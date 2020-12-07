@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddIDPCertificateFormComponent } from "./steps/add-certificate-steps";
 import { updateIDPCertificate } from "../../api";
-import { AddIDPCertificateWizardStepIcons } from "../../configs";
+import { getAddIDPCertificateWizardStepIcons } from "../../configs";
 import { IdentityProviderInterface } from "../../models";
 
 /**
@@ -176,7 +176,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     onSubmit={ handleWizardFormFinish }
                 />
             ),
-            icon: AddIDPCertificateWizardStepIcons.general,
+            icon: getAddIDPCertificateWizardStepIcons().general,
             title: t("adminPortal:components.certificates.keystore.wizard.steps.upload")
         }
     ];

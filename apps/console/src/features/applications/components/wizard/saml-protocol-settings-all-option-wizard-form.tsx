@@ -25,7 +25,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../core";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -386,7 +386,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     (
                         <FileUpload
                             encode={ true }
-                            dropzoneIcon={ EmptyPlaceholderIllustrations.fileUpload }
+                            dropzoneIcon={ getEmptyPlaceholderIllustrations().fileUpload }
                             updateFile={ setFile }
                             updateContent={ setFileContent }
                             updatePasteContent={ setFilePasteContent }

@@ -20,7 +20,7 @@ import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 
 /**
@@ -124,7 +124,7 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     return (
         <EmptyPlaceholder
             action={ resolveAction(error) }
-            image={ EmptyPlaceholderIllustrations.loginError }
+            image={ getEmptyPlaceholderIllustrations().loginError }
             imageSize="tiny"
             subtitle={ resolveSubTitles(error) }
             title={ resolveTitle(error) }

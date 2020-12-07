@@ -16,159 +16,157 @@
  * under the License.
  */
 
-import { ReactComponent as StatusShieldDanger } from "../themes/default/assets/images/accounts-status-icons/danger.svg";
-import { ReactComponent as StatusShieldGood } from "../themes/default/assets/images/accounts-status-icons/good.svg";
-import {
-    ReactComponent as StatusShieldWarning
-} from "../themes/default/assets/images/accounts-status-icons/warning.svg";
-import OrangeAppIconBackground from "../themes/default/assets/images/app-icon-background.png";
-import GravatarLogo from "../themes/default/assets/images/gravatar-logo.png";
-import { ReactComponent as AppIcon } from "../themes/default/assets/images/icons/app-icon.svg";
-import {
-    ReactComponent as AuthenticatorAppIcon
-} from "../themes/default/assets/images/icons/authenticator-app-icon.svg";
-import {
-    ReactComponent as BlockedMagnifierIcon
-} from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
-import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
-import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { AppConstants } from "../constants";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
-import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
-import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
-import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
-import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
-import { ReactComponent as EmailIcon } from "../themes/default/assets/images/icons/email-icon.svg";
-import { ReactComponent as ErrorIcon } from "../themes/default/assets/images/icons/error-icon.svg";
-import { ReactComponent as FingerprintIcon } from "../themes/default/assets/images/icons/fingerprint.svg";
-import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
-import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icons/info-icon.svg";
-import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
-import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
-import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
-import {
-    ReactComponent as SecurityQuestionsIcon
-} from "../themes/default/assets/images/icons/security-questions-icon.svg";
-import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons/sms-icon.svg";
-import { ReactComponent as SuccessIcon } from "../themes/default/assets/images/icons/success-icon.svg";
-import { ReactComponent as TickCircleIcon } from "../themes/default/assets/images/icons/tick-circle-icon.svg";
-import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
-import {
-    default as AssociatedAccountsMini
-} from "../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
-import {
-    default as AssociatedAccounts
-} from "../themes/default/assets/images/illustrations/associated-accounts.svg";
-import {
-    default as ChangePasswordMini
-} from "../themes/default/assets/images/illustrations/change-password-mini.svg";
-import { default as ChangePassword } from "../themes/default/assets/images/illustrations/change-password.svg";
-import {
-    ReactComponent as EnterVerificationCode
-} from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
-import {
-    default as FederatedAssociationsMini
-} from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
-import {
-    default as FederatedAssociations
-} from "../themes/default/assets/images/illustrations/federated-associations.svg";
-import {
-    ReactComponent as EmptySearchResultsIllustration
-} from "../themes/default/assets/images/illustrations/no-search-results.svg";
-import {
-    default as ProfileExportMini
-} from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
-import { default as ProfileExport } from "../themes/default/assets/images/illustrations/profile-export.svg";
-import {
-    ReactComponent as QRCodeScanIllustration
-} from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
-import {
-    ReactComponent as SecurityQuestionsMini
-} from "../themes/default/assets/images/illustrations/security-questions-mini.svg";
-import {
-    ReactComponent as SecurityQuestions
-} from "../themes/default/assets/images/illustrations/security-questions.svg";
-import { ReactComponent as Logo } from "../themes/default/assets/images/logo.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
 
-export const LogoImage = Logo;
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon = PackageIcon;
 export const DefaultAppIcon = CodeIcon;
 
-export const SidePanelIcons = {
-    account: ControlsIcon,
-    apps: AppIcon,
-    consent: TickCircleIcon,
-    overview: DashboardIcon,
-    personal: UserIcon,
-    security: LockIcon,
-    session: MonitorIcon
+export const getSidePanelIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        account: import(`../themes/${ theme }/assets/images/icons/controls-icon.svg`),
+        apps: import(`../themes/${ theme }/assets/images/icons/app-icon.svg`),
+        consent: import(`../themes/${ theme }/assets/images/icons/tick-circle-icon.svg`),
+        overview: import(`../themes/${ theme }/assets/images/icons/dashboard-icon.svg`),
+        personal: import(`../themes/${ theme }/assets/images/icons/user-icon.svg`),
+        security: import(`../themes/${ theme }/assets/images/icons/lock-icon.svg`),
+        session: import(`../themes/${ theme }/assets/images/icons/monitor-icon.svg`)
+    };
 };
 
-export const SettingsSectionIcons = {
-    associatedAccounts: AssociatedAccounts,
-    associatedAccountsMini: AssociatedAccountsMini,
-    changePassword: ChangePassword,
-    changePasswordMini: ChangePasswordMini,
-    federatedAssociations: FederatedAssociations,
-    federatedAssociationsMini: FederatedAssociationsMini,
-    profileExport: ProfileExport,
-    profileExportMini: ProfileExportMini,
-    securityQuestions: SecurityQuestions,
-    securityQuestionsMini: SecurityQuestionsMini
+export const getSettingsSectionIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        associatedAccounts: import(`../themes/${ theme }/assets/images/illustrations/associated-accounts.svg`),
+        associatedAccountsMini: import(`../themes/${
+            theme
+        }/assets/images/illustrations/associated-accounts-mini.svg`),
+        changePassword: import(`../themes/${ theme }/assets/images/illustrations/change-password.svg`),
+        changePasswordMini: import(`../themes/${ theme }/assets/images/illustrations/change-password-mini.svg`),
+        federatedAssociations: import(`../themes/${ theme }/assets/images/illustrations/federated-associations.svg`),
+        federatedAssociationsMini: import(`../themes/${
+            theme
+        }/assets/images/illustrations/federated-associations-mini.svg`),
+        profileExport: import(`../themes/${ theme }/assets/images/illustrations/profile-export.svg`),
+        profileExportMini: import(`../themes/${ theme }/assets/images/illustrations/profile-export-mini.svg`),
+        securityQuestions: import(`../themes/${ theme }/assets/images/illustrations/security-questions.svg`),
+        securityQuestionsMini: import(`../themes/${ theme }/assets/images/illustrations/security-questions-mini.svg`)
+    };
 };
 
-export const MFAIcons = {
-    authenticatorApp: AuthenticatorAppIcon,
-    fingerprint: FingerprintIcon,
-    sms: SMSIcon
+export const getMFAIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        authenticatorApp: import(`../themes/${ theme }/assets/images/icons/authenticator-app-icon.svg`),
+        fingerprint: import(`../themes/${ theme }/assets/images/icons/fingerprint.svg`),
+        sms: import(`../themes/${ theme }/assets/images/icons/sms-icon.svg`)
+    };
 };
 
-export const AccountRecoveryIcons = {
-    email: EmailIcon,
-    securityQuestions: SecurityQuestionsIcon
+export const getAccountRecoveryIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        email: import(`../themes/${ theme }/assets/images/icons/email-icon.svg`),
+        securityQuestions: import(`../themes/${ theme }/assets/images/icons/security-questions-icon.svg`)
+    };
 };
 
-export const AccountStatusShields = {
-    danger: StatusShieldDanger,
-    good: StatusShieldGood,
-    warning: StatusShieldWarning
+export const getAccountStatusShields = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        danger: import(`../themes/${ theme }/assets/images/accounts-status-icons/danger.svg`),
+        good: import(`../themes/${ theme }/assets/images/accounts-status-icons/good.svg`),
+        warning: import(`../themes/${ theme }/assets/images/accounts-status-icons/warning.svg`)
+    };
 };
 
-export const WidgetIcons = {
-    accountSecurity: PadlockIcon,
-    consents: ConsentIcon
+export const getWidgetIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        accountSecurity: import(`../themes/${ theme }/assets/images/icons/padlock-icon.svg`),
+        consents: import(`../themes/${ theme }/assets/images/icons/consent-icon.svg`)
+    };
 };
 
-export const AdvancedSearchIcons = {
-    clear: CrossIcon
+export const getAdvancedSearchIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        clear: import(`../themes/${ theme }/assets/images/icons/cross-icon.svg`)
+    };
 };
 
-export const EmptyPlaceholderIllustrations = {
-    accessDeniedError: ForbiddenIcon,
-    emptyList: BoxIcon,
-    genericError: CloseIcon,
-    loginError: ForbiddenIcon,
-    pageNotFound: BlockedMagnifierIcon,
-    search: EmptySearchResultsIllustration
+export const getEmptyPlaceholderIllustrations = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        accessDeniedError: import(`../themes/${ theme }/assets/images/icons/forbidden-icon.svg`),
+        emptyList: import(`../themes/${ theme }/assets/images/icons/box-icon.svg`),
+        genericError: import(`../themes/${ theme }/assets/images/icons/close-icon.svg`),
+        loginError: import(`../themes/${ theme }/assets/images/icons/forbidden-icon.svg`),
+        pageNotFound: import(`../themes/${ theme }/assets/images/icons/blocked-magnifier-icon.svg`),
+        search: import(`../themes/${ theme }/assets/images/illustrations/no-search-results.svg`)
+    };
 };
 
-export const AppIconBackgrounds = {
-    orange: OrangeAppIconBackground
+export const getAppIconBackgrounds = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        orange: import(`../themes/${ theme }/assets/images/app-icon-background.png`)
+    };
 };
 
-export const ThirdPartyLogos = {
-    gravatar: GravatarLogo
+export const getThirdPartyLogos = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        gravatar: import(`../themes/${ theme }/assets/images/gravatar-logo.png`)
+    };
 };
 
-export const AlertIcons = {
-    error: ErrorIcon,
-    info: InfoIcon,
-    success: SuccessIcon,
-    warning: WarningIcon
+export const AlertIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        error: import(`../themes/${ theme }/assets/images/icons/error-icon.svg`),
+        info: import(`../themes/${ theme }/assets/images/icons/info-icon.svg`),
+        success: import(`../themes/${ theme }/assets/images/icons/success-icon.svg`),
+        warning: import(`../themes/${ theme }/assets/images/icons/warning-icon.svg`)
+    };
 };
 
-export const QRCodeScan = QRCodeScanIllustration;
-export const EnterCode = EnterVerificationCode;
+export const getQRCodeScanIcon = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return import(`../themes/${ theme }/assets/images/illustrations/qrcode-scan.svg`);
+};
+
+export const getEnterCodeIcon = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return import(`../themes/${ theme }/assets/images/illustrations/enter-verification-code.svg`);
+};

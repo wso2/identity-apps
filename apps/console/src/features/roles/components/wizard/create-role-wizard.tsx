@@ -34,7 +34,7 @@ import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { UserBasicInterface } from "../../../users";
 import { createRole } from "../../api";
-import { RolesWizardStepIcons } from "../../configs";
+import { getRolesWizardStepIcons } from "../../configs";
 import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../models";
 
 /**
@@ -298,7 +298,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
-        icon: RolesWizardStepIcons.general,
+        icon: getRolesWizardStepIcons().general,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.0")
     },{
         content: (
@@ -336,7 +336,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 } }
             />
         ),
-        icon: RolesWizardStepIcons.assignUser,
+        icon: getRolesWizardStepIcons().assignUser,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.4")
     },{
         content: (
@@ -348,7 +348,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 summary={ generateWizardSummary() }
             />
         ),
-        icon: RolesWizardStepIcons.summary,
+        icon: getRolesWizardStepIcons().summary,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.3")
     }];
 

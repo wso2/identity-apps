@@ -16,25 +16,26 @@
  * under the License.
  */
 
-import {
-    ReactComponent as CertificateAvatar
-} from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as FileUploadIllustration } from "../../../themes/default/assets/images/icons/upload.svg";
-import { ReactComponent as CertificateBadge } from "../../../themes/default/assets/images/illustrations/badge.svg";
-import {
-    ReactComponent as CertificateIllustration
-} from "../../../themes/default/assets/images/illustrations/certificate.svg";
-import { ReactComponent as CertificateRibbon } from "../../../themes/default/assets/images/illustrations/ribbon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const CertificateIllustrations = {
-    avatar: CertificateAvatar,
-    badge: CertificateBadge,
-    file: CertificateIllustration,
-    ribbon: CertificateRibbon,
-    uploadPlaceholder: FileUploadIllustration
+export const getCertificateIllustrations = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        avatar: import(`../../../themes/${ theme }/assets/images/icons/certificate-avatar.svg`),
+        badge: import(`../../../themes/${ theme }/assets/images/illustrations/badge.svg`),
+        file: import(`../../../themes/${ theme }/assets/images/illustrations/certificate.svg`),
+        ribbon: import(`../../../themes/${ theme }/assets/images/illustrations/ribbon.svg`),
+        uploadPlaceholder: import(`../../../themes/${ theme }/assets/images/icons/upload.svg`)
+    };
 };
 
-export const ImportCertificateWizardStepIcons = {
-    general: DocumentIcon
+export const getImportCertificateWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };

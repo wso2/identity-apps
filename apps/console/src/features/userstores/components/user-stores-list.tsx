@@ -41,13 +41,13 @@ import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { deleteUserStore } from "../api";
-import { TableIcons } from "../configs";
+import { getTableIcons } from "../configs";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -247,7 +247,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                             { t("devPortal:placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
@@ -268,7 +268,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                             { t("adminPortal:components.userstores.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("adminPortal:components.userstores.placeholders.emptyList.title") }
                     subtitle={ [
@@ -313,7 +313,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                             shape="rounded"
                             spaced="right"
                             hoverable={ false }
-                            icon={ TableIcons.header.default }
+                            icon={ getTableIcons().header.default }
                         />
                         <Header.Content>
                             {

@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { OperationIcons } from "../../../../../core";
+import { getOperationIcons } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
@@ -440,8 +440,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                             <GenericIcon
                                                                 icon={
                                                                     showAuthenticatorsSidePanel
-                                                                        ? OperationIcons.minimize
-                                                                        : OperationIcons.maximize
+                                                                        ? getOperationIcons().minimize
+                                                                        : getOperationIcons().maximize
                                                                 }
                                                                 size="nano"
                                                                 transparent

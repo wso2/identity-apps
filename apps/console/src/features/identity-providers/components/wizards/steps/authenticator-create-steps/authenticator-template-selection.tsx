@@ -22,7 +22,7 @@ import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { IdPIcons } from "../../../../configs";
+import { getIdPIcons } from "../../../../configs";
 import {
     FederatedAuthenticatorMetaDataInterface,
     IdentityProviderInterface,
@@ -117,7 +117,7 @@ export const AuthenticatorTemplateSelection:
                                     id={ template.id }
                                     key={ index }
                                     header={ template.name }
-                                    image={ IdPIcons[template.image] }
+                                    image={ getIdPIcons()[template.image] }
                                     imageOptions={ {
                                         fill: "primary"
                                     } }

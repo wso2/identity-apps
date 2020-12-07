@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useSVGPromise } from "@wso2is/core/hooks";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     GenericIcon,
@@ -27,8 +28,8 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider } from "semantic-ui-react";
-import { AppConstants, TechnologyLogos, UIConstants, history } from "../../core";
-import { OverviewPageImages } from "../configs";
+import { AppConstants, UIConstants, getTechnologyLogos, history } from "../../core";
+import { getOverviewPageImages } from "../configs";
 
 /**
  * Proptypes for the overview page component.
@@ -52,6 +53,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const { t } = useTranslation();
 
+    const [ jumbotronBGAsDataURL ] = useSVGPromise(getOverviewPageImages().jumbotron.background);
+
     return (
         <PageLayout contentTopMargin={ false }>
             <div className="developer-portal page overview-page">
@@ -65,7 +68,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     matchedPadding={ false }
                     borderRadius={ 10 }
                     style={ {
-                        backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
+                        backgroundImage: `url(${ jumbotronBGAsDataURL })`
                     } }
                     data-testid={ `${ testId }-jumbotron` }
                 >
@@ -83,7 +86,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.angular") }
                         imageSize="x50"
-                        image={ TechnologyLogos.angular }
+                        image={ getTechnologyLogos().angular }
                         imageOptions={ {
                             fill: false
                         } }
@@ -95,7 +98,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.react") }
                         imageSize="x50"
-                        image={ TechnologyLogos.react }
+                        image={ getTechnologyLogos().react }
                         imageOptions={ {
                             fill: false
                         } }
@@ -107,7 +110,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.windows") }
                         imageSize="x50"
-                        image={ TechnologyLogos.windows }
+                        image={ getTechnologyLogos().windows }
                         imageOptions={ {
                             fill: false
                         } }
@@ -119,7 +122,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.ios") }
                         imageSize="x50"
-                        image={ TechnologyLogos.ios }
+                        image={ getTechnologyLogos().ios }
                         imageOptions={ {
                             fill: false
                         } }
@@ -131,7 +134,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.python") }
                         imageSize="x50"
-                        image={ TechnologyLogos.python }
+                        image={ getTechnologyLogos().python }
                         imageOptions={ {
                             fill: false
                         } }
@@ -143,7 +146,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.java") }
                         imageSize="x50"
-                        image={ TechnologyLogos.java }
+                        image={ getTechnologyLogos().java }
                         imageOptions={ {
                             fill: false
                         } }
@@ -155,7 +158,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         background="transparent"
                         label={ t("devPortal:technologies.android") }
                         imageSize="x50"
-                        image={ TechnologyLogos.android }
+                        image={ getTechnologyLogos().android }
                         imageOptions={ {
                             fill: false
                         } }
@@ -177,7 +180,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.applications }
+                            icon={ getOverviewPageImages().quickLinks.applications }
                             relaxed="very"
                             transparent
                         />
@@ -200,7 +203,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.idp }
+                            icon={ getOverviewPageImages().quickLinks.idp }
                             relaxed="very"
                             transparent
                         />
@@ -223,7 +226,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.remoteFetch }
+                            icon={ getOverviewPageImages().quickLinks.remoteFetch }
                             relaxed="very"
                             transparent
                         />

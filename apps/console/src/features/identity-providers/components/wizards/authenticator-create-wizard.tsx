@@ -31,7 +31,7 @@ import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator
 } from "../../api";
-import { IdentityProviderWizardStepIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons } from "../../configs";
 import {
     FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorMetaInterface,
@@ -354,19 +354,19 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         }));
         setWizardSteps([
             {
-                icon: IdentityProviderWizardStepIcons.general,
+                icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
                 title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorSelection.title")
             },
             {
-                icon: IdentityProviderWizardStepIcons.authenticatorSettings,
+                icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
                 submitCallback: setSubmitAuthenticator,
                 title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorConfiguration.title")
             },
             {
-                icon: IdentityProviderWizardStepIcons.summary,
+                icon: getIdentityProviderWizardStepIcons().summary,
                 name: WizardSteps.SUMMARY,
                 submitCallback: setFinishSubmit,
                 title: t("devPortal:components.idp.wizards.addAuthenticator.steps.summary.title")

@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import { ReactComponent as AppIcon } from "../../../themes/dark/assets/images/icons/app-icon.svg";
-import { ReactComponent as BuildingIcon } from "../../../themes/default/assets/images/icons/building-icon.svg";
-import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
-import BannerSprites from "../../../themes/default/assets/images/misc/banner-sprites.svg";
+import { AppConstants } from "../../core/constants";
 
-export const OverviewPageImages = {
-    jumbotron: {
-        background: BannerSprites
-    },
-    quickLinks: {
-        applications: AppIcon,
-        idp: BuildingIcon,
-        remoteFetch: CodeForkIcon
-    }
+export const getOverviewPageImages = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        jumbotron: {
+            background: import(`../../../themes/${ theme }/assets/images/misc/banner-sprites.svg`)
+        },
+        quickLinks: {
+            applications: import(`../../../themes/${ theme }/assets/images/icons/app-icon.svg`),
+            idp: import(`../../../themes/${ theme }/assets/images/icons/building-icon.svg`),
+            remoteFetch: import(`../../../themes/${ theme }/assets/images/icons/code-fork.svg`)
+        }
+    };
 };

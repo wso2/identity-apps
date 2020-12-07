@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { getTemplateDetails } from "../../api";
-import { ViewLocaleTemplateWizardStepIcons } from "../../configs";
+import { getViewLocaleTemplateWizardStepIcons } from "../../configs";
 import { EmailTemplate } from "../../models";
 import { EmailTemplateEditor } from "../email-template-editor";
 
@@ -80,7 +80,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 data-testid={ `${ testId }-email-template-editor` }
             />
         ),
-        icon: ViewLocaleTemplateWizardStepIcons.general
+        icon: getViewLocaleTemplateWizardStepIcons().general
     }];
 
     return (

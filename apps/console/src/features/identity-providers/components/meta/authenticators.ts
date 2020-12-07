@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatorIcons, IdPIcons } from "../../configs";
+import { getAuthenticatorIcons, getIdPIcons } from "../../configs";
 import { FederatedAuthenticatorMetaDataInterface, StrictGenericAuthenticatorInterface } from "../../models";
 
 export const getFederatedAuthenticators = (): FederatedAuthenticatorMetaDataInterface[] => {
@@ -24,73 +24,73 @@ export const getFederatedAuthenticators = (): FederatedAuthenticatorMetaDataInte
         {
             authenticatorId: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
             displayName: "Office 365",
-            icon: IdPIcons.office365,
+            icon: getIdPIcons().office365,
             name: "Office365Authenticator"
         },
         {
             authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
             displayName: "Twitter",
-            icon: IdPIcons.twitter,
+            icon: getIdPIcons().twitter,
             name: "TwitterAuthenticator"
         },
         {
             authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
             displayName: "Facebook",
-            icon: IdPIcons.facebook,
+            icon: getIdPIcons().facebook,
             name: "FacebookAuthenticator"
         },
         {
             authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
             displayName: "Google OIDC",
-            icon: IdPIcons.google,
+            icon: getIdPIcons().google,
             name: "GoogleOIDCAuthenticator"
         },
         {
             authenticatorId: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
             displayName: "Microsoft Windows Live",
-            icon: IdPIcons.microsoft,
+            icon: getIdPIcons().microsoft,
             name: "MicrosoftWindowsLiveAuthenticator"
         },
         {
             authenticatorId: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
             displayName: "Passive STS",
-            icon: IdPIcons.wsFed,
+            icon: getIdPIcons().wsFed,
             name: "PassiveSTSAuthenticator"
         },
         {
             authenticatorId: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
             displayName: "Yahoo OAuth 2",
-            icon: IdPIcons.yahoo,
+            icon: getIdPIcons().yahoo,
             name: "YahooOAuth2Authenticator"
         },
         {
             authenticatorId: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
             displayName: "IWA Kerberos",
-            icon: IdPIcons.iwaKerberos,
+            icon: getIdPIcons().iwaKerberos,
             name: "IWAKerberosAuthenticator"
         },
         {
             authenticatorId: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
             displayName: "SAML SSO",
-            icon: IdPIcons.saml,
+            icon: getIdPIcons().saml,
             name: "SAMLSSOAuthenticator"
         },
         {
             authenticatorId: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             displayName: "OpenID Connect",
-            icon: IdPIcons.oidc,
+            icon: getIdPIcons().oidc,
             name: "OpenIDConnectAuthenticator"
         },
         {
             authenticatorId: "RW1haWxPVFA",
             displayName: "Email OTP",
-            icon: IdPIcons.emailOTP,
+            icon: getIdPIcons().emailOTP,
             name: "EmailOTP"
         },
         {
             authenticatorId: "U01TT1RQ",
             displayName: "SMS OTP",
-            icon: IdPIcons.smsOTP,
+            icon: getIdPIcons().smsOTP,
             name: "SMSOTP"
         }
     ];
@@ -100,37 +100,37 @@ export const getSelectedLocalAuthenticators = (): StrictGenericAuthenticatorInte
     return [
         {
             id: "SWRlbnRpZmllckV4ZWN1dG9y",
-            image: AuthenticatorIcons?.identifierFirst,
+            image: getAuthenticatorIcons()?.identifierFirst,
             name: "IdentifierExecutor"
         },
         {
             id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
-            image: AuthenticatorIcons?.jwtBasic,
+            image: getAuthenticatorIcons()?.jwtBasic,
             name: "JWTBasicAuthenticator"
         },
         {
             id: "RklET0F1dGhlbnRpY2F0b3I",
-            image: AuthenticatorIcons?.fido,
+            image: getAuthenticatorIcons()?.fido,
             name: "FIDOAuthenticator"
         },
         {
             id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
-            image: AuthenticatorIcons?.x509,
+            image: getAuthenticatorIcons()?.x509,
             name: "x509CertificateAuthenticator"
         },
         {
             id: "dG90cA",
-            image: AuthenticatorIcons?.totp,
+            image: getAuthenticatorIcons()?.totp,
             name: "totp"
         },
         {
             id: "QmFzaWNBdXRoZW50aWNhdG9y",
-            image: AuthenticatorIcons?.basic,
+            image: getAuthenticatorIcons()?.basic,
             name: "BasicAuthenticator"
         },
         {
             id: "U2Vzc2lvbkV4ZWN1dG9y",
-            image: AuthenticatorIcons?.sessionExecutor,
+            image: getAuthenticatorIcons()?.sessionExecutor,
             name: "SessionExecutor"
         }
     ];
@@ -140,32 +140,32 @@ export const getSelectedFederatedAuthenticators = (): StrictGenericAuthenticator
     return [
         {
             id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
-            image: AuthenticatorIcons?.microsoft,
+            image: getAuthenticatorIcons()?.microsoft,
             name: "MicrosoftWindowsLiveAuthenticator"
         },
         {
             id: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-            image: AuthenticatorIcons?.google,
+            image: getAuthenticatorIcons()?.google,
             name: "GoogleOIDCAuthenticator"
         },
         {
             id: "U01TT1RQ",
-            image: AuthenticatorIcons?.smsOTP,
+            image: getAuthenticatorIcons()?.smsOTP,
             name: "SMSOTP"
         },
         {
             id: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-            image: AuthenticatorIcons?.twitter,
+            image: getAuthenticatorIcons()?.twitter,
             name: "TwitterAuthenticator"
         },
         {
             id: "RW1haWxPVFA",
-            image: AuthenticatorIcons?.emailOTP,
+            image: getAuthenticatorIcons()?.emailOTP,
             name: "EmailOTP"
         },
         {
             id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-            image: AuthenticatorIcons?.yahoo,
+            image: getAuthenticatorIcons()?.yahoo,
             name: "YahooOAuth2Authenticator"
         },
         {
@@ -175,12 +175,12 @@ export const getSelectedFederatedAuthenticators = (): StrictGenericAuthenticator
         },
         {
             id: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-            image: AuthenticatorIcons?.facebook,
+            image: getAuthenticatorIcons()?.facebook,
             name: "FacebookAuthenticator"
         },
         {
             id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
-            image: AuthenticatorIcons?.office365,
+            image: getAuthenticatorIcons()?.office365,
             name: "Office365Authenticator"
         }
     ];

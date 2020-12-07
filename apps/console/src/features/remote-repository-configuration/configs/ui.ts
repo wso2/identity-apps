@@ -16,24 +16,24 @@
  * under the License.
  */
 
-import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import {
-    default as RemoteFetchIllustration
-} from "../../../themes/default/assets/images/illustrations/remote-repository-illustration.svg";
+import { AppConstants } from "../../core/constants";
 
-export const CreateRemoteRepoWizardStepIcons = {
-    general: DocumentIcon
+export const getEmptyPlaceholderIllustrations = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        add: import(`../../../themes/${ theme }/assets/images/icons/code-fork.svg`)
+    };
 };
 
-export const RemoteRepoDetailsWizardStepIcons = {
-    general: DocumentIcon
-};
+export const getSectionIllustrations = () => {
 
-export const EmptyPlaceholderIllustrations = {
-    add: CodeForkIcon
-};
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
-export const SectionIllustrations = {
-    appConfigRepo: RemoteFetchIllustration
+    return {
+        appConfigRepo: import(`../../../themes/${
+            theme
+        }/assets/images/illustrations/remote-repository-illustration.svg`)
+    };
 };

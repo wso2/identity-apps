@@ -16,27 +16,27 @@
  * under the License.
  */
 
-import { AuthenticatorIcons, ConnectorIcons } from "../../configs";
+import { getAuthenticatorIcons, getConnectorIcons } from "../../configs";
 
 export const OutboundConnectors = [
     {
         connectorId: "Z29vZ2xlYXBwcw",
         displayName: "Google",
-        icon: AuthenticatorIcons.google,
+        icon: getAuthenticatorIcons().google,
         name: "googleapps",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw"
     },
     {
         connectorId: "c2FsZXNmb3JjZQ",
         displayName: "Salesforce",
-        icon: ConnectorIcons.salesforce,
+        icon: getConnectorIcons().salesforce,
         name: "salesforce",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
     },
    {
         connectorId: "c2NpbQ",
         displayName: "SCIM",
-        icon: ConnectorIcons.scim,
+        icon: getConnectorIcons().scim,
         name: "scim",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ"
     }

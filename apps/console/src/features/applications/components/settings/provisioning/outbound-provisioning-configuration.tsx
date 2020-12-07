@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../../core";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface, getIdentityProviderList } from "../../../../identity-providers";
 import { updateApplicationConfigurations } from "../../../api";
 import {
@@ -258,7 +258,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                             t("devPortal:components.applications.placeholders" +
                                                 ".emptyOutboundProvisioningIDPs.title")
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
                                             t("devPortal:components.applications.placeholders" +
                                                 ".emptyOutboundProvisioningIDPs.subtitles")

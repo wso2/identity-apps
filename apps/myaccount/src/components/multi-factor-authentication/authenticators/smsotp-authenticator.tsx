@@ -19,7 +19,7 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -27,14 +27,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
-import { MFAIcons } from "../../../configs";
+import { getMFAIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
-import { EditSection, ThemeIcon } from "../../shared";
+import { EditSection } from "../../shared";
 import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
-
 
 /**
  * SMS key.
@@ -269,8 +268,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={ MFAIcons.sms }
+                                <GenericIcon
+                                    icon={ getMFAIcons().sms }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }

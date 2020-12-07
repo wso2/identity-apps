@@ -16,21 +16,22 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const EmailTemplateIllustrations = {
-    emptyEmailListing: EmailIcon
+export const getAddEmailTemplateTypeWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };
 
-export const AddLocalClaimWizardStepIcons = {
-    general: DocumentIcon
-};
+export const getViewLocaleTemplateWizardStepIcons = () => {
 
-export const AddEmailTemplateTypeWizardStepIcons = {
-    general: DocumentIcon
-};
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
-export const ViewLocaleTemplateWizardStepIcons = {
-    general: DocumentIcon
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };

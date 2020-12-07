@@ -30,7 +30,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
@@ -679,7 +679,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 </PrimaryButton>
                                             )
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         imageSize="tiny"
                                         data-testid={ `${ testId }-empty-placeholder` }
                                     />

@@ -18,20 +18,20 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
-import { MFAIcons } from "../../../configs";
+import { getMFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
 import { AppState } from "../../../store";
 import { setActiveForm } from "../../../store/actions";
-import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
-
+import { EditSection, ModalComponent } from "../../shared";
 
 /**
  * FIDO key.
@@ -380,8 +380,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={ MFAIcons.fingerprint }
+                                <GenericIcon
+                                    icon={ getMFAIcons().fingerprint }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }

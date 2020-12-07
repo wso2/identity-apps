@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
 import { OIDCScopeAttributesList } from "./oidc-scope-attribute-list";
 import { createOIDCScope } from "../../api";
-import { OIDCScopeWizardStepIcons } from "../../configs";
+import { getOIDCScopeWizardStepIcons } from "../../configs";
 import { OIDCScopesManagementConstants } from "../../constants";
 import { OIDCScopesListInterface } from "../../models";
 
@@ -230,7 +230,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     data-testid={ `${ testId }-form` }
                 />
             ),
-            icon: OIDCScopeWizardStepIcons.general,
+            icon: getOIDCScopeWizardStepIcons().general,
             title: t("devPortal:components.oidcScopes.wizards.addScopeWizard.steps.basicDetails")
         },
         {
@@ -246,7 +246,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     data-testid={ `${ testId }-wizard` }
                 />
             ),
-            icon: OIDCScopeWizardStepIcons.claimConfig,
+            icon: getOIDCScopeWizardStepIcons().claimConfig,
             title: t("devPortal:components.oidcScopes.wizards.addScopeWizard.steps.claims")
         }
     ];

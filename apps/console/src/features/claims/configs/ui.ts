@@ -16,12 +16,22 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const AddDialectWizardStepIcons = {
-    general: DocumentIcon
+export const getAddDialectWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };
 
-export const AddLocalClaimWizardStepIcons = {
-    general: DocumentIcon
+export const getAddLocalClaimWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };

@@ -43,8 +43,8 @@ import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { deleteOIDCScope } from "../api";
@@ -302,7 +302,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                             { t("devPortal:components.oidcScopes.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("devPortal:components.oidcScopes.placeholders.emptySearch.title") }
                     subtitle={ [
@@ -323,7 +323,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                             { t("devPortal:components.oidcScopes.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations?.newList }
+                    image={ getEmptyPlaceholderIllustrations()?.newList }
                     imageSize="tiny"
                     title={ t("devPortal:components.oidcScopes.placeholders.emptyList.title") }
                     subtitle={ [

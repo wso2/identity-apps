@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../api";
-import { SettingsSectionIcons } from "../../configs";
+import { getSettingsSectionIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { SettingsSection } from "../shared";
 
@@ -122,8 +122,8 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
             contentPadding={ false }
             description={ t("userPortal:sections.profileExport.description") }
             header={ t("userPortal:sections.profileExport.heading") }
-            icon={ SettingsSectionIcons.profileExport }
-            iconMini={ SettingsSectionIcons.profileExportMini }
+            icon={ getSettingsSectionIcons().profileExport }
+            iconMini={ getSettingsSectionIcons().profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

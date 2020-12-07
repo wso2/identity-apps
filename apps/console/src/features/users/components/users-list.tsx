@@ -37,9 +37,9 @@ import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { UserManagementConstants } from "../constants";
@@ -331,7 +331,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             { t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
@@ -356,7 +356,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             { t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.addButton") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.title") }
                     subtitle={ [

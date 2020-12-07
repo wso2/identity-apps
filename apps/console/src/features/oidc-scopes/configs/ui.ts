@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const OIDCScopeWizardStepIcons = {
-    claimConfig: GearsIcon,
-    general: DocumentIcon
+export const getOIDCScopeWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        claimConfig: import(`../../../themes/${ theme }/assets/images/icons/gears-icon.svg`),
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };
