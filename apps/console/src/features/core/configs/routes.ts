@@ -239,7 +239,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.approvals
             },
             id: "approvals",
-            name: "adminPortal:components.sidePanel.approvals",
+            name: "console:manage.features.sidePanel.approvals",
             order: 4,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
