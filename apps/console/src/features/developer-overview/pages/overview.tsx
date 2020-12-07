@@ -59,8 +59,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     bordered
                     background="accent1"
                     className="with-animated-background"
-                    heading={ t("devPortal:components.overview.banner.heading") }
-                    subHeading={ t("devPortal:components.overview.banner.subHeading") }
+                    heading={ t("console:develop.overview.banner.heading") }
+                    subHeading={ t("console:develop.overview.banner.subHeading") }
                     textAlign="center"
                     matchedPadding={ false }
                     borderRadius={ 10 }
@@ -81,7 +81,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.angular") }
+                        label={ t("console:develop.technologies.angular") }
                         imageSize="x50"
                         image={ TechnologyLogos.angular }
                         imageOptions={ {
@@ -93,7 +93,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.react") }
+                        label={ t("console:develop.technologies.react") }
                         imageSize="x50"
                         image={ TechnologyLogos.react }
                         imageOptions={ {
@@ -105,7 +105,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.windows") }
+                        label={ t("console:develop.technologies.windows") }
                         imageSize="x50"
                         image={ TechnologyLogos.windows }
                         imageOptions={ {
@@ -117,7 +117,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.ios") }
+                        label={ t("console:develop.technologies.ios") }
                         imageSize="x50"
                         image={ TechnologyLogos.ios }
                         imageOptions={ {
@@ -129,7 +129,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.python") }
+                        label={ t("console:develop.technologies.python") }
                         imageSize="x50"
                         image={ TechnologyLogos.python }
                         imageOptions={ {
@@ -141,7 +141,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.java") }
+                        label={ t("console:develop.technologies.java") }
                         imageSize="x50"
                         image={ TechnologyLogos.java }
                         imageOptions={ {
@@ -153,7 +153,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.android") }
+                        label={ t("console:develop.technologies.android") }
                         imageSize="x50"
                         image={ TechnologyLogos.android }
                         imageOptions={ {
@@ -183,10 +183,10 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
+                                { t("console:develop.overview.quickLinks.cards.applications.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.applications.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>
@@ -206,10 +206,10 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
+                                { t("console:develop.overview.quickLinks.cards.idps.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.idps.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>
@@ -229,10 +229,10 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
+                                { t("console:develop.overview.quickLinks.cards.remoteFetch.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.remoteFetch.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>
