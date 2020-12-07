@@ -71,10 +71,10 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
                                     image={ EmptyPlaceholderIllustrations.genericError }
                                     imageSize="tiny"
                                     subtitle={ [
-                                        I18n.instance.t("devPortal:placeholders.genericError.subtitles.0"),
-                                        I18n.instance.t("devPortal:placeholders.genericError.subtitles.1")
+                                        I18n.instance.t("console:common.placeholders.genericError.subtitles.0"),
+                                        I18n.instance.t("console:common.placeholders.genericError.subtitles.1")
                                     ] }
-                                    title={ I18n.instance.t("devPortal:placeholders.genericError.title") }
+                                    title={ I18n.instance.t("console:common.placeholders.genericError.title") }
                                 />
                             ) }
                         >
