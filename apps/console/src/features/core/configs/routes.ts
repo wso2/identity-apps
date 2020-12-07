@@ -148,7 +148,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 
     return [
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../users/pages/user-edit")),
@@ -169,14 +169,14 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.users
             },
             id: "users",
-            name: "adminPortal:components.sidePanel.users",
+            name: "console:manage.features.sidePanel.users",
             order: 1,
             path: AppConstants.getPaths().get("USERS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../groups/pages/group-edit")),
@@ -204,7 +204,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../roles/pages/role-edit")),
@@ -232,7 +232,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             component: lazy(() => import("../../workflow-approvals/pages/approvals")),
             exact: true,
             icon: {
@@ -337,7 +337,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            category: "adminPortal:components.sidePanel.categories.userstores",
+            category: "console:manage.features.sidePanel.categories.userstores",
             children: [
                 {
                     component: lazy(() => import("../../userstores/pages/user-stores-edit")),
@@ -356,7 +356,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: SidePanelIcons.childIcon
                     },
                     id: "userstore-templates",
-                    name: "adminPortal:components.sidePanel.userstoreTemplates",
+                    name: "console:manage.features.sidePanel.userstoreTemplates",
                     path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
                     protected: true,
                     showOnSidePanel: false
@@ -367,7 +367,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.userStore
             },
             id: "userStores",
-            name: "adminPortal:components.sidePanel.userstores",
+            name: "console:manage.features.sidePanel.userstores",
             order: 5,
             path: AppConstants.getPaths().get("USERSTORES"),
             protected: true,
