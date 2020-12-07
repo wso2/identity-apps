@@ -91,11 +91,11 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                 typeRequests.map(response => response.catch(error => {
                     dispatch(addAlert({
                         description: error?.description
-                            || t("adminPortal:components.userstores.notifications." +
+                            || t("console:manage.features.userstores.notifications." +
                                 "fetchUserstoreTemplates.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.userstores.notifications." +
+                            || t("console:manage.features.userstores.notifications." +
                                 "fetchUserstoreTemplates.genericError.message")
                     }));
                 }))
@@ -134,10 +134,10 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             setRawUserstoreTypes(rawUserstoreTypes);
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description || t("adminPortal:components.userstores.notifications." +
+                description: error?.description || t("console:manage.features.userstores.notifications." +
                     "fetchUserstoreTypes.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || t("adminPortal:components.userstores.notifications." +
+                message: error?.message || t("console:manage.features.userstores.notifications." +
                     "fetchUserstoreTypes.genericError.message")
             }));
         }).finally(() => {
@@ -162,14 +162,14 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             }
             <PageLayout
                 isLoading={ isLoading }
-                title={ t("adminPortal:components.userstores.pageLayout.templates.title") }
-                description={ t("adminPortal:components.userstores.pageLayout.templates.description") }
+                title={ t("console:manage.features.userstores.pageLayout.templates.title") }
+                description={ t("console:manage.features.userstores.pageLayout.templates.description") }
                 contentTopMargin={ true }
                 backButton={ {
                     onClick: () => {
                         history.push(AppConstants.getPaths().get("USERSTORES"));
                     },
-                    text: t("adminPortal:components.userstores.pageLayout.templates.back")
+                    text: t("console:manage.features.userstores.pageLayout.templates.back")
                 }
                 } 
                 titleTextAlign="left"
@@ -183,8 +183,8 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                             <TemplateGrid<UserstoreTypeListItem>
                                 type="userstore"
                                 templates={ userstoreTypes }
-                                heading={ t("adminPortal:components.userstores.pageLayout.templates.templateHeading") }
-                                subHeading={ t("adminPortal:components.userstores.pageLayout." +
+                                heading={ t("console:manage.features.userstores.pageLayout.templates.templateHeading") }
+                                subHeading={ t("console:manage.features.userstores.pageLayout." +
                                     "templates.templateSubHeading") }
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
@@ -205,9 +205,9 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                         <EmptyPlaceholder
                                             image={ EmptyPlaceholderIllustrations.newList }
                                             imageSize="tiny"
-                                            title={ t("adminPortal:components.templates.emptyPlaceholder.title") }
+                                            title={ t("console:manage.features.templates.emptyPlaceholder.title") }
                                             subtitle={
-                                                [ t("adminPortal:components.templates.emptyPlaceholder.subtitles") ]
+                                                [ t("console:manage.features.templates.emptyPlaceholder.subtitles") ]
                                             }
                                             data-testid={ `${ testId }-grid-empty-placeholder` }
                                         />

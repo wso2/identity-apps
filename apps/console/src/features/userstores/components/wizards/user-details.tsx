@@ -92,14 +92,14 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                     type="toggle"
                                                     required={ false }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name
@@ -122,14 +122,14 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                     type="text"
                                                     required={ true }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name

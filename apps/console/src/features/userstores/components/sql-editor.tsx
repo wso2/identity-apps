@@ -103,7 +103,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     <Accordion.Title
                                         active={ accordionIndex === 0 }
                                         className="category-name"
-                                        content={ t("adminPortal:components.userstores.sqlEditor.create") }
+                                        content={ t("console:manage.features.userstores.sqlEditor.create") }
                                         index={ accordionIndex }
                                         icon={ <Icon className="angle right caret-icon" /> }
                                         onClick={ () => setAccordionIndex(accordionIndex === 0 ? -1 : 0) }
@@ -148,7 +148,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 1 }
                                     className="category-name"
-                                    content={ t("adminPortal:components.userstores.sqlEditor.read") }
+                                    content={ t("console:manage.features.userstores.sqlEditor.read") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 1 ? -1 : 1) }
@@ -192,7 +192,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 2 }
                                     className="category-name"
-                                    content={ t("adminPortal:components.userstores.sqlEditor.update") }
+                                    content={ t("console:manage.features.userstores.sqlEditor.update") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 2 ? -1 : 2) }
@@ -236,7 +236,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 <Accordion.Title
                                     active={ accordionIndex === 3 }
                                     className="category-name"
-                                    content={ t("adminPortal:components.userstores.sqlEditor.delete") }
+                                    content={ t("console:manage.features.userstores.sqlEditor.delete") }
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 3 ? -1 : 3) }
@@ -302,7 +302,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 </Menu.Menu>
                                 <Menu.Item position="right">
                                     <Checkbox
-                                        label={ t("adminPortal:components.userstores.sqlEditor.darkMode") }
+                                        label={ t("console:manage.features.userstores.sqlEditor.darkMode") }
                                         checked={ isEditorDarkMode }
                                         onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode); } }
                                         slider
@@ -340,7 +340,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         } }
                                         data-testid={ `${ testId }-reset-button` }
                                     >
-                                        { t("adminPortal:components.userstores.sqlEditor.reset") }
+                                        { t("console:manage.features.userstores.sqlEditor.reset") }
                                     </LinkButton>
                                     <PrimaryButton
                                         type="button"

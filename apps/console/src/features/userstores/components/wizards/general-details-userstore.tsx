@@ -160,13 +160,13 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                         } }
                     >
                         <Field
-                            label={ t("adminPortal:components.userstores.forms.general.name.label") }
+                            label={ t("console:manage.features.userstores.forms.general.name.label") }
                             name="name"
                             type="text"
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.userstores.forms.general." +
+                            requiredErrorMessage={ t("console:manage.features.userstores.forms.general." +
                                 "name.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.userstores.forms.general.name.placeholder") }
+                            placeholder={ t("console:manage.features.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             data-testid={ `${ testId }-form-name-input` }
                             validation={ async (value: FormValue, validation: Validation) => {
@@ -177,12 +177,12 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     dispatch(addAlert(
                                         {
                                             description: error?.description
-                                                || t("adminPortal:components.userstores.notifications." +
+                                                || t("console:manage.features.userstores.notifications." +
                                                     "fetchUserstores.genericError" +
                                                     ".description"),
                                             level: AlertLevels.ERROR,
                                             message: error?.message
-                                                || t("adminPortal:components.userstores.notifications." +
+                                                || t("console:manage.features.userstores.notifications." +
                                                     "fetchUserstores.genericError.message")
                                         }
                                     ));
@@ -191,7 +191,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                 if (userStores.find((userstore: UserStoreListItem) => userstore.name === value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("adminPortal:components.userstores.forms.general." +
+                                        t("console:manage.features.userstores.forms.general." +
                                             "name.validationErrorMessages.alreadyExistsErrorMessage")
                                     );
                                 }
@@ -199,12 +199,12 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             }
                         />
                         <Field
-                            label={ t("adminPortal:components.userstores.forms.general.description.label") }
+                            label={ t("console:manage.features.userstores.forms.general.description.label") }
                             name="description"
                             type="text"
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ t("adminPortal:components.userstores.forms.general." +
+                            placeholder={ t("console:manage.features.userstores.forms.general." +
                                 "description.placeholder") }
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-textarea` }
@@ -239,14 +239,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     type="password"
                                                     required={ true }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name
@@ -271,14 +271,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -317,14 +317,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         type="text"
                                                         required={ true }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -360,14 +360,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     type="password"
                                                     required={ true }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name
@@ -394,14 +394,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -426,14 +426,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         type="text"
                                                         required={ true }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -507,14 +507,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                 : null
                                     }
                                 />
-                                { t("adminPortal:components.userstores.forms.connection.testButton") }
+                                { t("console:manage.features.userstores.forms.connection.testButton") }
                             </Button>
                         )
                     }
                     { connectionFailed
                         && (
                             <Header as="h6" color="red">
-                                { t("adminPortal:components.userstores.forms.connection.connectionErrorMessage") }
+                                { t("console:manage.features.userstores.forms.connection.connectionErrorMessage") }
                             </Header>
                         )
                     }

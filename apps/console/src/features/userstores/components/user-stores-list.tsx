@@ -163,7 +163,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             assertion={ deleteName }
             assertionHint={
                 <p>
-                    <Trans i18nKey="adminPortal:components.userstores.confirmation.hint">
+                    <Trans i18nKey="console:manage.features.userstores.confirmation.hint">
                         Please type
                         <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
                             { { name: deleteName } }
@@ -179,18 +179,18 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 deleteUserStore(deleteID)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("adminPortal:components.userstores.notifications." +
+                            description: t("console:manage.features.userstores.notifications." +
                                 "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("adminPortal:components.userstores.notifications." +
+                            message: t("console:manage.features.userstores.notifications." +
                                 "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: t("adminPortal:components.userstores.notifications." +
+                            description: t("console:manage.features.userstores.notifications." +
                                 "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: t("adminPortal:components.userstores.notifications." +
+                            message: t("console:manage.features.userstores.notifications." +
                                 "delay.message")
                         }));
                         update();
@@ -198,11 +198,11 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     .catch(error => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? t("adminPortal:components.userstores.notifications." +
+                                ?? t("console:manage.features.userstores.notifications." +
                                     "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
                             message: error?.message
-                                ?? t("adminPortal:components.userstores.notifications." +
+                                ?? t("console:manage.features.userstores.notifications." +
                                     "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
@@ -215,19 +215,19 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
-                { t("adminPortal:components.userstores.confirmation.header") }
+                { t("console:manage.features.userstores.confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("adminPortal:components.userstores.confirmation.message") }
+                { t("console:manage.features.userstores.confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
-                { t("adminPortal:components.userstores.confirmation.content") }
+                { t("console:manage.features.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -244,15 +244,15 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("devPortal:placeholders.emptySearchResult.action") }
+                            { t("console:manage.placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("devPortal:placeholders.emptySearchResult.title") }
+                    title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
-                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -265,14 +265,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add" />
-                            { t("adminPortal:components.userstores.placeholders.emptyList.action") }
+                            { t("console:manage.features.userstores.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.userstores.placeholders.emptyList.title") }
+                    title={ t("console:manage.features.userstores.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("adminPortal:components.userstores.placeholders.emptyList.subtitles")
+                        t("console:manage.features.userstores.placeholders.emptyList.subtitles")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
