@@ -38,7 +38,7 @@ import {
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
@@ -179,7 +179,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
                     subtitle={ [
@@ -205,7 +205,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 { type: "Role" })}
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }

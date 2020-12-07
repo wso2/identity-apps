@@ -19,6 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
+import { GenericIcon } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,14 +27,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
-import { SidePanelIcons, getAppRoutes } from "../../configs";
+import { getSidePanelIcons, getAppRoutes } from "../../configs";
 import { AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
 import { filterRoutes } from "../../utils";
-import { ThemeIcon } from "../shared";
 
 /**
  * Side panel items component Prop types.
@@ -155,8 +155,8 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                                     onClick={ onSidePanelItemClick }
                                     key={ index }
                                 >
-                                    <ThemeIcon
-                                        icon={ SidePanelIcons[ route.icon ] }
+                                    <GenericIcon
+                                        icon={ getSidePanelIcons()[ route.icon ] }
                                         size="micro"
                                         floated="left"
                                         spaced="right"

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
@@ -44,7 +44,7 @@ const PageNotFound = (): ReactElement => {
                         { t("myAccount:placeholders.404.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.pageNotFound }
+                image={ getEmptyPlaceholderIllustrations().pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
                     t("myAccount:placeholders.404.subtitles.0"),

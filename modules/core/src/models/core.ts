@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RefObject } from "react";
+import { FunctionComponent, RefObject, SVGProps } from "react";
 import { Notification } from "react-notification-system";
 
 /**
@@ -177,4 +177,18 @@ export interface ProductVersionConfigInterface {
      * Text case.
      */
     textCase?: "lowercase" | "uppercase";
+}
+
+/**
+ * Interface for lazily loaded imported SVGs loaded using svgr webpack loader.
+ */
+export interface SVGRLoadedInterface {
+    /**
+     * Image as React Component.
+     */
+    ReactComponent:  FunctionComponent<SVGProps<SVGSVGElement>>;
+    /**
+     * Image as Data URL.
+     */
+    default: string;
 }

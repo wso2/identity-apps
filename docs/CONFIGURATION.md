@@ -98,6 +98,22 @@ The Proof Key for Code Exchange (PKCE) is a specification supported by WSO2 Iden
 idp_configs.enablePKCE = true
 ```
 
+#### `clockTolerance`
+
+> :bulb: No value defined in Default JSON
+
+> :checkered_flag: Fallback Value - 60 Seconds (Declared in SDK)
+
+Allowed leeway when validating the id_token. Required to address possible time mismatches between the client and the server.
+[Check the Specification](https://tools.ietf.org/html/rfc7519#page-10)
+
+**Supported Values -** Any number (in Seconds)
+
+```toml
+[console]
+idp_configs.clockTolerance = 120
+```
+
 #### `responseMode`
 
 > :bulb: No value defined in Default JSON

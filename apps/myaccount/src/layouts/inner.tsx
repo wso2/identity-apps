@@ -29,7 +29,7 @@ import {
     PageHeader,
     SidePanelWrapper
 } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
+import { getEmptyPlaceholderIllustrations } from "../configs";
 
 /**
  * Inner page layout component Prop types.
@@ -104,7 +104,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                                         { t("myAccount:placeholders.genericError.action") }
                                     </LinkButton>
                                 ) }
-                                image={ EmptyPlaceholderIllustrations.genericError }
+                                image={ getEmptyPlaceholderIllustrations().genericError }
                                 imageSize="tiny"
                                 subtitle={ [
                                     t("myAccount:placeholders.genericError.subtitles.0"),

@@ -49,9 +49,9 @@ import { EditExternalClaim } from "./edit";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { UserStoreListItem, getUserStores } from "../../userstores";
@@ -489,7 +489,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             { t("console:manage.placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
@@ -518,7 +518,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
                         isLocalClaim(list)

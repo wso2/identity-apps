@@ -31,7 +31,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
@@ -423,7 +423,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                     <EmptyPlaceholder
                                         title={ t("console:develop.features.idp.placeHolders.emptyConnectorList." +
                                             "title") }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
                                             t("console:develop.features.idp.placeHolders.emptyConnectorList." +
                                                 "subtitles.0"),

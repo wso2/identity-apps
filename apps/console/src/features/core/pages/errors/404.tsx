@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -48,7 +48,7 @@ const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
                     { t("console:common.placeholders.404.action") }
                 </Button>
             ) }
-            image={ EmptyPlaceholderIllustrations.pageNotFound }
+            image={ getEmptyPlaceholderIllustrations().pageNotFound }
             imageSize="tiny"
             subtitle={ [
                 t("console:common.placeholders.404.subtitles.0"),

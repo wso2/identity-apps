@@ -39,7 +39,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
-import { EmptyPlaceholderIllustrations, SectionIllustrations } from "../configs";
+import { getEmptyPlaceholderIllustrations, getSectionIllustrations } from "../configs";
 import {
     InterfaceRemoteConfigDetails,
     InterfaceRemoteConfigForm,
@@ -599,7 +599,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 <div
                                                     className="connector-section-with-image-bg"
                                                     style={ {
-                                                        background: `url(${ SectionIllustrations.appConfigRepo })`
+                                                        background: `url(${ getSectionIllustrations().appConfigRepo })`
                                                     } }
                                                 >
                                                     <Header>
@@ -645,7 +645,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                     t("console:manage.features.remoteFetch.placeholders." +
                                                         "emptyListPlaceholder.subtitles")
                                                 ] }
-                                                image={ EmptyPlaceholderIllustrations.add }
+                                                image={ getEmptyPlaceholderIllustrations().add }
                                                 imageSize="tiny"
                                             />
                                         }

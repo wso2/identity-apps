@@ -22,7 +22,7 @@ import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { InboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs";
 import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 
@@ -104,9 +104,12 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                             customProtocol
                                 ? <UserAvatar name={ summary?.name } size="tiny"/>
                                 : (
-                                    < AppAvatar
+                                    <AppAvatar
                                         image={
-                                            ApplicationManagementUtils.findIcon(protocolImage, InboundProtocolLogos)
+                                            ApplicationManagementUtils.findIcon(
+                                                protocolImage,
+                                                getInboundProtocolLogos()
+                                            )
                                         }
                                         size="tiny"
                                     />

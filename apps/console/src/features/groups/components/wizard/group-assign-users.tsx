@@ -34,7 +34,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
+import { getEmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
 import { GroupsMemberInterface } from "../../models";
 
 /**
@@ -513,7 +513,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                         "emptyPlaceholder.action") }
                                                 </PrimaryButton>
                                             }
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
                                         />
                                     </EmphasizedSegment>

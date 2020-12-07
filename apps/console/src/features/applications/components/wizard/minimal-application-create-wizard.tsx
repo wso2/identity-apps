@@ -47,12 +47,13 @@ import {
     AppState,
     CORSOriginsListInterface,
     ModalWithSidePanel,
-    TechnologyLogos,
-    getCORSOrigins, history,
+    getCORSOrigins,
+    getTechnologyLogos,
+    history,
     store
 } from "../../../core";
 import { createApplication, getApplicationTemplateData } from "../../api";
-import { InboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
@@ -433,8 +434,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         key={ index }
                                                         image={
                                                             {
-                                                                ...InboundProtocolLogos,
-                                                                ...TechnologyLogos
+                                                                ...getInboundProtocolLogos(),
+                                                                ...getTechnologyLogos()
                                                             }[ subTemplate.image ]
                                                         }
                                                         size="x120"

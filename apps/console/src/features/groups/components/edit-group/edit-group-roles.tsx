@@ -49,7 +49,7 @@ import {
     Popup,
     Table
 } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../roles/constants";
 import { UserRolePermissions } from "../../../users/components/user-role-permissions";
 import { RolePermissions } from "../../../users/components/wizard";
@@ -846,7 +846,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                 </PrimaryButton>
                                             )
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         imageSize="tiny"
                                     />
                                 </EmphasizedSegment>

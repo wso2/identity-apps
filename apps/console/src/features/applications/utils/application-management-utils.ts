@@ -25,7 +25,7 @@ import camelCase from "lodash/camelCase";
 import intersectionBy from "lodash/intersectionBy";
 import startCase from "lodash/startCase";
 import unionBy from "lodash/unionBy";
-import { DocPanelUICardInterface, TechnologyLogos, store } from "../../core";
+import { DocPanelUICardInterface, getTechnologyLogos, store } from "../../core";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
@@ -153,7 +153,7 @@ export class ApplicationManagementUtils {
         return technologies?.map((technology: string) => {
             let logo = null;
 
-            for (const [ key, value ] of Object.entries(TechnologyLogos)) {
+            for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
                 if (key === technology) {
                     logo = value;
                     break;

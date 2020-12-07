@@ -29,7 +29,7 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Flag, FlagNameValues, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../../core";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../core";
 import { EmailTemplate } from "../../models";
 import { ViewLocaleTemplate } from "../wizards";
 
@@ -131,7 +131,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.1"),
                         t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     data-testid={ `${ testId }-empty-placeholder` }
                 />

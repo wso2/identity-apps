@@ -43,11 +43,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ApprovalTaskComponent } from "./approval-task";
-import { EmptyPlaceholderIllustrations } from "../../core/configs";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs";
 import { UIConstants } from "../../core/constants";
 import { FeatureConfigInterface } from "../../core/models";
 import { fetchPendingApprovalDetails } from "../api";
-import { TableIcons } from "../configs";
+import { getTableIcons } from "../configs";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
 
 /**
@@ -214,7 +214,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("console:manage.features.approvals.placeholders.emptySearchResults.title") }
                     subtitle={ [
@@ -235,7 +235,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.approvals.placeholders.emptyApprovalFilter.title") }
                     subtitle={ [
@@ -253,7 +253,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.approvals.placeholders.emptyApprovalList.title") }
                     subtitle={ [
@@ -333,7 +333,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 shape="rounded"
                                 spaced="right"
                                 hoverable={ false }
-                                icon={ TableIcons.header.default }
+                                icon={ getTableIcons().header.default }
                             />
                             <Header.Content>
                                 { approval.id + " " + approval.presentationSubject + " " }

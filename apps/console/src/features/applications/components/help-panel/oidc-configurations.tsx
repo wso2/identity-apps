@@ -17,8 +17,7 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -26,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
-import { HelpPanelIcons } from "../../configs";
+import { getHelpPanelIcons } from "../../configs";
 import {
     OIDCApplicationConfigurationInterface,
     OIDCEndpointsInterface
@@ -95,7 +94,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.authorize }
+                            icon={ getHelpPanelIcons().endpoints.authorize }
                             size="micro"
                             square
                             transparent
@@ -120,7 +119,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.token }
+                            icon={ getHelpPanelIcons().endpoints.token }
                             size="micro"
                             square
                             transparent
@@ -145,7 +144,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.userInfo }
+                            icon={ getHelpPanelIcons().endpoints.userInfo }
                             size="micro"
                             square
                             transparent
@@ -170,7 +169,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.jwks }
+                            icon={ getHelpPanelIcons().endpoints.jwks }
                             size="micro"
                             square
                             transparent
@@ -195,7 +194,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.introspect }
+                            icon={ getHelpPanelIcons().endpoints.introspect }
                             size="micro"
                             square
                             transparent
@@ -220,7 +219,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.wellKnown }
+                            icon={ getHelpPanelIcons().endpoints.wellKnown }
                             size="micro"
                             square
                             transparent

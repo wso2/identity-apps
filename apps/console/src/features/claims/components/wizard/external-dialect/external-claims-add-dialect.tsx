@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
-import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { AddExternalClaims } from "../../add";
@@ -146,7 +146,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     title={ t("console:manage.features.claims.external.placeholders.empty.title") }
                                     subtitle={ [ t("console:manage.features.claims.external." +
                                         "placeholders.empty.subtitle") ] }
-                                    image={ EmptyPlaceholderIllustrations.emptyList }
+                                    image={ getEmptyPlaceholderIllustrations().emptyList }
                                     imageSize="tiny"
                                     data-testid={ `${ testId }-empty-placeholder` }
                                 />

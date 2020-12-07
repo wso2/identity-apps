@@ -21,8 +21,8 @@ import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, EmptyPlaceholderIllustrations, TechnologyLogos } from "../../../core";
-import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../configs";
+import { AppState, getEmptyPlaceholderIllustrations, getTechnologyLogos } from "../../../core";
+import { getApplicationTemplateIllustrations, getInboundProtocolLogos } from "../../configs";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
 import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../../utils";
 import { InboundProtocolsMeta } from "../meta";
@@ -234,9 +234,9 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             : []
                     }
                     templateIcons={ {
-                        ...ApplicationTemplateIllustrations,
-                        ...TechnologyLogos,
-                        ...InboundProtocolLogos
+                        ...getApplicationTemplateIllustrations(),
+                        ...getTechnologyLogos(),
+                        ...getInboundProtocolLogos()
                     } }
                     templateIconOptions={ {
                         fill: "primary"
@@ -261,7 +261,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     useSelectionCard={ true }
                     emptyPlaceholder={ (
                         <EmptyPlaceholder
-                            image={ EmptyPlaceholderIllustrations.newList }
+                            image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
                                 t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
@@ -281,7 +281,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     type="application"
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
-                    templateIcons={ InboundProtocolLogos }
+                    templateIcons={ getInboundProtocolLogos() }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
@@ -307,7 +307,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     useSelectionCard={ true }
                     emptyPlaceholder={ (
                         <EmptyPlaceholder
-                            image={ EmptyPlaceholderIllustrations.newList }
+                            image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
                                 t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +

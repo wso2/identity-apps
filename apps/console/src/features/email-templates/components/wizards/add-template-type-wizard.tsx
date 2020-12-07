@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createNewTemplateType } from "../../api";
-import { AddEmailTemplateTypeWizardStepIcons } from "../../configs";
+import { getAddEmailTemplateTypeWizardStepIcons } from "../../configs";
 import { AddEmailTemplateTypeForm } from "../forms";
 
 /**
@@ -74,7 +74,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 data-testid={ `${ testId }-form` }
             />
         ),
-        icon: AddEmailTemplateTypeWizardStepIcons.general,
+        icon: getAddEmailTemplateTypeWizardStepIcons().general,
         title: t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
     } ];
 

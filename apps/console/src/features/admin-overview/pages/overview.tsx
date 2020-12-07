@@ -38,7 +38,7 @@ import { GroupList } from "../../groups/components";
 import { GroupsInterface } from "../../groups/models";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
-import { OverviewPageIllustrations } from "../configs";
+import { getOverviewPageIllustrations } from "../configs";
 
 /**
  * Proptypes for the overview page component.
@@ -170,7 +170,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".groups.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards.groups" +
                                 ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.groups,
+                            image: getOverviewPageIllustrations().quickLinks.groups,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("GROUPS"));
                             }
@@ -180,7 +180,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".roles.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards.roles" +
                                 ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.roles,
+                            image: getOverviewPageIllustrations().quickLinks.roles,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("ROLES"));
                             }
@@ -190,7 +190,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".dialects.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".dialects.heading"),
-                            image: OverviewPageIllustrations.quickLinks.dialects,
+                            image: getOverviewPageIllustrations().quickLinks.dialects,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                             }
@@ -200,7 +200,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".certificates.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".certificates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.certificates,
+                            image: getOverviewPageIllustrations().quickLinks.certificates,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("CERTIFICATES"));
                             }
@@ -210,7 +210,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".cards.generalConfigs.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".generalConfigs.heading"),
-                            image: OverviewPageIllustrations.quickLinks.generalConfigs,
+                            image: getOverviewPageIllustrations().quickLinks.generalConfigs,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("SERVER_CONFIGS"));
                             }
@@ -220,7 +220,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".cards.emailTemplates.subHeading"),
                             header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".emailTemplates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.emailTemplates,
+                            image: getOverviewPageIllustrations().quickLinks.emailTemplates,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"));
                             }
@@ -318,7 +318,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                 subHeading={ t("console:manage.features.overview.widgets.overview.subHeading") }
                 stats={ [
                     {
-                        icon: OverviewPageIllustrations.statsOverview.users,
+                        icon: getOverviewPageIllustrations().statsOverview.users,
                         iconOptions: {
                             background: "accent1",
                             fill: "white"
@@ -327,7 +327,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         value: userCount
                     },
                     {
-                        icon: OverviewPageIllustrations.statsOverview.groups,
+                        icon: getOverviewPageIllustrations().statsOverview.groups,
                         iconOptions: {
                             background: "accent2",
                             fill: "white"
@@ -336,7 +336,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         value: groupCount
                     },
                     {
-                        icon: OverviewPageIllustrations.statsOverview.userstores,
+                        icon: getOverviewPageIllustrations().statsOverview.userstores,
                         iconOptions: {
                             background: "accent3",
                             fill: "white"

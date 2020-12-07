@@ -36,8 +36,8 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 import {
     AppState,
     AuthenticatorAccordion,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
     store
 } from "../../../core";
 import {
@@ -47,7 +47,7 @@ import {
     revokeClientSecret,
     updateAuthProtocolConfig
 } from "../../api";
-import { InboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs";
 import { OIDCDataInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import { InboundFormFactory } from "../forms";
@@ -372,7 +372,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             data-testid={ `${ testId }-inbound-${ protocol }-form` }
                                         />
                                     ),
-                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
+                                    icon: {
+                                        icon: getInboundProtocolLogos()[protocol], size: "micro"
+                                    } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
                                 };
@@ -506,7 +508,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     </PrimaryButton>
                                                 )
                                             }
-                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
                                             title={
                                                 t("console:develop.features.applications.placeholders" +

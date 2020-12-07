@@ -18,7 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
-import { SidePanelIcons } from "./ui";
+import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView } from "../../../views";
@@ -53,7 +53,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../applications/pages/application-template")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "applicationTemplate",
                     name: "Application Templates",
@@ -65,7 +65,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../applications/pages/application-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "applicationsEdit",
                     name: "Application Edit",
@@ -77,7 +77,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../applications/pages/applications")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.applications
+                icon: getSidePanelIcons().applications
             },
             id: "applications",
             name: "common:applications",
@@ -93,7 +93,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "identityProviderTemplate",
                     name: "Identity Provider Templates",
@@ -105,7 +105,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "identityProvidersEdit",
                     name: "Identity Providers Edit",
@@ -117,7 +117,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../identity-providers/pages/identity-providers")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.identityProviders
+                icon: getSidePanelIcons().identityProviders
             },
             id: "identityProviders",
             name: "common:identityProviders",
@@ -154,7 +154,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../users/pages/user-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "usersEdit",
                     name: "console:manage.features.sidePanel.editUsers",
@@ -166,7 +166,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../users/pages/users")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.users
+                icon: getSidePanelIcons().users
             },
             id: "users",
             name: "console:manage.features.sidePanel.users",
@@ -182,7 +182,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../groups/pages/group-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "groupsEdit",
                     name: "console:manage.features.sidePanel.editGroups",
@@ -194,7 +194,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../groups/pages/groups")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.groups
+                icon: getSidePanelIcons().groups
             },
             id: "groups",
             name: "console:manage.features.sidePanel.groups",
@@ -210,7 +210,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../roles/pages/role-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "rolesEdit",
                     name: "console:manage.features.sidePanel.editRoles",
@@ -222,7 +222,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../roles/pages/role")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.roles
+                icon: getSidePanelIcons().roles
             },
             id: "roles",
             name: "console:manage.features.sidePanel.roles",
@@ -236,7 +236,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../workflow-approvals/pages/approvals")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.approvals
+                icon: getSidePanelIcons().approvals
             },
             id: "approvals",
             name: "console:manage.features.sidePanel.approvals",
@@ -252,7 +252,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../claims/pages/local-claims-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "editLocalClaims",
                     name: "console:manage.features.sidePanel.editLocalClaims",
@@ -264,7 +264,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../claims/pages/local-claims")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "localDialect",
                     name: "console:manage.features.sidePanel.localDialect",
@@ -276,7 +276,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../claims/pages/external-dialect-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "editExternalDialect",
                     name: "console:manage.features.sidePanel.editExternalDialect",
@@ -288,7 +288,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../claims/pages/claim-dialects")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.claims
+                icon: getSidePanelIcons().claims
             },
             id: "attributeDialects",
             name: "console:manage.features.sidePanel.attributeDialects",
@@ -304,7 +304,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "oidcScopesEdit",
                     name: "OIDC Scopes Edit",
@@ -316,7 +316,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.scopes
+                icon: getSidePanelIcons().scopes
             },
             id: "oidcScopes",
             name: "OIDC Scopes",
@@ -328,7 +328,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
         {
             component: lazy(() => import("../pages/customize")),
             icon: {
-                icon: SidePanelIcons.overview
+                icon: getSidePanelIcons().overview
             },
             id: "customize",
             name: "Customize",
@@ -342,7 +342,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() => import("../../userstores/pages/user-stores-edit")),
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "edit-user-store",
                     name: "console:manage.features.sidePanel.editUserstore",
@@ -353,7 +353,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() => import("../../userstores/pages/userstores-templates")),
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "userstore-templates",
                     name: "console:manage.features.sidePanel.userstoreTemplates",
@@ -364,7 +364,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("../../userstores/pages/user-stores")),
             icon: {
-                icon: SidePanelIcons.userStore
+                icon: getSidePanelIcons().userStore
             },
             id: "userStores",
             name: "console:manage.features.sidePanel.userstores",
@@ -377,7 +377,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             category: "console:manage.features.sidePanel.categories.certificates",
             component: lazy(() => import("../../certificates/pages/certificates-keystore")),
             icon: {
-                icon: SidePanelIcons.certificate
+                icon: getSidePanelIcons().certificate
             },
             id: "certificates",
             name: "console:manage.features.sidePanel.certificates",
@@ -393,7 +393,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../email-templates/pages/email-templates-page")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
                     name: "console:manage.features.sidePanel.emailTemplates",
@@ -405,7 +405,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
                     name: "console:manage.features.sidePanel.addEmailTemplate",
@@ -417,7 +417,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.childIcon
+                        icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
                     name: "console:manage.features.sidePanel.addEmailTemplateLocale",
@@ -429,7 +429,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../email-templates/pages/email-template-types-page")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.emailTemplates
+                icon: getSidePanelIcons().emailTemplates
             },
             id: "emailTemplates",
             name: "console:manage.features.sidePanel.emailTemplates",
@@ -443,7 +443,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.remoteFetch
+                icon: getSidePanelIcons().remoteFetch
             },
             id: "remoteFetchConfig",
             name: "Remote Configurations",

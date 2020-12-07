@@ -17,10 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
-import { ThemeIcon, ThemeIconSizes } from "./icon";
+import { ThemeIconSizes } from "./icon";
 
 /**
  * Proptypes for the settings section component. See also
@@ -153,9 +154,10 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
                                             {
                                                 icon ? (
-                                                        <ThemeIcon
-                                                            icon={ icon }
+                                                        <GenericIcon
                                                             transparent
+                                                            icon={ icon }
+                                                            as="data-url"
                                                             size={ iconSize }
                                                             floated={ iconFloated }
                                                             defaultIcon={ iconStyle === "default" }
@@ -169,9 +171,10 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
                                             {
                                                 iconMini ? (
-                                                        <ThemeIcon
-                                                            icon={ iconMini }
+                                                        <GenericIcon
                                                             transparent
+                                                            icon={ iconMini }
+                                                            as="data-url"
                                                             size={ iconSize }
                                                             floated={ iconFloated }
                                                             defaultIcon={ iconStyle === "default" }

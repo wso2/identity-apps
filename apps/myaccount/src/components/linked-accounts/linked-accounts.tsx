@@ -27,7 +27,7 @@ import {
     addAccountAssociation,
     removeLinkedAccount
 } from "../../api";
-import { SettingsSectionIcons } from "../../configs";
+import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
@@ -217,8 +217,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.linkedAccounts.description") }
             header={ t("myAccount:sections.linkedAccounts.heading") }
-            icon={ SettingsSectionIcons.associatedAccounts }
-            iconMini={ SettingsSectionIcons.associatedAccountsMini }
+            icon={ getSettingsSectionIcons().associatedAccounts }
+            iconMini={ getSettingsSectionIcons().associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

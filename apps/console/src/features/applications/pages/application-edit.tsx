@@ -40,16 +40,16 @@ import {
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
     FeatureConfigInterface,
-    HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    getHelpPanelActionIcons,
     history,
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
 import { getApplicationDetails, updateApplicationConfigurations } from "../api";
 import { EditApplication, HelpPanelOverview } from "../components";
-import { HelpPanelIcons } from "../configs";
+import { getHelpPanelIcons } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationAccessTypes,
@@ -511,7 +511,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             heading: "Server Endpoints",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
-                icon: HelpPanelIcons.tabs.guide
+                icon: getHelpPanelIcons().tabs.guide
             }
         }
         // TODO : Should be removed after getting started flow is implemented.
@@ -566,7 +566,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 <SelectionCard
                                                     size="auto"
                                                     header={ configs.displayName }
-                                                    image={ InboundProtocolLogos[ configs.image ] }
+                                                    image={ getInboundProtocolLogos()[ configs.image ] }
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedProtocol(configs) }
@@ -583,7 +583,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             heading: t("console:develop.features.applications.helpPanel.tabs.configs.heading"),
             hidden: !configs || (configs instanceof Array && configs.length < 1),
             icon: {
-                icon: HelpPanelIcons.tabs.guide
+                icon: getHelpPanelIcons().tabs.guide
             }
         },
         {
@@ -639,7 +639,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 <SelectionCard
                                                     size="auto"
                                                     header={ sample.displayName }
-                                                    image={ TechnologyLogos[ sample.image ] }
+                                                    image={ getTechnologyLogos[ sample.image ] }
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedSample(sample) }
@@ -656,7 +656,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             heading: t("common:samples"),
             hidden: !samples || (samples instanceof Array && samples.length < 1),
             icon: {
-                icon: HelpPanelIcons.tabs.samples
+                icon: getHelpPanelIcons().tabs.samples
             }
         },
         {
@@ -710,7 +710,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 <SelectionCard
                                                     size="auto"
                                                     header={ sdk.displayName }
-                                                    image={ TechnologyLogos[ sdk.image ] }
+                                                    image={ getTechnologyLogos[ sdk.image ] }
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedSDK(sdk) }
@@ -727,7 +727,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             heading: t("common:sdks"),
             hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
             icon: {
-                icon: HelpPanelIcons.tabs.sdks
+                icon: getHelpPanelIcons().tabs.sdks
             }
         }*/
     ];
@@ -800,8 +800,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
-                close: HelpPanelActionIcons.close,
-                pin: HelpPanelActionIcons.pin
+                close: getHelpPanelActionIcons().close,
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }

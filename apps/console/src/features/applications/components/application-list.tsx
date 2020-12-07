@@ -42,10 +42,10 @@ import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { deleteApplication } from "../api";
@@ -366,7 +366,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             { t("console:develop.placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("console:develop.placeholders.emptySearchResult.title") }
                     subtitle={ [
@@ -387,7 +387,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             { t("console:develop.features.applications.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:develop.features.applications.placeholders.emptyList.title") }
                     subtitle={ [

@@ -29,7 +29,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim } from "../../api";
-import { AddDialectWizardStepIcons } from "../../configs";
+import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
 import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
@@ -186,7 +186,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-dialect-details` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
+            icon: getAddDialectWizardStepIcons().general,
             title: t("console:manage.features.claims.dialects.wizard.steps.dialectURI")
         },
         {
@@ -198,7 +198,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-external-claims` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
+            icon: getAddDialectWizardStepIcons().general,
             title: t("console:manage.features.claims.dialects.wizard.steps.externalAttribute")
         },
         {
@@ -209,7 +209,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
+            icon: getAddDialectWizardStepIcons().general,
             title: t("console:manage.features.claims.dialects.wizard.steps.summary")
 
         }

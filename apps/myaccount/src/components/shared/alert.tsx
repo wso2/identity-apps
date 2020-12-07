@@ -70,19 +70,19 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
 
         switch (alert.level) {
             case AlertLevels.SUCCESS as string: {
-                icon = AlertIcons.success;
+                icon = AlertIcons().success;
                 break;
             }
             case AlertLevels.WARNING as string: {
-                icon = AlertIcons.warning;
+                icon = AlertIcons().warning;
                 break;
             }
             case AlertLevels.ERROR as string: {
-                icon = AlertIcons.error;
+                icon = AlertIcons().error;
                 break;
             }
             case AlertLevels.INFO as string: {
-                icon = AlertIcons.info;
+                icon = AlertIcons().info;
                 break;
             }
             default:

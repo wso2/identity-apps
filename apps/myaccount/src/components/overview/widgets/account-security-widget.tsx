@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { WidgetIcons } from "../../../configs";
+import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
@@ -47,8 +47,8 @@ export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface
                 description={ t("myAccount:components.overview.widgets.accountSecurity.description") }
                 primaryAction={ t("myAccount:components.overview.widgets.accountSecurity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
-                icon={ WidgetIcons.accountSecurity }
-                iconMini={ WidgetIcons.accountSecurity }
+                icon={ getWidgetIcons().accountSecurity }
+                iconMini={ getWidgetIcons().accountSecurity }
                 iconSize="tiny"
                 iconStyle="twoTone"
             />

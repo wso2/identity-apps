@@ -19,13 +19,14 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Message, Modal, Segment } from "semantic-ui-react";
 import { resendSMSOTPCode, updateProfileInfo, validateSMSOTPCode } from "../../api";
-import { EnterCode } from "../../configs";
+import { getEnterCodeIcon } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 
@@ -43,11 +44,12 @@ interface MobileUpdateWizardProps extends TestableComponentInterface {
 /**
  * Mobile number update section.
  *
- * @return {JSX.Element}
+ * @param {MobileUpdateWizardProps} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
 export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps> = (
     props: MobileUpdateWizardProps
-): JSX.Element => {
+): React.ReactElement => {
 
     const {
         onAlertFired,
@@ -196,9 +198,21 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const stepIllustration = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return <EnterCode />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getEnterCodeIcon() }
+                    />
+                );
             case 1:
-                return <EnterCode />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getEnterCodeIcon() }
+                    />
+                );
         }
     };
 

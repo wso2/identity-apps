@@ -37,7 +37,7 @@ import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
+    getEmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
     history
@@ -191,7 +191,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
                     subtitle={ [
@@ -217,7 +217,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                                 { type: "Group" })}
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "group" }) }

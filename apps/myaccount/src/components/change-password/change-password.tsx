@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
-import { SettingsSectionIcons } from "../../configs";
+import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
@@ -360,8 +360,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.changePassword.description") }
             header={ t("myAccount:sections.changePassword.heading") }
-            icon={ SettingsSectionIcons.changePassword }
-            iconMini={ SettingsSectionIcons.changePasswordMini }
+            icon={ getSettingsSectionIcons().changePassword }
+            iconMini={ getSettingsSectionIcons().changePasswordMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

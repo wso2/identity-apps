@@ -46,7 +46,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
+import { getEmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getGroupList } from "../../groups/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";
 
@@ -794,7 +794,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 </PrimaryButton>
                                             )
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         imageSize="tiny"
                                     />
                                 </EmphasizedSegment>

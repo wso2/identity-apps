@@ -21,7 +21,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { ApplicationListItem } from "./application-list-item";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
 import { EmptyPlaceholder } from "../shared";
 
@@ -77,7 +77,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                             { t("myAccount:placeholders.emptySearchResult.action") }
                         </Button>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.search }
+                    image={ getEmptyPlaceholderIllustrations().search }
                     title={ t("myAccount:placeholders.emptySearchResult.title") }
                     subtitle={ [
                         t("myAccount:placeholders.emptySearchResult.subtitles.0",
@@ -99,7 +99,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                         { t("myAccount:components.applications.placeholders.emptyList.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.emptyList }
+                image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
                 title={ t("myAccount:components.applications.placeholders.emptyList.title") }
                 subtitle={ [

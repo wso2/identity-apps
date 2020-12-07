@@ -33,12 +33,12 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     UserStoreProperty,
-    getAUserStore
+    getAUserStore,
+    getEmptyPlaceholderIllustrations
 } from "../../core";
 import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
@@ -422,7 +422,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         subtitle={ [ t("console:manage.features.groups.placeholders.groupsError.subtitles.0"),
                             t("console:manage.features.groups.placeholders.groupsError.subtitles.1") ] }
                         title={ t("console:manage.features.groups.placeholders.groupsError.title") }
-                        image={ EmptyPlaceholderIllustrations.genericError }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     /> :
                     <GroupList

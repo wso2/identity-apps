@@ -30,7 +30,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -442,7 +442,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         <Icon name="add"/>{ t("console:develop.features.idp.buttons.addAuthenticator") }
                     </PrimaryButton>
                 ) }
-                image={ EmptyPlaceholderIllustrations.newList }
+                image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
                 title={ t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.title") }
                 subtitle={ [

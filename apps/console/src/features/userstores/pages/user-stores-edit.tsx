@@ -18,12 +18,11 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout, ResourceTab } from "@wso2is/react-components";
+import { GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Image } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getAType, getAUserStore } from "../api";
 import {
@@ -32,7 +31,7 @@ import {
     EditGroupDetails,
     EditUserDetails
 } from "../components";
-import { DatabaseAvatarGraphic } from "../configs";
+import { getDatabaseAvatarGraphic } from "../configs";
 import { CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { reOrganizeProperties } from "../utils";
 
@@ -187,15 +186,15 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     return (
         <PageLayout
             image={
-                <Image
-                    floated="left"
-                    verticalAlign="middle"
-                    rounded
-                    centered
-                    size="tiny"
-                >
-                    <DatabaseAvatarGraphic />
-                </Image>
+                <GenericIcon
+                    bordered
+                    defaultIcon
+                    size="x60"
+                    relaxed="very"
+                    shape="rounded"
+                    hoverable={ false }
+                    icon={ getDatabaseAvatarGraphic() }
+                />
             }
             title={ userStore?.name }
             description={ t("console:manage.features.userstores.pageLayout.edit.description") }

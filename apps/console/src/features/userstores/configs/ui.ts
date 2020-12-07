@@ -16,39 +16,42 @@
  * under the License.
  */
 
-import { ReactComponent as DatabaseAvatar } from "../../../themes/default/assets/images/icons/database-avatar.svg";
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import {
-    ReactComponent as DatabaseOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/database-outline.svg";
-import {
-    ReactComponent as ActiveDirectoryUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/ad-illustration.svg";
-import {
-    ReactComponent as CustomApplicationTemplateIllustration
-} from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
-import {
-    ReactComponent as JDBCUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/jdbc-illustration.svg";
-import {
-    ReactComponent as LDAPUserstoreIllustration
-} from "../../../themes/default/assets/images/illustrations/ldap-illustration.svg";
+import { AppConstants } from "../../core/constants";
 
-export const AddUserstoreWizardStepIcons = {
-    general: DocumentIcon
+export const getAddUserstoreWizardStepIcons  = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`)
+    };
 };
 
-export const DatabaseAvatarGraphic = DatabaseAvatar;
+export const getDatabaseAvatarGraphic  = () => {
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
-export const UserstoreTemplateIllustrations = {
-    ad: ActiveDirectoryUserstoreIllustration,
-    default: CustomApplicationTemplateIllustration,
-    jdbc: JDBCUserstoreIllustration,
-    ldap: LDAPUserstoreIllustration
+    return import(`../../../themes/${ theme }/assets/images/icons/outline-icons/database-outline.svg`);
 };
 
-export const TableIcons = {
-    header: {
-        default: DatabaseOutlineIcon
-    }
+export const getUserstoreTemplateIllustrations = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        ad: import(`../../../themes/${ theme }/assets/images/illustrations/ad-illustration.svg`),
+        default: import(`../../../themes/${ theme }/assets/images/illustrations/custom-app-illustration.svg`),
+        jdbc: import(`../../../themes/${ theme }/assets/images/illustrations/jdbc-illustration.svg`),
+        ldap: import(`../../../themes/${ theme }/assets/images/illustrations/ldap-illustration.svg`)
+    };
+};
+
+export const getTableIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        header: {
+            default: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/database-outline.svg`)
+        }
+    };
 };

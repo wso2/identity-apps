@@ -37,14 +37,14 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    HelpPanelActionIcons,
+    getHelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
     history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
-import { HelpPanelIcons } from "../configs";
+import { getHelpPanelIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
@@ -221,7 +221,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             heading: t("common:docs"),
             hidden: !helpPanelDocURL,
             icon: {
-                icon: HelpPanelIcons.tabs.docs
+                icon: getHelpPanelIcons().tabs.docs
             }
         }
     ];
@@ -234,8 +234,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
-                close: HelpPanelActionIcons.close,
-                pin: HelpPanelActionIcons.pin
+                close: getHelpPanelActionIcons().close,
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }

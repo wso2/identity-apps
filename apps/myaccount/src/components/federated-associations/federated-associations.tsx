@@ -21,7 +21,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
-import { SettingsSectionIcons } from "../../configs";
+import { getSettingsSectionIcons } from "../../configs";
 import {
     AlertInterface,
     AlertLevels
@@ -228,8 +228,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             data-testid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.federatedAssociations.description") }
             header={ t("myAccount:sections.federatedAssociations.heading") }
-            icon={ SettingsSectionIcons.federatedAssociations }
-            iconMini={ SettingsSectionIcons.federatedAssociationsMini }
+            icon={ getSettingsSectionIcons().federatedAssociations }
+            iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

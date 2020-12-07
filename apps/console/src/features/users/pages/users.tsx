@@ -35,11 +35,11 @@ import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     getAUserStore,
+    getEmptyPlaceholderIllustrations,
     store
 } from "../../core";
 import {
@@ -597,7 +597,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
                             t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
                         title={ t("console:manage.features.users.placeholders.userstoreError.title") }
-                        image={ EmptyPlaceholderIllustrations.genericError }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     />
                     : <UsersList

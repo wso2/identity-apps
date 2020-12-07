@@ -18,12 +18,13 @@
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
-import { CertificateIllustrations } from "../configs";
+import { getCertificateIllustrations } from "../configs";
 
 // This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
 if ("File" in self) {
@@ -474,7 +475,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         >
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
-                                    <CertificateIllustrations.uploadPlaceholder />
+                                    <GenericIcon
+                                        inline
+                                        transparent
+                                        size="mini"
+                                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                                    />
                                     <p className="description">
                                         { t("console:manage.features.certificates." +
                                             "keystore.wizard.dropZone.description") }
@@ -492,7 +498,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     : (
                         <Segment placeholder>
                             <Segment textAlign="center" basic>
-                                <CertificateIllustrations.file />
+                                <GenericIcon
+                                    inline
+                                    transparent
+                                    size="auto"
+                                    icon={ getCertificateIllustrations().file }
+                                />
                                 <p className="file-name">{ file.name }</p>
                                 <Icon name="trash alternate" link onClick={ () => {
                                     setFile(null);

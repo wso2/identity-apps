@@ -27,7 +27,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
-import { AddUserstoreWizardStepIcons } from "../configs";
+import { getAddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
@@ -246,7 +246,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-general-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
+            icon: getAddUserstoreWizardStepIcons().general,
             title: t("console:manage.features.userstores.wizard.steps.general")
         },
         {
@@ -259,7 +259,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-user-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
+            icon: getAddUserstoreWizardStepIcons().general,
             title: t("console:manage.features.userstores.wizard.steps.user")
         },
         {
@@ -272,7 +272,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-group-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
+            icon: getAddUserstoreWizardStepIcons().general,
             title: t("console:manage.features.userstores.wizard.steps.group")
         },
         {
@@ -287,7 +287,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
+            icon: getAddUserstoreWizardStepIcons().general,
             title: t("console:manage.features.userstores.wizard.steps.summary")
         }
     ];

@@ -17,6 +17,7 @@
  */
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -24,12 +25,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
-import { AccountRecoveryIcons } from "../../../configs";
+import { getAccountRecoveryIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
-import { EditSection, ThemeIcon } from "../../shared";
+import { EditSection } from "../../shared";
 
 /**
  * Email key.
@@ -241,8 +242,8 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={ AccountRecoveryIcons.email }
+                                <GenericIcon
+                                    icon={ getAccountRecoveryIcons().email }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }

@@ -22,10 +22,10 @@ import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-compon
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AppConstants, EmptyPlaceholderIllustrations, history } from "../../core";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
-import { UserstoreTemplateIllustrations } from "../configs";
+import { getUserstoreTemplateIllustrations } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES, USERSTORE_TYPE_IMAGES, USER_STORE_TYPE_DESCRIPTIONS } from "../constants";
 import { TypeResponse, UserstoreType } from "../models";
 
@@ -189,7 +189,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }
-                                templateIcons={ UserstoreTemplateIllustrations }
+                                templateIcons={ getUserstoreTemplateIllustrations() }
                                 templateIconOptions={ {
                                     fill: "primary"
                                 } }
@@ -203,7 +203,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 emptyPlaceholder={ (
                                     !isLoading && (
                                         <EmptyPlaceholder
-                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
                                             title={ t("console:manage.features.templates.emptyPlaceholder.title") }
                                             subtitle={

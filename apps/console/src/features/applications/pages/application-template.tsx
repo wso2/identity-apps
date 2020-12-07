@@ -28,11 +28,11 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    EmptyPlaceholderIllustrations,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { CUSTOM_APPLICATION_TEMPLATE_ID, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
-import { ApplicationTemplateIllustrations } from "../configs";
+import { getApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
@@ -247,7 +247,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                         ? templates
                         : filteredTemplates
                 }
-                templateIcons={ ApplicationTemplateIllustrations }
+                templateIcons={ getApplicationTemplateIllustrations() }
                 templateIconOptions={ {
                     fill: "primary"
                 } }
@@ -290,7 +290,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                     tagsSectionTitle: t("common:technologies")
                                 },
                                 <EmptyPlaceholder
-                                    image={ EmptyPlaceholderIllustrations.newList }
+                                    image={ getEmptyPlaceholderIllustrations().newList }
                                     imageSize="tiny"
                                     title={ t("console:develop.features.templates.emptyPlaceholder." +
                                         "title") }
@@ -319,7 +319,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                     tagsKey: "types"
                                 },
                                 <EmptyPlaceholder
-                                    image={ EmptyPlaceholderIllustrations.newList }
+                                    image={ getEmptyPlaceholderIllustrations().newList }
                                     imageSize="tiny"
                                     title={ t("console:develop.features.templates.emptyPlaceholder" +
                                         ".title") }
@@ -347,7 +347,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 <Grid.Row>
                                     <Grid.Column>
                                         <EmptyPlaceholder
-                                            image={ EmptyPlaceholderIllustrations.emptySearch }
+                                            image={ getEmptyPlaceholderIllustrations().emptySearch }
                                             imageSize="tiny"
                                             title="No results found"
                                             subtitle={ ["We weren't able to find the type you" +
@@ -371,7 +371,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                        "data-testid": `${ testId }-search-result-fallback-templates`
                                                     },
                                                     <EmptyPlaceholder
-                                                        image={ EmptyPlaceholderIllustrations.newList }
+                                                        image={ getEmptyPlaceholderIllustrations().newList }
                                                         imageSize="tiny"
                                                         title={ t("console:develop.features.templates." +
                                                             "emptyPlaceholder." +

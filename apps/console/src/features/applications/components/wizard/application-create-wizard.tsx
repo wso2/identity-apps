@@ -48,7 +48,7 @@ import {
     getAuthProtocolMetadata,
     updateAuthProtocolConfig
 } from "../../api";
-import { ApplicationWizardStepIcons } from "../../configs";
+import { getApplicationWizardStepIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
@@ -705,22 +705,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const STEPS: WizardStepInterface[] = [
         {
-            icon: ApplicationWizardStepIcons.protocolSelection,
+            icon: getApplicationWizardStepIcons().protocolSelection,
             name: WizardStepsFormTypes.PROTOCOL_SELECTION,
             title: t("console:develop.features.applications.addWizard.steps.protocolSelection.heading")
         },
         {
-            icon: ApplicationWizardStepIcons.general,
+            icon: getApplicationWizardStepIcons().general,
             name: WizardStepsFormTypes.GENERAL_SETTINGS,
             title: t("console:develop.features.applications.addWizard.steps.generalSettings.heading")
         },
         {
-            icon: ApplicationWizardStepIcons.protocolConfig,
+            icon: getApplicationWizardStepIcons().protocolConfig,
             name: WizardStepsFormTypes.PROTOCOL_SETTINGS,
             title: t("console:develop.features.applications.addWizard.steps.protocolConfig.heading")
         },
         {
-            icon: ApplicationWizardStepIcons.summary,
+            icon: getApplicationWizardStepIcons().summary,
             name: WizardStepsFormTypes.SUMMARY,
             title: t("console:develop.features.applications.addWizard.steps.summary.heading")
         }

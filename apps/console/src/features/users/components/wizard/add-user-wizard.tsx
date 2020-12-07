@@ -33,7 +33,7 @@ import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
-import { UserWizardStepIcons } from "../../configs";
+import { getUserWizardStepIcons } from "../../configs";
 import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetails } from "../../models";
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
@@ -536,7 +536,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
-            icon: UserWizardStepIcons.general,
+            icon: getUserWizardStepIcons().general,
             title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
         },
         {
@@ -559,7 +559,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     handleSetGroupId={ null }
                 />
             ),
-            icon: UserWizardStepIcons.groups,
+            icon: getUserWizardStepIcons().groups,
             title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
         },
         {
@@ -588,7 +588,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         handleSetRoleId={ (roleId) => handleRoleIdSet(roleId) }
                     />
             ),
-            icon: UserWizardStepIcons.roles,
+            icon: getUserWizardStepIcons().roles,
             title: t("console:manage.features.user.modals.addUserWizard.steps.roles")
         },
         {
@@ -600,7 +600,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onProfileImageChange={ handleProfileImageChange }
                 />
             ),
-            icon: UserWizardStepIcons.summary,
+            icon: getUserWizardStepIcons().summary,
             title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
         }
     ];

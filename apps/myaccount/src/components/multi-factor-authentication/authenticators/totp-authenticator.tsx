@@ -18,16 +18,16 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
-import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
+import { getEnterCodeIcon, getMFAIcons, getQRCodeScanIcon } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
-import { ThemeIcon } from "../../shared";
 
 /**
  * Property types for the TOTP component.
@@ -37,11 +37,20 @@ interface TOTPProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
+/**
+ * TOTP Authenticator.
+ *
+ * @param {React.PropsWithChildren<TOTPProps>} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
 export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     props: PropsWithChildren<TOTPProps>
-): JSX.Element => {
+): React.ReactElement => {
 
-    const { onAlertFired, ["data-testid"]: testId } = props;
+    const {
+        onAlertFired,
+        ["data-testid"]: testId
+    } = props;
 
     const [openWizard, setOpenWizard] = useState(false);
     const [qrCode, setQrCode] = useState("");
@@ -262,9 +271,21 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const stepIllustration = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return <QRCodeScan />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getQRCodeScanIcon() }
+                    />
+                );
             case 1:
-                return <EnterCode />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getEnterCodeIcon() }
+                    />
+                );
         }
     };
 
@@ -367,8 +388,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 11 } className="first-column">
                         <List.Content floated="left">
-                            <ThemeIcon
-                                icon={ MFAIcons.authenticatorApp }
+                            <GenericIcon
+                                icon={ getMFAIcons().authenticatorApp }
                                 size="mini"
                                 twoTone={ true }
                                 transparent={ true }

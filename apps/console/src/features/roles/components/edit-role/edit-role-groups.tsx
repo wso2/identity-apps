@@ -49,7 +49,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 
@@ -723,7 +723,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                     </PrimaryButton>
                                                 )
                                             }
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
                                         />
                                     </EmphasizedSegment>

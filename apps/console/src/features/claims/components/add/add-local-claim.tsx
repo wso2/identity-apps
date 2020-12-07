@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addLocalClaim } from "../../api";
-import { AddLocalClaimWizardStepIcons } from "../../configs";
+import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 
@@ -179,7 +179,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-local-claims-basic-details` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
+            icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.general")
         },
         {
@@ -191,7 +191,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-mapped-attributes` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
+            icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
         },
         {
@@ -201,7 +201,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-local-claims-summary` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
+            icon: getAddLocalClaimWizardStepIcons().general,
             title: t("console:manage.features.claims.local.wizard.steps.summary")
 
         }

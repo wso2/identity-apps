@@ -27,7 +27,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
 import { IdentityProviderInterface, getIdentityProviderList } from "../../../identity-providers";
 import { updateApplicationConfigurations } from "../../api";
-import { ApplicationWizardStepIcons } from "../../configs";
+import { getApplicationWizardStepIcons } from "../../configs";
 import { OutboundProvisioningConfigurationInterface } from "../../models";
 
 /**
@@ -187,7 +187,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     data-testid={ `${ testId }-form` }
                 />
             ),
-            icon: ApplicationWizardStepIcons.general,
+            icon: getApplicationWizardStepIcons().general,
             title: t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
                 ".steps.details")
         }

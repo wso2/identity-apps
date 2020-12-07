@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
@@ -216,7 +216,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         { t("console:develop.features.idp.buttons.addAttribute") }
                                                     </PrimaryButton>
                                                 }
-                                                image={ EmptyPlaceholderIllustrations.emptyList }
+                                                image={ getEmptyPlaceholderIllustrations().emptyList }
                                                 imageSize="tiny"
                                                 data-testid={ `${ testId }-empty-placeholder` }
                                             />
