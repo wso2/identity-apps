@@ -94,7 +94,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchApplications.error." +
+                        message: t("console:develop.features.applications.notifications.fetchApplications.error." +
                             "message")
                     }));
 
@@ -102,10 +102,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchApplications" +
+                    description: t("console:develop.features.applications.notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError." +
+                    message: t("console:develop.features.applications.notifications.fetchApplications.genericError." +
                         "message")
                 }));
             })
@@ -142,13 +142,13 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            { t("devPortal:components.oidcScopes.buttons.addScope") }
+                            { t("console:manage.features.oidcScopes.buttons.addScope") }
                         </PrimaryButton>
                     )
                     : null
             }
-            title={ t("devPortal:pages.oidcScopes.title") }
-            description={ t("devPortal:pages.oidcScopes.subTitle") }
+            title={ t("console:manage.pages.oidcScopes.title") }
+            description={ t("console:manage.pages.oidcScopes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -166,7 +166,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             icon="search"
                             iconPosition="left"
                             onChange={ searchScopeList }
-                            placeholder={ t("devPortal:components.oidcScopes.list.searchPlaceholder") }
+                            placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
                             floated="right"
                             size="small"
                         />

@@ -112,10 +112,10 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                    description: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                    message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
                         ".genericError.message")
                 }));
             })
@@ -124,7 +124,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                        message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
                             ".error.message")
                     }));
 
@@ -132,10 +132,10 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                    description: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                    message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
                         ".genericError.message")
                 }));
             });
@@ -152,15 +152,15 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
         <PageLayout
             title={
                 formMode === EmailTemplateFormModes.EDIT
-                    ? t("adminPortal:pages.editTemplate.title",
+                    ? t("console:manage.pages.editTemplate.title",
                         { template: emailTemplateTypeDetails?.displayName })
-                    : t("adminPortal:pages.addEmailTemplate.title")
+                    : t("console:manage.pages.addEmailTemplate.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: formMode === EmailTemplateFormModes.EDIT
-                    ? t("adminPortal:pages.editTemplate.backButton", { name: emailTemplateName })
-                    : t("adminPortal:pages.addEmailTemplate.backButton", { name: emailTemplateName })
+                    ? t("console:manage.pages.editTemplate.backButton", { name: emailTemplateName })
+                    : t("console:manage.pages.addEmailTemplate.backButton", { name: emailTemplateName })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

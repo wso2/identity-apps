@@ -166,10 +166,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 setDeletingScope(undefined);
                 onScopeDelete();
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope.success" +
+                    description: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope.success.message")
+                    message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -179,7 +179,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope.error" +
+                        message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.error" +
                             ".message")
                     }));
 
@@ -187,10 +187,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope" +
+                    description: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope.genericError" +
+                    message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.genericError" +
                         ".message")
                 }));
             });
@@ -235,7 +235,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         </Header.Content>
                     </Header>
                 ),
-                title: t("devPortal:components.oidcScopes.list.columns.name")
+                title: t("console:manage.features.oidcScopes.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -243,7 +243,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("devPortal.components.oidcScopes.list.columns.actions")
+                title: t("console:manage.features.oidcScopes.list.columns.actions")
             }
         ];
     };
@@ -299,15 +299,15 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ getOIDCScopesList }>
-                            { t("devPortal:components.oidcScopes.placeholders.emptySearch.action") }
+                            { t("console:manage.features.oidcScopes.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("devPortal:components.oidcScopes.placeholders.emptySearch.title") }
+                    title={ t("console:manage.features.oidcScopes.placeholders.emptySearch.title") }
                     subtitle={ [
-                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.0"),
-                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.1")
+                        t("console:manage.features.oidcScopes.placeholders.emptySearch.subtitles.0"),
+                        t("console:manage.features.oidcScopes.placeholders.emptySearch.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -320,16 +320,16 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            { t("devPortal:components.oidcScopes.placeholders.emptyList.action") }
+                            { t("console:manage.features.oidcScopes.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations()?.newList }
                     imageSize="tiny"
-                    title={ t("devPortal:components.oidcScopes.placeholders.emptyList.title") }
+                    title={ t("console:manage.features.oidcScopes.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.0"),
-                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.1"),
-                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.2")
+                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.0"),
+                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.1"),
+                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -375,7 +375,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "devPortal:components.oidcScopes.confirmationModals.deleteScope" +
+                                        "console:manage.features.oidcScopes.confirmationModals.deleteScope" +
                                         ".assertionHint"
                                     }
                                     tOptions={ { name: deletingScope.name } }
@@ -395,19 +395,19 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            { t("devPortal:components.oidcScopes.confirmationModals.deleteScope.header") }
+                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("devPortal:components.oidcScopes.confirmationModals.deleteScope.message") }
+                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("devPortal:components.oidcScopes.confirmationModals.deleteScope.content") }
+                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

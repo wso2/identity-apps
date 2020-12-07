@@ -234,7 +234,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             submitState={ triggerSubmit }
         >
             <TransferComponent
-                searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
+                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
                     { type: "Groups" }) }
                 addItems={ addGroups }
                 removeItems={ removeGroups }
@@ -246,12 +246,12 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [
-                        t("adminPortal:components.transferList.list.headers.0"),
-                        t("adminPortal:components.transferList.list.headers.1"), ""
+                        t("console:manage.features.transferList.list.headers.0"),
+                        t("console:manage.features.transferList.list.headers.1"), ""
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
                         "roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
                 >
@@ -279,12 +279,12 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     isListEmpty={ !(initialValues.tempGroupList.length > 0) }
                     listType="selected"
                     listHeaders={ [
-                        t("adminPortal:components.transferList.list.headers.0"),
-                        t("adminPortal:components.transferList.list.headers.1")
+                        t("console:manage.features.transferList.list.headers.0"),
+                        t("console:manage.features.transferList.list.headers.1")
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
-                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
                         "roles.selected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
                 >

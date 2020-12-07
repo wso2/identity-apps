@@ -44,8 +44,8 @@ const ApplicationsPage = (): ReactElement => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("userPortal:pages.applications.title") }
-            pageDescription={ t("userPortal:pages.applications.subTitle") }
+            pageTitle={ t("myAccount:pages.applications.title") }
+            pageDescription={ t("myAccount:pages.applications.subTitle") }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>

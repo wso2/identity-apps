@@ -240,14 +240,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
             <Modal.Header data-testid={ `${ testId }-modal-header` }>
-                { t("devPortal:components.idp.modals.attributeSelection.title") }
+                { t("console:develop.features.idp.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("devPortal:components.idp.modals.attributeSelection.subTitle") }
+                    { t("console:develop.features.idp.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image data-testid={ `${ testId }-modal-content` }>
                 <TransferComponent
-                    searchPlaceholder={ t("devPortal:components.idp.modals.attributeSelection." +
+                    searchPlaceholder={ t("console:develop.features.idp.modals.attributeSelection." +
                         "content.searchPlaceholder") }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }

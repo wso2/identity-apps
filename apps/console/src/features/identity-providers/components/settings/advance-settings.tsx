@@ -75,9 +75,9 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
+                    description: t("console:develop.features.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateIDP.success.message")
+                    message: t("console:develop.features.idp.notifications.updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);
             })

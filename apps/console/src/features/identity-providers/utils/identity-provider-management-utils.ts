@@ -64,11 +64,11 @@ export class IdentityProviderManagementUtils {
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("devPortal:components.idp.notifications." +
+                        description: I18n.instance.t("console:develop.features.idp.notifications." +
                             "getFederatedAuthenticatorsList.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.idp.notifications." +
+                        message: I18n.instance.t("console:develop.features.idp.notifications." +
                             "getFederatedAuthenticatorsList.error.message")
                     }));
 
@@ -76,10 +76,10 @@ export class IdentityProviderManagementUtils {
                 }
 
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.idp.notifications." +
+                    description: I18n.instance.t("console:develop.features.idp.notifications." +
                         "getFederatedAuthenticatorsList.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.idp.notifications." +
+                    message: I18n.instance.t("console:develop.features.idp.notifications." +
                         "getFederatedAuthenticatorsList.genericError.message")
                 }));
             });

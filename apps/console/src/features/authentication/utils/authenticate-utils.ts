@@ -53,11 +53,11 @@ export class AuthenticateUtils {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(
                         addAlert<AlertInterface>({
-                            description: I18n.instance.t("adminPortal:notifications.endSession.error.description", {
+                            description: I18n.instance.t("console:manage.notifications.endSession.error.description", {
                                 description: error.response.data.detail
                             }),
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t("adminPortal:notifications.endSession.error.message")
+                            message: I18n.instance.t("console:manage.notifications.endSession.error.message")
                         })
                     );
 
@@ -66,9 +66,10 @@ export class AuthenticateUtils {
 
                 store.dispatch(
                     addAlert<AlertInterface>({
-                        description: I18n.instance.t("adminPortal:notifications.endSession.genericError.description"),
+                        description: I18n.instance.t("console:manage.notifications.endSession.genericError" + 
+                            ".description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.endSession.genericError.message")
+                        message: I18n.instance.t("console:manage.notifications.endSession.genericError.message")
                     })
                 );
             });

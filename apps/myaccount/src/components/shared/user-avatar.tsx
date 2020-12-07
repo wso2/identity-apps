@@ -187,11 +187,11 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.description"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.message"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -238,7 +238,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      * Show Edit Modal
      */
     const editModal = () => {
-        const fieldName = t("userPortal:components.profile.fields."
+        const fieldName = t("myAccount:components.profile.fields."
             + urlSchema.name.replace(".", "_"),
             { defaultValue: urlSchema.displayName }
         );
@@ -251,7 +251,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                 onClose={ closeModal }
             >
                 <Modal.Content>
-                    <h3>{ t("userPortal:components.userAvatar.urlUpdateHeader") }</h3>
+                    <h3>{ t("myAccount:components.userAvatar.urlUpdateHeader") }</h3>
                     <Form>
                         <Form.Input
                             value={ url }
@@ -262,7 +262,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                 urlError === Error.VALIDATION
                                     ? {
                                         content: t(
-                                            "userPortal:components.profile.forms." +
+                                            "myAccount:components.profile.forms." +
                                             "generic.inputs.validations.invalidFormat",
                                             {
                                                 fieldName
@@ -273,7 +273,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                     : urlError === Error.REQUIRED
                                         ? {
                                             content: t(
-                                                "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                                                "myAccount:components.profile.forms.generic.inputs.validations.empty",
                                                 {
                                                     fieldName
                                                 }
@@ -282,7 +282,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                         }
                                         : false
                             }
-                            placeholder={ t("userPortal:components.profile.forms.generic.inputs.placeholder", {
+                            placeholder={ t("myAccount:components.profile.forms.generic.inputs.placeholder", {
                                 fieldName
                             }) }
                         />

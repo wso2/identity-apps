@@ -51,8 +51,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.mfa.description") }
-            header={ t("userPortal:sections.mfa.heading") }
+            description={ t("myAccount:sections.mfa.description") }
+            header={ t("myAccount:sections.mfa.heading") }
         >
             <List
                 divided={ true }

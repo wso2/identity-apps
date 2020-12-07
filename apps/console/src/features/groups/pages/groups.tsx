@@ -141,10 +141,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     setGroupsError(false);
                 } else {
                     dispatch(addAlert({
-                        description: t("adminPortal:components.groups.notifications." +
+                        description: t("console:manage.features.groups.notifications." +
                             "fetchGroups.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.groups.notifications.fetchGroups.genericError.message")
+                        message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
                     }));
                     setGroupsError(true);
                     setGroupsList([]);
@@ -153,10 +153,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }).catch((error) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("adminPortal:components.groups.notifications.fetchGroups.genericError.description"),
+                        ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("adminPortal:components.groups.notifications.fetchGroups.genericError.message")
+                        ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
                 }));
                 setGroupsError(true);
                 setGroupsList([]);
@@ -301,22 +301,22 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         deleteGroupById(role.id).then(() => {
             handleAlerts({
                 description: t(
-                    "adminPortal:components.groups.notifications.deleteGroup.success.description"
+                    "console:manage.features.groups.notifications.deleteGroup.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "adminPortal:components.groups.notifications.deleteGroup.success.message"
+                    "console:manage.features.groups.notifications.deleteGroup.success.message"
                 )
             });
             setListUpdated(true);
         }).catch(() => {
             handleAlerts({
                 description: t(
-                    "adminPortal:components.groups.notifications.deleteGroup.genericError.description"
+                    "console:manage.features.groups.notifications.deleteGroup.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "adminPortal:components.groups.notifications.deleteGroup.error.message"
+                    "console:manage.features.groups.notifications.deleteGroup.error.message"
                 )
             });
         });
@@ -356,12 +356,12 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         onClick={ () => setShowWizard(true) }
                     >
                         <Icon name="add"/>
-                        { t("adminPortal:components.roles.list.buttons.addButton", { type: "Group" }) }
+                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
                     </PrimaryButton>
                 )
             }
-            title={ t("adminPortal:pages.groups.title") }
-            description={ t("adminPortal:pages.groups.subTitle") }
+            title={ t("console:manage.pages.groups.title") }
+            description={ t("console:manage.pages.groups.subTitle") }
         >
             <ListLayout
                 advancedSearch={ (
@@ -376,17 +376,17 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("adminPortal:components.groups.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            t("console:manage.features.groups.advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("adminPortal:components.groups.advancedSearch.form.inputs.filterCondition" +
+                            t("console:manage.features.groups.advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("adminPortal:components.groups.advancedSearch.form.inputs.filterValue" +
+                            t("console:manage.features.groups.advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("adminPortal:components.groups.advancedSearch.placeholder") }
+                        placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="sw"
                         triggerClearQuery={ triggerClearQuery }
@@ -403,7 +403,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection
                         options={ userStoreOptions && userStoreOptions }
-                        placeholder={ t("adminPortal:components.groups.list.storeOptions") }
+                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         value={ userStore && userStore }
                         onChange={ handleDomainChange }
                     />
@@ -419,9 +419,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             >
                 { groupsError
                     ? <EmptyPlaceholder
-                        subtitle={ [ t("adminPortal:components.groups.placeholders.groupsError.subtitles.0"),
-                            t("adminPortal:components.groups.placeholders.groupsError.subtitles.1") ] }
-                        title={ t("adminPortal:components.groups.placeholders.groupsError.title") }
+                        subtitle={ [ t("console:manage.features.groups.placeholders.groupsError.subtitles.0"),
+                            t("console:manage.features.groups.placeholders.groupsError.subtitles.1") ] }
+                        title={ t("console:manage.features.groups.placeholders.groupsError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     /> :
@@ -438,18 +438,18 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterAttribute" +
+                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterAttribute" +
                                         ".placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterCondition" +
+                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterCondition" +
                                         ".placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterValue" +
+                                    t("console:manage.features.groups.advancedSearch.form.inputs.filterValue" +
                                         ".placeholder")
                                 }
-                                placeholder={ t("adminPortal:components.groups.advancedSearch.placeholder") }
+                                placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
                                 defaultSearchOperator="sw"
                                 triggerClearQuery={ triggerClearQuery }

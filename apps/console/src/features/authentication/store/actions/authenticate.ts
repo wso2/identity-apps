@@ -70,10 +70,10 @@ export const getProfileInformation = (
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.genericError.description"
+                            "console:manage.notifications.getProfileInfo.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                        message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
                     })
                 );
 
@@ -96,7 +96,8 @@ export const getProfileInformation = (
                                 addAlert<AlertInterface>({
                                     description: error.response.data.description,
                                     level: AlertLevels.ERROR,
-                                    message: I18n.instance.t("adminPortal:notifications.getProfileSchema.error.message")
+                                    message: I18n.instance.t("console:manage.notifications.getProfileSchema." + 
+                                        "error.message")
                                 })
                             );
                         }
@@ -104,11 +105,11 @@ export const getProfileInformation = (
                         dispatch(
                             addAlert<AlertInterface>({
                                 description: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.description"
+                                    "console:manage.notifications.getProfileSchema.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.message"
+                                    "console:manage.notifications.getProfileSchema.genericError.message"
                                 )
                             })
                         );
@@ -124,11 +125,11 @@ export const getProfileInformation = (
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.description", {
+                        description: I18n.instance.t("console:manage.notifications.getProfileInfo.error.description", {
                             description: error.response.data.detail
                         }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.message")
+                        message: I18n.instance.t("console:manage.notifications.getProfileInfo.error.message")
                     })
                 );
 
@@ -137,9 +138,10 @@ export const getProfileInformation = (
 
             dispatch(
                 addAlert({
-                    description: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.description"),
+                    description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." + 
+                        "description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                    message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
                 })
             );
         })

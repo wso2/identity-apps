@@ -212,7 +212,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                                             <EmptyPlaceholder
                                                                                 subtitle={
                                                                                     [
-                                                                                        t("devPortal:components" +
+                                                                                        t("console:develop.features" +
                                                                                             ".applications.placehold" +
                                                                                             "ers.emptyAuthenticators" +
                                                                                             "List.subtitles", {

@@ -66,7 +66,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const SORT_BY = [
         {
             key: 0,
-            text: t("adminPortal:components.claims.dialects.attributes.dialectURI"),
+            text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
             value: "dialectURI"
         }
     ];
@@ -120,11 +120,11 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects" +
+                        || t("console:manage.features.claims.dialects.notifications.fetchDialects" +
                             ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects" +
+                        || t("console:manage.features.claims.dialects.notifications.fetchDialects" +
                             ".genericError.message")
                 }
             ));
@@ -244,13 +244,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            { t("adminPortal:components.claims.dialects.pageLayout.list.primaryAction") }
+                            { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
                         </PrimaryButton>
                     )
                 }
                 isLoading={ isLoading }
-                title={ t("adminPortal:components.claims.dialects.pageLayout.list.title") }
-                description={ t("adminPortal:components.claims.dialects.pageLayout.list.description") }
+                title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
+                description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
                 {
@@ -277,7 +277,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     </span>
                                                 </Image>
                                                 <List.Header>
-                                                    { t("adminPortal:components.claims.dialects.localDialect") }
+                                                    { t("console:manage.features.claims.dialects.localDialect") }
                                                 </List.Header>
                                                 <List.Description data-testid={ `${ testId }-local-dialect` }>
                                                     { localURI }
@@ -302,7 +302,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         </span>
                                                     }
                                                     position="top center"
-                                                    content={ t("adminPortal:components.claims.dialects" +
+                                                    content={ t("console:manage.features.claims.dialects" +
                                                         ".pageLayout.list.view") }
                                                 />
                                             </Grid.Column>
@@ -321,23 +321,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
-                                    text: t("adminPortal:components.claims.dialects.attributes.dialectURI"),
+                                    text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
                                     value: "dialectURI"
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.claims.dialects.advancedSearch.form.inputs.filterAttribute" +
+                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterAttribute" +
                                     ".placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.claims.dialects.advancedSearch.form.inputs.filterCondition" +
+                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.claims.dialects.advancedSearch.form.inputs.filterValue" +
+                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("adminPortal:components.claims.dialects.advancedSearch.placeholder") }
+                            placeholder={ t("console:manage.features.claims.dialects.advancedSearch.placeholder") }
                             defaultSearchAttribute="dialectURI"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
@@ -365,24 +365,24 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
-                                        text: t("adminPortal:components.claims.dialects.attributes.dialectURI"),
+                                        text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
                                         value: "dialectURI"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
                                         ".filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
                                         ".filterValue.placeholder")
                                 }
                                 placeholder={
-                                    t("adminPortal:components.claims.dialects.advancedSearch.placeholder")
+                                    t("console:manage.features.claims.dialects.advancedSearch.placeholder")
                                 }
                                 defaultSearchAttribute="dialectURI"
                                 defaultSearchOperator="co"

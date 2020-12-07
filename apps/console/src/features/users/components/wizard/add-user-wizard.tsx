@@ -276,34 +276,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.error.description"
+                                    "console:manage.features.users.notifications.addUser.error.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.error.message"
+                                    "console:manage.features.users.notifications.addUser.error.message"
                                 )
                             });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.error.description",
+                                    "console:manage.features.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.error.message"
+                                    "console:manage.features.users.notifications.addUser.error.message"
                                 )
                             });
                         } else {
                             // Generic error message
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.genericError.description"
+                                    "console:manage.features.users.notifications.addUser.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.genericError.message"
+                                    "console:manage.features.users.notifications.addUser.genericError.message"
                                 )
                             });
                         }
@@ -322,34 +322,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.error.description"
+                                    "console:manage.features.users.notifications.addUser.error.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.error.message"
+                                    "console:manage.features.users.notifications.addUser.error.message"
                                 )
                             });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.error.description",
+                                    "console:manage.features.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.error.message"
+                                    "console:manage.features.users.notifications.addUser.error.message"
                                 )
                             });
                         } else {
                             // Generic error message
                             setAlert({
                                 description: t(
-                                    "adminPortal:components.users.notifications.addUser.genericError.description"
+                                    "console:manage.features.users.notifications.addUser.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "adminPortal:components.users.notifications.addUser.genericError.message"
+                                    "console:manage.features.users.notifications.addUser.genericError.message"
                                 )
                             });
                         }
@@ -414,11 +414,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             .then((response) => {
                 dispatch(addAlert({
                     description: t(
-                        "adminPortal:components.users.notifications.addUser.success.description"
+                        "console:manage.features.users.notifications.addUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "adminPortal:components.users.notifications.addUser.success.message"
+                        "console:manage.features.users.notifications.addUser.success.message"
                     )
                 }));
 
@@ -437,23 +437,23 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     closeWizard();
                     dispatch(addAlert({
                         description: t(
-                            "adminPortal:components.users.notifications.addUser.error.description"
+                            "console:manage.features.users.notifications.addUser.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.users.notifications.addUser.error.message"
+                            "console:manage.features.users.notifications.addUser.error.message"
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
                     closeWizard();
                     dispatch(addAlert({
                         description: t(
-                            "adminPortal:components.users.notifications.addUser.error.description",
+                            "console:manage.features.users.notifications.addUser.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.users.notifications.addUser.error.message"
+                            "console:manage.features.users.notifications.addUser.error.message"
                         )
                     }));
                 } else {
@@ -461,11 +461,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     // Generic error message
                     dispatch(addAlert({
                         description: t(
-                            "adminPortal:components.users.notifications.addUser.genericError.description"
+                            "console:manage.features.users.notifications.addUser.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.users.notifications.addUser.genericError.message"
+                            "console:manage.features.users.notifications.addUser.genericError.message"
                         )
                     }));
                 }
@@ -537,7 +537,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: getUserWizardStepIcons().general,
-            title: t("adminPortal:components.user.modals.addUserWizard.steps.basicDetails")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
         },
         {
             content: (
@@ -560,7 +560,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: getUserWizardStepIcons().groups,
-            title: t("adminPortal:components.user.modals.addUserWizard.steps.groups")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
         },
         {
             content: (
@@ -589,7 +589,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     />
             ),
             icon: getUserWizardStepIcons().roles,
-            title: t("adminPortal:components.user.modals.addUserWizard.steps.roles")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.roles")
         },
         {
             content: (
@@ -601,7 +601,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: getUserWizardStepIcons().summary,
-            title: t("adminPortal:components.user.modals.addUserWizard.steps.summary")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
         }
     ];
 
@@ -617,13 +617,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.user.modals.addUserWizard.title") }
+                { t("console:manage.features.user.modals.addUserWizard.title") }
                 {
                     wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
                     ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
                     : ""
                 }
-                <Heading as="h6">{ t("adminPortal:components.user.modals.addUserWizard.subTitle") }</Heading>
+                <Heading as="h6">{ t("console:manage.features.user.modals.addUserWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -661,7 +661,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                 >
-                                    { t("adminPortal:components.user.modals.addUserWizard.buttons.next") }
+                                    { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
@@ -680,7 +680,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     onClick={ navigateToPrevious }
                                 >
                                     <Icon name="arrow left"/>
-                                    { t("adminPortal:components.user.modals.addUserWizard.buttons.previous") }
+                                    { t("console:manage.features.user.modals.addUserWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

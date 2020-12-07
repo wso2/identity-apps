@@ -167,10 +167,10 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             } catch (e) {
                                 dispatch(
                                     addAlert({
-                                        description: I18n.instance.t("userPortal:components.profile.notifications" +
+                                        description: I18n.instance.t("myAccount:components.profile.notifications" +
                                             ".getProfileCompletion.genericError.description"),
                                         level: AlertLevels.ERROR,
-                                        message: I18n.instance.t("userPortal:components.profile.notifications" +
+                                        message: I18n.instance.t("myAccount:components.profile.notifications" +
                                             ".getProfileCompletion.genericError.message")
                                     })
                                 );
@@ -183,11 +183,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -197,12 +197,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             addAlert({
                                 description: I18n.instance.t(
-                                    "userPortal:components.profile.notifications.getProfileInfo.error.description",
+                                    "myAccount:components.profile.notifications.getProfileInfo.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "userPortal:components.profile.notifications.getProfileInfo.error.message"
+                                    "myAccount:components.profile.notifications.getProfileInfo.error.message"
                                 )
                             })
                         );
@@ -213,11 +213,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -232,13 +232,13 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     description:
                         error?.description ??
                         I18n.instance.t(
-                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
+                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.message ??
                         I18n.instance.t(
-                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
+                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
                         )
                 })
             );

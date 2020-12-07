@@ -243,11 +243,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     } }
                     templateIconSize="tiny"
                     heading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.quickSetup.heading")
                     }
                     subHeading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.quickSetup.subHeading")
                     }
                     onTemplateSelect={ handleTemplateSelection }
@@ -264,11 +264,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
                             }
                             subtitle={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
                             }
                         />
@@ -287,11 +287,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     } }
                     templateIconSize="tiny"
                     heading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.manualSetup.heading")
                     }
                     subHeading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.manualSetup.subHeading")
                     }
                     onTemplateSelect={ handleTemplateSelection }
@@ -310,11 +310,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
                             }
                             subtitle={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
                             }
                         />

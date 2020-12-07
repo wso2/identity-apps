@@ -162,13 +162,13 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         if (error.response && error.response.data && error.response.data.detail) {
             onAlertFired({
                 description: t(
-                    "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                    "myAccount:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                     "error.description",
                     { description: error.response.data.detail }
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                    "myAccount:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                     "error.message"
                 )
             });
@@ -178,12 +178,12 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
         onAlertFired({
             description: t(
-                "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                "myAccount:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                 "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: t(
-                "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                "myAccount:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                 "genericError.message"
             )
         });
@@ -237,11 +237,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
-                            "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                            "myAccount:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("userPortal:components.accountRecovery.questionRecovery." +
+                        message: t("myAccount:components.accountRecovery.questionRecovery." +
                             "notifications.updateQuestions." +
                             "success.message")
                     });
@@ -262,12 +262,12 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
-                            "userPortal:components.accountRecovery.questionRecovery.notifications" +
+                            "myAccount:components.accountRecovery.questionRecovery.notifications" +
                             ".addQuestions.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "userPortal:components.accountRecovery.questionRecovery.notifications." +
+                            "myAccount:components.accountRecovery.questionRecovery.notifications." +
                             "addQuestions.success.message"
                         )
                     });
@@ -332,19 +332,19 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     };
                                 }) }
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "myAccount:components.accountRecovery.questionRecovery." +
                                     "forms.securityQuestionsForm" +
                                     ".inputs.question.label"
                                 ) }
                                 name={ "question " + questionSet.questionSetId }
                                 placeholder={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "myAccount:components.accountRecovery.questionRecovery." +
                                     "forms.securityQuestionsForm" +
                                     ".inputs.question.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms" +
+                                    "myAccount:components.accountRecovery.questionRecovery.forms" +
                                     ".securityQuestionsForm" +
                                     ".inputs.question.validations.empty"
                                 ) }
@@ -354,18 +354,18 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             />
                             <Field
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "myAccount:components.accountRecovery.questionRecovery." +
                                     "forms.securityQuestionsForm." +
                                     "inputs.answer.label"
                                 ) }
                                 name={ "answer " + questionSet.questionSetId }
                                 placeholder={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms." +
+                                    "myAccount:components.accountRecovery.questionRecovery.forms." +
                                     "securityQuestionsForm.inputs.answer.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms." +
+                                    "myAccount:components.accountRecovery.questionRecovery.forms." +
                                     "securityQuestionsForm.inputs.answer.validations.empty"
                                 ) }
                                 type="text"
@@ -422,10 +422,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             </List.Content>
                             <List.Content>
                                 <List.Header>
-                                    { t("userPortal:components.accountRecovery.questionRecovery.heading") }
+                                    { t("myAccount:components.accountRecovery.questionRecovery.heading") }
                                 </List.Header>
                                 <List.Description>
-                                    { t("userPortal:components.accountRecovery.questionRecovery.descriptions.add") }
+                                    { t("myAccount:components.accountRecovery.questionRecovery.descriptions.add") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>

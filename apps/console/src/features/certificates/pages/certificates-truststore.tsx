@@ -192,19 +192,19 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                 ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                 ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                 ".filterValue.placeholder")
                         }
                         placeholder={
-                            t("adminPortal:components.certificates.truststore.advancedSearch.placeholder")
+                            t("console:manage.features.certificates.truststore.advancedSearch.placeholder")
                         }
                         defaultSearchAttribute="alias"
                         defaultSearchOperator="co"
@@ -237,19 +237,19 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("adminPortal:components.certificates.truststore.advancedSearch.placeholder")
+                                t("console:manage.features.certificates.truststore.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"

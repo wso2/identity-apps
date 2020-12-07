@@ -245,10 +245,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         } else {
             dispatch(addAlert(
                 {
-                    description: t("devPortal:components.idp.notifications." +
+                    description: t("console:develop.features.idp.notifications." +
                         "submitAttributeSettings.error.description"),
                     level: AlertLevels.WARNING,
-                    message: t("devPortal:components.idp.notifications.submitAttributeSettings.error.message")
+                    message: t("console:develop.features.idp.notifications.submitAttributeSettings.error.message")
                 }
             ));
         }
@@ -273,16 +273,16 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             selectedAttributesWithMapping={ selectedClaimsWithMapping }
                             setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
                             uiProps={ {
-                                attributeColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                attributeColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeMapping.attributeColumnHeader"),
-                                attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                attributeMapColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeMapping.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms" +
+                                attributeMapInputPlaceholderPrefix: t("console:develop.features.idp.forms" +
                                     ".attributeSettings.attributeMapping.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                                componentHeading: t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeMapping.componentHeading"),
                                 enablePrecedingDivider: false,
-                                hint: t("devPortal:components.idp.forms.attributeSettings.attributeMapping.hint")
+                                hint: t("console:develop.features.idp.forms.attributeSettings.attributeMapping.hint")
                             } }
                             data-testid={ `${ testId }-claim-attribute-selection` }
                         /> }
@@ -312,18 +312,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                             uiProps={ {
                                 attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ?
-                                    t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                    t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +
                                         "attributeColumnHeader.0") :
-                                    t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                    t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +
                                         "attributeColumnHeader.1"),
-                                attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                attributeMapColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeProvisioning.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms" +
+                                attributeMapInputPlaceholderPrefix: t("console:develop.features.idp.forms" +
                                     ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                                componentHeading: t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeProvisioning.componentHeading"),
                                 enablePrecedingDivider: false,
-                                hint: t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning.hint")
+                                hint: t("console:develop.features.idp.forms.attributeSettings." + 
+                                    "attributeProvisioning.hint")
                             } }
                             data-testid={ `${ testId }-provisioning-attribute-selection` }
                         /> }

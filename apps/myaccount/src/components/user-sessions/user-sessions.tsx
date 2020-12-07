@@ -84,12 +84,12 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.userSessions.notifications.fetchSessions.error.description",
+                            "myAccount:components.userSessions.notifications.fetchSessions.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.fetchSessions.error.message"
+                            "myAccount:components.userSessions.notifications.fetchSessions.error.message"
                         )
                     });
 
@@ -98,11 +98,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.userSessions.notifications.fetchSessions.genericError.description"
+                        "myAccount:components.userSessions.notifications.fetchSessions.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
+                        "myAccount:components.userSessions.notifications.fetchSessions.genericError.message"
                     )
                 });
             });
@@ -143,11 +143,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.userSessions.notifications.terminateUserSession.success.description"
+                        "myAccount:components.userSessions.notifications.terminateUserSession.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.userSessions.notifications.terminateUserSession.success.message"
+                        "myAccount:components.userSessions.notifications.terminateUserSession.success.message"
                     )
                 });
             })
@@ -155,23 +155,23 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.userSessions.notifications.revokeUserSession.error.description",
+                            "myAccount:components.userSessions.notifications.revokeUserSession.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.revokeUserSession.error.message"
+                            "myAccount:components.userSessions.notifications.revokeUserSession.error.message"
                         )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.userSessions.notifications.revokeUserSession.genericError." +
+                            "myAccount:components.userSessions.notifications.revokeUserSession.genericError." +
                             "description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.revokeUserSession.genericError.message"
+                            "myAccount:components.userSessions.notifications.revokeUserSession.genericError.message"
                         )
                     });
                 }
@@ -190,11 +190,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.userSessions.notifications.terminateAllUserSessions.success.description"
+                        "myAccount:components.userSessions.notifications.terminateAllUserSessions.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.userSessions.notifications.terminateAllUserSessions.success.message"
+                        "myAccount:components.userSessions.notifications.terminateAllUserSessions.success.message"
                     )
                 });
             })
@@ -202,25 +202,25 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "myAccount:components.userSessions.notifications.terminateAllUserSessions." +
                             "error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.terminateAllUserSessions.error" +
+                            "myAccount:components.userSessions.notifications.terminateAllUserSessions.error" +
                             ".message"
                         )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "myAccount:components.userSessions.notifications.terminateAllUserSessions." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "myAccount:components.userSessions.notifications.terminateAllUserSessions." +
                             "genericError.message"
                         )
                     });
@@ -273,10 +273,10 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         >
             <Modal.Content data-testid={ `${testId}-terminate-all-modal-content` }>
                 <Container>
-                    <h3>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
+                    <h3>{ t("myAccount:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
+                <p>{ t("myAccount:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-terminate-all-modal-actions` }>
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
@@ -299,10 +299,10 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         >
             <Modal.Content data-testid={ `${testId}-termination-modal-content` }>
                 <Container>
-                    <h3>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
+                    <h3>{ t("myAccount:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.message") }</p>
+                <p>{ t("myAccount:components.userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
@@ -318,11 +318,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.userSessions.description") }
-            header={ t("userPortal:sections.userSessions.heading") }
+            description={ t("myAccount:sections.userSessions.description") }
+            header={ t("myAccount:sections.userSessions.heading") }
             placeholder={
                 !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                    ? t("userPortal:sections.userSessions.actionTitles.empty")
+                    ? t("myAccount:sections.userSessions.actionTitles.empty")
                     : null
             }
             topActionBar={

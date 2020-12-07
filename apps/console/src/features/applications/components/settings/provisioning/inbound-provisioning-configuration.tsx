@@ -90,10 +90,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications" +
+                    description: t("console:develop.features.applications.notifications" +
                         ".updateInboundProvisioningConfig.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.applications.notifications.updateInboundProvisioningConfig" +
+                    message: t("console:develop.features.applications.notifications.updateInboundProvisioningConfig" +
                         ".success.message")
                 }));
 
@@ -101,10 +101,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications" +
+                    description: t("console:develop.features.applications.notifications" +
                         ".updateInboundProvisioningConfig.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.updateInboundProvisioningConfig" +
+                    message: t("console:develop.features.applications.notifications.updateInboundProvisioningConfig" +
                         ".genericError.message")
                 }));
             });
@@ -128,10 +128,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     return (
         <>
             <Heading as="h4">
-                { t("devPortal:components.applications.edit.sections.provisioning.inbound.heading") }
+                { t("console:develop.features.applications.edit.sections.provisioning.inbound.heading") }
             </Heading>
             <Heading subHeading as="h6">
-                { t("devPortal:components.applications.edit.sections.provisioning.inbound.subHeading") }
+                { t("console:develop.features.applications.edit.sections.provisioning.inbound.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>

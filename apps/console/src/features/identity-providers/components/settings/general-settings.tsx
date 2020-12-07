@@ -106,9 +106,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.deleteIDP.success.description"),
+                    description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.deleteIDP.success.message")
+                    message: t("console:develop.features.idp.notifications.deleteIDP.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -128,9 +128,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
+                    description: t("console:develop.features.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateIDP.success.message")
+                    message: t("console:develop.features.idp.notifications.updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);
             })
@@ -163,11 +163,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     />
                     <Divider hidden />
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (
-                        <DangerZoneGroup sectionHeader={ t("devPortal:components.idp.dangerZoneGroup.header") }>
+                        <DangerZoneGroup sectionHeader={ t("console:develop.features.idp.dangerZoneGroup.header") }>
                             <DangerZone
-                                actionTitle={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.actionTitle") }
-                                header={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.header") }
-                                subheader={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.subheader") }
+                                actionTitle={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.actionTitle") }
+                                header={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.header") }
+                                subheader={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.subheader") }
                                 onActionClick={ undefined }
                                 toggle={ {
                                     checked: isEnabled,
@@ -176,9 +176,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 data-testid={ `${ testId }-disable-idp-danger-zone` }
                             />
                             <DangerZone
-                                actionTitle={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.actionTitle") }
-                                header={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.header") }
-                                subheader={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.subheader") }
+                                actionTitle={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.actionTitle") }
+                                header={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.header") }
+                                subheader={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.subheader") }
                                 onActionClick={ handleIdentityProviderDeleteAction }
                                 data-testid={ `${ testId }-delete-idp-danger-zone` }
                             />
@@ -194,7 +194,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 assertionHint={ (
                                     <p>
                                         <Trans
-                                            i18nKey="devPortal:components.idp.confirmations.deleteIDP.assertionHint"
+                                            i18nKey="console:develop.features.idp.confirmations.deleteIDP.assertionHint"
                                             tOptions={ { name: name } }
                                         >
                                             Please type
@@ -215,14 +215,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteIDP.header") }
+                                    { t("console:develop.features.idp.confirmations.deleteIDP.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
                                                            data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteIDP.message") }
+                                    { t("console:develop.features.idp.confirmations.deleteIDP.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteIDP.content") }
+                                    { t("console:develop.features.idp.confirmations.deleteIDP.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

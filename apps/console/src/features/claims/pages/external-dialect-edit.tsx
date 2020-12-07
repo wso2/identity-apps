@@ -83,13 +83,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             assertion={ dialect.dialectURI }
             assertionHint={
                 <p>
-                <Trans i18nKey="adminPortal:components.claims.dialects.confirmations.hint">
+                <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
                         Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
                     </Trans>
                 </p>
             }
             assertionType="input"
-            primaryAction={ t("adminPortal:components.claims.dialects.confirmations.action") }
+            primaryAction={ t("console:manage.features.claims.dialects.confirmations.action") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
@@ -99,19 +99,19 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
-                { t("adminPortal:components.claims.dialects.confirmations.header") }
+                { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("adminPortal:components.claims.dialects.confirmations.message") }
+                { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
-                { t("adminPortal:components.claims.dialects.confirmations.content") }
+                { t("console:manage.features.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -126,11 +126,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "fetchADialect.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "fetchADialect.genericError.message")
                 }
             ));
@@ -162,11 +162,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "fetchExternalClaims.genericError.description") ,
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "fetchExternalClaims.genericError.message")
                 }
             ));
@@ -198,10 +198,10 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
             dispatch(addAlert(
                 {
-                    description: t("adminPortal:components.claims.dialects.notifications." +
+                    description: t("console:manage.features.claims.dialects.notifications." +
                         "deleteDialect.success.description") ,
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.dialects.notifications." +
+                    message: t("console:manage.features.claims.dialects.notifications." +
                         "deleteDialect.success.message")
                 }
             ));
@@ -209,11 +209,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "deleteDialect.genericError.description") ,
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.claims.dialects.notifications." +
+                        || t("console:manage.features.claims.dialects.notifications." +
                             "deleteDialect.genericError.message")
                 }
             ));
@@ -239,12 +239,12 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 </Image>
             }
             title={ dialect?.dialectURI }
-            description={ t("adminPortal:components.claims.dialects.pageLayout.edit.description") }
+            description={ t("console:manage.features.claims.dialects.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                 },
-                text: t ("adminPortal:components.claims.dialects.pageLayout.edit.back")
+                text: t ("console:manage.features.claims.dialects.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -254,7 +254,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <Header as="h4">
-                            { t("adminPortal:components.claims.dialects.pageLayout.edit.updateDialectURI") }
+                            { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI") }
                         </Header>
                         <EmphasizedSegment>
                             <EditDialectDetails
@@ -271,7 +271,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h4">
-                        { t("adminPortal:components.claims.dialects.pageLayout.edit.updateExternalAttributes") }
+                        { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes") }
                     </Header>
                 </Grid.Column>
             </Grid>
@@ -299,9 +299,9 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             data-testid={ `${ testId }-danger-zone-group` }
                         >
                             <DangerZone
-                                actionTitle={ t("adminPortal:components.claims.dialects.dangerZone.actionTitle") }
-                                header={ t("adminPortal:components.claims.dialects.dangerZone.header") }
-                                subheader={ t("adminPortal:components.claims.dialects.dangerZone.subheader") }
+                                actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle") }
+                                header={ t("console:manage.features.claims.dialects.dangerZone.header") }
+                                subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader") }
                                 onActionClick={ () => setConfirmDelete(true) }
                                 data-testid={ `${ testId }-dialect-delete-danger-zone` }
                             />

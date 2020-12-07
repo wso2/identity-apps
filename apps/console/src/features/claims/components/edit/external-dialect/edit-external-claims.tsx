@@ -69,12 +69,12 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const SORT_BY = [
         {
             key: 0,
-            text: t("adminPortal:components.claims.external.attributes.attributeURI"),
+            text: t("console:manage.features.claims.external.attributes.attributeURI"),
             value: "claimURI"
         },
         {
             key: 1,
-            text: t("adminPortal:components.claims.external.attributes.mappedClaim"),
+            text: t("console:manage.features.claims.external.attributes.mappedClaim"),
             value: "mappedLocalClaimURI"
         }
     ];
@@ -175,7 +175,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             dispatch(addAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: t("adminPortal:components.claims.external.advancedSearch.error")
+                message: t("console:manage.features.claims.external.advancedSearch.error")
             }));
         }
     };
@@ -197,28 +197,28 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     filterAttributeOptions={ [
                         {
                             key: 0,
-                            text: t("adminPortal:components.claims.external.attributes.attributeURI"),
+                            text: t("console:manage.features.claims.external.attributes.attributeURI"),
                             value: "claimURI"
                         },
                         {
                             key: 1,
-                            text: t("adminPortal:components.claims.external.attributes.mappedClaim"),
+                            text: t("console:manage.features.claims.external.attributes.mappedClaim"),
                             value: "mappedLocalClaimURI"
                         }
                     ] }
                     filterAttributePlaceholder={
-                        t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                        t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                             ".filterAttribute.placeholder")
                     }
                     filterConditionsPlaceholder={
-                        t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                        t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                             ".filterCondition.placeholder")
                     }
                     filterValuePlaceholder={
-                        t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                        t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                             ".filterValue.placeholder")
                     }
-                    placeholder={ t("adminPortal:components.claims.external.advancedSearch.placeholder") }
+                    placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder") }
                     defaultSearchAttribute="claimURI"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
@@ -247,7 +247,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     data-testid={ `${ testId }-list-layout-add-button` }
                 >
                     <Icon name="add" />
-                    { t("adminPortal:components.claims.external.pageLayout.edit.primaryAction") }
+                    { t("console:manage.features.claims.external.pageLayout.edit.primaryAction") }
                 </PrimaryButton>
             }
             data-testid={ `${ testId }-list-layout` }
@@ -263,7 +263,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         closeOnDimmerClick={ false }
                     >
                         <Modal.Header>
-                            { t("adminPortal:components.claims.external.pageLayout.edit.header") }
+                            { t("console:manage.features.claims.external.pageLayout.edit.header") }
                         </Modal.Header>
                         <Modal.Content>
                             <AddExternalClaims
@@ -304,28 +304,28 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
-                                        text: t("adminPortal:components.claims.external.attributes.attributeURI"),
+                                        text: t("console:manage.features.claims.external.attributes.attributeURI"),
                                         value: "claimURI"
                                     },
                                     {
                                         key: 1,
-                                        text: t("adminPortal:components.claims.external.attributes.mappedClaim"),
+                                        text: t("console:manage.features.claims.external.attributes.mappedClaim"),
                                         value: "mappedLocalClaimURI"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                    t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterValue.placeholder")
                                 }
-                                placeholder={ t("adminPortal:components.claims.external.advancedSearch.placeholder") }
+                                placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder") }
                                 defaultSearchAttribute="claimURI"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }

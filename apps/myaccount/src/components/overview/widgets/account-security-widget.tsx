@@ -43,9 +43,9 @@ export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface
         <div className="widget account-security" data-testid={ testId }>
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
-                header={ t("userPortal:components.overview.widgets.accountSecurity.header") }
-                description={ t("userPortal:components.overview.widgets.accountSecurity.description") }
-                primaryAction={ t("userPortal:components.overview.widgets.accountSecurity.actionTitles.update") }
+                header={ t("myAccount:components.overview.widgets.accountSecurity.header") }
+                description={ t("myAccount:components.overview.widgets.accountSecurity.description") }
+                primaryAction={ t("myAccount:components.overview.widgets.accountSecurity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().accountSecurity }
                 iconMini={ getWidgetIcons().accountSecurity }

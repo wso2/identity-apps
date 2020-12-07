@@ -104,13 +104,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             assertion={ claim.displayName }
             assertionHint={
                 <p>
-                    <Trans i18nKey="adminPortal:components.claims.local.confirmation.hint">
+                    <Trans i18nKey="console:manage.features.claims.local.confirmation.hint">
                         Please type <strong>{ { name: claim.displayName } }</strong> to confirm.
                     </Trans>
                 </p>
             }
             assertionType="input"
-            primaryAction={ t("adminPortal:components.claims.local.confirmation.primaryAction") }
+            primaryAction={ t("console:manage.features.claims.local.confirmation.primaryAction") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
@@ -118,13 +118,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header>
-                { t("adminPortal:components.claims.local.confirmation.header") }
+                { t("console:manage.features.claims.local.confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                { t("adminPortal:components.claims.local.confirmation.message") }
+                { t("console:manage.features.claims.local.confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                { t("adminPortal:components.claims.local.confirmation.content") }
+                { t("console:manage.features.claims.local.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -138,19 +138,20 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
             dispatch(addAlert(
                 {
-                    description: t("adminPortal:components.claims.local.notifications.deleteClaim.success.description"),
+                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success." + 
+                        "description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.local.notifications.deleteClaim.success.message")
+                    message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.claims.local.notifications.deleteClaim.genericError.description"),
+                        || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.claims.local.notifications.deleteClaim.genericError.message")
+                        || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
         });
@@ -198,7 +199,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("adminPortal:notifications.getProfileSchema.error.message")
+                            message: t("console:manage.notifications.getProfileSchema.error.message")
                         })
                     );
                 }
@@ -206,11 +207,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
-                            "adminPortal:notifications.getProfileSchema.genericError.description"
+                            "console:manage.notifications.getProfileSchema.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:notifications.getProfileSchema.genericError.message"
+                            "console:manage.notifications.getProfileSchema.genericError.message"
                         )
                     })
                 );
@@ -231,7 +232,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 <Form.Field
                                     data-testid={ `${ testId }-form-attribute-uri-readonly-input` }
                                 >
-                                    <label>{ t("adminPortal:components.claims.local.attributes.attributeURI") }</label>
+                                    <label>{ t("console:manage.features.claims.local.attributes.attributeURI") }</label>
                                     <CopyInputField value={ claim ? claim.claimURI : "" } />
                                 </Form.Field>
                             </Form>
@@ -257,10 +258,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         updateAClaim(claim.id, data).then(() => {
                             dispatch(addAlert(
                                 {
-                                    description: t("adminPortal:components.claims.local.notifications." +
+                                    description: t("console:manage.features.claims.local.notifications." +
                                         "updateClaim.success.description"),
                                     level: AlertLevels.SUCCESS,
-                                    message: t("adminPortal:components.claims.local.notifications." +
+                                    message: t("console:manage.features.claims.local.notifications." +
                                         "updateClaim.success.message")
                                 }
                             ));
@@ -270,11 +271,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             dispatch(addAlert(
                                 {
                                     description: error?.description
-                                        || t("adminPortal:components.claims.local.notifications.updateClaim." +
+                                        || t("console:manage.features.claims.local.notifications.updateClaim." +
                                             "genericError.description"),
                                     level: AlertLevels.ERROR,
                                     message: error?.message
-                                        || t("adminPortal:components.claims.local.notifications." +
+                                        || t("console:manage.features.claims.local.notifications." +
                                             "updateClaim.genericError.description")
                                 }
                             ));
@@ -293,17 +294,17 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     } }
                                     type="text"
                                     name="name"
-                                    label={ t("adminPortal:components.claims.local.forms.name.label") }
+                                    label={ t("console:manage.features.claims.local.forms.name.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.claims.local.forms." +
+                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
                                         "name.requiredErrorMessage") }
-                                    placeholder={ t("adminPortal:components.claims.local.forms.name.placeholder") }
+                                    placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
                                     value={ claim?.displayName }
                                     ref={ nameField }
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
                                 <Popup
-                                    content={ t("adminPortal:components.claims.local.forms.nameHint") }
+                                    content={ t("console:manage.features.claims.local.forms.nameHint") }
                                     inverted
                                     open={ isShowNameHint }
                                     trigger={ <span></span> }
@@ -317,12 +318,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 <Field
                                     type="textarea"
                                     name="description"
-                                    label={ t("adminPortal:components.claims.local.forms.description.label") }
+                                    label={ t("console:manage.features.claims.local.forms.description.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.claims.local.forms.description." +
+                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms.description." +
                                         "requiredErrorMessage") }
                                     placeholder={
-                                        t("adminPortal:components.claims.local.forms.description.placeholder")
+                                        t("console:manage.features.claims.local.forms.description.placeholder")
                                     }
                                     value={ claim?.description }
                                     data-testid={ `${ testId }-form-description-input` }
@@ -331,10 +332,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 <Field
                                     type="text"
                                     name="regularExpression"
-                                    label={ t("adminPortal:components.claims.local.forms.regEx.label") }
+                                    label={ t("console:manage.features.claims.local.forms.regEx.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("adminPortal:components.claims.local.forms.regEx.placeholder") }
+                                    placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
                                     value={ claim?.regEx }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowRegExHint, regExTimer);
@@ -346,7 +347,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     data-testid={ `${ testId }-form-regex-input` }
                                 />
                                 <Popup
-                                    content={ t("adminPortal:components.claims.local.forms.regExHint") }
+                                    content={ t("console:manage.features.claims.local.forms.regExHint") }
                                     inverted
                                     open={ isShowRegExHint }
                                     trigger={ <span></span> }
@@ -363,7 +364,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     required={ false }
                                     requiredErrorMessage=""
                                     children={ [ {
-                                        label: t("adminPortal:components.claims.local.forms.supportedByDefault.label"),
+                                        label: t("console:manage.features.claims.local.forms.supportedByDefault.label"),
                                         value: "Support"
                                     } ] }
                                     value={ claim?.supportedByDefault ? [ "Support" ] : [] }
@@ -380,11 +381,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 type="number"
                                                 min="0"
                                                 name="displayOrder"
-                                                label={ t("adminPortal:components.claims.local.forms.displayOrder" +
+                                                label={ t("console:manage.features.claims.local.forms.displayOrder" +
                                                     ".label") }
                                                 required={ false }
                                                 requiredErrorMessage=""
-                                                placeholder={ t("adminPortal:components.claims.local.forms." +
+                                                placeholder={ t("console:manage.features.claims.local.forms." +
                                                     "displayOrder.placeholder") }
                                                 value={ claim?.displayOrder.toString() }
                                                 onMouseOver={ () => {
@@ -398,7 +399,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             />
                                             <Popup
                                                 content={
-                                                    t("adminPortal:components.claims.local.forms.displayOrderHint")
+                                                    t("console:manage.features.claims.local.forms.displayOrderHint")
                                                 }
                                                 inverted
                                                 open={ isShowDisplayOrderHint }
@@ -419,7 +420,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     required={ false }
                                     requiredErrorMessage=""
                                     children={ [ {
-                                        label: t("adminPortal:components.claims.local.forms.required.label"),
+                                        label: t("console:manage.features.claims.local.forms.required.label"),
                                         value: "Required"
                                     } ] }
                                     value={ claim?.required ? [ "Required" ] : [] }
@@ -432,7 +433,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     required={ false }
                                     requiredErrorMessage=""
                                     children={ [ {
-                                        label: t("adminPortal:components.claims.local.forms.readOnly.label"),
+                                        label: t("console:manage.features.claims.local.forms.readOnly.label"),
                                         value: "ReadOnly"
                                     } ] }
                                     value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
@@ -458,9 +459,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 data-testid={ `${ testId }-danger-zone-group` }
             >
                 <DangerZone
-                    actionTitle={ t("adminPortal:components.claims.local.dangerZone.actionTitle") }
-                    header={ t("adminPortal:components.claims.local.dangerZone.header") }
-                    subheader={ t("adminPortal:components.claims.local.dangerZone.subheader") }
+                    actionTitle={ t("console:manage.features.claims.local.dangerZone.actionTitle") }
+                    header={ t("console:manage.features.claims.local.dangerZone.header") }
+                    subheader={ t("console:manage.features.claims.local.dangerZone.subheader") }
                     onActionClick={ () => setConfirmDelete(true) }
                     data-testid={ `${ testId }-local-claim-delete-danger-zone` }
                 />

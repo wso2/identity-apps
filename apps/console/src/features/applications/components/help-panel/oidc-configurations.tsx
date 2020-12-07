@@ -79,10 +79,10 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchOIDCServiceEndpoints" +
+                    description: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchOIDCServiceEndpoints." +
+                    message: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints." +
                         "genericError.message")
                 }));
             });
@@ -104,7 +104,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-authorize-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.authorize") }
                         </label>
                     </Grid.Column>
@@ -129,7 +129,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-token-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.token") }
                         </label>
                     </Grid.Column>
@@ -154,7 +154,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-userInfo-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.userInfo") }
                         </label>
                     </Grid.Column>
@@ -179,7 +179,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.keystore") }
                         </label>
                     </Grid.Column>
@@ -204,7 +204,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.introspection") }
                         </label>
                     </Grid.Column>
@@ -229,7 +229,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.wellKnown") }
                         </label>
                     </Grid.Column>

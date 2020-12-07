@@ -88,7 +88,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                                 ".error.message")
                         }));
 
@@ -96,10 +96,10 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                     }
 
                     dispatch(addAlert({
-                        description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                        description: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                        message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                             ".genericError.message")
                     }));
                 })
@@ -170,12 +170,12 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                             <Grid.Column>
                                 <Heading as="h5">
                                     <strong>
-                                        { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                             "sample.downloadSample.title") }
                                     </strong>
                                 </Heading>
                                 <Header.Subheader>
-                                    { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                         "sample.downloadSample.subTitle") }
                                 </Header.Subheader>
                                 <Divider hidden/>
@@ -183,7 +183,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                                     () => window.open(DocumentationConstants.Samples_Catalog.get("JS_SPA_SAMPLE"),
                                         "") }
                                 >
-                                    { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                         "sample.downloadSample.btn") }
                                 </PrimaryButton>
                             </Grid.Column>
@@ -192,12 +192,12 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                             <Grid.Column>
                                 <Heading as="h5">
                                     <strong>
-                                        { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                             "sample.configurations.title") }
                                     </strong>
                                 </Heading>
                                 <Header.Subheader>
-                                    { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                    { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                         "sample.configurations.subTitle") }
                                 </Header.Subheader>
                                 <Segment secondary padded>
@@ -206,7 +206,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
                         </pre>
                                     <Divider hidden/>
                                     <PrimaryButton basic onClick={ downloadConfigFile }>
-                                        { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                             "sample.configurations.btn") }
                                     </PrimaryButton>
                                 </Segment>

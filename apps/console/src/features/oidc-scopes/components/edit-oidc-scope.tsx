@@ -103,7 +103,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.error" +
+                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.error" +
                             ".message")
                     }));
 
@@ -111,10 +111,10 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims" +
+                    description: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims" +
+                    message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
                         ".genericError.message")
                 }));
             })
@@ -158,10 +158,10 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         updateOIDCScopeDetails(scope.name, data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.updateOIDCScope.success" +
+                    description: t("console:manage.features.oidcScopes.notifications.updateOIDCScope.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.oidcScopes.notifications.updateOIDCScope.success" +
+                    message: t("console:manage.features.oidcScopes.notifications.updateOIDCScope.success" +
                         ".message")
                 }));
                 onUpdate(scope.name);
@@ -171,7 +171,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.updateOIDCScope.error" +
+                        message: t("console:manage.features.oidcScopes.notifications.updateOIDCScope.error" +
                             ".message")
                     }));
 
@@ -179,10 +179,10 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.updateOIDCScope" +
+                    description: t("console:manage.features.oidcScopes.notifications.updateOIDCScope" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.updateOIDCScope" +
+                    message: t("console:manage.features.oidcScopes.notifications.updateOIDCScope" +
                         ".genericError.message")
                 }));
             });
@@ -230,7 +230,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                     data-testid="scope-mgt-claim-list-search-input"
                                                     icon={ <Icon name="search"/> }
                                                     onChange={ searchSelectedAttributes }
-                                                    placeholder={ t("devPortal:components.oidcScopes.editScope." +
+                                                    placeholder={ t("console:manage.features.oidcScopes.editScope." +
                                                         "claimList.searchClaims") }
                                                     floated="right"
                                                     size="small"
@@ -243,7 +243,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                     onClick={ handleOpenSelectionModal }
                                                 >
                                                     <Icon name="add"/>
-                                                    { t("devPortal:components.oidcScopes.editScope." +
+                                                    { t("console:manage.features.oidcScopes.editScope." +
                                                         "claimList.addClaim") }
                                                 </PrimaryButton>
                                             </Grid.Column>
@@ -289,12 +289,12 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                 <Segment>
                                     <EmptyPlaceholder
                                         data-testid="scope-mgt-empty-claims-list"
-                                        title={ t("devPortal:components.oidcScopes.editScope.claimList." +
+                                        title={ t("console:manage.features.oidcScopes.editScope.claimList." +
                                             "emptyPlaceholder.title") }
                                         subtitle={ [
-                                            t("devPortal:components.oidcScopes.editScope.claimList." +
+                                            t("console:manage.features.oidcScopes.editScope.claimList." +
                                                 "emptyPlaceholder.subtitles.0"),
-                                            t("devPortal:components.oidcScopes.editScope.claimList." +
+                                            t("console:manage.features.oidcScopes.editScope.claimList." +
                                                 "emptyPlaceholder.subtitles.1")
                                         ] }
                                         action={
@@ -304,7 +304,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                 icon="plus"
                                             >
                                                 <Icon name="add"/>
-                                                { t("devPortal:components.oidcScopes.editScope.claimList." +
+                                                { t("console:manage.features.oidcScopes.editScope.claimList." +
                                                     "emptyPlaceholder.action") }
                                             </PrimaryButton>
                                         }

@@ -268,12 +268,12 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                 <Grid.Column width={ 16 }>
                                     <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                                         <DangerZone
-                                            actionTitle={ t("userPortal:components.userSessions.dangerZones." +
+                                            actionTitle={ t("myAccount:components.userSessions.dangerZones." +
                                                 "terminate." +
                                                 "actionTitle") }
-                                            header={ t("userPortal:components.userSessions.dangerZones.terminate." +
+                                            header={ t("myAccount:components.userSessions.dangerZones.terminate." +
                                                 "header") }
-                                            subheader={ t("userPortal:components.userSessions.dangerZones.terminate." +
+                                            subheader={ t("myAccount:components.userSessions.dangerZones.terminate." +
                                                 "subheader") }
                                             onActionClick={ () => onTerminateUserSessionClick(userSession) }
                                         />

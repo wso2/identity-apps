@@ -176,16 +176,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             data-testid={ `${ testId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("adminPortal:components.roles.list.emptyPlaceholders.search.action") }
+                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("adminPortal:components.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -201,20 +201,20 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            { t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.action",
+                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
                                 { type: "Role" })}
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
                     subtitle={ [
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
                             { type: "roles" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
                             { type: "role" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
                             { type: "role" })
                     ] }
                 />
@@ -260,7 +260,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         </Header.Content>
                     </Header>
                 ),
-                title: t("adminPortal:components.roles.list.columns.name")
+                title: t("console:manage.features.roles.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -269,7 +269,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "lastModified",
                 key: "lastModified",
                 render: (role: RolesInterface) => CommonUtils.humanizeDateDifference(role?.meta?.created),
-                title: t("adminPortal:components.roles.list.columns.lastModified")
+                title: t("console:manage.features.roles.list.columns.lastModified")
             },
             {
                 allowToggleVisibility: false,
@@ -277,7 +277,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("adminPortal:components.roles.list.columns.actions")
+                title: t("console:manage.features.roles.list.columns.actions")
             }
         ];
     };
@@ -297,7 +297,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
                     handleRoleEdit(role?.id),
-                popupText: (): string => t("adminPortal:components.roles.list.popups.edit",
+                popupText: (): string => t("console:manage.features.roles.list.popups.edit",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             },
@@ -309,7 +309,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     setCurrentDeletedRole(role);
                     setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                 },
-                popupText: (): string => t("adminPortal:components.roles.list.popups.delete",
+                popupText: (): string => t("console:manage.features.roles.list.popups.delete",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             }
@@ -353,7 +353,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         (
                             <p>
                                 <Trans
-                                    i18nKey={ "adminPortal:components.roles.list.confirmations.deleteItem." +
+                                    i18nKey={ "console:manage.features.roles.list.confirmations.deleteItem." +
                                     "assertionHint" }
                                     tOptions={ { roleName: currentDeletedRole.displayName } }
                                 >
@@ -373,14 +373,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.message",
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
                             { type: "role" }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.content",
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
                             { type: "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

@@ -70,10 +70,10 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                         <Field
                             data-testid={ `${ testId }-oidc-scope-form-name-input` }
                             name="scopeName"
-                            label={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
+                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
                             required={ true }
                             requiredErrorMessage={ "Scope name is required" }
-                            placeholder={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs." +
+                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "scopeName.validations.empty") }
                             type="text"
                             value={ initialValues?.scopeName }
@@ -85,11 +85,11 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                         <Field
                             data-testid={ `${ testId }-oidc-scope-form-name-input` }
                             name="displayName"
-                            label={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs.displayName.label") }
+                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.displayName.label") }
                             required={ true }
-                            requiredErrorMessage={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs." +
+                            requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "displayName.validations.empty") }
-                            placeholder={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs." +
+                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "displayName.placeholder") }
                             type="text"
                             value={ initialValues?.displayName }
@@ -101,10 +101,10 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                         <Field
                             data-testid={ `${ testId }-oidc-scope-form-name-input` }
                             name="description"
-                            label={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs.description.label") }
+                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.description.label") }
                             required={ false }
                             requiredErrorMessage={ "Description is optional" }
-                            placeholder={ t("devPortal:components.oidcScopes.forms.addScopeForm.inputs." +
+                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "description.placeholder") }
                             type="text"
                             value={ initialValues?.description }

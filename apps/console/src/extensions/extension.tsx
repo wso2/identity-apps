@@ -62,10 +62,10 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                         subtitle={ [
-                            t("devPortal:placeholders.genericError.subtitles.0"),
-                            t("devPortal:placeholders.genericError.subtitles.1")
+                            t("console:common.placeholders.genericError.subtitles.0"),
+                            t("console:common.placeholders.genericError.subtitles.1")
                         ] }
-                        title={ t("devPortal:placeholders.genericError.title") }
+                        title={ t("console:common.placeholders.genericError.title") }
                     />
                 ) }
             >

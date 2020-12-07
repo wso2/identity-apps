@@ -186,9 +186,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             if (response.status === 201) {
                 dispatch(
                     addAlert({
-                        description: t("adminPortal:components.roles.notifications.createRole.success.description"),
+                        description: t("console:manage.features.roles.notifications.createRole.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.roles.notifications.createRole.success.message")
+                        message: t("console:manage.features.roles.notifications.createRole.success.message")
                     })
                 );
 
@@ -201,27 +201,27 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 closeWizard();
                 dispatch(
                     addAlert({
-                        description: t("adminPortal:components.roles.notifications.createRole.error.description"),
+                        description: t("console:manage.features.roles.notifications.createRole.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.roles.notifications.createRole.error.message")
+                        message: t("console:manage.features.roles.notifications.createRole.error.message")
                     })
                 );
             } else if (error.response && error.response.data.detail) {
                 closeWizard();
                 dispatch(
                     addAlert({
-                        description: t("adminPortal:components.roles.notifications.createRole.error.description",
+                        description: t("console:manage.features.roles.notifications.createRole.error.description",
                             { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.roles.notifications.createRole.error.message")
+                        message: t("console:manage.features.roles.notifications.createRole.error.message")
                     })
                 );
             } else {
                 closeWizard();
                 dispatch(addAlert({
-                    description: t("adminPortal:components.roles.notifications.createRole.genericError.description"),
+                    description: t("console:manage.features.roles.notifications.createRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.roles.notifications.createRole.genericError.message")
+                    message: t("console:manage.features.roles.notifications.createRole.genericError.message")
                 }));
             }
         });
@@ -299,7 +299,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: getRolesWizardStepIcons().general,
-        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.0")
+        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
     },{
         content: (
             <PermissionList
@@ -311,7 +311,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: <Icon name="key" inverted size="large" />,
-        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.1")
+        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.1")
     },{
         content: (
             <AssignGroupsUsers
@@ -337,7 +337,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: getRolesWizardStepIcons().assignUser,
-        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.4")
+        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.4")
     },{
         content: (
             <CreateRoleSummary
@@ -349,7 +349,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: getRolesWizardStepIcons().summary,
-        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.3")
+        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
     }];
 
     /**
@@ -397,7 +397,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.roles.addRoleWizard.heading", { type: "Role" }) }
+                { t("console:manage.features.roles.addRoleWizard.heading", { type: "Role" }) }
                 {
                     wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.roleName
                         ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.roleName
@@ -405,7 +405,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 }
                 <Heading as="h6">
                     {
-                        t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "role" })
+                        t("console:manage.features.roles.addRoleWizard.subHeading", { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -444,7 +444,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     onClick={ changeStepToNext }
                                     data-testid={ `${ testId }-next-button` }
                                 >
-                                    { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
+                                    { t("console:manage.features.roles.addRoleWizard.buttons.next") }
                                     <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
@@ -456,7 +456,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                         onClick={ handleFinishFlow }
                                         data-testid={ `${ testId }-initial-finish-button` }
                                     >
-                                        { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
+                                        { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
                                     </Button>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
@@ -465,7 +465,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     onClick={ changeStepToNext }
                                     data-testid={ `${ testId }-finish-button` }
                                 >
-                                    { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
+                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
@@ -475,7 +475,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left" data-testid={ `${ testId }-previous-button-icon` }/>
-                                    { t("adminPortal:components.roles.addRoleWizard.buttons.previous") }
+                                    { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

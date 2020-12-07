@@ -216,12 +216,12 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         } }
                         data-testid={ `${ testId }-add-button` }
                     >
-                        <Icon name="add" />{ t("devPortal:components.idp.buttons.addIDP") }
+                        <Icon name="add" />{ t("console:develop.features.idp.buttons.addIDP") }
                     </PrimaryButton>
                 )
             }
-            title={ t("devPortal:pages.idp.title") }
-            description={ t("devPortal:pages.idp.subTitle") }
+            title={ t("console:develop.pages.idp.title") }
+            description={ t("console:develop.pages.idp.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -236,15 +236,15 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            t("console:develop.features.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition.placeholder")
+                            t("console:develop.features.idp.advancedSearch.form.inputs.filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterValue.placeholder")
+                            t("console:develop.features.idp.advancedSearch.form.inputs.filterValue.placeholder")
                         }
-                        placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
+                        placeholder={ t("console:develop.features.idp.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -276,18 +276,18 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute" +
+                                t("console:develop.features.idp.advancedSearch.form.inputs.filterAttribute" +
                                     ".placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition" +
+                                t("console:develop.features.idp.advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                             }
                             filterValuePlaceholder={
-                                t("devPortal:components.idp.advancedSearch.form.inputs.filterValue" +
+                                t("console:develop.features.idp.advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
+                            placeholder={ t("console:develop.features.idp.advancedSearch.placeholder") }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }

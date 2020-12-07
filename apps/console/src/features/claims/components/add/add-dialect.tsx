@@ -101,18 +101,18 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 Promise.all(externalClaimPromises)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("adminPortal:components.claims.dialects.notifications." +
+                            description: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("adminPortal:components.claims.dialects.notifications.addDialect" +
+                            message: t("console:manage.features.claims.dialects.notifications.addDialect" +
                                 ".success.message")
                         }));
                     }).catch(() => {
                         dispatch(addAlert({
-                            description: t("adminPortal:components.claims.dialects.notifications." +
+                            description: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.genericError.description"),
                             level: AlertLevels.WARNING,
-                            message: t("adminPortal:components.claims.dialects.notifications." +
+                            message: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.genericError.message")
                         }));
                     }).finally(() => {
@@ -144,11 +144,11 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
                 setAlert({
                 description: error?.description
-                    || t("adminPortal:components.claims.dialects.notifications." +
+                    || t("console:manage.features.claims.dialects.notifications." +
                         "addDialect.error.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
-                    || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
+                    || t("console:manage.features.claims.dialects.notifications.addDialect.error.message")
             });
         });
     };
@@ -187,7 +187,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.dialectURI")
+            title: t("console:manage.features.claims.dialects.wizard.steps.dialectURI")
         },
         {
             content: (
@@ -199,7 +199,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.externalAttribute")
+            title: t("console:manage.features.claims.dialects.wizard.steps.externalAttribute")
         },
         {
             content: (
@@ -210,7 +210,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.summary")
+            title: t("console:manage.features.claims.dialects.wizard.steps.summary")
 
         }
     ];
@@ -250,7 +250,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.claims.dialects.wizard.header") }
+                { t("console:manage.features.claims.dialects.wizard.header") }
                 {
                     dialectDetailsData && dialectDetailsData.get("dialectURI")
                         ? " - " + dialectDetailsData.get("dialectURI")

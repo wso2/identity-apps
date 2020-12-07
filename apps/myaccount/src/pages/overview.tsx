@@ -37,10 +37,10 @@ const OverviewPage = (): ReactElement => {
     return (
         <InnerPageLayout
             pageTitle={ t(
-                "userPortal:pages:overview.title",
+                "myAccount:pages:overview.title",
                 { firstName: resolveUserDisplayName(profileDetails) }
                 ) }
-            pageDescription={ t("userPortal:pages:overview.subTitle") }
+            pageDescription={ t("myAccount:pages:overview.subTitle") }
             pageTitleTextAlign="left"
         >
             <Overview />

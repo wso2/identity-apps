@@ -101,13 +101,13 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     dispatch(
                         addAlert({
                             description: t(
-                                "adminPortal:components.governanceConnectors.notifications." +
+                                "console:manage.features.governanceConnectors.notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "adminPortal:components.governanceConnectors.notifications." +
+                                "console:manage.features.governanceConnectors.notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -117,12 +117,12 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     dispatch(
                         addAlert({
                             description: t(
-                                "adminPortal:components.governanceConnectors.notifications." +
+                                "console:manage.features.governanceConnectors.notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "adminPortal:components.governanceConnectors.notifications." +
+                                "console:manage.features.governanceConnectors.notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -137,7 +137,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             description={
                 connectorCategory?.description
                     ? connectorCategory.description
-                    : connectorCategory?.name && t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                    : connectorCategory?.name && t("console:manage.features.governanceConnectors.connectorSubHeading", {
                         name: connectorCategory.name
                     })
             }
@@ -176,7 +176,11 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     {
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
-                                                <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
+                                                <h5>
+                                                    { 
+                                                        t("console:manage.features.governanceConnectors.categories") 
+                                                    }
+                                                </h5>
                                                 <Menu secondary vertical className="governance-connector-categories">
                                                     {
                                                         connectors.map((

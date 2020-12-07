@@ -42,9 +42,9 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
         <div className="widget consent-management" data-testid={ testId }>
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
-                header={ t("userPortal:components.overview.widgets.consentManagement.header") }
-                description={ t("userPortal:components.overview.widgets.consentManagement.description") }
-                primaryAction={ t("userPortal:components.overview.widgets.consentManagement.actionTitles.manage") }
+                header={ t("myAccount:components.overview.widgets.consentManagement.header") }
+                description={ t("myAccount:components.overview.widgets.consentManagement.description") }
+                primaryAction={ t("myAccount:components.overview.widgets.consentManagement.actionTitles.manage") }
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().consents }
                 iconMini={ getWidgetIcons().consents }

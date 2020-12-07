@@ -95,10 +95,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             .then((response) => {
                 dispatch(addAlert(
                     {
-                        description: t("adminPortal:components.claims.local.notifications." +
+                        description: t("console:manage.features.claims.local.notifications." +
                             "addLocalClaim.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.claims.local.notifications." +
+                        message: t("console:manage.features.claims.local.notifications." +
                             "addLocalClaim.success.message")
                     }
                 ));
@@ -130,11 +130,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 setAlert(
                     {
                         description: error?.description
-                            || t("adminPortal:components.claims.local.notifications." +
+                            || t("console:manage.features.claims.local.notifications." +
                                 "addLocalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
+                            || t("console:manage.features.claims.local.notifications.addLocalClaim." + 
+                                "genericError.message")
                     }
                 );
             });
@@ -179,7 +180,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 />
             ),
             icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("adminPortal:components.claims.local.wizard.steps.general")
+            title: t("console:manage.features.claims.local.wizard.steps.general")
         },
         {
             content: (
@@ -191,7 +192,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 />
             ),
             icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("adminPortal:components.claims.local.wizard.steps.mapAttributes")
+            title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
         },
         {
             content: (
@@ -201,7 +202,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 />
             ),
             icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("adminPortal:components.claims.local.wizard.steps.summary")
+            title: t("console:manage.features.claims.local.wizard.steps.summary")
 
         }
     ];
@@ -241,7 +242,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.claims.local.wizard.header") }
+                { t("console:manage.features.claims.local.wizard.header") }
                 {
                     basicDetailsData && basicDetailsData.get("name")
                         ? " - " + basicDetailsData.get("name")

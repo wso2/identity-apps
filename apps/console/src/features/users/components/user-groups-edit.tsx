@@ -392,12 +392,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 .then(() => {
                     onAlertFired({
                         description: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
                             "success.message"
                         )
                     });
@@ -414,7 +414,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                                "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
                                 "error.message"
                             )
                         });
@@ -424,12 +424,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
                     onAlertFired({
                         description: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.message"
                         )
                     });
@@ -451,12 +451,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 .then(() => {
                     onAlertFired({
                         description: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
                             "success.message"
                         )
                     });
@@ -473,7 +473,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                                "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
                                 "error.message"
                             )
                         });
@@ -483,12 +483,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
                     onAlertFired({
                         description: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.message"
                         )
                     });
@@ -535,14 +535,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             className="user-roles"
         >
             <Modal.Header>
-                { t("adminPortal:components.user.updateUser.groups.addGroupsModal.heading") }
+                { t("console:manage.features.user.updateUser.groups.addGroupsModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.groups.addGroupsModal.subHeading") }
+                    { t("console:manage.features.user.updateUser.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
                 <Modal.Content image>
                     <TransferComponent
-                        searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
+                        searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
                             { type: "Groups" }) }
                         addItems={ addGroups }
                         removeItems={ removeGroups }
@@ -554,12 +554,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             isListEmpty={ !(groupList.length > 0) }
                             listType="unselected"
                             listHeaders={ [
-                                t("adminPortal:components.transferList.list.headers.0"),
-                                t("adminPortal:components.transferList.list.headers.1")
+                                t("console:manage.features.transferList.list.headers.0"),
+                                t("console:manage.features.transferList.list.headers.1")
                             ] }
                             handleHeaderCheckboxChange={ selectAllUnAssignedList }
                             isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                            emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                            emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                 "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
                             data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                         >
@@ -587,12 +587,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             isListEmpty={ !(tempGroupList.length > 0) }
                             listType="selected"
                             listHeaders={ [
-                                t("adminPortal:components.transferList.list.headers.0"),
-                                t("adminPortal:components.transferList.list.headers.1")
+                                t("console:manage.features.transferList.list.headers.0"),
+                                t("console:manage.features.transferList.list.headers.1")
                             ] }
                             handleHeaderCheckboxChange={ selectAllAssignedList }
                             isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                            emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                            emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                 "emptyPlaceholders.users.roles.selected", { type: "groups" }) }
                             data-testid="user-mgt-update-groups-modal-selected-groups-select-all-checkbox"
                         >
@@ -708,10 +708,10 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                { t("adminPortal:components.user.updateUser.groups.editGroups.heading") }
+                { t("console:manage.features.user.updateUser.groups.editGroups.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
+                { t("console:manage.features.user.updateUser.groups.editGroups.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -729,7 +729,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 data-testid="user-mgt-groups-list-search-input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedGroupListSearch }
-                                                placeholder={ t("adminPortal:components.user.updateUser.groups." +
+                                                placeholder={ t("console:manage.features.user.updateUser.groups." +
                                                     "editGroups.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -753,13 +753,13 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 <Table.Row>
                                                     <Table.HeaderCell>
                                                         <strong>
-                                                            { t("adminPortal:components.user.updateUser.groups." +
+                                                            { t("console:manage.features.user.updateUser.groups." +
                                                                 "editGroups.groupList.headers.0") }
                                                         </strong>
                                                     </Table.HeaderCell>
                                                     <Table.HeaderCell>
                                                         <strong>
-                                                            { t("adminPortal:components.user.updateUser.groups." +
+                                                            { t("console:manage.features.user.updateUser.groups." +
                                                                 "editGroups.groupList.headers.1") }
                                                         </strong>
                                                     </Table.HeaderCell>
@@ -773,14 +773,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 <EmphasizedSegment>
                                     <EmptyPlaceholder
                                         data-testid="user-mgt-empty-groups-list"
-                                        title={ t("adminPortal:components.user.updateUser.groups.editGroups." +
+                                        title={ t("console:manage.features.user.updateUser.groups.editGroups." +
                                             "groupList.emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
+                                            t("console:manage.features.user.updateUser.groups.editGroups." +
                                                     "groupList.emptyListPlaceholder.subTitle.0"),
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
+                                            t("console:manage.features.user.updateUser.groups.editGroups." +
                                                 "groupList.emptyListPlaceholder.subTitle.1"),
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
+                                            t("console:manage.features.user.updateUser.groups.editGroups." +
                                                 "groupList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={

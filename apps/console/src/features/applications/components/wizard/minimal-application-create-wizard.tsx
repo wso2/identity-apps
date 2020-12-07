@@ -188,12 +188,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.success.message"
                         )
                     })
@@ -233,7 +233,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.error.message"
                         )
                     });
@@ -243,13 +243,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
                 setAlert({
                     description: t(
-                        "devPortal:components.applications.notifications." +
+                        "console:develop.features.applications.notifications." +
                         "addApplication.genericError" +
                         ".description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "devPortal:components.applications.notifications." +
+                        "console:develop.features.applications.notifications." +
                         "addApplication.genericError.message"
                     )
                 });
@@ -286,7 +286,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "devPortal:components.applications.notifications.fetchTemplate.error" + ".message"
+                                "console:develop.features.applications.notifications.fetchTemplate.error" + ".message"
                             )
                         })
                     );
@@ -296,12 +296,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "devPortal:components.applications.notifications.fetchTemplate" +
+                            "console:develop.features.applications.notifications.fetchTemplate" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "devPortal:components.applications.notifications.fetchTemplate.genericError" + ".message"
+                            "console:develop.features.applications.notifications.fetchTemplate.genericError" + ".message"
                         )
                     })
                 );
@@ -370,15 +370,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             <Field
                                 name="name"
                                 label={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name.label"
+                                    "console:develop.features.applications.forms.generalDetails.fields.name.label"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name" +
+                                    "console:develop.features.applications.forms.generalDetails.fields.name" +
                                     ".validations.empty"
                                 ) }
                                 placeholder={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name.placeholder"
+                                    "console:develop.features.applications.forms.generalDetails.fields.name.placeholder"
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
@@ -391,7 +391,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             dispatch(addAlert({
                                                 description: error.response.data.description,
                                                 level: AlertLevels.ERROR,
-                                                message: t("devPortal:components.applications." +
+                                                message: t("console:develop.features.applications." +
                                                     "notifications.fetchApplications.error.message")
                                             }));
 
@@ -399,10 +399,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         }
 
                                         dispatch(addAlert({
-                                            description: t("devPortal:components.applications.notifications." +
+                                            description: t("console:develop.features.applications.notifications." +
                                                 "fetchApplications.genericError.description"),
                                             level: AlertLevels.ERROR,
-                                            message: t("devPortal:components.applications.notifications." +
+                                            message: t("console:develop.features.applications.notifications." +
                                                 "fetchApplications.genericError.message")
                                         }));
                                     }
@@ -410,7 +410,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     if (response?.applications?.length > 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                            t("console:develop.features.applications.forms.generalDetails.fields.name" +
                                                 ".validations.duplicate" )
                                         );
                                     }
@@ -512,9 +512,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 showHelpPanel && (
                     <ModalWithSidePanel.SidePanel>
                         <ModalWithSidePanel.Header className="wizard-header muted">
-                            { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help.heading") }
+                            { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
                             <Heading as="h6">
-                                { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help" +
+                                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
                                     ".subHeading") }
                             </Heading>
                         </ModalWithSidePanel.Header>

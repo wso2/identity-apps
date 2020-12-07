@@ -50,10 +50,10 @@ const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): React
             image={ getEmptyPlaceholderIllustrations().loginError }
             imageSize="tiny"
             subtitle={ [
-                t("adminPortal:placeholders.sessionStorageDisabled.subtitles.0"),
-                t("adminPortal:placeholders.sessionStorageDisabled.subtitles.1")
+                t("console:common.placeholders.sessionStorageDisabled.subtitles.0"),
+                t("console:common.placeholders.sessionStorageDisabled.subtitles.1")
             ] }
-            title={ t("adminPortal:placeholders.sessionStorageDisabled.title") }
+            title={ t("console:common.placeholders.sessionStorageDisabled.title") }
         />
     );
 };

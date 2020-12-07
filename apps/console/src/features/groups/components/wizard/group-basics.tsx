@@ -192,13 +192,13 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                         <Field
                             data-testid={ `${ testId }-domain-dropdown` }
                             type="dropdown"
-                            label={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                            label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                                 "domain.label.group") }
                             name="domain"
                             children={ userStoreOptions }
-                            placeholder={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                                 "domain.placeholder") }
-                            requiredErrorMessage={ t("adminPortal:components.roles.addRoleWizard.forms." +
+                            requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.domain.validation.empty.group") }
                             required={ true }
                             element={ <div></div> }
@@ -212,12 +212,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             data-testid={ `${ testId }-role-name-input` }
                             type="text"
                             name="groupName"
-                            label={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                            label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                                 "roleName.label", { type: "Group" }) }
-                            placeholder={ t("adminPortal:components.roles.addRoleWizard.forms." +
+                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.placeholder", { type: "Group" }) }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.roles.addRoleWizard.forms." +
+                            requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
                                 const searchData: SearchGroupInterface = {
@@ -233,14 +233,14 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     if (list?.data?.totalResults !== 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("adminPortal:components.roles.addRoleWizard." +
+                                            t("console:manage.features.roles.addRoleWizard." +
                                                 "forms.roleBasicDetails.roleName.validations.duplicate",
                                                 { type: "Group" }));
                                     }
                                 } finally {
                                     if (!isGroupNamePatternValid) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard" +
+                                        validation.errorMessages.push(t("console:manage.features.roles.addRoleWizard" +
                                             ".forms.roleBasicDetails.roleName.validations.invalid",
                                             { type: "group" }));
                                     }

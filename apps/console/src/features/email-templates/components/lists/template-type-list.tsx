@@ -122,15 +122,15 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("devPortal:placeholders.emptySearchResult.action") }
+                            { t("console:manage.placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("devPortal:placeholders.emptySearchResult.title") }
+                    title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
-                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -142,14 +142,14 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                     action={
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            { t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.action") }
+                            { t("console:manage.features.emailTemplateTypes.placeholders.emptyList.action") }
                         </PrimaryButton>
                     }
-                    title={ t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.title") }
+                    title={ t("console:manage.features.emailTemplateTypes.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.0"),
-                        t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.1"),
-                        t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.2")
+                        t("console:manage.features.emailTemplateTypes.placeholders.emptyList.subtitles.0"),
+                        t("console:manage.features.emailTemplateTypes.placeholders.emptyList.subtitles.1"),
+                        t("console:manage.features.emailTemplateTypes.placeholders.emptyList.subtitles.2")
                     ] }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -198,7 +198,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         </Header.Content>
                     </Header>
                 ),
-                title: t("adminPortal:components.emailTemplateTypes.list.name")
+                title: t("console:manage.features.emailTemplateTypes.list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -206,7 +206,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("adminPortal:components.emailTemplateTypes.list.actions")
+                title: t("console:manage.features.emailTemplateTypes.list.actions")
             }
         ];
     };
@@ -227,7 +227,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, templateType: EmailTemplateType): void =>
                     handleEditTemplate(templateType.id),
-                popupText: (): string => t("adminPortal:components.emailTemplateTypes.buttons.editTemplate"),
+                popupText: (): string => t("console:manage.features.emailTemplateTypes.buttons.editTemplate"),
                 renderer: "semantic-icon"
             },
             {
@@ -237,7 +237,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                     setCurrentDeletingTemplate(templateType);
                     setShowTemplateTypeDeleteConfirmation(true);
                 },
-                popupText: (): string => t("adminPortal:components.emailTemplateTypes.buttons.deleteTemplate"),
+                popupText: (): string => t("console:manage.features.emailTemplateTypes.buttons.deleteTemplate"),
                 renderer: "semantic-icon"
             }
         ];
@@ -275,7 +275,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         assertionHint={
                             <p>
                                 <Trans
-                                    i18nKey={ "adminPortal:components.emailTemplateTypes.confirmations" +
+                                    i18nKey={ "console:manage.features.emailTemplateTypes.confirmations" +
                                     ".deleteTemplateType.assertionHint" }
                                     tOptions={ { id: currentDeletingTemplate.displayName } }
                                 >
@@ -297,7 +297,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            { t("adminPortal:components.emailTemplateTypes.confirmations.deleteTemplateType" +
+                            { t("console:manage.features.emailTemplateTypes.confirmations.deleteTemplateType" +
                                 ".header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
@@ -305,13 +305,13 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                             warning
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("adminPortal:components.emailTemplateTypes.confirmations.deleteTemplateType" +
+                            { t("console:manage.features.emailTemplateTypes.confirmations.deleteTemplateType" +
                                 ".message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("adminPortal:components.emailTemplateTypes.confirmations.deleteTemplateType" +
+                            { t("console:manage.features.emailTemplateTypes.confirmations.deleteTemplateType" +
                                 ".content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

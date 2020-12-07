@@ -34,27 +34,27 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             { /* About WSO2 Identity Server */ }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h4">{ t("adminPortal:components.privacy.about.heading") }</Header>
-                    <p>{ t("adminPortal:components.privacy.about.description") }</p>
+                    <Header as="h4">{ t("console:common.privacy.about.heading") }</Header>
+                    <p>{ t("console:common.privacy.about.description") }</p>
                 </Grid.Column>
             </Grid.Row>
 
             { /* Privacy Policy */ }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h2">{ t("adminPortal:components.privacy.privacyPolicy.heading") }</Header>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.description.para1") }</p>
+                    <Header as="h2">{ t("console:common.privacy.privacyPolicy.heading") }</Header>
+                    <p>{ t("console:common.privacy.privacyPolicy.description.para1") }</p>
                     <p>
                         { /*Trans component had to be used over the useTranslation
                             hook to support inline links. */ }
-                        <Trans i18nKey="adminPortal:components.privacy.privacyPolicy.description.para2">
+                        <Trans i18nKey="console:common.privacy.privacyPolicy.description.para2">
                             Please note that this policy is for reference only, and is applicable for the software
                             as a product. WSO2 Inc. and its developers have no access to the information held within
                             WSO2 IS. Please see the <a href="#disclaimer">disclaimer</a> section for more
                             information.
                         </Trans>
                     </p>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.description.para3") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.description.para3") }</p>
                 </Grid.Column>
             </Grid.Row>
 
@@ -62,27 +62,27 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h3">
-                        { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.heading") }
+                        { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.heading") }
                     </Header>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.para1") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.para1") }</p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.0") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.1") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.1") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.2") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.2") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.3") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list1.3") }
                         </List.Item>
                     </List>
                     <p>
                         { /*Trans component had to be used over the useTranslation hook to support bold text. */ }
                         <Trans
-                            i18nKey="adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.para2"
+                            i18nKey="console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.para2"
                         >
                             However, WSO2 IS also collects the following information that is not considered
                             personal information, but is used only for <strong>statistical</strong> purposes.
@@ -91,16 +91,16 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
                     </p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.0") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.1") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.1") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.2") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.2") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.3") }
+                            { t("console:common.privacy.privacyPolicy.whatIsPersonalInfo.description.list2.3") }
                         </List.Item>
                     </List>
                 </Grid.Column>
@@ -110,51 +110,51 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h3">
-                        { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo.heading") }
+                        { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo.heading") }
                     </Header>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo.description.para1")
+                        t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo.description.para1")
                     }</p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
                                 "list1.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
                                 "list1.1") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo.description." +
                                 "list1.2") }
                         </List.Item>
                     </List>
 
                     { /* Tracking Technologies */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                        { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                             "trackingTechnologies.heading") }
                     </Header>
                     <p>
-                        { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                        { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                             "trackingTechnologies.description.para1") }
                     </p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                                 "trackingTechnologies.description.list1.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                                 "trackingTechnologies.description.list1.1") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                                 "trackingTechnologies.description.list1.2") }
                         </List.Item>
                         { // TODO: Discuss adding a cookie-policy page
                             /* <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.collectionOfPersonalInfo." +
+                            { t("console:common.privacy.privacyPolicy.collectionOfPersonalInfo." +
                                 "trackingTechnologies.description.list1.3") }
                         </List.Item> */ }
                     </List>
@@ -165,47 +165,47 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h3">
-                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.heading") }
+                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.heading") }
                     </Header>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description.para1") }</p>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description.para2") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description.para1") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description.para2") }</p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description.list1.0") }
+                            { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description.list1.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description.list1.1") }
+                            { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description.list1.1") }
                             <List.List>
-                                { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description." +
                                     "subList1.heading") }
                                 <List.List>
                                     <List.Item>
-                                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo." +
+                                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo." +
                                             "description.subList1.list.0") }
                                     </List.Item>
                                     <List.Item>
-                                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo." +
+                                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo." +
                                             "description.subList1.list.1") }
                                     </List.Item>
                                     <List.Item>
-                                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo." +
+                                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo." +
                                             "description.subList1.list.2") }
                                     </List.Item>
                                 </List.List>
                             </List.List>
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description.list1.2") }
+                            { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description.list1.2") }
                             <List.List>
-                                { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                { t("console:common.privacy.privacyPolicy.useOfPersonalInfo.description." +
                                     "subList2.heading") }
                                 <List.List>
                                     <List.Item>
-                                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo." +
+                                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo." +
                                             "description.subList2.list.0") }
                                     </List.Item>
                                     <List.Item>
-                                        { t("adminPortal:components.privacy.privacyPolicy.useOfPersonalInfo." +
+                                        { t("console:common.privacy.privacyPolicy.useOfPersonalInfo." +
                                             "description.subList2.list.1") }
                                     </List.Item>
                                 </List.List>
@@ -219,17 +219,17 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h3">
-                        { t("adminPortal:components.privacy.privacyPolicy.disclosureOfPersonalInfo.heading") }
+                        { t("console:common.privacy.privacyPolicy.disclosureOfPersonalInfo.heading") }
                     </Header>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.disclosureOfPersonalInfo.description") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.disclosureOfPersonalInfo.description") }</p>
 
                     { /* Legal process */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.disclosureOfPersonalInfo." +
+                        { t("console:common.privacy.privacyPolicy.disclosureOfPersonalInfo." +
                             "legalProcess.heading") }
                     </Header>
                     <p>
-                        { t("adminPortal:components.privacy.privacyPolicy.disclosureOfPersonalInfo.legalProcess." +
+                        { t("console:common.privacy.privacyPolicy.disclosureOfPersonalInfo.legalProcess." +
                             "description") }
                     </p>
                 </Grid.Column>
@@ -239,54 +239,54 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h3">
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.heading") }
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.heading") }
                     </Header>
 
                     { /* Where your personal information is stored */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.where.heading") }
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.where.heading") }
                     </Header>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.where.description.para1")
+                        t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.where.description.para1")
                     }</p>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.where.description.para2")
+                        t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.where.description.para2")
                     }</p>
 
                     { /* How long your personal information is retained */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.howLong.heading") }
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.howLong.heading") }
                     </Header>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
+                        t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
                             ".description.para1")
                     }</p>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
+                        t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
                             ".description.para2")
                     }</p>
                     <List bulleted>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
+                            { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
                                 ".description.list1.0") }
                         </List.Item>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
+                            { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.howLong" +
                                 ".description.list1.1") }
                         </List.Item>
                     </List>
 
                     { /* How to request removal of your personal information */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval" +
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval" +
                             ".heading") }
                     </Header>
                     <p>
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval." +
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval." +
                             "description.para1") }
                     </p>
                     <p>
-                        { t("adminPortal:components.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval." +
+                        { t("console:common.privacy.privacyPolicy.storageOfPersonalInfo.requestRemoval." +
                             "description.para2") }
                     </p>
                 </Grid.Column>
@@ -295,35 +295,35 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             { /* More information */ }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h3">{ t("adminPortal:components.privacy.privacyPolicy.moreInfo.heading") }</Header>
+                    <Header as="h3">{ t("console:common.privacy.privacyPolicy.moreInfo.heading") }</Header>
 
                     { /* Changes to this policy */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.moreInfo.changesToPolicy.heading") }
+                        { t("console:common.privacy.privacyPolicy.moreInfo.changesToPolicy.heading") }
                     </Header>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.moreInfo.changesToPolicy.description.para1")
+                        t("console:common.privacy.privacyPolicy.moreInfo.changesToPolicy.description.para1")
                     }</p>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.moreInfo.changesToPolicy.description.para2")
+                        t("console:common.privacy.privacyPolicy.moreInfo.changesToPolicy.description.para2")
                     }</p>
 
                     { /* Your choices */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.moreInfo.yourChoices.heading") }
+                        { t("console:common.privacy.privacyPolicy.moreInfo.yourChoices.heading") }
                     </Header>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.moreInfo.yourChoices.description.para1")
+                        t("console:common.privacy.privacyPolicy.moreInfo.yourChoices.description.para1")
                     }</p>
                     <p>{
-                        t("adminPortal:components.privacy.privacyPolicy.moreInfo.yourChoices.description.para2")
+                        t("console:common.privacy.privacyPolicy.moreInfo.yourChoices.description.para2")
                     }</p>
 
                     { /* Contact us */ }
                     <Header as="h4">
-                        { t("adminPortal:components.privacy.privacyPolicy.moreInfo.contactUs.heading") }
+                        { t("console:common.privacy.privacyPolicy.moreInfo.contactUs.heading") }
                     </Header>
-                    <p>{ t("adminPortal:components.privacy.privacyPolicy.moreInfo.contactUs.description.para1") }</p>
+                    <p>{ t("console:common.privacy.privacyPolicy.moreInfo.contactUs.description.para1") }</p>
                     <a
                         href="https://wso2.com/contact/"
                         rel="noopener noreferrer"
@@ -337,14 +337,14 @@ const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
             { /* Disclaimer */ }
             <Grid.Row columns={ 1 } id="disclaimer">
                 <Grid.Column width={ 16 }>
-                    <Header as="h2">{ t("adminPortal:components.privacy.privacyPolicy.disclaimer.heading") }</Header>
+                    <Header as="h2">{ t("console:common.privacy.privacyPolicy.disclaimer.heading") }</Header>
                     <List ordered>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.disclaimer.description.list1.0") }
+                            { t("console:common.privacy.privacyPolicy.disclaimer.description.list1.0") }
                         </List.Item>
                         <br/>
                         <List.Item>
-                            { t("adminPortal:components.privacy.privacyPolicy.disclaimer.description.list1.1") }
+                            { t("console:common.privacy.privacyPolicy.disclaimer.description.list1.1") }
                         </List.Item>
                     </List>
                 </Grid.Column>

@@ -30,7 +30,7 @@ export class I18nConstants {
      * @type {string}
      * @default
      */
-    public static readonly PORTAL_NAMESPACE: string = I18nModuleConstants.USER_PORTAL_NAMESPACE;
+    public static readonly PORTAL_NAMESPACE: string = I18nModuleConstants.MY_ACCOUNT_NAMESPACE;
 
     /**
      * Common namespace. Use these when loading translations.

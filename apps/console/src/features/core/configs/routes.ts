@@ -47,7 +47,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
     return [
         ...EXTENSION_ROUTES(),
         {
-            category: "devPortal:components.sidePanel.categories.application",
+            category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
                     component: lazy(() => import("../../applications/pages/application-template")),
@@ -87,7 +87,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "devPortal:components.sidePanel.categories.identityProviders",
+            category: "console:develop.features.sidePanel.categories.identityProviders",
             children: [
                 {
                     component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
@@ -148,7 +148,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 
     return [
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../users/pages/user-edit")),
@@ -157,7 +157,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "usersEdit",
-                    name: "adminPortal:components.sidePanel.editUsers",
+                    name: "console:manage.features.sidePanel.editUsers",
                     path: AppConstants.getPaths().get("USER_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -169,14 +169,14 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().users
             },
             id: "users",
-            name: "adminPortal:components.sidePanel.users",
+            name: "console:manage.features.sidePanel.users",
             order: 1,
             path: AppConstants.getPaths().get("USERS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../groups/pages/group-edit")),
@@ -185,7 +185,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "groupsEdit",
-                    name: "adminPortal:components.sidePanel.editGroups",
+                    name: "console:manage.features.sidePanel.editGroups",
                     path: AppConstants.getPaths().get("GROUP_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -197,14 +197,14 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().groups
             },
             id: "groups",
-            name: "adminPortal:components.sidePanel.groups",
+            name: "console:manage.features.sidePanel.groups",
             order: 2,
             path: AppConstants.getPaths().get("GROUPS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             children: [
                 {
                     component: lazy(() => import("../../roles/pages/role-edit")),
@@ -213,7 +213,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "rolesEdit",
-                    name: "adminPortal:components.sidePanel.editRoles",
+                    name: "console:manage.features.sidePanel.editRoles",
                     path: AppConstants.getPaths().get("ROLE_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -225,28 +225,28 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().roles
             },
             id: "roles",
-            name: "adminPortal:components.sidePanel.roles",
+            name: "console:manage.features.sidePanel.roles",
             order: 3,
             path: AppConstants.getPaths().get("ROLES"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.users",
+            category: "console:manage.features.sidePanel.categories.users",
             component: lazy(() => import("../../workflow-approvals/pages/approvals")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().approvals
             },
             id: "approvals",
-            name: "adminPortal:components.sidePanel.approvals",
+            name: "console:manage.features.sidePanel.approvals",
             order: 4,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.attributes",
+            category: "console:manage.features.sidePanel.categories.attributes",
             children: [
                 {
                     component: lazy(() => import("../../claims/pages/local-claims-edit")),
@@ -255,7 +255,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "editLocalClaims",
-                    name: "adminPortal:components.sidePanel.editLocalClaims",
+                    name: "console:manage.features.sidePanel.editLocalClaims",
                     path: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -267,7 +267,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "localDialect",
-                    name: "adminPortal:components.sidePanel.localDialect",
+                    name: "console:manage.features.sidePanel.localDialect",
                     path: AppConstants.getPaths().get("LOCAL_CLAIMS"),
                     protected: true,
                     showOnSidePanel: false
@@ -279,7 +279,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "editExternalDialect",
-                    name: "adminPortal:components.sidePanel.editExternalDialect",
+                    name: "console:manage.features.sidePanel.editExternalDialect",
                     path: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -291,14 +291,14 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().claims
             },
             id: "attributeDialects",
-            name: "adminPortal:components.sidePanel.attributeDialects",
+            name: "console:manage.features.sidePanel.attributeDialects",
             order: 6,
             path: AppConstants.getPaths().get("CLAIM_DIALECTS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.attributes",
+            category: "console:manage.features.sidePanel.categories.attributes",
             children: [
                 {
                     component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
@@ -337,7 +337,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            category: "adminPortal:components.sidePanel.categories.userstores",
+            category: "console:manage.features.sidePanel.categories.userstores",
             children: [
                 {
                     component: lazy(() => import("../../userstores/pages/user-stores-edit")),
@@ -345,7 +345,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "edit-user-store",
-                    name: "adminPortal:components.sidePanel.editUserstore",
+                    name: "console:manage.features.sidePanel.editUserstore",
                     path: AppConstants.getPaths().get("USERSTORES_EDIT"),
                     protected: true,
                     showOnSidePanel: false
@@ -356,7 +356,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "userstore-templates",
-                    name: "adminPortal:components.sidePanel.userstoreTemplates",
+                    name: "console:manage.features.sidePanel.userstoreTemplates",
                     path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
                     protected: true,
                     showOnSidePanel: false
@@ -367,27 +367,27 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().userStore
             },
             id: "userStores",
-            name: "adminPortal:components.sidePanel.userstores",
+            name: "console:manage.features.sidePanel.userstores",
             order: 5,
             path: AppConstants.getPaths().get("USERSTORES"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.certificates",
+            category: "console:manage.features.sidePanel.categories.certificates",
             component: lazy(() => import("../../certificates/pages/certificates-keystore")),
             icon: {
                 icon: getSidePanelIcons().certificate
             },
             id: "certificates",
-            name: "adminPortal:components.sidePanel.certificates",
+            name: "console:manage.features.sidePanel.certificates",
             order: 8,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.configurations",
+            category: "console:manage.features.sidePanel.categories.configurations",
             children: [
                 {
                     component: lazy(() => import("../../email-templates/pages/email-templates-page")),
@@ -396,7 +396,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
-                    name: "adminPortal:components.sidePanel.emailTemplates",
+                    name: "console:manage.features.sidePanel.emailTemplates",
                     path: AppConstants.getPaths().get("EMAIL_TEMPLATES"),
                     protected: true,
                     showOnSidePanel: false
@@ -408,7 +408,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
-                    name: "adminPortal:components.sidePanel.addEmailTemplate",
+                    name: "console:manage.features.sidePanel.addEmailTemplate",
                     path: AppConstants.getPaths().get("EMAIL_TEMPLATE"),
                     protected: true,
                     showOnSidePanel: false
@@ -420,7 +420,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "emailTemplates",
-                    name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
+                    name: "console:manage.features.sidePanel.addEmailTemplateLocale",
                     path: AppConstants.getPaths().get("EMAIL_TEMPLATE_ADD"),
                     protected: true,
                     showOnSidePanel: false
@@ -432,14 +432,14 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().emailTemplates
             },
             id: "emailTemplates",
-            name: "adminPortal:components.sidePanel.emailTemplates",
+            name: "console:manage.features.sidePanel.emailTemplates",
             order: 9,
             path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "adminPortal:components.sidePanel.categories.configurations",
+            category: "console:manage.features.sidePanel.categories.configurations",
             component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
             exact: true,
             icon: {
@@ -457,7 +457,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             exact: true,
             icon: null,
             id: "governanceConnectors",
-            name: "adminPortal:components.sidePanel.governanceConnectors",
+            name: "console:manage.features.sidePanel.governanceConnectors",
             order: 11,
             path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
             protected: true,
@@ -487,7 +487,7 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../pages/privacy")),
             icon: null,
             id: "privacy",
-            name: "adminPortal:components.sidePanel.privacy",
+            name: "console:common.sidePanel.privacy",
             path: AppConstants.getPaths().get("PRIVACY"),
             protected: true,
             showOnSidePanel: false

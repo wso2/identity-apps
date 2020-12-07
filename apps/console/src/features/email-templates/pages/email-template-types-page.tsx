@@ -106,10 +106,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplateTypes.notifications.getTemplateTypes" +
+                    description: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.emailTemplateTypes.notifications.getTemplateTypes" +
+                    message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
                         ".genericError.message")
                 }));
             })
@@ -118,7 +118,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.emailTemplateTypes.notifications.getTemplateTypes" +
+                        message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
                             ".error.message")
                     }));
 
@@ -126,10 +126,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplateTypes.notifications.getTemplateTypes" +
+                    description: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.emailTemplateTypes.notifications.getTemplateTypes" +
+                    message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
                         ".genericError.message")
                 }));
             })
@@ -216,10 +216,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
             .then((response: AxiosResponse) => {
                 if (response.status === 204) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("adminPortal:components.emailTemplateTypes.notifications" +
+                        description: t("console:manage.features.emailTemplateTypes.notifications" +
                             ".deleteTemplateType.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.emailTemplateTypes.notifications" +
+                        message: t("console:manage.features.emailTemplateTypes.notifications" +
                             ".deleteTemplateType.success.message")
                     }));
 
@@ -229,10 +229,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplateTypes.notifications" +
+                    description: t("console:manage.features.emailTemplateTypes.notifications" +
                         ".deleteTemplateType.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplateTypes.notifications" +
+                    message: t("console:manage.features.emailTemplateTypes.notifications" +
                         ".deleteTemplateType.genericError.message")
                 }));
             })
@@ -241,7 +241,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.emailTemplateTypes.notifications" +
+                        message: t("console:manage.features.emailTemplateTypes.notifications" +
                             ".deleteTemplateType.error.message")
                     }));
 
@@ -249,10 +249,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplateTypes.notifications" +
+                    description: t("console:manage.features.emailTemplateTypes.notifications" +
                         ".deleteTemplateType.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplateTypes.notifications" +
+                    message: t("console:manage.features.emailTemplateTypes.notifications" +
                         ".deleteTemplateType.genericError.message")
                 }));
             });
@@ -267,13 +267,13 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("adminPortal:components.emailTemplateTypes.buttons.newType") }
+                        { t("console:manage.features.emailTemplateTypes.buttons.newType") }
                     </PrimaryButton>
                 )
             }
             isLoading={ isTemplateTypesFetchRequestLoading }
-            title={ t("adminPortal:pages.emailTemplateTypes.title") }
-            description={ t("adminPortal:pages.emailTemplateTypes.subTitle") }
+            title={ t("console:manage.pages.emailTemplateTypes.title") }
+            description={ t("console:manage.pages.emailTemplateTypes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -288,19 +288,19 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
                                 ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
                                 ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
                                 ".filterValue.placeholder")
                         }
                         placeholder={
-                            t("adminPortal:components.emailTemplateTypes.advancedSearch.placeholder")
+                            t("console:manage.features.emailTemplateTypes.advancedSearch.placeholder")
                         }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="co"

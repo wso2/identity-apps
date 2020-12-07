@@ -519,12 +519,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ grant }
                         name="grant"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant.label")
+                            t("console:develop.features.applications.forms.inboundOIDC.fields.grant.label")
                         }
                         type="checkbox"
                         required={ true }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant" +
+                            t("console:develop.features.applications.forms.inboundOIDC.fields.grant" +
                                 ".validations.empty")
                         }
                         children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
@@ -535,7 +535,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                     <Hint>
                         {
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant.hint")
+                            t("console:develop.features.applications.forms.inboundOIDC.fields.grant.hint")
                         }
                     </Hint>
                 </Grid.Column>
@@ -552,16 +552,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
                             labelName={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
+                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.label")
                             }
                             required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
                                     ".placeholder")
                             }
                             validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
                                     ".validations.empty")
                             }
                             validation={ (value: string) => {
@@ -596,7 +596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             showError={ showURLError }
                             setShowError={ setShowURLError }
                             hint={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.hint")
                             }
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }
@@ -616,16 +616,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }
                                     labelName={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
                                             ".label")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
                                             ".placeholder")
                                     }
                                     value={ initialValues?.allowedOrigins?.toString() }
                                     validationErrorMsg={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
                                             ".validations.empty")
                                     }
                                     validation={ (value: string) => {
@@ -660,7 +660,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     setShowError={ setShowOriginError }
                                     showError={ showOriginError }
                                     hint={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
                                             ".hint")
                                     }
                                     readOnly={ readOnly }
@@ -687,7 +687,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label=""
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
+                            t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
                                 ".validations.empty")
                         }
                         type="checkbox"
@@ -698,7 +698,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         children={ [
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".fields.public.label"),
                                 value: "supportPublicClients"
                             }
@@ -707,7 +707,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-public-client-checkbox` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
+                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint") }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -720,11 +720,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Heading as="h5">
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
                             ".heading") }
                     </Heading>
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
                             ".hint") }
                     </Hint>
                     <Divider hidden />
@@ -734,19 +734,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label=""
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
                                 ".fields.pkce.validations.empty")
                         }
                         type="checkbox"
                         value={ findPKCE(initialValues.pkce) }
                         children={ [
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.mandatory.label"),
                                 value: "mandatory"
                             },
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.plainAlg.label"),
                                 value: "supportPlainTransformAlgorithm"
                             }
@@ -765,18 +765,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Heading as="h5">
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
                     </Heading>
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
                             ".hint") }
                     </Hint>
                     <Divider hidden />
                     <Field
                         ref={ type }
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.type.label")
                         }
                         name="type"
@@ -797,7 +797,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Field
                         ref={ bindingType }
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
                         }
                         name="bindingType"
@@ -838,7 +838,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                            label: t("console:develop.features.applications.forms.inboundOIDC" +
                                                 ".sections.accessToken.fields.validateBinding.label"),
                                             value: "validateTokenBinding"
                                         }
@@ -847,7 +847,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".accessToken.fields.validateBinding.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -868,7 +868,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                            label: t("console:develop.features.applications.forms.inboundOIDC" +
                                                 ".sections.accessToken.fields.revokeToken.label"),
                                             value: "revokeAccessToken"
                                         }
@@ -877,7 +877,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".accessToken.fields.revokeToken.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -891,12 +891,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ userAccessTokenExpiryInSeconds }
                         name="userAccessTokenExpiryInSeconds"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.expiry.label")
                         }
                         required={ true }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.expiry.validations.empty")
                         }
                         value={
@@ -905,7 +905,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 : metadata.defaultUserAccessTokenExpiryTime
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.expiry.placeholder")
                         }
                         type="number"
@@ -913,7 +913,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-access-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.fields.expiry.hint") }
                     </Hint>
                 </Grid.Column>
@@ -945,7 +945,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Heading as="h5">
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".refreshToken.heading") }
                     </Heading>
                     <Divider hidden />
@@ -955,7 +955,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label=""
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.renew.validations.empty")
                         }
                         type="checkbox"
@@ -966,7 +966,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         children={ [
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.refreshToken.fields.renew.label"),
                                 value: "refreshToken"
                             }
@@ -975,7 +975,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".refreshToken.fields.renew.hint") }
                     </Hint>
                 </Grid.Column>
@@ -986,16 +986,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ expiryInSeconds }
                         name="expiryInSeconds"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.expiry.label")
                         }
                         required={ true }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.expiry.validations.empty")
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.expiry.placeholder")
                         }
                         value={ initialValues.refreshToken
@@ -1006,7 +1006,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-refresh-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".refreshToken.fields.expiry.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1020,7 +1020,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Heading as="h5">
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".idToken.heading") }
                     </Heading>
                     <Divider hidden />
@@ -1028,16 +1028,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ audience }
                         name="audience"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.audience.label")
                         }
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.audience.validations.empty")
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.audience.placeholder")
                         }
                         value={ initialValues.idToken?.audience.toString() }
@@ -1046,7 +1046,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-audience-textarea` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.audience.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1059,7 +1059,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label=""
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.encryption.validations.empty")
                         }
                         type="checkbox"
@@ -1077,7 +1077,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         children={ [
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.idToken.fields.encryption.label"),
                                 value: "enableEncryption"
                             }
@@ -1086,7 +1086,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-checkbox` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.encryption.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1097,12 +1097,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ algorithm }
                         name="algorithm"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.algorithm.label")
                         }
                         required={ isEncryptionEnabled }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.algorithm.validations.empty")
                         }
                         type="dropdown"
@@ -1112,7 +1112,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 : metadata.idTokenEncryptionAlgorithm.defaultValue
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.algorithm.placeholder")
                         }
                         children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
@@ -1121,7 +1121,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.algorithm.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1132,12 +1132,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ method }
                         name="method"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.method.label")
                         }
                         required={ isEncryptionEnabled }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.method.validations.empty")
                         }
                         type="dropdown"
@@ -1147,7 +1147,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 : metadata.idTokenEncryptionMethod.defaultValue
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.method.placeholder")
                         }
                         children={ getAllowedList(metadata.idTokenEncryptionMethod) }
@@ -1156,7 +1156,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-method-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.method.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1167,16 +1167,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ idExpiryInSeconds }
                         name="idExpiryInSeconds"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.expiry.label")
                         }
                         required={ true }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.expiry.validations.empty")
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.expiry.placeholder")
                         }
                         value={
@@ -1189,7 +1189,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-id-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.expiry.hint") }
                     </Hint>
                 </Grid.Column>
@@ -1208,16 +1208,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ backChannelLogoutUrl }
                         name="backChannelLogoutUrl"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.back.label")
                         }
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.back.validations.empty")
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.back.placeholder")
                         }
                         type="text"
@@ -1225,7 +1225,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             if (!FormValidation.url(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push((
-                                    t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.back.validations.invalid")
                                 ));
                             }
@@ -1242,16 +1242,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ref={ frontChannelLogoutUrl }
                         name="frontChannelLogoutUrl"
                         label={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.front.label")
                         }
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.front.validations.empty")
                         }
                         placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".logoutURLs.fields.front.placeholder")
                         }
                         type="text"
@@ -1259,7 +1259,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             if (!FormValidation.url(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push((
-                                    t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.front.validations.invalid")
                                 ));
                             }
@@ -1286,7 +1286,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         children={ [
                             {
-                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.logoutURLs.fields.signatureValidation.label"),
                                 value: "EnableRequestObjectSignatureValidation"
                             }
@@ -1304,7 +1304,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Heading as="h5">
-                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".scopeValidators.heading") }
                     </Heading>
                     <Divider hidden />
@@ -1314,7 +1314,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label=""
                         required={ false }
                         requiredErrorMessage={
-                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".scopeValidators.fields.validator.validations.empty")
                         }
                         type="checkbox"
@@ -1408,7 +1408,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <Form.Field>
                                             <label>
-                                                { t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                { t("console:develop.features.applications.forms.inboundOIDC.fields" +
                                                     ".clientID.label") }
                                             </label>
                                             <CopyInputField
@@ -1427,7 +1427,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <Form.Field>
                                             <label>
                                                 {
-                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    t("console:develop.features.applications.forms.inboundOIDC.fields" +
                                                         ".clientSecret.label")
                                                 }
                                             </label>
@@ -1436,7 +1436,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     ? (
                                                         <Message info visible>
                                                             {
-                                                                t("devPortal:components.applications.forms." +
+                                                                t("console:develop.features.applications.forms." +
                                                                     "inboundOIDC.fields.clientSecret.hashedDisclaimer")
                                                             }
                                                         </Message>
@@ -1446,11 +1446,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             secret
                                                             value={ initialValues?.clientSecret }
                                                             hideSecretLabel={
-                                                                t("devPortal:components.applications.forms." +
+                                                                t("console:develop.features.applications.forms." +
                                                                     "inboundOIDC.fields.clientSecret.hideSecret")
                                                             }
                                                             showSecretLabel={
-                                                                t("devPortal:components.applications.forms." +
+                                                                t("console:develop.features.applications.forms." +
                                                                     "inboundOIDC.fields.clientSecret.showSecret")
                                                             }
                                                             data-testid={ `${ testId }-client-secret-readonly-input` }
@@ -1506,7 +1506,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             <p>
                                                 <Trans
                                                     i18nKey={
-                                                        "devPortal:components.applications.confirmations" +
+                                                        "console:develop.features.applications.confirmations" +
                                                         ".regenerateSecret.assertionHint"
                                                     }
                                                     tOptions={ { id: initialValues?.clientId } }
@@ -1531,7 +1531,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".regenerateSecret.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -1539,13 +1539,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             warning
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-message` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".regenerateSecret.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-content` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".regenerateSecret.content") }
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>
@@ -1558,7 +1558,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             <p>
                                                 <Trans
                                                     i18nKey={
-                                                        "devPortal:components.applications.confirmations" +
+                                                        "console:develop.features.applications.confirmations" +
                                                         ".revokeApplication.assertionHint"
                                                     }
                                                     tOptions={ { id: initialValues?.clientId } }
@@ -1581,7 +1581,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".revokeApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -1589,13 +1589,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             warning
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-message` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".revokeApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
                                         >
-                                            { t("devPortal:components.applications.confirmations" +
+                                            { t("console:develop.features.applications.confirmations" +
                                                 ".revokeApplication.content") }
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>

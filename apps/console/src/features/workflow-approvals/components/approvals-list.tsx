@@ -171,7 +171,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.approvals.notifications.fetchApprovalDetails." +
+                        message: t("console:manage.features.approvals.notifications.fetchApprovalDetails." +
                             "error.message")
                     }));
 
@@ -179,10 +179,10 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("adminPortal:components.approvals.notifications.fetchApprovalDetails" +
+                    description: t("console:manage.features.approvals.notifications.fetchApprovalDetails" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.approvals.notifications.fetchApprovalDetails." +
+                    message: t("console:manage.features.approvals.notifications.fetchApprovalDetails." +
                         "genericError.message")
                 }));
             })
@@ -211,16 +211,16 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ getApprovalsList }>
-                            { t("adminPortal:components.approvals.placeholders.emptySearchResults.action") }
+                            { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.approvals.placeholders.emptySearchResults.title") }
+                    title={ t("console:manage.features.approvals.placeholders.emptySearchResults.title") }
                     subtitle={ [
-                        t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.0"),
-                        t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.1"),
-                        t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.2")
+                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.0"),
+                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.1"),
+                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -232,18 +232,18 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ () => onChangeStatusFilter(ApprovalStatus.ALL) }>
-                            { t("adminPortal:components.approvals.placeholders.emptySearchResults.action") }
+                            { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.approvals.placeholders.emptyApprovalFilter.title") }
+                    title={ t("console:manage.features.approvals.placeholders.emptyApprovalFilter.title") }
                     subtitle={ [
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalFilter.subtitles.0",
+                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.0",
                             { status: filterStatus }),
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalFilter.subtitles.1",
+                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.1",
                             { status: filterStatus }),
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalFilter.subtitles.2")
+                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -255,11 +255,11 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.approvals.placeholders.emptyApprovalList.title") }
+                    title={ t("console:manage.features.approvals.placeholders.emptyApprovalList.title") }
                     subtitle={ [
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalList.subtitles.0"),
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalList.subtitles.1"),
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalList.subtitles.2")
+                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.0"),
+                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.1"),
+                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -355,7 +355,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                         </Header>
                     );
                 },
-                title: t("adminPortal:components.approvals.list.columns.name")
+                title: t("console:manage.features.approvals.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -363,7 +363,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("adminPortal:components.approvals.list.columns.actions")
+                title: t("console:manage.features.approvals.list.columns.actions")
             }
         ];
     };

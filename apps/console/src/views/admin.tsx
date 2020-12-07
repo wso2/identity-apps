@@ -195,7 +195,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 }
 
                 filteredRoutesClone.unshift({
-                    category: "adminPortal:components.sidePanel.categories.configurations",
+                    category: "console:manage.features.sidePanel.categories.configurations",
                     component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
                     exact: true,
                     icon: {

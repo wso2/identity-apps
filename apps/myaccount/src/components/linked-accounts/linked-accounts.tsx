@@ -101,11 +101,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.addAssociation.success.description"
+                        "myAccount:components.linkedAccounts.notifications.addAssociation.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.addAssociation.success.message"
+                        "myAccount:components.linkedAccounts.notifications.addAssociation.success.message"
                     )
                 });
 
@@ -117,12 +117,12 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             .catch((error) => {
                 onAlertFired({
                     description: error?.response?.data?.description ?? t(
-                        "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.description"
+                        "myAccount:components.linkedAccounts.notifications.addAssociation.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ? t("userPortal:components.linkedAccounts.notifications.addAssociation.error.message")
-                        : t("userPortal:components.linkedAccounts.notifications.addAssociation.genericError.message")
+                        ? t("myAccount:components.linkedAccounts.notifications.addAssociation.error.message")
+                        : t("myAccount:components.linkedAccounts.notifications.addAssociation.genericError.message")
                 });
             });
     };
@@ -141,12 +141,12 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
+                        "myAccount:components.linkedAccounts.notifications.switchAccount.error.description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
+                        "myAccount:components.linkedAccounts.notifications.switchAccount.error.message"
                     )
                 });
 
@@ -155,11 +155,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
             onAlertFired({
                 description: t(
-                    "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                    "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                    "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.message"
                 )
             });
         }
@@ -173,11 +173,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.removeAssociation.success.description"
+                        "myAccount:components.linkedAccounts.notifications.removeAssociation.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.removeAssociation.success.message"
+                        "myAccount:components.linkedAccounts.notifications.removeAssociation.success.message"
                     )
                 });
 
@@ -188,12 +188,12 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.linkedAccounts.notifications.removeAssociation.error.description",
+                            "myAccount:components.linkedAccounts.notifications.removeAssociation.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.linkedAccounts.notifications.removeAssociation.error.message"
+                            "myAccount:components.linkedAccounts.notifications.removeAssociation.error.message"
                         )
                     });
 
@@ -202,11 +202,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.removeAssociation.genericError.description"
+                        "myAccount:components.linkedAccounts.notifications.removeAssociation.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.removeAssociation.genericError.message"
+                        "myAccount:components.linkedAccounts.notifications.removeAssociation.genericError.message"
                     )
                 });
             });
@@ -215,8 +215,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.linkedAccounts.description") }
-            header={ t("userPortal:sections.linkedAccounts.heading") }
+            description={ t("myAccount:sections.linkedAccounts.description") }
+            header={ t("myAccount:sections.linkedAccounts.heading") }
             icon={ getSettingsSectionIcons().associatedAccounts }
             iconMini={ getSettingsSectionIcons().associatedAccountsMini }
             iconSize="auto"
@@ -226,7 +226,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 () => dispatch(setActiveForm(
                     CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER))
             }
-            primaryAction={ t("userPortal:sections.linkedAccounts.actionTitles.add") }
+            primaryAction={ t("myAccount:sections.linkedAccounts.actionTitles.add") }
             primaryActionIcon="add"
             showActionBar={
                 activeForm !== CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER }

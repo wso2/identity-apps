@@ -227,7 +227,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                         position="top center"
                                                                         inverted
                                                                         content={
-                                                                            t("devPortal:components.applications" +
+                                                                            t("console:develop.features.applications" +
                                                                                 ".edit.sections.signOnMethod." +
                                                                                 "sections.templateDescription" +
                                                                                 ".popupContent")

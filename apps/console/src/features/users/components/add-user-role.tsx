@@ -212,7 +212,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
             submitState={ triggerSubmit }
         >
             <TransferComponent
-                searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
+                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
                     { type: "Roles" }) }
                 addItems={ addRoles }
                 removeItems={ removeRoles }
@@ -224,12 +224,12 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     isListEmpty={ !(initialValues?.roleList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [
-                        t("adminPortal:components.transferList.list.headers.0"),
-                        t("adminPortal:components.transferList.list.headers.1"), ""
+                        t("console:manage.features.transferList.list.headers.0"),
+                        t("console:manage.features.transferList.list.headers.1"), ""
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
                         "roles.unselected", { type: "roles" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
                 >
@@ -257,12 +257,12 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     isListEmpty={ !(initialValues?.tempRoleList?.length > 0) }
                     listType="selected"
                     listHeaders={ [
-                        t("adminPortal:components.transferList.list.headers.0"),
-                        t("adminPortal:components.transferList.list.headers.1")
+                        t("console:manage.features.transferList.list.headers.0"),
+                        t("console:manage.features.transferList.list.headers.1")
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
                         "roles.selected", { type: "roles" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-roles-select-all-checkbox"
                 >
