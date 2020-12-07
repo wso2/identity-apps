@@ -68,7 +68,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                 className="label"
                             >
                                 {
-                                   t("adminPortal:components.roles.addRoleWizard.summary.labels.domain.group")
+                                   t("console:manage.features.roles.addRoleWizard.summary.labels.domain.group")
                                 }
                             </div>
                         </Grid.Column>
@@ -88,7 +88,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                 className="label"
                             >
                                 {
-                                    t("adminPortal:components.roles.addRoleWizard.summary.labels.roleName",
+                                    t("console:manage.features.roles.addRoleWizard.summary.labels.roleName",
                                             { type: "Group" })
                                 }
                             </div>
@@ -115,7 +115,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                     data-testid={ `${ testId }-permissions-label` }
                                     className="label"
                                 >
-                                    { t("adminPortal:components.roles.addRoleWizard.summary.labels.permissions") }
+                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.permissions") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -151,7 +151,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                     data-testid={ `${ testId }-users-label` }
                                     className="label"
                                 >
-                                    { t("adminPortal:components.roles.addRoleWizard.summary.labels.users") }
+                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.users") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
