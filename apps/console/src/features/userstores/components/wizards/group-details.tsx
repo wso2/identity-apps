@@ -97,14 +97,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -133,14 +133,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         type="toggle"
                                                         required={ false }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: name
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -164,14 +164,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                     type="text"
                                                     required={ !disabled }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: name
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name

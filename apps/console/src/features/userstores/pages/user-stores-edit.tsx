@@ -84,11 +84,11 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
                             ".description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
         });
@@ -105,11 +105,11 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstoreMetadata." +
+                        || t("console:manage.features.userstores.notifications.fetchUserstoreMetadata." +
                             "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstoreMetadata" +
+                        || t("console:manage.features.userstores.notifications.fetchUserstoreMetadata" +
                             ".genericError.message")
                 }));
             });
@@ -127,7 +127,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
      */
     const panes = [
         {
-            menuItem:  t ("adminPortal:components.userstores.pageLayout.edit.tabs.general"),
+            menuItem:  t ("console:manage.features.userstores.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditBasicDetailsUserStore
@@ -141,7 +141,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.connection"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.connection"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditConnectionDetails
@@ -155,7 +155,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.user"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.user"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditUserDetails
@@ -169,7 +169,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.group"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.group"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditGroupDetails
@@ -198,12 +198,12 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                 </Image>
             }
             title={ userStore?.name }
-            description={ t("adminPortal:components.userstores.pageLayout.edit.description") }
+            description={ t("console:manage.features.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
-                text: t ("adminPortal:components.userstores.pageLayout.edit.back")
+                text: t ("console:manage.features.userstores.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
