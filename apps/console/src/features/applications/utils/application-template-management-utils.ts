@@ -25,11 +25,7 @@ import {
     getApplicationTemplateList
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
-import {
-    ApplicationTemplateConfigInterface,
-    ApplicationTemplateGroupConfigInterface,
-    getApplicationTemplatesConfig
-} from "../data/application-templates";
+import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
 import {
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface,
@@ -177,7 +173,7 @@ export class ApplicationTemplateManagementUtils {
             }
 
             const group: ApplicationTemplateGroupInterface = getApplicationTemplatesConfig().groups
-                .find((group: ApplicationTemplateGroupConfigInterface) => {
+                .find((group: TemplateConfigInterface<ApplicationTemplateGroupInterface>) => {
                     return group.resource.id === template.templateGroup;
                 })?.resource;
 
@@ -222,7 +218,7 @@ export class ApplicationTemplateManagementUtils {
         const templates: ApplicationTemplateInterface[] = [];
 
         getApplicationTemplatesConfig().templates
-            .filter((config: ApplicationTemplateConfigInterface) => {
+            .filter((config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
                 if (!config.enabled) {
                     return false;
                 }

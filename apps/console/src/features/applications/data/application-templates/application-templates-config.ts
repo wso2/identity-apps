@@ -31,14 +31,14 @@ import * as extensionsConfig from "../../../../extensions/config";
 import { ApplicationTemplateGroupInterface, ApplicationTemplateListItemInterface } from "../../models";
 
 export interface ApplicationTemplatesConfigInterface {
-    groups: ApplicationTemplateGroupConfigInterface[];
-    templates: ApplicationTemplateConfigInterface[];
+    groups: TemplateConfigInterface<ApplicationTemplateGroupInterface>[];
+    templates: TemplateConfigInterface<ApplicationTemplateListItemInterface>[];
 }
 
-export interface ApplicationTemplateConfigInterface {
+export interface TemplateConfigInterface<T = {}> {
     enabled: boolean;
     id: string;
-    resource?: ApplicationTemplateListItemInterface;
+    resource?: T;
 }
 
 export interface ApplicationTemplateGroupConfigInterface {
