@@ -27,12 +27,12 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import * as extensionsConfig from "../../../../extensions/config";
-import { ApplicationTemplateGroupInterface, ApplicationTemplateListItemInterface } from "../../models";
+import { ExtensionsManager } from "../../../../extensions";
+import { ApplicationTemplateGroupInterface, ApplicationTemplateInterface } from "../../models";
 
 export interface ApplicationTemplatesConfigInterface {
     groups: TemplateConfigInterface<ApplicationTemplateGroupInterface>[];
-    templates: TemplateConfigInterface<ApplicationTemplateListItemInterface>[];
+    templates: TemplateConfigInterface<ApplicationTemplateInterface>[];
 }
 
 export interface TemplateConfigInterface<T = {}> {
@@ -41,13 +41,9 @@ export interface TemplateConfigInterface<T = {}> {
     resource?: T | Promise<T>;
 }
 
-export interface ApplicationTemplateGroupConfigInterface {
-    enabled: boolean;
-    id: string;
-    resource?: ApplicationTemplateGroupInterface;
-}
-
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {
+
+    const extensionsManager: ExtensionsManager = ExtensionsManager.getInstance();
 
     return {
         groups: merge([
@@ -66,7 +62,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                 id: MobileApplicationTemplateGroup.id,
                 resource: MobileApplicationTemplateGroup
             }
-        ], extensionsConfig()?.templateExtensions?.applications?.groups),
+        ], extensionsManager.getApplicationTemplatesConfig().groups),
         templates: merge([
             {
                 enabled: true,
@@ -98,6 +94,6 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                 id: CustomApplicationTemplate.id,
                 resource: CustomApplicationTemplate
             }
-        ], extensionsConfig()?.templateExtensions?.applications?.templates)
+        ], extensionsManager.getApplicationTemplatesConfig().templates)
     };
 };

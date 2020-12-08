@@ -57,23 +57,25 @@ export class ApplicationTemplateManagementUtils {
                                              useAPI: boolean = false): Promise<void> => {
 
         if (!useAPI) {
-            const templates: ApplicationTemplateInterface[] = ApplicationTemplateManagementUtils
-                .loadLocalFileBasedTemplates();
+            return ApplicationTemplateManagementUtils.loadLocalFileBasedTemplates()
+                .then((response: ApplicationTemplateInterface[]) => {
+                    // Group the templates if `skipGrouping` flag is false.
+                    if (!skipGrouping) {
+                        // Set the templates without grouping. Used to quickly search through to get the template name.
+                        store.dispatch(setApplicationTemplates(response));
+                        // Set the templates with grouping.
+                        store.dispatch(
+                            setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(response),
+                                true)
+                        );
 
-            // Group the templates if `skipGrouping` flag is false.
-            if (!skipGrouping) {
-                // Set the templates without grouping. Used to quickly search through to get the template name.
-                store.dispatch(setApplicationTemplates(templates));
-                // Set the templates with grouping.
-                store.dispatch(setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(templates),
-                    true));
+                        return Promise.resolve();
+                    }
 
-                return Promise.resolve();
-            }
+                    store.dispatch(setApplicationTemplates(response));
 
-            store.dispatch(setApplicationTemplates(templates));
-
-            return Promise.resolve();
+                    return Promise.resolve();
+                });
         }
 
         return getApplicationTemplateList()
@@ -172,37 +174,40 @@ export class ApplicationTemplateManagementUtils {
                 return;
             }
 
-            const group: ApplicationTemplateGroupInterface = getApplicationTemplatesConfig().groups
-                .find((group: TemplateConfigInterface<ApplicationTemplateGroupInterface>) => {
-                    return group.resource.id === template.templateGroup;
-                })?.resource;
+            ApplicationTemplateManagementUtils.loadLocalFileBasedTemplateGroups()
+                .then((response: ApplicationTemplateGroupInterface[]) => {
+                    const group: ApplicationTemplateGroupInterface = response
+                        .find((group: ApplicationTemplateGroupInterface) => {
+                            return group.id === template.templateGroup;
+                    });
 
-            if (!group) {
-                groupedTemplates.push(template);
-                return;
-            }
+                    if (!group) {
+                        groupedTemplates.push(template);
+                        return;
+                    }
 
-            if (groupedTemplates.some((groupedTemplate) =>
-                groupedTemplate.id === template.templateGroup)) {
+                    if (groupedTemplates.some((groupedTemplate) =>
+                        groupedTemplate.id === template.templateGroup)) {
 
-                groupedTemplates.forEach((editingTemplate, index) => {
-                    if (editingTemplate.id === template.templateGroup) {
-                        groupedTemplates[ index ] = {
-                            ...group,
-                            subTemplates: [ ...editingTemplate.subTemplates, template ]
-                        };
+                        groupedTemplates.forEach((editingTemplate, index) => {
+                            if (editingTemplate.id === template.templateGroup) {
+                                groupedTemplates[ index ] = {
+                                    ...group,
+                                    subTemplates: [ ...editingTemplate.subTemplates, template ]
+                                };
+
+                                return;
+                            }
+                        });
 
                         return;
                     }
+
+                    groupedTemplates.push({
+                        ...group,
+                        subTemplates: [ template ]
+                    });
                 });
-
-                return;
-            }
-
-            groupedTemplates.push({
-                ...group,
-                subTemplates: [ template ]
-            });
         });
 
         return groupedTemplates;
@@ -211,21 +216,44 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Loads local file based application templates.
      *
-     * @return {ApplicationTemplateInterface[]}
+     * @return {Promise<(ApplicationTemplateInterface | Promise<ApplicationTemplateInterface>)[]>}
      */
-    private static loadLocalFileBasedTemplates(): ApplicationTemplateInterface[] {
+    private static async loadLocalFileBasedTemplates(): Promise<(ApplicationTemplateInterface
+        | Promise<ApplicationTemplateInterface>)[]> {
 
-        const templates: ApplicationTemplateInterface[] = [];
+        const templates: (ApplicationTemplateInterface | Promise<ApplicationTemplateInterface>)[] = [];
 
         getApplicationTemplatesConfig().templates
-            .filter((config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
+            .map(async (config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
                 if (!config.enabled) {
-                    return false;
+                    return;
                 }
 
                 templates.push(config.resource);
             });
 
-        return templates;
+        return Promise.all([ ...templates ]);
+    }
+
+    /**
+     * Loads local file based application template groups.
+     *
+     * @return {Promise<(ApplicationTemplateGroupInterface | Promise<ApplicationTemplateGroupInterface>)[]>}
+     */
+    private static async loadLocalFileBasedTemplateGroups(): Promise<(ApplicationTemplateGroupInterface
+            | Promise<ApplicationTemplateGroupInterface>)[]> {
+
+        const groups: (ApplicationTemplateGroupInterface | Promise<ApplicationTemplateGroupInterface>)[] = [];
+
+        getApplicationTemplatesConfig().groups
+            .forEach(async (config: TemplateConfigInterface<ApplicationTemplateGroupInterface>) => {
+                if (!config.enabled) {
+                    return;
+                }
+
+                groups.push(config.resource);
+            });
+
+        return Promise.all([ ...groups ]);
     }
 }
