@@ -941,8 +941,14 @@ export interface ConsoleNS {
                         };
                     };
                     outboundConnectorAccordion: {
-                        default: string;
-                        enable: string;
+                        default: {
+                            0: string;
+                            1: string;
+                        };
+                        enable: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     common: {
                         requiredErrorMessage: string;

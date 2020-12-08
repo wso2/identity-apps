@@ -2369,8 +2369,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     outboundConnectorAccordion: {
-                        default: "Mettre par défaut",
-                        enable: "Activé"
+                        default: {
+                            0: "Défaut",
+                            1: "Mettre par défaut"
+                        },
+                        enable: {
+                            0: "Activé",
+                            1: "Désactivé"
+                        }
                     },
                     outboundProvisioningRoles: {
                         heading: "Approvisionnement externe des rôles",

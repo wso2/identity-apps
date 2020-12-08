@@ -24,7 +24,8 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
-    PrimaryButton
+    PrimaryButton,
+    SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -41,8 +42,8 @@ import {
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorWithMetaInterface,
-    OutboundProvisioningConnectorsInterface
+    OutboundProvisioningConnectorsInterface,
+    OutboundProvisioningConnectorWithMetaInterface
 } from "../../models";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import {
@@ -205,6 +206,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      */
     const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface): void => {
 
+        const EMPTY_STRING = "";
         const connectorList = [];
 
         availableConnectors.map((connector) => {
@@ -215,7 +217,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
         const data = {
             connectors: connectorList,
-            defaultConnectorId: identityProvider.provisioning.outboundConnectors.defaultConnectorId
+            defaultConnectorId: EMPTY_STRING
         };
 
         updateOutboundProvisioningConnectors(data, identityProvider.id)
@@ -288,19 +290,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     /**
-     * Handles default connector change event.
-     *
-     * @param {React.FormEvent<HTMLInputElement>} e - Event.
-     * @param {CheckboxProps} data - Checkbox data.
-     * @param {string} id - Id of the connector.
-     */
-    const handleDefaultConnectorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        const connector = availableConnectors.find(connector => (connector.id === id)).data;
-        connector.isDefault = data.checked;
-        handleConnectorConfigFormSubmit(connector);
-    };
-
-    /**
      * Handles connector enable toggle.
      *
      * @param {React.FormEvent<HTMLInputElement>} e - Event.
@@ -323,6 +312,23 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             connector.isEnabled = data.checked;
             handleConnectorConfigFormSubmit(connector);
         }
+    };
+
+    const createAccordionActions = (
+        connector: OutboundProvisioningConnectorWithMetaInterface
+    ): SegmentedAccordionTitleActionInterface[] => {
+        return [
+            // Toggle Switch which enables/disables the connector state.
+            {
+                defaultChecked: connector.data?.isEnabled,
+                label: t(connector.data?.isEnabled ?
+                    "console:develop.features.idp.forms.outboundConnectorAccordion.enable.0" :
+                    "console:develop.features.idp.forms.outboundConnectorAccordion.enable.1"
+                ),
+                onChange: handleConnectorEnableToggle,
+                type: "toggle"
+            }
+        ];
     };
 
     return (
@@ -361,6 +367,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                         globalActions = {
                                                             [
                                                                 {
+                                                                    disabled: connector.data?.isEnabled,
                                                                     icon: "trash alternate",
                                                                     onClick: handleAuthenticatorDeleteOnClick,
                                                                     type: "icon"
@@ -370,24 +377,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                         authenticators={
                                                             [
                                                                 {
-                                                                    actions: [
-                                                                        {
-                                                                            defaultChecked: connector.data?.isDefault,
-                                                                            label: t("console:develop.features.idp." +
-                                                                                "forms.outboundConnectorAccordion." +
-                                                                                "default"),
-                                                                            onChange: handleDefaultConnectorChange,
-                                                                            type: "checkbox"
-                                                                        },
-                                                                        {
-                                                                            defaultChecked: connector?.data?.isEnabled,
-                                                                            label: t("console:develop.features.idp." +
-                                                                                "forms.outboundConnectorAccordion." +
-                                                                                "enable"),
-                                                                            onChange: handleConnectorEnableToggle,
-                                                                            type: "toggle"
-                                                                        }
-                                                                    ],
+                                                                    actions: createAccordionActions(connector),
                                                                     content: (
                                                                         <OutboundProvisioningConnectorFormFactory
                                                                             metadata={ connector.meta }
