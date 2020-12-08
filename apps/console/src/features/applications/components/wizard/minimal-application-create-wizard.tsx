@@ -25,10 +25,17 @@ import {
     Validation,
     useTrigger
 } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    SelectionCard,
+    useWizardAlert
+} from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -494,7 +501,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
-                    <WizardHelp />
+                    <Suspense fallback={ <ContentLoader /> }>
+                        <WizardHelp />
+                    </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
         );
