@@ -2386,8 +2386,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     outboundConnectorAccordion: {
-                        default: "පෙරනිමිය කරන්න",
-                        enable: "සක්‍රීය කර ඇත"
+                        default: {
+                            0: "පෙරනිමිය",
+                            1: "පෙරනිමිය කරන්න"
+                        },
+                        enable: {
+                            0: "සක්‍රීය කර ඇත",
+                            1: "ආබාඅක්‍රීය කර ඇතධිතයි"
+                        }
                     },
                     outboundProvisioningRoles: {
                         heading: "පිටතට යන ප්‍රතිපාදන කාර්යභාරය",

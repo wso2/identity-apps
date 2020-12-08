@@ -2380,8 +2380,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     outboundConnectorAccordion: {
-                        default: "Make default",
-                        enable: "Enabled"
+                        default: {
+                            0: "Default",
+                            1: "Make default"
+                        },
+                        enable: {
+                            0: "Enabled",
+                            1: "Disabled"
+                        }
                     },
                     outboundProvisioningRoles: {
                         heading: "OutBound Provisioning Roles",
