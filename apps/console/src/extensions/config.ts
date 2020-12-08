@@ -16,7 +16,9 @@
  * under the License.
  */
 
-export const ExtensionsConfig = {
+import { ExtensionsConfigInterface } from "./models";
+
+export const ExtensionsConfig: ExtensionsConfigInterface = {
     componentExtensions: [],
     routes: [],
     sections: {
