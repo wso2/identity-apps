@@ -375,8 +375,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     || (
                                                         <a
                                                             className="placeholder-text"
+                                                            tabIndex={ 0 }
                                                             onClick={ () => {
                                                                 setShowMobileUpdateWizard(true);
+                                                            } }
+                                                            onKeyPress={ (e) => {
+                                                                if (e.key === "Enter") {
+                                                                    setShowMobileUpdateWizard(true);
+                                                                    }
                                                             } }
                                                         >
                                                             { t("myAccount:components.profile.forms.generic.inputs." +
@@ -551,13 +557,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : (
                                                 <a
                                                     className="placeholder-text"
-                                                        onClick={ () => {
+                                                    tabIndex={ 0 }
+                                                    onKeyPress={ (e) => {
+                                                        if (e.key === "Enter") {
                                                             dispatch(
                                                                 setActiveForm(
                                                                     CommonConstants.PERSONAL_INFO + schema.name
                                                                 )
                                                             );
-                                                        } }
+                                                        }
+                                                    } }
+                                                    onClick={ () => {
+                                                        dispatch(
+                                                            setActiveForm(
+                                                                CommonConstants.PERSONAL_INFO + schema.name
+                                                            )
+                                                        );
+                                                    } }
                                                 >
                                                     {t("myAccount:components.profile.forms.generic.inputs.placeholder",
                                                         {
@@ -592,6 +608,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         className="list-icon"
                                                         size="small"
                                                         color="grey"
+                                                        tabIndex={ 0 }
+                                                        onKeyPress={ (e) => {
+                                                            if (e.key === "Enter") {
+                                                                dispatch(
+                                                                    setActiveForm(
+                                                                        CommonConstants.PERSONAL_INFO + schema.name
+                                                                    )
+                                                                )
+                                                            }
+                                                        } }
                                                         onClick={
                                                             () => dispatch(
                                                                 setActiveForm(
@@ -675,6 +701,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 editable
                 showGravatarLabel
                 size="tiny"
+                tabIndex={ 0 }
+                onKeyPress={ (e) => {
+                    if (e.key === "Enter") {
+                        handleAvatarOnClick();
+                    }
+                } }
                 onClick={ handleAvatarOnClick }
                 profileInfo={ profileDetails?.profileInfo as any }
                 gravatarInfoPopoverText={ (

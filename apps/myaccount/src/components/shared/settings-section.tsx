@@ -37,8 +37,8 @@ interface SettingsSectionProps extends TestableComponentInterface {
     iconFloated?: "left" | "right";
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
-    onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
-    onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    onPrimaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
+    onSecondaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
     placeholder?: string;
     primaryAction?: any;
     primaryActionDisabled?: boolean;
@@ -217,7 +217,9 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                         <Card.Content className="extra-content" extra>
                             <List selection={ !secondaryAction } verticalAlign="middle">
                                 <List.Item
+                                    active
                                     className="action-button"
+                                    tabIndex={ 0 }
                                     disabled={ !!placeholder }
                                     // if both `primaryAction` & `secondaryAction` are passed in,
                                     // disable list item `onClick`.
@@ -225,6 +227,21 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
+                                    onKeyPress={ (e: KeyboardEvent) => {
+                                        if (e.key !== "Enter") {
+                                            return;
+                                        }
+        
+                                        if (onPrimaryActionClick) {
+                                            onPrimaryActionClick(e);
+                                            return;
+                                        }
+        
+                                        if (onSecondaryActionClick) {
+                                            onSecondaryActionClick(e);
+                                            return;
+                                        }
+                                    } }
                                 >
                                     {
                                         placeholder
