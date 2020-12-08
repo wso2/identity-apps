@@ -214,7 +214,9 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                         <Card.Content className="extra-content" extra>
                             <List selection={ !secondaryAction } verticalAlign="middle">
                                 <List.Item
+                                    active
                                     className="action-button"
+                                    tabIndex={ 0 }
                                     disabled={ !!placeholder }
                                     // if both `primaryAction` & `secondaryAction` are passed in,
                                     // disable list item `onClick`.
@@ -222,6 +224,12 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
+                                    onKeyPress={ (e) => {
+                                        if (e.key === "Enter") { !(primaryAction && secondaryAction)
+                                            ? onSecondaryActionClick || onPrimaryActionClick
+                                            : null
+                                            }
+                                    } }
                                 >
                                     {
                                         placeholder
