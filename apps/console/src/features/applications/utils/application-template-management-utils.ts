@@ -59,20 +59,24 @@ export class ApplicationTemplateManagementUtils {
         if (!useAPI) {
             return ApplicationTemplateManagementUtils.loadLocalFileBasedTemplates()
                 .then((response: ApplicationTemplateInterface[]) => {
+
+                    const templates:  ApplicationTemplateInterface[] = ApplicationTemplateManagementUtils
+                        .resolveHelpContent(response);
+
                     // Group the templates if `skipGrouping` flag is false.
                     if (!skipGrouping) {
                         // Set the templates without grouping. Used to quickly search through to get the template name.
-                        store.dispatch(setApplicationTemplates(response));
+                        store.dispatch(setApplicationTemplates(templates));
                         // Set the templates with grouping.
                         store.dispatch(
-                            setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(response),
+                            setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(templates),
                                 true)
                         );
 
                         return Promise.resolve();
                     }
 
-                    store.dispatch(setApplicationTemplates(response));
+                    store.dispatch(setApplicationTemplates(templates));
 
                     return Promise.resolve();
                 });
@@ -259,5 +263,29 @@ export class ApplicationTemplateManagementUtils {
             });
 
         return Promise.all([ ...groups ]);
+    }
+
+    /**
+     * Resolves the help content for the respective template.
+     *
+     * @param {ApplicationTemplateInterface[]} templates - Input templates.
+     * @return {ApplicationTemplateInterface[]}
+     */
+    private static resolveHelpContent(templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] {
+
+        templates.map((template: ApplicationTemplateInterface) => {
+            const config = getApplicationTemplatesConfig().templates
+                .find((config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
+                    return config.id === template.id;
+                });
+
+            if (!config.wizardHelp) {
+                return;
+            }
+
+            template.wizardHelp = config.wizardHelp;
+        });
+
+        return templates;
     }
 }

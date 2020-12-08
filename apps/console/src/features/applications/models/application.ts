@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface } from "@wso2is/core/models";
+import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import {
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
@@ -304,6 +305,7 @@ export interface ApplicationTemplateListInterface {
  */
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
     application?: MainApplicationInterface;
+    wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
 /**

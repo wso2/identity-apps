@@ -19,6 +19,7 @@
 import keyBy from "lodash/keyBy";
 import merge from "lodash/merge";
 import values from "lodash/values";
+import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
@@ -41,6 +42,7 @@ export interface TemplateConfigInterface<T = {}> {
     enabled: boolean;
     id: string;
     resource?: T | Promise<T> | string;
+    wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {

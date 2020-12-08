@@ -286,7 +286,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 {
                                     "data-testid": `${ testId }-quick-start-template-grid`,
                                     heading: "General Applications",
-                                    subHeading: t("console:develop.features.applications.templates.quickSetup.subHeading"),
+                                    subHeading: t("console:develop.features.applications.templates.quickSetup" +
+                                        ".subHeading"),
                                     tagsSectionTitle: t("common:technologies")
                                 },
                                 <EmptyPlaceholder
@@ -454,7 +455,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     subTitle={ selectedTemplate?.description }
                     closeWizard={ (): void => setShowWizard(false) }
                     template={ selectedTemplate }
-                    showHelpPanel={ selectedTemplate.id !== CUSTOM_APPLICATION_TEMPLATE_ID }
+                    showHelpPanel={ true }
                     subTemplates={ selectedTemplate?.subTemplates }
                     subTemplatesSectionTitle={ selectedTemplate?.subTemplatesSectionTitle }
                     addProtocol={ false }
