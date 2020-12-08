@@ -57,6 +57,11 @@ export class ExtensionsManager {
         return ExtensionsConfig;
     }
 
+    /**
+     * Builds and returns the application template config.
+     *
+     * @return {ApplicationTemplateExtensionsConfigInterface}
+     */
     public getApplicationTemplatesConfig(): ApplicationTemplateExtensionsConfigInterface {
 
         const config: ApplicationTemplateExtensionsConfigInterface = this.getConfig()?.templateExtensions?.applications;
@@ -87,6 +92,12 @@ export class ExtensionsManager {
         return config;
     }
 
+    /**
+     * Tries to resolve the template resources, lazy loading whenever necessary.
+     *
+     * @param {TemplateConfigInterface<T>} templateConfig - Template config.
+     * @return {TemplateConfigInterface<T>}
+     */
     private static lazyLoadTemplateResources<T = {}>(
         templateConfig: TemplateConfigInterface<T>): TemplateConfigInterface<T> {
 
