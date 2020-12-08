@@ -704,7 +704,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 tabIndex={ 0 }
                 onKeyPress={ (e) => {
                     if (e.key === "Enter") {
-                        handleAvatarOnClick
+                        handleAvatarOnClick();
                     }
                 } }
                 onClick={ handleAvatarOnClick }

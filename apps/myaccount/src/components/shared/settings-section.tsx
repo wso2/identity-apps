@@ -36,8 +36,8 @@ interface SettingsSectionProps extends TestableComponentInterface {
     iconFloated?: "left" | "right";
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
-    onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
-    onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    onPrimaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
+    onSecondaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
     placeholder?: string;
     primaryAction?: any;
     primaryActionDisabled?: boolean;
@@ -224,11 +224,20 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
-                                    onKeyPress={ (e) => {
-                                        if (e.key === "Enter") { !(primaryAction && secondaryAction)
-                                            ? onSecondaryActionClick || onPrimaryActionClick
-                                            : null
-                                            }
+                                    onKeyPress={ (e: KeyboardEvent) => {
+                                        if (e.key !== "Enter") {
+                                            return;
+                                        }
+        
+                                        if (onPrimaryActionClick) {
+                                            onPrimaryActionClick(e);
+                                            return;
+                                        }
+        
+                                        if (onSecondaryActionClick) {
+                                            onSecondaryActionClick(e);
+                                            return;
+                                        }
                                     } }
                                 >
                                     {
