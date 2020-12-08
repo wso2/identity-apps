@@ -20,7 +20,7 @@ import { I18n } from "@wso2is/i18n";
 import { EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
 import React, { Suspense, lazy } from "react";
 import { Placeholder } from "semantic-ui-react";
-import * as getConfig from "./config";
+import { ExtensionsConfig } from "./config";
 import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
@@ -31,24 +31,24 @@ interface ComponentExtensionInterface {
 
 /**
  * Identity Apps Component Extension
- * Note : This component will read the config.js and identify `componentExtensions` 
- * key and will generate appropriate extension content. 
- * 
+ * Note : This component will read the config.js and identify `componentExtensions`
+ * key and will generate appropriate extension content.
+ *
  * Current Support : Tab Extensions
  * TODO : Support for other types of components
- * 
- * @param props - extension props
+ *
+ * @param {ComponentExtensionInterface} args - Extensions.
  */
-export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface ): any[] => {
+export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface): any[] => {
 
-    const { 
+    const {
         component,
         subComponent,
         type
     } = args;
 
     if (type === "tab") {
-        const componentExtensionConfig: any[] = getConfig()?.componentExtensions;
+        const componentExtensionConfig: any[] = ExtensionsConfig.componentExtensions;
         const tabPanes: any[] = [];
 
         if (componentExtensionConfig.length < 1) {
@@ -61,7 +61,7 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
 
         if (config && config.panes && config.panes.length > 0) {
             config.panes.map(pane => {
-                const DynamicLoader = lazy(() => import(`${pane.path}`));
+                const DynamicLoader = lazy(() => import(`${ pane.path }`));
                 tabPanes.push({
                     menuItem: I18n.instance.t(pane.title),
                     render: () => (
@@ -87,7 +87,7 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
                                         </Placeholder.Header>
                                     </Placeholder>
                                 ) }>
-                                
+
                                 <DynamicLoader />
                             </Suspense>
                         </ErrorBoundary>
@@ -100,6 +100,4 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
     }
 
     return [];
-
 };
-
