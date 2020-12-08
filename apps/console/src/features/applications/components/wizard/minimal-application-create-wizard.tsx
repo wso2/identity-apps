@@ -32,7 +32,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import {
@@ -301,7 +300,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.applications.notifications.fetchTemplate.genericError" + ".message"
+                            "console:develop.features.applications.notifications.fetchTemplate.genericError.message"
                         )
                     })
                 );
@@ -469,6 +468,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         );
     };
 
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHelpPanel = (): ReactElement => {
+
+        // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
+        if (!showHelpPanel || !selectedTemplate.wizardHelp) {
+            return null;
+        }
+
+        const {
+            wizardHelp: WizardHelp
+        } = selectedTemplate;
+
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header muted">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    <Heading as="h6">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
+                            ".subHeading") }
+                    </Heading>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <WizardHelp />
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        );
+    };
+
     return (
         <ModalWithSidePanel
             open={ true }
@@ -508,22 +539,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            {
-                showHelpPanel && (
-                    <ModalWithSidePanel.SidePanel>
-                        <ModalWithSidePanel.Header className="wizard-header muted">
-                            { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
-                            <Heading as="h6">
-                                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
-                                    ".subHeading") }
-                            </Heading>
-                        </ModalWithSidePanel.Header>
-                        <ModalWithSidePanel.Content>
-                            <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
-                        </ModalWithSidePanel.Content>
-                    </ModalWithSidePanel.SidePanel>
-                )
-            }
+            { renderHelpPanel() }
         </ModalWithSidePanel>
     );
 };
