@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import keyBy from "lodash/keyBy";
 import merge from "lodash/merge";
+import values from "lodash/values";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
@@ -46,54 +48,64 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
     const extensionsManager: ExtensionsManager = ExtensionsManager.getInstance();
 
     return {
-        groups: merge([
-            {
-                enabled: true,
-                id: WebApplicationTemplateGroup.id,
-                resource: WebApplicationTemplateGroup
-            },
-            {
-                enabled: true,
-                id: DesktopApplicationTemplateGroup.id,
-                resource: DesktopApplicationTemplateGroup
-            },
-            {
-                enabled: true,
-                id: MobileApplicationTemplateGroup.id,
-                resource: MobileApplicationTemplateGroup
-            }
-        ], extensionsManager.getApplicationTemplatesConfig().groups),
-        templates: merge([
-            {
-                enabled: true,
-                id: AndroidMobileApplicationTemplate.id,
-                resource: AndroidMobileApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: OIDCWebApplicationTemplate.id,
-                resource: OIDCWebApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: SAMLWebApplicationTemplate.id,
-                resource: SAMLWebApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: SinglePageApplicationTemplate.id,
-                resource: SinglePageApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: WindowsDesktopApplicationTemplate.id,
-                resource: WindowsDesktopApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: CustomApplicationTemplate.id,
-                resource: CustomApplicationTemplate
-            }
-        ], extensionsManager.getApplicationTemplatesConfig().templates)
+        groups: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: WebApplicationTemplateGroup.id,
+                        resource: WebApplicationTemplateGroup
+                    },
+                    {
+                        enabled: true,
+                        id: DesktopApplicationTemplateGroup.id,
+                        resource: DesktopApplicationTemplateGroup
+                    },
+                    {
+                        enabled: true,
+                        id: MobileApplicationTemplateGroup.id,
+                        resource: MobileApplicationTemplateGroup
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().groups, "id")
+            )
+        ),
+        templates: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: AndroidMobileApplicationTemplate.id,
+                        resource: AndroidMobileApplicationTemplate
+                    },
+                    {
+                        enabled: true,
+                        id: OIDCWebApplicationTemplate.id,
+                        resource: OIDCWebApplicationTemplate
+                    },
+                    {
+                        enabled: true,
+                        id: SAMLWebApplicationTemplate.id,
+                        resource: SAMLWebApplicationTemplate
+                    },
+                    {
+                        enabled: true,
+                        id: SinglePageApplicationTemplate.id,
+                        resource: SinglePageApplicationTemplate
+                    },
+                    {
+                        enabled: true,
+                        id: WindowsDesktopApplicationTemplate.id,
+                        resource: WindowsDesktopApplicationTemplate
+                    },
+                    {
+                        enabled: true,
+                        id: CustomApplicationTemplate.id,
+                        resource: CustomApplicationTemplate
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")
+            )
+        )
     };
 };
