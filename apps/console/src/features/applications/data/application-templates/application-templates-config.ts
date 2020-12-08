@@ -38,13 +38,13 @@ export interface ApplicationTemplatesConfigInterface {
 export interface ApplicationTemplateConfigInterface {
     enabled: boolean;
     id: string;
-    templateObj?: ApplicationTemplateListItemInterface;
+    resource?: ApplicationTemplateListItemInterface;
 }
 
 export interface ApplicationTemplateGroupConfigInterface {
     enabled: boolean;
     id: string;
-    templateGroupObj?: ApplicationTemplateGroupInterface;
+    resource?: ApplicationTemplateGroupInterface;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {
@@ -54,49 +54,49 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
             {
                 enabled: true,
                 id: WebApplicationTemplateGroup.id,
-                templateGroupObj: WebApplicationTemplateGroup
+                resource: WebApplicationTemplateGroup
             },
             {
                 enabled: true,
                 id: DesktopApplicationTemplateGroup.id,
-                templateGroupObj: DesktopApplicationTemplateGroup
+                resource: DesktopApplicationTemplateGroup
             },
             {
                 enabled: true,
                 id: MobileApplicationTemplateGroup.id,
-                templateGroupObj: MobileApplicationTemplateGroup
+                resource: MobileApplicationTemplateGroup
             }
         ], extensionsConfig()?.templateExtensions?.applications?.groups),
         templates: merge([
             {
                 enabled: true,
                 id: AndroidMobileApplicationTemplate.id,
-                templateObj: AndroidMobileApplicationTemplate
+                resource: AndroidMobileApplicationTemplate
             },
             {
                 enabled: true,
                 id: OIDCWebApplicationTemplate.id,
-                templateObj: OIDCWebApplicationTemplate
+                resource: OIDCWebApplicationTemplate
             },
             {
                 enabled: true,
                 id: SAMLWebApplicationTemplate.id,
-                templateObj: SAMLWebApplicationTemplate
+                resource: SAMLWebApplicationTemplate
             },
             {
                 enabled: true,
                 id: SinglePageApplicationTemplate.id,
-                templateObj: SinglePageApplicationTemplate
+                resource: SinglePageApplicationTemplate
             },
             {
                 enabled: true,
                 id: WindowsDesktopApplicationTemplate.id,
-                templateObj: WindowsDesktopApplicationTemplate
+                resource: WindowsDesktopApplicationTemplate
             },
             {
                 enabled: true,
                 id: CustomApplicationTemplate.id,
-                templateObj: CustomApplicationTemplate
+                resource: CustomApplicationTemplate
             }
         ], extensionsConfig()?.templateExtensions?.applications?.templates)
     };

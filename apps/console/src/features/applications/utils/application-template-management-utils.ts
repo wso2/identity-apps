@@ -178,8 +178,8 @@ export class ApplicationTemplateManagementUtils {
 
             const group: ApplicationTemplateGroupInterface = getApplicationTemplatesConfig().groups
                 .find((group: ApplicationTemplateGroupConfigInterface) => {
-                    return group.templateGroupObj.id === template.templateGroup;
-                })?.templateGroupObj;
+                    return group.resource.id === template.templateGroup;
+                })?.resource;
 
             if (!group) {
                 groupedTemplates.push(template);
@@ -227,7 +227,7 @@ export class ApplicationTemplateManagementUtils {
                     return false;
                 }
 
-                templates.push(config.templateObj);
+                templates.push(config.resource);
             });
 
         return templates;
