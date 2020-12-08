@@ -78,32 +78,38 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                     {
                         enabled: true,
                         id: AndroidMobileApplicationTemplate.id,
-                        resource: AndroidMobileApplicationTemplate
+                        resource: AndroidMobileApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
                     },
                     {
                         enabled: true,
                         id: OIDCWebApplicationTemplate.id,
-                        resource: OIDCWebApplicationTemplate
+                        resource: OIDCWebApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
                     },
                     {
                         enabled: true,
                         id: SAMLWebApplicationTemplate.id,
-                        resource: SAMLWebApplicationTemplate
+                        resource: SAMLWebApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
                     },
                     {
                         enabled: true,
                         id: SinglePageApplicationTemplate.id,
-                        resource: SinglePageApplicationTemplate
+                        resource: SinglePageApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/single-page-application/create-wizard-help"))
                     },
                     {
                         enabled: true,
                         id: WindowsDesktopApplicationTemplate.id,
-                        resource: WindowsDesktopApplicationTemplate
+                        resource: WindowsDesktopApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/windows-desktop-application/create-wizard-help"))
                     },
                     {
                         enabled: true,
                         id: CustomApplicationTemplate.id,
-                        resource: CustomApplicationTemplate
+                        resource: CustomApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
                     }
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")
