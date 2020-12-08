@@ -38,7 +38,7 @@ export interface ApplicationTemplatesConfigInterface {
 export interface TemplateConfigInterface<T = {}> {
     enabled: boolean;
     id: string;
-    resource?: T | Promise<T>;
+    resource?: T | Promise<T> | string;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {

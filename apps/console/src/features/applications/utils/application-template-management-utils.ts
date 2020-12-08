@@ -229,7 +229,9 @@ export class ApplicationTemplateManagementUtils {
                     return;
                 }
 
-                templates.push(config.resource);
+                templates.push(
+                    config.resource as (ApplicationTemplateInterface | Promise<ApplicationTemplateInterface>)
+                );
             });
 
         return Promise.all([ ...templates ]);
@@ -251,7 +253,9 @@ export class ApplicationTemplateManagementUtils {
                     return;
                 }
 
-                groups.push(config.resource);
+                groups.push(
+                    config.resource as (ApplicationTemplateGroupInterface | Promise<ApplicationTemplateGroupInterface>)
+                );
             });
 
         return Promise.all([ ...groups ]);
