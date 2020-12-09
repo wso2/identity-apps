@@ -171,7 +171,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * The following function generate a random password.
      */
     const generateRandomPassword = (): void => {
-        setRandomPassword(generate({ length: 10, numbers: true }));
+        const genPasswrod = generate({ length: 11, numbers: true, symbols: true, uppercase: true });
+        setPassword(genPasswrod);
+        setRandomPassword(genPasswrod);
     };
 
     /**
