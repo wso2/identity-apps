@@ -255,6 +255,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     });
 
     /**
+     * This function will normalize the SAML name ID format
+     * returned by the API.
+     *
+     * @param {any} protocolConfigs
+     */
+    const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
+        const key = "saml";
+        if (protocolConfigs[key]) {
+            const assertion = protocolConfigs[key].singleSignOnProfile?.assertion;
+            if (assertion) {
+                const ref = assertion.nameIdFormat as string;
+                assertion.nameIdFormat = ref.replace(/\//g, ":");
+            }
+        }
+    };
+
+    /**
      * Finds the configured inbound protocol.
      */
     const findConfiguredInboundProtocol = (appId): void => {
@@ -314,6 +331,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }));
                 })
                 .finally(() => {
+
+                    // Mutate the saml: NameIDFormat property according to the specification.
+                    normalizeSAMLNameIDFormat(protocolConfigs);
+
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
                     setIsInboundProtocolConfigRequestLoading(false);
