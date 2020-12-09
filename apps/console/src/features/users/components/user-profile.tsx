@@ -866,7 +866,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 {
                                     profileSchema
                                     && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                        if (!(schema.name === "roles.default" || schema.name === "profileUrl")) {
+                                        if (!(schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                            || schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                            || schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                            || schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                            || schema.name === ProfileConstants?.
+                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))){
                                             return (
                                                 generateProfileEditForm(schema, index)
                                             );
