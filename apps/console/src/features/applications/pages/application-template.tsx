@@ -36,7 +36,11 @@ import { getApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
+import {
+    ApplicationTemplateCategories, ApplicationTemplateCategoryInterface,
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface
+} from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
@@ -77,6 +81,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         (state: AppState) => state?.application?.groupedTemplates);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    const [ categorizedTemplates, setCategorizedTemplates ] = useState<ApplicationTemplateCategoryInterface[]>([]);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [
@@ -152,6 +157,23 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     }, [ applicationTemplates ]);
 
     /**
+     * Categorize the application templates.
+     */
+    useEffect(() => {
+        if (!applicationTemplates || !Array.isArray(applicationTemplates) || !(applicationTemplates.length > 0)) {
+            return;
+        }
+
+        ApplicationTemplateManagementUtils.categorizeTemplates(applicationTemplates)
+            .then((response: ApplicationTemplateCategoryInterface[]) => {
+                setCategorizedTemplates(response);
+            })
+            .catch(() => {
+                setCategorizedTemplates([]);
+            });
+    }, [ applicationTemplates ]);
+
+    /**
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
@@ -218,25 +240,21 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Generic function to render the template grid.
      *
-     * @param {ApplicationTemplateCategories[]} categories - Filter categories. Not needed if `templates` is passed in.
+     * @param {ApplicationTemplateInterface[]} templates - Set of templates to be displayed.
      * @param {object} additionalProps - Additional props for the `TemplateGrid` component.
      * @param {React.ReactElement} placeholder - Empty placeholder for the grid.
-     * @param {ApplicationTemplateListItemInterface[]} templates - Template array which will get precedence.
+     * @param {ApplicationTemplateInterface[]} templatesOverrides - Template array which will get precedence.
      * @param {boolean} isSearchView - Is the requested view search ro not.
      * @return {React.ReactElement}
      */
-    const renderTemplateGrid = (categories: ApplicationTemplateCategories[],
+    const renderTemplateGrid = (templates: ApplicationTemplateInterface[],
                                 additionalProps: object,
                                 placeholder?: ReactElement,
-                                templates?: ApplicationTemplateListItemInterface[],
+                                templatesOverrides?: ApplicationTemplateInterface[],
                                 isSearchView?: boolean): ReactElement => {
 
-        const filteredTemplates: ApplicationTemplateListItemInterface[] = applicationTemplates.filter((template) => {
-            return categories.includes(template.category as ApplicationTemplateCategories);
-        });
-
         // Don't show the grid if there are no templates unless the view requested is search.
-        if (!isSearchView && isEmpty(templates) && isEmpty(filteredTemplates)) {
+        if (!isSearchView && isEmpty(templatesOverrides) && isEmpty(templates)) {
 
             return null;
         }
@@ -245,9 +263,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             <TemplateGrid<ApplicationTemplateListItemInterface>
                 type="application"
                 templates={
-                    templates
-                        ? templates
-                        : filteredTemplates
+                    templatesOverrides
+                        ? templatesOverrides
+                        : templates
                 }
                 templateIcons={ getApplicationTemplateIllustrations() }
                 templateIconOptions={ {
@@ -274,63 +292,41 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      * @return {React.ReactElement}
      */
     const renderTemplateGrids = (view: "CATEGORIZED" | "SEARCH_RESULTS"): ReactElement => {
+
         if (view === "CATEGORIZED") {
             return (
                 <>
-                    <div className="templates quick-start-templates">
-                        {
-                            renderTemplateGrid(
-                                [
-                                    ApplicationTemplateCategories.DEFAULT
-                                ],
-                                {
-                                    "data-testid": `${ testId }-quick-start-template-grid`,
-                                    heading: "General Applications",
-                                    subHeading: t("console:develop.features.applications.templates.quickSetup" +
-                                        ".subHeading"),
-                                    tagsSectionTitle: t("common:technologies")
-                                },
-                                <EmptyPlaceholder
-                                    image={ getEmptyPlaceholderIllustrations().newList }
-                                    imageSize="tiny"
-                                    title={ t("console:develop.features.templates.emptyPlaceholder." +
-                                        "title") }
-                                    subtitle={ [t("console:develop.features.templates." +
-                                        "emptyPlaceholder.subtitles")] }
-                                    data-testid={
-                                        `${ testId }-quick-start-template-grid-empty-placeholder`
+                    {
+                        categorizedTemplates.map((category: ApplicationTemplateCategoryInterface, index: number) => (
+                                <div key={ index } className="templates quick-start-templates">
+                                    {
+                                        renderTemplateGrid(
+                                            category.templates,
+                                            {
+                                                "data-testid": `${ category.id }-template-grid`,
+                                                heading: category.displayName,
+                                                showTagIcon: category.viewConfigs?.tags?.showTagIcon,
+                                                showTags:  category.viewConfigs?.tags?.showTags,
+                                                subHeading: category.description,
+                                                tagsAs: category.viewConfigs?.tags?.as,
+                                                tagsKey: category.viewConfigs?.tags?.tagsKey
+                                            },
+                                            <EmptyPlaceholder
+                                                image={ getEmptyPlaceholderIllustrations().newList }
+                                                imageSize="tiny"
+                                                title={ t("console:develop.features.templates.emptyPlaceholder." +
+                                                    "title") }
+                                                subtitle={ [t("console:develop.features.templates." +
+                                                    "emptyPlaceholder.subtitles")] }
+                                                data-testid={
+                                                    `${ testId }-quick-start-template-grid-empty-placeholder`
+                                                }
+                                            />
+                                        )
                                     }
-                                />
-                            )
-                        }
-                    </div>
-                    <Divider hidden/>
-                    <div className="templates custom-templates">
-                        {
-                            renderTemplateGrid(
-                                [ ApplicationTemplateCategories.VENDOR ],
-                                {
-                                    "data-testid": `${ testId }-custom-template-grid`,
-                                    heading: "Vendor Integrations",
-                                    showTagIcon: true,
-                                    showTags:  true,
-                                    subHeading: "Predefined set of applications to integrate your application " +
-                                        "with popular vendors.",
-                                    tagsAs: "default",
-                                    tagsKey: "types"
-                                },
-                                <EmptyPlaceholder
-                                    image={ getEmptyPlaceholderIllustrations().newList }
-                                    imageSize="tiny"
-                                    title={ t("console:develop.features.templates.emptyPlaceholder" +
-                                        ".title") }
-                                    subtitle={ [t("console:develop.features.templates." +
-                                        "emptyPlaceholder.subtitles")] }
-                                    data-testid={ `${ testId }-custom-template-grid-empty-placeholder` }
-                                />
-                            )
-                        }
-                    </div>
+                                </div>
+                            ))
+                    }
                 </>
             );
         }

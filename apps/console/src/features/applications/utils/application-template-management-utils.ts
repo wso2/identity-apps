@@ -20,6 +20,8 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
+import { Dictionary } from "lodash";
+import groupBy from "lodash/groupBy";
 import { store } from "../../core";
 import {
     getApplicationTemplateList
@@ -28,6 +30,7 @@ import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
+    ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface
@@ -219,6 +222,37 @@ export class ApplicationTemplateManagementUtils {
     };
 
     /**
+     * Categorize the application templates.
+     *
+     * @param {ApplicationTemplateInterface[]} templates - Templates list.
+     * @return {Promise<void | ApplicationTemplateCategoryInterface[]>}
+     */
+    public static categorizeTemplates(
+        templates: ApplicationTemplateInterface[]): Promise<void | ApplicationTemplateCategoryInterface[]> {
+
+        let categorizedTemplates: ApplicationTemplateCategoryInterface[] = [];
+
+        const groupedByCategory: Dictionary<ApplicationTemplateInterface[]> = groupBy(templates, "category");
+
+        return this.loadLocalFileBasedTemplateCategories()
+            .then((categories: ApplicationTemplateCategoryInterface[]) => {
+
+                categorizedTemplates = [ ...categories ];
+
+                categorizedTemplates.forEach((category: ApplicationTemplateCategoryInterface) => {
+                    if (Object.prototype.hasOwnProperty.call(groupedByCategory, category.id)) {
+                        category.templates = groupedByCategory[ category.id ];
+                    }
+                });
+
+                return categorizedTemplates;
+            })
+            .catch(() => {
+                return categorizedTemplates;
+            });
+    }
+
+    /**
      * Loads local file based application templates.
      *
      * @return {Promise<(ApplicationTemplateInterface | Promise<ApplicationTemplateInterface>)[]>}
@@ -264,6 +298,32 @@ export class ApplicationTemplateManagementUtils {
             });
 
         return Promise.all([ ...groups ]);
+    }
+
+    /**
+     * Loads local file based application template categories.
+     *
+     * @return {Promise<(ApplicationTemplateCategoryInterface | Promise<ApplicationTemplateCategoryInterface>)[]>}
+     */
+    private static async loadLocalFileBasedTemplateCategories(): Promise<(ApplicationTemplateCategoryInterface
+        | Promise<ApplicationTemplateCategoryInterface>)[]> {
+
+        const categories: (ApplicationTemplateCategoryInterface | Promise<ApplicationTemplateCategoryInterface>)[] = [];
+
+        getApplicationTemplatesConfig().categories
+            .forEach(async (config: TemplateConfigInterface<ApplicationTemplateCategoryInterface>) => {
+                if (!config.enabled) {
+                    return;
+                }
+
+                categories.push(
+                    config.resource as (
+                        ApplicationTemplateCategoryInterface
+                        | Promise<ApplicationTemplateCategoryInterface>)
+                );
+            });
+
+        return Promise.all([ ...categories ]);
     }
 
     /**

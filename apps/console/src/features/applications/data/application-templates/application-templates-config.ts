@@ -20,6 +20,7 @@ import keyBy from "lodash/keyBy";
 import merge from "lodash/merge";
 import values from "lodash/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
+import GeneralApplicationTemplateCategory from "./categories/general-application-template-category.json";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
@@ -31,9 +32,14 @@ import SinglePageApplicationTemplate from "./templates/single-page-application/s
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
 import { ExtensionsManager } from "../../../../extensions";
-import { ApplicationTemplateGroupInterface, ApplicationTemplateInterface } from "../../models";
+import {
+    ApplicationTemplateCategoryInterface,
+    ApplicationTemplateGroupInterface,
+    ApplicationTemplateInterface
+} from "../../models";
 
 export interface ApplicationTemplatesConfigInterface {
+    categories: TemplateConfigInterface<ApplicationTemplateCategoryInterface>[];
     groups: TemplateConfigInterface<ApplicationTemplateGroupInterface>[];
     templates: TemplateConfigInterface<ApplicationTemplateInterface>[];
 }
@@ -50,6 +56,18 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
     const extensionsManager: ExtensionsManager = ExtensionsManager.getInstance();
 
     return {
+        categories: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: GeneralApplicationTemplateCategory.id,
+                        resource: GeneralApplicationTemplateCategory
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().categories, "id")
+            )
+        ),
         groups: values(
             merge(
                 keyBy([

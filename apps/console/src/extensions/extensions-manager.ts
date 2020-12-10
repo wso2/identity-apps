@@ -19,7 +19,11 @@
 import { ExtensionsConfig } from "./config";
 import { ApplicationTemplateExtensionsConfigInterface, ExtensionsConfigInterface } from "./models";
 import { TemplateConfigInterface } from "../features/applications/data/application-templates";
-import { ApplicationTemplateGroupInterface, ApplicationTemplateInterface } from "../features/applications/models";
+import {
+    ApplicationTemplateCategoryInterface,
+    ApplicationTemplateGroupInterface,
+    ApplicationTemplateInterface
+} from "../features/applications/models";
 
 /**
  * Class to manage extensions.
@@ -68,9 +72,18 @@ export class ExtensionsManager {
 
         if (!config) {
             return {
+                categories: [],
                 groups: [],
                 templates: []
             };
+        }
+
+        // If categories exists, try to resolve the category config by lazy loading the resource etc.
+        if (config.categories && Array.isArray(config.categories) && config.categories.length > 0) {
+            config.categories = config.categories
+                .map((category: TemplateConfigInterface<ApplicationTemplateCategoryInterface>) => {
+                    return ExtensionsManager.lazyLoadTemplateResources<ApplicationTemplateCategoryInterface>(category);
+                });
         }
 
         // If groups exists, try to resolve the group config by lazy loading the resource etc.

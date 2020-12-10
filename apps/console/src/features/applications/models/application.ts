@@ -294,6 +294,59 @@ export interface ApplicationTemplateGroupInterface {
 }
 
 /**
+ * Interface for application template categories.
+ */
+export interface ApplicationTemplateCategoryInterface {
+    /**
+     * Category id.
+     */
+    id: string;
+    /**
+     * Category Display Name.
+     */
+    displayName: string;
+    /**
+     * Category Description.
+     */
+    description: string;
+    /**
+     * Templates belonging to the category.
+     */
+    templates?: ApplicationTemplateInterface[];
+    /**
+     * View configurations.
+     */
+    viewConfigs?: ApplicationTemplateCategoryViewConfigInterface;
+}
+
+/**
+ * Interface for the application templates category view config.
+ */
+export interface ApplicationTemplateCategoryViewConfigInterface {
+    /**
+     * Config for the UI tags displayed on templates.
+     */
+    tags: {
+        /**
+         * Element to render the tag as.
+         */
+        as: "icon" | "label" | "default";
+        /**
+         * Show/Hide the tag icon.
+         */
+        showTagIcon: boolean;
+        /**
+         * Show/Hide the tags.
+         */
+        showTags: boolean;
+        /**
+         * Where to find the tags in the templates object.
+         */
+        tagsKey: string;
+    };
+}
+
+/**
  *  Application template list interface.
  */
 export interface ApplicationTemplateListInterface {

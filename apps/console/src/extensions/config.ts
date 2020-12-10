@@ -28,6 +28,7 @@ export const ExtensionsConfig: ExtensionsConfigInterface = {
     },
     templateExtensions: {
         applications: {
+            categories: [],
             groups: [],
             templates: []
         }
