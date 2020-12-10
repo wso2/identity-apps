@@ -28,7 +28,7 @@
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-    String callback = (String) request.getAttribute("callback");
+    String callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
     String username = request.getParameter("username");
     String sessionDataKey = request.getParameter("sessionDataKey");
     String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
