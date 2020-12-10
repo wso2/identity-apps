@@ -24,8 +24,9 @@ import { store } from "../../core";
 import {
     getApplicationTemplateList
 } from "../api";
-import { CustomApplicationTemplate } from "../components";
 import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface,

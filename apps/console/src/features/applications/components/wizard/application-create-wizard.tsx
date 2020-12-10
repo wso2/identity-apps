@@ -50,6 +50,8 @@ import {
 } from "../../api";
 import { getApplicationWizardStepIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
@@ -61,7 +63,6 @@ import {
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import {
-    CUSTOM_APPLICATION_TEMPLATE_ID,
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
     PassiveStsProtocolTemplate,
@@ -468,7 +469,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
-                if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+                if (selectedTemplate.id === CustomApplicationTemplate.id) {
                     return (
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
@@ -614,7 +615,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      */
     useEffect(() => {
         if (selectedTemplate) {
-            if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+            if (selectedTemplate.id === CustomApplicationTemplate.id) {
                 const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {

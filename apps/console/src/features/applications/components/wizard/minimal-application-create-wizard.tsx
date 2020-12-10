@@ -44,8 +44,6 @@ import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-
 import {
     ApplicationListInterface,
     ApplicationTemplateLoadingStrategies,
-    CUSTOM_APPLICATION_TEMPLATE_ID,
-    CustomApplicationTemplate,
     getApplicationList
 } from "../..";
 import {
@@ -61,6 +59,8 @@ import {
 import { createApplication, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     MainApplicationInterface,
@@ -137,7 +137,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
-        if (!selectedTemplate || selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (!selectedTemplate || selectedTemplate.id === CustomApplicationTemplate.id) {
             return;
         }
 
@@ -158,7 +158,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     useEffect(() => {
         // Stop fetching template details if the selected template is `Expert Mode`.
-        if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
             setTemplateSettings(CustomApplicationTemplate);
             return;
         }

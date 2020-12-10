@@ -31,9 +31,11 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { CUSTOM_APPLICATION_TEMPLATE_ID, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
+import { MinimalAppCreateWizard } from "../components";
 import { getApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
 
@@ -164,7 +166,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        if (id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (id === CustomApplicationTemplate.id) {
             setSelectedTemplate(CustomApplicationTemplate);
             setShowWizard(true);
 
