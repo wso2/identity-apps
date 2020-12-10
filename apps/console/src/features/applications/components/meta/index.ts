@@ -16,11 +16,7 @@
  * under the License.
  */
 
-export * from "./spa-application-template.meta";
-export * from "./oauth-web-application-template.meta";
 export * from "./inbound-protocols.meta";
-export * from "./saml-web-application-template.meta";
 export * from "./oauth-protocol-template.meta";
 export * from  "./saml-protocol-template.meta";
 export * from "./passive-sts-protocol-template.meta";
-export * from "./ws-trust-protocol-template.meta";
