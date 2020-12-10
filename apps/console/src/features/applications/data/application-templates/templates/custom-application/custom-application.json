@@ -4,12 +4,12 @@
     "description": "Manually configure the inbound authentication protocol, authentication flow, etc.",
     "image": "customApp",
     "authenticationProtocol": "",
-    "category": "MANUAL",
+    "category": "DEFAULT",
     "displayOrder": -1,
     "self": "",
     "subTemplates": [],
     "subTemplatesSectionTitle": "",
     "templateGroup": "",
     "types": [],
-    "application": {}
+    "application": null
 }

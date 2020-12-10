@@ -281,9 +281,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                         {
                             renderTemplateGrid(
                                 [
-                                    ApplicationTemplateCategories.DEFAULT,
-                                    ApplicationTemplateCategories.DEFAULT_GROUP,
-                                    ApplicationTemplateCategories.MANUAL
+                                    ApplicationTemplateCategories.DEFAULT
                                 ],
                                 {
                                     "data-testid": `${ testId }-quick-start-template-grid`,
@@ -367,8 +365,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                             {
                                                 renderTemplateGrid(
                                                     [
-                                                        ApplicationTemplateCategories.DEFAULT,
-                                                        ApplicationTemplateCategories.DEFAULT_GROUP
+                                                        ApplicationTemplateCategories.DEFAULT
                                                     ],
                                                     {
                                                        "data-testid": `${ testId }-search-result-fallback-templates`

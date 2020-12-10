@@ -332,22 +332,11 @@ export enum ApplicationTemplateCategories {
      */
     DEFAULT = "DEFAULT",
     /**
-     * For default templates groups.
-     * ex: web-application, mobile, desktop etc.
-     * @type {string}
-     */
-    DEFAULT_GROUP = "DEFAULT_GROUP",
-    /**
      * Vendor templates.
      * ex: Zoom, Salesforce etc.
      * @type {string}
      */
     VENDOR = "VENDOR",
-    /**
-     * Templates added manually which are not available in the API.
-     * @type {string}
-     */
-    MANUAL = "MANUAL"
 }
 
 /**
