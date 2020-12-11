@@ -121,7 +121,7 @@ module.exports = {
                 ],
                 "react/no-children-prop": 0,
                 "react/prop-types": 1,
-                "no-undef": 2,
+                "no-undef": 1,
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
