@@ -26,6 +26,10 @@ module.exports = {
         "plugin:import/typescript",
         "plugin:react-hooks/recommended"
     ],
+    globals: {
+        // no-undef complains about globalThis @see {@link https://github.com/eslint/eslint/issues/11553}
+        globalThis: false
+    },
     parserOptions: {
         ecmaVersion: 9,
         sourceType: "module"
@@ -74,6 +78,8 @@ module.exports = {
         "no-unused-vars": 1,
         "react-hooks/exhaustive-deps": ["off"],
         "react/no-children-prop": 0,
+        "react/display-name": 0,
+        "react/prop-types": 1,
         "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
         "object-curly-spacing": ["warn", "always"],
         "no-console": "warn",
@@ -87,7 +93,6 @@ module.exports = {
             parser: "@typescript-eslint/parser",
             extends: [
                 "eslint:recommended",
-                "plugin:react/recommended",
                 "plugin:@typescript-eslint/eslint-recommended",
                 "plugin:@typescript-eslint/recommended"
             ],
@@ -107,20 +112,10 @@ module.exports = {
             },
             rules: {
                 "eol-last": "error",
-                "react/jsx-curly-spacing": [
-                    2,
-                    "always",
-                    {
-                        allowMultiline: true,
-                        spacing: { objectLiterals: "always" }
-                    }
-                ],
-                "react/no-children-prop": 0,
-                "react/prop-types": "off",
+                "no-undef": 1,
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
-                "react/display-name": 0,
                 "no-use-before-define": "off",
                 "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
                 "@typescript-eslint/no-use-before-define": [
