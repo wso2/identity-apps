@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu } from "semantic-ui-react";
+import { Container, Menu, Responsive } from "semantic-ui-react";
 import { LanguageSwitcher } from "../language-switcher";
 
 /**
@@ -118,8 +118,16 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     );
 
     return (
-        <Menu id="app-footer" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
-            <Container fluid={ fluid } data-testid={ `${ testId }-container` } className="app-footer-container">
+        <Menu 
+            stackable 
+            id="app-footer" 
+            className={ classes } 
+            fixed={ fixed } 
+            fluid={ fluid } 
+            borderless 
+            data-testid={ testId }
+        >
+            <Container  data-testid={ `${ testId }-container` } className="app-footer-container">
                 <Menu.Item className="copyright" data-testid={ `${ testId }-copyright` }>{ copyright }</Menu.Item>
                 <Menu.Menu position="right" data-testid={ `${ testId }-menu` }>
                     {

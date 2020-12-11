@@ -103,6 +103,18 @@
     }
 }
 
+@media only screen and (max-width: @largestMobileScreen) {
+    .layout-content {
+        padding-bottom: 0;
+    }
+
+    .ui.menu {
+        &.app-footer {
+            height: auto;
+        }
+    }
+}
+
 @media only screen and (max-width: @tabletBreakpoint) {
     .overview-page {
         .widget {

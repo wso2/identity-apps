@@ -160,15 +160,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const trigger = (
         <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
-            <div className="username" data-testid={ `${ testId }-user-display-name` }>{
-                isProfileInfoLoading
-                    ? (
-                        <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
-                            <Placeholder.Line/>
-                        </Placeholder>
-                    )
-                    : resolveUserDisplayName(profileInfo, basicProfileInfo)
-            }</div>
+            <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
+                {
+                    isProfileInfoLoading
+                        ? (
+                            <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
+                                <Placeholder.Line/>
+                            </Placeholder>
+                        )
+                        : resolveUserDisplayName(profileInfo, basicProfileInfo)
+                }
+            </Responsive>
             <UserAvatar
                 isLoading={ isProfileInfoLoading }
                 authState={ basicProfileInfo }
@@ -232,9 +234,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 }
                 {
                     brand && (
-                        <Menu.Item as={ Link } to={ brandLink } header data-testid={ `${ testId }-brand-container` }>
-                            { brand }
-                        </Menu.Item>
+                        <Responsive as={ Menu.Item } minWidth={ 767 }>
+                            <Menu.Item 
+                                as={ Link } 
+                                to={ brandLink } 
+                                header 
+                                data-testid={ `${ testId }-brand-container` }
+                            >
+                                { brand }
+                            </Menu.Item>
+                        </Responsive>
+                        
                     )
                 }
                 {
