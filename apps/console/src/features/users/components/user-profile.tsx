@@ -753,7 +753,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     type="text"
                                     value={ domainName[1] }
                                     key={ key }
-                                    readOnly={ isReadOnly }
+                                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                                     maxLength={ 30 }
                                 />
                             </Form.Field>
@@ -769,7 +769,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 value={ profileInfo.get(schema.name) }
                                 key={ key }
                                 disabled={ schema.name === "userName" }
-                                readOnly={ isReadOnly }
+                                readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                                 validation={ (value: string, validation: Validation) => {
                                     if (!RegExp(schema.regEx).test(value)) {
                                         validation.isValid = false;
