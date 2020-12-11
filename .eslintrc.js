@@ -125,7 +125,7 @@ module.exports = {
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
-                "react/display-name": [ 0, { ignoreTranspilerName: false } ],
+                "react/display-name": 1,
                 "no-use-before-define": "off",
                 "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
                 "@typescript-eslint/no-use-before-define": [
