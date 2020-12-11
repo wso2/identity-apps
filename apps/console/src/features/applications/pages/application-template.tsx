@@ -355,33 +355,6 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
-                                <Grid.Row>
-                                    <Grid.Column textAlign="center">
-                                        <div>
-                                            {
-                                                renderTemplateGrid(
-                                                    [
-                                                        ApplicationTemplateCategories.DEFAULT
-                                                    ],
-                                                    {
-                                                       "data-testid": `${ testId }-search-result-fallback-templates`
-                                                    },
-                                                    <EmptyPlaceholder
-                                                        image={ getEmptyPlaceholderIllustrations().newList }
-                                                        imageSize="tiny"
-                                                        title={ t("console:develop.features.templates." +
-                                                            "emptyPlaceholder." +
-                                                            "title") }
-                                                        subtitle={ [t("console:develop.features.templates." +
-                                                            "emptyPlaceholder.subtitles")] }
-                                                        data-testid={ `${ testId }-quick-start-template-grid-
-                                                                empty-placeholder` }
-                                                    />
-                                                )
-                                            }
-                                        </div>
-                                    </Grid.Column>
-                                </Grid.Row>
                             </Grid>,
                             filteredTemplateList,
                             true
