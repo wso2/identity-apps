@@ -17,7 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -55,7 +55,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
 
     const { t } = useTranslation();
 
-    const [ templateData, setTemplateData ] = useState<EmailTemplate>(undefined);
+    const [ templateData, setTemplateData ] = useState<EmailTemplate>(null);
 
     useEffect(() => {
         getTemplateDetails(templateTypeId, templateId)
@@ -69,19 +69,20 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             });
     },[templateData !== undefined]);
 
-    const WIZARD_STEPS = [{
-        content: (
-            <EmailTemplateEditor 
-                htmlContent={ templateData?.body }
-                isPreviewOnly
-                isReadOnly
-                isAddFlow={ false }
-                isSignature={ false }
-                data-testid={ `${ testId }-email-template-editor` }
-            />
-        ),
+    const WIZARD_STEPS = [ {
+        content: templateData?.body
+            ? (
+                <EmailTemplateEditor
+                    htmlContent={ templateData.body }
+                    isPreviewOnly
+                    isReadOnly
+                    isAddFlow={ false }
+                    isSignature={ false }
+                    data-testid={ `${ testId }-email-template-editor` }
+                />
+            ) : <ContentLoader/>,
         icon: getViewLocaleTemplateWizardStepIcons().general
-    }];
+    } ];
 
     return (
         <Modal
@@ -101,7 +102,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container template-view-content" scrolling>
-                {WIZARD_STEPS[0].content}
+                { WIZARD_STEPS[0].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
