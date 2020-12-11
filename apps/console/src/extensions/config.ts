@@ -16,20 +16,21 @@
  * under the License.
  */
 
-module.exports = () => {
-    return {
-        componentExtensions: [],
-        routes: [],
-        sections: {
-            components: {
-                "example": "./components/example.tsx"
-            }
-        },
-        templateExtensions: {
-            applications: {
-                groups: [],
-                templates: []
-            }
+import { ExtensionsConfigInterface } from "./models";
+
+export const ExtensionsConfig: ExtensionsConfigInterface = {
+    componentExtensions: [],
+    routes: [],
+    sections: {
+        components: {
+            "example": "./components/example.tsx"
         }
-    };
+    },
+    templateExtensions: {
+        applications: {
+            categories: [],
+            groups: [],
+            templates: []
+        }
+    }
 };

@@ -1,5 +1,5 @@
 {
-    "category": "DEFAULT_GROUP",
+    "category": "DEFAULT",
     "description": "Applications developed to target native desktops.",
     "enabled": true,
     "id": "desktop",

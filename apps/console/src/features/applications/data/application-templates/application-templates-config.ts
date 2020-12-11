@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import keyBy from "lodash/keyBy";
 import merge from "lodash/merge";
+import values from "lodash/values";
+import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
+import GeneralApplicationTemplateCategory from "./categories/general-application-template-category.json";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
@@ -27,77 +31,107 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import * as extensionsConfig from "../../../../extensions/config";
-import { ApplicationTemplateGroupInterface, ApplicationTemplateListItemInterface } from "../../models";
+import { ExtensionsManager } from "../../../../extensions";
+import {
+    ApplicationTemplateCategoryInterface,
+    ApplicationTemplateGroupInterface,
+    ApplicationTemplateInterface
+} from "../../models";
 
 export interface ApplicationTemplatesConfigInterface {
-    groups: ApplicationTemplateGroupConfigInterface[];
-    templates: ApplicationTemplateConfigInterface[];
+    categories: TemplateConfigInterface<ApplicationTemplateCategoryInterface>[];
+    groups: TemplateConfigInterface<ApplicationTemplateGroupInterface>[];
+    templates: TemplateConfigInterface<ApplicationTemplateInterface>[];
 }
 
-export interface ApplicationTemplateConfigInterface {
+export interface TemplateConfigInterface<T = {}> {
     enabled: boolean;
     id: string;
-    templateObj?: ApplicationTemplateListItemInterface;
-}
-
-export interface ApplicationTemplateGroupConfigInterface {
-    enabled: boolean;
-    id: string;
-    templateGroupObj?: ApplicationTemplateGroupInterface;
+    resource?: T | Promise<T> | string;
+    wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {
 
+    const extensionsManager: ExtensionsManager = ExtensionsManager.getInstance();
+
     return {
-        groups: merge([
-            {
-                enabled: true,
-                id: WebApplicationTemplateGroup.id,
-                templateGroupObj: WebApplicationTemplateGroup
-            },
-            {
-                enabled: true,
-                id: DesktopApplicationTemplateGroup.id,
-                templateGroupObj: DesktopApplicationTemplateGroup
-            },
-            {
-                enabled: true,
-                id: MobileApplicationTemplateGroup.id,
-                templateGroupObj: MobileApplicationTemplateGroup
-            }
-        ], extensionsConfig()?.templateExtensions?.applications?.groups),
-        templates: merge([
-            {
-                enabled: true,
-                id: AndroidMobileApplicationTemplate.id,
-                templateObj: AndroidMobileApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: OIDCWebApplicationTemplate.id,
-                templateObj: OIDCWebApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: SAMLWebApplicationTemplate.id,
-                templateObj: SAMLWebApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: SinglePageApplicationTemplate.id,
-                templateObj: SinglePageApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: WindowsDesktopApplicationTemplate.id,
-                templateObj: WindowsDesktopApplicationTemplate
-            },
-            {
-                enabled: true,
-                id: CustomApplicationTemplate.id,
-                templateObj: CustomApplicationTemplate
-            }
-        ], extensionsConfig()?.templateExtensions?.applications?.templates)
+        categories: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: GeneralApplicationTemplateCategory.id,
+                        resource: GeneralApplicationTemplateCategory
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().categories, "id")
+            )
+        ),
+        groups: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: WebApplicationTemplateGroup.id,
+                        resource: WebApplicationTemplateGroup
+                    },
+                    {
+                        enabled: true,
+                        id: DesktopApplicationTemplateGroup.id,
+                        resource: DesktopApplicationTemplateGroup
+                    },
+                    {
+                        enabled: true,
+                        id: MobileApplicationTemplateGroup.id,
+                        resource: MobileApplicationTemplateGroup
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().groups, "id")
+            )
+        ),
+        templates: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: true,
+                        id: AndroidMobileApplicationTemplate.id,
+                        resource: AndroidMobileApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
+                    },
+                    {
+                        enabled: true,
+                        id: OIDCWebApplicationTemplate.id,
+                        resource: OIDCWebApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
+                    },
+                    {
+                        enabled: true,
+                        id: SAMLWebApplicationTemplate.id,
+                        resource: SAMLWebApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
+                    },
+                    {
+                        enabled: true,
+                        id: SinglePageApplicationTemplate.id,
+                        resource: SinglePageApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/single-page-application/create-wizard-help"))
+                    },
+                    {
+                        enabled: true,
+                        id: WindowsDesktopApplicationTemplate.id,
+                        resource: WindowsDesktopApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/windows-desktop-application/create-wizard-help"))
+                    },
+                    {
+                        enabled: true,
+                        id: CustomApplicationTemplate.id,
+                        resource: CustomApplicationTemplate,
+                        wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
+                    }
+                ], "id"),
+                keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")
+            )
+        )
     };
 };

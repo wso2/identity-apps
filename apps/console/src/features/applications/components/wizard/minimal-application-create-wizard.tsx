@@ -25,21 +25,25 @@ import {
     Validation,
     useTrigger
 } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    SelectionCard,
+    useWizardAlert
+} from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import {
     ApplicationListInterface,
     ApplicationTemplateLoadingStrategies,
-    CUSTOM_APPLICATION_TEMPLATE_ID,
-    CustomApplicationTemplate,
     getApplicationList
 } from "../..";
 import {
@@ -55,6 +59,8 @@ import {
 import { createApplication, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     MainApplicationInterface,
@@ -131,7 +137,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
-        if (!selectedTemplate || selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (!selectedTemplate || selectedTemplate.id === CustomApplicationTemplate.id) {
             return;
         }
 
@@ -152,7 +158,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     useEffect(() => {
         // Stop fetching template details if the selected template is `Expert Mode`.
-        if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
             setTemplateSettings(CustomApplicationTemplate);
             return;
         }
@@ -301,7 +307,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.applications.notifications.fetchTemplate.genericError" + ".message"
+                            "console:develop.features.applications.notifications.fetchTemplate.genericError.message"
                         )
                     })
                 );
@@ -469,6 +475,40 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         );
     };
 
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHelpPanel = (): ReactElement => {
+
+        // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
+        if (!showHelpPanel || !selectedTemplate.wizardHelp) {
+            return null;
+        }
+
+        const {
+            wizardHelp: WizardHelp
+        } = selectedTemplate;
+
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header muted">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    <Heading as="h6">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
+                            ".subHeading") }
+                    </Heading>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader /> }>
+                        <WizardHelp />
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        );
+    };
+
     return (
         <ModalWithSidePanel
             open={ true }
@@ -508,22 +548,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            {
-                showHelpPanel && (
-                    <ModalWithSidePanel.SidePanel>
-                        <ModalWithSidePanel.Header className="wizard-header muted">
-                            { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
-                            <Heading as="h6">
-                                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
-                                    ".subHeading") }
-                            </Heading>
-                        </ModalWithSidePanel.Header>
-                        <ModalWithSidePanel.Content>
-                            <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
-                        </ModalWithSidePanel.Content>
-                    </ModalWithSidePanel.SidePanel>
-                )
-            }
+            { renderHelpPanel() }
         </ModalWithSidePanel>
     );
 };
