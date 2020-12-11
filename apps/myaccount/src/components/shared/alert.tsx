@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { ThemeIcon } from "./icon";
 import { AlertIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
@@ -100,7 +100,7 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
             ),
             position: alertsPosition,
             title: (
-                <ThemeIcon
+                <GenericIcon
                     icon={ icon }
                     colored
                     floated="left"
@@ -110,7 +110,7 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
                     spaced="right"
                     relaxed
                 />
-                )
+            )
         });
     }, [ alert ]);
 

@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
-import { AppConsentEdit } from "./consent-edit";
 import { ConsentedAppIcon } from "../../configs";
 import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "../../models";
 import { toSentenceCase } from "../../utils";
-import { ThemeIcon } from "../shared";
+import { AppConsentEdit } from "./consent-edit";
 
 /**
  * Proptypes for the application consents list component.
@@ -88,7 +88,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                         <Grid.Row columns={ 2 }>
                                             <Grid.Column width={ 11 } className="first-column">
                                                 <List.Content verticalAlign="middle">
-                                                    <ThemeIcon
+                                                    <GenericIcon
                                                         icon={ ConsentedAppIcon }
                                                         size="micro"
                                                         bordered
