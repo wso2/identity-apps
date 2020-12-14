@@ -20,6 +20,7 @@ import { CommonUtils } from "@wso2is/core/utils";
 import { ErrorBoundary, LinkButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Responsive } from "semantic-ui-react";
 import {
     Alert,
     AppFooter,
@@ -124,7 +125,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                 </SidePanelWrapper>
             </div>
             <Alert dismissInterval={ 5 } alertsPosition="br" />
-            <AppFooter/>
+            <Responsive minWidth={ 767 }>
+                <AppFooter/>
+            </Responsive>
         </>
     );
 };
