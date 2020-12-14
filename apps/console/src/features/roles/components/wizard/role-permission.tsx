@@ -98,6 +98,19 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     }, [ permissions.length > 0 ]);
 
     /**
+     * Util function to join split permision string for given array location.
+     * 
+     * @param permissionString permission string
+     * @param joinLocation location to join the string
+     */
+    function permissionJoining(permissionString, joinLocation) {
+        permissionString = permissionString.split("/");
+        const first = permissionString.splice(0, joinLocation);
+        permissionString = [first.join("/"), ...permissionString];
+        return permissionString;
+    }
+
+    /**
      * Retrieve all permissions from backend.
      */
     const getAllPerms = () => {
@@ -105,9 +118,28 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if (response.status === 200 && response.data && response.data instanceof Array) {
                 const permissionStringArray = response.data;
                 let permissionTree: TreeNode[] = [];
-                permissionTree = permissionStringArray.reduce((arr, path) => generatePermissionTree(
-                    path, path.resourcePath.replace(/^\/|\/$/g, "").split("/"), arr
-                ),[]);
+                let isStartingWithTwoNodes: boolean = false;
+                permissionTree = permissionStringArray.reduce((arr, path, index) => {
+                    let nodes: TreeNode[] = [];
+                    if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
+                        isStartingWithTwoNodes = true;
+                    }
+                    if (isStartingWithTwoNodes) {
+                        nodes = generatePermissionTree(
+                            path, 
+                            permissionJoining(path.resourcePath.replace(/^\/|\/$/g, ""), 2),
+                            arr
+                        );
+                    } else {
+                        nodes = generatePermissionTree(
+                            path, 
+                            path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
+                            arr
+                        );
+                    }
+                    
+                    return nodes;
+                },[]);
                 setPermissions(permissionTree);
                 setDefaultExpandKeys( [permissionTree[0].key.toString()] );
                 setIsPermissionsLoading(false);
