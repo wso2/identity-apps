@@ -20,7 +20,7 @@ import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
 import React, { ReactElement, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
-import { ExtensionsConfig } from "./config";
+import { ExtensionsManager } from "./extensions-manager";
 import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 /**
@@ -45,7 +45,7 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
     
     const { t } = useTranslation();
 
-    const fragment = ExtensionsConfig?.sections[type + "s"]?.[section];
+    const fragment = ExtensionsManager.getConfig()?.sections[type + "s"]?.[section];
 
     let DynamicLoader;
 

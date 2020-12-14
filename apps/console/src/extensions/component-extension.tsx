@@ -20,7 +20,7 @@ import { I18n } from "@wso2is/i18n";
 import { EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
 import React, { Suspense, lazy } from "react";
 import { Placeholder } from "semantic-ui-react";
-import { ExtensionsConfig } from "./config";
+import { ExtensionsManager } from "./extensions-manager";
 import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
@@ -48,7 +48,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
     } = args;
 
     if (type === "tab") {
-        const componentExtensionConfig: any[] = ExtensionsConfig.componentExtensions;
+        const componentExtensionConfig: any[] = ExtensionsManager.getConfig().componentExtensions;
         const tabPanes: any[] = [];
 
         if (componentExtensionConfig.length < 1) {
