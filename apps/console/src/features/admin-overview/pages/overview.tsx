@@ -36,6 +36,7 @@ import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
 import { GroupList } from "../../groups/components";
 import { GroupsInterface } from "../../groups/models";
+import { getServerConfigs, RealmConfigInterface } from "../../server-configurations";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
 import { getOverviewPageIllustrations } from "../configs";
@@ -74,11 +75,13 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
     const [ userCount, setUsersCount ] = useState<number>(0);
     const [ groupCount, setGroupCount ] = useState<number>(0);
+    const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
 
     useEffect(() => {
         getUserstoresList(null, null, null, null);
         getUserList(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT, null, null, null, null);
         getGroupsList();
+        getAdminUser();
     }, []);
 
     const getUserList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
@@ -91,6 +94,16 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             })
             .finally(() => {
                 setUserListRequestLoading(false);
+            });
+    };
+
+    /**
+     * Util method to get super admin
+     */
+    const getAdminUser = () => {
+        getServerConfigs()
+            .then((response) => {
+                setRealmConfigs(response?.realmConfig);
             });
     };
 
@@ -264,6 +277,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         selection
                         defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
                         isLoading={ isUserListRequestLoading }
+                        realmConfigs={ realmConfigs }
                         usersList={ usersList }
                         onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.getPaths().get("USERS")) }
                         showListItemActions={ false }

@@ -20,6 +20,13 @@ export interface RealmConfigurationsInterface {
 	homeRealmIdentifiers?: string[];
 	idleSessionTimeoutPeriod?: string;
 	rememberMePeriod?: string;
+	realmConfig: RealmConfigInterface;
+}
+
+export interface RealmConfigInterface {
+	adminUser: string;
+	adminRole: string;
+	everyoneRole: string;
 }
 
 export interface ConnectorPropertyInterface {

@@ -45,7 +45,9 @@ import {
 import {
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
-    getConnectorCategory
+    getConnectorCategory,
+    getServerConfigs,
+    RealmConfigInterface
 } from "../../server-configurations";
 import {
     UserStoreListItem,
@@ -104,6 +106,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ userStoreError, setUserStoreError ] = useState(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
 
     const init = useRef(true);
 
@@ -312,10 +315,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
+     * Util method to get super admin
+     */
+    const getAdminUser = () => {
+        getServerConfigs()
+            .then((response) => {
+                setRealmConfigs(response?.realmConfig);
+            });
+    };
+
+    /**
      * Fetch the list of available userstores.
      */
     useEffect(() => {
         getUserStores();
+        getAdminUser();
     }, []);
 
     useEffect(() => {
@@ -640,6 +654,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         handleUserDelete={ handleUserDelete }
                         userMetaListContent={ userListMetaContent }
                         isLoading={ isUserListRequestLoading }
+                        realmConfigs={ realmConfigs }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
