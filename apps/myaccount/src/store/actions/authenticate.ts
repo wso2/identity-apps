@@ -51,7 +51,7 @@ import {
     BasicProfileInterface,
     LinkedAccountInterface,
     ProfileSchema,
-    ReadOnlyUserStatus
+    ReadOnlyUserStatus, ServiceResourceEndpointsInterface
 } from "../../models";
 import {
     getProfileCompletion,
@@ -61,6 +61,7 @@ import {
     onHttpRequestSuccess
 } from "../../utils";
 import { store } from "../index";
+import { setServiceResourceEndpoints } from "@wso2is/core/dist/src/store";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -111,6 +112,10 @@ export const setInitialized = (flag: boolean): AuthAction => ({
     type: authenticateActionTypes.SET_INITIALIZED
 });
 
+/**
+ * Variable to denote whether the app started in a different host compared to the server origin.
+ */
+export let isDifferentHost = false;
 
 /**
  * Get SCIM2 schemas
@@ -301,6 +306,43 @@ export const initializeAuthentication = () =>(dispatch)=> {
     };
 
     const initialize = (response?: any): void => {
+
+        // Define endpoints
+        let serverOrigin = window["AppUtils"].getConfig()?.serverOrigin;
+        let authorizeURL = window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL;
+        let oidcSessionIFrameURL = window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL;
+        let tokenURL = window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL;
+        let tokenRevokeURL = window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL;
+        let jwksURL = window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL;
+        let wellKnownEndpoint = window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL;
+        let logoutURL = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
+
+        /* Check whether the host is different compared to the server origin. If different, we assume that the app
+        is accessed through a custom domain. */
+        const serverHost = serverOrigin.split("//")[1];
+        if (serverHost !== window.location.host) {
+            isDifferentHost = true;
+            wellKnownEndpoint = serverOrigin + "/oauth2/token/.well-known/openid-configuration";
+            window["AppUtils"].updateServerOrigin(window.location.origin);
+            serverOrigin = window.location.origin;
+            authorizeURL = window.location.origin + "/common/oauth2/authorize";
+            tokenURL = window.location.origin + "/common/oauth2/token";
+            jwksURL = window.location.origin + "/common/oauth2/jwks";
+            tokenRevokeURL = window.location.origin + "/common/oauth2/revoke";
+            oidcSessionIFrameURL = window.location.origin + "/oidc/checksession";
+            logoutURL = window.location.origin + "/common/oidc/logout";
+            // Need to update the store with new URLs.
+            store.dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(
+                Config.getServiceResourceEndpoints()));
+        } else {
+            const currentLocation = window.location.toString();
+            if (currentLocation.includes("/t/")) {
+                // Set specialized authorized URL when a tenant domain is present.
+                const tenantDomain = currentLocation.split("/t/")[1].split("/")[0];
+                authorizeURL = serverOrigin + "/t/" + tenantDomain + "/common/oauth2/authorize";
+            }
+        }
+
         auth.initialize({
             authorizationCode: response?.data?.authCode,
             baseUrls: resolveBaseUrls(),
@@ -309,20 +351,19 @@ export const initializeAuthentication = () =>(dispatch)=> {
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {
-                authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
-                jwks: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
-                logout: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
-                oidcSessionIFrame: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
-                revoke: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-                token: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-                wellKnown: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+                authorize: authorizeURL,
+                jwks: jwksURL,
+                logout: logoutURL,
+                oidcSessionIFrame: oidcSessionIFrameURL,
+                revoke: tokenRevokeURL,
+                token: tokenURL,
+                wellKnown: wellKnownEndpoint
             },
             responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode
                 ?? responseModeFallback,
             scope: window["AppUtils"].getConfig().idpConfigs?.scope
                 ?? [ TokenConstants.SYSTEM_SCOPE ],
-            serverOrigin: window["AppUtils"].getConfig().idpConfigs?.serverOrigin
-                ?? window["AppUtils"].getConfig().idpConfigs.serverOrigin,
+            serverOrigin: serverOrigin,
             sessionState: response?.data?.sessionState,
             signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
@@ -348,8 +389,10 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
     auth.on(Hooks.SignIn, (response: UserInfo) => {
 
-        // Update the app base name with the newly resolved tenant.
-        window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
+        // Update the app base name with the newly resolved tenant, if accessed through super tenant domain.
+        if (!isDifferentHost) {
+            window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
+        }
 
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
