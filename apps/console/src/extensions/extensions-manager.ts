@@ -56,9 +56,9 @@ export class ExtensionsManager {
      *
      * @return {ExtensionsConfigInterface}
      */
-    public getConfig(): ExtensionsConfigInterface {
+    public static getConfig(): ExtensionsConfigInterface {
 
-        return ExtensionsConfig;
+        return ExtensionsConfig();
     }
 
     /**
@@ -68,7 +68,7 @@ export class ExtensionsManager {
      */
     public getApplicationTemplatesConfig(): ApplicationTemplateExtensionsConfigInterface {
 
-        const config: ApplicationTemplateExtensionsConfigInterface = this.getConfig()?.templateExtensions?.applications;
+        const config: ApplicationTemplateExtensionsConfigInterface = ExtensionsManager.getConfig()?.templateExtensions?.applications;
 
         if (!config) {
             return {
