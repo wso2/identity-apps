@@ -18,7 +18,7 @@
 
 import { ExtensionsConfigInterface } from "./models";
 
-export const ExtensionsConfig: ExtensionsConfigInterface = {
+export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     componentExtensions: [],
     routes: [],
     sections: {
@@ -33,4 +33,4 @@ export const ExtensionsConfig: ExtensionsConfigInterface = {
             templates: []
         }
     }
-};
+});
