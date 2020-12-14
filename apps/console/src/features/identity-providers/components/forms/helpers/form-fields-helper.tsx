@@ -137,9 +137,8 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
                     "requiredErrorMessage") }
-                placeholder={ propertyMetadata?.defaultValue }
                 type="text"
-                value={ eachProp?.value }
+                value={ eachProp?.value || propertyMetadata?.defaultValue }
                 key={ eachProp?.key }
                 disabled={ disable }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
