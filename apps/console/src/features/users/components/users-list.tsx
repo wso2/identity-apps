@@ -42,6 +42,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { RealmConfigInterface } from "../../server-configurations";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
 
@@ -82,6 +83,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * Callback for the search query clear action.
      */
     onSearchQueryClear?: () => void;
+    /**
+     * Admin user details content.
+     */
+    realmConfigs: RealmConfigInterface;
     /**
      * Search query for the list.
      */
@@ -129,6 +134,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
+        realmConfigs,
         searchQuery,
         selection,
         showListItemActions,
@@ -302,7 +308,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user.userName === "admin";
+                    || user.userName === realmConfigs?.adminUser;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

@@ -17,3 +17,4 @@
  */
 
 export * from "./governance-connectors";
+export * from "./server-config";
