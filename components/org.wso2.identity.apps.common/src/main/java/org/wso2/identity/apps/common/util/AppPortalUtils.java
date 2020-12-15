@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
@@ -51,6 +52,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.SERVER_CONTEXT;
 
 /**
  * App portal utils.
@@ -83,9 +85,19 @@ public class AppPortalUtils {
         oAuthConsumerAppDTO.setOAuthVersion(VERSION_2);
         oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
-        String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String callbackUrl;
+        if (portalPath.startsWith(SERVER_CONTEXT)) {
+            callbackUrl = portalPath;
+        } else {
+            callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        }
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-            callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+            if (callbackUrl.contains(SERVER_CONTEXT)) {
+                String path = StringUtils.split(SERVER_CONTEXT)[0];
+                callbackUrl = callbackUrl.replace(SERVER_CONTEXT, "/t/" + tenantDomain.trim() + path);
+            } else {
+                callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);

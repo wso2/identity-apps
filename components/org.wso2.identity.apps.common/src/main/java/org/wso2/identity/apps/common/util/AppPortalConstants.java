@@ -35,6 +35,7 @@ public class AppPortalConstants {
     public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";
 
     public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
+    public static final String SERVER_CONTEXT = "${carbon.protocol}://${carbon.host}:${carbon.management.port}";
 
     private AppPortalConstants() {
 
@@ -45,9 +46,9 @@ public class AppPortalConstants {
      */
     public enum AppPortal {
 
-        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", "/myaccount/login",
-                "/myaccount/"),
-        CONSOLE("Console", "This is the console application.", "CONSOLE", "/console/login",
+        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", SERVER_CONTEXT +
+                "/myaccount/login", "/myaccount/"),
+        CONSOLE("Console", "This is the console application.", "CONSOLE", SERVER_CONTEXT + "/console/login",
                 "/console/");
 
         private final String name;
