@@ -234,7 +234,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 }
                 {
                     brand && (
-                        <Responsive as={ Menu.Item } minWidth={ 767 }>
+                        <Responsive className="p-0" as={ Menu.Item } minWidth={ 767 }>
                             <Menu.Item 
                                 as={ Link } 
                                 to={ brandLink } 
