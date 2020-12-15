@@ -437,6 +437,19 @@ body {
 @fluidDefaultLayoutFooterPadding: 0 @fluidLayoutHorizontalPadding;
 @defaultLayoutPadding: 4em 6em;
 
+// A mixin to re-use the footer styles across the
+// different .layout rules.
+// Ref: http://lesscss.org/features/#mixins-feature-mixins-with-parentheses
+.layout-app-footer-mixin() {
+    .app-footer {
+        .app-footer-container {
+            padding: @fluidDashboardLayoutFooterPadding;
+            inset: 0;
+            width: 100% !important;
+        }
+    }
+}
+
 .layout {
     &.dashboard-layout {
         .layout-content {
@@ -486,14 +499,7 @@ body {
                 }
             }
 
-            .app-footer {
-                .app-footer-container {
-                    padding: @fluidDashboardLayoutFooterPadding;
-                    top: 0;
-                    bottom: 0;
-                    width: 100% !important;
-                }
-            }
+            .layout-app-footer-mixin()
         }
     }
 
@@ -504,12 +510,16 @@ body {
                 padding: @pageLayoutContentPadding;
             }
         }
+
+        .layout-app-footer-mixin()
     }
 
     &.help-panel-layout {
         .layout-content {
             min-height: 100%;
         }
+
+        .layout-app-footer-mixin()
     }
 
     &.list-layout {
@@ -591,11 +601,7 @@ body {
                 }
             }
 
-            .app-footer {
-                .app-footer-container {
-                    padding: @fluidDefaultLayoutFooterPadding;
-                }
-            }
+            .layout-app-footer-mixin()
         }
     }
 }
