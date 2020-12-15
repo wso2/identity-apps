@@ -139,7 +139,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             description: values.get("description").toString(),
             id: appId,
             imageUrl: values.get("imageUrl").toString(),
-            name: values.get("name").toString()
+            name: values.get("name")?.toString()
         };
     };
 
