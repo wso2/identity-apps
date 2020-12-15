@@ -46,5 +46,7 @@ export class RoleConstants {
         .set("ROLE_CREATE", "roles.create")
         .set("ROLE_UPDATE", "roles.update")
         .set("ROLE_DELETE", "roles.delete")
-        .set("ROLE_READ", "roles.read")
+        .set("ROLE_READ", "roles.read");
+
+    public static readonly SUPER_ADMIN_PERMISSION_KEY = "/permission/protected";
 }
