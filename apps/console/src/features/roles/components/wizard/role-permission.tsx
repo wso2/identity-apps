@@ -23,7 +23,10 @@ import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { store } from "../../../core";
+import { getServerConfigs } from "../../../server-configurations";
 import { getPermissionList } from "../../api";
+import { RoleConstants } from "../../constants";
 import { TreeNode } from "../../models";
 import { generatePermissionTree } from "../role-utils";
 
@@ -70,7 +73,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ previouslyCheckedKeys, setPreviouslyCheckedKeys ] = useState<string[]>([]);
     const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
-    
+    const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
+
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
@@ -95,7 +99,22 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         }
 
         getAllPerms();
+        checkIsSuperAdmin();
     }, [ permissions.length > 0 ]);
+
+    /**
+     * Util function to check if current user is a super admin.
+     */
+    const checkIsSuperAdmin = () => {
+        getServerConfigs().then((response) => {
+            const loggedUserName = store.getState().profile.profileInfo.userName;
+            const adminUser = response?.realmConfig.adminUser;
+
+            if (loggedUserName === adminUser) {
+                setIsSuperAdmin(true);
+            }
+        });
+    };
 
     /**
      * Util function to join split permision string for given array location.
@@ -103,12 +122,44 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * @param permissionString permission string
      * @param joinLocation location to join the string
      */
-    function permissionJoining(permissionString, joinLocation) {
+    const permissionJoining = (permissionString, joinLocation) => {
         permissionString = permissionString.split("/");
         const first = permissionString.splice(0, joinLocation);
         permissionString = [first.join("/"), ...permissionString];
         return permissionString;
-    }
+    };
+
+    /**
+     * Utill method to disable super admin permissions when `isSuperAdmin` is false.
+     * 
+     * @param isSuperAdmin is super admin check
+     * @param permissionTree permission tree to change
+     */
+    const disableSuperAdminTreeNode = (isSuperAdmin: boolean, permissionTree: TreeNode[]) => {
+        permissionTree[0].children.forEach((permission: TreeNode) => {
+            if (permission.key === RoleConstants.SUPER_ADMIN_PERMISSION_KEY && !isSuperAdmin) {
+                permission.disableCheckbox = true;
+                if (permission.children) {
+                    disableTreeNode(permission.children, true);
+                }
+            }
+        });
+    };
+
+    /**
+     * Util function to disable checking of a node and it's children.
+     * 
+     * @param permissionNodes - array of permission nodes
+     * @param state - disable state
+     */
+    const disableTreeNode = (permissionNodes: TreeNode[], state: boolean) => {
+        permissionNodes.forEach((permission: TreeNode) => {
+            permission.disableCheckbox = state;
+            if (permission.children) {
+                disableTreeNode(permission.children, state);
+            }
+        });
+    };
 
     /**
      * Retrieve all permissions from backend.
@@ -140,6 +191,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     
                     return nodes;
                 },[]);
+                disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
                 setPermissions(permissionTree);
                 setDefaultExpandKeys( [permissionTree[0].key.toString()] );
                 setIsPermissionsLoading(false);
