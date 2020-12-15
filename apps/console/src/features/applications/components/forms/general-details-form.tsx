@@ -20,14 +20,14 @@ import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Certificate as CertificateDisplay, Heading, Hint, LinkButton } from "@wso2is/react-components";
+import { Certificate as CertificateDisplay, GenericIcon, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppState, CertificateIllustrations, UIConfigInterface } from "../../../core";
+import { AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../models";
 
 /**
@@ -160,7 +160,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon />
+                        <GenericIcon
+                            inline
+                            transparent
+                            size="auto"
+                            icon={ getCertificateIllustrations().ribbon }
+                        />
                         <div className="certificate-alias">
                             View Certificate - {
                             certificateDisplay?.alias
@@ -177,11 +182,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <CertificateDisplay
                         certificate={ certificateDisplay }
                         labels={ {
-                            issuerDN: t("devPortal:components.certificates.keystore.summary.issuerDN"),
-                            subjectDN: t("devPortal:components.certificates.keystore.summary.subjectDN"),
-                            validFrom: t("devPortal:components.certificates.keystore.summary.validFrom"),
-                            validTill: t("devPortal:components.certificates.keystore.summary.validTill"),
-                            version: t("devPortal:components.certificates.keystore.summary.version")
+                            issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
+                            subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
+                            validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
+                            validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
+                            version: t("console:manage.features.certificates.keystore.summary.version")
                         } }
                     />
                 </Modal.Content>
@@ -246,14 +251,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="name"
-                                label={ t("devPortal:components.applications.forms.generalDetails.fields.name.label") }
+                                label={ t("console:develop.features.applications.forms.generalDetails.fields.name.label") }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
                                         ".validations.empty")
                                 }
                                 placeholder={
-                                    t("devPortal:components.applications.forms.generalDetails.fields.name.placeholder")
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name.placeholder")
                                 }
                                 type="text"
                                 value={ name }
@@ -268,13 +273,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Field
                             name="description"
                             label={
-                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
                                     ".label")
                             }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
                                     ".placeholder")
                             }
                             type="textarea"
@@ -289,12 +294,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Field
                             name="imageUrl"
                             label={
-                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl.label")
+                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl.label")
                             }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl" +
+                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl" +
                                     ".placeholder")
                             }
                             type="text"
@@ -302,7 +307,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("devPortal:components.applications.forms.generalDetails.fields" +
+                                        t("console:develop.features.applications.forms.generalDetails.fields" +
                                             ".imageUrl.validations.invalid")
                                     );
                                 }
@@ -322,7 +327,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.generalDetails.fields" +
+                                    label: t("console:develop.features.applications.forms.generalDetails.fields" +
                                         ".discoverable.label"),
                                     value: "discoverable"
                                 }
@@ -332,7 +337,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.hint") }
+                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -341,15 +346,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Field
                             name="accessUrl"
                             label={
-                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.label")
+                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
                             }
                             required={ isDiscoverable }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
                                     ".validations.empty")
                             }
                             placeholder={
-                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
                                     ".placeholder")
                             }
                             type="text"
@@ -357,7 +362,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("devPortal:components.applications.forms.generalDetails.fields" +
+                                        t("console:develop.features.applications.forms.generalDetails.fields" +
                                             ".accessUrl.validations.invalid")
                                     );
                                 }
@@ -371,12 +376,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h4">
-                            { t("devPortal:components.applications.forms.advancedConfig.sections.certificate" +
+                            { t("console:develop.features.applications.forms.advancedConfig.sections.certificate" +
                                 ".heading") }
                         </Heading>
                         <Field
                             label={
-                                t("devPortal:components.applications.forms.advancedConfig.sections.certificate" +
+                                t("console:develop.features.applications.forms.advancedConfig.sections.certificate" +
                                     ".fields.type.label")
                             }
                             name="type"
@@ -390,12 +395,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             value={ certificate?.type }
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.sections" +
                                         ".certificate.fields.type.children.jwks.label"),
                                     value: CertificateTypeInterface.JWKS
                                 },
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.sections" +
                                         ".certificate.fields.type.children.pem.label"),
                                     value: CertificateTypeInterface.PEM
                                 }
@@ -415,16 +420,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         <Field
                                             name="certificateValue"
                                             label={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.pemValue.label")
                                             }
                                             required={ false }
                                             requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.pemValue.validations.empty")
                                             }
                                             placeholder={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.pemValue.placeholder")
                                             }
                                             type="textarea"
@@ -443,7 +448,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             data-testid={ `${ testId }-certificate-textarea` }
                                         />
                                         < Hint>
-                                            { t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                            { t("console:develop.features.applications.forms.advancedConfig.sections" +
                                                 ".certificate.fields.pemValue.hint") }
                                         </Hint>
                                         <LinkButton
@@ -452,7 +457,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             disabled={ _.isEmpty(PEMValue) }
                                             data-testid={ `${ testId }-certificate-info-button` }
                                         >
-                                            { t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                            { t("console:develop.features.applications.forms.advancedConfig.sections" +
                                                 ".certificate.fields.pemValue.actions.view") }
                                         </LinkButton>
                                     </>
@@ -462,16 +467,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         <Field
                                             name="jwksValue"
                                             label={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.label")
                                             }
                                             required={ false }
                                             requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.validations.empty")
                                             }
                                             placeholder={
-                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                t("console:develop.features.applications.forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.placeholder") }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
@@ -479,7 +484,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                     validation.isValid = false;
                                                     validation.errorMessages.push(
                                                         t(
-                                                            "devPortal:components.applications.forms" +
+                                                            "console:develop.features.applications.forms" +
                                                             ".advancedConfig.sections.certificate.fields.jwksValue" +
                                                             ".validations.invalid"
                                                         )

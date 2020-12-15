@@ -19,13 +19,14 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Message, Modal, Segment } from "semantic-ui-react";
 import { resendSMSOTPCode, updateProfileInfo, validateSMSOTPCode } from "../../api";
-import { EnterCode } from "../../configs";
+import { getEnterCodeIcon } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 
@@ -43,11 +44,12 @@ interface MobileUpdateWizardProps extends TestableComponentInterface {
 /**
  * Mobile number update section.
  *
- * @return {JSX.Element}
+ * @param {MobileUpdateWizardProps} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
 export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps> = (
     props: MobileUpdateWizardProps
-): JSX.Element => {
+): React.ReactElement => {
 
     const {
         onAlertFired,
@@ -119,11 +121,11 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         }).catch(error => {
             onAlertFired({
                 description: error?.detail ?? t(
-                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.description"
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t(
-                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.message"
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
         });
@@ -160,12 +162,12 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
             })
             .catch((errorMessage) => {
             onAlertFired({
-                description: t("userPortal:components.mobileUpdateWizard.notifications." +
+                description: t("myAccount:components.mobileUpdateWizard.notifications." +
                     "resendError.error.description", {
                     error: errorMessage
                 }),
                 level: AlertLevels.ERROR,
-                message: t("userPortal:components.mobileUpdateWizard.notifications.resendError.error.message")
+                message: t("myAccount:components.mobileUpdateWizard.notifications.resendError.error.message")
             });
         });
     };
@@ -179,9 +181,9 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const stepHeader = (stepToDisplay: number): string => {
         switch (stepToDisplay) {
             case 0:
-                return t("userPortal:components.mobileUpdateWizard.submitMobile.heading");
+                return t("myAccount:components.mobileUpdateWizard.submitMobile.heading");
             case 1:
-                return t("userPortal:components.mobileUpdateWizard.verifySmsOtp.heading");
+                return t("myAccount:components.mobileUpdateWizard.verifySmsOtp.heading");
             case 2:
                 return null;
         }
@@ -196,9 +198,21 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const stepIllustration = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return <EnterCode />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getEnterCodeIcon() }
+                    />
+                );
             case 1:
-                return <EnterCode />;
+                return (
+                    <GenericIcon
+                        transparent
+                        size="small"
+                        icon={ getEnterCodeIcon() }
+                    />
+                );
         }
     };
 
@@ -259,7 +273,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
      * This renders the mobile update form content.
      */
     const renderSubmitMobile = (): JSX.Element => {
-        const fieldName = t("userPortal:components.profile.forms.mobileChangeForm.inputs.mobile.label");
+        const fieldName = t("myAccount:components.profile.forms.mobileChangeForm.inputs.mobile.label");
         return (
             <>
                 <Forms
@@ -272,17 +286,17 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         autoFocus={ true }
                         label={ fieldName }
                         name="mobileNumber"
-                        placeholder={ t("userPortal:components.profile.forms.generic.inputs." +
+                        placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
                             "placeholder", { fieldName }) }
                         required={ isMobileRequired }
                         requiredErrorMessage={ t(
-                            "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                            "myAccount:components.profile.forms.generic.inputs.validations.empty",
                             { fieldName }) }
                         type="text"
                         validation={ (value: string, validation: Validation) => {
                             if (!FormValidation.mobileNumber(value)) {
                                 validation.errorMessages.push(t(
-                                    "userPortal:components.profile.forms." +
+                                    "myAccount:components.profile.forms." +
                                     "generic.inputs.validations.invalidFormat",
                                     {
                                         fieldName
@@ -309,7 +323,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         ? (
                             <>
                                 <Message error>
-                                    { t("userPortal:components.mobileUpdateWizard.verifySmsOtp.error") }
+                                    { t("myAccount:components.mobileUpdateWizard.verifySmsOtp.error") }
                                 </Message>
                             </>
                         )
@@ -320,7 +334,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         ? (
                             <>
                                 <Message success>
-                                    { t("userPortal:components.mobileUpdateWizard.notifications." +
+                                    { t("myAccount:components.mobileUpdateWizard.notifications." +
                                         "resendSuccess.message") }
                                 </Message>
                             </>
@@ -335,15 +349,15 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                 >
                     <Field
                         name="code"
-                        label={ t("userPortal:components.mobileUpdateWizard.verifySmsOtp.label") }
-                        placeholder={ t("userPortal:components.mobileUpdateWizard.verifySmsOtp.placeholder") }
+                        label={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp.label") }
+                        placeholder={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp.placeholder") }
                         type="text"
                         required={ true }
-                        requiredErrorMessage={ t("userPortal:components.mobileUpdateWizard.verifySmsOtp." +
+                        requiredErrorMessage={ t("myAccount:components.mobileUpdateWizard.verifySmsOtp." +
                             "requiredError") }
                     />
                     <Segment textAlign="center" basic>
-                        <p className="link" onClick={ resendOTOCode }>{ t("userPortal:components." +
+                        <p className="link" onClick={ resendOTOCode }>{ t("myAccount:components." +
                             "mobileUpdateWizard.verifySmsOtp.generate") }</p>
                     </Segment>
                 </Forms>
@@ -379,7 +393,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         </g>
                     </svg>
                 </div>
-                <p>{ t("userPortal:components.mobileUpdateWizard.done") }</p>
+                <p>{ t("myAccount:components.mobileUpdateWizard.done") }</p>
             </Segment>
         );
     };

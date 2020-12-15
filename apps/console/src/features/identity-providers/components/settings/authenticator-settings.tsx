@@ -30,7 +30,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -121,30 +121,32 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.success.message")
+                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." + 
+                        "success.message")
                 }));
                 onUpdate(identityProvider.id);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                        description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.error.message")
+                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." + 
+                            "error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                         "genericError.message")
                 }));
             });
@@ -153,19 +155,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleGetFederatedAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.getFederatedAuthenticator.error.description",
+                description: t("console:develop.features.idp.notifications.getFederatedAuthenticator.error.description",
                     { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: t("devPortal:components.idp.notifications.getFederatedAuthenticator.error.message")
+                message: t("console:develop.features.idp.notifications.getFederatedAuthenticator.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.description"),
+            description: t("console:develop.features.idp.notifications.getFederatedAuthenticator." + 
+                "genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.message")
+            message: t("console:develop.features.idp.notifications.getFederatedAuthenticator.genericError.message")
         }));
     };
 
@@ -254,9 +257,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // Validation
         if (authenticator.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.disableAuthenticator.error.description"),
+                description: t("console:develop.features.idp.notifications.disableAuthenticator.error.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.disableAuthenticator.error.message")
+                message: t("console:develop.features.idp.notifications.disableAuthenticator.error.message")
             }));
             onUpdate(identityProvider.id);
         } else {
@@ -288,10 +291,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         updateFederatedAuthenticators(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
                         ".success.message")
                 }));
 
@@ -302,7 +305,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
                             ".error.message")
                     }));
 
@@ -310,10 +313,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
                         ".genericError.message")
                 }));
             });
@@ -335,10 +338,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         if (id == identityProvider.federatedAuthenticators.defaultAuthenticatorId) {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.deleteDefaultAuthenticator" +
+                description: t("console:develop.features.idp.notifications.deleteDefaultAuthenticator" +
                     ".error.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.deleteDefaultAuthenticator" +
+                message: t("console:develop.features.idp.notifications.deleteDefaultAuthenticator" +
                     ".error.message")
             }));
             return;
@@ -436,16 +439,16 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 action={ (
                     <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
                                    data-testid={ `${ testId }-add-authenticator-button` }>
-                        <Icon name="add"/>{ t("devPortal:components.idp.buttons.addAuthenticator") }
+                        <Icon name="add"/>{ t("console:develop.features.idp.buttons.addAuthenticator") }
                     </PrimaryButton>
                 ) }
-                image={ EmptyPlaceholderIllustrations.newList }
+                image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
-                title={ t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.title") }
+                title={ t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.title") }
                 subtitle={ [
-                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.0"),
-                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.1"),
-                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.2")
+                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.0"),
+                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.1"),
+                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.2")
                 ] }
                 data-testid={ `${ testId }-empty-placeholder` }
             />
@@ -463,7 +466,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         auth: FederatedAuthenticatorWithMetaInterface
     ): boolean => {
         return auth.data?.isDefault;
-    }
+    };
 
     /**
      * A helper function that generates {@link SegmentedAccordionTitleActionInterface}
@@ -484,8 +487,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
-                    "devPortal:components.idp.forms.authenticatorAccordion.default.0" :
-                    "devPortal:components.idp.forms.authenticatorAccordion.default.1"
+                    "console:develop.features.idp.forms.authenticatorAccordion.default.0" :
+                    "console:develop.features.idp.forms.authenticatorAccordion.default.1"
                 ),
                 onChange: handleDefaultAuthenticatorChange,
                 type: "checkbox"
@@ -494,8 +497,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             {
                 defaultChecked: authenticator.data?.isEnabled,
                 label: t(authenticator.data?.isEnabled ?
-                    "devPortal:components.idp.forms.authenticatorAccordion.enable.0" :
-                    "devPortal:components.idp.forms.authenticatorAccordion.enable.1"
+                    "console:develop.features.idp.forms.authenticatorAccordion.enable.0" :
+                    "console:develop.features.idp.forms.authenticatorAccordion.enable.1"
                 ),
                 disabled: isDefaultAuthenticator,
                 onChange: handleAuthenticatorEnableToggle,
@@ -512,7 +515,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
                                        data-testid={ `${ testId }-add-authenticator-button` }>
                             <Icon name="add"/>
-                            { t("devPortal:components.idp.buttons.addAuthenticator") }
+                            { t("console:develop.features.idp.buttons.addAuthenticator") }
                         </PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
@@ -529,7 +532,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                 icon: "trash alternate",
                                                 onClick: handleAuthenticatorDeleteOnClick,
                                                 popoverText: "Remove Authenticator",
-                                                type: "icon",
+                                                type: "icon"
                                             }
                                         ] }
                                         authenticators={
@@ -585,7 +588,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 assertionHint={ (
                                     <p>
                                         <Trans
-                                            i18nKey="devPortal:components.idp.confirmations.deleteAuthenticator.
+                                            i18nKey="console:develop.features.idp.confirmations.deleteAuthenticator.
                                             assertionHint"
                                             tOptions={ { name: deletingAuthenticator?.name } }
                                         >
@@ -605,16 +608,16 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             >
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.header") }
+                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached warning
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.message") }
+                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.content") }
+                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
@@ -622,8 +625,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     {
                          showAddAuthenticatorWizard && (
                              <AuthenticatorCreateWizard
-                                 title={ t("devPortal:components.idp.modals.addAuthenticator.title") }
-                                 subTitle={ t("devPortal:components.idp.modals.addAuthenticator.subTitle",
+                                 title={ t("console:develop.features.idp.modals.addAuthenticator.title") }
+                                 subTitle={ t("console:develop.features.idp.modals.addAuthenticator.subTitle",
                                      { idpName: identityProvider.name }) }
                                  closeWizard={ () => {
                                      setShowAddAuthenticatorWizard(false);

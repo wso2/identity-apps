@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
@@ -109,7 +109,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         icon={ <Icon name="search"/> }
                                         onChange={ handleSearch }
                                         placeholder={
-                                            t("devPortal:components.idp.forms." +
+                                            t("console:develop.features.idp.forms." +
                                                 "attributeSettings.attributeSelection." +
                                                 "searchAttributes.placeHolder")
                                         }
@@ -205,16 +205,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     : (
                                         <Segment data-testid={ testId }>
                                             <EmptyPlaceholder
-                                                title={ t("devPortal:components.idp.placeHolders.noAttributes.title") }
+                                                title={ t("console:develop.features.idp.placeHolders.noAttributes." + 
+                                                    "title") }
                                                 subtitle={ [
-                                                    t("devPortal:components.idp.placeHolders.noAttributes.subtitles.0")
+                                                    t("console:develop.features.idp.placeHolders.noAttributes." + 
+                                                        "subtitles.0")
                                                 ] }
                                                 action={
                                                     <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                        { t("devPortal:components.idp.buttons.addAttribute") }
+                                                        { t("console:develop.features.idp.buttons.addAttribute") }
                                                     </PrimaryButton>
                                                 }
-                                                image={ EmptyPlaceholderIllustrations.emptyList }
+                                                image={ getEmptyPlaceholderIllustrations().emptyList }
                                                 imageSize="tiny"
                                                 data-testid={ `${ testId }-empty-placeholder` }
                                             />

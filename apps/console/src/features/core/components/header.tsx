@@ -178,7 +178,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             userDropdownLinks={ [
                 {
                     icon: "arrow right",
-                    name: t("adminPortal:components.header.links.userPortalNav"),
+                    name: t("console:manage.features.header.links.userPortalNav"),
                     onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
                         "_blank", "noopener")
                 },

@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addLocalClaim } from "../../api";
-import { AddLocalClaimWizardStepIcons } from "../../configs";
+import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 
@@ -95,10 +95,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             .then((response) => {
                 dispatch(addAlert(
                     {
-                        description: t("adminPortal:components.claims.local.notifications." +
+                        description: t("console:manage.features.claims.local.notifications." +
                             "addLocalClaim.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.claims.local.notifications." +
+                        message: t("console:manage.features.claims.local.notifications." +
                             "addLocalClaim.success.message")
                     }
                 ));
@@ -130,11 +130,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 setAlert(
                     {
                         description: error?.description
-                            || t("adminPortal:components.claims.local.notifications." +
+                            || t("console:manage.features.claims.local.notifications." +
                                 "addLocalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
+                            || t("console:manage.features.claims.local.notifications.addLocalClaim." + 
+                                "genericError.message")
                     }
                 );
             });
@@ -178,8 +179,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-local-claims-basic-details` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
-            title: t("adminPortal:components.claims.local.wizard.steps.general")
+            icon: getAddLocalClaimWizardStepIcons().general,
+            title: t("console:manage.features.claims.local.wizard.steps.general")
         },
         {
             content: (
@@ -190,8 +191,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-mapped-attributes` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
-            title: t("adminPortal:components.claims.local.wizard.steps.mapAttributes")
+            icon: getAddLocalClaimWizardStepIcons().general,
+            title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
         },
         {
             content: (
@@ -200,8 +201,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     data-testid={ `${ testId }-local-claims-summary` }
                 />
             ),
-            icon: AddLocalClaimWizardStepIcons.general,
-            title: t("adminPortal:components.claims.local.wizard.steps.summary")
+            icon: getAddLocalClaimWizardStepIcons().general,
+            title: t("console:manage.features.claims.local.wizard.steps.summary")
 
         }
     ];
@@ -241,7 +242,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.claims.local.wizard.header") }
+                { t("console:manage.features.claims.local.wizard.header") }
                 {
                     basicDetailsData && basicDetailsData.get("name")
                         ? " - " + basicDetailsData.get("name")

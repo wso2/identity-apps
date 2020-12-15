@@ -16,23 +16,16 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import { ReactComponent as KeyIcon } from "../../../themes/default/assets/images/icons/key-icon.svg";
-import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
-import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
-import { ReactComponent as UserIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const UserWizardStepIcons = {
-    general: DocumentIcon,
-    groups: GearsIcon,
-    roles: SpinWheelIcon,
-    summary: ReportIcon
-};
+export const getRolesWizardStepIcons= () => {
 
-export const RolesWizardStepIcons = {
-    assignUser: UserIcon,
-    general: DocumentIcon,
-    permissions: KeyIcon,
-    summary: ReportIcon
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        assignUser: import(`../../../themes/${ theme }/assets/images/icons/user-icon.svg`),
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`),
+        permissions: import(`../../../themes/${ theme }/assets/images/icons/key-icon.svg`),
+        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`)
+    };
 };

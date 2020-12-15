@@ -17,9 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { Header } from "semantic-ui-react";
-import { ThemeIcon, ThemeIconSizes } from "./icon";
+import { ThemeIconSizes } from "./icon";
 
 /**
  * Proptypes for the placeholder component. Also see
@@ -58,7 +59,7 @@ export const EmptyPlaceholder: FunctionComponent<EmptyPlaceholderProps> = (
                 image
                     ? (
                         <div className="image-container">
-                            <ThemeIcon icon={ image } size={ imageSize } transparent/>
+                            <GenericIcon icon={ image } size={ imageSize } transparent/>
                         </div>
                     )
                     : null

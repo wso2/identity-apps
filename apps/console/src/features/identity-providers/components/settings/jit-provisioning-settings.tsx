@@ -83,18 +83,19 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         updateJITProvisioningConfigs(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateJITProvisioning.success.description"),
+                    description: t("console:develop.features.idp.notifications.updateJITProvisioning." + 
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateJITProvisioning.success.message")
+                    message: t("console:develop.features.idp.notifications.updateJITProvisioning.success.message")
                 }));
                 onUpdate(idpId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateJITProvisioning." +
+                    description: t("console:develop.features.idp.notifications.updateJITProvisioning." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateJITProvisioning.genericError.message")
+                    message: t("console:develop.features.idp.notifications.updateJITProvisioning.genericError.message")
                 }));
             });
     };

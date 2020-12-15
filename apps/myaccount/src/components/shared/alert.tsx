@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { ThemeIcon } from "./icon";
 import { AlertIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
@@ -70,19 +70,19 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
 
         switch (alert.level) {
             case AlertLevels.SUCCESS as string: {
-                icon = AlertIcons.success;
+                icon = AlertIcons().success;
                 break;
             }
             case AlertLevels.WARNING as string: {
-                icon = AlertIcons.warning;
+                icon = AlertIcons().warning;
                 break;
             }
             case AlertLevels.ERROR as string: {
-                icon = AlertIcons.error;
+                icon = AlertIcons().error;
                 break;
             }
             case AlertLevels.INFO as string: {
-                icon = AlertIcons.info;
+                icon = AlertIcons().info;
                 break;
             }
             default:
@@ -100,7 +100,7 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
             ),
             position: alertsPosition,
             title: (
-                <ThemeIcon
+                <GenericIcon
                     icon={ icon }
                     colored
                     floated="left"
@@ -110,7 +110,7 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
                     spaced="right"
                     relaxed
                 />
-                )
+            )
         });
     }, [ alert ]);
 

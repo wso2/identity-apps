@@ -88,16 +88,16 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         updateRoleDetails(roleObject.id, roleData)
             .then(() => {
                 handleAlerts({
-                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                    description: t("console:manage.features.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    message: t("console:manage.features.roles.notifications.updateRole.success.message")
                 });
                 onRoleUpdate();
             }).catch(() => {
             handleAlerts({
-                description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                description: t("console:manage.features.roles.notifications.updateRole.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("adminPortal:components.roles.notifications.updateRole.error.message")
+                message: t("console:manage.features.roles.notifications.updateRole.error.message")
             });
         });
     };

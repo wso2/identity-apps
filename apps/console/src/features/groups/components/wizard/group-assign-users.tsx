@@ -34,7 +34,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
+import { getEmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
 import { GroupsMemberInterface } from "../../models";
 
 /**
@@ -324,12 +324,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         >
             <Modal.Header>
                 {
-                    t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                       t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                       t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -337,7 +337,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             <Modal.Content image>
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
-                    searchPlaceholder={ t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
                         "searchPlaceholder") }
                     addItems={ addUser }
                     removeItems={ removeUser }
@@ -349,12 +349,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         isListEmpty={ !(usersList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
                     >
                         {
@@ -380,12 +380,12 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         isListEmpty={ !(tempUserList?.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                             "emptyPlaceholders.groups.selected", { type: "users" }) }
                     >
                         {
@@ -443,7 +443,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     data-testid={ `${ testId }-users-list-search-input` }
                                                     icon={ <Icon name="search"/> }
                                                     onChange={ handleAssignedUserListSearch }
-                                                    placeholder={ t("adminPortal:components.roles.addRoleWizard." +
+                                                    placeholder={ t("console:manage.features.roles.addRoleWizard." +
                                                         "users.assignUserModal.list.searchPlaceholder") }
                                                     floated="left"
                                                     size="small"
@@ -463,7 +463,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     <Table.Row>
                                                         <Table.HeaderCell/>
                                                         <Table.HeaderCell>
-                                                            { t("adminPortal:components.roles.edit.users.list." +
+                                                            { t("console:manage.features.roles.edit.users.list." +
                                                                 "header") }
                                                         </Table.HeaderCell>
                                                     </Table.Row>
@@ -497,10 +497,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                 ) : (
                                     <EmphasizedSegment>
                                         <EmptyPlaceholder
-                                            title={ t("adminPortal:components.roles.edit.users.list." +
+                                            title={ t("console:manage.features.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
                                             subtitle={ [
-                                                t("adminPortal:components.roles.edit.users.list." +
+                                                t("console:manage.features.roles.edit.users.list." +
                                                     "emptyPlaceholder.subtitles", { type: "group" })
                                             ] }
                                             action={
@@ -509,11 +509,11 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     onClick={ handleOpenAddNewGroupModal }
                                                     icon="plus"
                                                 >
-                                                    { t("adminPortal:components.roles.edit.users.list." +
+                                                    { t("console:manage.features.roles.edit.users.list." +
                                                         "emptyPlaceholder.action") }
                                                 </PrimaryButton>
                                             }
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
                                         />
                                     </EmphasizedSegment>
@@ -534,7 +534,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         <Grid.Row columns={ 2 }>
                             <TransferComponent
                                 data-testid={ `${ testId }-update-user-list-transfer` }
-                                searchPlaceholder={ t("adminPortal:components.roles.addRoleWizard.users." +
+                                searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users." +
                                     "assignUserModal.list.searchPlaceholder") }
                                 addItems={ addUser }
                                 removeItems={ removeUser }
@@ -546,13 +546,13 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     isListEmpty={ !(usersList?.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
-                                        t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
                                             "listHeader")
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                     data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
-                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.groups.unselected", { type: "users" }) }
                                 >
                                     {
@@ -578,13 +578,13 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     isListEmpty={ !(tempUserList?.length > 0) }
                                     listType="selected"
                                     listHeaders={ [
-                                        t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
                                             "listHeader")
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                     data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
-                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.groups.selected", { type: "users" }) }
                                 >
                                     {

@@ -18,12 +18,13 @@
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
-import { CertificateIllustrations } from "../configs";
+import { getCertificateIllustrations } from "../configs";
 
 // This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
 if ("File" in self) {
@@ -447,7 +448,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const panes = [
         {
-            menuItem: t("adminPortal:components.certificates.keystore.wizard.panes.upload"),
+            menuItem: t("console:manage.features.certificates.keystore.wizard.panes.upload"),
             render: () => (
                 !file
                     ? (
@@ -474,9 +475,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         >
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
-                                    <CertificateIllustrations.uploadPlaceholder />
+                                    <GenericIcon
+                                        inline
+                                        transparent
+                                        size="mini"
+                                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                                    />
                                     <p className="description">
-                                        { t("adminPortal:components.certificates." +
+                                        { t("console:manage.features.certificates." +
                                             "keystore.wizard.dropZone.description") }
                                     </p>
                                     <p className="description">– or –</p>
@@ -484,7 +490,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                 <Button basic primary onClick={ () => {
                                     fileUpload.current.click();
                                 } }>
-                                    {t("adminPortal:components.certificates.keystore.wizard.dropZone.action")}
+                                    {t("console:manage.features.certificates.keystore.wizard.dropZone.action")}
                                 </Button>
                             </Segment>
                         </div >
@@ -492,7 +498,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     : (
                         <Segment placeholder>
                             <Segment textAlign="center" basic>
-                                <CertificateIllustrations.file />
+                                <GenericIcon
+                                    inline
+                                    transparent
+                                    size="auto"
+                                    icon={ getCertificateIllustrations().file }
+                                />
                                 <p className="file-name">{ file.name }</p>
                                 <Icon name="trash alternate" link onClick={ () => {
                                     setFile(null);
@@ -505,12 +516,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             )
         },
         {
-            menuItem: t("adminPortal:components.certificates.keystore.wizard.panes.paste"),
+            menuItem: t("console:manage.features.certificates.keystore.wizard.panes.paste"),
             render: () => (
                 <Form>
                     <TextArea
                         rows={ 13 }
-                        placeholder={ t("adminPortal:components.certificates.keystore.wizard.pastePlaceholder") }
+                        placeholder={ t("console:manage.features.certificates.keystore.wizard.pastePlaceholder") }
                         value={ pem }
                         onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                             setPem(event.target.value);
@@ -569,14 +580,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                             <Form.Input
                                 fluid
                                 type="text"
-                                placeholder={ t("adminPortal:components.certificates.keystore.forms.alias." +
+                                placeholder={ t("console:manage.features.certificates.keystore.forms.alias." +
                                     "placeholder") }
-                                label={ t("adminPortal:components.certificates.keystore.forms.alias.label") }
+                                label={ t("console:manage.features.certificates.keystore.forms.alias.label") }
                                 required={ true }
                                 error={
                                     nameError
                                         ? {
-                                            content: t("adminPortal:components.certificates.keystore." +
+                                            content: t("console:manage.features.certificates.keystore." +
                                                 "forms.alias.requiredErrorMessage")
                                         }
                                         : false
@@ -610,8 +621,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 (fileError || certEmpty) &&
                 <Message error attached="bottom" data-testid={ `${ testId }-error-message` }>
                     { fileError
-                        ? t("adminPortal:components.certificates.keystore.errorCertificate")
-                        : t("adminPortal:components.certificates.keystore.errorEmpty")
+                        ? t("console:manage.features.certificates.keystore.errorCertificate")
+                        : t("console:manage.features.certificates.keystore.errorEmpty")
                     }
                 </Message>
             }

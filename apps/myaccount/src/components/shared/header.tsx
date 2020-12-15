@@ -123,12 +123,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
+                            "myAccount:components.linkedAccounts.notifications.switchAccount.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
+                            "myAccount:components.linkedAccounts.notifications.switchAccount.error.message"
                         )
                     })
                 );
@@ -139,11 +139,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             dispatch(
                 addAlert({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                        "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                        "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.message"
                     )
                 })
             );

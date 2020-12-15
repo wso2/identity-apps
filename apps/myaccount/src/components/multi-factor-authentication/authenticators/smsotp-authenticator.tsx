@@ -19,7 +19,7 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -27,14 +27,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
-import { MFAIcons } from "../../../configs";
+import { getMFAIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
-import { EditSection, ThemeIcon } from "../../shared";
+import { EditSection } from "../../shared";
 import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
-
 
 /**
  * SMS key.
@@ -119,11 +118,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.mfa.smsOtp.notifications.updateMobile.success.description"
+                        "myAccount:components.mfa.smsOtp.notifications.updateMobile.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.mfa.smsOtp.notifications.updateMobile.success.message"
+                        "myAccount:components.mfa.smsOtp.notifications.updateMobile.success.message"
                     )
                 });
 
@@ -134,12 +133,12 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 if (error?.response?.data && error?.response?.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.mfa.smsOtp.notifications.updateMobile.error.description",
+                            "myAccount:components.mfa.smsOtp.notifications.updateMobile.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.mfa.smsOtp.notifications.updateMobile.error.message"
+                            "myAccount:components.mfa.smsOtp.notifications.updateMobile.error.message"
                         )
                     });
 
@@ -148,11 +147,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.mfa.smsOtp.notifications.updateMobile.genericError.description"
+                        "myAccount:components.mfa.smsOtp.notifications.updateMobile.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.mfa.smsOtp.notifications.updateMobile.genericError.message"
+                        "myAccount:components.mfa.smsOtp.notifications.updateMobile.genericError.message"
                     )
                 });
             });
@@ -184,13 +183,13 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 }
                 <EditSection data-testid={ `${testId}-mobile-verification-edit-section` }>
                     <p>
-                        { t("userPortal:components.profile.messages.mobileVerification.content") }
+                        { t("myAccount:components.profile.messages.mobileVerification.content") }
                     </p>
                     <Grid padded={ true }>
                         <Grid.Row columns={ 2 }>
                             < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                                 <List.Content>{ t(
-                                    "userPortal:components.profile.forms.mobileChangeForm.inputs" +
+                                    "myAccount:components.profile.forms.mobileChangeForm.inputs" +
                                     ".mobile.label"
                                 ) }</List.Content>
                             </Grid.Column>
@@ -207,7 +206,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                         } }
                                                     >
                                                         { t(
-                                                            "userPortal:components.profile.forms." +
+                                                            "myAccount:components.profile.forms." +
                                                             "mobileChangeForm.inputs.mobile.label"
                                                         ) }
                                                     </a>
@@ -269,8 +268,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={ MFAIcons.sms }
+                                <GenericIcon
+                                    icon={ getMFAIcons().sms }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }
@@ -280,9 +279,9 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{ t("userPortal:components.mfa.smsOtp.heading") }</List.Header>
+                                <List.Header>{ t("myAccount:components.mfa.smsOtp.heading") }</List.Header>
                                 <List.Description>
-                                    { t("userPortal:components.mfa.smsOtp.descriptions.hint") }
+                                    { t("myAccount:components.mfa.smsOtp.descriptions.hint") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -323,17 +322,17 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                             <Field
                                                 autoFocus={ true }
                                                 label={ t(
-                                                    "userPortal:components.profile.forms.mobileChangeForm.inputs" +
+                                                    "myAccount:components.profile.forms.mobileChangeForm.inputs" +
                                                     ".mobile.label"
                                                 ) }
                                                 name="mobileNumber"
                                                 placeholder={ t(
-                                                    "userPortal:components.profile.forms.mobileChangeForm" +
+                                                    "myAccount:components.profile.forms.mobileChangeForm" +
                                                     ".inputs.mobile.placeholder"
                                                 ) }
                                                 required={ true }
                                                 requiredErrorMessage={ t(
-                                                    "userPortal:components.profile.forms." +
+                                                    "myAccount:components.profile.forms." +
                                                     "mobileChangeForm.inputs.mobile.validations.empty"
                                                 ) }
                                                 type="text"
@@ -341,7 +340,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                     if (!FormValidation.mobileNumber(value)) {
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(t(
-                                                            "userPortal:components.profile.forms.mobileChangeForm." +
+                                                            "myAccount:components.profile.forms.mobileChangeForm." +
                                                             "inputs.mobile.validations.invalidFormat"
                                                         ));
                                                     }
@@ -351,7 +350,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                             <p style={ { fontSize: "12px" } }>
                                                 <Icon color="grey" floated="left" name="info circle" />
                                                 { t(
-                                                    "userPortal:components.profile.forms.mobileChangeForm" +
+                                                    "myAccount:components.profile.forms.mobileChangeForm" +
                                                     ".inputs.mobile.note"
                                                 ) }
                                             </p>

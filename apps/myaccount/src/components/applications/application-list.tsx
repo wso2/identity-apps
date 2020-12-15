@@ -21,7 +21,7 @@ import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { ApplicationListItem } from "./application-list-item";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
 import { EmptyPlaceholder } from "../shared";
 
@@ -74,15 +74,15 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                             className="link-button"
                             onClick={ onSearchQueryClear }
                         >
-                            { t("userPortal:placeholders.emptySearchResult.action") }
+                            { t("myAccount:placeholders.emptySearchResult.action") }
                         </Button>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.search }
-                    title={ t("userPortal:placeholders.emptySearchResult.title") }
+                    image={ getEmptyPlaceholderIllustrations().search }
+                    title={ t("myAccount:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("userPortal:placeholders.emptySearchResult.subtitles.0",
+                        t("myAccount:placeholders.emptySearchResult.subtitles.0",
                             { query: searchQuery }),
-                        t("userPortal:placeholders.emptySearchResult.subtitles.1")
+                        t("myAccount:placeholders.emptySearchResult.subtitles.1")
                     ] }
                 />
             );
@@ -96,16 +96,16 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                         className="link-button"
                         onClick={ onListRefresh }
                     >
-                        { t("userPortal:components.applications.placeholders.emptyList.action") }
+                        { t("myAccount:components.applications.placeholders.emptyList.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.emptyList }
+                image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
-                title={ t("userPortal:components.applications.placeholders.emptyList.title") }
+                title={ t("myAccount:components.applications.placeholders.emptyList.title") }
                 subtitle={ [
-                    t("userPortal:components.applications.placeholders.emptyList.subtitles.0"),
-                    t("userPortal:components.applications.placeholders.emptyList.subtitles.1"),
-                    t("userPortal:components.applications.placeholders.emptyList.subtitles.2")
+                    t("myAccount:components.applications.placeholders.emptyList.subtitles.0"),
+                    t("myAccount:components.applications.placeholders.emptyList.subtitles.1"),
+                    t("myAccount:components.applications.placeholders.emptyList.subtitles.2")
                 ] }
             />
         );

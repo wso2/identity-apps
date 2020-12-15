@@ -185,10 +185,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.claims.local.notifications.fetchLocalClaims.genericError" +
+                    description: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.claims.local.notifications.fetchLocalClaims.genericError.message")
+                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError.message")
                 }));
             }).finally(() => {
                 setIsClaimLoading(false);
@@ -202,10 +202,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.claims.dialects.notifications.fetchDialects" +
+                    description: t("console:manage.features.claims.dialects.notifications.fetchDialects" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.claims.dialects.notifications.fetchDialects.genericError.message")
+                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects.genericError.message")
                 }));
             });
     };
@@ -219,10 +219,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 })
                 .catch(() => {
                     dispatch(addAlert({
-                        description: t("devPortal:components.claims.external.notifications.fetchExternalClaims" +
+                        description: t("console:manage.features.claims.external.notifications.fetchExternalClaims" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.claims.external.notifications.fetchExternalClaims" +
+                        message: t("console:manage.features.claims.external.notifications.fetchExternalClaims" +
                             ".genericError.message")
                     }));
                 })
@@ -497,18 +497,18 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             .then(() => {
                 onUpdate(appId);
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateClaimConfig.success" +
+                    description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.applications.notifications.updateClaimConfig.success.message")
+                    message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
                 }));
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateClaimConfig" +
+                    description: t("console:develop.features.applications.notifications.updateClaimConfig" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.updateClaimConfig.genericError" +
+                    message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
                         ".message")
                 }));
             });

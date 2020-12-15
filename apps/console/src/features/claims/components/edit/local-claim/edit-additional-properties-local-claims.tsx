@@ -68,16 +68,16 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                        <p>{ t("adminPortal:components.claims.local.additionalProperties.hint") }</p>
+                        <p>{ t("console:manage.features.claims.local.additionalProperties.hint") }</p>
                         <DynamicField
                             data={ claim.properties }
                             keyType="text"
-                            keyName={ t("adminPortal:components.claims.local.additionalProperties.key") }
-                            valueName={ t("adminPortal:components.claims.local.additionalProperties.value") }
+                            keyName={ t("console:manage.features.claims.local.additionalProperties.key") }
+                            valueName={ t("console:manage.features.claims.local.additionalProperties.value") }
                             submit={ submit }
-                            keyRequiredMessage={ t("adminPortal:components.claims.local.additionalProperties." +
+                            keyRequiredMessage={ t("console:manage.features.claims.local.additionalProperties." +
                                 "keyRequiredErrorMessage") }
-                            valueRequiredErrorMessage={ t("adminPortal:components.claims.local.additionalProperties." +
+                            valueRequiredErrorMessage={ t("console:manage.features.claims.local.additionalProperties." +
                                 "valueRequiredErrorMessage") }
                             requiredField={ true }
                             update={ (data) => {
@@ -92,10 +92,10 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
                                         {
-                                            description: t("adminPortal:components.claims.local.notifications." +
+                                            description: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.description"),
                                             level: AlertLevels.SUCCESS,
-                                            message: t("adminPortal:components.claims.local.notifications." +
+                                            message: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.message")
                                         }
                                     ));
@@ -104,11 +104,11 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                     dispatch(addAlert(
                                         {
                                             description: error?.description
-                                                || t("adminPortal:components.claims.local.notifications." +
+                                                || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.description"),
                                             level: AlertLevels.ERROR,
                                             message: error?.message
-                                                || t("adminPortal:components.claims.local.notifications." +
+                                                || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.message")
                                         }
                                     ));

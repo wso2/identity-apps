@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface } from "@wso2is/core/models";
+import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import {
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
@@ -260,18 +261,104 @@ export interface ApplicationTemplateListItemInterface {
     subTemplatesSectionTitle?: string;
 }
 
+export interface ApplicationTemplateGroupInterface {
+    /**
+     * Application template group category.
+     */
+    category?: string;
+    /**
+     * Group Description.
+     */
+    description?: string;
+    /**
+     * Group id.
+     */
+    id: string;
+    /**
+     * Group Image.
+     */
+    image?: string;
+    /**
+     * Template group name.
+     */
+    name: string;
+    /**
+     * List of Sub templates.
+     * ex: `OIDC Web Application` under `Web Application` template.
+     */
+    subTemplates?: ApplicationTemplateListItemInterface[];
+    /**
+     * Title for the sub template selection section inside the wizard.
+     */
+    subTemplatesSectionTitle?: string;
+}
+
+/**
+ * Interface for application template categories.
+ */
+export interface ApplicationTemplateCategoryInterface {
+    /**
+     * Category id.
+     */
+    id: string;
+    /**
+     * Category Display Name.
+     */
+    displayName: string;
+    /**
+     * Category Description.
+     */
+    description: string;
+    /**
+     * Templates belonging to the category.
+     */
+    templates?: ApplicationTemplateInterface[];
+    /**
+     * View configurations.
+     */
+    viewConfigs?: ApplicationTemplateCategoryViewConfigInterface;
+}
+
+/**
+ * Interface for the application templates category view config.
+ */
+export interface ApplicationTemplateCategoryViewConfigInterface {
+    /**
+     * Config for the UI tags displayed on templates.
+     */
+    tags: {
+        /**
+         * Element to render the tag as.
+         */
+        as: "icon" | "label" | "default";
+        /**
+         * Show/Hide the tag icon.
+         */
+        showTagIcon: boolean;
+        /**
+         * Show/Hide the tags.
+         */
+        showTags: boolean;
+        /**
+         * Where to find the tags in the templates object.
+         */
+        tagsKey: string;
+    };
+}
+
 /**
  *  Application template list interface.
  */
 export interface ApplicationTemplateListInterface {
-    templates: ApplicationTemplateListItemInterface[];
+    templates: ApplicationTemplateInterface[];
 }
 
 /**
  *  Contains Application template data.
  */
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
-    application: MainApplicationInterface;
+    application?: MainApplicationInterface;
+    wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
 /**
@@ -298,22 +385,30 @@ export enum ApplicationTemplateCategories {
      */
     DEFAULT = "DEFAULT",
     /**
-     * For default templates groups.
-     * ex: web-application, mobile, desktop etc.
-     * @type {string}
-     */
-    DEFAULT_GROUP = "DEFAULT_GROUP",
-    /**
      * Vendor templates.
      * ex: Zoom, Salesforce etc.
      * @type {string}
      */
     VENDOR = "VENDOR",
+}
+
+/**
+ * Enum for application template loading strategies.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApplicationTemplateLoadingStrategies {
     /**
-     * Templates added manually which are not available in the API.
+     * App will resort to in app templates.
      * @type {string}
      */
-    MANUAL = "MANUAL"
+    LOCAL = "LOCAL",
+    /**
+     * App will fetch templates from the template management REST API.
+     * @type {string}
+     */
+    REMOTE = "REMOTE"
 }
 
 /**

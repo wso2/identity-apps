@@ -119,9 +119,9 @@
 
     // Login context request url.
     String sessionDataKey = request.getParameter("sessionDataKey");
-    String relyingParty = request.getParameter("relyingParty");
-    String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + sessionDataKey + "&relyingParty="
-            + relyingParty;
+    String appName = request.getParameter("sp");
+    String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + sessionDataKey + "&application="
+            + appName;
     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;

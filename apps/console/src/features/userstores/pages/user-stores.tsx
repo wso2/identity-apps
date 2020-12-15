@@ -119,11 +119,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
                             ".description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
         });
@@ -226,13 +226,13 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("adminPortal:components.userstores.pageLayout.list.primaryAction") }
+                        { t("console:manage.features.userstores.pageLayout.list.primaryAction") }
                     </PrimaryButton>
                 )
             }
             isLoading={ isLoading }
-            title={ t("adminPortal:components.userstores.pageLayout.list.title") }
-            description={ t("adminPortal:components.userstores.pageLayout.list.description") }
+            title={ t("console:manage.features.userstores.pageLayout.list.title") }
+            description={ t("console:manage.features.userstores.pageLayout.list.description") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -252,19 +252,19 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                            t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                 ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                            t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                 ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                            t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                 ".filterValue.placeholder")
                         }
                         placeholder={
-                            t("adminPortal:components.userstores.advancedSearch.placeholder")
+                            t("console:manage.features.userstores.advancedSearch.placeholder")
                         }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
@@ -305,19 +305,19 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                t("console:manage.features.userstores.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("adminPortal:components.userstores.advancedSearch.placeholder")
+                                t("console:manage.features.userstores.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"

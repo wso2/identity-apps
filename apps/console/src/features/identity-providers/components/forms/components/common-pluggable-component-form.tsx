@@ -252,9 +252,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="customProperties"
-                            label={ t("devPortal:components.idp.forms.common.customProperties") }
+                            label={ t("console:develop.features.idp.forms.common.customProperties") }
                             required={ false }
-                            requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                            requiredErrorMessage={ t("console:develop.features.idp.forms.common.requiredErrorMessage") }
                             type="queryParams"
                             value={ getCustomProperties() }
                             data-testid={ `${ testId }-${ "customProperties" }` }

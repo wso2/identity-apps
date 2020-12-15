@@ -65,16 +65,16 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
                                 name="jwksUrl"
                                 label="JWKS Endpoint"
                                 required={ true }
-                                requiredErrorMessage={ t("devPortal:components.idp.forms." +
+                                requiredErrorMessage={ t("console:develop.features.idp.forms." +
                                     "advancedConfigs.certificateType.certificateJWKS.validations.empty") }
-                                placeholder={ t("devPortal:components.idp.forms.advancedConfigs." +
+                                placeholder={ t("console:develop.features.idp.forms.advancedConfigs." +
                                     "certificateType.certificateJWKS.placeholder") }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("devPortal:components.idp.forms.common." +
+                                            t("console:develop.features.idp.forms.common." +
                                                 "invalidQueryParamErrorMessage")
                                         );
                                     }

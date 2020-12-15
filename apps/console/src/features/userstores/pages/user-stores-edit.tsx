@@ -18,12 +18,11 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout, ResourceTab } from "@wso2is/react-components";
+import { GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Image } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getAType, getAUserStore } from "../api";
 import {
@@ -32,7 +31,7 @@ import {
     EditGroupDetails,
     EditUserDetails
 } from "../components";
-import { DatabaseAvatarGraphic } from "../configs";
+import { getDatabaseAvatarGraphic } from "../configs";
 import { CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { reOrganizeProperties } from "../utils";
 
@@ -84,11 +83,11 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
                             ".description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
+                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
         });
@@ -105,11 +104,11 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstoreMetadata." +
+                        || t("console:manage.features.userstores.notifications.fetchUserstoreMetadata." +
                             "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstoreMetadata" +
+                        || t("console:manage.features.userstores.notifications.fetchUserstoreMetadata" +
                             ".genericError.message")
                 }));
             });
@@ -127,7 +126,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
      */
     const panes = [
         {
-            menuItem:  t ("adminPortal:components.userstores.pageLayout.edit.tabs.general"),
+            menuItem:  t ("console:manage.features.userstores.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditBasicDetailsUserStore
@@ -141,7 +140,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.connection"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.connection"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditConnectionDetails
@@ -155,7 +154,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.user"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.user"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditUserDetails
@@ -169,7 +168,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.group"),
+            menuItem: t("console:manage.features.userstores.pageLayout.edit.tabs.group"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditGroupDetails
@@ -187,23 +186,23 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     return (
         <PageLayout
             image={
-                <Image
-                    floated="left"
-                    verticalAlign="middle"
-                    rounded
-                    centered
-                    size="tiny"
-                >
-                    <DatabaseAvatarGraphic />
-                </Image>
+                <GenericIcon
+                    bordered
+                    defaultIcon
+                    size="x60"
+                    relaxed="very"
+                    shape="rounded"
+                    hoverable={ false }
+                    icon={ getDatabaseAvatarGraphic() }
+                />
             }
             title={ userStore?.name }
-            description={ t("adminPortal:components.userstores.pageLayout.edit.description") }
+            description={ t("console:manage.features.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
-                text: t ("adminPortal:components.userstores.pageLayout.edit.back")
+                text: t ("console:manage.features.userstores.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

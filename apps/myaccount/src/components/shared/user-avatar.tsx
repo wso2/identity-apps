@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useSVGPromise } from "@wso2is/core/hooks";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -24,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Button, Dimmer, Form, Icon, Modal, Popup } from "semantic-ui-react";
 import { Avatar, AvatarProps } from "./avatar";
 import { updateProfileInfo } from "../../api";
-import { ThirdPartyLogos } from "../../configs";
+import { getThirdPartyLogos } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
 import { resolveUserDisplayName } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
@@ -78,6 +79,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     const [ showEditModal, setShowEditModal ] = useState(false);
     const [ url, setUrl ] = useState("");
     const [ urlError, setUrlError ] = useState(Error.NONE);
+    const [ gravatarLogoAsDataURL ] = useSVGPromise(getThirdPartyLogos().gravatar);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -118,7 +120,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const resolveTopLabel = (): string => {
         if (isGravatarURL()) {
-            return ThirdPartyLogos.gravatar;
+            return gravatarLogoAsDataURL;
         }
 
         return null;
@@ -185,11 +187,11 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.description"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.message"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -236,7 +238,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      * Show Edit Modal
      */
     const editModal = () => {
-        const fieldName = t("userPortal:components.profile.fields."
+        const fieldName = t("myAccount:components.profile.fields."
             + urlSchema.name.replace(".", "_"),
             { defaultValue: urlSchema.displayName }
         );
@@ -249,7 +251,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                 onClose={ closeModal }
             >
                 <Modal.Content>
-                    <h3>{ t("userPortal:components.userAvatar.urlUpdateHeader") }</h3>
+                    <h3>{ t("myAccount:components.userAvatar.urlUpdateHeader") }</h3>
                     <Form>
                         <Form.Input
                             value={ url }
@@ -260,7 +262,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                 urlError === Error.VALIDATION
                                     ? {
                                         content: t(
-                                            "userPortal:components.profile.forms." +
+                                            "myAccount:components.profile.forms." +
                                             "generic.inputs.validations.invalidFormat",
                                             {
                                                 fieldName
@@ -271,7 +273,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                     : urlError === Error.REQUIRED
                                         ? {
                                             content: t(
-                                                "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                                                "myAccount:components.profile.forms.generic.inputs.validations.empty",
                                                 {
                                                     fieldName
                                                 }
@@ -280,7 +282,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                         }
                                         : false
                             }
-                            placeholder={ t("userPortal:components.profile.forms.generic.inputs.placeholder", {
+                            placeholder={ t("myAccount:components.profile.forms.generic.inputs.placeholder", {
                                 fieldName
                             }) }
                         />

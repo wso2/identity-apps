@@ -72,11 +72,11 @@ export const DialectDetails: FunctionComponent<DialectDetailsPropsInterface> = (
             <Field
                 type="text"
                 name="dialectURI"
-                label={ t("adminPortal:components.claims.dialects.forms.dialectURI.label") }
+                label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }
                 required={ true }
-                requiredErrorMessage={ t("adminPortal:components.claims.dialects." +
+                requiredErrorMessage={ t("console:manage.features.claims.dialects." +
                     "forms.dialectURI.requiredErrorMessage") }
-                placeholder={ t("adminPortal:components.claims.dialects.forms.dialectURI.placeholder") }
+                placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder") }
                 value={ values?.get("dialectURI")?.toString() }
                 data-testid={ `${ testId }-form-dialect-uri-input` }
             />

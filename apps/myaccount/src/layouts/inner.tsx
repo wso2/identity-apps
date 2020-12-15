@@ -20,6 +20,7 @@ import { CommonUtils } from "@wso2is/core/utils";
 import { ErrorBoundary, LinkButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Responsive } from "semantic-ui-react";
 import {
     Alert,
     AppFooter,
@@ -29,7 +30,7 @@ import {
     PageHeader,
     SidePanelWrapper
 } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
+import { getEmptyPlaceholderIllustrations } from "../configs";
 
 /**
  * Inner page layout component Prop types.
@@ -101,16 +102,16 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                             <EmptyPlaceholder
                                 action={ (
                                     <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                        { t("userPortal:placeholders.genericError.action") }
+                                        { t("myAccount:placeholders.genericError.action") }
                                     </LinkButton>
                                 ) }
-                                image={ EmptyPlaceholderIllustrations.genericError }
+                                image={ getEmptyPlaceholderIllustrations().genericError }
                                 imageSize="tiny"
                                 subtitle={ [
-                                    t("userPortal:placeholders.genericError.subtitles.0"),
-                                    t("userPortal:placeholders.genericError.subtitles.1")
+                                    t("myAccount:placeholders.genericError.subtitles.0"),
+                                    t("myAccount:placeholders.genericError.subtitles.1")
                                 ] }
-                                title={ t("userPortal:placeholders.genericError.title") }
+                                title={ t("myAccount:placeholders.genericError.title") }
                             />
                         ) }
                     >
@@ -124,7 +125,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                 </SidePanelWrapper>
             </div>
             <Alert dismissInterval={ 5 } alertsPosition="br" />
-            <AppFooter/>
+            <Responsive minWidth={ 767 }>
+                <AppFooter/>
+            </Responsive>
         </>
     );
 };

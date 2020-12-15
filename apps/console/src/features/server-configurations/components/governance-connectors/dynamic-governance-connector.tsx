@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import get from "lodash/get";
 import kebabCase from "lodash/kebabCase";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
-import { GovernanceConnectorIllustrations } from "../../configs";
+import { getGovernanceConnectorIllustrations } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -54,18 +54,39 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const { t } = useTranslation();
 
+    const [ connectorIllustration, setConnectorIllustration ]  = useState<string>(undefined);
+
+    /**
+     * Set the connector illustration.
+     */
+    useEffect(() => {
+        if (!connector || !connector.id) {
+            return;
+        }
+
+        const illustration: Promise<SVGRLoadedInterface>  = get(getGovernanceConnectorIllustrations(), connector.id,
+            getGovernanceConnectorIllustrations()?.default);
+        
+        if (illustration) {
+            illustration
+                .then((image: SVGRLoadedInterface) => {
+                    setConnectorIllustration(image.default);
+                });
+        }
+    }, [ connector, getGovernanceConnectorIllustrations ]);
+
     const handleUpdateError = (error) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
                     description: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.error.description",
                         { description: error.response.data.description }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.governanceConnectors.notifications." + "updateConnector.error.message"
+                        "console:manage.features.governanceConnectors.notifications." + "updateConnector.error.message"
                     )
                 })
             );
@@ -74,12 +95,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             dispatch(
                 addAlert({
                     description: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -103,13 +124,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 dispatch(
                     addAlert({
                         description: t(
-                            "adminPortal:components.governanceConnectors.notifications." +
+                            "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
                             { name: connector.friendlyName }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.governanceConnectors.notifications." +
+                            "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -146,23 +167,6 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         />
     );
 
-    /**
-     * Default illustration for connector illustrations.
-     *
-     * @param {string} id - Connector id
-     * @return {ReactElement | string} Resolved connector illustration
-     */
-    const resolveConnectorIllustration = (id: string): ReactElement | string => {
-
-        const illustration = get(GovernanceConnectorIllustrations, id);
-
-        if (!illustration) {
-            return GovernanceConnectorIllustrations.default;
-        }
-
-        return illustration;
-    };
-
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -173,13 +177,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                                 <div
                                     className="connector-section-with-image-bg"
                                     style={ {
-                                        background: `url(${ resolveConnectorIllustration(connector?.id) })`
+                                        background: `url(${ connectorIllustration })`
                                     } }
                                 >
                                     <Header>
                                         { connector?.friendlyName }
                                         <Header.Subheader>
-                                            { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                                            { t("console:manage.features.governanceConnectors.connectorSubHeading", {
                                                 name: connector?.friendlyName
                                             }) }
                                         </Header.Subheader>

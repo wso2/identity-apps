@@ -102,16 +102,16 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                 <Field
                                     name="audience"
                                     label={
-                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                             ".audience.label")
                                     }
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundWSTrust" +
+                                        t("console:develop.features.applications.forms.inboundWSTrust" +
                                             ".fields.audience.validations.empty")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                             ".audience.placeholder")
                                     }
                                     type="text"
@@ -121,7 +121,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                 />
 
                                 <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
-                                    { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".audience.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -130,14 +130,14 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     label={
-                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                             ".certificateAlias.label")
                                     }
                                     name="certificateAlias"
                                     type="dropdown"
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                             ".certificateAlias.validations.empty")
                                     }
                                     default={ metadata?.certificateAlias.defaultValue }
@@ -149,7 +149,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     data-testid={ `${ testId }-certificate-alias-dropdown` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".certificateAlias.hint") }
                                 </Hint>
                             </Grid.Column>

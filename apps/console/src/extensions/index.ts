@@ -17,5 +17,7 @@
  */
 
 export * from "./extension";
+export * from "./extensions-manager";
 export * from "./extension-menu";
 export * from "./component-extension";
+export * from "./models";

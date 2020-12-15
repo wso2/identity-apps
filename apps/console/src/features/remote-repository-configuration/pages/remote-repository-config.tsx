@@ -39,7 +39,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
-import { EmptyPlaceholderIllustrations, SectionIllustrations } from "../configs";
+import { getEmptyPlaceholderIllustrations, getSectionIllustrations } from "../configs";
 import {
     InterfaceRemoteConfigDetails,
     InterfaceRemoteConfigForm,
@@ -599,7 +599,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 <div
                                                     className="connector-section-with-image-bg"
                                                     style={ {
-                                                        background: `url(${ SectionIllustrations.appConfigRepo })`
+                                                        background: `url(${ getSectionIllustrations().appConfigRepo })`
                                                     } }
                                                 >
                                                     <Header>
@@ -645,7 +645,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                     t("console:manage.features.remoteFetch.placeholders." +
                                                         "emptyListPlaceholder.subtitles")
                                                 ] }
-                                                image={ EmptyPlaceholderIllustrations.add }
+                                                image={ getEmptyPlaceholderIllustrations().add }
                                                 imageSize="tiny"
                                             />
                                         }
@@ -668,7 +668,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         (
                             <p>
                                 <Trans
-                                    i18nKey={ "devPortal:components:remoteConfig.list.confirmations.deleteItem." +
+                                    i18nKey={ "console:manage.features.remoteConfig.list.confirmations.deleteItem." +
                                     "assertionHint" }
                                     tOptions={ { roleName: remoteRepoConfigDetail?.remoteFetchName } }
                                 >
@@ -687,13 +687,13 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     } }
                 >
                     <ConfirmationModal.Header>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.header") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.message") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.content") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             }

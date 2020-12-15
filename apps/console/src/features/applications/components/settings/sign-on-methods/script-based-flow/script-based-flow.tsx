@@ -208,12 +208,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
                         <Heading as="h5">
-                            { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                            { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                 ".authenticationFlow.sections.scriptBased.heading") }
                         </Heading>
                         { !readOnly && (
                             <Hint>
-                                { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                     ".authenticationFlow.sections.scriptBased.hint") }
                             </Hint>
                         )}
@@ -225,7 +225,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             { !readOnly && (
                                 <ScriptTemplatesSidePanel
                                     title={
-                                        t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                             ".authenticationFlow.sections.scriptBased.editor.templates.heading")
                                     }
                                     ref={ authTemplatesSidePanelRef }
@@ -244,7 +244,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         <Menu.Item>
                                             <Checkbox
                                                 label={
-                                                    t("devPortal:components.applications.edit.sections" +
+                                                    t("console:develop.features.applications.edit.sections" +
                                                         ".signOnMethod.sections.authenticationFlow.sections" +
                                                         ".scriptBased.editor.templates.darkMode")
                                                 }

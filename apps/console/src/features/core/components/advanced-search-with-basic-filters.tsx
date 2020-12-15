@@ -23,7 +23,7 @@ import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { AdvancedSearchIcons } from "../configs";
+import { getAdvancedSearchIcons } from "../configs";
 
 /**
  * Filter attribute field identifier.
@@ -219,17 +219,17 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("adminPortal:components.advancedSearch.popups.clear") }
-            clearIcon={ AdvancedSearchIcons.clear }
+            clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
+            clearIcon={ getAdvancedSearchIcons().clear }
             defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
-            dropdownTriggerPopupLabel={ t("adminPortal:components.advancedSearch.popups.dropdown") }
-            hintActionKeys={ t("adminPortal:components.advancedSearch.hints.querySearch.actionKeys") }
-            hintLabel={ t("adminPortal:components.advancedSearch.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
+            hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
+            hintLabel={ t("console:common.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("adminPortal:components.advancedSearch.options.header") }
+            searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
@@ -256,17 +256,17 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 }
                                 // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
-                                label={ t("adminPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
+                                label={ t("console:common.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
                                     filterAttributePlaceholder
                                         ? filterAttributePlaceholder
-                                        : t("adminPortal:components.advancedSearch.form.inputs.filterAttribute" +
+                                        : t("console:common.advancedSearch.form.inputs.filterAttribute" +
                                         ".placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("adminPortal:components.advancedSearch.form.inputs.filterAttribute" +
+                                    t("console:common.advancedSearch.form.inputs.filterAttribute" +
                                         ".validations.empty")
                                 }
                                 type="dropdown"
@@ -292,32 +292,32 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                             })
                                     }
                                     label={
-                                        t("adminPortal:components.advancedSearch.form.inputs.filterCondition.label")
+                                        t("console:common.advancedSearch.form.inputs.filterCondition.label")
                                     }
                                     name={ FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
                                             ? filterConditionsPlaceholder
-                                            : t("adminPortal:components.advancedSearch.form.inputs.filterCondition" +
+                                            : t("console:common.advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
                                         ".filterCondition.validations.empty") }
                                     type="dropdown"
                                     data-testid={ `${ testId }-filter-condition-dropdown` }
                                 />
                                 <Field
-                                    label={ t("adminPortal:components.advancedSearch.form.inputs.filterValue.label") }
+                                    label={ t("console:common.advancedSearch.form.inputs.filterValue.label") }
                                     name={ FILTER_VALUES_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterValuePlaceholder
                                             ? filterValuePlaceholder
-                                            : t("adminPortal:components.advancedSearch.form.inputs.filterValue" +
+                                            : t("console:common.advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
                                         ".filterValue.validations.empty") }
                                     type="text"
                                     data-testid={ `${ testId }-filter-value-input` }

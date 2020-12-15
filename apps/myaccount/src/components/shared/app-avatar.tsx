@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Avatar, AvatarProps } from "./avatar";
-import { AppIconBackgrounds } from "../../configs";
+import { getAppIconBackgrounds } from "../../configs";
 
 /**
  * Prop types for the App Avatar component.
@@ -69,7 +69,7 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
             data-testid={ testId }
             avatarType="app"
             className={ appAvatarClassNames }
-            style={ onCard ? {} : { backgroundImage: `url(${ AppIconBackgrounds.orange })` } }
+            style={ onCard ? {} : { backgroundImage: `url(${ getAppIconBackgrounds().orange })` } }
             bordered
             avatar
             name={ name }

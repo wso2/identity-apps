@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { store } from "../../../core";
-import { HelpPanelIcons } from "../../configs";
+import { getHelpPanelIcons } from "../../configs";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 
 /**
@@ -65,7 +65,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.issuer }
+                            icon={ getHelpPanelIcons().endpoints.issuer }
                             size="micro"
                             square
                             transparent
@@ -75,7 +75,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-issuer-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.issuer") }
                         </label>
                     </Grid.Column>
@@ -90,7 +90,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.samlSSO }
+                            icon={ getHelpPanelIcons().endpoints.samlSSO }
                             size="micro"
                             square
                             transparent
@@ -100,7 +100,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-sso-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.sso") }
                         </label>
                     </Grid.Column>
@@ -115,7 +115,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.samlSLO }
+                            icon={ getHelpPanelIcons().endpoints.samlSLO }
                             size="micro"
                             square
                             transparent
@@ -125,7 +125,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-slo-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.slo") }
                         </label>
                     </Grid.Column>
@@ -140,7 +140,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.certificate }
+                            icon={ getHelpPanelIcons().endpoints.certificate }
                             size="micro"
                             square
                             transparent
@@ -150,7 +150,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-certificate-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.certificate") }
                         </label>
                     </Grid.Column>
@@ -165,7 +165,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                 tenantName, samlConfigurations?.certificate) }
                         >
                             <Icon name="download" />
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.certificate") }
                         </Button>
                     </Grid.Column>
@@ -173,7 +173,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.metadata }
+                            icon={ getHelpPanelIcons().endpoints.metadata }
                             size="micro"
                             square
                             transparent
@@ -183,7 +183,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-metadata-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.metadata") }
                         </label>
                     </Grid.Column>
@@ -196,7 +196,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             onClick={ exportMetadataFile }
                         >
                             <Icon name="download" />
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.metadata") }
                         </Button>
                     </Grid.Column>

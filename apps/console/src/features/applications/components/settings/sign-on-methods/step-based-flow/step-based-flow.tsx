@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { OperationIcons } from "../../../../../core";
+import { getOperationIcons } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
@@ -204,10 +204,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (options.find((option) => option.authenticator === authenticator?.defaultAuthenticator?.name)) {
             dispatch(addAlert({
-                description: t("devPortal:components.applications.notifications.duplicateAuthenticationStep" +
+                description: t("console:develop.features.applications.notifications.duplicateAuthenticationStep" +
                     ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.applications.notifications.duplicateAuthenticationStep" +
+                message: t("console:develop.features.applications.notifications.duplicateAuthenticationStep" +
                     ".genericError.message")
             }));
 
@@ -308,10 +308,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (steps.length <= 1) {
             dispatch(addAlert({
-                description: t("devPortal:components.applications.notifications.authenticationStepMin" +
+                description: t("console:develop.features.applications.notifications.authenticationStepMin" +
                     ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.applications.notifications.authenticationStepMin.genericError" +
+                message: t("console:develop.features.applications.notifications.authenticationStepMin.genericError" +
                     ".message")
             }));
 
@@ -378,10 +378,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (found) {
             dispatch(addAlert({
-                description: t("devPortal:components.applications.notifications.emptyAuthenticationStep" +
+                description: t("console:develop.features.applications.notifications.emptyAuthenticationStep" +
                     ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.applications.notifications.emptyAuthenticationStep.genericError" +
+                message: t("console:develop.features.applications.notifications.emptyAuthenticationStep.genericError" +
                     ".message")
             }));
 
@@ -409,16 +409,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         <Grid.Row>
                             <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 14 }>
                                 <Heading as="h4">
-                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.heading") }
                                 </Heading>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.heading") }
                                 </Heading>
                                 { !readOnly && (
                                     <Hint>
-                                        { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                             ".authenticationFlow.sections.stepBased.hint") }
                                     </Hint>
                                 )}
@@ -440,8 +440,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                             <GenericIcon
                                                                 icon={
                                                                     showAuthenticatorsSidePanel
-                                                                        ? OperationIcons.minimize
-                                                                        : OperationIcons.maximize
+                                                                        ? getOperationIcons().minimize
+                                                                        : getOperationIcons().maximize
                                                                 }
                                                                 size="nano"
                                                                 transparent
@@ -468,13 +468,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     inline
                                                     compact
                                                     label={
-                                                        t("devPortal:components.applications.edit.sections" +
+                                                        t("console:develop.features.applications.edit.sections" +
                                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                                             ".stepBased.forms.fields.subjectIdentifierFrom.label")
                                                     }
                                                     className="mr-2"
                                                     placeholder={
-                                                        t("devPortal:components.applications.edit.sections" +
+                                                        t("console:develop.features.applications.edit.sections" +
                                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                                             ".stepBased.forms.fields.subjectIdentifierFrom" +
                                                             ".placeholder")
@@ -509,13 +509,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     inline
                                                     compact
                                                     label={
-                                                        t("devPortal:components.applications.edit.sections" +
+                                                        t("console:develop.features.applications.edit.sections" +
                                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                                             ".stepBased.forms.fields.attributesFrom.label")
                                                     }
                                                     className="mr-2"
                                                     placeholder={
-                                                        t("devPortal:components.applications.edit.sections" +
+                                                        t("console:develop.features.applications.edit.sections" +
                                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                                             ".stepBased.forms.fields.attributesFrom.placeholder")
                                                     }
@@ -546,7 +546,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             data-testid={ `${ testId }-new-authentication-step-button` }
                                         >
                                             <Icon name="add"/>
-                                            { t("devPortal:components.applications.edit.sections.signOnMethod" +
+                                            { t("console:develop.features.applications.edit.sections.signOnMethod" +
                                                 ".sections.authenticationFlow.sections.stepBased.actions.addStep") }
                                         </PrimaryButton>
                                     </Grid.Column>

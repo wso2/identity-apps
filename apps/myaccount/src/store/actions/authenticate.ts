@@ -22,7 +22,7 @@ import {
     Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
-    ResponseModeTypes,
+    ResponseMode,
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
@@ -39,11 +39,7 @@ import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
-import {
-    getProfileInfo,
-    getUserReadOnlyStatus,
-    switchAccount
-} from "../../api";
+import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { CommonConstants } from "../../constants";
 import {
@@ -176,10 +172,10 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             } catch (e) {
                                 dispatch(
                                     addAlert({
-                                        description: I18n.instance.t("userPortal:components.profile.notifications" +
+                                        description: I18n.instance.t("myAccount:components.profile.notifications" +
                                             ".getProfileCompletion.genericError.description"),
                                         level: AlertLevels.ERROR,
-                                        message: I18n.instance.t("userPortal:components.profile.notifications" +
+                                        message: I18n.instance.t("myAccount:components.profile.notifications" +
                                             ".getProfileCompletion.genericError.message")
                                     })
                                 );
@@ -192,11 +188,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -206,12 +202,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             addAlert({
                                 description: I18n.instance.t(
-                                    "userPortal:components.profile.notifications.getProfileInfo.error.description",
+                                    "myAccount:components.profile.notifications.getProfileInfo.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "userPortal:components.profile.notifications.getProfileInfo.error.message"
+                                    "myAccount:components.profile.notifications.getProfileInfo.error.message"
                                 )
                             })
                         );
@@ -222,11 +218,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
+                                "myAccount:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -241,13 +237,13 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     description:
                         error?.description ??
                         I18n.instance.t(
-                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
+                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.message ??
                         I18n.instance.t(
-                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
+                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
                         )
                 })
             );
@@ -258,9 +254,9 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
     const auth = IdentityClient.getInstance();
 
-    const responseModeFallback: ResponseModeTypes = process.env.NODE_ENV === "production"
-        ? "form_post"
-        : "query";
+    const responseModeFallback: ResponseMode = process.env.NODE_ENV === "production"
+        ? ResponseMode.formPost
+        : ResponseMode.query;
 
     const storageFallback: Storage = new UAParser().getBrowser().name === "IE"
         ? Storage.SessionStorage
@@ -348,6 +344,10 @@ export const initializeAuthentication = () =>(dispatch)=> {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
+            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
+            customParams :  {
+                t : window["AppUtils"].getTenantName(true)
+            },
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {

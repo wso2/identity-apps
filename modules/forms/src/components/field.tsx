@@ -253,8 +253,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                             : false
                     }
                     autoFocus={ inputField.autoFocus || false }
-                    readOnly={ inputField.readOnly }
-                    disabled={ inputField.disabled }
+                    disabled={ inputField.readOnly }
                     required={ inputField.label ? inputField.required : false }
                     onKeyPress={ (event: React.KeyboardEvent) => {
                         event.key === ENTER_KEY && handleBlur(event, inputField.name);

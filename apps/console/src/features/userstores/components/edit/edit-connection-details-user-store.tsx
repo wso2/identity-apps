@@ -232,10 +232,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         patchUserStore(id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.userstores.notifications." +
+                    description: t("console:manage.features.userstores.notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.userstores.notifications." +
+                    message: t("console:manage.features.userstores.notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -244,9 +244,9 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
+                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("adminPortal:components.userstores.notifications.updateDelay.message")
+                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the userstore details
@@ -255,10 +255,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             .catch(error => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications." +
+                        || t("console:manage.features.userstores.notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("adminPortal:components.userstores.notifications." +
+                    message: error?.message || t("console:manage.features.userstores.notifications." +
                         "updateUserstore.genericError.message")
                 }));
             });
@@ -298,7 +298,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
                                                     placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
+                                                        t("console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -317,14 +317,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -343,14 +343,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         required={ true }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -401,21 +401,21 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     setIsTesting(false);
                                                     if (response?.connection) {
                                                         dispatch(addAlert({
-                                                            description: t("adminPortal:components.userstores" +
+                                                            description: t("console:manage.features.userstores" +
                                                                 ".notifications.testConnection.success.description"),
                                                             level: AlertLevels.SUCCESS,
-                                                            message: t("adminPortal:components.userstores." +
+                                                            message: t("console:manage.features.userstores." +
                                                                 "notifications.testConnection.success.message")
                                                         }));
                                                         setConnectionFailed(false);
                                                         setConnectionSuccessful(true);
                                                     } else {
                                                         dispatch(addAlert({
-                                                            description: t("adminPortal:components.userstores." +
+                                                            description: t("console:manage.features.userstores." +
                                                                 "notifications.testConnection.genericError" +
                                                                 ".description"),
                                                             level: AlertLevels.ERROR,
-                                                            message: t("adminPortal:components." +
+                                                            message: t("console:manage.features." +
                                                                 "userstores.notifications.testConnection.genericError" +
                                                                 ".message")
                                                         }));
@@ -425,10 +425,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                 }).catch((error) => {
                                                     dispatch(addAlert({
                                                         description: error?.description
-                                                            || t("adminPortal:components.userstores.notifications." +
+                                                            || t("console:manage.features.userstores.notifications." +
                                                                 "testConnection.genericError.description"),
                                                         level: AlertLevels.ERROR,
-                                                        message: error?.message || t("adminPortal:components." +
+                                                        message: error?.message || t("console:manage.features." +
                                                             "userstores.notifications.testConnection.genericError" +
                                                             ".message")
                                                     }));
@@ -453,7 +453,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     : null
                                         }
                                     />
-                                    { t("adminPortal:components.userstores.forms.connection.testButton")}
+                                    { t("console:manage.features.userstores.forms.connection.testButton")}
                         </Button>
                             </Grid.Column>
                         </Grid.Row>
@@ -510,7 +510,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         showPassword={ t("common:showPassword") }
                                                         hidePassword={ t("common:hidePassword") }
                                                         placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
+                                                            t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -530,14 +530,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("adminPortal:components.userstores.forms." +
+                                                                t("console:manage.features.userstores.forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
                                                             placeholder={
-                                                                t("adminPortal:components.userstores.forms." +
+                                                                t("console:manage.features.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -557,14 +557,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("adminPortal:components.userstores.forms." +
+                                                                t("console:manage.features.userstores.forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
                                                             placeholder={
-                                                                t("adminPortal:components.userstores.forms." +
+                                                                t("console:manage.features.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]

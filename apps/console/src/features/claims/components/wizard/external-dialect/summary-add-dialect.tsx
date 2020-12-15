@@ -83,10 +83,10 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 <Table.HeaderCell>
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("adminPortal:components.claims.dialects.wizard.summary.externalAttribute") }
+                                    { t("console:manage.features.claims.dialects.wizard.summary.externalAttribute") }
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("adminPortal:components.claims.dialects.wizard.summary.mappedAttribute") }
+                                    { t("console:manage.features.claims.dialects.wizard.summary.mappedAttribute") }
                                 </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
@@ -122,7 +122,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign='center'>
                                             <Message warning>
-                                                { t("adminPortal:components.claims.dialects.wizard.summary.notFound") }
+                                                { t("console:manage.features.claims.dialects.wizard.summary.notFound") }
                                             </Message>
                                         </Table.Cell>
                                     </Table.Row>

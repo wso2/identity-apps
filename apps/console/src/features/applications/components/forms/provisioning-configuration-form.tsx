@@ -118,7 +118,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             }
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.provisioningConfig.fields" +
                                         ".proxyMode.label"),
                                     value: "modeOn"
                                 }
@@ -127,7 +127,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             data-testid={ `${ testId }-proxy-mode-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.provisioningConfig.fields.proxyMode" +
+                            { t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode" +
                                 ".hint") }
                         </Hint>
                     </Grid.Column>
@@ -137,7 +137,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                         <Field
                             name="provisioningUserstoreDomain"
                             label={
-                                t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                                t("console:develop.features.applications.forms.provisioningConfig.fields" +
                                     ".userstoreDomain.label")
                             }
                             required={ false }
@@ -151,7 +151,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                            { t("console:develop.features.applications.forms.provisioningConfig.fields" +
                                 ".userstoreDomain.hint") }
                         </Hint>
                     </Grid.Column>

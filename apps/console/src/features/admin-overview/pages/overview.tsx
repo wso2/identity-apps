@@ -36,9 +36,10 @@ import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
 import { GroupList } from "../../groups/components";
 import { GroupsInterface } from "../../groups/models";
+import { getServerConfigs, RealmConfigInterface } from "../../server-configurations";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
-import { OverviewPageIllustrations } from "../configs";
+import { getOverviewPageIllustrations } from "../configs";
 
 /**
  * Proptypes for the overview page component.
@@ -74,11 +75,13 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
     const [ userCount, setUsersCount ] = useState<number>(0);
     const [ groupCount, setGroupCount ] = useState<number>(0);
+    const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
 
     useEffect(() => {
         getUserstoresList(null, null, null, null);
         getUserList(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT, null, null, null, null);
         getGroupsList();
+        getAdminUser();
     }, []);
 
     const getUserList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
@@ -91,6 +94,16 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             })
             .finally(() => {
                 setUserListRequestLoading(false);
+            });
+    };
+
+    /**
+     * Util method to get super admin
+     */
+    const getAdminUser = () => {
+        getServerConfigs()
+            .then((response) => {
+                setRealmConfigs(response?.realmConfig);
             });
     };
 
@@ -147,11 +160,11 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                 dispatch(addAlert(
                     {
                         description: error?.description
-                            || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                            || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
                                 ".description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                            || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
                                 ".message")
                     }
                 ));
@@ -162,65 +175,65 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
         <>
             <Grid.Column className="with-bottom-gutters">
                 <StatsQuickLinksWidget
-                    heading={ t("adminPortal:components.overview.widgets.quickLinks.heading") }
-                    subHeading={ t("adminPortal:components.overview.widgets.quickLinks.subHeading") }
+                    heading={ t("console:manage.features.overview.widgets.quickLinks.heading") }
+                    subHeading={ t("console:manage.features.overview.widgets.quickLinks.subHeading") }
                     links={ [
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            description: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".groups.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards.groups" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards.groups" +
                                 ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.groups,
+                            image: getOverviewPageIllustrations().quickLinks.groups,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("GROUPS"));
                             }
                         },
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            description: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".roles.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards.roles" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards.roles" +
                                 ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.roles,
+                            image: getOverviewPageIllustrations().quickLinks.roles,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("ROLES"));
                             }
                         },
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            description: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".dialects.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".dialects.heading"),
-                            image: OverviewPageIllustrations.quickLinks.dialects,
+                            image: getOverviewPageIllustrations().quickLinks.dialects,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                             }
                         },
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            description: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".certificates.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".certificates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.certificates,
+                            image: getOverviewPageIllustrations().quickLinks.certificates,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("CERTIFICATES"));
                             }
                         },
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks" +
+                            description: t("console:manage.features.overview.widgets.quickLinks" +
                                 ".cards.generalConfigs.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".generalConfigs.heading"),
-                            image: OverviewPageIllustrations.quickLinks.generalConfigs,
+                            image: getOverviewPageIllustrations().quickLinks.generalConfigs,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("SERVER_CONFIGS"));
                             }
                         },
                         {
-                            description: t("adminPortal:components.overview.widgets.quickLinks" +
+                            description: t("console:manage.features.overview.widgets.quickLinks" +
                                 ".cards.emailTemplates.subHeading"),
-                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                            header: t("console:manage.features.overview.widgets.quickLinks.cards" +
                                 ".emailTemplates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.emailTemplates,
+                            image: getOverviewPageIllustrations().quickLinks.emailTemplates,
                             onClick: () => {
                                 history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"));
                             }
@@ -230,8 +243,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             </Grid.Column>
             <Grid.Column className="with-bottom-gutters">
                 <StatsInsightsWidget
-                    heading={ t("adminPortal:components.overview.widgets.insights.groups.heading") }
-                    subHeading={ t("adminPortal:components.overview.widgets.insights.groups.subHeading") }
+                    heading={ t("console:manage.features.overview.widgets.insights.groups.heading") }
+                    subHeading={ t("console:manage.features.overview.widgets.insights.groups.subHeading") }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
                     onPrimaryActionClick={ () => history.push(AppConstants.getPaths().get("GROUPS")) }
                     showExtraContent={ groupList instanceof Array && groupList.length > 0 }
@@ -250,8 +263,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             </Grid.Column>
             <Grid.Column className="with-bottom-gutters">
                 <StatsInsightsWidget
-                    heading={ t("adminPortal:components.overview.widgets.insights.users.heading") }
-                    subHeading={ t("adminPortal:components.overview.widgets.insights.users.subHeading") }
+                    heading={ t("console:manage.features.overview.widgets.insights.users.heading") }
+                    subHeading={ t("console:manage.features.overview.widgets.insights.users.subHeading") }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
                     onPrimaryActionClick={ () => history.push(AppConstants.getPaths().get("USERS")) }
                     showExtraContent={
@@ -264,6 +277,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         selection
                         defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
                         isLoading={ isUserListRequestLoading }
+                        realmConfigs={ realmConfigs }
                         usersList={ usersList }
                         onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.getPaths().get("USERS")) }
                         showListItemActions={ false }
@@ -301,47 +315,47 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         <Heading as="h1" ellipsis compact>
                             {
                                 t(
-                                    "adminPortal:pages.overview.title",
+                                    "console:manage.overview.title",
                                     { firstName: resolveUserDisplayName(profileInfo) }
                                 )
                             }
                         </Heading>
                         <Heading as="h5" subHeading ellipsis>
-                            { t("adminPortal:pages.overview.subTitle") }
+                            { t("console:manage.pages.overview.subTitle") }
                         </Heading>
                     </div>
                 </div>
             </Jumbotron>
             <Divider hidden />
             <StatsOverviewWidget
-                heading={ t("adminPortal:components.overview.widgets.overview.heading") }
-                subHeading={ t("adminPortal:components.overview.widgets.overview.subHeading") }
+                heading={ t("console:manage.features.overview.widgets.overview.heading") }
+                subHeading={ t("console:manage.features.overview.widgets.overview.subHeading") }
                 stats={ [
                     {
-                        icon: OverviewPageIllustrations.statsOverview.users,
+                        icon: getOverviewPageIllustrations().statsOverview.users,
                         iconOptions: {
                             background: "accent1",
                             fill: "white"
                         },
-                        label: t("adminPortal:components.overview.widgets.overview.cards.users.heading"),
+                        label: t("console:manage.features.overview.widgets.overview.cards.users.heading"),
                         value: userCount
                     },
                     {
-                        icon: OverviewPageIllustrations.statsOverview.groups,
+                        icon: getOverviewPageIllustrations().statsOverview.groups,
                         iconOptions: {
                             background: "accent2",
                             fill: "white"
                         },
-                        label: t("adminPortal:components.overview.widgets.overview.cards.groups.heading"),
+                        label: t("console:manage.features.overview.widgets.overview.cards.groups.heading"),
                         value: groupCount
                     },
                     {
-                        icon: OverviewPageIllustrations.statsOverview.userstores,
+                        icon: getOverviewPageIllustrations().statsOverview.userstores,
                         iconOptions: {
                             background: "accent3",
                             fill: "white"
                         },
-                        label: t("adminPortal:components.overview.widgets.overview.cards.userstores.heading"),
+                        label: t("console:manage.features.overview.widgets.overview.cards.userstores.heading"),
                         value: userstoresCount
                     }
                 ] }

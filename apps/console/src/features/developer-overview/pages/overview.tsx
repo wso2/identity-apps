@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useSVGPromise } from "@wso2is/core/hooks";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     GenericIcon,
@@ -27,8 +28,8 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider } from "semantic-ui-react";
-import { AppConstants, TechnologyLogos, UIConstants, history } from "../../core";
-import { OverviewPageImages } from "../configs";
+import { AppConstants, UIConstants, getTechnologyLogos, history } from "../../core";
+import { getOverviewPageImages } from "../configs";
 
 /**
  * Proptypes for the overview page component.
@@ -52,6 +53,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const { t } = useTranslation();
 
+    const [ jumbotronBGAsDataURL ] = useSVGPromise(getOverviewPageImages().jumbotron.background);
+
     return (
         <PageLayout contentTopMargin={ false }>
             <div className="developer-portal page overview-page">
@@ -59,13 +62,13 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     bordered
                     background="accent1"
                     className="with-animated-background"
-                    heading={ t("devPortal:components.overview.banner.heading") }
-                    subHeading={ t("devPortal:components.overview.banner.subHeading") }
+                    heading={ t("console:develop.overview.banner.heading") }
+                    subHeading={ t("console:develop.overview.banner.subHeading") }
                     textAlign="center"
                     matchedPadding={ false }
                     borderRadius={ 10 }
                     style={ {
-                        backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
+                        backgroundImage: `url(${ jumbotronBGAsDataURL })`
                     } }
                     data-testid={ `${ testId }-jumbotron` }
                 >
@@ -81,9 +84,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.angular") }
+                        label={ t("console:develop.technologies.angular") }
                         imageSize="x50"
-                        image={ TechnologyLogos.angular }
+                        image={ getTechnologyLogos().angular }
                         imageOptions={ {
                             fill: false
                         } }
@@ -93,9 +96,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.react") }
+                        label={ t("console:develop.technologies.react") }
                         imageSize="x50"
-                        image={ TechnologyLogos.react }
+                        image={ getTechnologyLogos().react }
                         imageOptions={ {
                             fill: false
                         } }
@@ -105,9 +108,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.windows") }
+                        label={ t("console:develop.technologies.windows") }
                         imageSize="x50"
-                        image={ TechnologyLogos.windows }
+                        image={ getTechnologyLogos().windows }
                         imageOptions={ {
                             fill: false
                         } }
@@ -117,9 +120,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.ios") }
+                        label={ t("console:develop.technologies.ios") }
                         imageSize="x50"
-                        image={ TechnologyLogos.ios }
+                        image={ getTechnologyLogos().ios }
                         imageOptions={ {
                             fill: false
                         } }
@@ -129,9 +132,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.python") }
+                        label={ t("console:develop.technologies.python") }
                         imageSize="x50"
-                        image={ TechnologyLogos.python }
+                        image={ getTechnologyLogos().python }
                         imageOptions={ {
                             fill: false
                         } }
@@ -141,9 +144,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.java") }
+                        label={ t("console:develop.technologies.java") }
                         imageSize="x50"
-                        image={ TechnologyLogos.java }
+                        image={ getTechnologyLogos().java }
                         imageOptions={ {
                             fill: false
                         } }
@@ -153,9 +156,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     <LabeledCard
                         basic
                         background="transparent"
-                        label={ t("devPortal:technologies.android") }
+                        label={ t("console:develop.technologies.android") }
                         imageSize="x50"
-                        image={ TechnologyLogos.android }
+                        image={ getTechnologyLogos().android }
                         imageOptions={ {
                             fill: false
                         } }
@@ -177,16 +180,16 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.applications }
+                            icon={ getOverviewPageImages().quickLinks.applications }
                             relaxed="very"
                             transparent
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
+                                { t("console:develop.overview.quickLinks.cards.applications.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.applications.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>
@@ -200,16 +203,16 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.idp }
+                            icon={ getOverviewPageImages().quickLinks.idp }
                             relaxed="very"
                             transparent
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
+                                { t("console:develop.overview.quickLinks.cards.idps.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.idps.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>
@@ -223,16 +226,16 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             square
                             fill="default"
                             size="x50"
-                            icon={ OverviewPageImages.quickLinks.remoteFetch }
+                            icon={ getOverviewPageImages().quickLinks.remoteFetch }
                             relaxed="very"
                             transparent
                         />
                         <Card.Content textAlign="center">
                             <Card.Header>
-                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
+                                { t("console:develop.overview.quickLinks.cards.remoteFetch.heading") }
                             </Card.Header>
                             <Card.Description>
-                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
+                                { t("console:develop.overview.quickLinks.cards.remoteFetch.subHeading") }
                             </Card.Description>
                         </Card.Content>
                     </Card>

@@ -80,7 +80,7 @@ export const meta: LocaleMeta = {
     code: "en-GB",
     flag: "gb",
     name: "English (United Kingdom)",
-    namespaces: [ "common", "devPortal", "userPortal" ]
+    namespaces: [ "common", "devPortal", "myAccount" ]
 };
 ```
 5. Export the bundle from the index.

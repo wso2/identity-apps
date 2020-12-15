@@ -21,10 +21,10 @@ import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, EmptyPlaceholderIllustrations, TechnologyLogos } from "../../../core";
-import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../configs";
+import { AppState, getEmptyPlaceholderIllustrations, getTechnologyLogos } from "../../../core";
+import { getApplicationTemplateIllustrations, getInboundProtocolLogos } from "../../configs";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../../utils";
 import { InboundProtocolsMeta } from "../meta";
 
 /**
@@ -120,7 +120,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
         setApplicationTemplateRequestLoadingStatus(true);
 
-        ApplicationManagementUtils.getApplicationTemplates()
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
@@ -234,20 +234,20 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             : []
                     }
                     templateIcons={ {
-                        ...ApplicationTemplateIllustrations,
-                        ...TechnologyLogos,
-                        ...InboundProtocolLogos
+                        ...getApplicationTemplateIllustrations(),
+                        ...getTechnologyLogos(),
+                        ...getInboundProtocolLogos()
                     } }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
                     templateIconSize="tiny"
                     heading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.quickSetup.heading")
                     }
                     subHeading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.quickSetup.subHeading")
                     }
                     onTemplateSelect={ handleTemplateSelection }
@@ -261,14 +261,14 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     useSelectionCard={ true }
                     emptyPlaceholder={ (
                         <EmptyPlaceholder
-                            image={ EmptyPlaceholderIllustrations.newList }
+                            image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
                             }
                             subtitle={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
                             }
                         />
@@ -281,17 +281,17 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     type="application"
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
-                    templateIcons={ InboundProtocolLogos }
+                    templateIcons={ getInboundProtocolLogos() }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
                     templateIconSize="tiny"
                     heading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.manualSetup.heading")
                     }
                     subHeading={
-                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.manualSetup.subHeading")
                     }
                     onTemplateSelect={ handleTemplateSelection }
@@ -307,14 +307,14 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     useSelectionCard={ true }
                     emptyPlaceholder={ (
                         <EmptyPlaceholder
-                            image={ EmptyPlaceholderIllustrations.newList }
+                            image={ getEmptyPlaceholderIllustrations().newList }
                             imageSize="tiny"
                             title={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
                             }
                             subtitle={
-                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                t("console:develop.features.applications.edit.sections.access.addProtocolWizard" +
                                     ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
                             }
                         />

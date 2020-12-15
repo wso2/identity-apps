@@ -22,7 +22,7 @@ import {
     Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
-    ResponseModeTypes,
+    ResponseMode,
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
@@ -70,10 +70,10 @@ export const getProfileInformation = (
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.genericError.description"
+                            "console:manage.notifications.getProfileInfo.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                        message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
                     })
                 );
 
@@ -96,7 +96,8 @@ export const getProfileInformation = (
                                 addAlert<AlertInterface>({
                                     description: error.response.data.description,
                                     level: AlertLevels.ERROR,
-                                    message: I18n.instance.t("adminPortal:notifications.getProfileSchema.error.message")
+                                    message: I18n.instance.t("console:manage.notifications.getProfileSchema." + 
+                                        "error.message")
                                 })
                             );
                         }
@@ -104,11 +105,11 @@ export const getProfileInformation = (
                         dispatch(
                             addAlert<AlertInterface>({
                                 description: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.description"
+                                    "console:manage.notifications.getProfileSchema.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.message"
+                                    "console:manage.notifications.getProfileSchema.genericError.message"
                                 )
                             })
                         );
@@ -124,11 +125,11 @@ export const getProfileInformation = (
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.description", {
+                        description: I18n.instance.t("console:manage.notifications.getProfileInfo.error.description", {
                             description: error.response.data.detail
                         }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.message")
+                        message: I18n.instance.t("console:manage.notifications.getProfileInfo.error.message")
                     })
                 );
 
@@ -137,9 +138,10 @@ export const getProfileInformation = (
 
             dispatch(
                 addAlert({
-                    description: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.description"),
+                    description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." + 
+                        "description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                    message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
                 })
             );
         })
@@ -152,9 +154,9 @@ export const initializeAuthentication = () => (dispatch) => {
 
     const auth = IdentityClient.getInstance();
 
-    const responseModeFallback: ResponseModeTypes = process.env.NODE_ENV === "production"
-        ? "form_post"
-        : "query";
+    const responseModeFallback: ResponseMode = process.env.NODE_ENV === "production"
+        ? ResponseMode.formPost
+        : ResponseMode.query;
 
     const storageFallback: Storage = new UAParser().getBrowser().name === "IE"
         ? Storage.SessionStorage
@@ -202,6 +204,10 @@ export const initializeAuthentication = () => (dispatch) => {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
+            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
+            customParams :  {
+                t : window["AppUtils"].getTenantName(true)
+            },
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {

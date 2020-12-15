@@ -20,7 +20,7 @@ import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 
@@ -47,13 +47,13 @@ const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): React
 
     return (
         <EmptyPlaceholder
-            image={ EmptyPlaceholderIllustrations.loginError }
+            image={ getEmptyPlaceholderIllustrations().loginError }
             imageSize="tiny"
             subtitle={ [
-                t("userPortal:placeholders.sessionStorageDisabled.subtitles.0"),
-                t("userPortal:placeholders.sessionStorageDisabled.subtitles.1")
+                t("myAccount:placeholders.sessionStorageDisabled.subtitles.0"),
+                t("myAccount:placeholders.sessionStorageDisabled.subtitles.1")
             ] }
-            title={ t("userPortal:placeholders.sessionStorageDisabled.title") }
+            title={ t("myAccount:placeholders.sessionStorageDisabled.title") }
         />
     );
 };

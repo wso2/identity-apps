@@ -106,19 +106,19 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h4">
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.heading") }
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
                                     name="subjectAttribute"
                                     label={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                             ".sections.subject.fields.subjectAttribute.label")
                                     }
                                     required={ claimMappingOn }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                             ".subject.fields.subjectAttribute.validations.empty")
                                     }
                                     type="dropdown"
@@ -128,7 +128,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-subject-attribute-dropdown` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.fields.subjectAttribute.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -142,13 +142,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     required={ false }
                                     value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                             ".subject.fields.subjectIncludeUserDomain.validations.empty")
                                     }
                                     children={
                                         [
                                             {
-                                                label: t("devPortal:components.applications.forms" +
+                                                label: t("console:develop.features.applications.forms" +
                                                     ".advancedAttributeSettings.sections.subject.fields" +
                                                     ".subjectIncludeUserDomain.label"),
                                                 value: "includeUserDomain"
@@ -159,7 +159,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.fields.subjectIncludeUserDomain.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -173,13 +173,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     required={ false }
                                     value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                             ".sections.subject.fields.subjectIncludeTenantDomain.validations.empty")
                                     }
                                     children={
                                         [
                                             {
-                                                label: t("devPortal:components.applications.forms" +
+                                                label: t("console:develop.features.applications.forms" +
                                                     ".advancedAttributeSettings.sections.subject.fields" +
                                                     ".subjectIncludeTenantDomain.label"),
                                                 value: "includeTenantDomain"
@@ -190,7 +190,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                         ".sections.subject.fields.subjectIncludeTenantDomain.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -204,13 +204,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     required={ false }
                                     value={ initialSubject?.useMappedLocalSubject ? [ "useMappedLocalSubject" ] : [] }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                             ".sections.subject.fields.subjectUseMappedLocalSubject.validations.empty")
                                     }
                                     children={
                                         [
                                             {
-                                                label: t("devPortal:components.applications.forms" +
+                                                label: t("console:develop.features.applications.forms" +
                                                     ".advancedAttributeSettings.sections.subject.fields" +
                                                     ".subjectUseMappedLocalSubject.label"),
                                                 value: "useMappedLocalSubject"
@@ -221,7 +221,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.fields.subjectUseMappedLocalSubject.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -229,19 +229,19 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h4">
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".role.heading") }
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
                                     name="roleAttribute"
                                     label={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                             ".role.fields.roleAttribute.label")
                                     }
                                     required={ claimMappingOn }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                             ".role.fields.roleAttribute.validations.empty")
                                     }
                                     type="dropdown"
@@ -251,7 +251,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-role-attribute-dropdown` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".role.fields.roleAttribute.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -265,13 +265,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     required={ false }
                                     value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                             ".role.fields.role.validations.empty")
                                     }
                                     children={
                                         [
                                             {
-                                                label: t("devPortal:components.applications.forms" +
+                                                label: t("console:develop.features.applications.forms" +
                                                     ".advancedAttributeSettings.sections.role.fields.role.label"),
                                                 value: "includeUserDomain"
                                             }
@@ -281,7 +281,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     data-testid={ `${ testId }-role-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".role.fields.role.hint") }
                                 </Hint>
                             </Grid.Column>

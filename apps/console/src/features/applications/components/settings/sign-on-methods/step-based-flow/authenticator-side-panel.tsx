@@ -24,7 +24,7 @@ import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { OperationIcons } from "../../../../../core";
+import { getOperationIcons } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 
 /**
@@ -139,7 +139,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                         <div className="inline floated right mt-1">
                                             <GenericIcon
                                                 className="drag-handle"
-                                                icon={ OperationIcons.drag }
+                                                icon={ getOperationIcons().drag }
                                                 size="nano"
                                                 transparent
                                             />
@@ -158,8 +158,8 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                             <GenericIcon
                                                 icon={
                                                     visibility
-                                                        ? OperationIcons.minimize
-                                                        : OperationIcons.maximize
+                                                        ? getOperationIcons().minimize
+                                                        : getOperationIcons().maximize
                                                 }
                                                 size="nano"
                                                 transparent
@@ -212,7 +212,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                                             <EmptyPlaceholder
                                                                                 subtitle={
                                                                                     [
-                                                                                        t("devPortal:components" +
+                                                                                        t("console:develop.features" +
                                                                                             ".applications.placehold" +
                                                                                             "ers.emptyAuthenticators" +
                                                                                             "List.subtitles", {

@@ -62,7 +62,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
             onSubmit={ null }
             onChange={ (isChanged, values) => handleOptionOnChange(isChanged, values) }
         >
-            <Header as="h6" >{ t("adminPortal:components.users.usersList.metaOptions.heading") }</Header>
+            <Header as="h6" >{ t("console:manage.features.users.usersList.metaOptions.heading") }</Header>
             <Divider />
             <List relaxed>
                 <List.Item>
@@ -74,7 +74,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                         type="checkbox"
                         children={ [
                             {
-                                label: t("adminPortal:components.users.usersList.metaOptions.columns.name"),
+                                label: t("console:manage.features.users.usersList.metaOptions.columns.name"),
                                 value: "name"
                             }
                         ] }
@@ -92,7 +92,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                         type="checkbox"
                         children={ [
                             {
-                                label: t("adminPortal:components.users.usersList.metaOptions.columns.emails"),
+                                label: t("console:manage.features.users.usersList.metaOptions.columns.emails"),
                                 value: "emails"
                             }
                         ] }
@@ -110,7 +110,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                         type="checkbox"
                         children={ [
                             {
-                                label: t("adminPortal:components.users.usersList.metaOptions.columns.userName"),
+                                label: t("console:manage.features.users.usersList.metaOptions.columns.userName"),
                                 value: "userName"
                             }
                         ] }
@@ -127,7 +127,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                         type="checkbox"
                         children={ [
                             {
-                                label: t("adminPortal:components.users.usersList.metaOptions.columns.id"),
+                                label: t("console:manage.features.users.usersList.metaOptions.columns.id"),
                                 value: "id"
                             }
                         ] }
@@ -144,7 +144,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                         type="checkbox"
                         children={ [
                             {
-                                label: t("adminPortal:components.users.usersList.metaOptions.columns.lastModified"),
+                                label: t("console:manage.features.users.usersList.metaOptions.columns.lastModified"),
                                 value: "meta.lastModified"
                             }
                         ] }

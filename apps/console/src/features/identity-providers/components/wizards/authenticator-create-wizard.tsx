@@ -31,7 +31,7 @@ import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator
 } from "../../api";
-import { IdentityProviderWizardStepIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons } from "../../configs";
 import {
     FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorMetaInterface,
@@ -214,29 +214,29 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                    description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.addFederatedAuthenticator.success.message")
+                    message: t("console:develop.features.idp.notifications.addFederatedAuthenticator.success.message")
                 }));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                        description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.addFederatedAuthenticator.error.message")
+                        message: t("console:develop.features.idp.notifications.addFederatedAuthenticator.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                    description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                    message: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
                         "genericError.message")
                 });
             })
@@ -354,22 +354,22 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         }));
         setWizardSteps([
             {
-                icon: IdentityProviderWizardStepIcons.general,
+                icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
-                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorSelection.title")
+                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.authenticatorSelection.title")
             },
             {
-                icon: IdentityProviderWizardStepIcons.authenticatorSettings,
+                icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
                 submitCallback: setSubmitAuthenticator,
-                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorConfiguration.title")
+                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.authenticatorConfiguration.title")
             },
             {
-                icon: IdentityProviderWizardStepIcons.summary,
+                icon: getIdentityProviderWizardStepIcons().summary,
                 name: WizardSteps.SUMMARY,
                 submitCallback: setFinishSubmit,
-                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.summary.title")
+                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.summary.title")
             }
         ]);
 
@@ -406,7 +406,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     }
                 </Modal.Header>
                 <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
-                    <Steps.Group header={ t("devPortal:components.idp.wizards.addAuthenticator.header") }
+                    <Steps.Group header={ t("console:develop.features.idp.wizards.addAuthenticator.header") }
                                  current={ currentWizardStep }>
                         { wizardSteps.map((step, index) => (
                             <Steps.Step
@@ -434,21 +434,21 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                 {currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-next-button` }>
-                                        { t("devPortal:components.idp.wizards.buttons.next") }
+                                        { t("console:develop.features.idp.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-finish-button` }>
-                                        { t("devPortal:components.idp.wizards.buttons.finish") }
+                                        { t("console:develop.features.idp.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }
                                                 data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("devPortal:components.idp.wizards.buttons.previous") }
+                                        { t("console:develop.features.idp.wizards.buttons.previous") }
                                     </LinkButton>
                                 )}
                             </Grid.Column>

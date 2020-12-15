@@ -51,16 +51,16 @@ import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
     RouteUtils,
-    SidePanelIcons,
-    SidePanelMiscIcons,
     UIConstants,
     getAdminViewRoutes,
+    getEmptyPlaceholderIllustrations,
+    getSidePanelIcons,
+    getSidePanelMiscIcons,
     history,
     useUIElementSizes
 } from "../features/core";
@@ -195,11 +195,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 }
 
                 filteredRoutesClone.unshift({
-                    category: "adminPortal:components.sidePanel.categories.configurations",
+                    category: "console:manage.features.sidePanel.categories.configurations",
                     component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
                     exact: true,
                     icon: {
-                        icon: SidePanelIcons.connectors[ category.id ] ?? SidePanelIcons.connectors.default
+                        icon: getSidePanelIcons().connectors[ category.id ] ?? getSidePanelIcons().connectors.default
                     },
                     id: category.id,
                     name: category.name,
@@ -362,7 +362,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             sidePanel={ (
                 <SidePanel
                     categorized
-                    caretIcon={ SidePanelMiscIcons.caretRight }
+                    caretIcon={ getSidePanelMiscIcons().caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
                     footerHeight={ footerHeight }
@@ -392,7 +392,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
-                        image={ EmptyPlaceholderIllustrations.brokenPage }
+                        image={ getEmptyPlaceholderIllustrations().brokenPage }
                         imageSize="tiny"
                         subtitle={ [
                             t("console:common.placeholders.brokenPage.subtitles.0"),

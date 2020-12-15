@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary } from "./wizard";
 import { UploadCertificate } from "../../core";
 import { createKeystoreCertificate } from "../api";
-import { ImportCertificateWizardStepIcons } from "../configs";
+import { getImportCertificateWizardStepIcons } from "../configs";
 
 /**
  * Prop types of the `ImportCertificate` component.
@@ -97,10 +97,10 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const handleSubmit = (): void => {
         createKeystoreCertificate(data).then(() => {
             dispatch(addAlert({
-                description: t("adminPortal:components.certificates.keystore.notifications." +
+                description: t("console:manage.features.certificates.keystore.notifications." +
                     "addCertificate.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.certificates.keystore.notifications." +
+                message: t("console:manage.features.certificates.keystore.notifications." +
                     "addCertificate.success.message")
             }));
             update();
@@ -108,11 +108,11 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         }).catch(error => {
             setAlert({
                 description: error?.response?.data?.description
-                    || t("adminPortal:components.certificates.keystore.notifications." +
+                    || t("console:manage.features.certificates.keystore.notifications." +
                         "addCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.response?.data?.message
-                    || t("adminPortal:components.certificates.keystore.notifications." +
+                    || t("console:manage.features.certificates.keystore.notifications." +
                         "addCertificate.genericError.message")
             });
         });
@@ -196,8 +196,8 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     data-testid={ `${ testId }-upload` }
                 />
             ),
-            icon: ImportCertificateWizardStepIcons.general,
-            title: t("adminPortal:components.certificates.keystore.wizard.steps.upload")
+            icon: getImportCertificateWizardStepIcons().general,
+            title: t("console:develop.features.certificates.keystore.wizard.steps.upload")
         },
         {
             content: (
@@ -207,8 +207,8 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: ImportCertificateWizardStepIcons.general,
-            title: t("adminPortal:components.certificates.keystore.wizard.steps.summary")
+            icon: getImportCertificateWizardStepIcons().general,
+            title: t("console:develop.features.certificates.keystore.wizard.steps.summary")
 
         }
     ];
@@ -245,7 +245,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.certificates.keystore.wizard.header")}
+                { t("console:manage.features.certificates.keystore.wizard.header")}
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group

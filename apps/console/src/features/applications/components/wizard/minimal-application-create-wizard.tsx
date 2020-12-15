@@ -25,20 +25,25 @@ import {
     Validation,
     useTrigger
 } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    SelectionCard,
+    useWizardAlert
+} from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import {
     ApplicationListInterface,
-    CUSTOM_APPLICATION_TEMPLATE_ID,
-    CustomApplicationTemplate,
+    ApplicationTemplateLoadingStrategies,
     getApplicationList
 } from "../..";
 import {
@@ -46,16 +51,18 @@ import {
     AppState,
     CORSOriginsListInterface,
     ModalWithSidePanel,
-    TechnologyLogos,
-    getCORSOrigins, history,
+    getCORSOrigins,
+    getTechnologyLogos,
+    history,
     store
 } from "../../../core";
 import { createApplication, getApplicationTemplateData } from "../../api";
-import { InboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface,
     MainApplicationInterface,
     SupportedAuthProtocolTypes
 } from "../../models";
@@ -66,11 +73,11 @@ import {
 interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     title: string;
     closeWizard: () => void;
-    template?: ApplicationTemplateListItemInterface;
+    template?: ApplicationTemplateInterface;
     subTitle?: string;
     addProtocol: boolean;
     selectedProtocols?: string[];
-    subTemplates?: ApplicationTemplateListItemInterface[];
+    subTemplates?: ApplicationTemplateInterface[];
     subTemplatesSectionTitle?: string;
     appId?: string;
     /**
@@ -81,6 +88,10 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
      * Flag to show/hide help panel.
      */
     showHelpPanel?: boolean;
+    /**
+     * Application template loading strategy.
+     */
+    templateLoadingStrategy: ApplicationTemplateLoadingStrategies;
 }
 
 /**
@@ -100,6 +111,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTemplates,
         subTemplatesSectionTitle,
         subTitle,
+        templateLoadingStrategy,
         [ "data-testid" ]: testId
     } = props;
 
@@ -118,14 +130,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
-        if (!selectedTemplate || selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (!selectedTemplate || selectedTemplate.id === CustomApplicationTemplate.id) {
             return;
         }
 
@@ -146,18 +158,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     useEffect(() => {
         // Stop fetching template details if the selected template is `Expert Mode`.
-        if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
             setTemplateSettings(CustomApplicationTemplate);
             return;
         }
 
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
-            loadTemplateDetails(template.id);
+            loadTemplateDetails(template.id, template);
             return;
         }
 
         setSelectedTemplate(subTemplates[0]);
-        loadTemplateDetails(subTemplates[0].id);
+        loadTemplateDetails(subTemplates[0].id, subTemplates[0]);
     }, [ subTemplates ]);
 
     /**
@@ -182,12 +194,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.success.message"
                         )
                     })
@@ -227,7 +239,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "devPortal:components.applications.notifications." +
+                            "console:develop.features.applications.notifications." +
                             "addApplication.error.message"
                         )
                     });
@@ -237,13 +249,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
                 setAlert({
                     description: t(
-                        "devPortal:components.applications.notifications." +
+                        "console:develop.features.applications.notifications." +
                         "addApplication.genericError" +
                         ".description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "devPortal:components.applications.notifications." +
+                        "console:develop.features.applications.notifications." +
                         "addApplication.genericError.message"
                     )
                 });
@@ -260,7 +272,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Load application template data.
      */
-    const loadTemplateDetails = (id: string): void => {
+    const loadTemplateDetails = (id: string, template: ApplicationTemplateInterface): void => {
+
+        // If the loading strategy is `LOCAL`, stop making the GET request to fetch template details.
+        if (templateLoadingStrategy === ApplicationTemplateLoadingStrategies.LOCAL) {
+            setTemplateSettings(template);
+
+            return;
+        }
+
         getApplicationTemplateData(id)
             .then((response: ApplicationTemplateInterface) => {
                 setTemplateSettings(response);
@@ -272,7 +292,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "devPortal:components.applications.notifications.fetchTemplate.error" + ".message"
+                                "console:develop.features.applications.notifications.fetchTemplate.error" + ".message"
                             )
                         })
                     );
@@ -282,12 +302,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 dispatch(
                     addAlert({
                         description: t(
-                            "devPortal:components.applications.notifications.fetchTemplate" +
+                            "console:develop.features.applications.notifications.fetchTemplate" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "devPortal:components.applications.notifications.fetchTemplate.genericError" + ".message"
+                            "console:develop.features.applications.notifications.fetchTemplate.genericError.message"
                         )
                     })
                 );
@@ -356,15 +376,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             <Field
                                 name="name"
                                 label={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name.label"
+                                    "console:develop.features.applications.forms.generalDetails.fields.name.label"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name" +
+                                    "console:develop.features.applications.forms.generalDetails.fields.name" +
                                     ".validations.empty"
                                 ) }
                                 placeholder={ t(
-                                    "devPortal:components.applications.forms.generalDetails.fields.name.placeholder"
+                                    "console:develop.features.applications.forms.generalDetails.fields.name.placeholder"
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
@@ -377,7 +397,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             dispatch(addAlert({
                                                 description: error.response.data.description,
                                                 level: AlertLevels.ERROR,
-                                                message: t("devPortal:components.applications." +
+                                                message: t("console:develop.features.applications." +
                                                     "notifications.fetchApplications.error.message")
                                             }));
 
@@ -385,10 +405,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         }
 
                                         dispatch(addAlert({
-                                            description: t("devPortal:components.applications.notifications." +
+                                            description: t("console:develop.features.applications.notifications." +
                                                 "fetchApplications.genericError.description"),
                                             level: AlertLevels.ERROR,
-                                            message: t("devPortal:components.applications.notifications." +
+                                            message: t("console:develop.features.applications.notifications." +
                                                 "fetchApplications.genericError.message")
                                         }));
                                     }
@@ -396,7 +416,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     if (response?.applications?.length > 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                            t("console:develop.features.applications.forms.generalDetails.fields.name" +
                                                 ".validations.duplicate" )
                                         );
                                     }
@@ -413,15 +433,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             <div>{ subTemplatesSectionTitle }</div>
                                             {
                                                 subTemplates.map((
-                                                    subTemplate: ApplicationTemplateListItemInterface, index: number
+                                                    subTemplate: ApplicationTemplateInterface, index: number
                                                 ) => (
                                                     <SelectionCard
                                                         inline
                                                         key={ index }
                                                         image={
                                                             {
-                                                                ...InboundProtocolLogos,
-                                                                ...TechnologyLogos
+                                                                ...getInboundProtocolLogos(),
+                                                                ...getTechnologyLogos()
                                                             }[ subTemplate.image ]
                                                         }
                                                         size="x120"
@@ -430,7 +450,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         selected={ selectedTemplate.id === subTemplate.id }
                                                         onClick={ () => {
                                                             setSelectedTemplate(subTemplate);
-                                                            loadTemplateDetails(subTemplate.id);
+                                                            loadTemplateDetails(subTemplate.id, subTemplate);
                                                         } }
                                                         imageSize="mini"
                                                         contentTopBorder={ false }
@@ -452,6 +472,40 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                 </Grid>
             </Forms>
+        );
+    };
+
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHelpPanel = (): ReactElement => {
+
+        // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
+        if (!showHelpPanel || !selectedTemplate.wizardHelp) {
+            return null;
+        }
+
+        const {
+            wizardHelp: WizardHelp
+        } = selectedTemplate;
+
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header muted">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    <Heading as="h6">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
+                            ".subHeading") }
+                    </Heading>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader /> }>
+                        <WizardHelp />
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
         );
     };
 
@@ -494,22 +548,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            {
-                showHelpPanel && (
-                    <ModalWithSidePanel.SidePanel>
-                        <ModalWithSidePanel.Header className="wizard-header muted">
-                            { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help.heading") }
-                            <Heading as="h6">
-                                { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help" +
-                                    ".subHeading") }
-                            </Heading>
-                        </ModalWithSidePanel.Header>
-                        <ModalWithSidePanel.Content>
-                            <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
-                        </ModalWithSidePanel.Content>
-                    </ModalWithSidePanel.SidePanel>
-                )
-            }
+            { renderHelpPanel() }
         </ModalWithSidePanel>
     );
 };

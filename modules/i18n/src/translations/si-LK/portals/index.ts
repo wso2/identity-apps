@@ -17,7 +17,5 @@
  */
 
 export * from "./common";
-export * from "./user-portal";
+export * from "./myaccount";
 export * from "./console";
-export * from "./admin-portal";
-export * from "./dev-portal";

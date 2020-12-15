@@ -41,10 +41,10 @@ import {
     AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
-    EmptyPlaceholderIllustrations,
-    HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    getEmptyPlaceholderIllustrations,
+    getHelpPanelActionIcons,
     history
 } from "../../core";
 import {
@@ -59,10 +59,10 @@ import {
     handleGetIDPTemplateListError
 } from "../components";
 import {
-    HelpPanelIcons,
-    IdPCapabilityIcons,
-    IdPIcons,
-    IdPTemplateDocsIcons
+    getHelpPanelIcons,
+    getIdPCapabilityIcons,
+    getIdPIcons,
+    getIdPTemplateDocsIcons
 } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
@@ -184,14 +184,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             switch (serviceIdentifier) {
                 case SupportedServices.AUTHENTICATION:
                     return {
-                        displayName: t("devPortal:pages.idpTemplate.supportServices.authenticationDisplayName"),
-                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
+                        displayName: t("console:develop.pages.idpTemplate.supportServices.authenticationDisplayName"),
+                        logo: getIdPCapabilityIcons()[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
                     };
                 case SupportedServices.PROVISIONING:
                     return {
-                        displayName: t("devPortal:pages.idpTemplate.supportServices.provisioningDisplayName"),
-                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
+                        displayName: t("console:develop.pages.idpTemplate.supportServices.provisioningDisplayName"),
+                        logo: getIdPCapabilityIcons()[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
                     };
             }
@@ -381,7 +381,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 titleAs="h4"
                                 backButton={ docsTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedTemplateDoc(undefined),
-                                    text: t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.goBack")
+                                    text: t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.goBack")
                                 } }
                                 bottomMargin={ false }
                                 data-testid={ `${ testId }-help-panel-docs-tab-page-header` }
@@ -404,10 +404,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     : (
                         <>
                             <Heading as="h4">
-                                { t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.title") }
+                                { t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.title") }
                             </Heading>
                             <Hint>
-                                { t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.hint") }
+                                { t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.hint") }
                             </Hint>
                             <Divider hidden/>
 
@@ -419,7 +419,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 <SelectionCard
                                                     size="auto"
                                                     header={ sample.displayName }
-                                                    image={ IdPTemplateDocsIcons[ sample.image ] }
+                                                    image={ getIdPTemplateDocsIcons()[ sample.image ] }
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedTemplate(sample) }
@@ -436,7 +436,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             heading: t("common:docs"),
             hidden: !templateDocs || (templateDocs instanceof Array && templateDocs.length < 1),
             icon: {
-                icon: HelpPanelIcons.tabs.docs
+                icon: getHelpPanelIcons().tabs.docs
             }
         }
     ];
@@ -449,21 +449,21 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
-                close: HelpPanelActionIcons.close,
-                pin: HelpPanelActionIcons.pin
+                close: getHelpPanelActionIcons().close,
+                pin: getHelpPanelActionIcons().pin
             } }
-            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
-            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
+            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
+            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
         >
             <PageLayout
-                title={ t("devPortal:pages.idpTemplate.title") }
+                title={ t("console:develop.pages.idpTemplate.title") }
                 contentTopMargin={ true }
-                description={ t("devPortal:pages.idpTemplate.subTitle") }
+                description={ t("console:develop.pages.idpTemplate.subTitle") }
                 backButton={ {
                     "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("devPortal:pages.idpTemplate.backButton")
+                    text: t("console:develop.pages.idpTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
@@ -477,7 +477,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 <TemplateGrid<IdentityProviderTemplateListItemInterface>
                                     type="idp"
                                     templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
-                                    templateIcons={ IdPIcons }
+                                    templateIcons={ getIdPIcons() }
                                     templateIconOptions={ {
                                         fill: "primary"
                                     } }
@@ -485,8 +485,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                     showTags={ true }
                                     tagsKey="services"
                                     tagsAs="label"
-                                    heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
-                                    subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
+                                    heading={ t("console:develop.features.idp.templates.quickSetup.heading") }
+                                    subHeading={ t("console:develop.features.idp.templates.quickSetup.subHeading") }
                                     onTemplateSelect={ handleTemplateSelection }
                                     paginate={ true }
                                     paginationLimit={ 5 }
@@ -496,11 +496,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                     } }
                                     emptyPlaceholder={ (
                                         <EmptyPlaceholder
-                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
-                                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                            title={ t("console:develop.features.templates.emptyPlaceholder.title") }
                                             subtitle={
-                                                [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ]
+                                                [ t("console:develop.features.templates.emptyPlaceholder.subtitles") ]
                                             }
                                         />
                                     ) }
@@ -516,13 +516,13 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     <TemplateGrid<IdentityProviderTemplateListItemInterface>
                         type="idp"
                         templates={ [ ExpertModeTemplate ] }
-                        templateIcons={ IdPIcons }
+                        templateIcons={ getIdPIcons() }
                         templateIconOptions={ {
                             fill: "primary"
                         } }
                         templateIconSize="tiny"
-                        heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
-                        subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
+                        heading={ t("console:develop.features.idp.templates.manualSetup.heading") }
+                        subHeading={ t("console:develop.features.idp.templates.manualSetup.subHeading") }
                         onTemplateSelect={ handleTemplateSelection }
                         paginate={ true }
                         paginationLimit={ 5 }
@@ -532,10 +532,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         } }
                         emptyPlaceholder={ (
                             <EmptyPlaceholder
-                                image={ EmptyPlaceholderIllustrations.newList }
+                                image={ getEmptyPlaceholderIllustrations().newList }
                                 imageSize="tiny"
-                                title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                                title={ t("console:develop.features.templates.emptyPlaceholder.title") }
+                                subtitle={ [ t("console:develop.features.templates.emptyPlaceholder.subtitles") ] }
                             />
                         ) }
                         tagsSectionTitle={ t("common:services") }

@@ -64,10 +64,10 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {
                                     dispatch(addAlert({
-                                        description: t("adminPortal:components.claims.dialects.notifications" +
+                                        description: t("console:manage.features.claims.dialects.notifications" +
                                             ".updateDialect.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: t("adminPortal:components.claims.dialects.notifications" +
+                                        message: t("console:manage.features.claims.dialects.notifications" +
                                             ".updateDialect.success.message")
                                     }));
                                     history.push(
@@ -78,11 +78,11 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                 .catch((error) => {
                                     dispatch(addAlert({
                                         description: error?.description
-                                            || t("adminPortal:components.claims.dialects.notifications" +
+                                            || t("console:manage.features.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.description"),
                                         level: AlertLevels.ERROR,
                                         message: error?.message
-                                            || t("adminPortal:components.claims.dialects.notifications" +
+                                            || t("console:manage.features.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.message")
                                     }));
                                 });
@@ -90,18 +90,18 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                     >
                         <Field
                             type="text"
-                            placeholder={ t("adminPortal:components.claims.dialects.forms.dialectURI.placeholder") }
+                            placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder") }
                             value={ dialect?.dialectURI }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.dialects." +
+                            requiredErrorMessage={ t("console:manage.features.claims.dialects." +
                                 "forms.dialectURI.requiredErrorMessage") }
-                            label={ t("adminPortal:components.claims.dialects.forms.dialectURI.label") }
+                            label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
                             data-testid={ `${ testId }-form-dialect-uri-input` }
                         />
                         <Divider hidden />
                         <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
-                            { t("adminPortal:components.claims.dialects.forms.submit") }
+                            { t("console:manage.features.claims.dialects.forms.submit") }
                         </PrimaryButton>
                     </Forms>
                 </Grid.Column>

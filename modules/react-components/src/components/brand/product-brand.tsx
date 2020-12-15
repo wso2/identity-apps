@@ -55,6 +55,10 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
      * Product version config settings.
      */
     versionUISettings?: ProductVersionConfigInterface;
+    /**
+     * Mobile view switch.
+     */
+    mobile?: boolean;
 }
 
 /**
@@ -77,6 +81,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         style,
         version,
         versionUISettings,
+        mobile,
         [ "data-testid" ]: testId
     } = props;
 
@@ -165,19 +170,22 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
     return (
         <div className={ mainClasses } style={ style } data-testid={ testId }>
             { version && resolveReleaseVersionLabel() }
-            <div className="product-title-main">
+            <div className={ `product-title-main ${ mobile ? "mt-4" : "" }` }>
                 { logo && logo }
                 {
                     (appName || productName) && (
-                        <Heading
-                            className={ "product-title-text" }
-                            style={ style }
-                            data-testid={ `${ testId }-title` }
-                            compact
-                        >
-                            { productName }
-                            { appName && <span className="app-name">{ appName }</span> }
-                        </Heading>
+                        <>
+                            <Heading
+                                className={ "product-title-text" }
+                                style={ style }
+                                data-testid={ `${ testId }-title` }
+                                compact
+                            >
+                                { productName }
+                                { !mobile && appName && <span className="app-name">{ appName }</span> }
+                            </Heading>
+                            { mobile && appName && <span className="app-name display-inline-block">{ appName }</span> }
+                        </>
                     )
                 }
                 { children }

@@ -179,12 +179,12 @@ export const App = (): ReactElement => {
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
                                             modalOptions={ {
-                                                description: I18n.instance.t("userPortal:modals" +
+                                                description: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.description"),
-                                                headingI18nKey: "userPortal:modals.sessionTimeoutModal.heading",
-                                                primaryButtonText: I18n.instance.t("userPortal:modals" +
+                                                headingI18nKey: "myAccount:modals.sessionTimeoutModal.heading",
+                                                primaryButtonText: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.primaryButton"),
-                                                secondaryButtonText: I18n.instance.t("userPortal:modals" +
+                                                secondaryButtonText: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.secondaryButton")
                                             } }
                                         >

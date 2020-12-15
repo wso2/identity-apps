@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { WidgetIcons } from "../../../configs";
+import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
@@ -42,12 +42,12 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
         <div className="widget consent-management" data-testid={ testId }>
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
-                header={ t("userPortal:components.overview.widgets.consentManagement.header") }
-                description={ t("userPortal:components.overview.widgets.consentManagement.description") }
-                primaryAction={ t("userPortal:components.overview.widgets.consentManagement.actionTitles.manage") }
+                header={ t("myAccount:components.overview.widgets.consentManagement.header") }
+                description={ t("myAccount:components.overview.widgets.consentManagement.description") }
+                primaryAction={ t("myAccount:components.overview.widgets.consentManagement.actionTitles.manage") }
                 onPrimaryActionClick={ navigate }
-                icon={ WidgetIcons.consents }
-                iconMini={ WidgetIcons.consents }
+                icon={ getWidgetIcons().consents }
+                iconMini={ getWidgetIcons().consents }
                 iconSize="tiny"
                 iconStyle="twoTone"
             />

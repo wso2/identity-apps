@@ -48,8 +48,8 @@ const PersonalInfoPage = (): ReactElement => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("userPortal:pages.personalInfo.title") }
-            pageDescription={ t("userPortal:pages.personalInfo.subTitle") }
+            pageTitle={ t("myAccount:pages.personalInfo.title") }
+            pageDescription={ t("myAccount:pages.personalInfo.subTitle") }
         >
             <Divider hidden/>
             <Grid>

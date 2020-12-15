@@ -164,7 +164,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         (
                             <>
                                 <Label attached="top">
-                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.actions.selectAuthenticator") }
                                 </Label>
                                 <Form className="mt-3 mb-3" data-testid={ `${ testId }-authenticator-selection` }>
@@ -228,9 +228,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 : (
                                     <EmptyPlaceholder
                                         subtitle={ [
-                                            t("devPortal:components.applications.placeholders" +
+                                            t("console:develop.features.applications.placeholders" +
                                                 ".emptyAuthenticatorStep.subtitles.0"),
-                                            t("devPortal:components.applications.placeholders" +
+                                            t("console:develop.features.applications.placeholders" +
                                                 ".emptyAuthenticatorStep.subtitles.1")
                                         ] }
                                         data-testid={ `${ testId }-empty-placeholder` }

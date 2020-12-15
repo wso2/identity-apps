@@ -27,7 +27,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
-import { AddUserstoreWizardStepIcons } from "../configs";
+import { getAddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
@@ -107,14 +107,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const handleSubmit = () => {
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
-                description: t("adminPortal:components.userstores.notifications.addUserstore.success.description"),
+                description: t("console:manage.features.userstores.notifications.addUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.userstores.notifications.addUserstore.success.message")
+                message: t("console:manage.features.userstores.notifications.addUserstore.success.message")
             }));
             dispatch(addAlert({
-                description: t("adminPortal:components.userstores.notifications.delay.description"),
+                description: t("console:manage.features.userstores.notifications.delay.description"),
                 level: AlertLevels.WARNING,
-                message: t("adminPortal:components.userstores.notifications.delay.message")
+                message: t("console:manage.features.userstores.notifications.delay.message")
             }));
 
             onClose();
@@ -122,10 +122,10 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
             setAlert({
-                description: error?.description ?? t("adminPortal:components.userstores.notifications.addUserstore" +
+                description: error?.description ?? t("console:manage.features.userstores.notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message ?? t("adminPortal:components.userstores.notifications.addUserstore" +
+                message: error?.message ?? t("console:manage.features.userstores.notifications.addUserstore" +
                     ".genericError.message")
             });
         });
@@ -246,8 +246,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-general-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.general")
+            icon: getAddUserstoreWizardStepIcons().general,
+            title: t("console:manage.features.userstores.wizard.steps.general")
         },
         {
             content: (
@@ -259,8 +259,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-user-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.user")
+            icon: getAddUserstoreWizardStepIcons().general,
+            title: t("console:manage.features.userstores.wizard.steps.user")
         },
         {
             content: (
@@ -272,8 +272,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-group-details` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.group")
+            icon: getAddUserstoreWizardStepIcons().general,
+            title: t("console:manage.features.userstores.wizard.steps.group")
         },
         {
             content: (
@@ -287,8 +287,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.summary")
+            icon: getAddUserstoreWizardStepIcons().general,
+            title: t("console:manage.features.userstores.wizard.steps.summary")
         }
     ];
 
@@ -330,7 +330,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.userstores.wizard.header",
+                { t("console:manage.features.userstores.wizard.header",
                     {
                         type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                     })

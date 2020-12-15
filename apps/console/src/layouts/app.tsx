@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../features/core/components";
-import { EmptyPlaceholderIllustrations, getAppLayoutRoutes } from "../features/core/configs";
+import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
 
 /**
@@ -61,7 +61,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
-                        image={ EmptyPlaceholderIllustrations.brokenPage }
+                        image={ getEmptyPlaceholderIllustrations().brokenPage }
                         imageSize="tiny"
                         subtitle={ [
                             t("console:common.placeholders.brokenPage.subtitles.0"),

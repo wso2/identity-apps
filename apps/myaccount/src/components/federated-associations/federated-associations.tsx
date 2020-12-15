@@ -21,7 +21,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
-import { SettingsSectionIcons } from "../../configs";
+import { getSettingsSectionIcons } from "../../configs";
 import {
     AlertInterface,
     AlertLevels
@@ -63,7 +63,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             .catch((error) => {
                 onAlertFired({
                     description:
-                        t("userPortal:components.federatedAssociations.notifications.getFederatedAssociations."
+                        t("myAccount:components.federatedAssociations.notifications.getFederatedAssociations."
                             + "error.description",
                             {
                                 description: error
@@ -71,7 +71,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                         ),
                     level: AlertLevels.ERROR,
                     message:
-                        t("userPortal:components.federatedAssociations.notifications." +
+                        t("myAccount:components.federatedAssociations.notifications." +
                             "getFederatedAssociations.error.message")
                 });
             });
@@ -93,22 +93,22 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             .then(() => {
                 getFederatedAssociationsList();
                 onAlertFired({
-                    description: t("userPortal:components.federatedAssociations.notifications"
+                    description: t("myAccount:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("userPortal:components.federatedAssociations.notifications"
+                    message: t("myAccount:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.success.message")
                 });
             })
             .catch((error) => {
                 onAlertFired({
-                    description: t("userPortal:components.federatedAssociations.notifications"
+                    description: t("myAccount:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.error.description",
                         {
                             description: error
                         }),
                     level: AlertLevels.ERROR,
-                    message: t("userPortal:components.federatedAssociations.notifications"
+                    message: t("myAccount:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.error.message")
                 });
             });
@@ -127,7 +127,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                 onClose={ () => { setConfirmDelete(false); } }
             >
                 <Modal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
-                    { t("userPortal:components.federatedAssociations.deleteConfirmation") }
+                    { t("myAccount:components.federatedAssociations.deleteConfirmation") }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${testId}-delete-confirmation-modal-actions` }>
                     <Button
@@ -226,10 +226,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.federatedAssociations.description") }
-            header={ t("userPortal:sections.federatedAssociations.heading") }
-            icon={ SettingsSectionIcons.federatedAssociations }
-            iconMini={ SettingsSectionIcons.federatedAssociationsMini }
+            description={ t("myAccount:sections.federatedAssociations.description") }
+            header={ t("myAccount:sections.federatedAssociations.heading") }
+            icon={ getSettingsSectionIcons().federatedAssociations }
+            iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

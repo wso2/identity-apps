@@ -22,6 +22,7 @@ import { Forms } from "@wso2is/forms";
 import {
     Certificate as CertificateDisplay,
     EmptyPlaceholder,
+    GenericIcon,
     PrimaryButton,
     ResourceList,
     ResourceListItem,
@@ -31,7 +32,7 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
-import { CertificateIllustrations, EmptyPlaceholderIllustrations, UIConstants } from "../../../../core";
+import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
 
@@ -114,7 +115,12 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon />
+                        <GenericIcon
+                            inline
+                            transparent
+                            size="auto"
+                            icon={ getCertificateIllustrations().ribbon }
+                        />
                         <div className="certificate-alias">
                                 View Certificate - {
                                 certificateDisplay?.alias
@@ -131,11 +137,11 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     <CertificateDisplay
                         certificate={ certificateDisplay }
                         labels={ {
-                            issuerDN: t("devPortal:components.certificates.keystore.summary.issuerDN"),
-                            subjectDN: t("devPortal:components.certificates.keystore.summary.subjectDN"),
-                            validFrom: t("devPortal:components.certificates.keystore.summary.validFrom"),
-                            validTill: t("devPortal:components.certificates.keystore.summary.validTill"),
-                            version: t("devPortal:components.certificates.keystore.summary.version")
+                            issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
+                            subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
+                            validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
+                            validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
+                            version: t("console:manage.features.certificates.keystore.summary.version")
                         } }
                     />
                 </Modal.Content>
@@ -226,7 +232,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                     data-testid={ `${testId}-add-certificate-button` }
                                 >
                                     <Icon name="add"/>
-                                    { t("devPortal:components.idp.buttons.addCertificate") }
+                                    { t("console:develop.features.idp.buttons.addCertificate") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -249,7 +255,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                         "data-testid": `${ testId }-edit-cert-${ index }-button`,
                                                         icon: "eye",
                                                         onClick: () => handleViewCertificate(certificate),
-                                                        popupText: t("devPortal:components.users.usersList.list." +
+                                                        popupText: t("console:manage.features.users.usersList.list." +
                                                             "iconPopups.edit"),
                                                         type: "button"
                                                     },
@@ -259,7 +265,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                         onClick: (): void => {
                                                             return null;
                                                         },
-                                                        popupText: t("devPortal:components.users.usersList.list." +
+                                                        popupText: t("console:manage.features.users.usersList.list." +
                                                             "iconPopups.delete"),
                                                         type: "button"
                                                     }
@@ -297,13 +303,13 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                 <Divider hidden/>
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("devPortal:components.idp.placeHolders." +
+                                        title={ t("console:develop.features.idp.placeHolders." +
                                             "emptyCertificateList.title") }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
-                                            t("devPortal:components.idp.placeHolders." +
+                                            t("console:develop.features.idp.placeHolders." +
                                                 "emptyCertificateList.subtitles.0"),
-                                            t("devPortal:components.idp.placeHolders." +
+                                            t("console:develop.features.idp.placeHolders." +
                                                 "emptyCertificateList.subtitles.1")
                                         ] }
                                         imageSize="tiny"
@@ -314,7 +320,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 type="button"
                                             >
                                                 <Icon name="add"/>
-                                                { t("devPortal:components.idp.buttons.addCertificate") }
+                                                { t("console:develop.features.idp.buttons.addCertificate") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${testId}-empty-placeholder` }

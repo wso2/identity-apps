@@ -20,8 +20,8 @@ import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
 import React, { ReactElement, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
-import * as getConfig from "./config";
-import { EmptyPlaceholderIllustrations } from "../features/core";
+import { ExtensionsManager } from "./extensions-manager";
+import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 /**
  * Extension Interface.
@@ -45,7 +45,7 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
     
     const { t } = useTranslation();
 
-    const fragment = getConfig()?.sections[type + "s"]?.[section];
+    const fragment = ExtensionsManager.getConfig()?.sections[type + "s"]?.[section];
 
     let DynamicLoader;
 
@@ -59,13 +59,13 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
         <ErrorBoundary
                 fallback={ (
                     <EmptyPlaceholder
-                        image={ EmptyPlaceholderIllustrations.genericError }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                         subtitle={ [
-                            t("devPortal:placeholders.genericError.subtitles.0"),
-                            t("devPortal:placeholders.genericError.subtitles.1")
+                            t("console:common.placeholders.genericError.subtitles.0"),
+                            t("console:common.placeholders.genericError.subtitles.1")
                         ] }
-                        title={ t("devPortal:placeholders.genericError.title") }
+                        title={ t("console:common.placeholders.genericError.title") }
                     />
                 ) }
             >

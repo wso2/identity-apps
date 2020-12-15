@@ -160,23 +160,23 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "adminPortal:components.approvals.notifications.fetchPendingApprovals.error.description",
+                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.approvals.notifications.fetchPendingApprovals.error.message"
+                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.message"
                         )
                     }));
                 }
 
                 dispatch(addAlert({
                     description: t(
-                        "adminPortal:components.approvals.notifications.fetchPendingApprovals.genericError.description"
+                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.approvals.notifications.fetchPendingApprovals.genericError.message"
+                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.message"
                     )
                 }));
             })
@@ -274,12 +274,12 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "adminPortal:components.approvals.notifications.updatePendingApprovals.error.description",
+                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.approvals.notifications.updatePendingApprovals.error.message"
+                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.message"
                         )
                     }));
 
@@ -288,11 +288,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
                 dispatch(addAlert({
                     description: t(
-                        "adminPortal:components.approvals.notifications.updatePendingApprovals.genericError.description"
+                        "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.approvals.notifications.updatePendingApprovals.genericError.message"
+                        "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
             });
@@ -320,8 +320,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("adminPortal:pages.approvalsPage.title") }
-            description={ t("adminPortal:pages.approvalsPage.subTitle") }
+            title={ t("console:manage.pages.approvalsPage.title") }
+            description={ t("console:manage.pages.approvalsPage.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

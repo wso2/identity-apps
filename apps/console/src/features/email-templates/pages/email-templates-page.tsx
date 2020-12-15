@@ -104,10 +104,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                    description: t("console:manage.features.emailTemplates.notifications.getTemplates" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                    message: t("console:manage.features.emailTemplates.notifications.getTemplates" +
                         ".genericError.message")
                 }));
             })
@@ -116,17 +116,17 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.emailTemplates.notifications.getTemplates.error.message")
+                        message: t("console:manage.features.emailTemplates.notifications.getTemplates.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                    description: t("console:manage.features.emailTemplates.notifications.getTemplates" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                    message: t("console:manage.features.emailTemplates.notifications.getTemplates" +
                         ".genericError.message")
                 }));
             })
@@ -196,11 +196,11 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 if (response.status === 204) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.description"
+                            "console:manage.features.emailTemplates.notifications.deleteTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.message"
+                            "console:manage.features.emailTemplates.notifications.deleteTemplate.success.message"
                         )
                     }));
 
@@ -210,10 +210,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                    description: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                    message: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
                         ".genericError.message")
                 }));
             })
@@ -223,7 +223,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.error.message"
+                            "console:manage.features.emailTemplates.notifications.deleteTemplate.error.message"
                         )
                     }));
 
@@ -231,10 +231,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                    description: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                    message: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
                         ".genericError.message")
                 }));
             });
@@ -250,20 +250,20 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("adminPortal:components.emailTemplates.buttons.newTemplate") }
+                        { t("console:manage.features.emailTemplates.buttons.newTemplate") }
                     </PrimaryButton>
                 )
             }
             isLoading={ isEmailTemplatesFetchRequestLoading }
             title={
                 (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
-                    ? t("adminPortal:pages.emailTemplatesWithDisplayName.title",
+                    ? t("console:manage.pages.emailTemplatesWithDisplayName.title",
                     { displayName: emailTemplateTypeDetails.displayName })
-                    : t("adminPortal:pages.emailTemplates.title")
+                    : t("console:manage.pages.emailTemplates.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("adminPortal:pages.emailTemplates.backButton")
+                text: t("console:manage.pages.emailTemplates.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
@@ -41,16 +41,16 @@ const PageNotFound = (): ReactElement => {
                         as={ Link }
                         to={ AppConstants.getAppHomePath() }
                     >
-                        { t("userPortal:placeholders.404.action") }
+                        { t("myAccount:placeholders.404.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.pageNotFound }
+                image={ getEmptyPlaceholderIllustrations().pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
-                    t("userPortal:placeholders.404.subtitles.0"),
-                    t("userPortal:placeholders.404.subtitles.1")
+                    t("myAccount:placeholders.404.subtitles.0"),
+                    t("myAccount:placeholders.404.subtitles.1")
                 ] }
-                title={ t("userPortal:placeholders.404.title") }
+                title={ t("myAccount:placeholders.404.title") }
             />
         </ErrorPageLayout>
     );

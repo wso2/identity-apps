@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createNewTemplateType } from "../../api";
-import { AddEmailTemplateTypeWizardStepIcons } from "../../configs";
+import { getAddEmailTemplateTypeWizardStepIcons } from "../../configs";
 import { AddEmailTemplateTypeForm } from "../forms";
 
 /**
@@ -74,8 +74,8 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 data-testid={ `${ testId }-form` }
             />
         ),
-        icon: AddEmailTemplateTypeWizardStepIcons.general,
-        title: t("adminPortal:components.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
+        icon: getAddEmailTemplateTypeWizardStepIcons().general,
+        title: t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
     } ];
 
     const createTemplateType = (templateTypeName: string): void => {
@@ -83,10 +83,10 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                        description: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
                             ".success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                        message: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
                             ".success.message")
                     }));
                 }
@@ -99,7 +99,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 setAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                    message: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
                         ".genericError.message")
                 });
             });
@@ -117,9 +117,9 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header template-type-wizard">
-                { t("adminPortal:components.emailTemplateTypes.wizards.addTemplateType.heading") }
+                { t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.heading") }
                 <Heading as="h6">
-                    { t("adminPortal:components.emailTemplateTypes.wizards.addTemplateType.subHeading") }
+                    { t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -146,7 +146,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                                 onClick={ setFinishSubmit }
                                 data-testid={ `${ testId }-create-button` }
                             >
-                                { t("adminPortal:components.emailTemplateTypes.buttons.createTemplateType") }
+                                { t("console:manage.features.emailTemplateTypes.buttons.createTemplateType") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

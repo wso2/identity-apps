@@ -29,7 +29,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim } from "../../api";
-import { AddDialectWizardStepIcons } from "../../configs";
+import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
 import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
@@ -101,18 +101,18 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 Promise.all(externalClaimPromises)
                     .then(() => {
                         dispatch(addAlert({
-                            description: t("adminPortal:components.claims.dialects.notifications." +
+                            description: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("adminPortal:components.claims.dialects.notifications.addDialect" +
+                            message: t("console:manage.features.claims.dialects.notifications.addDialect" +
                                 ".success.message")
                         }));
                     }).catch(() => {
                         dispatch(addAlert({
-                            description: t("adminPortal:components.claims.dialects.notifications." +
+                            description: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.genericError.description"),
                             level: AlertLevels.WARNING,
-                            message: t("adminPortal:components.claims.dialects.notifications." +
+                            message: t("console:manage.features.claims.dialects.notifications." +
                                 "addDialect.genericError.message")
                         }));
                     }).finally(() => {
@@ -144,11 +144,11 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
                 setAlert({
                 description: error?.description
-                    || t("adminPortal:components.claims.dialects.notifications." +
+                    || t("console:manage.features.claims.dialects.notifications." +
                         "addDialect.error.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
-                    || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
+                    || t("console:manage.features.claims.dialects.notifications.addDialect.error.message")
             });
         });
     };
@@ -186,8 +186,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-dialect-details` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.dialectURI")
+            icon: getAddDialectWizardStepIcons().general,
+            title: t("console:manage.features.claims.dialects.wizard.steps.dialectURI")
         },
         {
             content: (
@@ -198,8 +198,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-external-claims` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.externalAttribute")
+            icon: getAddDialectWizardStepIcons().general,
+            title: t("console:manage.features.claims.dialects.wizard.steps.externalAttribute")
         },
         {
             content: (
@@ -209,8 +209,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: AddDialectWizardStepIcons.general,
-            title: t("adminPortal:components.claims.dialects.wizard.steps.summary")
+            icon: getAddDialectWizardStepIcons().general,
+            title: t("console:manage.features.claims.dialects.wizard.steps.summary")
 
         }
     ];
@@ -250,7 +250,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.claims.dialects.wizard.header") }
+                { t("console:manage.features.claims.dialects.wizard.header") }
                 {
                     dialectDetailsData && dialectDetailsData.get("dialectURI")
                         ? " - " + dialectDetailsData.get("dialectURI")

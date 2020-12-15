@@ -34,7 +34,7 @@ import {
     getOutboundProvisioningConnectorsList,
     updateOutboundProvisioningConnector
 } from "../../api";
-import { OutboundProvisioningConnectorWizard } from "../../configs";
+import { getOutboundProvisioningConnectorWizard } from "../../configs";
 import {
     IdentityProviderInterface, OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -154,10 +154,10 @@ export const OutboundProvisioningConnectorCreateWizard:
         updateOutboundProvisioningConnector(identityProvider.id, connector)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
                         "success.message")
                 }));
 
@@ -179,10 +179,12 @@ export const OutboundProvisioningConnectorCreateWizard:
             .catch(error => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
-                            "error.description", { description: error.response.data.description }),
+                        description: t("console:develop.features.idp.notifications." + 
+                            "getOutboundProvisioningConnectorsList.error.description", 
+                            { description: error.response.data.description }
+                        ),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications." +
+                        message: t("console:develop.features.idp.notifications." +
                             "getOutboundProvisioningConnectorsList.error.message")
                     });
 
@@ -190,10 +192,10 @@ export const OutboundProvisioningConnectorCreateWizard:
                 }
 
                 setAlert({
-                    description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
+                    description: t("console:develop.features.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
+                    message: t("console:develop.features.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.message")
                 });
             });
@@ -325,8 +327,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-connector-selection` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.connectorSelection,
-            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorSelection.title")
+            icon: getOutboundProvisioningConnectorWizard().connectorSelection,
+            title: t("console:develop.features.idp.wizards.addProvisioningConnector.steps.connectorSelection.title")
         },
         {
             content: (
@@ -342,8 +344,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-provisioning-settings` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.connectorDetails,
-            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorConfiguration.title")
+            icon: getOutboundProvisioningConnectorWizard().connectorDetails,
+            title: t("console:develop.features.idp.wizards.addProvisioningConnector.steps.connectorConfiguration.title")
         },
         {
             content: (
@@ -356,8 +358,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.summary,
-            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.summary.title")
+            icon: getOutboundProvisioningConnectorWizard().summary,
+            title: t("console:develop.features.idp.wizards.addProvisioningConnector.steps.summary.title")
         }
     ];
 
@@ -373,14 +375,14 @@ export const OutboundProvisioningConnectorCreateWizard:
             data-testid={ `${ testId }-modal` }
         >
             <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
-                { t("devPortal:components.idp.modals.addProvisioningConnector.title") }
+                { t("console:develop.features.idp.modals.addProvisioningConnector.title") }
                 <Heading as="h6">
-                    { t("devPortal:components.idp.modals.addProvisioningConnector.subTitle") }
+                    { t("console:develop.features.idp.modals.addProvisioningConnector.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
                 <Steps.Group
-                    header={ t("devPortal:components.idp.wizards.addProvisioningConnector.header") }
+                    header={ t("console:develop.features.idp.wizards.addProvisioningConnector.header") }
                     current={ currentWizardStep }
                 >
                     { STEPS.map((step, index) => (
@@ -414,21 +416,21 @@ export const OutboundProvisioningConnectorCreateWizard:
                                     disabled={ isConnectorMetadataRequestLoading }
                                     data-testid={ `${ testId }-modal-next-button` }
                                 >
-                                    { t("devPortal:components.idp.wizards.buttons.next") }
+                                    { t("console:develop.features.idp.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ navigateToNext }
                                                data-testid={ `${ testId }-modal-finish-button` }>
-                                    { t("devPortal:components.idp.wizards.buttons.finish") }
+                                    { t("console:develop.features.idp.wizards.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ navigateToPrevious }
                                             data-testid={ `${ testId }-modal-previous-button` }>
                                     <Icon name="arrow left"/>
-                                    { t("devPortal:components.idp.wizards.buttons.previous") }
+                                    { t("console:develop.features.idp.wizards.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

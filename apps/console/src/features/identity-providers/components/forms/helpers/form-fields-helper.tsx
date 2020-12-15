@@ -43,7 +43,8 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
                 name={ propertyMetadata?.key }
                 placeholder={ propertyMetadata?.defaultValue }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 value={ eachProp?.value }
                 type="password"
                 disabled={ disable }
@@ -68,7 +69,8 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 type="checkbox"
                 required={ false }
                 value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 children={
                     [
                         {
@@ -100,7 +102,8 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 type="checkbox"
                 required={ propertyMetadata?.isMandatory }
                 value={ eachProp?.value ? [eachProp?.key] : [] }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 children={
                     [
                         {
@@ -132,7 +135,8 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 type="text"
                 value={ eachProp?.value }
@@ -142,7 +146,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 validation={ (value: string, validation: Validation) => {
                     if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push(I18n.instance.t("adminPortal:components.users.forms." +
+                        validation.errorMessages.push(I18n.instance.t("console:manage.features.users.forms." +
                             "validation.formatError", {
                             field: propertyMetadata?.displayName
                         }));
@@ -166,13 +170,14 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 validation={ (value, validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
-                            I18n.instance.t("devPortal:components.idp.forms.common.invalidURLErrorMessage"));
+                            I18n.instance.t("console:develop.features.idp.forms.common.invalidURLErrorMessage"));
                     }
                 } }
                 type="text"
@@ -198,12 +203,13 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 validation={ (value, validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
-                            I18n.instance.t("devPortal:components.idp.forms.common.invalidQueryParamErrorMessage"));
+                            I18n.instance.t("console:develop.features.idp.forms.common.invalidQueryParamErrorMessage"));
                     }
                 } }
                 type="queryParams"
@@ -229,7 +235,8 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
                 name={ eachProp?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
+                    "requiredErrorMessage") }
                 type="dropdown"
                 value={ eachProp?.value }
                 key={ eachProp?.key }

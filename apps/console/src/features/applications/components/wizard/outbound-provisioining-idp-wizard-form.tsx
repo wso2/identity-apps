@@ -183,17 +183,17 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                 <Field
                                     type="dropdown"
                                     label={
-                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
                                             ".idp.label")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
                                             ".idp.placeholder")
                                     }
                                     name="idp"
                                     children={ idpListOptions }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
                                             ".idp.validations.empty")
                                     }
                                     readOnly={ readOnly }
@@ -211,17 +211,17 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                         <Field
                             type="dropdown"
                             label={
-                                t("devPortal:components.applications.forms.outboundProvisioning.fields.connector" +
+                                t("console:develop.features.applications.forms.outboundProvisioning.fields.connector" +
                                     ".label")
                             }
                             placeholder={
-                                t("devPortal:components.applications.forms.outboundProvisioning.fields.connector" +
+                                t("console:develop.features.applications.forms.outboundProvisioning.fields.connector" +
                                     ".placeholder")
                             }
                             name="connector"
                             children={ connectorListOptions }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                t("console:develop.features.applications.forms.outboundProvisioning.fields" +
                                     ".connector.validations.empty")
                             }
                             readOnly={ readOnly }
@@ -236,7 +236,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                         />
                         { connectorListOptions?.length <= 0 &&
                             <Hint icon="warning sign">
-                            { t("devPortal:components.applications.edit.sections.provisioning." +
+                            { t("console:develop.features.applications.edit.sections.provisioning." +
                                 "outbound.addIdpWizard.errors.noProvisioningConnector") }
                             </Hint>
                         }
@@ -251,7 +251,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
                                         ".fields.rules.label"),
                                     value: "rules"
                                 }
@@ -266,7 +266,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-rules-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.rules.hint") }
+                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.rules.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -279,7 +279,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
                                         ".fields.blocking.label"),
                                     value: "blocking"
                                 }
@@ -294,7 +294,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-blocking-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.blocking" +
+                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.blocking" +
                                 ".hint") }
                         </Hint>
                     </Grid.Column>
@@ -308,7 +308,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
                                         ".fields.jit.label"),
                                     value: "jit"
                                 }
@@ -323,7 +323,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-jit-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.jit.hint") }
+                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.jit.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

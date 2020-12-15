@@ -17,24 +17,29 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
-import { AccountStatusShields } from "../../../configs";
+import { getAccountStatusShields } from "../../../configs";
 import * as UIConstants from "../../../constants/ui-constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
-import { ThemeIcon } from "../../shared";
 
 /**
  * Account status widget.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (
+    props: TestableComponentInterface
+): React.ReactElement => {
+
     const { ["data-testid"]: testId } = props;
+
     const { t } = useTranslation();
+
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
 
     /**
@@ -98,14 +103,14 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
         const status = getProfileStatus();
 
         if (status === ProfileCompletionStatus.SUCCESS) {
-            return AccountStatusShields.good;
+            return getAccountStatusShields().good;
         } else if (status === ProfileCompletionStatus.ERROR) {
-            return AccountStatusShields.danger;
+            return getAccountStatusShields().danger;
         } else if (status === ProfileCompletionStatus.WARNING) {
-            return AccountStatusShields.warning;
+            return getAccountStatusShields().warning;
         }
 
-        return AccountStatusShields.good;
+        return getAccountStatusShields().good;
     };
 
     /**
@@ -138,7 +143,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                         <>
                                             <div className="header">
                                                 <Icon color="green" name="check circle" />
-                                                { t("userPortal:components.overview.widgets.accountStatus." +
+                                                { t("myAccount:components.overview.widgets.accountStatus." +
                                                     "completedFields") }
                                             </div>
                                             <ul>
@@ -147,10 +152,10 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("userPortal:components.profile.fields."
+                                                                    ? t("myAccount:components.profile.fields."
                                                                         + "profileImage",
                                                                         { defaultValue: attr.displayName })
-                                                                    : t("userPortal:components.profile.fields."
+                                                                    : t("myAccount:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -171,7 +176,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                         <>
                                             <div className="header">
                                                 <Icon color="red" name="times circle" />
-                                                { t("userPortal:components.overview.widgets.accountStatus." +
+                                                { t("myAccount:components.overview.widgets.accountStatus." +
                                                     "inCompleteFields") }
                                             </div>
                                             <ul>
@@ -180,10 +185,10 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("userPortal:components.profile.fields."
+                                                                    ? t("myAccount:components.profile.fields."
                                                                         + "profileImage",
                                                                         { defaultValue: attr.displayName })
-                                                                    : t("userPortal:components.profile.fields."
+                                                                    : t("myAccount:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -219,7 +224,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                 profileCompletion.required, false)}` }
                         >
                             {
-                                t("userPortal:components.overview.widgets.accountStatus" +
+                                t("myAccount:components.overview.widgets.accountStatus" +
                                     ".mandatoryFieldsCompletion",
                                     {
                                         completed: profileCompletion.required.completedCount,
@@ -242,7 +247,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                 profileCompletion.optional, true)}` }
                         >
                             {
-                                t("userPortal:components.overview.widgets.accountStatus" +
+                                t("myAccount:components.overview.widgets.accountStatus" +
                                     ".optionalFieldsCompletion",
                                     {
                                         completed: profileCompletion.optional.completedCount,
@@ -264,7 +269,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                 <Grid.Row>
                     <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
                         <div className="status-shield-container">
-                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent />
+                            <GenericIcon icon={ resolveStatusShield() } size="auto" transparent />
                         </div>
                     </Grid.Column>
                     <Grid.Column largeScreen={ 10 } computer={ 11 } tablet={ 11 } mobile={ 16 }>
@@ -272,8 +277,8 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                             <Header className="status-header" as="h3">
                                 {
                                     (getProfileCompletionPercentage() === 100)
-                                        ? t("userPortal:components.overview.widgets.accountStatus.complete")
-                                        : t("userPortal:components.overview.widgets.accountStatus.inComplete")
+                                        ? t("myAccount:components.overview.widgets.accountStatus.complete")
+                                        : t("myAccount:components.overview.widgets.accountStatus.inComplete")
                                 }
                             </Header>
                             <Progress
@@ -289,7 +294,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                                 error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
                             >
                                 {
-                                    t("userPortal:components.overview.widgets.accountStatus.completionPercentage",
+                                    t("myAccount:components.overview.widgets.accountStatus.completionPercentage",
                                         {
                                             percentage: profileCompletion && profileCompletion.percentage
                                                 ? profileCompletion.percentage

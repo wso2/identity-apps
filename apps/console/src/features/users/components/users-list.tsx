@@ -37,11 +37,12 @@ import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { RealmConfigInterface } from "../../server-configurations";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
 
@@ -82,6 +83,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * Callback for the search query clear action.
      */
     onSearchQueryClear?: () => void;
+    /**
+     * Admin user details content.
+     */
+    realmConfigs: RealmConfigInterface;
     /**
      * Search query for the list.
      */
@@ -129,6 +134,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
+        realmConfigs,
         searchQuery,
         selection,
         showListItemActions,
@@ -200,7 +206,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         </Header>
                     );
                 },
-                title: t("adminPortal:components.users.list.columns.name")
+                title: t("console:manage.features.users.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -208,7 +214,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("adminPortal:components.users.list.columns.actions")
+                title: t("console:manage.features.users.list.columns.actions")
             }
         ];
 
@@ -302,14 +308,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user.userName === "admin";
+                    || user.userName === realmConfigs?.adminUser;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("adminPortal:components.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -328,16 +334,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("adminPortal:components.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -353,16 +359,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             onClick={ () => onEmptyListPlaceholderActionClick() }
                         >
                             <Icon name="add"/>
-                            { t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.addButton") }
+                            { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.title") }
+                    title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
-                        t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
-                        t("adminPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.2")
+                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
+                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
+                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
                     ] }
                 />
             );
@@ -407,7 +413,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             (
                                 <p>
                                     <Trans
-                                        i18nKey={ "adminPortal:components.user.deleteUser.confirmationModal." +
+                                        i18nKey={ "console:manage.features.user.deleteUser.confirmationModal." +
                                         "assertionHint" }
                                         tOptions={ { userName: deletingUser.userName } }
                                     >
@@ -424,17 +430,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("adminPortal:components.user.deleteUser.confirmationModal.header") }
+                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            { t("adminPortal:components.user.deleteUser.confirmationModal.message") }
+                            { t("console:manage.features.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                            { t("adminPortal:components.user.deleteUser.confirmationModal.content") }
+                            { t("console:manage.features.user.deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

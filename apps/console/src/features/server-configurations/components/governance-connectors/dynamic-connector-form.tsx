@@ -114,8 +114,8 @@ const DynamicConnectorForm = (props) => {
                                             formValues[
                                                 GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)
                                             ]
-                                                ? t("adminPortal:components.governanceConnectors.enabled")
-                                                : t("adminPortal:components.governanceConnectors.disabled")
+                                                ? t("console:manage.features.governanceConnectors.enabled")
+                                                : t("console:manage.features.governanceConnectors.disabled")
                                         }
                                         onChange={ (event: any, newValue: boolean) => {
                                             if (
@@ -175,7 +175,7 @@ const validate = (values) => {
 
     if (allowedIdleTimeSpan < 0) {
         errors[ allowedIdleTimeSpanName ]
-            = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.positiveIntegers");
+            = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.positiveIntegers");
     }
 
     if (
@@ -191,7 +191,7 @@ const validate = (values) => {
             GovernanceConnectorUtils.encodeConnectorPropertyName(
                 ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
             )
-        ] = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.format");
+        ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
 
     }
 

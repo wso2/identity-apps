@@ -25,7 +25,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../core";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -177,7 +177,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 label={
-                                    t("devPortal:components.applications.forms.inboundSAML.fields.mode.label")
+                                    t("console:develop.features.applications.forms.inboundSAML.fields.mode.label")
                                 }
                                 name="mode"
                                 default={ configureMode }
@@ -185,17 +185,17 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 children={
                                     [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".fields.mode.children.manualConfig.label"),
                                             value: SAMLConfigModes.MANUAL
                                         },
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".fields.mode.children.metadataURL.label"),
                                             value: SAMLConfigModes.META_URL
                                         },
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".fields.mode.children.metadataFile.label"),
                                             value: SAMLConfigModes.META_FILE
                                         }
@@ -209,7 +209,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 data-testid={ `${ testId }-mode-radio-group` }
                             />
                             <Hint>
-                                { t("devPortal:components.applications.forms.inboundSAML.fields.mode.hint") }
+                                { t("console:develop.features.applications.forms.inboundSAML.fields.mode.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -222,17 +222,17 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         <Field
                                             name="issuer"
                                             label={
-                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".fields.issuer.label")
                                             }
                                             required={ true }
                                             requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                     ".issuer.validations.empty")
                                             }
                                             type="text"
                                             placeholder={
-                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                     ".issuer.placeholder")
                                             }
                                             value={ initialValues?.inboundProtocolConfiguration
@@ -240,7 +240,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             data-testid={ `${ testId }-issuer-input` }
                                         />
                                         <Hint>
-                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            { t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".issuer.hint") }
                                         </Hint>
                                     </Grid.Column>
@@ -250,17 +250,17 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         <Field
                                             name="applicationQualifier"
                                             label={
-                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".fields.qualifier.label")
                                             }
                                             required={ false }
                                             requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                     ".qualifier.validations.empty")
                                             }
                                             type="text"
                                             placeholder={
-                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                     ".qualifier.placeholder")
                                             }
                                             value={
@@ -270,7 +270,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             data-testid={ `${ testId }-application-qualifier-input` }
                                         />
                                         <Hint>
-                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            { t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".qualifier.hint") }
                                         </Hint>
                                     </Grid.Column>
@@ -283,15 +283,15 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             .saml?.manualConfiguration?.assertionConsumerUrls.toString()
                                     }
                                     labelName={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.label")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.placeholder")
                                     }
                                     validationErrorMsg={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.validations.invalid")
                                     }
                                     validation={ (value: string) => {
@@ -327,7 +327,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     showError={ showAssertionConsumerUrlError }
                                     setShowError={ setAssertionConsumerUrlError }
                                     hint={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.hint")
                                     }
                                     addURLTooltip={ t("common:addURL") }
@@ -347,24 +347,24 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     <Field
                                         name="url"
                                         label={
-                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".metaURL.label")
                                         }
                                         required={ true }
                                         requiredErrorMessage={
-                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".metaURL.validations.empty")
                                         }
                                         type="text"
                                         placeholder={
-                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".metaURL.placeholder")
                                         }
                                         validation={ (value: string, validation: Validation) => {
                                             if (!FormValidation.url(value)) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(
-                                                    t("devPortal:components.applications.forms.inboundSAML" +
+                                                    t("console:develop.features.applications.forms.inboundSAML" +
                                                         ".fields.metaURL.validations.invalid")
                                                 );
                                             }
@@ -373,7 +373,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         data-testid={ `${ testId }-meta-url-input` }
                                     />
                                     <Hint>
-                                        { t("devPortal:components.applications.forms.inboundSAML.fields.metaURL" +
+                                        { t("console:develop.features.applications.forms.inboundSAML.fields.metaURL" +
                                             ".hint") }
                                     </Hint>
                                 </Grid.Column>
@@ -386,7 +386,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     (
                         <FileUpload
                             encode={ true }
-                            dropzoneIcon={ EmptyPlaceholderIllustrations.fileUpload }
+                            dropzoneIcon={ getEmptyPlaceholderIllustrations().fileUpload }
                             updateFile={ setFile }
                             updateContent={ setFileContent }
                             updatePasteContent={ setFilePasteContent }

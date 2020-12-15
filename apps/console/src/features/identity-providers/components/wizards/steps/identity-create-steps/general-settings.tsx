@@ -73,11 +73,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="name"
-                            label={ t("devPortal:components.idp.forms.generalDetails.name.label") }
+                            label={ t("console:develop.features.idp.forms.generalDetails.name.label") }
                             required={ true }
-                            requiredErrorMessage={ t("devPortal:components.idp.forms.generalDetails." +
+                            requiredErrorMessage={ t("console:develop.features.idp.forms.generalDetails." +
                                 "name.validations.empty") }
-                            placeholder={ t("devPortal:components.idp.forms." +
+                            placeholder={ t("console:develop.features.idp.forms." +
                                 "generalDetails.name.placeholder") }
                             type="text"
                             validation={ async (value: string, validation: Validation) => {
@@ -89,7 +89,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                         validation.isValid = true;
                                     } else {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                        validation.errorMessages.push(t("console:develop.features.idp.forms." +
                                             "generalDetails.name.validations.duplicate"));
                                     }
                                 } catch (error) {
@@ -105,10 +105,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="description"
-                            label={ t("devPortal:components.idp.forms.generalDetails.description.label") }
+                            label={ t("console:develop.features.idp.forms.generalDetails.description.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ t("devPortal:components.idp.forms." +
+                            placeholder={ t("console:develop.features.idp.forms." +
                                 "generalDetails.description.placeholder") }
                             type="textarea"
                             value={ initialValues?.description }
@@ -120,15 +120,15 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="image"
-                            label={ t("devPortal:components.idp.forms.generalDetails.image.label") }
+                            label={ t("console:develop.features.idp.forms.generalDetails.image.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ t("devPortal:components.idp.forms.generalDetails.image.placeholder") }
+                            placeholder={ t("console:develop.features.idp.forms.generalDetails.image.placeholder") }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                    validation.errorMessages.push(t("console:develop.features.idp.forms." +
                                         "common.invalidURLErrorMessage"));
                                 }
                             } }
