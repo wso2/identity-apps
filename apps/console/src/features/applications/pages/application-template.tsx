@@ -29,6 +29,7 @@ import {
     AppState,
     ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations,
+    getTechnologyLogos,
     history
 } from "../../core";
 import { MinimalAppCreateWizard } from "../components";
@@ -267,7 +268,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                         ? templatesOverrides
                         : templates
                 }
-                templateIcons={ getApplicationTemplateIllustrations() }
+                templateIcons={ { ...getApplicationTemplateIllustrations(), ...getTechnologyLogos() } }
                 templateIconOptions={ {
                     fill: "primary"
                 } }
@@ -324,6 +325,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                             />
                                         )
                                     }
+                                    <Divider hidden />
                                 </div>
                             ))
                     }
