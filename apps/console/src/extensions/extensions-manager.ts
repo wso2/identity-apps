@@ -16,9 +16,14 @@
  * under the License.
  */
 
+import isObject from "lodash/isObject";
+import { lazy } from "react";
 import { ExtensionsConfig } from "./config";
 import { ApplicationTemplateExtensionsConfigInterface, ExtensionsConfigInterface } from "./models";
-import { TemplateConfigInterface } from "../features/applications/data/application-templates";
+import {
+    TemplateConfigInterface,
+    TemplateContentInterface
+} from "../features/applications/data/application-templates";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
@@ -31,7 +36,6 @@ import {
 export class ExtensionsManager {
 
     private static instance = new ExtensionsManager();
-    private static readonly APPLICATION_TEMPLATES_FOLDER_RELATIVE_PATH: string = "./";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -68,7 +72,8 @@ export class ExtensionsManager {
      */
     public getApplicationTemplatesConfig(): ApplicationTemplateExtensionsConfigInterface {
 
-        const config: ApplicationTemplateExtensionsConfigInterface = ExtensionsManager.getConfig()?.templateExtensions?.applications;
+        const config: ApplicationTemplateExtensionsConfigInterface = ExtensionsManager.getConfig()
+            .templateExtensions?.applications;
 
         if (!config) {
             return {
@@ -119,11 +124,24 @@ export class ExtensionsManager {
             return templateConfig;
         }
 
+        // Dynamically lazy loads the content.
+        const loadContent = (content: TemplateContentInterface): TemplateContentInterface => {
+
+            if (!content && !isObject(content)) {
+                return null;
+            }
+
+            for (const [ key, value ] of Object.entries(content)) {
+                content[ key ] = lazy(() => import(`${ value }`));
+            }
+
+            return content;
+        };
+
         return {
             ...templateConfig,
-            resource: import(`${
-                ExtensionsManager.APPLICATION_TEMPLATES_FOLDER_RELATIVE_PATH
-                }${ templateConfig.resource }`).then(module => module.default)
+            content: loadContent(templateConfig?.content),
+            resource: import(`${ templateConfig.resource }`).then(module => module.default)
         };
     }
 }
