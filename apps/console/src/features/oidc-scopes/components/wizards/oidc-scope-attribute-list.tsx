@@ -260,7 +260,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                                     isItemChecked={ checkedUnassignedListItems.includes(claim) }
                                     showSecondaryActions={ false }
                                     showListSubItem={ true }
-                                    listSubItem={ claim?.claimURI }
                                     data-testid={ `${ testId }-unselected-transfer-list-item-${ 1 }` }
                                 />
                             );
@@ -291,7 +290,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                                     isItemChecked={ checkedAssignedListItems.includes(claim) }
                                     showSecondaryActions={ false }
                                     showListSubItem={ true }
-                                    listSubItem={ claim?.claimURI }
                                     data-testid={ `${ testId }-selected-transfer-list-item-${ 1 }` }
                                 />
                             );
