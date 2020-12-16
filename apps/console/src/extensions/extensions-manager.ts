@@ -119,11 +119,6 @@ export class ExtensionsManager {
     private static lazyLoadTemplateResources<T = {}>(
         templateConfig: TemplateConfigInterface<T>): TemplateConfigInterface<T> {
 
-        if (typeof templateConfig.resource !== "string") {
-
-            return templateConfig;
-        }
-
         // Dynamically lazy loads the content.
         const loadContent = (content: TemplateContentInterface): TemplateContentInterface => {
 
@@ -138,10 +133,20 @@ export class ExtensionsManager {
             return content;
         };
 
+        // Lazy loads the resource.
+        const loadResource = (resource) => {
+
+            if (typeof resource !== "string") {
+                return resource;
+            }
+
+            return import(`${ resource }`).then(module => module.default);
+        };
+
         return {
             ...templateConfig,
             content: loadContent(templateConfig?.content),
-            resource: import(`${ templateConfig.resource }`).then(module => module.default)
+            resource: loadResource(templateConfig?.resource)
         };
     }
 }
