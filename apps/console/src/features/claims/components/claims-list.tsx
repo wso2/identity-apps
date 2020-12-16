@@ -78,6 +78,8 @@ export enum ListType {
     ADD_EXTERNAL
 }
 
+export type ClaimEventClickItem = Claim | ExternalClaim | ClaimDialect | AddExternalClaim;
+
 /**
  * Prop types of `ClaimsList` component
  */
@@ -111,11 +113,11 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
     /**
      * Called when edit is clicked on add external claim list.
      */
-    onEdit?: (claim: Claim | ExternalClaim | ClaimDialect | AddExternalClaim, values: Map<string, FormValue>) => void;
+    onEdit?: (claim: ClaimEventClickItem, values: Map<string, FormValue>) => void;
     /**
      * Called when delete is clicked on add external claim list.
      */
-    onDelete?: (claim: Claim | ExternalClaim | ClaimDialect | AddExternalClaim) => void;
+    onDelete?: (claim: ClaimEventClickItem) => void;
     /**
      * On list item select callback.
      */
