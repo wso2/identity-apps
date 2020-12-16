@@ -417,7 +417,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             />
         ),
         icon: getGroupsWizardStepIcons().summary,
-        title: t("console:manage.featuresroles.addRoleWizard.wizardSteps.3")
+        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
     }];
 
     /**
