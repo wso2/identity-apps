@@ -127,7 +127,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
             borderless 
             data-testid={ testId }
         >
-            <Container fluid data-testid={ `${ testId }-container` } className="app-footer-container">
+            <Container fluid={ fluid } data-testid={ `${ testId }-container` } className="app-footer-container">
                 <Menu.Item className="copyright" data-testid={ `${ testId }-copyright` }>{ copyright }</Menu.Item>
                 <Menu.Menu position="right" data-testid={ `${ testId }-menu` }>
                     {
