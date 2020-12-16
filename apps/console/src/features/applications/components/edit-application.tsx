@@ -42,7 +42,7 @@ import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationInterface,
-    ApplicationTemplateListItemInterface,
+    ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
@@ -84,7 +84,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Application template.
      */
-    template?: ApplicationTemplateListItemInterface;
+    template?: ApplicationTemplateInterface;
     /**
      * Callback to see if tab extensions are available
      */
@@ -187,8 +187,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
+        if (!template?.content?.quickStart || !application?.id || isInboundProtocolConfigRequestLoading) {
+            return;
+        }
+
         const extensions: any[] = ComponentExtensionPlaceholder({
             component: "application",
+            props: {
+                application: application,
+                content: template.content.quickStart,
+                inboundProtocolConfig: inboundProtocolConfig,
+                inboundProtocols: inboundProtocolList,
+                template: template
+            },
             subComponent: "edit",
             type: "tab"
         });
@@ -198,7 +209,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         setTabPaneExtensions(extensions);
-    }, [ tabPaneExtensions ]);
+    }, [
+        tabPaneExtensions,
+        template,
+        application,
+        inboundProtocolList,
+        inboundProtocolConfig,
+        isInboundProtocolConfigRequestLoading
+    ]);
 
     /**
      * Called on `availableInboundProtocols` prop update.
