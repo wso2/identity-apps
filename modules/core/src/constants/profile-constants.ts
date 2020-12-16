@@ -66,4 +66,9 @@ export class ProfileConstants {
         .set("ACCOUNT_LOCKED", "accountLocked")
         .set("ACCOUNT_DISABLED", "accountDisabled")
         .set("ONETIME_PASSWORD", "oneTimePassword");
+
+    /**
+     * States if the SCIM schema is mutable.
+     */
+    public static readonly READONLY_SCHEMA: string = "READ_ONLY";
 }

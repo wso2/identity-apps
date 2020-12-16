@@ -423,7 +423,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     <EditSection data-testid={ `${testId}-schema-editing-section` }>
                         <Grid>
                             <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 4 }>{fieldName}</Grid.Column>
+                                <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
                                 <Grid.Column width={ 12 }>
                                     <Forms
                                         onSubmit={ (values) => {
@@ -596,8 +596,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         >
                             <List.Content floated="right">
                                 { !isReadOnlyUser
-                                    && schema.mutability !== "READ_ONLY"
-                                    && schema.name !== "userName"
+                                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA
                                     && !isEmpty(profileInfo.get(schema.name))
                                     ? (
                                         < Popup
