@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Claim, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import isEqual from "lodash/isEqual";
