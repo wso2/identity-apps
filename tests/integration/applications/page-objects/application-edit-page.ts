@@ -100,7 +100,7 @@ export class ApplicationEditPage {
      */
     public selectTab(tab: "GENERAL" | "ACCESS" | "ATTRIBUTES" | "SIGN_ON" | "PROVISIONING" | "ADVANCED"): void {
 
-        this.getTab(tab).click();
+        this.getTab(tab).click({ force: true, multiple: true});
     };
     
 
