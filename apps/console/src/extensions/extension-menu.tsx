@@ -19,19 +19,30 @@
 import { RouteInterface } from "@wso2is/core/models";
 import  { lazy } from "react";
 import { ExtensionsManager } from "./extensions-manager";
+import { ExtensionRoutesInterface } from "./models";
 
 /**
  * This will dynamically add extension routes to the application.
  *
- * @return {RouteInterface[]}
+ * @return {ExtensionRoutesInterface}
  */
-export const EXTENSION_ROUTES = (): RouteInterface[]  => {
-    const routes: RouteInterface[]  = ExtensionsManager.getConfig().routes;
+export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
 
-    routes.forEach(route => {
+    const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
+    const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
+
+    developRoutes.forEach(route => {
         const routePath = route.components;
         route.component = lazy(() => import(`${routePath}`));
     });
 
-    return routes;
+    fullscreenRoutes.forEach(route => {
+        const routePath = route.components;
+        route.component = lazy(() => import(`${routePath}`));
+    });
+
+    return {
+        develop: developRoutes,
+        fullscreen: fullscreenRoutes
+    };
 };

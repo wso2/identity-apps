@@ -16,24 +16,27 @@
  * under the License.
  */
 
-import { ExtensionsConfigInterface } from "./models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
-    componentExtensions: [],
-    routes: {
-        develop: [],
-        fullscreen: []
-    },
-    sections: {
-        components: {
-            "example": "./components/example.tsx"
-        }
-    },
-    templateExtensions: {
-        applications: {
-            categories: [],
-            groups: [],
-            templates: []
-        }
-    }
-});
+/**
+ * Full screen layout.
+ * Used to render features which has to be rendered in full screen mode.
+ *
+ * @param {React.PropsWithChildren<{}>} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const FullScreenLayout: FunctionComponent<PropsWithChildren<{}>> = (
+    props: PropsWithChildren<{}>
+): ReactElement => {
+
+    const {
+        children
+    } = props;
+
+    return (
+        <>
+            { children }
+        </>
+    );
+};

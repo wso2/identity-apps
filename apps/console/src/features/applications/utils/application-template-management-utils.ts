@@ -340,11 +340,11 @@ export class ApplicationTemplateManagementUtils {
                     return config.id === template.id;
                 });
 
-            if (!config.wizardHelp) {
+            if (!config?.content) {
                 return;
             }
 
-            template.wizardHelp = config.wizardHelp;
+            template.content = config.content;
         });
 
         return templates;

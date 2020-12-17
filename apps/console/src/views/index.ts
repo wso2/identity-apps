@@ -18,3 +18,4 @@
 
 export * from "./admin";
 export * from "./developer";
+export * from "./full-screen-view";

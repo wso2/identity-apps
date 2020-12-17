@@ -25,6 +25,7 @@ import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
     component?: string;
+    props?: object;
     subComponent?: string;
     type?: string;
 }
@@ -43,6 +44,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
 
     const {
         component,
+        props,
         subComponent,
         type
     } = args;
@@ -87,8 +89,7 @@ export const ComponentExtensionPlaceholder = (args: ComponentExtensionInterface)
                                         </Placeholder.Header>
                                     </Placeholder>
                                 ) }>
-
-                                <DynamicLoader />
+                                <DynamicLoader { ...props } />
                             </Suspense>
                         </ErrorBoundary>
                     )

@@ -45,9 +45,17 @@ export interface ApplicationTemplatesConfigInterface {
 }
 
 export interface TemplateConfigInterface<T = {}> {
+    content?: TemplateContentInterface;
     enabled: boolean;
     id: string;
     resource?: T | Promise<T> | string;
+}
+
+export interface TemplateContentInterface extends StrictTemplateContentInterface {
+    [ key: string ]: any;
+}
+
+export interface StrictTemplateContentInterface {
     wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
@@ -94,40 +102,52 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
             merge(
                 keyBy([
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: AndroidMobileApplicationTemplate.id,
-                        resource: AndroidMobileApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
+                        resource: AndroidMobileApplicationTemplate
                     },
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: OIDCWebApplicationTemplate.id,
-                        resource: OIDCWebApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
+                        resource: OIDCWebApplicationTemplate
                     },
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: SAMLWebApplicationTemplate.id,
-                        resource: SAMLWebApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
+                        resource: SAMLWebApplicationTemplate
                     },
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/single-page-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: SinglePageApplicationTemplate.id,
-                        resource: SinglePageApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/single-page-application/create-wizard-help"))
+                        resource: SinglePageApplicationTemplate
                     },
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/windows-desktop-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: WindowsDesktopApplicationTemplate.id,
-                        resource: WindowsDesktopApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/windows-desktop-application/create-wizard-help"))
+                        resource: WindowsDesktopApplicationTemplate
                     },
                     {
+                        content: {
+                            wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
+                        },
                         enabled: true,
                         id: CustomApplicationTemplate.id,
-                        resource: CustomApplicationTemplate,
-                        wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
+                        resource: CustomApplicationTemplate
                     }
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")

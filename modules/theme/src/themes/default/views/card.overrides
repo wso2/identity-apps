@@ -287,8 +287,14 @@
             margin-right: @selectionCardRightSpacing;
         }
         &.selected {
-            &:after {
-                visibility: visible;
+            &.underlined-selection {
+                &:after {
+                    visibility: visible;
+                }
+            }
+            &.filled-selection {
+                background: lighten(@primaryColor, 40);
+                border: 1px solid @primaryColor;
             }
         }
         &.disabled {

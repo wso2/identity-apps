@@ -60,6 +60,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      */
     selected?: boolean;
     /**
+     *
+     */
+    selectionType?: "underlined" | "filled";
+    /**
      * Should text be shown i.e Header & Description.
      */
     showText?: boolean;
@@ -110,6 +114,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         multilineDescription,
         onClick,
         selected,
+        selectionType,
         showText,
         showTooltips,
         size,
@@ -123,11 +128,13 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         "selection-card",
         {
             disabled,
+            "filled-selection": selectionType === "filled",
             inline,
             "no-content-top-border": !contentTopBorder,
             selected,
             [ size ]: size,
             [ `spaced-${ spaced }` ]: spaced,
+            "underlined-selection": selectionType === "underlined",
             [ "with-image" ]: image
         },
         className
@@ -202,6 +209,7 @@ SelectionCard.defaultProps = {
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    selectionType: "underlined",
     showText: true,
     showTooltips: false,
     size: "default",

@@ -17,13 +17,13 @@
  */
 
 import { LinkInterface } from "@wso2is/core/models";
-import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import {
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
+import { TemplateContentInterface } from "../data/application-templates";
 
 /**
  *  Captures the basic details in the applications.
@@ -358,7 +358,7 @@ export interface ApplicationTemplateListInterface {
  */
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
     application?: MainApplicationInterface;
-    wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
+    content?: TemplateContentInterface;
 }
 
 /**

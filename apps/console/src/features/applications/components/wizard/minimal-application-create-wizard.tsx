@@ -123,7 +123,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
-    
+
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
 
@@ -483,13 +483,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const renderHelpPanel = (): ReactElement => {
 
         // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
-        if (!showHelpPanel || !selectedTemplate.wizardHelp) {
+        if (!selectedTemplate?.content?.wizardHelp) {
             return null;
         }
 
         const {
             wizardHelp: WizardHelp
-        } = selectedTemplate;
+        } = selectedTemplate.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
