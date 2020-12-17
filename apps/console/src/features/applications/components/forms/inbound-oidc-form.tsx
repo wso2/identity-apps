@@ -39,6 +39,7 @@ import {
     SupportedAccessTokenBindingTypes,
     emptyOIDCConfig
 } from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -189,48 +190,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Add regexp to multiple callbackUrls and update configs.
-     *
-     * @param {string} urls - Callback URLs.
-     * @return {string} Prepared callback URL.
-     */
-    const buildCallBackUrlWithRegExp = (urls: string): string => {
-        let callbackURL = urls.replace(/['"]+/g, "");
-        if (callbackURL.split(",").length > 1) {
-            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
-        }
-        return callbackURL;
-    };
-
-    /**
-     * Separate out multiple origins in the passed string.
-     *
-     * @param {string} origins - Allowed origins
-     * @return Resolved allowed origins.
-     */
-    const resolveAllowedOrigins = (origins: string): string[] => {
-        if (origins.split(",").length > 1) {
-            return origins.split(",");
-        }
-        return origins && (origins !== "") ? [ origins ] : [];
-    };
-
-    /**
-     * Remove regexp from incoming data and show the callbackUrls.
-     *
-     * @param {string} url - Callback URLs.
-     * @return {string} Prepared callback URL.
-     */
-    const buildCallBackURLWithSeparator = (url: string): string => {
-        if (url.includes("regexp=(")) {
-            url = url.replace("regexp=(", "");
-            url = url.replace(")", "");
-            url = url.split("|").join(",");
-        }
-        return url;
-    };
-
-    /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
      * @param {MetadataPropertyInterface} metadataProp - Metadata.
@@ -370,8 +329,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (showCallbackURLField) {
             formValues = {
                 ...formValues,
-                allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
-                callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
+                allowedOrigins: ApplicationManagementUtils.resolveAllowedOrigins(origin ? origin : allowedOrigins),
+                callbackURLs: [ ApplicationManagementUtils.buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
             };
         } else {
             formValues = {
@@ -555,7 +514,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.label")
                             }
                             required={ true }
-                            value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
+                            value={
+                                ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                    initialValues.callbackURLs?.toString())
+                            }
                             placeholder={
                                 t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
                                     ".placeholder")

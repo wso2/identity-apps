@@ -321,4 +321,53 @@ export class ApplicationManagementUtils {
      */
     public static getConfigDocsKey = (template: string) => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
+
+    /**
+     * Separate out multiple origins in the passed string.
+     *
+     * @param {string} origins - Allowed origins
+     * @return {string[]} Resolved allowed origins.
+     */
+    public static resolveAllowedOrigins = (origins: string): string[] => {
+
+        if (origins.split(",").length > 1) {
+            return origins.split(",");
+        }
+
+        return origins && (origins !== "") ? [ origins ] : [];
+    };
+
+    /**
+     * Add regexp to multiple callbackUrls and update configs.
+     *
+     * @param {string} urls - Callback URLs.
+     * @return {string} Prepared callback URL.
+     */
+    public static buildCallBackUrlWithRegExp = (urls: string): string => {
+
+        let callbackURL = urls.replace(/['"]+/g, "");
+
+        if (callbackURL.split(",").length > 1) {
+            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
+        }
+
+        return callbackURL;
+    };
+
+    /**
+     * Remove regexp from incoming data and show the callbackUrls.
+     *
+     * @param {string} url - Callback URLs.
+     * @return {string} Prepared callback URL.
+     */
+    public static buildCallBackURLWithSeparator = (url: string): string => {
+
+        if (url.includes("regexp=(")) {
+            url = url.replace("regexp=(", "");
+            url = url.replace(")", "");
+            url = url.split("|").join(",");
+        }
+
+        return url;
+    };
 }
