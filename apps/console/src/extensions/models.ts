@@ -25,9 +25,17 @@ import { ApplicationTemplatesConfigInterface } from "../features/applications/da
  */
 export interface ExtensionsConfigInterface {
     componentExtensions: ReactElement[] | any[];
-    routes: RouteInterface[];
+    routes: ExtensionRoutesInterface;
     sections: SectionExtensionsConfigInterface;
     templateExtensions: TemplateExtensionsConfigInterface;
+}
+
+/**
+ * Interface for routes extensions.
+ */
+export interface ExtensionRoutesInterface {
+    develop?: RouteInterface[];
+    fullscreen?: RouteInterface[];
 }
 
 /**

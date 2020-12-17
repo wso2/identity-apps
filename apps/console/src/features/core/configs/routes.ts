@@ -21,7 +21,7 @@ import { lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
-import { AdminView, DeveloperView } from "../../../views";
+import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
 
 /**
@@ -45,7 +45,7 @@ import { AppConstants } from "../constants";
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
 
     return [
-        ...EXTENSION_ROUTES(),
+        ...EXTENSION_ROUTES().develop,
         {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
@@ -475,6 +475,29 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
         }
     ];
 };
+
+/**
+ * Get full screen layout routes.
+ *
+ * @return {RouteInterface[]}
+ */
+export const getFullScreenViewRoutes = (): RouteInterface[] => {
+
+    return [
+        ...EXTENSION_ROUTES().fullscreen,
+        {
+            component: null,
+            icon: null,
+            id: "404",
+            name: "404",
+            path: "*",
+            protected: true,
+            redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            showOnSidePanel: false
+        }
+    ];
+};
+
 /**
  * Get default page layout routes.
  *
@@ -624,6 +647,15 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             id: "storageDisabled",
             name: "storageDisabled",
             path: AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: FullScreenView,
+            icon: null,
+            id: "full-screen-view",
+            name: "Full Screen View",
+            path: AppConstants.getFullScreenViewBasePath(),
             protected: false,
             showOnSidePanel: false
         },

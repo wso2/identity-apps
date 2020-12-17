@@ -20,7 +20,10 @@ import { ExtensionsConfigInterface } from "./models";
 
 export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     componentExtensions: [],
-    routes: [],
+    routes: {
+        develop: [],
+        fullscreen: []
+    },
     sections: {
         components: {
             "example": "./components/example.tsx"

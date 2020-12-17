@@ -52,6 +52,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the full screen view base path.
+     *
+     * @return {string}
+     */
+    public static getFullScreenViewBasePath(): string {
+        return this.getMainViewBasePath() + "/fullscreen";
+    }
+
+    /**
      * Get the developer view base path.
      *
      * @return {string}
