@@ -31,7 +31,9 @@
         "@wso2is/theme": "^1.0.602",
         "@wso2is/validation": "^1.0.602",
         "country-language": "^0.1.7",
-        "redux-mock-store": "^1.5.4"
+        "reactour": "^1.18.0",
+        "redux-mock-store": "^1.5.4",
+        "styled-components": "^4.4.1"
     },
     "devDependencies": {
         "@testing-library/dom": "^7.24.3",
