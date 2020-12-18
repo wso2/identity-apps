@@ -86,6 +86,9 @@ public class AppPortalUtils {
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+        } else {
+            callbackUrl = "regexp=(" + callbackUrl + "|" +
+                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
