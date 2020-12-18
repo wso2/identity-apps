@@ -87,6 +87,7 @@ public class AppPortalUtils {
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
         }
+        callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         if (grantTypes != null && !grantTypes.isEmpty()) {

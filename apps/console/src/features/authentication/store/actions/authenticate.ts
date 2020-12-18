@@ -26,7 +26,8 @@ import {
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
-    UserInfo
+    UserInfo,
+    LOGOUT_URL
 } from "@asgardio/oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants, TokenConstants } from "@wso2is/core/constants";
@@ -254,6 +255,13 @@ export const initializeAuthentication = () => (dispatch) => {
 
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+        // Update post_logout_redirect_uri of logout_url with tenant qualified url
+        if (sessionStorage.getItem(LOGOUT_URL)) {
+            let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+            logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
+            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+        }
 
         dispatch(
             setSignIn<AuthenticatedUserInterface>({
