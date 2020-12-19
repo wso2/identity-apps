@@ -45,6 +45,8 @@
 
 					if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
 						errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
+					} else if (errorMessage.equalsIgnoreCase("email.duplicate.message")) {
+					    errorMessage = "Email address is already being used by another user. Please try using a different email address";
 					}
 				}
 			}
@@ -93,15 +95,6 @@
 						<!-- page content -->
 						<h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.email")%></h2>
 						<div class="ui divider hidden"></div>
-						<%
-							if ("true".equals(authenticationFailed)) {
-						%>
-						<div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
-						</div>
-						<div class="ui divider hidden"></div>
-						<%
-							}
-						%>
 						<%
 							if ("true".equals(authenticationFailed)) {
 						%>
