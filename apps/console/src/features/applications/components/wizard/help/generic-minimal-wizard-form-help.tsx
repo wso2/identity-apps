@@ -104,12 +104,10 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                         {
                             (template.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) && (
                                 <>
-                                    <Heading as="h5">Redirect URLs</Heading>
+                                    <Heading as="h5">Allowed redirect URLs</Heading>
                                     <p>
-                                        After the authentication, we will only redirect to the above redirect URLs. You
-                                        can
-                                        also
-                                        specify more than one URL if needed.
+                                        After the authentication, we will only redirect to the above allowed redirect
+                                        URLs. You can also specify more than one URL if needed.
                                     </p>
                                     <p>E.g. https://www.conotoso.com/login</p>
                                     <Message warning>Note: This field is required for a functional app.</Message>

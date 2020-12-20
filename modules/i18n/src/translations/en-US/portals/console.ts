@@ -481,7 +481,7 @@ export const console: ConsoleNS = {
                                     heading: "Audience"
                                 },
                                 callbackURLs: {
-                                    heading: "Redirect URL(s)"
+                                    heading: "Allowed redirect URL(s)"
                                 },
                                 certificateAlias: {
                                     heading: "Certificate alias"
@@ -1041,10 +1041,10 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "After the authentication, we will only redirect to the above redirect URLs " +
-                                    "and you can specify multiple URLs",
-                                label: "Redirect URLs",
-                                placeholder: "Enter redirect URLs",
+                                hint: "After the authentication, we will only redirect to the above allowed redirect " +
+                                    "URLs and you can specify multiple URLs",
+                                label: "Allowed redirect URLs",
+                                placeholder: "Enter allowed redirect URLs",
                                 validations: {
                                     empty: "Please add a valid URL."
                                 }
