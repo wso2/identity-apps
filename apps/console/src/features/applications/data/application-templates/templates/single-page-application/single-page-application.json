@@ -10,7 +10,7 @@
         "vue"
     ],
     "category": "DEFAULT",
-    "displayOrder": 3,
+    "displayOrder": 0,
     "templateGroup": "spa",
     "application": {
         "name": "",

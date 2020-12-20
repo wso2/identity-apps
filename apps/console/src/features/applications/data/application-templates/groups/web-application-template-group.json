@@ -2,6 +2,7 @@
     "category": "DEFAULT",
     "description": "Regular web applications which use re-directions inside browsers.",
     "enabled": true,
+    "displayOrder": 1,
     "id": "web-application",
     "image": "oidcWebApp",
     "name": "Web Application",
