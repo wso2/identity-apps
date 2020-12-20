@@ -54,8 +54,10 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-            }
+                    errorMessage = "Authentication Failed! Please Retry";
+                } else if (errorMessage.equalsIgnoreCase("mobile.number.update.failed")) {
+                    errorMessage = "Mobile number is being used in another profile. Please use a different mobile number";
+                }
         }
     }
 %>
