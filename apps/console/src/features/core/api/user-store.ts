@@ -18,6 +18,7 @@
 
 import { IdentityClient } from "@asgardio/oidc-js";
 import { HttpMethods } from "@wso2is/core/models";
+import { UserStoreDetails } from "../models";
 import { store } from "../store";
 
 /**
@@ -35,7 +36,7 @@ const httpClient = IdentityClient.getInstance()
  *
  * @return {Promise<any>} response.
  */
-export const getPrimaryUserStore = (): Promise<any> => {
+export const getPrimaryUserStore = (): Promise<UserStoreDetails> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

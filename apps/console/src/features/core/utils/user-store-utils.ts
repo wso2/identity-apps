@@ -21,6 +21,7 @@ import _ from "lodash";
 import { UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
+import { UserStoreDetails } from "../models";
 
 /**
  * Utility class for common user store operations.
@@ -86,7 +87,7 @@ export class SharedUserStoreUtils {
     /**
      * The following method will fetch the primary user store details.
      */
-    public static async getPrimaryUserStore(): Promise<any> {
+    public static async getPrimaryUserStore(): Promise<UserStoreDetails> {
         return getPrimaryUserStore().then((response) => {
             return response;
         });
@@ -106,7 +107,7 @@ export class SharedUserStoreUtils {
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
         }
-
+        
         for (const id of ids) {
              await getAUserStore(id)
                 .then((res) => {
