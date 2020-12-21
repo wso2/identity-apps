@@ -3,6 +3,7 @@
     "description": "Applications developed to target mobiles devices.",
     "enabled": true,
     "id": "mobile",
+    "displayOrder": 3,
     "image": "oidcMobile",
     "name": "Mobile Application",
     "subTemplatesSectionTitle": "Technology"

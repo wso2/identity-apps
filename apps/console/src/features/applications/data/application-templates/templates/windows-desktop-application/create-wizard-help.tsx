@@ -51,12 +51,11 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
             <Divider />
 
             <>
-                <Heading as="h5">Redirect URLs</Heading>
+                <Heading as="h5">Allowed redirect URLs</Heading>
                 <p>
-                    After the authentication, we will only redirect to the above redirect URLs. You
-                    can
-                    also
-                    specify more than one URL if needed.
+                    After user sign-in or sign-out, we will only redirect to these URLs. You can specify
+                    multiple valid URLs. Make sure to specify the protocol ( https:// ) otherwise the
+                    redirect may fail in some cases.
                 </p>
                 <p>E.g. https://www.conotoso.com/login</p>
                 <Message warning>Note: This field is required for a functional app.</Message>

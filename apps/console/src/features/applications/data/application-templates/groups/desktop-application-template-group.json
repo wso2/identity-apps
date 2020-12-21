@@ -3,6 +3,7 @@
     "description": "Applications developed to target native desktops.",
     "enabled": true,
     "id": "desktop",
+    "displayOrder": 2,
     "image": "windowsNative",
     "name": "Desktop Application",
     "subTemplatesSectionTitle": "Technology"
