@@ -34,9 +34,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AdvanceAttributeSettings } from "./advance-attribute-settings";
-import { AttributeSelection } from "./attribute-selection";
-import { RoleMapping } from "./role-mapping";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { updateClaimConfiguration } from "../../../api/";
 import {
@@ -46,6 +43,9 @@ import {
     RoleMappingInterface,
     SubjectConfigInterface
 } from "../../../models";
+import { AdvanceAttributeSettings } from "./advance-attribute-settings";
+import { AttributeSelection } from "./attribute-selection";
+import { RoleMapping } from "./role-mapping";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -362,7 +362,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 });
             }
         } else {
-            externalClaims.map((element: ExtendedExternalClaimInterface) => {
+            const allExternalClaims = [ ...externalClaims, ...selectedExternalClaims ];
+            allExternalClaims.map((element: ExtendedExternalClaimInterface) => {
                 const option: DropdownOptionsInterface = {
                     key: element.id,
                     text: element.claimURI,
