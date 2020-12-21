@@ -102,7 +102,7 @@ export class SharedUserStoreUtils {
 
         // Checks if the primary user store is readonly as well.
         if ( primaryUserStore.properties.find(property => { 
-            return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "false"
+            return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
         }
