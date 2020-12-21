@@ -313,6 +313,9 @@ export const initializeAuthentication = () =>(dispatch)=> {
         let jwksURL = window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL;
         let wellKnownEndpoint = window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL;
         let logoutURL = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
+        const customParams = {
+            t: window["AppUtils"].getTenantName(true)
+        };
 
         /* Check whether the host is different compared to the server origin. If different, we assume that the app
         is accessed through a custom domain. */
@@ -328,6 +331,8 @@ export const initializeAuthentication = () =>(dispatch)=> {
             tokenRevokeURL = window.location.origin + "/common/oauth2/revoke";
             oidcSessionIFrameURL = window.location.origin + "/oidc/checksession";
             logoutURL = window.location.origin + "/common/oidc/logout";
+            // Set extracted domain name as the tenant domain.
+            customParams["t"] = window.location.host;
             // Need to update the store with new URLs.
             store.dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(
                 Config.getServiceResourceEndpoints()));
@@ -346,9 +351,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clockTolerance: window["AppUtils"].getConfig().clockTolerance,
-            customParams :  {
-                t : window["AppUtils"].getTenantName(true)
-            },
+            customParams: customParams,
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {
