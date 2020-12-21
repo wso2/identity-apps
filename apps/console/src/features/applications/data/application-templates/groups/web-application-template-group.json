@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Traditional web applications which uses re-directions inside browsers.",
+    "description": "Traditional web applications which uses re-directions.",
     "enabled": true,
     "displayOrder": 1,
     "id": "web-application",
