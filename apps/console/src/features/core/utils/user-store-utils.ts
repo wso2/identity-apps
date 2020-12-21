@@ -17,11 +17,15 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 import { UserStoreDetails } from "../models";
+import { store } from "../store";
 
 /**
  * Utility class for common user store operations.
@@ -87,9 +91,17 @@ export class SharedUserStoreUtils {
     /**
      * The following method will fetch the primary user store details.
      */
-    public static async getPrimaryUserStore(): Promise<UserStoreDetails> {
+    public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
         return getPrimaryUserStore().then((response) => {
             return response;
+        }).catch(() => {
+            store.dispatch(addAlert({
+                description: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." +
+                    "genericError.description"),
+                level: AlertLevels.INFO,
+                message: I18n.instance.t("console:develop.features.userstores.notifications.fetchUserstores." + 
+                    "genericError.message")
+            }));
         });
     }
 
@@ -102,12 +114,12 @@ export class SharedUserStoreUtils {
         const readOnlyUserStores: string[] = [];
 
         // Checks if the primary user store is readonly as well.
-        if ( primaryUserStore.properties.find(property => { 
+        if ( primaryUserStore && primaryUserStore.properties.find(property => { 
             return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
         }
-        
+
         for (const id of ids) {
              await getAUserStore(id)
                 .then((res) => {
