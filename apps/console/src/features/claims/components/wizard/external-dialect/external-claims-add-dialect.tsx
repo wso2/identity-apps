@@ -1,29 +1,29 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the 'License'); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-import { Claim, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { ClaimsList, ListType } from "../..";
+import { ClaimEventClickItem, ClaimsList, ListType } from "../..";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -45,6 +45,14 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * Saved add external claims
      */
     values: AddExternalClaim[];
+    /**
+     * A delegated event handler to pass the current
+     * selected/active claims to the parent.
+     *
+     * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit
+     * @param {AddExternalClaim[]} claims
+     */
+    onExternalClaimsChanged: (claims: AddExternalClaim[]) => void;
 }
 
 /**
@@ -62,6 +70,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         onSubmit,
         submitState,
         values,
+        onExternalClaimsChanged,
         [ "data-testid" ]: testId
     } = props;
 
@@ -81,7 +90,67 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     
     useEffect(() => {
         setClaims(values);
-    },[values]);
+    }, [ values ]);
+
+    /**
+     * Handles the event when a new external claim has been submitted via
+     * the form {@link AddExternalClaims}. We delegate this change to
+     * to the above parent component {@link AddDialect} because it has the
+     * state to manage the user selected {@link ExternalClaim} mappings.
+     *
+     * @see AddExternalClaims
+     * @param {Map<string, FormValue>} values {claimURI, localClaim}
+     */
+    const onExternalClaimAdd = (values: Map<string, FormValue>): void => {
+        const newClaim = {
+            claimURI: values.get("claimURI").toString(),
+            mappedLocalClaimURI: values.get("localClaim").toString()
+        };
+        const newState = [ ...claims, newClaim ];
+        setClaims(newState);
+        onExternalClaimsChanged(newState);
+    };
+
+    /**
+     * This function handles the event when a added claim is removed from the
+     * {@link ClaimsList} component. In here what we do is remove the item
+     * from the local state {@link claims} and delegate the change to the
+     * parent component {@link AddDialect} as well.
+     *
+     * Clarification Note: -
+     * In this function the param `claim` is always {@link AddExternalClaim}
+     *
+     * @see {@link ClaimsList}
+     * @param {ClaimEventClickItem} editingClaim
+     */
+    const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
+        const filteredClaims = claims.filter((claim: AddExternalClaim) => !isEqual(editingClaim, claim));
+        setClaims(filteredClaims);
+        onExternalClaimsChanged(filteredClaims);
+    };
+
+    /**
+     * This function handles the event when the user edits a already added
+     * claim in the {@link ClaimsList}
+     *
+     * @see ClaimsList
+     * @param {ClaimEventClickItem} editingClaim
+     * @param {Map<string, FormValue>} values {claimURI, localClaim}
+     */
+    const onExternalClaimEdit = (editingClaim: ClaimEventClickItem, values: Map<string, FormValue>): void => {
+        const existingClaims = [ ...claims ];
+        for (const claim of existingClaims) {
+            // If its not the claim then continue
+            if (!isEqual(editingClaim, claim)) continue;
+            // `ClaimDialect` interface doesn't have `claimURI` key which results
+            // in TS error due to the usage of union type.
+            if (!( ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY in editingClaim )) continue;
+            claim.claimURI = values.get("claimURI").toString();
+            claim.mappedLocalClaimURI = values.get("localClaim").toString();
+        }
+        setClaims(existingClaims);
+        onExternalClaimsChanged(existingClaims);
+    };
 
     return (
         <Grid>
@@ -89,14 +158,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                 <Grid.Column width={ 16 }>
                     <AddExternalClaims
                         wizard={ true }
-                        onSubmit={ (values: Map<string, FormValue>) => {
-                            const tempClaims = [ ...claims ];
-                            tempClaims.push({
-                                claimURI: values.get("claimURI").toString(),
-                                mappedLocalClaimURI: values.get("localClaim").toString()
-                            });
-                            setClaims(tempClaims);
-                        } }
+                        onSubmit={ onExternalClaimAdd }
                         externalClaims={ claims }
                         data-testid={ `${ testId }-add-external-claims` }
                     />
@@ -108,36 +170,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     isLoading={ false }
                                     list={ claims }
                                     localClaim={ ListType.ADD_EXTERNAL }
-                                    onEdit={ (editingClaim: Claim | ExternalClaim | ClaimDialect | AddExternalClaim,
-                                              values: Map<string, FormValue>) => {
-
-                                        const tempClaims = [ ...claims ];
-
-                                        tempClaims.forEach((claim: AddExternalClaim) => {
-                                            if (!isEqual(editingClaim, claim)) {
-                                                return;
-                                            }
-
-                                            // `ClaimDialect` interface doesn't have `claimURI` key which results
-                                            // in TS error due to the usage of union type.
-                                            if (!(ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY in editingClaim)) {
-                                                return;
-                                            }
-
-                                            claim.claimURI = values.get("claimURI").toString();
-                                            claim.mappedLocalClaimURI = values.get("localClaim").toString();
-                                        });
-
-                                        setClaims(tempClaims);
-                                    } }
-                                    onDelete={ (editingClaim: Claim | ExternalClaim | ClaimDialect |
-                                        AddExternalClaim) => {
-
-                                        const tempClaims = claims.filter((claim: AddExternalClaim) =>
-                                            !isEqual(editingClaim, claim));
-
-                                        setClaims(tempClaims);
-                                    } }
+                                    onEdit={ onExternalClaimEdit }
+                                    onDelete={ onExternalClaimDelete }
                                     data-testid={ `${ testId }-list` }
                                 />
                             )

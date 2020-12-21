@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the 'License'); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -78,9 +78,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     const [ secondStep, setSecondStep ] = useTrigger();
 
     const dispatch = useDispatch();
-
     const { t } = useTranslation();
-
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
@@ -164,13 +162,30 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     };
 
     /**
-     * Handler that is called when the `Add External CLaims` step of the wizard is completed.
+     * Handler that is called when the `Add External Claims` step of the wizard is completed.
      *
      * @param {AddExternalClaim[]} claims - Claim Values.
      */
     const onSubmitExternalClaims = (claims: AddExternalClaim[]): void => {
         setCurrentWizardStep(2);
         setExternalClaims(claims);
+    };
+
+    /**
+     * This component {@link AddDialect} delegates the wizard claim
+     * adding, editing, and deleting functionality to child components
+     * {@link ExternalClaims}, {@link ClaimsList} respectively.
+     *
+     * So, this will also delegate the state changes {@code externalClaims}
+     * to its child components down below to keep itself updated. Since,
+     * this is a wizard, the user is able go back and fourth to different steps
+     * and we need to ensure the state is preserved till the wizard submission.
+     *
+     * @see ExternalClaims nested handler functions for further information.
+     * @param {AddExternalClaim[]} claims
+     */
+    const onExternalClaimsChanged = (claims: AddExternalClaim[]) => {
+        setExternalClaims([ ...claims ]);
     };
 
     /**
@@ -195,6 +210,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     submitState={ secondStep }
                     onSubmit={ onSubmitExternalClaims }
                     values={ externalClaims }
+                    onExternalClaimsChanged={ onExternalClaimsChanged }
                     data-testid={ `${ testId }-external-claims` }
                 />
             ),
