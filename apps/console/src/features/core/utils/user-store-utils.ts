@@ -19,7 +19,7 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import _ from "lodash";
 import { UserStoreProperty } from "../../userstores/models";
-import { getAUserStore } from "../api";
+import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 
 /**
@@ -84,11 +84,28 @@ export class SharedUserStoreUtils {
     }
 
     /**
+     * The following method will fetch the primary user store details.
+     */
+    public static async getPrimaryUserStore(): Promise<any> {
+        return getPrimaryUserStore().then((response) => {
+            return response;
+        });
+    }
+
+    /**
      * The following method fetch the readonly user stores list.
      */
     public static async getReadOnlyUserStores(): Promise<string[]> {
         const ids = await SharedUserStoreUtils.getUserStoreIds();
+        const primaryUserStore = await SharedUserStoreUtils.getPrimaryUserStore();
         const readOnlyUserStores: string[] = [];
+
+        // Checks if the primary user store is readonly as well.
+        if ( primaryUserStore.properties.find(property => { 
+            return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "false"
+        ) {
+            readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
+        }
 
         for (const id of ids) {
              await getAUserStore(id)
