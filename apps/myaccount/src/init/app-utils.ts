@@ -348,7 +348,7 @@ export const AppUtils = (function() {
          *
          * @param serverOrigin - new server origin.
          */
-        updateServerOrigin: function(serverOrigin) {
+        updateServerOrigin: function(serverOrigin): void {
             _config.serverOrigin = serverOrigin;
         },
 

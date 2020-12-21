@@ -30,6 +30,7 @@ import {
 } from "@asgardio/oidc-js";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants, TokenConstants } from "@wso2is/core/constants";
+import { setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
@@ -47,7 +48,8 @@ import {
     BasicProfileInterface,
     LinkedAccountInterface,
     ProfileSchema,
-    ReadOnlyUserStatus, ServiceResourceEndpointsInterface
+    ReadOnlyUserStatus,
+    ServiceResourceEndpointsInterface
 } from "../../models";
 import {
     getProfileCompletion,
@@ -57,7 +59,6 @@ import {
     onHttpRequestSuccess
 } from "../../utils";
 import { store } from "../index";
-import { setServiceResourceEndpoints } from "@wso2is/core/dist/src/store";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
