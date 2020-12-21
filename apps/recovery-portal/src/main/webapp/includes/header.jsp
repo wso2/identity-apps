@@ -17,6 +17,7 @@
 --%>
 
 <jsp:directive.include file="localize.jsp" />
+<jsp:directive.include file="../tenant-resolve.jsp"/>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

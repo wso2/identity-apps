@@ -18,6 +18,7 @@
 
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ include file="localize.jsp" %>
+<%@ include file="init-url.jsp" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">

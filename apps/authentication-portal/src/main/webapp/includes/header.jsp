@@ -17,6 +17,7 @@
   --%>
 
 <%@ include file="localize.jsp" %>
+<%@ include file="init-url.jsp" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -19,6 +19,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="com.google.gson.Gson" %>
 
 <%
     String tenantDomain;
@@ -29,5 +34,22 @@
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
         }
+    }
+    
+    String tenantForTheming = tenantDomain;
+    // Resolve tenant domain for theming purposes.
+    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+    if (StringUtils.isBlank(authAPIURL)) {
+        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    }
+    if (!authAPIURL.endsWith("/")) {
+        authAPIURL += "/";
+    }
+    authAPIURL += "context/" + request.getParameter("sessionDataKey");
+    String contextProps = AuthContextAPIClient.getContextProperties(authAPIURL);
+    Gson gson = new Gson();
+    Map<String, Object> params = gson.fromJson(contextProps, Map.class);
+    if (params != null && params.containsKey("t")) {
+        tenantForTheming = (String) params.get("t");
     }
 %>
