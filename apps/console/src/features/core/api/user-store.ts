@@ -18,6 +18,7 @@
 
 import { IdentityClient } from "@asgardio/oidc-js";
 import { HttpMethods } from "@wso2is/core/models";
+import { UserStoreDetails } from "../models";
 import { store } from "../store";
 
 /**
@@ -28,6 +29,35 @@ import { store } from "../store";
 const httpClient = IdentityClient.getInstance()
     .httpRequest.bind(IdentityClient.getInstance())
     .bind(IdentityClient.getInstance());
+
+/**
+ * Gets details of the primary user store.
+ *
+ *
+ * @return {Promise<any>} response.
+ */
+export const getPrimaryUserStore = (): Promise<UserStoreDetails> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.userStores}/primary`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
 
 /**
  * Gets a userstore by its id.
