@@ -71,16 +71,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         }
                                                         className="transfer-segment"
                                                     >
-                                                            {
-                                                                !list.props.isListEmpty && (
-                                                                    <TransferListSearch
-                                                                        data-testid={ testId + "-unselected-groups-" +
-                                                                            "search-input" }
-                                                                        handleListSearch={ handleUnelectedListSearch }
-                                                                        placeholder={ searchPlaceholder }
-                                                                    />
-                                                                )
-                                                            }
+                                                        <TransferListSearch
+                                                            data-testid={ testId + "-unselected-groups-search-input" }
+                                                            handleListSearch={ handleUnelectedListSearch }
+                                                            placeholder={ searchPlaceholder }
+                                                        />
                                                         <Segment className="transfer-list-segment">
                                                             { list }
                                                         </Segment>
@@ -129,17 +124,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         data-testid={ `${ testId }-selected-groups` }
                                                         className="transfer-segment"
                                                     >
-                                                            {
-                                                                !list.props.isListEmpty && (
-                                                                    <TransferListSearch
-                                                                        data-testid={
-                                                                            `${ testId }-selected-groups-search-input`
-                                                                        }
-                                                                        handleListSearch={ handleSelectedListSearch }
-                                                                        placeholder={ searchPlaceholder }
-                                                                    />
-                                                                )
-                                                            }
+                                                        <TransferListSearch
+                                                            data-testid={ `${ testId }-selected-groups-search-input` }
+                                                            handleListSearch={ handleSelectedListSearch }
+                                                            placeholder={ searchPlaceholder }
+                                                        />
                                                         <Segment className="transfer-list-segment">
                                                             { list }
                                                         </Segment>
