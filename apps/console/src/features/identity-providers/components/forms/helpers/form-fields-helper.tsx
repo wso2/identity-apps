@@ -232,14 +232,14 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
     return (
         <>
             <Field
-                name={ eachProp?.key }
+                name={ eachProp?.key || propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.idp.forms.common." + 
                     "requiredErrorMessage") }
                 type="dropdown"
-                value={ eachProp?.value }
-                key={ eachProp?.key }
+                value={ eachProp?.value || propertyMetadata?.key }
+                key={ eachProp?.key || propertyMetadata?.key }
                 children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
                 disabled={ disable }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
