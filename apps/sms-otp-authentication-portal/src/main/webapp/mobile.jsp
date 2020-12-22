@@ -55,8 +55,10 @@
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                     errorMessage = "Authentication Failed! Please Retry";
-                } else if (errorMessage.equalsIgnoreCase("mobile.number.update.failed")) {
-                    errorMessage = "Mobile number is being used in another profile. Please use a different mobile number";
+                }
+
+                if (request.getParameter("authFailureInfo") != null) {
+                    errorMessage = request.getParameter("authFailureInfo");
                 }
         }
     }

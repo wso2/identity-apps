@@ -48,6 +48,10 @@
 					} else if (errorMessage.equalsIgnoreCase("email.duplicate.message")) {
 					    errorMessage = "Email address is already being used by another user. Please try using a different email address";
 					}
+
+					if (request.getParameter("authFailureInfo") != null) {
+                        errorMessage = request.getParameter("authFailureInfo");
+                    }
 				}
 			}
 	%>
