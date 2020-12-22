@@ -95,7 +95,7 @@ export class RouteUtils {
 
         /**
          * If one of the passed arguments are not truthy, then function
-         * cannot do the operation and check for available routes. In this
+         * cannot do the operation and check the available routes. In this
          * case we return false saying there's no matching routes.
          */
         if (!view || !pathname || !routes || !routes.length) {
@@ -138,13 +138,15 @@ export class RouteUtils {
          * In this function what we do is escape all the special characters
          * of the URI and replace the path_parameters to match a dynamic string.
          *
-         * Regex {@code [\w~\-\\.!*'(),]+} is a set expression that allows the
-         * following characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or
-         * more times. The expression assumes the path_parameter has at-lease one
-         * character and contains only the characters specified above.
+         * Regex explanation: -
+         * {@code [\w~\-\\.!*'(),]+} is a set expression that allows the following
+         * characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or more times.
+         * The expression assumes the path_parameter has at-lease one character and
+         * contains only the characters specified above.
          *
          * Refer RFC-3986 {@link https://tools.ietf.org/html/rfc3986#section-2.3}
-         * @param {string} path
+         *
+         * @param {string} path - A valid URL
          */
         const pathInToARegexSource = (path: string): string => {
             if (!path || !path.trim().length) return EMPTY_STRING;
@@ -157,8 +159,7 @@ export class RouteUtils {
         };
 
         /**
-         * To keep track of the qualified paths that
-         * matches exactly the {@code pathname}
+         * To keep track of the qualified paths that matches exactly the {@code pathname}
          */
         const qualifiedPaths: string[] = [];
 
@@ -175,6 +176,10 @@ export class RouteUtils {
             }
         }
 
+        /**
+         * If there's one or more qualified paths, then we can safely assume
+         * the requested URL is present in the application.
+         */
         return qualifiedPaths.length > 0;
 
     }
