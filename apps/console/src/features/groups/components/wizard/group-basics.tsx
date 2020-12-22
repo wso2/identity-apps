@@ -17,7 +17,7 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface, UserStoreDetails } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -127,9 +127,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                     userStoreRegEx = response;
                 });
         } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then(response => {
+            await SharedUserStoreUtils.getPrimaryUserStore().then((response: UserStoreDetails) => {
                 setRegExLoading(true);
-                userStoreRegEx = response.properties.filter(property => 
+                userStoreRegEx = response?.properties.filter(property => 
                     { return property.name === "RolenameJavaScriptRegEx"; 
                 })[0].value;
             });
