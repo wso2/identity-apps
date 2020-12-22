@@ -18,6 +18,7 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
+import { chain } from "lodash";
 import sortBy from "lodash/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -74,13 +75,113 @@ export class RouteUtils {
             }
         }
 
-        const isRouteAvailable: RouteInterface = routes.find((route: RouteInterface) => route.path === pathname);
-
-        if (isRouteAvailable) {
+        if (RouteUtils.isRouteAvailable(view, pathname, routes)) {
             return;
         }
 
         history.push(sortBy(routes, "order")[0].path);
+    }
+
+    /**
+     * Checks whether a given pathname is available in the route's
+     * children router paths.
+     *
+     * @param {string} view - Top level route path
+     * @param {string} pathname - Cached route path
+     * @param {RouteInterface[]} routes - Available routes.
+     * @private
+     */
+    private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
+
+        /**
+         * If one of the passed arguments are not truthy, then function
+         * cannot do the operation and check the available routes. In this
+         * case we return false saying there's no matching routes.
+         */
+        if (!view || !pathname || !routes || !routes.length) {
+            return false;
+        }
+
+        const EMPTY_STRING: string = "";
+
+        /**
+         * In this chain what we do is, go through all the available
+         * routes and filter out the top level views and map out all
+         * the nested children's path.
+         *
+         * Explanation: -
+         * A top level view can be `/console/develop` and we have
+         * nested routes such as [`/console/develop/identity-providers`,
+         * `/console/develop/applications`] and each of those route
+         * paths will have their own children routes.
+         *
+         * Note on default values: -
+         * Since we use lodash here we need to make sure default values
+         * are initialized during the chain when the values are null.
+         */
+        const allChildPaths: string[] = chain(routes ?? [])
+            .filter(({ path = EMPTY_STRING }) => path?.match(view))
+            .map(({ children = [] as RouteInterface[] }) => children)
+            .flatten()
+            .map(({ path = EMPTY_STRING }) => path)
+            .value();
+
+        /**
+         * If there's no child paths have been found in all the available
+         * routes then return false and navigate to another.
+         */
+        if (!allChildPaths && !allChildPaths.length) {
+            return false;
+        }
+
+        /**
+         * In this function what we do is escape all the special characters
+         * of the URI and replace the path_parameters to match a dynamic string.
+         *
+         * Regex explanation: -
+         * {@code [\w~\-\\.!*'(),]+} is a set expression that allows the following
+         * characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or more times.
+         * The expression assumes the path_parameter has at-lease one character and
+         * contains only the characters specified above.
+         *
+         * Refer RFC-3986 {@link https://tools.ietf.org/html/rfc3986#section-2.3}
+         *
+         * @param {string} path - A valid URL
+         */
+        const pathToARegex = (path: string): string => {
+            if (!path || !path.trim().length) return EMPTY_STRING;
+            return path.split("/").map((fragment: string) => {
+                if (fragment && fragment.startsWith(":")) {
+                    return /[\w~\-\\.!*'(), ]+/.source;
+                }
+                return fragment ?? EMPTY_STRING;
+            }).join("/");
+        };
+
+        /**
+         * To keep track of the qualified paths that matches exactly the {@code pathname}
+         */
+        const qualifiedPaths: string[] = [];
+
+        /**
+         * Validate each of the child paths against the {@code pathname}.
+         */
+        for (const childPath of allChildPaths) {
+            if (childPath) {
+                const expression = RegExp(`^${pathToARegex(childPath)}$`);
+                const match = expression.exec(pathname);
+                if (match && match.length > 0) {
+                    qualifiedPaths.push(...match);
+                }
+            }
+        }
+
+        /**
+         * If there's one or more qualified paths, then we can safely assume
+         * the requested URL is present in the application.
+         */
+        return qualifiedPaths.length > 0;
+
     }
 
     /**
