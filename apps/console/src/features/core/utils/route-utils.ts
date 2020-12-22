@@ -18,6 +18,7 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
+import { chain } from "lodash";
 import sortBy from "lodash/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -74,13 +75,85 @@ export class RouteUtils {
             }
         }
 
-        const isRouteAvailable: RouteInterface = routes.find((route: RouteInterface) => route.path === pathname);
-
-        if (isRouteAvailable) {
+        if (RouteUtils.isRouteAvailable(view, pathname, routes)) {
             return;
         }
 
         history.push(sortBy(routes, "order")[0].path);
+    }
+
+    /**
+     * Checks whether a given pathname is available in the route's
+     * children router paths.
+     *
+     * @param {string} view - Top level route path
+     * @param {string} pathname - Cached route path
+     * @param {RouteInterface[]} routes - Available routes.
+     * @private
+     */
+    private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
+
+        /**
+         * In this chain what we do is, go through all the available
+         * routes and filter out the top level views and map out all
+         * the nested children's path.
+         *
+         * Explanation: -
+         * A top level view can be `/console/develop` and we have
+         * nested routes such as [`/console/develop/identity-providers`,
+         * `/console/develop/applications`] and each of those route
+         * paths will have their own children routes.
+         */
+        const allChildPaths: string[] = chain(routes)
+            .filter(({ path }) => path.match(view))
+            .map(({ children }) => children)
+            .flatten()
+            .map(({ path }) => path)
+            .value();
+
+        /**
+         * In this function what we do is escape all the special characters
+         * of the URI and replace the path_parameters to match a dynamic string.
+         *
+         * Regex {@code [\w~\-\\.!*'(),]+} is a set expression that allows the
+         * following characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or
+         * more times. The expression assumes the path_parameter has at-lease one
+         * character and contains only the characters specified above.
+         *
+         * Refer RFC-3986 {@link https://tools.ietf.org/html/rfc3986#section-2.3}
+         * @param {string} path
+         */
+        const pathInToARegexSource = (path: string): string => {
+            if (!path || !path.trim().length) return "";
+            return path.split("/").map(fragment => {
+                if (fragment.startsWith(":")) {
+                    return /[\w~\-\\.!*'(), ]+/.source;
+                }
+                return fragment;
+            }).join("/");
+        };
+
+        /**
+         * To keep track of the qualified paths that
+         * matches exactly the {@code pathname}
+         */
+        const qualifiedPaths: string[] = [];
+
+        /**
+         * Validate each of the child paths against the {@code pathname}.
+         */
+        for (const childPath of allChildPaths) {
+            if (childPath) {
+                const expression = RegExp(`^${pathInToARegexSource(childPath)}$`);
+                const match = expression.exec(pathname);
+                if (match && match.length > 0) {
+                    qualifiedPaths.push(...match);
+                }
+            }
+        }
+
+        return qualifiedPaths.length > 0;
+
     }
 
     /**
