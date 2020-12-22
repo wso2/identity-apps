@@ -49,7 +49,7 @@ export class AdaptiveScriptUtils {
         const newStepIdentifier = "    executeStep(:index);";
         const steps: string[] = [];
 
-        for (let i = 0; i < stepCount; i++) {
+        for (let i = 1; i < stepCount; i++) {
             steps.push(newStepIdentifier.replace(":index", i.toString()));
         }
 

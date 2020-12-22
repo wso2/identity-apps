@@ -162,12 +162,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         if (!script && authenticationSequence?.steps?.length > 0) {
-            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length));
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length + 1));
             return;
         }
 
         if (isDefaultScript) {
-            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps));
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             return;
         }
 
