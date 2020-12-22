@@ -148,7 +148,7 @@ export class RouteUtils {
          *
          * @param {string} path - A valid URL
          */
-        const pathInToARegexSource = (path: string): string => {
+        const pathToARegex = (path: string): string => {
             if (!path || !path.trim().length) return EMPTY_STRING;
             return path.split("/").map((fragment: string) => {
                 if (fragment && fragment.startsWith(":")) {
@@ -168,7 +168,7 @@ export class RouteUtils {
          */
         for (const childPath of allChildPaths) {
             if (childPath) {
-                const expression = RegExp(`^${pathInToARegexSource(childPath)}$`);
+                const expression = RegExp(`^${pathToARegex(childPath)}$`);
                 const match = expression.exec(pathname);
                 if (match && match.length > 0) {
                     qualifiedPaths.push(...match);
