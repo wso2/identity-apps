@@ -179,7 +179,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             authenticationSequence: {
                 ...sequence,
                 requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: JSON.stringify(adaptiveScript)
+                script: JSON.stringify(adaptiveScript).replace(/\\n/g, "").slice(1, -1)
             }
         };
 
