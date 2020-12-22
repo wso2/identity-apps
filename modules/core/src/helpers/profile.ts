@@ -32,7 +32,9 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
                                        authState?: AuthReducerStateInterface,
                                        fallback: string = null): string => {
 
-    if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
+    if (profileInfo.displayName) {
+        return profileInfo.displayName;
+    } else if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
         const givenName = isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
         const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
 
