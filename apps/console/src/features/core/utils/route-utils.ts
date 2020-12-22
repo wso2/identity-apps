@@ -94,6 +94,17 @@ export class RouteUtils {
     private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
 
         /**
+         * If one of the passed arguments are not truthy, then function
+         * cannot do the operation and check for available routes. In this
+         * case we return false saying there's no matching routes.
+         */
+        if (!view || !pathname || !routes || !routes.length) {
+            return false;
+        }
+
+        const EMPTY_STRING: string = "";
+
+        /**
          * In this chain what we do is, go through all the available
          * routes and filter out the top level views and map out all
          * the nested children's path.
@@ -103,13 +114,25 @@ export class RouteUtils {
          * nested routes such as [`/console/develop/identity-providers`,
          * `/console/develop/applications`] and each of those route
          * paths will have their own children routes.
+         *
+         * Note on default values: -
+         * Since we use lodash here we need to make sure default values
+         * are initialized during the chain when the values are null.
          */
-        const allChildPaths: string[] = chain(routes)
-            .filter(({ path }) => path.match(view))
-            .map(({ children }) => children)
+        const allChildPaths: string[] = chain(routes ?? [])
+            .filter(({ path = EMPTY_STRING }) => path?.match(view))
+            .map(({ children = [] as RouteInterface[] }) => children)
             .flatten()
-            .map(({ path }) => path)
+            .map(({ path = EMPTY_STRING }) => path)
             .value();
+
+        /**
+         * If there's no child paths have been found in all the available
+         * routes then return false and navigate to another.
+         */
+        if (!allChildPaths && !allChildPaths.length) {
+            return false;
+        }
 
         /**
          * In this function what we do is escape all the special characters
@@ -124,12 +147,12 @@ export class RouteUtils {
          * @param {string} path
          */
         const pathInToARegexSource = (path: string): string => {
-            if (!path || !path.trim().length) return "";
-            return path.split("/").map(fragment => {
-                if (fragment.startsWith(":")) {
+            if (!path || !path.trim().length) return EMPTY_STRING;
+            return path.split("/").map((fragment: string) => {
+                if (fragment && fragment.startsWith(":")) {
                     return /[\w~\-\\.!*'(), ]+/.source;
                 }
-                return fragment;
+                return fragment ?? EMPTY_STRING;
             }).join("/");
         };
 
