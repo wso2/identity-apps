@@ -268,17 +268,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             return;
         }
 
-        if (id == identityProvider.provisioning.outboundConnectors.defaultConnectorId) {
-            dispatch(addAlert({
-                description: t("console:develop.features.idp.notifications.deleteDefaultConnector" +
-                    ".error.description"),
-                level: AlertLevels.WARNING,
-                message: t("console:develop.features.idp.notifications.deleteDefaultConnector" +
-                    ".error.message")
-            }));
-            return;
-        }
-
         const deletingConnector = availableConnectors.find((connector) => connector.id == id);
 
         if (!deletingConnector) {
@@ -298,20 +287,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      */
     const handleConnectorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
         const connector = availableConnectors.find(connector => (connector.id === id)).data;
-        // Validation
-        if (connector.isDefault && !data.checked) {
-            dispatch(addAlert({
-                description: t("console:develop.features.idp.notifications.disableOutboundProvisioningConnector." +
-                    "error.description"),
-                level: AlertLevels.WARNING,
-                message: t("console:develop.features.idp.notifications.disableOutboundProvisioningConnector." +
-                    "error.message")
-            }));
-            onUpdate(identityProvider.id);
-        } else {
-            connector.isEnabled = data.checked;
-            handleConnectorConfigFormSubmit(connector);
-        }
+        connector.isEnabled = data.checked;
+        handleConnectorConfigFormSubmit(connector);
     };
 
     const createAccordionActions = (
