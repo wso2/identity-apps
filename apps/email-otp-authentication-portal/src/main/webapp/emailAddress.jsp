@@ -51,8 +51,8 @@
 					}
 
 					if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
-                        errorMessage = request.getParameter("authFailureInfo");
-                    }
+					    errorMessage = request.getParameter("authFailureInfo");
+					}
 				}
 			}
 	%>
