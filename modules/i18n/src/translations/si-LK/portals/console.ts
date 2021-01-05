@@ -640,7 +640,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Prot {{appName}} යෙදුමට නව ප්‍රොටෝකෝලයක් එක් කරන්න"
                             },
-                            tabName: "ප්රවේශ"
+                            tabName: "ප්රොටෝකෝලය"
                         },
                         advanced: {
                             tabName: "උසස්"

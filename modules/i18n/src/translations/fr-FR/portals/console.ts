@@ -632,7 +632,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Ajouter un nouveau protocole à l'application {{appName}}"
                             },
-                            tabName: "Accès"
+                            tabName: "Protocole"
                         },
                         advanced: {
                             tabName: "Avancé"

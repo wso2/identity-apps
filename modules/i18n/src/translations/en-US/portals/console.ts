@@ -636,7 +636,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Add new protocol to {{appName}} application"
                             },
-                            tabName: "Access"
+                            tabName: "Protocol"
                         },
                         advanced: {
                             tabName: "Advanced"
