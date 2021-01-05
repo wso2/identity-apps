@@ -24,6 +24,8 @@
  * @type {string}
  */
 export const JDBC = "JDBC";
+export const CONSUMER_USERSTORE_NAME = "CONSUMER";
+export const CONSUMER_USERSTORE_ID = "Q09OU1VNRVI";
 
 export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
