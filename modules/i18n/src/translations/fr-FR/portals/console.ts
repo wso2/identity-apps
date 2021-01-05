@@ -2154,7 +2154,7 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Aide",
-                            subHeading: "Utilisez les éléments suivants à titre d'orientation"
+                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
                         }
                     }
                 }
