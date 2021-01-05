@@ -16,14 +16,19 @@
  * under the License.
  */
 
-import React, { useState } from "react";
-import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
+import classNames from "classnames";
+import React, { MouseEvent, useState } from "react";
+import { Button, Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 import { filterPassedProps } from "../utils";
 
 /**
  * Password prop types
  */
 interface PasswordPropsInterface {
+    showIcon?: boolean;
+    showResetIcon?: boolean;
+    onResetPasswordValue?: (e: MouseEvent<HTMLButtonElement>) => void;
+    className?: string;
     label: string;
     value: string;
     error: false | { content: JSX.Element[] };
@@ -53,6 +58,8 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
 
     const filteredProps = filterPassedProps({ ...props });
 
+    const classes = classNames("password-input", props.className);
+
     return (
         <Form.Input
             { ...filteredProps }
@@ -65,35 +72,73 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
             width={ props.width }
             onBlur={ props.onBlur }
             onChange={ props.onChange }
-            icon={
-                (
-                    <Popup
-                        trigger={
-                            (
-                                <Icon
-                                    name={
-                                        !isShow ? "eye" : "eye slash"
-                                    }
-                                    disabled={ !props.value }
-                                    link
-                                    onClick={ () => { setIsShow(!isShow); } }
-                                />
-                            )
-                        }
-                        position="top center"
-                        content={
-                            !isShow
-                                ? props.showPassword
-                                : props.hidePassword
-                        }
-                        inverted
-                    />
-                )
+            action={
+                props.showResetIcon ?
+                    (
+                        <Popup
+                            trigger={
+                                (
+                                    <Button
+                                        className="copy-input-action"
+                                        icon="redo"
+                                        type="button"
+                                        onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                            e.stopPropagation();
+                                            props.onResetPasswordValue;
+                                        } }
+                                    />
+                                )
+                            }
+                            openOnTriggerFocus
+                            closeOnTriggerBlur
+                            position="top center"
+                            content={ "Reset password change" }
+                            inverted
+                        />
+                    )
+                    : null
             }
+            icon={
+                props.showIcon ?
+                    (
+                        <Popup
+                            trigger={
+                                (
+                                    <Icon
+                                        className="password-input-eye-icon"
+                                        name={
+                                            !isShow ? "eye" : "eye slash"
+                                        }
+                                        disabled={ !props.value }
+                                        link
+                                        onClick={ () => { setIsShow(!isShow); } }
+                                    />
+                                )
+                            }
+                            position="top center"
+                            content={
+                                !isShow
+                                    ? props.showPassword
+                                    : props.hidePassword
+                            }
+                            inverted
+                        />
+                    )
+                    : null
+            }
+            className={ classes }
             autoFocus={ props.autoFocus || false }
             readOnly={ props.readOnly }
             disabled={ props.disabled }
             required={ props.required }
         />
     );
+};
+
+/**
+ * Default props for the component.
+ */
+Password.defaultProps = {
+    showIcon: true,
+    showResetIcon: false
 };

@@ -27,6 +27,8 @@ export const JDBC = "JDBC";
 export const CONSUMER_USERSTORE_ID = "Q09OU1VNRVI";
 export const CONSUMER_USERSTORE_TYPE = "AsgardeoConsumerUserStoreManager";
 
+export const ENCRYPTED_PROPERTY = "ENCRYPTED PROPERTY";
+
 export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",

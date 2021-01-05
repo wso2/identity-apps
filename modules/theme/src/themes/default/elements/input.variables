@@ -7,3 +7,4 @@
 --------------------------------*/
 
 @copyInputFieldMarginRight: 40px !important;
+@passwordInputFieldMarginRight: 40px !important;
