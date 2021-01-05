@@ -143,32 +143,6 @@ export class ApplicationManagementUtils {
     }
 
     /**
-     * Build supported technologies list for UI from the given technology types.
-     *
-     * @param {string[]} technologies - Set of supported technologies.
-     *
-     * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
-     */
-    public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
-        return technologies?.map((technology: string) => {
-            let logo = null;
-
-            for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
-                if (key === technology) {
-                    logo = value;
-                    break;
-                }
-            }
-
-            return {
-                displayName: startCase(technology),
-                logo,
-                name: technology
-            };
-        });
-    }
-
-    /**
      * Finds the icon from the given object.
      *
      * @param imageName Name on the image to be found.

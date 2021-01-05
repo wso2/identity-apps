@@ -1,5 +1,14 @@
 {
     "id": "DEFAULT",
     "displayName": "",
-    "description": ""
+    "description": "",
+    "viewConfigs": {
+        "tags": {
+            "as": "icon",
+            "sectionTitle": "Technologies",
+            "showTagIcon": false,
+            "showTags": true,
+            "tagsKey": "types"
+        }
+    }
 }

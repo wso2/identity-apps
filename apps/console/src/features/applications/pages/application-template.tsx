@@ -315,7 +315,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                 showTags:  category.viewConfigs?.tags?.showTags,
                                                 subHeading: category.description,
                                                 tagsAs: category.viewConfigs?.tags?.as,
-                                                tagsKey: category.viewConfigs?.tags?.tagsKey
+                                                tagsKey: category.viewConfigs?.tags?.tagsKey,
+                                                tagsSectionTitle: category.viewConfigs?.tags?.sectionTitle
                                             },
                                             <EmptyPlaceholder
                                                 image={ getEmptyPlaceholderIllustrations().newList }
