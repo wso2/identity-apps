@@ -3111,7 +3111,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Please choose one of the predefined application templates to speed up your application " +
+                subTitle: "Choose one of the predefined application templates to help you with quick application " +
                     "creation.",
                 title: "Select Application Type"
             },
