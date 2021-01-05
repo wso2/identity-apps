@@ -56,6 +56,11 @@ const TEMPLATE_FILTER_TYPES: DropdownItemProps[] = [
     }
 ];
 
+// Temporary component level constants to show search/hide template filter options.
+// TODO: Remove once more than one template category is available. (https://github.com/wso2/product-is/issues/10891)
+const SHOW_TEMPLATE_SEARCH: boolean = false;
+const SHOW_TEMPLATE_FILTER: boolean = false;
+
 /**
  * Props for the Applications templates page.
  */
@@ -384,31 +389,45 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             showBottomDivider
             data-testid={ `${ testId }-page-layout` }
         >
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column>
-                        <Input
-                            data-testid={ `${ testId }-search` }
-                            icon={ <Icon name="search"/> }
-                            onChange={ handleTemplateSearch }
-                            placeholder="Search application type"
-                            floated="left"
-                            width={ 6 }
-                            style={ { width: "270px" } }
-                        />
-                        <Dropdown
-                            data-testid={ `${ testId }-sort` }
-                            className="floated right"
-                            placeholder="Select type"
-                            selection
-                            defaultValue="all"
-                            options={ templateFilterTypes }
-                            onChange={ handleTemplateTypeChange }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            <Divider hidden />
+            {
+                (SHOW_TEMPLATE_SEARCH || SHOW_TEMPLATE_FILTER) && (
+                    <>
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    {
+                                        SHOW_TEMPLATE_SEARCH && (
+                                            <Input
+                                                data-testid={ `${ testId }-search` }
+                                                icon={ <Icon name="search"/> }
+                                                onChange={ handleTemplateSearch }
+                                                placeholder="Search application type"
+                                                floated="left"
+                                                width={ 6 }
+                                                style={ { width: "270px" } }
+                                            />
+                                        )
+                                    }
+                                    {
+                                        SHOW_TEMPLATE_FILTER && (
+                                            <Dropdown
+                                                data-testid={ `${ testId }-sort` }
+                                                className="floated right"
+                                                placeholder="Select type"
+                                                selection
+                                                defaultValue="all"
+                                                options={ templateFilterTypes }
+                                                onChange={ handleTemplateTypeChange }
+                                            />
+                                        )
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Divider hidden />
+                    </>
+                )
+            }
             {
                 searchTriggered && filteredTemplateList
                     ? renderTemplateGrids("SEARCH_RESULTS")
