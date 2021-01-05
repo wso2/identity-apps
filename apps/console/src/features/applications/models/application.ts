@@ -332,6 +332,10 @@ export interface ApplicationTemplateCategoryViewConfigInterface {
          */
         as: "icon" | "label" | "default";
         /**
+         * Title for the section.
+         */
+        sectionTitle: string;
+        /**
          * Show/Hide the tag icon.
          */
         showTagIcon: boolean;
