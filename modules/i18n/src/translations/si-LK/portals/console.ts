@@ -410,7 +410,7 @@ export const console: ConsoleNS = {
         },
         validations: {
             inSecureURL: {
-                description: "ඇතුළත් කළ URL එක SSL නොවන URL එකකි. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                description: "ඇතුළත් කළ URL එක TLS නොවන URL එකකි. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                 heading: "අනාරක්ෂිත URL ලින්කුවකි"
             },
             unrecognizedURL: {
