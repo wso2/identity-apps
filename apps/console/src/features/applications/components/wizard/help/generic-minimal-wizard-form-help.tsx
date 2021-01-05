@@ -106,11 +106,11 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                                 <>
                                     <Heading as="h5">Allowed redirect URLs</Heading>
                                     <p>
-                                        After user sign-in or sign-out, we will only redirect to these URLs. You can specify 
-                                        multiple valid URLs. Make sure to specify the protocol ( https:// ) otherwise the 
+                                        After user sign-in or sign-out, we will only redirect to these URLs. You can specify
+                                        multiple valid URLs. Make sure to specify the protocol ( https:// ) otherwise the
                                         redirect may fail in some cases.
                                     </p>
-                                    <p>E.g. https://www.conotoso.com/login</p>
+                                    <p>E.g. https://sample.app/login</p>
                                     <Message warning>Note: This field is required for a functional app.</Message>
                                 </>
                             )

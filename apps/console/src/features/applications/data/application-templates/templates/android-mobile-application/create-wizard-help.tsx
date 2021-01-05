@@ -55,7 +55,7 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
                     multiple valid URLs. Make sure to specify the protocol ( https:// ) otherwise the
                     redirect may fail in some cases.
                 </p>
-                <p>E.g. https://www.conotoso.com/login</p>
+                <p>E.g. https://sample.app/login</p>
                 <Message warning>Note: This field is required for a functional app.</Message>
             </>
         </div>
