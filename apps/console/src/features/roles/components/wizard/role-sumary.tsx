@@ -17,11 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { ContentLoader, UserAvatar } from "@wso2is/react-components";
+import Tree from "rc-tree";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { TreeNode } from "../../models";
+import { RoleManagementUtils } from "../../utils";
 
 interface AddUserWizardSummaryProps extends TestableComponentInterface {
     summary: any;
@@ -48,6 +50,22 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     } = props;
 
     const { t } = useTranslation();
+    
+    const [ permissions, setPermissions ] = useState<TreeNode[]>([]);
+    const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
+    const [ selectedPermissions, setSelectedPermissions ] = useState<string[]>([]);
+
+    useEffect(() => {
+        RoleManagementUtils.getAllPermissions().then((permissionTree: TreeNode[]) => {
+            setPermissions(permissionTree);
+            setDefaultExpandKeys( [ permissionTree[0].key.toString() ] );
+
+            if (summary && summary.PermissionList) {
+                const permissions = summary.PermissionList;
+                setSelectedPermissions([...selectedPermissions, ...permissions.map( permission => permission.key )]);
+            }
+        });
+    }, [ permissions.length > 0 ]);
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -59,6 +77,26 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
 
         onSubmit(summary);
     }, [ triggerSubmit ]);
+
+
+    /**
+     * Util method to get a custom expander icon for 
+     * the tree nodes.
+     * @param eventObject - event object
+     */
+    const switcherIcon = eventObject => {
+        if (eventObject.isLeaf) {
+            return null;
+        }
+        return (
+            <div className="tree-arrow-wrap">
+                <span className={ `tree-arrow ${ !eventObject.expanded ? "active" : "" }` }>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        );
+    };
 
     return (
         <Grid className="wizard-summary">
@@ -106,26 +144,24 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
-                                    {
-                                        summary.PermissionList
-                                            .map((perm: TreeNode, index) => (
-                                                <Label
-                                                    data-testid={
-                                                        `${ testId }-permissions-${ index }-label`
-                                                    }
-                                                    key={ index }
-                                                    basic
-                                                    circular
-                                                >
-                                                    { perm.title }
-                                                </Label>
-                                            ))
-                                    }
+                                    <Tree
+                                        className={ "customIcon" }
+                                        data-testid={ `${ testId }-tree` }
+                                        disabled
+                                        checkedKeys={ selectedPermissions }
+                                        defaultExpandedKeys={ defaultExpandedKeys }
+                                        showLine
+                                        showIcon={ false }
+                                        checkable
+                                        selectable={ false }
+                                        treeData={ permissions }
+                                        switcherIcon={ switcherIcon }
+                                    />
                                 </Label.Group>
                             </Grid.Column>
                         </Grid.Row>
                     )
-                    : null
+                    : <ContentLoader className="p-3" active />
             }
             {
                 summary?.UserList && summary?.UserList instanceof Array &&

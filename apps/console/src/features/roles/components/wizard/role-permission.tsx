@@ -25,10 +25,9 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { store } from "../../../core";
 import { getServerConfigs } from "../../../server-configurations";
-import { getPermissionList } from "../../api";
 import { RoleConstants } from "../../constants";
 import { TreeNode } from "../../models";
-import { generatePermissionTree } from "../role-utils";
+import { RoleManagementUtils } from "../../utils";
 
 /**
  * Interface to capture permission list props
@@ -78,6 +77,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
+        RoleManagementUtils.getAllPermissions().then((permissionTree: TreeNode[]) => {
+            disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
+            setPermissions(permissionTree);
+            setDefaultExpandKeys( [permissionTree[0].key.toString()] );
+            setIsPermissionsLoading(false);
+        });
+        checkIsSuperAdmin();
+
         if ( initialValues && initialValues.length > 0 ) {
             const previousFormCheckedKeys: string[] = [];
             initialValues.forEach(initialKey => {
@@ -97,9 +104,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             });
             setCheckedPermission(checkedNodes);
         }
-
-        getAllPerms();
-        checkIsSuperAdmin();
     }, [ permissions.length > 0 ]);
 
     /**
@@ -114,19 +118,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 setIsSuperAdmin(true);
             }
         });
-    };
-
-    /**
-     * Util function to join split permision string for given array location.
-     * 
-     * @param permissionString permission string
-     * @param joinLocation location to join the string
-     */
-    const permissionJoining = (permissionString, joinLocation) => {
-        permissionString = permissionString.split("/");
-        const first = permissionString.splice(0, joinLocation);
-        permissionString = [first.join("/"), ...permissionString];
-        return permissionString;
     };
 
     /**
@@ -157,44 +148,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             permission.disableCheckbox = state;
             if (permission.children) {
                 disableTreeNode(permission.children, state);
-            }
-        });
-    };
-
-    /**
-     * Retrieve all permissions from backend.
-     */
-    const getAllPerms = () => {
-        getPermissionList().then((response) => {
-            if (response.status === 200 && response.data && response.data instanceof Array) {
-                const permissionStringArray = response.data;
-                let permissionTree: TreeNode[] = [];
-                let isStartingWithTwoNodes: boolean = false;
-                permissionTree = permissionStringArray.reduce((arr, path, index) => {
-                    let nodes: TreeNode[] = [];
-                    if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
-                        isStartingWithTwoNodes = true;
-                    }
-                    if (isStartingWithTwoNodes) {
-                        nodes = generatePermissionTree(
-                            path, 
-                            permissionJoining(path.resourcePath.replace(/^\/|\/$/g, ""), 2),
-                            arr
-                        );
-                    } else {
-                        nodes = generatePermissionTree(
-                            path, 
-                            path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
-                            arr
-                        );
-                    }
-                    
-                    return nodes;
-                },[]);
-                disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
-                setPermissions(permissionTree);
-                setDefaultExpandKeys( [permissionTree[0].key.toString()] );
-                setIsPermissionsLoading(false);
             }
         });
     };
@@ -292,7 +245,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 className={ "customIcon" }
                                 data-testid={ `${ testId }-tree` }
                                 disabled={ isReadOnly }
-                                defaultCheckedKeys={ previouslyCheckedKeys }
+                                checkedKeys={ checkedPermission.map( permission => permission.key ) }
                                 defaultExpandedKeys={ defaultExpandedKeys }
                                 showLine
                                 showIcon={ false }
