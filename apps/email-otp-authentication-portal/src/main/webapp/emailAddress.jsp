@@ -36,10 +36,10 @@
 			}
 
 			String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-			String authenticationFailed = "false";
+			boolean authenticationFailed = false;
 
 			if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-				authenticationFailed = "true";
+				authenticationFailed = true;
 
 				if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
 					errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
@@ -101,7 +101,7 @@
 						<h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.email")%></h2>
 						<div class="ui divider hidden"></div>
 						<%
-							if ("true".equals(authenticationFailed)) {
+							if (authenticationFailed) {
 						%>
 						<div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
 						</div>
