@@ -25,6 +25,8 @@
  */
 export const JDBC = "JDBC";
 
+export const ENCRYPTED_PROPERTY = "ENCRYPTED PROPERTY";
+
 export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",

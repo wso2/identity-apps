@@ -20,13 +20,13 @@ import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore, testConnection } from "../../api";
-import { JDBC } from "../../constants";
+import { ENCRYPTED_PROPERTY, JDBC } from "../../constants";
 import { RequiredBinary, TestConnection, TypeProperty, UserstoreType } from "../../models";
 
 /**
@@ -76,6 +76,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ isTesting, setIsTesting ] = useState(false);
     const [ sql, setSql ] = useState<Map<string, string>>(null);
+    const [ showPasswordIcon, setShowPasswordIcon ] = useState<boolean>(false);
+    const [ initialPwValue, setInitialPwValue ] = useState<string>(ENCRYPTED_PROPERTY);
 
     const dispatch = useDispatch();
 
@@ -264,6 +266,20 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             });
     };
 
+    /**
+     * Show the show password icon on the initial password change.
+     */
+    const handlePasswordChange = () => {
+        setShowPasswordIcon(true);
+    };
+
+    /**
+     * Handle the password reset action.
+     */
+    const handleResetPasswordChange = (e: MouseEvent<HTMLButtonElement>) => {
+        setInitialPwValue(ENCRYPTED_PROPERTY);
+    };
+
     return (
         <EmphasizedSegment>
             <Forms
@@ -305,6 +321,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             })
                                                     }
                                                     data-testid={ `${ testId }-form-password-input-${ property.name }` }
+                                                    value={ initialPwValue }
+                                                    showIcon={ showPasswordIcon }
+                                                    showResetIcon={ false }
+                                                    onResetPasswordValue={ () => handleResetPasswordChange }
+                                                    listen={ handlePasswordChange }
                                                 />
                                             )
                                             : toggle
