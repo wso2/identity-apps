@@ -241,6 +241,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                     type="password"
                                                     key={ index }
                                                     required={ true }
+                                                    disabled={ id === CONSUMER_USERSTORE_ID }
                                                     label={ name }
                                                     requiredErrorMessage={
                                                         t("console:manage.features.userstores.forms." +
@@ -269,6 +270,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         type="toggle"
                                                         key={ index }
                                                         required={ false }
+                                                        disabled={ id === CONSUMER_USERSTORE_ID }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
@@ -295,6 +297,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         type="text"
                                                         key={ index }
                                                         required={ true }
+                                                        disabled={ id === CONSUMER_USERSTORE_ID }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
@@ -365,6 +368,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             type="password"
                                                             key={ index }
                                                             required={ false }
+                                                            disabled={ id === CONSUMER_USERSTORE_ID }
                                                             label={ name }
                                                             requiredErrorMessage={
                                                                 t("console:manage.features.userstores.forms." +
@@ -394,6 +398,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 type="toggle"
                                                                 key={ index }
                                                                 required={ false }
+                                                                disabled={ id === CONSUMER_USERSTORE_ID }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
                                                                     t("console:manage.features.userstores.forms.edit." +
@@ -423,6 +428,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     type="text"
                                                                     key={ index }
                                                                     required={ false }
+                                                                    disabled={ id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
                                                                         t("console:manage.features.userstores.forms.edit." +
@@ -449,6 +455,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     type="text"
                                                                     key={ index }
                                                                     required={ false }
+                                                                    disabled={ id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
                                                                         t("console:manage.features.userstores.forms.edit." +
