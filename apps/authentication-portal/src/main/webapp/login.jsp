@@ -28,6 +28,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
@@ -96,6 +97,7 @@
 <%
     String inputType = request.getParameter("inputType");
     String username = null;
+    String usernameIdentifier = null;
 
     if (isIdentifierFirstLogin(inputType)) {
         String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
@@ -111,6 +113,7 @@
         Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
         if (parameters != null) {
             username = (String) parameters.get("username");
+            usernameIdentifier = (String) parameters.get("username");
         } else {
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
@@ -125,6 +128,20 @@
     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
+    }
+
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
+    if (isSaaSApp && StringUtils.isNotBlank(usernameIdentifier)) {
+        if (usernameIdentifier.split("@").length == 2) {
+            usernameIdentifier = usernameIdentifier.split("@")[0];
+        }
+
+        if (usernameIdentifier.split("@").length > 2
+            && !StringUtils.equals(usernameIdentifier.split("@")[1], IdentityManagementEndpointConstants.SUPER_TENANT)) {
+
+            usernameIdentifier = usernameIdentifier.split("@")[0] + "@" + usernameIdentifier.split("@")[1];
+        }
     }
 %>
 
@@ -167,7 +184,7 @@
             <div class="ui segment">
                 <h3 class="ui header">
                     <% if (isIdentifierFirstLogin(inputType)) { %>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " " + username%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " " + usernameIdentifier%>
                     <% } else { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
                     <% } %>
