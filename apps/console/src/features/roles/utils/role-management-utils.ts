@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { searchRoleList } from "../api";
-import { SearchRoleInterface } from "../models";
+import { getPermissionList, searchRoleList } from "../api";
+import { generatePermissionTree } from "../components/role-utils";
+import { SearchRoleInterface, TreeNode } from "../models";
 
 /**
  * Utility class for roles operations.
@@ -53,4 +54,52 @@ export class RoleManagementUtils {
                 return response?.data?.totalResults === 0;
             });
     };
+
+    /**
+     * Util function to join split permision string for given array location.
+     * 
+     * @param permissionString permission string
+     * @param joinLocation location to join the string
+     */
+    public static permissionJoining = (permissionString, joinLocation) => {
+        permissionString = permissionString.split("/");
+        const first = permissionString.splice(0, joinLocation);
+        permissionString = [first.join("/"), ...permissionString];
+        return permissionString;
+    };
+
+    /**
+     * Retrieve all permissions from backend.
+     */
+    public static getAllPermissions = (): Promise<TreeNode[]> => {
+        return getPermissionList().then((response) => {
+            if (response.status === 200 && response.data && response.data instanceof Array) {
+                const permissionStringArray = response.data;
+                let permissionTree: TreeNode[] = [];
+                let isStartingWithTwoNodes: boolean = false;
+                permissionTree = permissionStringArray.reduce((arr, path, index) => {
+                    let nodes: TreeNode[] = [];
+                    if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
+                        isStartingWithTwoNodes = true;
+                    }
+                    if (isStartingWithTwoNodes) {
+                        nodes = generatePermissionTree(
+                            path, 
+                            RoleManagementUtils.permissionJoining(path.resourcePath.replace(/^\/|\/$/g, ""), 2),
+                            arr
+                        );
+                    } else {
+                        nodes = generatePermissionTree(
+                            path, 
+                            path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
+                            arr
+                        );
+                    }
+                    
+                    return nodes;
+                },[]);
+                return permissionTree;
+            }
+        });
+    }
 }
