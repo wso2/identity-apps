@@ -20,9 +20,11 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
+import { TemplateCardTagInterface } from "@wso2is/react-components";
 import { Dictionary } from "lodash";
 import groupBy from "lodash/groupBy";
-import { store } from "../../core";
+import startCase  from "lodash/startCase";
+import { getTechnologyLogos, store } from "../../core";
 import {
     getApplicationTemplateList
 } from "../api";
@@ -74,6 +76,12 @@ export class ApplicationTemplateManagementUtils {
                         ApplicationTemplateManagementUtils.groupTemplates(templates)
                             .then((groups: ApplicationTemplateInterface[]) => {
 
+                                // Generate the technologies icons array.
+                                groups.map((group: ApplicationTemplateInterface) => {
+                                    group.types = ApplicationTemplateManagementUtils
+                                        .buildSupportedTechnologies(group.types);
+                                });
+
                                 if (sort) {
                                     templates = ApplicationTemplateManagementUtils.sortApplicationTemplates(templates);
                                     groups = ApplicationTemplateManagementUtils
@@ -88,6 +96,12 @@ export class ApplicationTemplateManagementUtils {
 
                         return Promise.resolve();
                     }
+
+                    // Generate the technologies array.
+                    templates.map((template: ApplicationTemplateInterface) => {
+                        template.types = ApplicationTemplateManagementUtils
+                            .buildSupportedTechnologies(template.types);
+                    });
 
                     if (sort) {
                         templates = ApplicationTemplateManagementUtils.sortApplicationTemplates(templates);
@@ -110,6 +124,12 @@ export class ApplicationTemplateManagementUtils {
                     ApplicationTemplateManagementUtils.groupTemplates(templates)
                         .then((groups: ApplicationTemplateInterface[]) => {
 
+                            // Generate the technologies icons array.
+                            groups.map((group: ApplicationTemplateInterface) => {
+                                group.types = ApplicationTemplateManagementUtils
+                                    .buildSupportedTechnologies(group.types);
+                            });
+
                             if (sort) {
                                 templates = ApplicationTemplateManagementUtils.sortApplicationTemplates(templates);
                                 groups = ApplicationTemplateManagementUtils
@@ -124,6 +144,12 @@ export class ApplicationTemplateManagementUtils {
 
                     return Promise.resolve();
                 }
+
+                // Generate the technologies array.
+                templates.map((template: ApplicationTemplateInterface) => {
+                    template.types = ApplicationTemplateManagementUtils
+                        .buildSupportedTechnologies(template.types);
+                });
 
                 if (sort) {
                     templates = ApplicationTemplateManagementUtils.sortApplicationTemplates(templates);
@@ -154,6 +180,32 @@ export class ApplicationTemplateManagementUtils {
                 }));
             });
     };
+
+    /**
+     * Build supported technologies list for UI from the given technology types.
+     *
+     * @param {string[]} technologies - Set of supported technologies.
+     *
+     * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
+     */
+    public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
+        return technologies.map((technology: string) => {
+            let logo = null;
+
+            for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
+                if (key === technology) {
+                    logo = value;
+                    break;
+                }
+            }
+
+            return {
+                displayName: startCase(technology),
+                logo,
+                name: technology
+            };
+        });
+    }
 
     /**
      * Sort the application templates based on display order.

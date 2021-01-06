@@ -187,8 +187,8 @@ export const console: ConsoleNS = {
         },
         privacy: {
             about: {
-                description: "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open " + 
-                    "source Identity Management and Entitlement Server that is based on open standards and " + 
+                description: "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open " +
+                    "source Identity Management and Entitlement Server that is based on open standards and " +
                     "specifications.",
                 heading: "About WSO2 Identity Server"
             },
@@ -196,20 +196,20 @@ export const console: ConsoleNS = {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "WSO2 IS uses your IP address to detect any suspicious login attempts to your" + 
+                            0: "WSO2 IS uses your IP address to detect any suspicious login attempts to your" +
                                 " account.",
-                            1: "WSO2 IS uses attributes like your first name, last name, etc., to provide a " + 
+                            1: "WSO2 IS uses attributes like your first name, last name, etc., to provide a " +
                                 "rich and personalized user experience.",
                             2: "WSO2 IS uses your security questions and answers only to allow account recovery."
                         },
-                        para1: "WSO2 IS collects your information only to serve your access requirements." + 
+                        para1: "WSO2 IS collects your information only to serve your access requirements." +
                             " For example:"
                     },
                     heading: "Collection of personal information",
                     trackingTechnologies: {
                         description: {
                             list1: {
-                                0: "Collecting information from the user profile page where you enter your " + 
+                                0: "Collecting information from the user profile page where you enter your " +
                                     "personal data.",
                                 1: "Tracking your IP address with HTTP request, HTTP headers, and TCP/IP.",
                                 2: "Tracking your geographic information with the IP address.",
@@ -222,14 +222,14 @@ export const console: ConsoleNS = {
                     }
                 },
                 description: {
-                    para1: "This policy describes how WSO2 IS captures your personal information, the " + 
+                    para1: "This policy describes how WSO2 IS captures your personal information, the " +
                         "purposes of collection, and information about the retention of your personal information.",
-                    para2: "Please note that this policy is for reference only, and is applicable for " + 
-                        "the software as a product. WSO2 Inc. and its developers have no access to the " + 
-                        "information held within WSO2 IS. Please see the <1>disclaimer</1> section for " + 
+                    para2: "Please note that this policy is for reference only, and is applicable for " +
+                        "the software as a product. WSO2 Inc. and its developers have no access to the " +
+                        "information held within WSO2 IS. Please see the <1>disclaimer</1> section for " +
                         "more information.",
-                    para3: "Entities, organizations or individuals controlling the use and administration " + 
-                        "of WSO2 IS should create their own privacy policies setting out the manner in which " + 
+                    para3: "Entities, organizations or individuals controlling the use and administration " +
+                        "of WSO2 IS should create their own privacy policies setting out the manner in which " +
                         "data is controlled or processed by the respective entity, organization or individual."
                 },
                 disclaimer: {
@@ -238,19 +238,19 @@ export const console: ConsoleNS = {
                             0: "WSO2, its employees, partners, and affiliates do not have access to and do not " +
                                 "require, store, process or control any of the data, including personal data " +
                                 "contained in WSO2 IS. All data, including personal data is controlled and " +
-                                "processed by the entity or individual running WSO2 IS. WSO2, its employees " + 
-                                "partners and affiliates are not a data processor or a data controller within " + 
-                                "the meaning of any data privacy regulations. WSO2 does not provide any " + 
-                                "warranties or undertake any responsibility or liability in connection with " + 
-                                "the lawfulness or the manner and purposes for which WSO2 IS is used by " + 
+                                "processed by the entity or individual running WSO2 IS. WSO2, its employees " +
+                                "partners and affiliates are not a data processor or a data controller within " +
+                                "the meaning of any data privacy regulations. WSO2 does not provide any " +
+                                "warranties or undertake any responsibility or liability in connection with " +
+                                "the lawfulness or the manner and purposes for which WSO2 IS is used by " +
                                 "such entities or persons.",
                             1: "This privacy policy is for the informational purposes of the entity or persons " +
                                 "running WSO2 IS and sets out the processes and functionality contained within " +
-                                "WSO2 IS regarding personal data protection. It is the responsibility of " + 
-                                "entities and persons running WSO2 IS to create and administer its own rules " + 
-                                "and processes governing users' personal data, and such rules and processes " + 
-                                "may change the use, storage and disclosure policies contained herein. " + 
-                                "Therefore users should consult the entity or persons running WSO2 IS for its " + 
+                                "WSO2 IS regarding personal data protection. It is the responsibility of " +
+                                "entities and persons running WSO2 IS to create and administer its own rules " +
+                                "and processes governing users' personal data, and such rules and processes " +
+                                "may change the use, storage and disclosure policies contained herein. " +
+                                "Therefore users should consult the entity or persons running WSO2 IS for its " +
                                 "own privacy policy for details governing users' personal data."
                         }
                     },
@@ -261,12 +261,12 @@ export const console: ConsoleNS = {
                         "known as Service Provider) that are registered with WSO2 IS. These applications are " +
                         "registered by the identity administrator of your entity or organization. Personal " +
                         "information is disclosed only for the purposes for which it was collected (or for a " +
-                        "use identified as consistent with that purpose), as controlled by such Service " + 
+                        "use identified as consistent with that purpose), as controlled by such Service " +
                         "Providers, unless you have consented otherwise or where it is required by law.",
                     heading: "Disclosure of personal information",
                     legalProcess: {
-                        description: "Please note that the organization, entity or individual running WSO2 IS " + 
-                        "may be compelled to disclose your personal information with or without your consent " + 
+                        description: "Please note that the organization, entity or individual running WSO2 IS " +
+                        "may be compelled to disclose your personal information with or without your consent " +
                         "when it is required by law following due and lawful process.",
                         heading: "Legal process"
                     }
@@ -287,7 +287,7 @@ export const console: ConsoleNS = {
                     },
                     contactUs: {
                         description: {
-                            para1: "Please contact WSO2 if you have any question or concerns regarding this " + 
+                            para1: "Please contact WSO2 if you have any question or concerns regarding this " +
                             "privacy policy."
                         },
                         heading: "Contact us"
@@ -296,7 +296,7 @@ export const console: ConsoleNS = {
                     yourChoices: {
                         description: {
                             para1: "If you are already have a user account within WSO2 IS, you have the right to " +
-                                "deactivate your account if you find that this privacy policy is unacceptable " + 
+                                "deactivate your account if you find that this privacy policy is unacceptable " +
                                 "to you.",
                             para2: "If you do not have an account and you do not agree with our privacy policy, " +
                                 "you can choose not to create one."
@@ -315,15 +315,15 @@ export const console: ConsoleNS = {
                             para1: "WSO2 IS retains your personal data as long as you are an active user of our " +
                                 "system. You can update your personal data at any time using the given self-care " +
                                 "user portals.",
-                            para2: "WSO2 IS may keep hashed secrets to provide you with an added level of " + 
+                            para2: "WSO2 IS may keep hashed secrets to provide you with an added level of " +
                                 "security. This includes:"
                         },
                         heading: "How long your personal information is retained"
                     },
                     requestRemoval: {
                         description: {
-                            para1: "You can request the administrator to delete your account. The " + 
-                                "administrator is the administrator of the tenant you are registered under, or " + 
+                            para1: "You can request the administrator to delete your account. The " +
+                                "administrator is the administrator of the tenant you are registered under, or " +
                                 "the super-administrator if you do not use the tenant feature.",
                             para2: "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."
@@ -349,12 +349,12 @@ export const console: ConsoleNS = {
                                 "uploaded profile pictures for this purpose.",
                             1: "To protect your account from unauthorized access or potential hacking attempts. " +
                                 "WSO2 IS uses HTTP or TCP/IP Headers for this purpose.",
-                            2: "Derive statistical data for analytical purposes on system performance " + 
-                                "improvements. WSO2 IS will not keep any personal information after statistical" + 
-                                " calculations. Therefore, the statistical report has no means of identifying " + 
+                            2: "Derive statistical data for analytical purposes on system performance " +
+                                "improvements. WSO2 IS will not keep any personal information after statistical" +
+                                " calculations. Therefore, the statistical report has no means of identifying " +
                                 "an individual person."
                         },
-                        para1: "WSO2 IS will only use your personal information for the purposes for which it" + 
+                        para1: "WSO2 IS will only use your personal information for the purposes for which it" +
                             " was collected (or for a use identified as consistent with that purpose).",
                         para2: "WSO2 IS uses your personal information only for the following purposes.",
                         subList1: {
@@ -390,7 +390,7 @@ export const console: ConsoleNS = {
                             2: "Type of device that you used to log in (E.g., phone or tablet)",
                             3: "Operating system and generic browser information"
                         },
-                        para1: "WSO2 IS considers anything related to you, and by which you may be identified, " + 
+                        para1: "WSO2 IS considers anything related to you, and by which you may be identified, " +
                             "as your personal information. This includes, but is not limited to:",
                         para2: "However, WSO2 IS also collects the following information that is not considered " +
                             "personal information, but is used only for <1>statistical</1> purposes. The reason " +
@@ -405,7 +405,7 @@ export const console: ConsoleNS = {
         },
         validations: {
             inSecureURL: {
-                description: "The entered URL a non-SSL URL. Please proceed with caution.",
+                description: "The entered URL a non-TLS URL. Please proceed with caution.",
                 heading: "Insecure URL"
             },
             unrecognizedURL: {
@@ -428,12 +428,12 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests" + 
+                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests" +
                             " to WSO2 Identity Server APIs.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also " + 
+                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also " +
                                 "prevent legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server " + 
+                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server " +
                                 "APIs from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
                         },
                         header: "CORS Not Allowed",
@@ -445,8 +445,8 @@ export const console: ConsoleNS = {
                         detailedContent: {
                             0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
                                 "legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity " + 
-                                "Server APIs from the applications registered in the <1>{{ tenantName }}</1> " + 
+                            1: "Therefore enabling CORS for this origin will allow you to access Identity " +
+                                "Server APIs from the applications registered in the <1>{{ tenantName }}</1> " +
                                 "tenant domain."
                         },
                         header: "CORS is Allowed"
@@ -588,7 +588,7 @@ export const console: ConsoleNS = {
                     },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                        content: "If you regenerate this application, All the applications depending on this also " + 
+                        content: "If you regenerate this application, All the applications depending on this also " +
                             "might stop working. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and permanently change the client secret."
@@ -636,7 +636,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Add new protocol to {{appName}} application"
                             },
-                            tabName: "Access"
+                            tabName: "Protocol"
                         },
                         advanced: {
                             tabName: "Advanced"
@@ -718,7 +718,7 @@ export const console: ConsoleNS = {
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",
-                                subHeading: "Provision users or groups to a WSO2 Identity Server’s userstore via " + 
+                                subHeading: "Provision users or groups to a WSO2 Identity Server’s userstore via " +
                                     "this application."
                             },
                             outbound: {
@@ -756,7 +756,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             heading: "Script based configuration",
-                                            hint: "Define the authentication flow via an adaptive script. You can " + 
+                                            hint: "Define the authentication flow via an adaptive script. You can " +
                                                 "select one of the templates fom the panel to get started."
                                         },
                                         stepBased: {
@@ -777,7 +777,7 @@ export const console: ConsoleNS = {
                                                 }
                                             },
                                             heading: "Step based configuration",
-                                            hint: "Create authentication steps by dragging the local/federated " + 
+                                            hint: "Create authentication steps by dragging the local/federated " +
                                                 "authenticators on to the relevant steps."
                                         }
                                     }
@@ -852,7 +852,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     subjectIncludeTenantDomain: {
-                                        hint: "This option will append the tenant domain to the local subject " + 
+                                        hint: "This option will append the tenant domain to the local subject " +
                                             " identifier",
                                         label: "Include Tenant Domain",
                                         validations: {
@@ -868,7 +868,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     subjectUseMappedLocalSubject: {
-                                        hint: "This option will use the local subject identifier when asserting " + 
+                                        hint: "This option will use the local subject identifier when asserting " +
                                             "the identity",
                                         label: "Use mapped local subject",
                                         validations: {
@@ -883,7 +883,7 @@ export const console: ConsoleNS = {
                     advancedConfig: {
                         fields: {
                             enableAuthorization: {
-                                hint: "Decides whether authorization policies needs to be engaged during " + 
+                                hint: "Decides whether authorization policies needs to be engaged during " +
                                     " authentication flows.",
                                 label: "Enable authorization",
                                 validations: {
@@ -969,7 +969,7 @@ export const console: ConsoleNS = {
                                 label: "Access URL",
                                 placeholder: "Enter access url for the application login page",
                                 validations: {
-                                    empty: "A valid access URL needs to be defined for an application to be marked " + 
+                                    empty: "A valid access URL needs to be defined for an application to be marked " +
                                         " as discoverable",
                                     invalid: "This is not a valid URL"
                                 }
@@ -1046,7 +1046,8 @@ export const console: ConsoleNS = {
                                 label: "Allowed redirect URLs",
                                 placeholder: "Enter allowed redirect URLs",
                                 validations: {
-                                    empty: "Please add a valid URL."
+                                    empty: "Please add a valid URL.",
+                                    required: "Note: This field is required for a functional app."
                                 }
                             },
                             clientID: {
@@ -1113,7 +1114,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Access Token",
-                                hint: " Configure the access token issuer, user access token expiry time, " + 
+                                hint: " Configure the access token issuer, user access token expiry time, " +
                                     "application access token expiry time etc."
                             },
                             idToken: {
@@ -1203,7 +1204,7 @@ export const console: ConsoleNS = {
                                 },
                                 heading: "PKCE",
                                 hint: "PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent " +
-                                    "certain attacks and to be able to securely perform the OAuth exchange from " + 
+                                    "certain attacks and to be able to securely perform the OAuth exchange from " +
                                     " public clients."
                             },
                             refreshToken: {
@@ -1262,7 +1263,7 @@ export const console: ConsoleNS = {
                             },
                             idpEntityIdAlias: {
                                 hint: "This value can override identity provider entity Id that is specified under " +
-                                    "SAML SSO inbound authentication configuration of the resident identity " + 
+                                    "SAML SSO inbound authentication configuration of the resident identity " +
                                     "provider. The Identity Provider Entity Id is used as the issuer of " +
                                     "the SAML response that is generated.",
                                 label: "Idp entityId alias",
@@ -1330,7 +1331,7 @@ export const console: ConsoleNS = {
                                     },
                                     nameIdFormat: {
                                         hint: "This defines the name identifier formats that are supported by " +
-                                            "the identity provider. Name identifiers are used to provide " + 
+                                            "the identity provider. Name identifiers are used to provide " +
                                             "information\n regarding a user.",
                                         label: "Name ID format",
                                         placeholder: "Enter name ID format",
@@ -1352,14 +1353,14 @@ export const console: ConsoleNS = {
                             attributeProfile: {
                                 fields: {
                                     enable: {
-                                        hint: "The Identity Server provides support for a basic attribute profile " + 
-                                            "where the identity provider can include the user’s attributes in " + 
+                                        hint: "The Identity Server provides support for a basic attribute profile " +
+                                            "where the identity provider can include the user’s attributes in " +
                                             "the SAML Assertions as part of the attribute statement.",
                                         label: "Enable"
                                     },
                                     includeAttributesInResponse: {
                                         hint: "Once you select the checkbox to Include Attributes in the Response " +
-                                            "Always, the identity provider always includes the attribute values " + 
+                                            "Always, the identity provider always includes the attribute values " +
                                             "related to the selected claims in the SAML attribute statement.",
                                         label: "Always include attributes in response"
                                     },
@@ -1432,8 +1433,8 @@ export const console: ConsoleNS = {
                             requestValidation: {
                                 fields: {
                                     signatureValidation: {
-                                        hint: "This specifies whether the identity provider must validate the " + 
-                                            "signature of the SAML2 authentication request and the SAML2 logout " + 
+                                        hint: "This specifies whether the identity provider must validate the " +
+                                            "signature of the SAML2 authentication request and the SAML2 logout " +
                                             "request that are sent by the application.",
                                         label: "Enable request signature validation",
                                         validations: {
@@ -1621,7 +1622,7 @@ export const console: ConsoleNS = {
                         configs: {
                             content: {
                                 subTitle: "Update the pre defined configurations through the template or add new " +
-                                    "configurations depending on the protocol (OIDC, SAML, WS-Trust, etc.) " + 
+                                    "configurations depending on the protocol (OIDC, SAML, WS-Trust, etc.) " +
                                     "configured for the application.",
                                 title: "Application Configurations"
                             },
@@ -1637,14 +1638,14 @@ export const console: ConsoleNS = {
                                     configurations: {
                                         btn: "Download the Configuration",
                                         subTitle: "In order to integrate the application created in the server with " +
-                                            "the sample application, you need to initialise the client with " + 
+                                            "the sample application, you need to initialise the client with " +
                                             "following configurations.",
                                         title: "Initialize the client"
                                     },
                                     downloadSample: {
                                         btn: "Download the sample",
                                         subTitle: "This sample application will show case the usage of the of WSO2 " +
-                                            "Identity Server SDK and how you can integrate any application with " + 
+                                            "Identity Server SDK and how you can integrate any application with " +
                                             "Identity Server.",
                                         title: "Try out the sample"
                                     },
@@ -1654,7 +1655,7 @@ export const console: ConsoleNS = {
                                     title: "Sample Applications"
                                 },
                                 technology: {
-                                    subTitle: "Sample and required SDKs along with useful information will be " + 
+                                    subTitle: "Sample and required SDKs along with useful information will be " +
                                         "provided once you select a technology",
                                     title: "Select a technology"
                                 }
@@ -1676,7 +1677,7 @@ export const console: ConsoleNS = {
                             content: {
                                 endpoints: {
                                     subTitle: "If you implement your application without using a WSO2 SDK, the " +
-                                        "following server endpoints will be useful for you to implement " + 
+                                        "following server endpoints will be useful for you to implement " +
                                         "authentication for the app.",
                                     title: "Server endpoints"
                                 },
@@ -1789,7 +1790,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "There is an empty authentication step. Please remove it or add " + 
+                            description: "There is an empty authentication step. Please remove it or add " +
                                 "authenticators to proceed.",
                             message: "Update error"
                         }
@@ -1870,7 +1871,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the IDP configurations for the OIDC " + 
+                            description: "An error occurred retrieving the IDP configurations for the OIDC " +
                                 "application.",
                             message: "Retrieval error"
                         },
@@ -1905,7 +1906,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the IDP configurations for the SAML" + 
+                            description: "An error occurred retrieving the IDP configurations for the SAML" +
                                 " application.",
                             message: "Retrieval error"
                         },
@@ -2165,7 +2166,7 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
-                            subHeading: "Use the following as a guidance"
+                            subHeading: "Use the descriptions below for guidance"
                         }
                     }
                 }
@@ -2506,7 +2507,7 @@ export const console: ConsoleNS = {
                             message: "Warning!"
                         },
                         pem: {
-                            description: "Please note that if you have added a JWKS endpoint it'll be overridden " + 
+                            description: "Please note that if you have added a JWKS endpoint it'll be overridden " +
                                 "by the certificate.",
                             message: "Warning!"
                         }
@@ -3111,7 +3112,8 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Please choose one of the following application types.",
+                subTitle: "Choose one of the predefined application templates to help you with quick application " +
+                    "creation.",
                 title: "Select Application Type"
             },
             applications: {
@@ -3137,7 +3139,7 @@ export const console: ConsoleNS = {
                 title: "Select Identity Provider Type"
             },
             overview: {
-                subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " + 
+                subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +
                     "dialects, etc.",
                 title: "Welcome, {{firstName}}"
             }
@@ -3454,7 +3456,7 @@ export const console: ConsoleNS = {
                             + "also be deleted.Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected external " + 
+                        message: "This action is irreversible and will permanently delete the selected external " +
                             "dialect."
                     },
                     dangerZone: {
@@ -3750,7 +3752,7 @@ export const console: ConsoleNS = {
                             + "will also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{name}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected local " + 
+                        message: "This action is irreversible and will permanently delete the selected local " +
                             "attribute.",
                         primaryAction: "Confirm"
                     },
@@ -3979,7 +3981,7 @@ export const console: ConsoleNS = {
                             "have a valid email template to work with and this will delete all the locale templates " +
                             "associated with this template type. Please proceed cautiously.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the selected email " + 
+                        message: "This action is irreversible and will permanently delete the selected email " +
                             "template type."
                     }
                 },
@@ -4269,7 +4271,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 pageSubHeading: "Configure and manage {{ name }}."
-    
+
             },
             groups: {
                 advancedSearch: {
@@ -4982,8 +4984,8 @@ export const console: ConsoleNS = {
                         },
                         confirmation: {
                             assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
-                            content: "If you delete this {{type}}, the permissions attached to it will be " + 
-                                "deleted and the users attached to it will no longer be able to perform intended " + 
+                            content: "If you delete this {{type}}, the permissions attached to it will be " +
+                                "deleted and the users attached to it will no longer be able to perform intended " +
                                 "actions which were previously allowed. Please proceed with caution",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
@@ -5046,8 +5048,8 @@ export const console: ConsoleNS = {
                     confirmations: {
                         deleteItem: {
                             assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
-                            content: "If you delete this {{type}}, the permissions attached to it will be " + 
-                                "deleted and the users attached to it will no longer be able to perform " + 
+                            content: "If you delete this {{type}}, the permissions attached to it will be " +
+                                "deleted and the users attached to it will no longer be able to perform " +
                                 "intended actions which were previously allowed. Please proceed with caution.",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
@@ -5309,7 +5311,7 @@ export const console: ConsoleNS = {
                         lockUserZone: {
                             actionTitle: "Lock User",
                             header: "Lock user",
-                            subheader: "Once you lock the account, the user can no longer log in to the system. " + 
+                            subheader: "Once you lock the account, the user can no longer log in to the system. " +
                                 "Please be certain."
                         }
                     }
@@ -5322,7 +5324,7 @@ export const console: ConsoleNS = {
                                 options: {
                                     askPassword: "Invite user to set password",
                                     createPassword: "Set user password"
-    
+
                                 }
                             }
                         },
@@ -5415,7 +5417,7 @@ export const console: ConsoleNS = {
                 modals: {
                     addUserWarnModal: {
                         heading: "Warning",
-                        message: "Please note that this created user will not be assigned with a role. If you " + 
+                        message: "Please note that this created user will not be assigned with a role. If you " +
                             "wish to assign roles to this user please click on the button below."
                     },
                     addUserWizard: {
@@ -5694,7 +5696,7 @@ export const console: ConsoleNS = {
                                 viewPermissions: "View Permissions"
                             },
                             searchPlaceholder: "Search groups",
-                            subHeading: "Add or remove the groups user is assigned with and note that this will " + 
+                            subHeading: "Add or remove the groups user is assigned with and note that this will " +
                                 "affect performing certain tasks."
                         },
                         notifications: {

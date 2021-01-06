@@ -632,7 +632,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Ajouter un nouveau protocole à l'application {{appName}}"
                             },
-                            tabName: "Accès"
+                            tabName: "Protocole"
                         },
                         advanced: {
                             tabName: "Avancé"
@@ -1036,7 +1036,8 @@ export const console: ConsoleNS = {
                                 label: "URLs de redirection",
                                 placeholder: "Saisir les URLs de redirection",
                                 validations: {
-                                    empty: "Veuillez ajouter une URL valide."
+                                    empty: "Veuillez ajouter une URL valide.",
+                                    required: "Remarque: ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
                             clientID: {
@@ -2154,7 +2155,7 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Aide",
-                            subHeading: "Utilisez les éléments suivants à titre d'orientation"
+                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
                         }
                     }
                 }
@@ -4253,7 +4254,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 pageSubHeading: "Configurer et gérer {{ name }}."
-    
+
             },
             groups: {
                 advancedSearch: {
@@ -4990,7 +4991,7 @@ export const console: ConsoleNS = {
                                 name: "Nom du rôle",
                                 placeholder: "Saisissez votre nom de rôle",
                                 required: "Le nom du rôle est requis"
-    
+
                             }
                         }
                     },
@@ -5318,7 +5319,7 @@ export const console: ConsoleNS = {
                                 options: {
                                     askPassword: "Inviter l'utilisateur à définir un mot de passe",
                                     createPassword: "Définir le mot de passe de l'utilisateur"
-    
+
                                 }
                             }
                         },
@@ -5896,7 +5897,7 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                
+
                 forms: {
                     validation: {
                         formatError: "Le format du {{field}} saisi est incorrect."

@@ -50,7 +50,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                 <Divider/>
                 <Heading as="h5">Protocol</Heading>
                 <p>
-                    The access configuration protocol which will be used to SSO (Single Sign On) to
+                    The access configuration protocol which will be used to SSO (Single sign-on) to
                     the
                     application.
                 </p>

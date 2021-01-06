@@ -105,11 +105,11 @@ body {
     &-flex {
         display: flex !important;
     }
-    
+
     &-inline {
         display: inline !important;
     }
-    
+
     &-inline-block {
         display: inline-block !important;
     }
@@ -516,7 +516,7 @@ body {
                 margin-right: @listLayoutActionPanelMarginRight;
                 margin-left: @listLayoutActionPanelMarginLeft;
                 border: @listLayoutActionPanelBorder;
-                
+
                 .row {
                     padding: @listLayoutActionPanelPadding;
                 }
@@ -536,20 +536,20 @@ body {
                         margin-right: 10px;
                     }
                 }
-                
+
                 .meta-columns-button {
                     background: @listLayoutActionPanelTriggerButtonBackground !important;
                     border: @listLayoutActionPanelTriggerButtonBorder !important;
                     box-shadow: @listLayoutActionPanelTriggerButtonBoxShadow !important;
-                    
+
                     &:hover, &:active, &:focus {
                         border: @listLayoutActionPanelTriggerButtonBorder !important;
                     }
                 }
-                
+
                 .ui.dropdown {
                     background: @listLayoutActionPanelDropdownBackground;
-                    
+
                     &:not(.active) {
                         border: @listLayoutActionPanelDropdownBorder;
                     }
@@ -1133,7 +1133,7 @@ body {
 
 .advanced-search-wrapper {
     position: relative;
-    
+
     &.fill {
         &-default {
             &.search-hint-active {
@@ -1152,7 +1152,7 @@ body {
                         input {
                             background: @advancedSearchWhiteInputBackgroundColor;
                         }
-                        
+
                         .input-add-on {
                             background: @advancedSearchWhiteInputBackgroundColor !important;
 
@@ -1185,7 +1185,7 @@ body {
             min-width: @advancedSearchWidth;
             border: @advancedSearchBorder;
             border-radius: @borderRadius;
-            
+
             &.with-add-on {
                 border: @advancedSearchInputBorder;
 
@@ -1216,7 +1216,7 @@ body {
             border-bottom: @advancedSearchActiveInputBorderBottom !important;
         }
     }
-    
+
     .search-query-hint {
         position: absolute;
         visibility: hidden;
@@ -1303,6 +1303,16 @@ body {
 
 .bold-text {
     font-weight: 500 !important;
+}
+
+.font-weight {
+    &-bold {
+        font-weight: bold !important;
+    }
+
+    &-lighter {
+        font-weight: lighter !important;
+    }
 }
 
 .mb-1x {
@@ -1493,7 +1503,7 @@ body {
     .list-pagination {
         float: right;
     }
-    
+
     .page-limit-label {
         color: @paginationBarItemLimitLabelColor;
     }
@@ -1525,7 +1535,10 @@ body {
 
             .page-header {
                 margin: 0 0 0 10px;
-                max-width: @pageHeaderMaxWidth;
+
+                &:not(.no-max-width) {
+                    max-width: @pageHeaderMaxWidth;
+                }
 
                 .sub-header {
                     .with-label {

@@ -1,7 +1,7 @@
 {
     "id": "custom-application",
     "name": "Custom Application",
-    "description": "Manually configure the inbound authentication protocol, authentication flow, etc.",
+    "description": "Configure an application without using predefined templates.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",

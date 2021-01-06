@@ -410,7 +410,7 @@ export const console: ConsoleNS = {
         },
         validations: {
             inSecureURL: {
-                description: "ඇතුළත් කළ URL එක SSL නොවන URL එකකි. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                description: "ඇතුළත් කළ URL එක TLS නොවන URL එකකි. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                 heading: "අනාරක්ෂිත URL ලින්කුවකි"
             },
             unrecognizedURL: {
@@ -640,7 +640,7 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Prot {{appName}} යෙදුමට නව ප්‍රොටෝකෝලයක් එක් කරන්න"
                             },
-                            tabName: "ප්රවේශ"
+                            tabName: "ප්රොටෝකෝලය"
                         },
                         advanced: {
                             tabName: "උසස්"
@@ -1057,7 +1057,8 @@ export const console: ConsoleNS = {
                                 label: "URL යලි හරවන්න",
                                 placeholder: "යළි-යොමුවීම් URL ඇතුළත් කරන්න",
                                 validations: {
-                                    empty: "කරුණාකර වලංගු URL එකක් එක් කරන්න."
+                                    empty: "කරුණාකර වලංගු URL එකක් එක් කරන්න.",
+                                    required: "සටහන: ක්‍රියාකාරී යෙදුමක් සඳහා මෙම ක්ෂේත්‍රය අවශ්‍ය වේ."
                                 }
                             },
                             clientID: {
@@ -4109,8 +4110,8 @@ export const console: ConsoleNS = {
                 confirmations: {
                     deleteTemplate: {
                         assertionHint: "තහවුරු කිරීමට කරුණාකර <1>{{id}}</1> ටයිප් කරන්න.",
-                        content: "ඔබ මෙම විද්‍යුත් තැපැල් අච්චුව මකා දැමුවහොත්, සියලු සම්බන්ධිත වැඩ " + 
-                            "ප්‍රවාහයන්ට තවදුරටත් වැඩ කිරීමට වලංගු විද්‍යුත් තැපැල් අච්චුවක් නොමැත. කරුණාකර " + 
+                        content: "ඔබ මෙම විද්‍යුත් තැපැල් අච්චුව මකා දැමුවහොත්, සියලු සම්බන්ධිත වැඩ " +
+                            "ප්‍රවාහයන්ට තවදුරටත් වැඩ කිරීමට වලංගු විද්‍යුත් තැපැල් අච්චුවක් නොමැත. කරුණාකර " +
                             "ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර තෝරාගත් විද්‍යුත් තැපැල් අච්චුව"
@@ -4283,7 +4284,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 pageSubHeading: "{{ name }} වින්‍යාස කර කළමනාකරණය කරන්න."
-    
+
             },
             groups: {
                 advancedSearch: {
@@ -5340,7 +5341,7 @@ export const console: ConsoleNS = {
                                 options: {
                                     askPassword: "මුරපදය සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",
                                     createPassword: "පරිශීලක මුරපදය සකසන්න"
-    
+
                                 }
                             }
                         },
@@ -6420,7 +6421,7 @@ export const console: ConsoleNS = {
             }
         },
         placeholders: {
-            
+
             emptySearchResult: {
                 action: "සෙවුම් විමසුම හිස් කරන්න",
                 subtitles: {

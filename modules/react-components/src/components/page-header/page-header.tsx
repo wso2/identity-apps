@@ -51,6 +51,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      */
     description?: ReactNode;
     /**
+     * Flag to determine whether max width should be added to page header text content.
+     */
+    pageHeaderMaxWidth?: boolean;
+    /**
      * Column width for the heading container grid.
      */
     headingColumnWidth?: SemanticWIDTHS;
@@ -115,6 +119,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         title,
         titleAs,
         titleTextAlign,
+        pageHeaderMaxWidth,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,6 +143,13 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         {
             [ "display-flex" ]: action,
             "fluid": isLoading
+        }
+    );
+
+    const headerContentClasses = classNames(
+        "page-header ellipsis",
+        {
+            "no-max-width": !pageHeaderMaxWidth
         }
     );
     
@@ -184,7 +196,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                     )
                     : (
                         <Header
-                            className="page-header ellipsis"
+                            className={ headerContentClasses }
                             as={ titleAs }
                             textAlign={ titleTextAlign }
                             data-testid={ `${ testId }-text-wrapper` }
