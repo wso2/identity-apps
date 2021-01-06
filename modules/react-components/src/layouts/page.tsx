@@ -42,6 +42,10 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
      * Flag to enable/disable help panel visibility.
      */
     showHelpPanel?: boolean;
+    /**
+     * Flag to determine whether max width should be added to page header.
+     */
+    pageHeaderMaxWidth?: boolean;
 }
 
 /**
