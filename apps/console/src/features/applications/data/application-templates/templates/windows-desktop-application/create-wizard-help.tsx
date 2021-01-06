@@ -60,7 +60,7 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
                 <p>E.g. https://sample.app/login</p>
 
                 <p>
-                    You can also configure this field later under the <strong>Protocol</strong>
+                    You can also configure this field later under the <strong>Protocol </strong>
                     tab in application-edit view.
                 </p>
             </>

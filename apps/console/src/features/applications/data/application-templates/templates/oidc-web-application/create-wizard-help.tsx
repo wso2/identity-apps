@@ -74,7 +74,7 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
                 <p>E.g. https://www.conotoso.com/login</p>
 
                 <p>
-                    You can also configure this field later under the <strong>Protocol</strong>
+                    You can also configure this field later under the <strong>Protocol </strong>
                     tab in application-edit view.
                 </p>
             </>
