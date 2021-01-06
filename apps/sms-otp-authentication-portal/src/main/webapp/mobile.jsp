@@ -33,13 +33,14 @@
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
     String mobileRegex = null;
-    String validateMobileNumberFormat = "false";
+    boolean validateMobileNumberFormat = false;
     String mobileRegexPolicyValidationErrorMessage = null;
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
     if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN))) {
         mobileRegex = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN)));
+        validateMobileNumberFormat = true;
     }
     if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE))) {
         mobileRegexPolicyValidationErrorMessage = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE)));
@@ -164,7 +165,7 @@
                         document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div>'
                               +'<div class="ui divider hidden"></div>';
-                    } else if ("<%=validateMobileNumberFormat%>" == "true" && !(mobileNumber.match("<%=mobileRegex%>"))) {
+                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=mobileRegex%>"))) {
                        document.getElementById('alertDiv').innerHTML
                           = '<div id="error-msg" class="ui negative message"><%=mobileRegexPolicyValidationErrorMessage%></div>'
                             +'<div class="ui divider hidden"></div>';
