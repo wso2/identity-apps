@@ -130,9 +130,7 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-
-    if (isSaaSApp && StringUtils.isNotBlank(usernameIdentifier)) {
+    if (StringUtils.isNotBlank(usernameIdentifier)) {
         if (usernameIdentifier.split("@").length == 2) {
             usernameIdentifier = usernameIdentifier.split("@")[0];
         }
