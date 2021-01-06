@@ -1685,6 +1685,7 @@ export const console: ConsoleNS = {
                                         authorize: "Authorize",
                                         introspection: "Introspection",
                                         keystore: "Key Set",
+                                        jwks: "JWKS",
                                         token: "Token",
                                         userInfo: "UserInfo",
                                         wellKnown: "Discovery"

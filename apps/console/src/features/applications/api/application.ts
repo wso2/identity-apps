@@ -760,7 +760,8 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
                 tokenEndpoint: response.data.token_endpoint,
-                userEndpoint: response.data.userinfo_endpoint
+                userEndpoint: response.data.userinfo_endpoint,
+                wellKnownEndpoint: store.getState().config.endpoints.wellKnown
             };
             return Promise.resolve(oidcConfigs);
         }).catch((error: AxiosError) => {

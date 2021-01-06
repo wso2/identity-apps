@@ -570,6 +570,7 @@ export interface OIDCApplicationConfigurationInterface {
     tokenEndpoint: string;
     userEndpoint: string;
     jwksEndpoint: string;
+    wellKnownEndpoint: string;
 }
 
 /**
@@ -588,7 +589,8 @@ export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterfa
     introspectionEndpoint: "",
     jwksEndpoint: "",
     tokenEndpoint: "",
-    userEndpoint: ""
+    userEndpoint: "",
+    wellKnownEndpoint: ""
 });
 
 export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterface => ({

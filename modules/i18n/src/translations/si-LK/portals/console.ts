@@ -1692,6 +1692,7 @@ export const console: ConsoleNS = {
                                         authorize: "අවසරලත්",
                                         introspection: "ස්වයං විමර්ශනය",
                                         keystore: "යතුරු කට්ටලය",
+                                        jwks: "JWKS",
                                         token: "ටෝකන්",
                                         userInfo: "UserInfo",
                                         wellKnown: "සොයාගැනීම"

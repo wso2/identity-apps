@@ -110,7 +110,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ endpoints?.authorize }
+                            value={ oidcConfigurations?.authorizeEndpoint }
                             className="panel-url-input"
                             data-testid={ `${ testId }-authorize-readonly-input` }
                         />
@@ -135,7 +135,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ endpoints?.token }
+                            value={ oidcConfigurations?.tokenEndpoint }
                             className="panel-url-input"
                             data-testid={ `${ testId }-token-readonly-input` }
                         />
@@ -180,12 +180,12 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                         <label data-testid={ `${ testId }-jwks-label` }>
                             { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "oidcConfigurations.labels.keystore") }
+                                "oidcConfigurations.labels.jwks") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ endpoints?.jwks }
+                            value={ oidcConfigurations?.jwksEndpoint }
                             className="panel-url-input"
                             data-testid={ `${ testId }-jwks-readonly-input` }
                         />
@@ -235,7 +235,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ serverOrigin + endpoints?.wellKnown }
+                            value={ oidcConfigurations?.wellKnownEndpoint  }
                             className="panel-url-input"
                             data-testid={ `${ testId }-introspection-readonly-input` }
                         />
