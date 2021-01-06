@@ -81,6 +81,22 @@
             localAuthenticatorNames = Arrays.asList(authList.split(","));
         }
     }
+    
+    String multiOptionURIParam = "";
+    if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
+        String baseURL;
+        try {
+            baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
+        } catch (URLBuilderException e) {
+            request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
+            request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
+            request.getRequestDispatcher("error.do").forward(request, response);
+            return;
+        }
+        
+        String queryParamString = request.getQueryString() != null ? ("?" + request.getQueryString()) : "";
+        multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
+    }
 %>
 <%
     boolean reCaptchaEnabled = false;
@@ -451,13 +467,6 @@
                 console.warn("Preventing multi click.")
             } else {
                 $(elem).addClass(linkClicked);
-                <%
-                String multiOptionURIParam = "";
-                if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
-                    multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(request.getRequestURI() +
-                        (request.getQueryString() != null ? "?" + request.getQueryString() : ""));
-                }
-                %>
                 document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
                     "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
                     "<%=multiOptionURIParam%>";
