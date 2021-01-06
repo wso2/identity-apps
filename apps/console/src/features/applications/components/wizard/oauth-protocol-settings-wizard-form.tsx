@@ -24,7 +24,7 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Label } from "semantic-ui-react";
+import { Grid, Label, Message } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../api";
 import {
     ApplicationTemplateListItemInterface,
@@ -118,7 +118,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ publicClient, setPublicClient ] = useState<string[]>([]);
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
-    const [ showURLError, setShowURLError ] = useState(false);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
     const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
@@ -336,11 +335,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     onSubmit={ (values) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
-                                if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                    setShowURLError(true);
-                                } else {
-                                    onSubmit(getFormValues(values, url));
-                                }
+                                onSubmit(getFormValues(values, url));
                             });
                         } else {
                             onSubmit(getFormValues(values));
@@ -432,11 +427,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             return true;
                                         } }
                                         computerWidth={ 10 }
-                                        setShowError={ setShowURLError }
-                                        showError={ showURLError }
                                         hint={
-                                            !hideFieldHints && t("console:develop.features.applications.forms.inboundOIDC" +
-                                                ".fields.callBackUrls.hint")
+                                            !hideFieldHints && t("console:develop.features.applications" +
+                                                ".forms.inboundOIDC.fields.callBackUrls.hint")
                                         }
                                         addURLTooltip={ t("common:addURL") }
                                         duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -444,10 +437,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                             submitUrl = submitFunction;
                                         } }
-                                        required={ true }
+                                        required={ false }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />
+                                    <Message visible warning>
+                                        {
+                                            t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                                ".callBackUrls.validations.required")
+                                        }
+                                    </Message>
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -472,8 +471,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     />
                                     { !hideFieldHints && (
                                         <Hint>
-                                            { t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
-                                                ".hint") }
+                                            {
+                                                t("console:develop.features.applications.forms.inboundOIDC" +
+                                                    ".fields.public.hint")
+                                            }
                                         </Hint>
                                     ) }
                                 </Grid.Column>
