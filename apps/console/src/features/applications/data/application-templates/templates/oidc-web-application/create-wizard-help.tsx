@@ -72,7 +72,11 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
                     Make sure to specify the protocol (https://) otherwise the redirect may fail in some cases.
                 </p>
                 <p>E.g. https://www.conotoso.com/login</p>
-                <Message warning>Note: This field is required for a functional app.</Message>
+
+                <p>
+                    You can also configure this field later under the <strong>Protocol</strong>
+                    tab in application-edit view.
+                </p>
             </>
         </div>
     );

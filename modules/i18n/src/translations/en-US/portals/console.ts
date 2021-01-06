@@ -1046,7 +1046,8 @@ export const console: ConsoleNS = {
                                 label: "Allowed redirect URLs",
                                 placeholder: "Enter allowed redirect URLs",
                                 validations: {
-                                    empty: "Please add a valid URL."
+                                    empty: "Please add a valid URL.",
+                                    required: "Note: This field is required for a functional app."
                                 }
                             },
                             clientID: {

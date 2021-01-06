@@ -106,12 +106,17 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                                 <>
                                     <Heading as="h5">Allowed redirect URLs</Heading>
                                     <p>
-                                        After user sign-in/sign-out, the user is redirected to a web page within your application.
-                                        Add the list of possible redirect URLs here. You can specify multiple valid URLs.
-                                        Make sure to specify the protocol (https://) otherwise the redirect may fail in some cases.
+                                        After user sign-in/sign-out, the user is redirected to a web page within
+                                        your application. Add the list of possible redirect URLs here. You can
+                                        specify multiple valid URLs. Make sure to specify the protocol (https://)
+                                        otherwise the redirect may fail in some cases.
                                     </p>
                                     <p>E.g. https://sample.app/login</p>
-                                    <Message warning>Note: This field is required for a functional app.</Message>
+
+                                    <p>
+                                        You can also configure this field later under the <strong>Protocol</strong>
+                                        tab in application-edit view.
+                                    </p>
                                 </>
                             )
                         }
