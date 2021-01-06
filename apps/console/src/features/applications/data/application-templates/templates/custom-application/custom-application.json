@@ -1,7 +1,7 @@
 {
     "id": "custom-application",
     "name": "Custom Application",
-    "description": "Manually configure your own custom application without any predefined templates, protocols, or authentication flows.",
+    "description": "Configure an application without using predefined templates.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",
