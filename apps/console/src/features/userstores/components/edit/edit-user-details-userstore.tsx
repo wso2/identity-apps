@@ -353,7 +353,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                 .find(attribute => attribute.name === "type").value === "password";
                                             const toggle = property.attributes
                                                 .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+                                            const uniqueID = property.name === "UniqueID";
+
                                             return (
                                                 isValuePresent
                                                 ? (
@@ -413,33 +414,61 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     property.name }` }
                                                             />
                                                         )
-                                                        : (
-                                                            <Field
-                                                                name={ property.name }
-                                                                value={ property.value ?? property.defaultValue }
-                                                                type="text"
-                                                                key={ index }
-                                                                required={ false }
-                                                                label={ property.description.split("#")[ 0 ] }
-                                                                requiredErrorMessage={
-                                                                    t("console:manage.features.userstores.forms.edit." +
-                                                                        "connection.custom.requiredErrorMessage",
-                                                                        {
-                                                                            name: property.description.split("#")[ 0 ]
-                                                                        })
-                                                                }
-                                                                placeholder={
-                                                                    t("console:manage.features.userstores.forms." +
-                                                                        "custom.placeholder",
-                                                                        {
-                                                                            name: property.description.split("#")[ 0 ]
-                                                                        })
-                                                                }
-                                                                data-testid={ `${ testId }-form-non-sql-text-input-${
-                                                                    property.name }` }
-                                                            />
-                                                        )
-                                                    )
+                                                        : uniqueID
+                                                            ? (
+                                                                <Field
+                                                                    name={ property.name }
+                                                                    hidden
+                                                                    value={ property.value ?? property.defaultValue }
+                                                                    type="text"
+                                                                    key={ index }
+                                                                    required={ false }
+                                                                    label={ property.description.split("#")[ 0 ] }
+                                                                    requiredErrorMessage={
+                                                                        t("console:manage.features.userstores.forms.edit." +
+                                                                            "connection.custom.requiredErrorMessage",
+                                                                            {
+                                                                                name: property.description.split("#")[ 0 ]
+                                                                            })
+                                                                    }
+                                                                    placeholder={
+                                                                        t("console:manage.features.userstores.forms." +
+                                                                            "custom.placeholder",
+                                                                            {
+                                                                                name: property.description.split("#")[ 0 ]
+                                                                            })
+                                                                    }
+                                                                    data-testid={ `${ testId }-form-non-sql-text-input-${
+                                                                        property.name }` }
+                                                                />
+                                                            )
+                                                            : (
+                                                                <Field
+                                                                    name={ property.name }
+                                                                    value={ property.value ?? property.defaultValue }
+                                                                    type="text"
+                                                                    key={ index }
+                                                                    required={ false }
+                                                                    label={ property.description.split("#")[ 0 ] }
+                                                                    requiredErrorMessage={
+                                                                        t("console:manage.features.userstores.forms.edit." +
+                                                                            "connection.custom.requiredErrorMessage",
+                                                                            {
+                                                                                name: property.description.split("#")[ 0 ]
+                                                                            })
+                                                                    }
+                                                                    placeholder={
+                                                                        t("console:manage.features.userstores.forms." +
+                                                                            "custom.placeholder",
+                                                                            {
+                                                                                name: property.description.split("#")[ 0 ]
+                                                                            })
+                                                                    }
+                                                                    data-testid={ `${ testId }-form-non-sql-text-input-${
+                                                                        property.name }` }
+                                                                />
+                                                            )
+                                                )
                                                 : (
                                                     <></>
                                                 )
