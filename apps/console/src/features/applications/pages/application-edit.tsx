@@ -848,6 +848,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                pageHeaderMaxWidth={ false }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <EditApplication
