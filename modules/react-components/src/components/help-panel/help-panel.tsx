@@ -143,7 +143,7 @@ export interface HelpPanelTabInterface {
  */
 export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelComponentPropsInterface>
     & RefAttributes<HelpPanelRefType>> & any = forwardRef<HelpPanelRefType, HelpPanelComponentPropsInterface>(
-    (props, ref): ReactElement => {
+    (props: HelpPanelPropsInterface, ref): ReactElement => {
 
         const {
             actions,
