@@ -34,7 +34,7 @@ import {
 import { getDatabaseAvatarGraphic } from "../configs";
 import { CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { reOrganizeProperties } from "../utils";
-import { CONSUMER_USERSTORE_NAME } from "../constants";
+import { CONSUMER_USERSTORE_ID } from "../constants";
 
 /**
  * Props for the Userstores edit page.
@@ -141,7 +141,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: (userStore?.name === CONSUMER_USERSTORE_NAME) ? null
+            menuItem: (userStoreId === CONSUMER_USERSTORE_ID) ? null
                 : t("console:manage.features.userstores.pageLayout.edit.tabs.connection"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -170,7 +170,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: (userStore?.name === CONSUMER_USERSTORE_NAME) ? null
+            menuItem: (userStoreId === CONSUMER_USERSTORE_ID) ? null
                 :  t("console:manage.features.userstores.pageLayout.edit.tabs.group"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

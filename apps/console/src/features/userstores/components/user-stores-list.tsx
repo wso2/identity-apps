@@ -49,7 +49,7 @@ import {
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
 import { UserStoreListItem } from "../models";
-import { CONSUMER_USERSTORE_NAME } from "../constants";
+import { CONSUMER_USERSTORE_ID } from "../constants";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -386,7 +386,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             {
                 hidden: (userstore: UserStoreListItem): boolean => {
                     return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.delete,
-                        allowedScopes) || userstore.name == CONSUMER_USERSTORE_NAME;
+                        allowedScopes) || userstore.id == CONSUMER_USERSTORE_ID;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>

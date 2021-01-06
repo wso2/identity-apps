@@ -28,7 +28,7 @@ import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
-import { CONSUMER_USERSTORE_NAME, DISABLED } from "../../constants";
+import { CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -384,7 +384,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     data-testid={ `${ testId }-form-type-input` }
                                 />
                                 {
-                                    userStore?.name === CONSUMER_USERSTORE_NAME ? (
+                                    id === CONSUMER_USERSTORE_ID ? (
                                         <Field
                                             label={ t("console:manage.features.userstores.forms.general.description.label") }
                                             name="description"
@@ -417,7 +417,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
                                 {
-                                    userStore?.name !== CONSUMER_USERSTORE_NAME ?
+                                    id !== CONSUMER_USERSTORE_ID ?
                                     properties?.required?.map((property: TypeProperty, index: number) => {
                                         const isDisabledField = property.description.split("#")[ 0 ] === DISABLED;
                                         if (isDisabledField) {
@@ -690,7 +690,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             <Divider hidden />
 
             {
-                userStore?.name !== CONSUMER_USERSTORE_NAME &&
+                id !== CONSUMER_USERSTORE_ID &&
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup
