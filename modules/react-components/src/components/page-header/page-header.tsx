@@ -20,7 +20,7 @@ import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/
 import classNames from "classnames";
 import React, { MouseEventHandler, ReactElement, ReactNode } from "react";
 import { Divider, Grid, Header, Icon, Placeholder, SemanticWIDTHS } from "semantic-ui-react";
-import { GenericIcon } from "../icon";
+import { GenericIcon, GenericIconProps } from "../icon";
 
 /**
  * Page header component Prop types.
@@ -62,6 +62,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Optional image.
      */
     image?: any;
+    /**
+     * Image spaced side.
+     */
+    imageSpaced?: boolean | GenericIconProps[ "spaced" ];
     /**
      * Show/ Hide bottom divider.
      */
@@ -115,6 +119,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         headingColumnWidth,
         image,
         isLoading,
+        imageSpaced,
         showBottomDivider,
         title,
         titleAs,
@@ -170,7 +175,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                     }
                     size="tiny"
                     transparent
-                    spaced="right"
+                    spaced={ (typeof imageSpaced === "boolean" && !imageSpaced) ? null : "right" }
                     data-testid={ `${ testId }-image` }
                 />
             ) }
@@ -280,6 +285,7 @@ PageHeader.defaultProps = {
     bottomMargin: true,
     "data-testid": "page-header",
     headingColumnWidth: 10,
+    imageSpaced: "right",
     showBottomDivider: false,
     titleAs: "h1"
 };
