@@ -43,7 +43,7 @@ $(document).ready(function() {
 });
 
 function requestTOTPToken() {
-    var endpointURL = "../../commonauth";
+    var endpointURL = "../commonauth";
     $.ajax({
         url: endpointURL,
         type: "GET",
