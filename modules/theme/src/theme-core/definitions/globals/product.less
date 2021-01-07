@@ -673,6 +673,18 @@ body {
             }
         }
     }
+    &.x22 {
+        > .icon {
+            width: @iconX22;
+            height: auto;
+            max-height: @iconX22; //to avoid issues in IE
+        }
+        &.square {
+            > .icon {
+                height: @iconX22;
+            }
+        }
+    }
     &.mini {
         > .icon {
             width: @iconMini;

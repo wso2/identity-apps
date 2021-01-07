@@ -143,6 +143,7 @@ export type GenericIconSizes =
     | "nano"
     | "default"
     | "micro"
+    | "x22"
     | "mini"
     | "x50"
     | "x60"
