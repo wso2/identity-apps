@@ -405,7 +405,7 @@ export const console: ConsoleNS = {
         },
         validations: {
             inSecureURL: {
-                description: "The entered URL a non-TLS URL. Please proceed with caution.",
+                description: "The entered URL is a non-TLS URL. Please proceed with caution.",
                 heading: "Insecure URL"
             },
             unrecognizedURL: {

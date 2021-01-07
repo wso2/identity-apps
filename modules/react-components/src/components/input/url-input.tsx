@@ -29,6 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
+import {URLUtils} from "@wso2is/core/dist/src/utils";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
@@ -565,6 +566,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
+                    const isUnsecureURL = URLUtils.isHttpUrl(url);
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
@@ -585,6 +587,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                         )
                                     }
                                 </Label>
+                                {
+                                    isUnsecureURL && (
+                                        <Popup
+                                            trigger={ <Icon name="exclamation triangle" color="yellow" /> }
+                                            content={ t("console:common.validations.inSecureURL.description") }
+                                            inverted
+                                            position="top left"
+                                            size="mini"
+                                        />
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     );

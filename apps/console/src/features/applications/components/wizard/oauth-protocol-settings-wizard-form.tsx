@@ -415,14 +415,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
                                             let label: ReactElement = null;
 
-                                            if (URLUtils.isHttpUrl(value)) {
-                                                label = (
-                                                    <Label basic color="orange" className="mt-2">
-                                                        { t("console:common.validations.inSecureURL.description") }
-                                                    </Label>
-                                                );
-                                            }
-
                                             if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                                 label = (
                                                     <Label basic color="orange" className="mt-2">
