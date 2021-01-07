@@ -5949,10 +5949,10 @@ export const console: ConsoleNS = {
                     },
                     userstoreError: {
                         subtitles: {
-                            0: "An error occurred while trying to fetch users from the userstore",
-                            1: "Please make sure the connection details of the userstore are accurate."
+                            0: "Couldn't fetch users from the userstore",
+                            1: "Please try again"
                         },
-                        title: "Couldn't fetch users from the userstore"
+                        title: "Something went wrong"
                     }
                 },
                 userSessions: {

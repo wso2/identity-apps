@@ -5965,11 +5965,10 @@ export const console: ConsoleNS = {
                     },
                     userstoreError: {
                         subtitles: {
-                            0: "Une erreur s'est produite lors de la tentative de récupération des utilisateurs dans " +
-                                "l'annuaire'",
-                            1: "Veuillez vous assurer que les informations de connexion à l'annuaire sont exactes."
+                            0: "Impossible de récupérer les utilisateurs de la boutique d'utilisateurs",
+                            1: "Veuillez réessayer"
                         },
-                        title: "Impossible d'aller chercher les utilisateurs dans l'annuaire"
+                        title: "Un problème est survenu"
                     }
                 },
                 userSessions: {
