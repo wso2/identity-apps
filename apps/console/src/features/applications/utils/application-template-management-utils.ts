@@ -189,7 +189,7 @@ export class ApplicationTemplateManagementUtils {
      * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
      */
     public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
-        return technologies.map((technology: string) => {
+        return technologies?.map((technology: string) => {
             let logo = null;
 
             for (const [ key, value ] of Object.entries(getTechnologyLogos())) {

@@ -283,11 +283,23 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     };
 
     /**
+     * The following function handles removing CORS allowed origin.
+     *
+     * @param {string} url - Removing origin
+     */
+    const handleRemoveAllowOrigin = (url: string): void => {
+        console.log("handleRemoveAllowOrigin")
+        const allowedURLs = [ ...allowCORSUrls ];
+        allowedURLs.splice(allowedURLs.indexOf(url), 1);
+        setAllowCORSUrls(allowedURLs);
+    };
+
+    /**
      * The following function handles allowing CORS for a new origin.
      *
      * @param {string} url - Allowed origin
      */
-    const handleAllowOrigin = (url: string): void => {
+    const handleAddAllowOrigin = (url: string): void => {
         const allowedURLs = [ ...allowCORSUrls ];
         allowedURLs.push(url);
         setAllowCORSUrls(allowedURLs);
@@ -380,7 +392,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <URLInput
                                         labelEnabled={ true }
-                                        handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                        handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
+                                        handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
                                         tenantDomain={ tenantDomain }
                                         allowedOrigins={ allowedOrigins }
                                         urlState={ callBackUrls }
