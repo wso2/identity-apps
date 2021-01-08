@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -113,6 +114,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
     const {
         beautify,
+        className,
         getThemeFromEnvironment,
         height,
         language,
@@ -128,6 +130,13 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         [ "data-testid" ]: testId,
         ...rest
     } = props;
+
+    const classes = classNames(
+        "code-editor",
+        {
+            "one-liner": oneLiner
+        }
+        , className);
 
     const [ dark, setDark ] = useState(false);
     
@@ -215,6 +224,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     return (
         <CodeMirror
             { ...rest }
+            className={ classes }
             value={ beautify ? beautifyCode() : sourceCode }
             editorDidMount ={ (editor, ...args) => {
                 if (height) {
