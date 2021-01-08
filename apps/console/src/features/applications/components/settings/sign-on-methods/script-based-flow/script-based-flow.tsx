@@ -19,12 +19,13 @@
 import { UIConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
+import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
@@ -166,13 +167,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             return;
         }
 
-        if (isDefaultScript) {
-            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+        if (script) {
+            setSourceCode(beautify.js(stripSlashes(script)));
             return;
         }
 
-        if (StringUtils.isValidJSONString(script)) {
-            setSourceCode(JSON.parse(script));
+        if (isDefaultScript) {
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             return;
         }
 

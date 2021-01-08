@@ -58,6 +58,7 @@
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
+        "js-beautify": "*",
         "lodash": "*",
         "log": "*",
         "moment": "*",
@@ -76,6 +77,7 @@
         "redux-form": "*",
         "redux-thunk": "*",
         "style-loader": "*",
+        "slashes": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
     },
