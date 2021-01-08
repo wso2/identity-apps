@@ -189,6 +189,11 @@ export class ApplicationTemplateManagementUtils {
      * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
      */
     public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
+
+        if (!technologies) {
+            return;
+        }
+
         return technologies.map((technology: string) => {
             let logo = null;
 
