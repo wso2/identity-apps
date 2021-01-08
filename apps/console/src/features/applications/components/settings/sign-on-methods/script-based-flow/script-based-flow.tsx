@@ -163,7 +163,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         if (!script && authenticationSequence?.steps?.length > 0) {
-            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length + 1));
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             return;
         }
 
