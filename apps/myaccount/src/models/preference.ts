@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,26 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./change-password";
-export * from "./linked-accounts";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./multi-factor-fido";
-export * from "./user-sessions";
-export * from "./multi-factor-totp";
-export * from "./verify-mobile-smsotp";
-export * from "./configs";
-export * from "./preference";
+/**
+ * Preference Request model
+ */
+export interface PreferenceRequest {
+    "connector-name": string;
+    properties: string[];
+}
+
+/**
+ * Preference Property model
+ */
+export interface PreferenceProperty {
+    name: string;
+    value: string;
+}
+
+/**
+ * PreferenceConnector Response model
+ */
+export interface PreferenceConnectorResponse {
+    "connector-name": string;
+    properties: PreferenceProperty[];
+}
