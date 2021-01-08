@@ -38,8 +38,8 @@ export const myAccount: MyAccountNS = {
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The email address in the user profile has been updated successfully",
-                        message: "Email Address Updated Successfully"
+                        description: "Successfully retrieved the recovery preference",
+                        message: "Recovery preference retrieval successful"
                     }
                 }
             },
