@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { UnControlled as CodeMirror, ICodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
+import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/addon/hint/sql-hint";
@@ -54,10 +54,6 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     beautify?: boolean;
     /**
-     * Editor mount lifecycle.
-     */
-    editorDidMount?: ICodeMirror["editorDidMount"];
-    /**
      * Language the code is written in.
      */
     language?: "javascript" | "json" | "typescript" | "htmlmixed";
@@ -65,6 +61,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      * Whether to enable linting or not.
      */
     lint?: boolean;
+    /**
+     * Should the editor be formatted for a one line command.
+     */
+    oneLiner?: boolean;
     /**
      * If the editor is read only or not.
      */
@@ -113,12 +113,12 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
     const {
         beautify,
-        editorDidMount,
         getThemeFromEnvironment,
         height,
         language,
         lint,
         options,
+        oneLiner,
         readOnly,
         showLineNumbers,
         smart,
@@ -220,8 +220,12 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 if (height) {
                     editor.setSize("", height);
                 }
+                
+                if (oneLiner) {
+                    editor.setSize("", "100%");
+                }
 
-                editorDidMount(editor, ...args);
+                rest.editorDidMount && rest.editorDidMount(editor, ...args);
             } }
             options={
                 {
@@ -231,7 +235,9 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                     extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
                     gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
                     indentUnit: tabSize,
-                    lineNumbers: showLineNumbers,
+                    lineNumbers: !oneLiner
+                        ? showLineNumbers
+                        : false,
                     lint,
                     matchBrackets: smart,
                     matchTags: smart,
