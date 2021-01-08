@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
+import { UnControlled as CodeMirror, ICodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/addon/hint/sql-hint";
@@ -54,6 +54,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     beautify?: boolean;
     /**
+     * Editor mount lifecycle.
+     */
+    editorDidMount?: ICodeMirror["editorDidMount"];
+    /**
      * Language the code is written in.
      */
     language?: "javascript" | "json" | "typescript" | "htmlmixed";
@@ -83,6 +87,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     tabSize?: number;
     /**
+     * Height of the editor.
+     */
+    height?: "100%" | string;
+    /**
      * Editor theme.
      */
     theme?: "dark" | "light";
@@ -105,7 +113,9 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
     const {
         beautify,
+        editorDidMount,
         getThemeFromEnvironment,
+        height,
         language,
         lint,
         options,
@@ -143,7 +153,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             getThemeFromEnvironment &&
                 window.matchMedia &&
                 window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
-        }
+        };
     }, [getThemeFromEnvironment]);
     
     /**
@@ -206,6 +216,13 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         <CodeMirror
             { ...rest }
             value={ beautify ? beautifyCode() : sourceCode }
+            editorDidMount ={ (editor, ...args) => {
+                if (height) {
+                    editor.setSize("", height);
+                }
+
+                editorDidMount(editor, ...args);
+            } }
             options={
                 {
                     ...options,
