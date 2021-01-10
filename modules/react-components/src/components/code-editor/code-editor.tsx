@@ -65,7 +65,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
     /**
      * Flat to enable line wrapping.
      */
-    lineWrapping: boolean;
+    lineWrapping?: boolean;
     /**
      * Whether to enable linting or not.
      */
