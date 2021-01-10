@@ -69,7 +69,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
     /**
      * If the editor is read only or not.
      */
-    readOnly?: boolean;
+    readOnly?: boolean | string;
     /**
      * Whether to show line numbers.
      */
