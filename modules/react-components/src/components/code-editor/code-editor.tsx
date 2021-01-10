@@ -63,6 +63,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      */
     language?: "javascript" | "json" | "typescript" | "htmlmixed";
     /**
+     * Flat to enable line wrapping.
+     */
+    lineWrapping: boolean;
+    /**
      * Whether to enable linting or not.
      */
     lint?: boolean;
@@ -126,6 +130,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         getThemeFromEnvironment,
         height,
         language,
+        lineWrapping,
         lint,
         options,
         oneLiner,
@@ -278,6 +283,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 } }
                 options={
                     {
+                        lineWrapping,
                         ...options,
                         autoCloseBrackets: smart,
                         autoCloseTags: smart,
@@ -308,6 +314,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 CodeEditor.defaultProps = {
     "data-testid": "code-editor",
     language: "javascript",
+    lineWrapping: true,
     lint: false,
     readOnly: false,
     showLineNumbers: true,
