@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import * as codemirror from "codemirror";
 import JSBeautify from "js-beautify";
@@ -238,19 +239,14 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      */
     const handleCopyToClipboard = (): void => {
 
-        const dummyTextArea: HTMLTextAreaElement = document.createElement("textarea");
+        CommonUtils.copyTextToClipboard(editorInstance.doc.getValue())
+            .then(() => {
+                setCopyToClipboardIcon("check");
 
-        dummyTextArea.innerText = editorInstance.doc.getValue();
-        document.body.appendChild(dummyTextArea);
-        dummyTextArea.select();
-        document.execCommand("copy");
-        dummyTextArea.remove();
-
-        setCopyToClipboardIcon("check");
-
-        setTimeout(() => {
-            setCopyToClipboardIcon("copy outline");
-        }, 1000);
+                setTimeout(() => {
+                    setCopyToClipboardIcon("copy outline");
+                }, 1000);
+            });
     };
 
     return (
@@ -259,7 +255,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 {
                     withClipboardCopy && (
                         <div className="editor-action" onClick={ handleCopyToClipboard }>
-                            <Icon name={ copyToClipboardIcon } />
+                            <Icon name={ copyToClipboardIcon }/>
                         </div>
                     )
                 }
