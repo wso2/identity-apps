@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import * as codemirror from "codemirror";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -37,6 +38,7 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/hint/show-hint.css";
+import { Icon } from "semantic-ui-react";
 
 // Putting the `JSHINT` in the window object. To handle,
 // Property 'JSHINT' does not exist on type 'Window & typeof globalThis'.
@@ -44,6 +46,7 @@ import "codemirror/addon/hint/show-hint.css";
 interface CustomWindow extends Window {
     JSHINT: any;
 }
+
 (window as CustomWindow & typeof globalThis).JSHINT = JSHINT;
 
 /**
@@ -99,6 +102,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      * Get theme from the environment.
      */
     getThemeFromEnvironment?: boolean;
+    /**
+     * Enable clipboard copy option.
+     */
+    withClipboardCopy?: boolean;
 }
 
 /**
@@ -127,19 +134,23 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         sourceCode,
         tabSize,
         theme,
+        withClipboardCopy,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
+    const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
+
     const classes = classNames(
         "code-editor",
         {
-            "one-liner": oneLiner
+            "one-liner": oneLiner,
+            "with-actions": withClipboardCopy
         }
         , className);
 
     const [ dark, setDark ] = useState(false);
-    
+
     /**
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
      */
@@ -155,16 +166,16 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             }
         };
         getThemeFromEnvironment &&
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
 
         return () => {
             getThemeFromEnvironment &&
-                window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
         };
-    }, [getThemeFromEnvironment]);
-    
+    }, [ getThemeFromEnvironment ]);
+
     /**
      * Resolves the language mode.
      *
@@ -176,7 +187,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             throw new Error("Please define a language.");
         }
 
-        return  {
+        return {
             json: language === "json",
             name: (language === "json" || language === "typescript") ? "javascript" : language,
             statementIndent: 4,
@@ -221,44 +232,70 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         return code;
     };
 
-    return (
-        <CodeMirror
-            { ...rest }
-            className={ classes }
-            value={ beautify ? beautifyCode() : sourceCode }
-            editorDidMount ={ (editor, ...args) => {
-                if (height) {
-                    editor.setSize("", height);
-                }
-                
-                if (oneLiner) {
-                    editor.setSize("", "100%");
-                }
+    /**
+     * Handles clipboard copy event internally.
+     */
+    const handleCopyToClipboard = (): void => {
 
-                rest.editorDidMount && rest.editorDidMount(editor, ...args);
-            } }
-            options={
+        const dummyTextArea: HTMLTextAreaElement = document.createElement("textarea");
+
+        dummyTextArea.innerText = editorInstance.doc.getValue();
+        document.body.appendChild(dummyTextArea);
+        dummyTextArea.select();
+        document.execCommand("copy");
+        dummyTextArea.remove();
+    };
+
+    return (
+        <div className={ classes }>
+            <div className="editor-actions">
                 {
-                    ...options,
-                    autoCloseBrackets: smart,
-                    autoCloseTags: smart,
-                    extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
-                    gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
-                    indentUnit: tabSize,
-                    lineNumbers: !oneLiner
-                        ? showLineNumbers
-                        : false,
-                    lint,
-                    matchBrackets: smart,
-                    matchTags: smart,
-                    mode: options?.mode ? options.mode : resolveMode(language),
-                    readOnly,
-                    tabSize,
-                    theme: resolveTheme()
+                    withClipboardCopy && (
+                        <div className="editor-action" onClick={ handleCopyToClipboard }>
+                            <Icon name="copy outline"/>
+                        </div>
+                    )
                 }
-            }
-            data-testid={ testId }
-        />
+            </div>
+            <CodeMirror
+                { ...rest }
+                value={ beautify ? beautifyCode() : sourceCode }
+                editorDidMount={ (editor: codemirror.Editor, ...args) => {
+                    if (height) {
+                        editor.setSize("", height);
+                    }
+
+                    if (oneLiner) {
+                        editor.setSize("", "100%");
+                    }
+
+                    setEditorInstance(editor);
+
+                    rest.editorDidMount && rest.editorDidMount(editor, ...args);
+                } }
+                options={
+                    {
+                        ...options,
+                        autoCloseBrackets: smart,
+                        autoCloseTags: smart,
+                        extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
+                        gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
+                        indentUnit: tabSize,
+                        lineNumbers: !oneLiner
+                            ? showLineNumbers
+                            : false,
+                        lint,
+                        matchBrackets: smart,
+                        matchTags: smart,
+                        mode: options?.mode ? options.mode : resolveMode(language),
+                        readOnly,
+                        tabSize,
+                        theme: resolveTheme()
+                    }
+                }
+                data-testid={ testId }
+            />
+        </div>
     );
 };
 

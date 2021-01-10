@@ -1804,6 +1804,43 @@ svg.illustration {
 --------------------------------*/
 
 .code-editor {
+
+    .editor-actions {
+        display: none;
+        position: absolute;
+        right: 10px;
+        padding-top: @codeEditorActionsPaddingTop;
+        z-index: 9;
+
+        .editor-action {
+            pointer-events: auto;
+            width: @codeEditorActionWidth;
+            height: @codeEditorActionHeight;
+            text-align: center;
+
+            .icon {
+                cursor: pointer;
+                color: darken(@whiteSmoke, 20);
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        &:hover {
+            .editor-action {
+                .icon {
+                    color: @whiteSmoke;
+                }
+            }
+        }
+    }
+    &.with-actions {
+        position: relative;
+
+        .editor-actions {
+            display: block;
+        }
+    }
     &.one-liner {
         .CodeMirror {
             padding: @codeEditorOneLinerPadding;
