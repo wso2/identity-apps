@@ -38,7 +38,7 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/hint/show-hint.css";
-import { Icon } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 
 // Putting the `JSHINT` in the window object. To handle,
 // Property 'JSHINT' does not exist on type 'Window & typeof globalThis'.
@@ -140,6 +140,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     } = props;
 
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
+    const [ copyToClipboardIcon, setCopyToClipboardIcon ] = useState<SemanticICONS>("copy outline");
 
     const classes = classNames(
         "code-editor",
@@ -244,6 +245,12 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         dummyTextArea.select();
         document.execCommand("copy");
         dummyTextArea.remove();
+
+        setCopyToClipboardIcon("check");
+
+        setTimeout(() => {
+            setCopyToClipboardIcon("copy outline");
+        }, 1000);
     };
 
     return (
@@ -252,7 +259,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 {
                     withClipboardCopy && (
                         <div className="editor-action" onClick={ handleCopyToClipboard }>
-                            <Icon name="copy outline"/>
+                            <Icon name={ copyToClipboardIcon } />
                         </div>
                     )
                 }
