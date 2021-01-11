@@ -39,7 +39,11 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
         const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
         return givenName + familyName;
     } else if (profileInfo.userName) {
-        return profileInfo.userName;
+        let userName = "";
+        profileInfo.userName.split("/").length > 1
+            ?  userName = profileInfo?.userName.split("/")[1]
+            : userName = profileInfo?.userName;
+        return userName;
     } else if (authState && authState.displayName) {
         return authState.displayName;
     } else if (authState && authState.username) {
