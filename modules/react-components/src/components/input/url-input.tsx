@@ -590,7 +590,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 {
                                     isUnsecureURL && (
                                         <Popup
-                                            trigger={ <Icon name="exclamation triangle" color="yellow" /> }
+                                            trigger={ <Icon className="ml-1" name="exclamation triangle" color="yellow" /> }
                                             content={ t("console:common.validations.inSecureURL.description") }
                                             inverted
                                             position="top left"
