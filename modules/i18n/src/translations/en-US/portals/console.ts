@@ -965,7 +965,7 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Applications flagged as discoverable are visible for end users.",
+                                hint: "Discoverable applications can be accessed via this URL.",
                                 label: "Access URL",
                                 placeholder: "Enter access url for the application login page",
                                 validations: {
@@ -979,6 +979,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
+                                hint: "If an application is flagged as discoverable, it will be visible to end users" +
+                                    " in <1>My Account</1><2></2>",
                                 label: "Discoverable application"
                             },
                             imageUrl: {

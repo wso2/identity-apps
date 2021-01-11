@@ -957,12 +957,12 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Les applications marquées comme découvrables sont visibles par les utilisateurs finaux.",
+                                hint: "Les applications détectables sont accessibles via cette URL",
                                 label: "URL d'accès",
                                 placeholder: "Saisissez l'url d'accès à la page de connexion de l'application",
                                 validations: {
-                                    empty: "Une URL d'accès valide doit être définie pour qu'une application soit marquée comme " +
-                                        "étant découvrable",
+                                    empty: "Une URL d'accès valide doit être définie pour qu'une application soit " +
+                                        "marquée comme étant découvrable",
                                     invalid: "Ceci n'est pas une URL valide"
                                 }
                             },
@@ -971,6 +971,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {
+                                hint: "Si une application est marquée comme détectable, elle sera visible par les " +
+                                    "utilisateurs finaux dans <1>My Account</1><2></2>",
                                 label: "Application découvrable"
                             },
                             imageUrl: {

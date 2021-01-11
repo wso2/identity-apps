@@ -24,10 +24,10 @@ import { Certificate as CertificateDisplay, GenericIcon, Heading, Hint, LinkButt
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
+import { Button, Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants, AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../models";
 
 /**
@@ -132,7 +132,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @return {any} Sanitized form values.
      */
     const updateConfigurations = (values: Map<string, FormValue>): any => {
-        return  {
+        return {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
                 certificate: {
@@ -251,7 +251,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             onChange={ handleFormValuesOnChange }
         >
             <Grid>
-                { !UIConfig.systemAppsIdentifiers.includes(name) &&
+                { !UIConfig.systemAppsIdentifiers.includes(name) && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
@@ -276,7 +276,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             />
                         </Grid.Column>
                     </Grid.Row>
-                }
+                ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
@@ -350,8 +350,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        <Hint compact>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.generalDetails." +
+                                    "fields.discoverable.hint"
+                                }
+                            >
+                                If an application is flagged as discoverable, it will be visible to end users in
+                                <a
+                                    href={ AppConstants.getMyAccountPath() }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="link external"
+                                >
+                                    My Account
+                                </a>
+                                <Icon className="ml-1 link primary" name="external"></Icon>
+                            </Trans>
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -385,6 +401,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-access-url-input` }
                         />
+                        <Hint compact>
+                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

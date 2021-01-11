@@ -21,8 +21,9 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
+import { Divider, Grid, Icon } from "semantic-ui-react";
+import { AppConstants } from "../../../core/constants";
 
 /**
  * Proptypes for the general settings wizard form component.
@@ -180,14 +181,31 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 }
                                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                             />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                            <Hint compact>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.generalDetails." +
+                                        "fields.discoverable.hint"
+                                    }
+                                >
+                                    If an application is flagged as discoverable, it will be visible to end users in
+                                    <a
+                                        href={ AppConstants.getMyAccountPath() }
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="link external"
+                                    >
+                                        My Account
+                                    </a>
+                                    <Icon className="ml-1 link primary" name="external"></Icon>
+                                </Trans>
                             </Hint>
                             <Divider hidden/>
                             <Field
                                 name="accessUrl"
                                 label={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
+                                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        ".accessUrl.label")
                                 }
                                 required={ isDiscoverable }
                                 requiredErrorMessage={
@@ -211,6 +229,12 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 value={ initialValues ? initialValues?.accessUrl : templateValues?.accessUrl }
                                 data-testid={ `${ testId }-application-access-url-input` }
                             />
+                            <Hint compact>
+                                {
+                                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                                    ".accessUrl.hint")
+                                }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Column>
                 </Grid.Row>
