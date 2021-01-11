@@ -288,7 +288,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @param {string} url - Removing origin
      */
     const handleRemoveAllowOrigin = (url: string): void => {
-        console.log("handleRemoveAllowOrigin")
         const allowedURLs = [ ...allowCORSUrls ];
         allowedURLs.splice(allowedURLs.indexOf(url), 1);
         setAllowCORSUrls(allowedURLs);
