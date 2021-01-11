@@ -316,6 +316,12 @@
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
+
+                // Prevent clicking multiple times, and notify the user something
+                // is happening in the background.
+                const submitButton = $('#recoverySubmit');
+                submitButton.addClass("loading").attr("disabled", true);
+
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
