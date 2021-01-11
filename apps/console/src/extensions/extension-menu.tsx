@@ -28,9 +28,14 @@ import { ExtensionRoutesInterface } from "./models";
  */
 export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
 
-    const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
-    const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
-    const manageRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.manage ];
+    // TODO: in below .getConfigs() strangely sometimes it returns null
+    //       or undefined. It causes the application to break. The null
+    //       coalescing operator used to overcome the issue. But we need
+    //       debug the issue properly.
+
+    const developRoutes: RouteInterface[]  =  [ ...(ExtensionsManager.getConfig().routes.develop ?? []) ];
+    const fullscreenRoutes: RouteInterface[]  = [ ...(ExtensionsManager.getConfig().routes.fullscreen ?? []) ];
+    const manageRoutes: RouteInterface[]  = [ ...(ExtensionsManager.getConfig().routes.manage ?? []) ];
 
     developRoutes.forEach(route => {
         const routePath = route.components;
