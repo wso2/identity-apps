@@ -36,6 +36,7 @@ export interface ExtensionsConfigInterface {
 export interface ExtensionRoutesInterface {
     develop?: RouteInterface[];
     fullscreen?: RouteInterface[];
+    manage?: RouteInterface[];
 }
 
 /**

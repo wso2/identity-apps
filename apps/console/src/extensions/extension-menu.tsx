@@ -30,6 +30,7 @@ export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
 
     const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
     const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
+    const manageRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.manage ];
 
     developRoutes.forEach(route => {
         const routePath = route.components;
@@ -41,8 +42,14 @@ export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
         route.component = lazy(() => import(`${routePath}`));
     });
 
+    manageRoutes.forEach(route => {
+        const routePath = route.components;
+        route.component = lazy(() => import(`${routePath}`));
+    });
+
     return {
         develop: developRoutes,
-        fullscreen: fullscreenRoutes
+        fullscreen: fullscreenRoutes,
+        manage: manageRoutes
     };
 };

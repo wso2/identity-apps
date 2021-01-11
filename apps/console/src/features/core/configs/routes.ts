@@ -147,6 +147,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 export const getAdminViewRoutes = (): RouteInterface[] => {
 
     return [
+        ...EXTENSION_ROUTES().manage,
         {
             category: "console:manage.features.sidePanel.categories.users",
             children: [
