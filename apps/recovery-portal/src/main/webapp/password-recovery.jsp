@@ -285,7 +285,7 @@
                     errorMessage.text("Please fill the first name.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-
+                    submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
 
@@ -298,7 +298,7 @@
                     errorMessage.text("Please select reCaptcha.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-
+                    submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
 
