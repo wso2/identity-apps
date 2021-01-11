@@ -21,7 +21,8 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
+import union from "lodash/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
@@ -729,7 +730,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         },
                                         { label: "Artifact", value: "ARTIFACT" }
                                     ] }
-                                    value={ initialValues?.singleSignOnProfile?.bindings }
+                                    value={
+                                        union(initialValues?.singleSignOnProfile?.bindings,
+                                            [ "HTTP_POST", "HTTP_REDIRECT" ])
+                                    }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-bindings-checkbox-group` }
                                 />

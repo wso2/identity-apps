@@ -421,6 +421,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
+                template={ template }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-access-settings` }
             />

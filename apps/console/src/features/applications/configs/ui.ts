@@ -23,7 +23,7 @@ export const getInboundProtocolLogos = () => {
     const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
     return {
-        oidc: import(`../../../themes/${ theme }/assets/images/protocols/oidc.png`),
+        oidc: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`),
         openid: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`),
         "passive-sts": import(`../../../themes/${ theme }/assets/images/protocols/ws-fed.png`),
         saml: import(`../../../themes/${ theme }/assets/images/protocols/saml.png`),

@@ -469,10 +469,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const renderOIDCConfigFields = (): ReactElement => (
         <>
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Field
                         ref={ grant }
@@ -570,17 +566,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".label")
+                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".fields.allowedOrigins.label")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".placeholder")
+                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".fields.allowedOrigins.placeholder")
                                     }
                                     value={ initialValues?.allowedOrigins?.toString() }
                                     validationErrorMsg={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".validations.empty")
+                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".fields.allowedOrigins.validations.empty")
                                     }
                                     validation={ (value: string) => {
 
@@ -606,8 +602,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     setShowError={ setShowOriginError }
                                     showError={ showOriginError }
                                     hint={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".hint")
+                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".fields.allowedOrigins.hint")
                                     }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
@@ -1546,6 +1542,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>
                                 </Grid.Row>
+                            )
+                        }
+                        {
+                            (initialValues?.clientId || initialValues?.clientSecret) && (
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
+                                    <Divider />
+                                    <Divider hidden />
+                                </Grid.Column>
                             )
                         }
                         { (initialValues?.state !== State.REVOKED) && renderOIDCConfigFields() }
