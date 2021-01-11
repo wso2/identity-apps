@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface } from "../../models";
+import { AuthProtocolMetaListItemInterface, SupportedAuthProtocolTypes } from "../../models";
 
 export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     {
@@ -60,3 +60,14 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
         type: "wstrust"
     }
 ];
+
+/**
+ * Supported auth protocol type display name mapping.
+ */
+export const SupportedAuthProtocolTypeDisplayNames = {
+    [ SupportedAuthProtocolTypes.SAML ]: "SAML",
+    [ SupportedAuthProtocolTypes.OIDC ] : "OpenID Connnect",
+    [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Passive STS",
+    [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
+    [ SupportedAuthProtocolTypes. CUSTOM ]: "Custom"
+};
