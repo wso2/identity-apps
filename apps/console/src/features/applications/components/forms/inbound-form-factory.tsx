@@ -23,7 +23,7 @@ import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
-import { SupportedAuthProtocolTypes } from "../../models";
+import { ApplicationTemplateListItemInterface, SupportedAuthProtocolTypes } from "../../models";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -47,6 +47,10 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      * Tenant domain
      */
     tenantDomain?: string;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -70,6 +74,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         readOnly,
         allowedOrigins,
         tenantDomain,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
@@ -85,6 +90,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     onApplicationRegenerate={ onApplicationRegenerate }
                     onApplicationRevoke={ onApplicationRevoke }
                     readOnly={ readOnly }
+                    template={ template }
                     data-testid={ testId }
                 />
             );

@@ -23,12 +23,10 @@ import {
     ConfirmationModal,
     ContentLoader,
     EmphasizedSegment,
-    GenericIcon,
-    GenericIconProps,
-    UserAvatar
+    GenericIcon
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import isEmpty from "lodash/isEmpty";
+import get from "lodash/get";
 import sortBy from "lodash/orderBy";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -36,7 +34,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card, Grid, Radio, SemanticWIDTHS } from "semantic-ui-react";
 import {
     AppState,
-    AuthenticatorAccordion,
     FeatureConfigInterface,
     store
 } from "../../../core";
@@ -313,28 +310,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     };
 
     /**
-     * Handles Authenticator delete button on click action.
-     *
-     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} name - Protocol name.
-     */
-    const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
-        if (!name) {
-            return;
-        }
-
-        const deletingProtocol = inboundProtocols
-            .find((protocol) => protocol === name);
-
-        if (!deletingProtocol) {
-            return;
-        }
-
-        setProtocolToDelete(deletingProtocol);
-        setShowDeleteConfirmationModal(true);
-    };
-
-    /**
      * Resolves the protocol selection cards.
      * @return {React.ReactElement}
      */
@@ -465,9 +440,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 allowedOrigins={ allowedOriginList }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={
-                                    isEmpty(inboundProtocolConfig[ selectedProtocol ])
-                                        ? undefined
-                                        : inboundProtocolConfig[ selectedProtocol ]
+                                    get(inboundProtocolConfig, selectedProtocol)
+                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                        : undefined
                                 }
                                 onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
                                 type={ selectedProtocol as SupportedAuthProtocolTypes }
@@ -481,6 +456,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         allowedScopes
                                     )
                                 }
+                                template={ template }
                                 data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
                             />
                         )
@@ -488,9 +464,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={
-                                    isEmpty(inboundProtocolConfig[ selectedProtocol ])
-                                        ? undefined
-                                        : inboundProtocolConfig[ selectedProtocol ]
+                                    get(inboundProtocolConfig, selectedProtocol)
+                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                        : undefined
                                 }
                                 onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
                                 type={ SupportedAuthProtocolTypes.CUSTOM }
@@ -501,6 +477,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         allowedScopes
                                     )
                                 }
+                                template={ template }
                                 data-testid={ `${ testId }-inbound-custom-form` }
                             />
                         )
