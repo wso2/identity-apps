@@ -5284,9 +5284,8 @@ export const console: ConsoleNS = {
                 disableUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
-                        content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à Mon " +
-                            "compte ou à toute autre application à laquelle l'utilisateur était auparavant abonné. " +
-                            "Veuillez procéder avec prudence.",
+                        content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à" +
+                            " Mon compte ou à toute autre application à laquelle l'utilisateur était abonné auparavant.",
                         header: "Êtes-vous sûr?",
                         message: "Assurez-vous que l'utilisateur n'a plus besoin d'accéder au système."
                     }
