@@ -40,7 +40,7 @@
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <script>
@@ -323,7 +323,7 @@
             isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(tenantDomain);
             isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
             isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
-        } catch (SelfRegistrationMgtClientException e) {
+        } catch (PreferenceRetrievalClientException e) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", AuthenticationEndpointUtil
                             .i18n(resourceBundle, "something.went.wrong.contact.admin"));
