@@ -52,7 +52,7 @@ export class UserManagementConstants {
      * @type {string[]}
      * @default
      */
-    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "id", "profileUrl",
+    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "profileUrl",
         "meta.lastModified" ];
 
     /**
