@@ -21,7 +21,8 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { isEmpty } from "lodash";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -29,6 +30,7 @@ import { Button, Divider, Form, Grid, Label, Message } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { ApplicationManagementConstants } from "../../constants";
 import {
+    ApplicationTemplateListItemInterface,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -62,6 +64,10 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Tenant domain
      */
     tenantDomain?: string;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -84,6 +90,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         readOnly,
         allowedOriginList,
         tenantDomain,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
@@ -230,6 +237,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // See https://github.com/wso2/product-is/issues/8806.
                 if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(grant.name)) {
                     return;
+                }
+
+                // Remove un-allowed grant types.
+                if (template
+                    && template.id
+                    && get(ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES, template.id)
+                    && !ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES[ template.id ]
+                        .includes(grant.name)) {
+
+                        return;
                 }
 
                 allowedList.push({ label: grant.displayName, value: grant.name });
@@ -495,6 +512,38 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                    <Field
+                        ref={ supportPublicClients }
+                        name="supportPublicClients"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
+                                ".validations.empty")
+                        }
+                        type="checkbox"
+                        value={
+                            initialValues.publicClient
+                                ? [ "supportPublicClients" ]
+                                : []
+                        }
+                        children={ [
+                            {
+                                label: t("console:develop.features.applications.forms.inboundOIDC" +
+                                    ".fields.public.label"),
+                                value: "supportPublicClients"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-public-client-checkbox` }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
             {
                 showCallbackURLField && (
                     <>
@@ -621,38 +670,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                    <Field
-                        ref={ supportPublicClients }
-                        name="supportPublicClients"
-                        label=""
-                        required={ false }
-                        requiredErrorMessage={
-                            t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
-                                ".validations.empty")
-                        }
-                        type="checkbox"
-                        value={
-                            initialValues.publicClient
-                                ? [ "supportPublicClients" ]
-                                : []
-                        }
-                        children={ [
-                            {
-                                label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                    ".fields.public.label"),
-                                value: "supportPublicClients"
-                            }
-                        ] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-public-client-checkbox` }
-                    />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint") }
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
 
             { /* PKCE */ }
             <Grid.Row columns={ 2 }>
