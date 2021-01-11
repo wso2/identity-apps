@@ -29,7 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
-import {URLUtils} from "@wso2is/core/dist/src/utils";
+import { URLUtils } from "@wso2is/core/dist/src/utils";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
