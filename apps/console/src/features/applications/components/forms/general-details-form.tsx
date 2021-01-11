@@ -51,6 +51,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      */
     discoverability?: boolean;
     /**
+     * Set of hidden fields.
+     */
+    hiddenFields?: string[];
+    /**
      * Application logo URL.
      */
     imageUrl?: string;
@@ -88,6 +92,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         name,
         description,
         discoverability,
+        hiddenFields,
         imageUrl,
         accessUrl,
         onSubmit,
@@ -138,8 +143,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             },
             description: values.get("description").toString(),
             id: appId,
-            imageUrl: values.get("imageUrl").toString(),
-            name: values.get("name")?.toString()
+            name: values.get("name")?.toString(),
+            ...!hiddenFields.includes("imageUrl") && { imageUrl: values.get("imageUrl").toString() }
         };
     };
 
@@ -251,14 +256,18 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="name"
-                                label={ t("console:develop.features.applications.forms.generalDetails.fields.name.label") }
+                                label={
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                                        ".label")
+                                }
                                 required={ true }
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.generalDetails.fields.name" +
                                         ".validations.empty")
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.name.placeholder")
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                                        ".placeholder")
                                 }
                                 type="text"
                                 value={ name }
@@ -289,35 +298,40 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="imageUrl"
-                            label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl.label")
-                            }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl" +
-                                    ".placeholder")
-                            }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.generalDetails.fields" +
-                                            ".imageUrl.validations.invalid")
-                                    );
-                                }
-                            } }
-                            value={ imageUrl }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-image-url-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !hiddenFields.includes("imageUrl") && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    name="imageUrl"
+                                    label={
+                                        t("console:develop.features.applications.forms.generalDetails" +
+                                            ".fields.imageUrl.label")
+                                    }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.generalDetails" +
+                                            ".fields.imageUrl.placeholder")
+                                    }
+                                    type="text"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.imageUrl.validations.invalid")
+                                            );
+                                        }
+                                    } }
+                                    value={ imageUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-application-image-url-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
