@@ -674,7 +674,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         data-testid="user-mgt-user-list"
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
-                        userEditPath={ AppConstants.getPaths().get("USER_EDIT") }
                     />
                 }
                 {
