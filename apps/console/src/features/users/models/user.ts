@@ -70,14 +70,14 @@ export interface UserListInterface {
  * Basic user details for add user wizard
  */
 export interface BasicUserDetailsInterface {
-    userName: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    domain: string;
-    newPassword: string;
-    confirmPassword: string;
-    passwordOption: string;
+    userName?: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    domain?: string;
+    newPassword?: string;
+    confirmPassword?: string;
+    passwordOption?: string;
 }
 
 /**
