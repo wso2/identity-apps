@@ -169,6 +169,16 @@ export class AppConstants {
     }
 
     /**
+     * Get the My Account path.
+     *
+     * @return {string}
+     */
+    public static getMyAccountPath(): string {
+
+        return window[ "AppUtils" ].getConfig().accountApp.path;
+    }
+
+    /**
      * URL param for email template add state.
      * NOTE: Not needed if the same component is not used for edit and add,
      * @type {string}

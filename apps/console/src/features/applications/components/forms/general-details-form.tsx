@@ -24,10 +24,10 @@ import { Certificate as CertificateDisplay, GenericIcon, Heading, Hint, LinkButt
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
+import { Button, Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants, AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../models";
 
 /**
@@ -50,6 +50,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Is the application discoverable.
      */
     discoverability?: boolean;
+    /**
+     * Set of hidden fields.
+     */
+    hiddenFields?: string[];
     /**
      * Application logo URL.
      */
@@ -88,6 +92,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         name,
         description,
         discoverability,
+        hiddenFields,
         imageUrl,
         accessUrl,
         onSubmit,
@@ -127,7 +132,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @return {any} Sanitized form values.
      */
     const updateConfigurations = (values: Map<string, FormValue>): any => {
-        return  {
+        return {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
                 certificate: {
@@ -138,8 +143,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             },
             description: values.get("description").toString(),
             id: appId,
-            imageUrl: values.get("imageUrl").toString(),
-            name: values.get("name")?.toString()
+            name: values.get("name")?.toString(),
+            ...!hiddenFields.includes("imageUrl") && { imageUrl: values.get("imageUrl").toString() }
         };
     };
 
@@ -246,19 +251,23 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             onChange={ handleFormValuesOnChange }
         >
             <Grid>
-                { !UIConfig.systemAppsIdentifiers.includes(name) &&
+                { !UIConfig.systemAppsIdentifiers.includes(name) && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="name"
-                                label={ t("console:develop.features.applications.forms.generalDetails.fields.name.label") }
+                                label={
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                                        ".label")
+                                }
                                 required={ true }
                                 requiredErrorMessage={
                                     t("console:develop.features.applications.forms.generalDetails.fields.name" +
                                         ".validations.empty")
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.name.placeholder")
+                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                                        ".placeholder")
                                 }
                                 type="text"
                                 value={ name }
@@ -267,7 +276,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             />
                         </Grid.Column>
                     </Grid.Row>
-                }
+                ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
@@ -289,35 +298,40 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="imageUrl"
-                            label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl.label")
-                            }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl" +
-                                    ".placeholder")
-                            }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.generalDetails.fields" +
-                                            ".imageUrl.validations.invalid")
-                                    );
-                                }
-                            } }
-                            value={ imageUrl }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-image-url-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !hiddenFields.includes("imageUrl") && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    name="imageUrl"
+                                    label={
+                                        t("console:develop.features.applications.forms.generalDetails" +
+                                            ".fields.imageUrl.label")
+                                    }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.generalDetails" +
+                                            ".fields.imageUrl.placeholder")
+                                    }
+                                    type="text"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.imageUrl.validations.invalid")
+                                            );
+                                        }
+                                    } }
+                                    value={ imageUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-application-image-url-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
@@ -336,8 +350,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        <Hint compact>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.generalDetails." +
+                                    "fields.discoverable.hint"
+                                }
+                            >
+                                If an application is flagged as discoverable, it will be visible to end users in
+                                <a
+                                    href={ AppConstants.getMyAccountPath() }
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="link external"
+                                >
+                                    My Account
+                                </a>
+                                <Icon className="ml-1 link primary" name="external"></Icon>
+                            </Trans>
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -371,6 +401,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-access-url-input` }
                         />
+                        <Hint compact>
+                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

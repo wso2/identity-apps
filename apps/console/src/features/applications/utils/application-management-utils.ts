@@ -20,21 +20,21 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { TemplateCardTagInterface } from "@wso2is/react-components";
 import camelCase from "lodash/camelCase";
 import intersectionBy from "lodash/intersectionBy";
-import startCase from "lodash/startCase";
 import unionBy from "lodash/unionBy";
-import { DocPanelUICardInterface, getTechnologyLogos, store } from "../../core";
+import { DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
 } from "../api";
+import { SupportedAuthProtocolTypeDisplayNames } from "../components/meta";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes,
     emptySAMLAppConfiguration
 } from "../models";
 import {
@@ -344,4 +344,16 @@ export class ApplicationManagementUtils {
 
         return url;
     };
+
+    /**
+     * Resolves the display name of auth protocols.
+     * ex: oidc -> OpenID Connect
+     *
+     * @param {SupportedAuthProtocolTypes} protocol - Auth Protocol.
+     * @return {string}
+     */
+    public static resolveProtocolDisplayName = (protocol: SupportedAuthProtocolTypes): string => {
+
+        return SupportedAuthProtocolTypeDisplayNames[protocol];
+    }
 }

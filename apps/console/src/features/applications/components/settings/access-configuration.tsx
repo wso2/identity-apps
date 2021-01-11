@@ -50,6 +50,7 @@ import {
 import { getInboundProtocolLogos } from "../../configs";
 import { OIDCDataInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
+import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
 
@@ -259,7 +260,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     description: t("console:develop.features.applications.notifications.regenerateSecret" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.regenerateSecret.genericError.message")
+                    message: t("console:develop.features.applications.notifications.regenerateSecret" +
+                        ".genericError.message")
                 }));
             });
     };
@@ -376,7 +378,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         icon: getInboundProtocolLogos()[protocol], size: "micro"
                                     } as GenericIconProps,
                                     id: protocol,
-                                    title: _.upperCase(protocol)
+                                    title: ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(protocol as SupportedAuthProtocolTypes)
                                 };
                             } else {
                                 return {
@@ -414,7 +417,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         size: "nano"
                                     } as GenericIconProps,
                                     id: protocol,
-                                    title: _.upperCase(protocol)
+                                    title: ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(protocol as SupportedAuthProtocolTypes)
                                 };
                             }
                         })

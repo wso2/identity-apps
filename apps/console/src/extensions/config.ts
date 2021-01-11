@@ -22,7 +22,8 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     componentExtensions: [],
     routes: {
         develop: [],
-        fullscreen: []
+        fullscreen: [],
+        manage: []
     },
     sections: {
         components: {

@@ -969,7 +969,7 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "සොයාගත හැකි ලෙස සලකුණු කර ඇති යෙදුම් අවසාන පරිශීලකයින් සඳහා දැකිය හැකිය.",
+                                hint: "සසොයාගත හැකි යෙදුම් මෙම URL හරහා ප්‍රවේශ කළ හැකිය.",
                                 label: "URL වෙත ප්‍රවේශ වන්න",
                                 placeholder: "යෙදුම් පිවිසුම් පිටුව සඳහා ප්‍රවේශ url ඇතුල් කරන්න",
                                 validations: {
@@ -983,6 +983,8 @@ export const console: ConsoleNS = {
                                 placeholder: "යෙදුම සඳහා විස්තරයක් ඇතුළත් කරන්න"
                             },
                             discoverable: {
+                                hint: "යෙදුමක් සොයාගත හැකි ලෙස සලකුණු කර ඇත්නම්, එය <1>My Account</1><2></2> " +
+                                    "පරිශීලකයින්ට පෙනෙනු ඇත",
                                 label: "සොයාගත හැකි යෙදුම"
                             },
                             imageUrl: {

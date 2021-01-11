@@ -187,3 +187,12 @@
 @listLayoutActionPanelTriggerButtonBackground: @lightInputBackground;
 @listLayoutActionPanelTriggerButtonBorder: none;
 @listLayoutActionPanelTriggerButtonBoxShadow: none;
+
+/*-------------------------------
+          Code Editor
+--------------------------------*/
+
+@codeEditorOneLinerPadding: 1em;
+@codeEditorActionWidth: 25px;
+@codeEditorActionHeight: 25px;
+@codeEditorActionsPaddingTop: 4px;

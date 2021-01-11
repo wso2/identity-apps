@@ -140,8 +140,57 @@ export class CommonUtils {
         const offsetPosition = offset ? elementPosition - offset : elementPosition;
     
         window.scrollTo({
-             top: offsetPosition,
-             behavior: "smooth"
+            behavior: "smooth",
+            top: offsetPosition
         });
-    };
+    }
+
+    /**
+     * Copy to clipboard with fallback.
+     *
+     * @param {string} text - Text to copy.
+     * @return {Promise<boolean>}
+     */
+    public static copyTextToClipboard(text: string): Promise<boolean> {
+
+        const fallbackCopyTextToClipboard = (copyingText: string): Promise<boolean> => {
+            const dummyTextArea: HTMLTextAreaElement = document.createElement("textarea");
+            dummyTextArea.value = copyingText;
+
+            // Avoid scrolling to bottom
+            dummyTextArea.style.top = "0";
+            dummyTextArea.style.left = "0";
+            dummyTextArea.style.position = "fixed";
+
+            document.body.appendChild(dummyTextArea);
+            dummyTextArea.focus();
+            dummyTextArea.select();
+
+            try {
+                const copyStatus: boolean = document.execCommand("copy");
+
+                dummyTextArea.remove();
+                document.body.removeChild(dummyTextArea);
+
+                if (copyStatus) {
+                    return Promise.resolve(true);
+                }
+
+                return Promise.resolve(false);
+            } catch (e) {
+                return Promise.resolve(false);
+            }
+        };
+
+        if (!navigator.clipboard) {
+            return fallbackCopyTextToClipboard(text);
+        }
+
+        return navigator.clipboard.writeText(text)
+            .then(() => {
+                return true;
+            },() => {
+                return false;
+            });
+    }
 }
