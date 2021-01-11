@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Applications developed to target mobiles devices.",
+    "description": "Applications developed to target mobile devices.",
     "enabled": true,
     "id": "mobile",
     "displayOrder": 3,
