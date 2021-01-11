@@ -38,6 +38,9 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClientException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <script>
@@ -310,13 +313,31 @@
                 accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
             }
         }
+
+        Boolean isSelfSignUpEnabledInTenant = false;
+        Boolean isUsernameRecoveryEnabledInTenant = false;
+        Boolean isPasswordRecoveryEnabledInTenant = false;
+
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(tenantDomain);
+            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
+            isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
+        } catch (SelfRegistrationMgtClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                            .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     %>
 
     <div class="buttons">
-        <% if (isRecoveryEPAvailable) { %>
+        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledByTenantAdmin || isPasswordRecoveryEnabledByTenantAdmin)) { %>
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType)) { %>
+            <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledByTenantAdmin) { %>
             <a
                 id="usernameRecoverLink"
                 tabindex="5"
@@ -325,8 +346,11 @@
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
+            <% }
+              if (isUsernameRecoveryEnabledByTenantAdmin && isPasswordRecoveryEnabledByTenantAdmin) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-            <% } %>
+            <% }
+              if (isPasswordRecoveryEnabledByTenantAdmin) { %>
             <a
                 id="passwordRecoverLink"
                 tabindex="6"
@@ -335,6 +359,7 @@
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
+            <% } %>
             ?
         </div>
         <% } %>
