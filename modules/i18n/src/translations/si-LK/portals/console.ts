@@ -6045,7 +6045,7 @@ export const console: ConsoleNS = {
                     },
                     placeholders: {
                         emptyListPlaceholder: {
-                            subtitles: "මෙම පරිශීලකයින් සඳහා සක්‍රීය සැසි නොමැත.",
+                            subtitles: "මෙම පරිශීලකයා සඳහා සක්‍රීය සැසි නොමැත.",
                             title: "ක්‍රියාකාරී සැසි නොමැත"
                         }
                     }

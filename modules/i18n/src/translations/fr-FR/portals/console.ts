@@ -6039,7 +6039,7 @@ export const console: ConsoleNS = {
                     },
                     placeholders: {
                         emptyListPlaceholder: {
-                            subtitles: "Il n'y a aucune session active pour cet utilisateur.",
+                            subtitles: "Il n'y a aucune sessions active pour cet utilisateur.",
                             title: "Aucune session active"
                         }
                     }

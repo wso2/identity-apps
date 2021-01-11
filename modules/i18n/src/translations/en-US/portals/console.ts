@@ -6024,7 +6024,7 @@ export const console: ConsoleNS = {
                     },
                     placeholders: {
                         emptyListPlaceholder: {
-                            subtitles: "There are no active sessions for this users.",
+                            subtitles: "There are no active sessions for this user.",
                             title: "No active sessions"
                         }
                     }
