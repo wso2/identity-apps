@@ -69,5 +69,5 @@ export const SupportedAuthProtocolTypeDisplayNames = {
     [ SupportedAuthProtocolTypes.OIDC ] : "OpenID Connnect",
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Passive STS",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
-    [ SupportedAuthProtocolTypes. CUSTOM ]: "Custom"
+    [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom"
 };
