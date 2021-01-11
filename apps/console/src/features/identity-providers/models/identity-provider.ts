@@ -158,7 +158,7 @@ export interface IdentityProviderResponseInterface {
  *  Identity provider template list interface.
  */
 export interface IdentityProviderTemplateListInterface {
-    templates: IdentityProviderTemplateListItemInterface[];
+    templates: IdentityProviderTemplateInterface[];
 }
 
 /**
@@ -189,7 +189,7 @@ export interface IdentityProviderTemplateItemInterface {
 /**
  *  Identity provider template list item interface.
  */
-export interface IdentityProviderTemplateListItemInterface extends IdentityProviderTemplateItemInterface {
+export interface IdentityProviderTemplateInterface extends IdentityProviderTemplateItemInterface {
     services?: SupportedServicesInterface[];
 }
 
@@ -377,7 +377,7 @@ export enum SupportedIdentityProviderTemplateCategories {
  *  Identity provider templates interface.
  */
 export interface IdentityProviderTemplatesInterface {
-    [key: string]: IdentityProviderTemplateListItemInterface[];
+    [key: string]: IdentityProviderTemplateInterface[];
 }
 
 export const emptyIdentityProvider = (): StrictIdentityProviderInterface => ({

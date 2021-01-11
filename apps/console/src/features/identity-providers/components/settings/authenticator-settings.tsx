@@ -44,7 +44,7 @@ import {
     FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorWithMetaInterface,
     IdentityProviderInterface,
-    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface
 } from "../../models";
@@ -104,7 +104,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ availableAuthenticators, setAvailableAuthenticators ] =
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
     const [ availableTemplates, setAvailableTemplates ] =
-        useState<IdentityProviderTemplateListItemInterface[]>(undefined);
+        useState<IdentityProviderTemplateInterface[]>(undefined);
     const [ availableManualModeOptions, setAvailableManualModeOptions ] =
         useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
@@ -409,7 +409,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param templatesList List of templates.
      */
     async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemResponseInterface[]) {
-        const templates: IdentityProviderTemplateListItemInterface[] = [];
+        const templates: IdentityProviderTemplateInterface[] = [];
         for (const template of templatesList) {
             templates.push(await fetchIDPTemplate(template.id));
         }
@@ -421,7 +421,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param templateId ID of the authenticator.
      */
-    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateListItemInterface> => {
+    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
         return new Promise(resolve => {
             getIdentityProviderTemplate(templateId)
                 .then(response => {

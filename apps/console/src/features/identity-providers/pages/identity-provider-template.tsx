@@ -67,7 +67,7 @@ import {
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderListResponseInterface,
-    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface,
     SupportedServices,
@@ -105,10 +105,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         (state: AppState) => state.helpPanel.docStructure);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(undefined);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
     const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
-        useState<IdentityProviderTemplateListItemInterface>(undefined);
-    const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateListItemInterface[]>([]);
+        useState<IdentityProviderTemplateInterface>(undefined);
+    const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateInterface[]>([]);
     const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
     const [
         isIDPTemplateRequestLoading,
@@ -205,7 +205,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @return List of templates.
      */
     const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
-        IdentityProviderTemplateListItemInterface[] => {
+        IdentityProviderTemplateInterface[] => {
         return templates?.map(eachTemplate => {
             if (eachTemplate?.services[0] === "") {
                 return {
@@ -236,7 +236,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 }
                 // sort templateList based on display Order
                 response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
+                const availableTemplates: IdentityProviderTemplateInterface[] = interpretAvailableTemplates(
                     response?.templates);
 
                 // Add expert mode template
@@ -259,7 +259,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         getIdentityProviderTemplate(templateId)
             .then((response) => {
-                setSelectedTemplate(response as IdentityProviderTemplateListItemInterface);
+                setSelectedTemplate(response as IdentityProviderTemplateInterface);
             })
             .catch((error) => {
                 handleGetIDPTemplateAPICallError(error);
@@ -474,7 +474,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     (availableTemplates && !isIDPTemplateRequestLoading)
                         ? (
                             <div className="quick-start-templates">
-                                <TemplateGrid<IdentityProviderTemplateListItemInterface>
+                                <TemplateGrid<IdentityProviderTemplateInterface>
                                     type="idp"
                                     templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
                                     templateIcons={ getIdPIcons() }
@@ -513,7 +513,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 }
                 <Divider hidden/>
                 <div className="custom-templates">
-                    <TemplateGrid<IdentityProviderTemplateListItemInterface>
+                    <TemplateGrid<IdentityProviderTemplateInterface>
                         type="idp"
                         templates={ [ ExpertModeTemplate ] }
                         templateIcons={ getIdPIcons() }

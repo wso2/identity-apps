@@ -26,7 +26,7 @@ import { getIdPIcons } from "../../../../configs";
 import {
     FederatedAuthenticatorMetaDataInterface,
     IdentityProviderInterface,
-    IdentityProviderTemplateListItemInterface
+    IdentityProviderTemplateInterface
 } from "../../../../models";
 
 /**
@@ -36,7 +36,7 @@ interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends Testabl
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
-    authenticatorTemplates: IdentityProviderTemplateListItemInterface[];
+    authenticatorTemplates: IdentityProviderTemplateInterface[];
 }
 
 /**
