@@ -328,7 +328,7 @@
                 <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
 
-                    if (firstName == '') {
+                    if (firstName === '') {
                         errorMessage.text("Please fill the first name.");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
