@@ -189,7 +189,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                         >
                             <GenericIcon
                                 icon={ tag.logo }
-                                size="micro"
+                                size={ "x22" }
                                 spaced="right"
                                 fill={ false }
                                 data-testid={ `${ testId }-logo` }

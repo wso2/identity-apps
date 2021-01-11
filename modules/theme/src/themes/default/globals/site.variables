@@ -28,7 +28,7 @@
 @iconFont          : "font-awesome";
 @fontName          : -apple-system, BlinkMacSystemFont, Segoe WPC, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif, @iconFont;
 @googleFontName    : 'Lato';
-
+@fontPath          : "assets/fonts";
 @bold              : 400;
 @lightFontColor    : @lightTextColor;
 
@@ -110,6 +110,7 @@
 @iconNano: 10px;
 @iconDefault: 14px;
 @iconMicro: 18px;
+@iconX22: 22px;
 @iconMini: 35px;
 @iconX50: 50px;
 @iconX60: 60px;

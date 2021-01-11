@@ -344,6 +344,15 @@ export const AppUtils = (function() {
         },
 
         /**
+         * Updates the server origin.
+         *
+         * @param serverOrigin - new server origin.
+         */
+        updateServerOrigin: function(serverOrigin): void {
+            _config.serverOrigin = serverOrigin;
+        },
+
+        /**
          * Updates the tenant qualified basename.
          *
          * @param tenant - new Tenant.
