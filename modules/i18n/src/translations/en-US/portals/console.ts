@@ -5293,8 +5293,8 @@ export const console: ConsoleNS = {
                 disableUser: {
                     confirmationModal: {
                         assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                        content: "If you disable this user, the user will not be able to login to the My Account " +
-                            "or any other application the user was subscribed before. Please proceed with caution.",
+                        content: "If you disable this user, the user will not be able to log in to My Account or " +
+                            "any other application the user was subscribed to before.",
                         header: "Are you sure?",
                         message: "Make sure that the user no longer requires access to the system."
                     }
@@ -6024,7 +6024,7 @@ export const console: ConsoleNS = {
                     },
                     placeholders: {
                         emptyListPlaceholder: {
-                            subtitles: "There are no active sessions for this users.",
+                            subtitles: "There are no active sessions for this user.",
                             title: "No active sessions"
                         }
                     }
