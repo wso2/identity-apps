@@ -1053,18 +1053,18 @@ export const console: ConsoleNS = {
                                 hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
                                     "origins to WSO2 Identity Server APIs",
                                 label: "Allowed Origins",
-                                placeholder: "Enter allowed origins",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
                             },
                             callBackUrls: {
                                 hint: "After the authentication, we will only redirect to the above allowed redirect " +
-                                    "URLs and you can specify multiple URLs",
-                                label: "Allowed redirect URLs",
-                                placeholder: "Enter allowed redirect URLs",
+                                    "URIs and you can specify multiple URIs",
+                                label: "Allowed Redirect URIs",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to integrate a sample, " +
                                         "this field can be skipped."

@@ -1043,18 +1043,18 @@ export const console: ConsoleNS = {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
                                     "depuis des origines tierces vers les APIs de WSO2 Identity Server ",
                                 label: "Origines autorisées",
-                                placeholder: "Entrez les origines autorisées",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Veuillez ajouter une origine valide."
                                 }
                             },
                             callBackUrls: {
-                                hint: "Après l'authentification, nous ne redirigerons que vers les URLs de redirection " +
+                                hint: "Après l'authentification, nous ne redirigerons que vers les URIs de redirection " +
                                     "renseignées ci-dessus",
-                                label: "URLs de redirection",
-                                placeholder: "Saisir les URLs de redirection",
+                                label: "URIs de redirection",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URL valide.",
+                                    empty: "Veuillez ajouter une URI valide.",
                                     required: "ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
