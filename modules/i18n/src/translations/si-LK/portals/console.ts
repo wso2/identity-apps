@@ -1145,7 +1145,7 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "සේවාදායකයා සඳහා ID ටෝකනයේ සංකේතාංකන ඇල්ගොරිතම තෝරන්න.",
+                                        hint: "පතන කොටසේ සහය දක්වන හැඳුනුම්පත් සංකේතාංකන ඇල්ගොරිතම අඩංගු වේ.",
                                         label: "ඇල්ගොරිතම",
                                         placeholder: "ඇල්ගොරිතම තෝරන්න",
                                         validations: {

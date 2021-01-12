@@ -1143,7 +1143,7 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "Choose encryption algorithm of ID token for the client.",
+                                        hint: "The dropdown contains the supported ID token encryption algorithms.",
                                         label: "Algorithm",
                                         placeholder: "Select Algorithm",
                                         validations: {

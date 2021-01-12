@@ -1131,7 +1131,8 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "Choisissez l'algorithme de chiffrement du jeton d'identification du client.",
+                                        hint: "La liste déroulante contient les algorithmes de chiffrement" +
+                                            " de jeton d'identification pris en charge.",
                                         label: "Algorithme",
                                         placeholder: "Sélectionner un algorithme",
                                         validations: {
