@@ -43,8 +43,8 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
     return (
         <div data-testid={ testId }>
             <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the application so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
+            <p>A unique name for the application.</p>
+            <p>E.g., My App</p>
 
             <Divider />
 
