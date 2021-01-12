@@ -50,6 +50,11 @@ const loadRouteComponents = (routes: RouteInterface[]): RouteInterface[] => {
 
     routes.map(route => {
 
+        // If a component is not defined. Don't load. Useful in overriding scenarios.
+        if (!route.component) {
+            return;
+        }
+
         // When lazy loading the component the import will return an object if we directly
         // pass the component path. Therefore we have overcome this issue by assigning it to a
         // const.
