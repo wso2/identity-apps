@@ -48,7 +48,8 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes
+    SupportedAccessTokenBindingTypes,
+    emptyOIDCConfig
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
