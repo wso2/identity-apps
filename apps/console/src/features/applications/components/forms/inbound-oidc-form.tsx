@@ -612,7 +612,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 showCallbackURLField && (
                     <>
-                        <div ref={ url }></div>
+                        <div ref={ url }/>
                         <URLInput
                             isAllowEnabled={ false }
                             tenantDomain={ tenantDomain }
@@ -674,7 +674,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                                <div ref={ allowedOrigin }></div>
+                                <div ref={ allowedOrigin }/>
                                 <URLInput
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
@@ -715,10 +715,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     computerWidth={ 10 }
                                     setShowError={ setShowOriginError }
                                     showError={ showOriginError }
-                                    hint={
-                                        t("console:develop.features.applications.forms.inboundOIDC" +
-                                            ".fields.allowedOrigins.hint")
-                                    }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -730,6 +726,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showPredictions={ false }
                                     customLabel={ allowedOriginsErrorLabel }
                                 />
+                                <Hint>
+                                    The HTTP origins that host your web application.
+                                    <p>You can define multiple web origins and wild cards are supported.</p>
+                                    <p>E.g,&nbsp;&nbsp;
+                                        <code>https://myapp.io&nbsp;https://localhost:9000
+                                            &nbsp;https://*.otherapp.io</code>
+                                    </p>
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     </>
