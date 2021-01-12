@@ -1076,7 +1076,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Allow the client to authenticate without a client secret.",
+                                hint: "Allow the client to authenticate to Asgardeo without the client secret." +
+                                    " Public clients such as applications running in a browser or on a mobile device" +
+                                    " are unable to use registered client secrets. ",
                                 label: "Public client",
                                 validations: {
                                     empty: "This is a required field."
