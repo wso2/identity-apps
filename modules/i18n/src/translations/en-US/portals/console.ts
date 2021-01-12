@@ -1232,7 +1232,7 @@ export const console: ConsoleNS = {
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Configure the refresh token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the refresh token in seconds.",
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {

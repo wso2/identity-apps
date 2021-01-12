@@ -1221,7 +1221,7 @@ export const console: ConsoleNS = {
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration du jeton de rafraîchissement (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton d'actualisation en secondes.",
                                         label: "Délai d'expiration du jeton de rafraîchissement",
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
