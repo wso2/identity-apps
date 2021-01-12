@@ -49,7 +49,6 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
 
     const routes: RouteInterface[] = values(
         merge(
-            keyBy(EXTENSION_ROUTES().develop, "id"),
             keyBy(
                 [
                     {
@@ -134,7 +133,8 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     }
                 ], "id"
-            )
+            ),
+            keyBy(EXTENSION_ROUTES().develop, "id")
         )
     );
 
@@ -161,7 +161,6 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
 
     const routes: RouteInterface[] = values(
         merge(
-            keyBy(EXTENSION_ROUTES().manage, "id"),
             keyBy(
                 [
                     {
@@ -482,7 +481,8 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     }
                 ], "id"
-            )
+            ),
+            keyBy(EXTENSION_ROUTES().manage, "id")
         )
     );
 
