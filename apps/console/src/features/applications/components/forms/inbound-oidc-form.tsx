@@ -1458,7 +1458,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     </Hint>
                                     <LinkButton
                                         className="certificate-info-link-button"
-                                        onClick={ () => viewCertificate() }
+                                        onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                            e.preventDefault();
+                                            viewCertificate();
+                                        } }
                                         disabled={ isEmpty(PEMValue) }
                                         data-testid={ `${ testId }-certificate-info-button` }
                                     >
