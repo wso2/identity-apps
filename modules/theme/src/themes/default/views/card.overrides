@@ -357,6 +357,33 @@
             box-shadow: none !important;
             background: transparent;
 
+            .integrate-radio {
+                flex-grow: 0;
+                width: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .ui.radio.checkbox {
+                    margin-top: -5px !important;
+                }
+
+                .ui.radio.checkbox label::after {
+                    width: 22px !important;
+                    height: 22px !important;
+                    top: 0px !important;
+                    left: -1px !important;
+                    background-color: @primaryColor !important;
+                }
+
+                .ui.radio.checkbox label::before {
+                    width: 20px !important;
+                    height: 20px !important;
+                    border-color: @nobel !important;
+                    border-width: 2px !important;
+                }
+            }
+
              &.card-selected {
                  box-shadow: none !important;
                  background: @galleryGray;
@@ -387,6 +414,10 @@
                          font-size: 0.9em;
                      }
                  }
+             }
+
+             &:hover {
+                background: @galleryGray;
              }
         }
     }
