@@ -76,7 +76,7 @@ export const SupportedAuthProtocolTypeDisplayNames = {
  * Supported auth protocol type description mapping.
  */
 export const SupportedAuthProtocolTypeDescriptions = {
-    [ SupportedAuthProtocolTypes.SAML ]: "Open standard for exchanging authentication and authorization.",
+    [ SupportedAuthProtocolTypes.SAML ]: "Open-standard for authentication and authorization.",
     [ SupportedAuthProtocolTypes.OIDC ] : "Authentication layer on top of OAuth 2.0",
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Enable STS in a web browser.",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "Standard that provides extensions to WS-Security.",
