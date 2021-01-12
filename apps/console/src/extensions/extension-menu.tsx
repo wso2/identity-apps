@@ -28,33 +28,39 @@ import { ExtensionRoutesInterface } from "./models";
  */
 export const EXTENSION_ROUTES = (): ExtensionRoutesInterface  => {
 
-    // TODO: in below .getConfigs() strangely sometimes it returns null
-    //       or undefined. It causes the application to break. The null
-    //       coalescing operator used to overcome the issue. But we need
-    //       debug the issue properly.
-
-    const developRoutes: RouteInterface[]  =  [ ...(ExtensionsManager.getConfig().routes.develop ?? []) ];
-    const fullscreenRoutes: RouteInterface[]  = [ ...(ExtensionsManager.getConfig().routes.fullscreen ?? []) ];
-    const manageRoutes: RouteInterface[]  = [ ...(ExtensionsManager.getConfig().routes.manage ?? []) ];
-
-    developRoutes.forEach(route => {
-        const routePath = route.components;
-        route.component = lazy(() => import(`${routePath}`));
-    });
-
-    fullscreenRoutes.forEach(route => {
-        const routePath = route.components;
-        route.component = lazy(() => import(`${routePath}`));
-    });
-
-    manageRoutes.forEach(route => {
-        const routePath = route.components;
-        route.component = lazy(() => import(`${routePath}`));
-    });
+    const developRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.develop ];
+    const manageRoutes: RouteInterface[]  =  [ ...ExtensionsManager.getConfig().routes.manage ];
+    const fullscreenRoutes: RouteInterface[]  = [ ...ExtensionsManager.getConfig().routes.fullscreen ];
 
     return {
-        develop: developRoutes,
-        fullscreen: fullscreenRoutes,
-        manage: manageRoutes
+        develop: loadRouteComponents(developRoutes),
+        fullscreen: loadRouteComponents(fullscreenRoutes),
+        manage: loadRouteComponents(manageRoutes)
     };
+};
+
+/**
+ * Lazy load the components relevant to the routes specified.
+ *
+ * @param routes
+ *
+ * @return {RouteInterface[]}
+ */
+const loadRouteComponents = (routes: RouteInterface[]): RouteInterface[] => {
+
+    routes.map(route => {
+
+        // When lazy loading the component the import will return an object if we directly
+        // pass the component path. Therefore we have overcome this issue by assigning it to a
+        // const.
+        const routePath = route.component;
+        route.component = lazy(() => import(`${ routePath }`));
+
+        if (route.children && route.children.length > 0) {
+            route.children = loadRouteComponents(route.children);
+        }
+
+    });
+
+    return routes;
 };

@@ -437,14 +437,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                                 let label: ReactElement = null;
 
-                                if (URLUtils.isHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.inSecureURL.description") }
-                                        </Label>
-                                    );
-                                }
-
                                 if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
@@ -860,14 +852,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                                 let label: ReactElement = null;
 
-                                if (URLUtils.isHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.inSecureURL.description") }
-                                        </Label>
-                                    );
-                                }
-
                                 if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
@@ -917,14 +901,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             validation={ (value: string) => {
 
                                 let label: ReactElement = null;
-
-                                if (URLUtils.isHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.inSecureURL.description") }
-                                        </Label>
-                                    );
-                                }
 
                                 if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
                                     label = (
@@ -1378,14 +1354,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             validation={ (value: string) => {
 
                                 let label: ReactElement = null;
-
-                                if (URLUtils.isHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.inSecureURL.description") }
-                                        </Label>
-                                    );
-                                }
 
                                 if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
                                     label = (

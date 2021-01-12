@@ -29,6 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
+import { URLUtils } from "@wso2is/core/dist/src/utils";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
@@ -81,6 +82,10 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      */
     handleAddAllowedOrigin?: (url: string) => void;
     /**
+     * Callback to remove the allowed origin
+     */
+    handleRemoveAllowedOrigin?: (url: string) => void;
+    /**
      * Popup label availability
      */
     labelEnabled?: boolean;
@@ -109,6 +114,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         isAllowEnabled,
         allowedOrigins,
         handleAddAllowedOrigin,
+        handleRemoveAllowedOrigin,
         labelEnabled,
         showError,
         setShowError,
@@ -141,7 +147,6 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
     const [ successShowMore, setSuccessShowMore ] = useState<boolean>(false);
     const [ warningShowMore, setWarningShowMore ] = useState<boolean>(false);
-    const [ allowOrigin, setAllowOrigin ] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
@@ -276,6 +281,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             urlsAfterRemoved = "";
         }
         setURLState(urlsAfterRemoved);
+        if (allowedOrigins.includes(removeURL)) {
+            allowedOrigins.splice(allowedOrigins.indexOf(removeURL), 1);
+        }
+        handleRemoveAllowedOrigin(removeURL);
     };
 
     /**
@@ -315,7 +324,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const handleAllowOrigin = (url: string): void => {
         handleAddAllowedOrigin(url);
-        setAllowOrigin(true);
+        allowedOrigins.push(url);
     };
 
     const computerSize: any = (computerWidth) ? computerWidth : 8;
@@ -329,7 +338,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * locale bundles.
          * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
          */
-        if (allowedOrigins?.includes(origin) || allowOrigin) {
+        if (allowedOrigins?.includes(origin)) {
             return (
                 <LabelWithPopup
                     className="cors-details-popup"
@@ -557,6 +566,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
+                    const isUnsecureURL = URLUtils.isHttpUrl(url);
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
@@ -577,6 +587,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                         )
                                     }
                                 </Label>
+                                {
+                                    isUnsecureURL && (
+                                        <Popup
+                                            trigger={ <Icon className="ml-1" name="exclamation triangle" color="yellow" /> }
+                                            content={ t("console:common.validations.inSecureURL.description") }
+                                            inverted
+                                            position="top left"
+                                            size="mini"
+                                        />
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     );

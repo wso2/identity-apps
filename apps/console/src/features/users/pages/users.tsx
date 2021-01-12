@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
+    AppConstants,
     AppState,
     FeatureConfigInterface,
     SharedUserStoreUtils,
@@ -44,12 +45,13 @@ import {
 } from "../../core";
 import {
     GovernanceConnectorInterface,
+    RealmConfigInterface,
     ServerConfigurationsConstants,
     getConnectorCategory,
-    getServerConfigs,
-    RealmConfigInterface
+    getServerConfigs
 } from "../../server-configurations";
 import {
+    CONSUMER_USERSTORE,
     UserStoreListItem,
     UserStorePostData,
     UserStoreProperty
@@ -124,19 +126,29 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 const data = { ...response };
 
                 data.Resources = data?.Resources?.map((resource) => {
-                    let email: string = null;
-                    if (resource?.emails instanceof Array) {
-                        const emailElement = resource?.emails[ 0 ];
-                        if (typeof emailElement === "string") {
-                            email = emailElement;
-                        } else {
-                            email = emailElement?.value;
+                    const userStore = resource.userName.split("/").length > 1
+                        ? resource.userName.split("/")[0]
+                        : "Primary";
+
+                    if (userStore !== CONSUMER_USERSTORE) {
+                        let email: string = null;
+                        if (resource?.emails instanceof Array) {
+                            const emailElement = resource?.emails[0];
+                            if (typeof emailElement === "string") {
+                                email = emailElement;
+                            } else {
+                                email = emailElement?.value;
+                            }
                         }
+
+                        resource.emails = [email];
+
+                        return resource;
+                    } else {
+                        const resources = [ ...data.Resources ];
+                        resources.splice(resources.indexOf(resource), 1);
+                        data.Resources = resources;
                     }
-
-                    resource.emails = [email];
-
-                    return resource;
                 });
 
                 setUsersList(moderateUsersList(data, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET));
@@ -273,20 +285,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store: UserStoreListItem, index) => {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled").value === "true";
+                    if (store.name !== CONSUMER_USERSTORE) {
+                        getAUserStore(store.id).then((response: UserStorePostData) => {
+                            const isDisabled = response.properties.find(
+                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                        if (!isDisabled) {
-                            storeOption = {
-                                key: index,
-                                text: store.name,
-                                value: store.name
-                            };
-                            storeOptions.push(storeOption);
-                        }
-                    });
-
+                            if (!isDisabled) {
+                                storeOption = {
+                                    key: index,
+                                    text: store.name,
+                                    value: store.name
+                                };
+                                storeOptions.push(storeOption);
+                            }
+                        });
+                    }
                 }
                 );
                 setUserStoresList(storeOptions);

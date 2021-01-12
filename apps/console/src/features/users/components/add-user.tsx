@@ -29,6 +29,7 @@ import {
 } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core/utils";
 import {
+    CONSUMER_USERSTORE,
     PRIMARY_USERSTORE_PROPERTY_VALUES,
     USERSTORE_REGEX_PROPERTIES,
     UserStoreListItem
@@ -199,16 +200,17 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store: UserStoreListItem, index) => {
-                    if (store.enabled) {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
+                    if (store.name !== CONSUMER_USERSTORE) {
+                        if (store.enabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
                     }
-                }
-                );
+                });
                 setUserStoresList(storeOptions);
             });
 
