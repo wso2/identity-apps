@@ -1139,7 +1139,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "les destinataires auxquels le jeton d'identification est destiné.",
+                                        hint: "Spécifiez le destinataire auquel ce jeton d'ID est destiné. Par " +
+                                            "défaut, l'ID client de cette application est ajouté en tant qu'audience.",
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {

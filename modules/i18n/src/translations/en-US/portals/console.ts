@@ -1151,7 +1151,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "The recipients that the ID token is intended for.",
+                                        hint: "Specify the recipient(s) that this ID token is intended for. " +
+                                            "By default, the client ID of this application is added as an audience. ",
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
