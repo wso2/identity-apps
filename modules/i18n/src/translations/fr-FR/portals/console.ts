@@ -1157,7 +1157,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration du jeton d'identification (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton ID en secondes.",
                                         label: "Délai d'expiration du jeton d'identification",
                                         placeholder: "Entrez l'heure d'expiration du jeton d'identification",
                                         validations: {

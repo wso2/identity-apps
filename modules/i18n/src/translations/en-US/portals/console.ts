@@ -1167,7 +1167,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     expiry: {
-                                        hint: "Configure the ID token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the ID token in seconds.",
                                         label: "Id token expiry time",
                                         placeholder: "Enter the ID token expiry time",
                                         validations: {
