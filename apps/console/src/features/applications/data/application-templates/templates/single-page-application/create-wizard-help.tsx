@@ -42,9 +42,11 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>A unique name for the application.</p>
-            <p>E.g., My App</p>
+            <React.Fragment>
+                <Heading as="h5">Name</Heading>
+                <p>A unique name for the application.</p>
+                <p>E.g., My App</p>
+            </React.Fragment>
 
             <Divider />
 
