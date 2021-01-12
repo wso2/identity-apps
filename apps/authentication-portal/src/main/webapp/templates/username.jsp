@@ -90,6 +90,11 @@
                     if (StringUtils.isBlank(identityMgtEndpointContext)) {
                         identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
                     }
+
+                    String accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+                    if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+                        accountRegistrationEndpointURL = identityMgtEndpointContext + "/register.do";
+                    }
             
                     if (isRecoveryEPAvailable) {
             %>
@@ -109,7 +114,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                 <div class="form-actions">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.account")%>
-                    <a id="registerLink" href="<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, encodedUrlParameters)%>">
+                    <a id="registerLink" href="<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, encodedUrlParameters)%>">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register.now")%>
                     </a>
                 </div>
@@ -128,8 +133,8 @@
     private String getRecoverUsernameUrl(String identityMgtEndpointContext, String urlEncodedURL) {
         return identityMgtEndpointContext + "/recoverusername.do?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
     }
-    private String getRegistrationUrl(String identityMgtEndpointContext, String urlEncodedURL) {
-        return identityMgtEndpointContext + "/register.do?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+    private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL) {
+        return accountRegistrationEndpointURL + "?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
     }
 %>
 <!-- /content -->

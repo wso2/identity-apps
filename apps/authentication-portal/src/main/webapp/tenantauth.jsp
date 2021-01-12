@@ -88,6 +88,7 @@
         Boolean isRecoveryEPAvailable = false;
         Boolean isSelfSignUpEPAvailable = false;
         String identityMgtEndpointContext = "";
+        String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
 
@@ -127,6 +128,11 @@
                     return;
                 }
             }
+
+            accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+            if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+                accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+            }
         }
     %>
 
@@ -143,7 +149,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters)%>';"   
+                onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
                 class="ui large button link-button"
                 id="registerLink"
                 role="button">
