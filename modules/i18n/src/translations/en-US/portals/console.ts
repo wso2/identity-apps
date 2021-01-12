@@ -1160,7 +1160,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Enable ID token encryption.",
+                                        hint: "Define whether to ID token encryption should be enabled or not.",
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."

@@ -1148,7 +1148,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Activez le cryptage des jetons d'identification.",
+                                        hint: "Définissez si le cryptage des jetons d'identification doit" +
+                                            " être activé ou non.",
                                         label: "Activer le chiffrement",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
