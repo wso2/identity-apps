@@ -54,12 +54,6 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
                     the
                     application.
                 </p>
-                <Message info>
-                    <a href="#" target="_blank">
-                        Click here
-                    </a>{ " " }
-                    to learn more about supported protocols for agent-based single sign-on.
-                </Message>
             </>
 
             <Divider />
@@ -71,7 +65,7 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
                     Add the list of possible redirect URLs here. You can specify multiple valid URLs.
                     Make sure to specify the protocol (https://) otherwise the redirect may fail in some cases.
                 </p>
-                <p>E.g. https://www.conotoso.com/login</p>
+                <p>E.g. https://sample.app/login</p>
 
                 <p>
                     You can also configure this field later under the <strong>Protocol </strong>

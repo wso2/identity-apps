@@ -1039,7 +1039,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisir les URLs de redirection",
                                 validations: {
                                     empty: "Veuillez ajouter une URL valide.",
-                                    required: "Remarque: ce champ est obligatoire pour une application fonctionnelle."
+                                    required: "ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
                             clientID: {

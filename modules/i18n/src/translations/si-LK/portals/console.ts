@@ -1060,7 +1060,7 @@ export const console: ConsoleNS = {
                                 placeholder: "යළි-යොමුවීම් URL ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "කරුණාකර වලංගු URL එකක් එක් කරන්න.",
-                                    required: "සටහන: ක්‍රියාකාරී යෙදුමක් සඳහා මෙම ක්ෂේත්‍රය අවශ්‍ය වේ."
+                                    required: "ක්‍රියාකාරී යෙදුමක් සඳහා මෙම ක්ෂේත්‍රය අවශ්‍ය වේ."
                                 }
                             },
                             clientID: {
