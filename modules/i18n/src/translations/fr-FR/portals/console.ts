@@ -1229,7 +1229,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Émettre un nouveau jeton de rafraîchissement par requête lorsque le Refresh Token Grant est utilisé.",
+                                        hint: "Émettez un nouveau jeton d'actualisation par demande " +
+                                            "d'actualisation de jeton.",
                                         label: "Faire pivoter le jeton d'actualisation",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."

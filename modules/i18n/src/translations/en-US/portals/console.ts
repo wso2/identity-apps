@@ -1240,7 +1240,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Issue a new refresh token per request when Refresh Token Grant is used.",
+                                        hint: "Issue a new refresh token per token refresh request.",
                                         label: "Rotate refresh token",
                                         validations: {
                                             empty: "This is a required field."
