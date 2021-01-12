@@ -1012,7 +1012,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 label: "නම",
-                                placeholder: "යෙදුම සඳහා නමක් ඇතුළත් කරන්න.",
+                                placeholder: "මගේ යෙදුම",
                                 validations: {
                                     duplicate: "මෙම නම සහිත යෙදුමක් දැනටමත් තිබේ." +
                                         " කරුණාකර වෙනත් නමක් ඇතුළත් කරන්න.",

@@ -1008,7 +1008,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 label: "Name",
-                                placeholder: "Enter a name for the application.",
+                                placeholder: "My App",
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
