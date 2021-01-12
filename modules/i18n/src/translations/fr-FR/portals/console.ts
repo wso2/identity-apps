@@ -984,7 +984,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 label: "Nom",
-                                placeholder: "Saisissez un nom pour l'application.",
+                                placeholder: "Mon appli",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
                                 }
