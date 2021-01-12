@@ -1183,7 +1183,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "PKCE obligatoire"
+                                                label: "Activer (rendre PKCE obligatoire)"
                                             },
                                             plainAlg: {
                                                 label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"

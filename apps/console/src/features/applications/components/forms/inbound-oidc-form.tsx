@@ -687,10 +687,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".heading") }
                     </Heading>
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
-                            ".hint") }
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
-                    <Divider hidden />
+                    <Message compact={true} size={"mini"}>
+                        The default method used by Asgardeo to generate the challenge is SHA-256. Only select
+                        "Plain" for constrained environments that can not use the SHA-256 transformation.
+                    </Message>
                     <Field
                         ref={ pkce }
                         name="PKCE"
@@ -731,11 +733,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
                     </Heading>
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
-                            ".hint") }
-                    </Hint>
-                    <Divider hidden />
                     <Field
                         ref={ type }
                         label={
@@ -753,6 +750,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
+                    <Message compact={true} size={"tiny"}>
+                        <Message.Content>
+                            <Message.Header>Token Types</Message.Header>
+                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
+                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
+                        </Message.Content>
+                    </Message>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
@@ -780,6 +784,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
+                    <Message compact={true} size={"tiny"}>
+                        <Message.Header>
+                            Asgardeo has the capability to attach the OAuth2 access token and refresh
+                            token to an external attribute during the token generation and optionally validate the
+                            external attribute during the API invocation.
+                        </Message.Header>
+                        <br/>
+                        <Message.Content>
+                            <p><b>None</b> - No Binding.</p>
+                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
+                            <p><b>SSO-Session</b> - Bind the access token to the session.
+                                Asgardeo will generate different tokens for each new browser instance.</p>
+                        </Message.Content>
+                    </Message>
                 </Grid.Column>
             </Grid.Row>
             {

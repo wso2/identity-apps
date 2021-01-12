@@ -1199,7 +1199,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "PKCE අනිවාර්යයි"
+                                                label: "සක්‍රීය කරන්න (PKCE අනිවාර්ය කරන්න)"
                                             },
                                             plainAlg: {
                                                 label: "PKCE 'ප්ලේන්' ට්‍රාන්ස්ෆෝමර් ඇල්ගොරිතම සඳහා සහය දක්වන්න"
