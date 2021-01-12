@@ -28,7 +28,7 @@ import {
 import { AxiosResponse } from "axios";
 import get from "lodash/get";
 import sortBy from "lodash/orderBy";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Grid, Radio, SemanticWIDTHS } from "semantic-ui-react";
@@ -42,11 +42,13 @@ import {
     getAuthProtocolMetadata,
     regenerateClientSecret,
     revokeClientSecret,
+    updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
 import {
     ApplicationTemplateListItemInterface,
+    CertificateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
@@ -68,6 +70,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Currently editing application name.
      */
     appName: string;
+    /**
+     * Current certificate configurations.
+     */
+    certificate: CertificateInterface;
     /**
      * Protocol configurations.
      */
@@ -128,6 +134,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const {
         appId,
         appName,
+        certificate,
         featureConfig,
         inboundProtocolConfig,
         inboundProtocols,
@@ -233,6 +240,41 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
                         ".genericError.message")
+                }));
+            });
+    };
+
+    /**
+     * Handles form submit.
+     *
+     * @param values - Form values.
+     */
+    const handleSubmit = (values: any): void => {
+
+        updateApplicationDetails({ id: appId, ...values.general })
+            .then(() => {
+                handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.notifications.updateApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -436,6 +478,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
                             <InboundFormFactory
+                                certificate={ certificate }
                                 tenantDomain={ tenantName }
                                 allowedOrigins={ allowedOriginList }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
@@ -444,7 +487,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         ? inboundProtocolConfig[ selectedProtocol ]
                                         : undefined
                                 }
-                                onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
+                                onSubmit={ handleSubmit }
                                 type={ selectedProtocol as SupportedAuthProtocolTypes }
                                 onApplicationRegenerate={ handleApplicationRegenerate }
                                 onApplicationRevoke={ handleApplicationRevoke }
@@ -462,13 +505,14 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         )
                         : (
                             <InboundFormFactory
+                                certificate={ certificate }
                                 metadata={ authProtocolMeta[ selectedProtocol ] }
                                 initialValues={
                                     get(inboundProtocolConfig, selectedProtocol)
                                         ? inboundProtocolConfig[ selectedProtocol ]
                                         : undefined
                                 }
-                                onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
+                                onSubmit={ handleSubmit }
                                 type={ SupportedAuthProtocolTypes.CUSTOM }
                                 readOnly={
                                     !hasRequiredScopes(

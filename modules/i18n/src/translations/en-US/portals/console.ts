@@ -120,6 +120,22 @@ export const console: ConsoleNS = {
                 secondaryButton: "Logout"
             }
         },
+        notifications: {
+            invalidPEMFile: {
+                error: {
+                    description: "{{ description }}",
+                    message: "Decoding Error"
+                },
+                genericError: {
+                    description: "An error occurred while decoding the certificate.",
+                    message: "Decoding Error"
+                },
+                success: {
+                    description: "Successfully decoded the certificate file.",
+                    message: "Decoding Successful"
+                }
+            }
+        },
         placeholders: {
             404: {
                 action: "Back to home",

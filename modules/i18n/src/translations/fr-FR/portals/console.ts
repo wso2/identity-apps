@@ -120,6 +120,22 @@ export const console: ConsoleNS = {
                 secondaryButton: "Déconnexion"
             }
         },
+        notifications: {
+            invalidPEMFile: {
+                error: {
+                    description: "{{ description }}",
+                    message: "Erreur de décodage"
+                },
+                genericError: {
+                    description: "Une erreur s'est produite lors du décodage du certificat.",
+                    message: "Erreur de décodage"
+                },
+                success: {
+                    description: "Décodage réussi du fichier de certificat.",
+                    message: "Décodage réussi"
+                }
+            }
+        },
         placeholders: {
             404: {
                 action: "Revenir à la page d'accueil",

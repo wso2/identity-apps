@@ -120,6 +120,22 @@ export const console: ConsoleNS = {
                 secondaryButton: "ඉවත් වන්න"
             }
         },
+        notifications: {
+            invalidPEMFile: {
+                error: {
+                    description: "{{ description }}",
+                    message: "විකේතනය කිරීමේ දෝෂය"
+                },
+                genericError: {
+                    description: "සහතිකය විකේතනය කිරීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "විකේතනය කිරීමේ දෝෂය"
+                },
+                success: {
+                    description: "සහතික ගොනුව සාර්ථකව විකේතනය කරන ලදි.",
+                    message: "විකේතනය සාර්ථකයි"
+                }
+            }
+        },
         placeholders: {
             404: {
                 action: "ආපසු ප්‍රධාන පිටුවට යන්න",
