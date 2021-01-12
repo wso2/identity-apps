@@ -20,7 +20,7 @@
 /// <reference types="cypress" />
 
 import { IdentityProviderEditPageConstants } from "../constants";
-import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
+import { CommonUtils } from "@wso2/identity-cypress-test-base/ui";
 
 /**
  * Class containing Identity Provider Edit Page objects.

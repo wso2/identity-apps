@@ -19,7 +19,7 @@
 
 /// <reference types="cypress" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base//utils";
+import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
 import { RemoteConfigurationPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
 

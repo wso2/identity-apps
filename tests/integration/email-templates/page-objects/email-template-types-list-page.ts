@@ -20,7 +20,7 @@
 /// <reference types="cypress" />
 
 import { EmailTemplateTypesListPageConstants } from "../constants";
-import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/constants";
+import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/ui";
 
 /**
  * Class containing Email Templates Type Page objects.

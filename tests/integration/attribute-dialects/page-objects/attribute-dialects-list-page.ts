@@ -18,8 +18,8 @@
 
 /// <reference types="cypress" />
 
-import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/constants";
-import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
+import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/ui";
+import { CommonUtils } from "@wso2/identity-cypress-test-base/ui";
 import { AttributeDialectsListPageConstants } from "../constants";
 
 /**

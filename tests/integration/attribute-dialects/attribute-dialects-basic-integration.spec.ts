@@ -19,7 +19,7 @@
 /// <reference types="cypress" />
 /// <reference types="../../types" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
+import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
 import { v4 as uuidv4 } from "uuid";
 import { AttributeDialectsListPage } from "./page-objects";
 
