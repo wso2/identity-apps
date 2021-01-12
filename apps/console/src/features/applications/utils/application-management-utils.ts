@@ -29,7 +29,7 @@ import {
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
 } from "../api";
-import { SupportedAuthProtocolTypeDisplayNames } from "../components/meta";
+import { SupportedAuthProtocolTypeDescriptions, SupportedAuthProtocolTypeDisplayNames } from "../components/meta";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AuthProtocolMetaListItemInterface,
@@ -352,8 +352,19 @@ export class ApplicationManagementUtils {
      * @param {SupportedAuthProtocolTypes} protocol - Auth Protocol.
      * @return {string}
      */
-    public static resolveProtocolDisplayName = (protocol: SupportedAuthProtocolTypes): string => {
+    public static resolveProtocolDisplayName(protocol: SupportedAuthProtocolTypes): string {
 
         return SupportedAuthProtocolTypeDisplayNames[protocol];
+    }
+
+    /**
+     * Resolves the descriptions of auth protocols.
+     *
+     * @param {SupportedAuthProtocolTypes} protocol - Auth Protocol.
+     * @return {string}
+     */
+    public static resolveProtocolDescription(protocol: SupportedAuthProtocolTypes): string {
+
+        return SupportedAuthProtocolTypeDescriptions[protocol];
     }
 }

@@ -166,6 +166,15 @@ export class ApplicationManagementConstants {
     public static readonly HIDDEN_GRANT_TYPES: string[] = [ "account_switch" ];
 
     /**
+     * Set of grant types allowed for certain templates.
+     * @constant
+     * @type {string[]}
+     */
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: object = {
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [ "authorization_code", "refresh_token", "implicit" ]
+    };
+
+    /**
      * Key for the SPA template.
      * @constant
      * @type {string}

@@ -1804,6 +1804,24 @@ svg.illustration {
 }
 
 /*-------------------------------
+        Inline Code Block
+--------------------------------*/
+
+code {
+    &.inline-code {
+        border-radius: @defaultBorderRadius;
+        font-size: 0.9em;
+        padding: 4px 8px;
+        color: @inlineCodeBlockColor;
+        background: @inlineCodeBlockBgColor;
+
+        .with-border {
+            border: @inlineCodeBlockBorder;
+        }
+    }
+}
+
+/*-------------------------------
           Code Editor
 --------------------------------*/
 

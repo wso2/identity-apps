@@ -349,6 +349,49 @@
     }
 }
 
+/* Selection card with radio button */
+.ui.card {
+    &.selection-card {
+        &.radio-selection-card {
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent;
+
+             &.card-selected {
+                 box-shadow: none !important;
+                 background: @galleryGray;
+
+                 .integrate-radio {
+                     .ui.radio.checkbox label::before {
+                         border-color: @primaryColor !important;
+                     }
+                 }
+             }
+
+             .selection-card-content {
+                 display: flex;
+                 flex-direction: row;
+                 padding: 1.4em 1em !important;
+                 cursor: pointer;
+
+                 .header {
+                     font-size: 1.4em;
+
+                     span {
+                         color: @primaryColor;
+                     }
+                 }
+
+                 .meta {
+                     span {
+                         font-size: 0.9em;
+                     }
+                 }
+             }
+        }
+    }
+}
+
 /*********************************************
              Template Card Variation
 *********************************************/

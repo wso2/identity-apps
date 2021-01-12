@@ -22,22 +22,19 @@ import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
     ContentLoader,
-    EmptyPlaceholder,
-    GenericIconProps,
-    PrimaryButton,
-    UserAvatar
+    EmphasizedSegment,
+    GenericIcon
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import _ from "lodash";
+import get from "lodash/get";
+import sortBy from "lodash/orderBy";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Card, Grid, Radio, SemanticWIDTHS } from "semantic-ui-react";
 import {
     AppState,
-    AuthenticatorAccordion,
     FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
     store
 } from "../../../core";
 import {
@@ -48,7 +45,12 @@ import {
     updateAuthProtocolConfig
 } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
-import { OIDCDataInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
+import {
+    ApplicationTemplateListItemInterface,
+    OIDCDataInterface,
+    SupportedAuthProtocolMetaTypes,
+    SupportedAuthProtocolTypes
+} from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
@@ -87,8 +89,8 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     isInboundProtocolConfigRequestLoading: boolean;
     /**
-    * CORS allowed origin list for the tenant.
-    */
+     * CORS allowed origin list for the tenant.
+     */
     allowedOriginList?: string[];
     /**
      * Callback to update the allowed origins.
@@ -106,6 +108,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -132,6 +138,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onApplicationSecretRegenerate,
         inboundProtocolsLoading,
         readOnly,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
@@ -143,6 +150,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const tenantName = store.getState().config.deployment.tenant;
 
+    const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
@@ -302,129 +310,179 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     };
 
     /**
-     * Handles Authenticator delete button on click action.
-     *
-     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} name - Protocol name.
+     * Resolves the protocol selection cards.
+     * @return {React.ReactElement}
      */
-    const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
-        if (!name) {
-            return;
+    const resolveInboundProtocolSelection = (): ReactElement => {
+
+        let supportedProtocols: string[] = template?.authenticationProtocol
+            ? [ template.authenticationProtocol ]
+            : Object.values(SupportedAuthProtocolTypes);
+
+        // Filter out legacy and unsupported auth protocols.
+        supportedProtocols = supportedProtocols.filter((protocol) => {
+            if (protocol === SupportedAuthProtocolTypes.WS_TRUST
+                || protocol === SupportedAuthProtocolTypes.CUSTOM) {
+
+                return false;
+            }
+
+            return protocol;
+        });
+
+        // Sort the list of protocols.
+        supportedProtocols = sortBy(supportedProtocols, (element) => {
+
+            let customOrder: object = {
+                [ SupportedAuthProtocolTypes.OIDC ] : 0,
+                [ SupportedAuthProtocolTypes.SAML ] : 1
+            };
+
+            if (inboundProtocols.length > 0) {
+                inboundProtocols.forEach((protocol, index) => {
+                    if (Object.values(SupportedAuthProtocolTypes).includes(protocol as SupportedAuthProtocolTypes)) {
+                        customOrder = {
+                            ...customOrder,
+                            [ protocol ]: index
+                        };
+                    }
+                });
+            }
+
+            return customOrder[element];
+        });
+
+        if (!selectedProtocol) {
+            setSelectedProtocol(supportedProtocols[0]);
         }
 
-        const deletingProtocol = inboundProtocols
-            .find((protocol) => protocol === name);
-
-        if (!deletingProtocol) {
-            return;
+        // If only one protocol is available, skip the selection cards.
+        if (supportedProtocols.length === 1) {
+            return null;
         }
 
-        setProtocolToDelete(deletingProtocol);
-        setShowDeleteConfirmationModal(true);
+        return (
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Card.Group
+                        itemsPerRow={ supportedProtocols.length as SemanticWIDTHS }
+                    >
+                        {
+                            supportedProtocols.map((protocol, index) => (
+                                <Card
+                                    key={ index }
+                                    className={
+                                        `selection-card radio-selection-card ${ (selectedProtocol === protocol)
+                                            ? "card-selected"
+                                            : ""
+                                            }`
+                                    }
+                                >
+                                    <Card.Content
+                                        onClick={ () => {
+                                            setSelectedProtocol(protocol);
+                                        } }
+                                        className="selection-card-content"
+                                    >
+                                        <div className="integrate-radio mr-2">
+                                            <Radio
+                                                checked={ selectedProtocol === protocol }
+                                            />
+                                        </div>
+                                        <div className="card-content">
+                                            <Card.Header>
+                                                <GenericIcon
+                                                    inline
+                                                    transparent
+                                                    icon={ getInboundProtocolLogos()[ protocol ] }
+                                                    size="micro"
+                                                    spaced="right"
+                                                />
+                                                {
+                                                    ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                            protocol as SupportedAuthProtocolTypes)
+                                                }
+                                            </Card.Header>
+                                            <Card.Meta>
+                                                {
+                                                    ApplicationManagementUtils.resolveProtocolDescription(
+                                                        protocol as SupportedAuthProtocolTypes)
+                                                }
+                                            </Card.Meta>
+                                        </div>
+                                    </Card.Content>
+                                </Card>
+                            ))
+                        }
+                    </Card.Group>
+                </Grid.Column>
+            </Grid.Row>
+        );
     };
 
     /**
-     * Resolves the corresponding protocol config form when a
-     * protocol is selected.
+     * Resolves the corresponding protocol config form when a protocol is selected.
      * @return {React.ReactElement}
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
-        return (inboundProtocolConfig
-                ?
-                <AuthenticatorAccordion
-                    globalActions={
-                        !readOnly && [
-                            {
-                                icon: "trash alternate",
-                                onClick: handleProtocolDeleteOnClick,
-                                type: "icon"
-                            }
-                        ]
-                    }
-                    authenticators={
-                        Object.keys(inboundProtocolConfig).map((protocol) => {
-                            if (Object.values(SupportedAuthProtocolTypes)
-                                .includes(protocol as SupportedAuthProtocolTypes)) {
-                                return {
-                                    actions: [],
-                                    content: (
-                                        <InboundFormFactory
-                                            tenantDomain={ tenantName }
-                                            allowedOrigins={ allowedOriginList }
-                                            metadata={ authProtocolMeta[protocol] }
-                                            initialValues={
-                                                _.isEmpty(inboundProtocolConfig[protocol])
-                                                    ? undefined : inboundProtocolConfig[protocol]
-                                            }
-                                            onSubmit={
-                                                (values: any) => handleInboundConfigFormSubmit(values,
-                                                    protocol)
-                                            }
-                                            type={ protocol as SupportedAuthProtocolTypes }
-                                            onApplicationRegenerate={ handleApplicationRegenerate }
-                                            onApplicationRevoke={ handleApplicationRevoke }
-                                            readOnly={
-                                                readOnly
-                                                || !hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes
-                                                )
-                                            }
-                                            data-testid={ `${ testId }-inbound-${ protocol }-form` }
-                                        />
-                                    ),
-                                    icon: {
-                                        icon: getInboundProtocolLogos()[protocol], size: "micro"
-                                    } as GenericIconProps,
-                                    id: protocol,
-                                    title: ApplicationManagementUtils
-                                        .resolveProtocolDisplayName(protocol as SupportedAuthProtocolTypes)
-                                };
-                            } else {
-                                return {
-                                    actions: [],
-                                    content: (
-                                        <InboundFormFactory
-                                            metadata={ authProtocolMeta[protocol] }
-                                            initialValues={
-                                                _.isEmpty(inboundProtocolConfig[protocol])
-                                                    ? undefined : inboundProtocolConfig[protocol]
-                                            }
-                                            onSubmit={
-                                                (values: any) => handleInboundConfigFormSubmit(values,
-                                                    protocol)
-                                            }
-                                            type={ SupportedAuthProtocolTypes.CUSTOM }
-                                            readOnly={
-                                                !hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes
-                                                )
-                                            }
-                                            data-testid={ `${ testId }-inbound-custom-form` }
-                                        />
-                                    ),
-                                    icon: {
-                                        icon: (
-                                            <UserAvatar
-                                                data-testid={ `${ testId }-${ protocol }-icon` }
-                                                name={ protocol }
-                                                size="mini"
-                                            />
-                                        ),
-                                        size: "nano"
-                                    } as GenericIconProps,
-                                    id: protocol,
-                                    title: ApplicationManagementUtils
-                                        .resolveProtocolDisplayName(protocol as SupportedAuthProtocolTypes)
-                                };
-                            }
-                        })
-                    }
-                    data-testid={ `${ testId }-protocol-accordion` }
-                /> : <ContentLoader/>
+
+        if (!selectedProtocol) {
+            return null;
+        }
+
+        return (
+            <EmphasizedSegment className="protocol-settings-section">
+                {
+                    Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
+                        ? (
+                            <InboundFormFactory
+                                tenantDomain={ tenantName }
+                                allowedOrigins={ allowedOriginList }
+                                metadata={ authProtocolMeta[ selectedProtocol ] }
+                                initialValues={
+                                    get(inboundProtocolConfig, selectedProtocol)
+                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                        : undefined
+                                }
+                                onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
+                                type={ selectedProtocol as SupportedAuthProtocolTypes }
+                                onApplicationRegenerate={ handleApplicationRegenerate }
+                                onApplicationRevoke={ handleApplicationRevoke }
+                                readOnly={
+                                    readOnly
+                                    || !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update,
+                                        allowedScopes
+                                    )
+                                }
+                                template={ template }
+                                data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
+                            />
+                        )
+                        : (
+                            <InboundFormFactory
+                                metadata={ authProtocolMeta[ selectedProtocol ] }
+                                initialValues={
+                                    get(inboundProtocolConfig, selectedProtocol)
+                                        ? inboundProtocolConfig[ selectedProtocol ]
+                                        : undefined
+                                }
+                                onSubmit={ (values: any) => handleInboundConfigFormSubmit(values, selectedProtocol) }
+                                type={ SupportedAuthProtocolTypes.CUSTOM }
+                                readOnly={
+                                    !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update,
+                                        allowedScopes
+                                    )
+                                }
+                                template={ template }
+                                data-testid={ `${ testId }-inbound-custom-form` }
+                            />
+                        )
+                }
+            </EmphasizedSegment>
         );
     };
 
@@ -432,13 +490,14 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * Use effect hook to be run when an inbound protocol is selected.
      */
     useEffect(() => {
-        if (_.isEmpty(inboundProtocols)) {
-            return;
-        }
 
-        inboundProtocols.map((selected) => {
+        const protocols: string[] = Object.values(SupportedAuthProtocolMetaTypes);
 
-            if (selected === SupportedAuthProtocolTypes.WS_FEDERATION) {
+        protocols.map((selected) => {
+
+            if (selected === SupportedAuthProtocolTypes.WS_FEDERATION
+                || selected === SupportedAuthProtocolTypes.WS_TRUST) {
+
                 return;
             }
 
@@ -479,62 +538,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         !isLoading
             ? (
                 <Grid>
+                    { resolveInboundProtocolSelection() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            {
-                                (inboundProtocols.length > 0)
-                                    ? !readOnly
-                                    && hasRequiredScopes(featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update,
-                                        allowedScopes)
-                                    && (
-                                        <Button
-                                            floated="right"
-                                            primary
-                                            onClick={ () => setShowWizard(true) }
-                                            data-testid={ `${ testId }-new-protocol-button` }
-                                        >
-                                            <Icon name="add"/>New Protocol
-                                        </Button>
-                                    )
-                                    : (
-                                        !inboundProtocolsLoading
-                                        && <EmptyPlaceholder
-                                            action={
-                                                hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes) && (
-                                                    <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                        <Icon name="add"/>
-                                                        { t("console:develop.features.applications.placeholders" +
-                                                            ".emptyProtocolList.action") }
-                                                    </PrimaryButton>
-                                                )
-                                            }
-                                            image={ getEmptyPlaceholderIllustrations().newList }
-                                            imageSize="tiny"
-                                            title={
-                                                t("console:develop.features.applications.placeholders" +
-                                                    ".emptyProtocolList.title")
-                                            }
-                                            subtitle={ [
-                                                t("console:develop.features.applications.placeholders" +
-                                                    ".emptyProtocolList.subtitles.0"),
-                                                t("console:develop.features.applications.placeholders" +
-                                                    ".emptyProtocolList.subtitles.1"),
-                                                t("console:develop.features.applications.placeholders" +
-                                                    ".emptyProtocolList.subtitles.2")
-                                            ] }
-                                            data-testid={ `${ testId }-protocol-empty-placeholder` }
-                                        />
-                                    )
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { inboundProtocols?.length > 0 && resolveInboundProtocolSettingsForm() }
+                            { resolveInboundProtocolSettingsForm() }
                         </Grid.Column>
                     </Grid.Row>
                     {
@@ -606,7 +613,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 <ConfirmationModal.Content
                                     data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
                                 >
-                                   { t("console:develop.features.applications.confirmations.deleteProtocol.content") }
+                                    { t("console:develop.features.applications.confirmations.deleteProtocol.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
