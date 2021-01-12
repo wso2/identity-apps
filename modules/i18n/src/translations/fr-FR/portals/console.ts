@@ -1118,7 +1118,9 @@ export const console: ConsoleNS = {
                                         label: "Type de token"
                                     },
                                     validateBinding: {
-                                        hint: "Activer la validation de la liaison des jetons pendant les invocations des API",
+                                        hint: "Validez les attributs de liaison lors de la validation du jeton. Le" +
+                                            " client doit présenter le jeton d'accès + cookie pour une" +
+                                            " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
                                     }
                                 },

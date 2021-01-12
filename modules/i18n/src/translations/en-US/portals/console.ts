@@ -1131,7 +1131,8 @@ export const console: ConsoleNS = {
                                         label: "Token type"
                                     },
                                     validateBinding: {
-                                        hint: "Enable token binding validation during the API invocations",
+                                        hint: "Validate the binding attributes at the token validation. The client " +
+                                            "needs to present the access token + cookie for successful authorization.",
                                         label: "Validate token bindings"
                                     }
                                 },
