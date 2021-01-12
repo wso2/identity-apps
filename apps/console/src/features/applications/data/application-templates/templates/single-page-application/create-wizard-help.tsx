@@ -49,17 +49,17 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
             <Divider />
 
             <>
-                <Heading as="h5">Allowed redirect URLs</Heading>
+                <Heading as="h5">Allowed Redirect URIs</Heading>
                 <p>
-                    After user sign-in/sign-out, the user is redirected to a page within your application.
-                    Add the list of possible redirect URLs here. You can specify multiple valid URLs.
-                    Make sure to specify the protocol (https://) otherwise the redirect may fail in some cases.
+                    After user login/logout, the user is redirected to a web page within your application
+                    that receives the post-authentication authorization code.
                 </p>
-                <p>E.g. https://sample.app/login</p>
+                <p>E.g., https://myapp.io/login</p>
 
                 <p>
-                    You can also configure this field later under the <strong>Protocol </strong>
-                    tab in application-edit view.
+                    <span>Make sure the protocol is <code>https://</code>
+                         otherwise the redirect may fail in some cases.&nbsp;
+                    </span>
                 </p>
             </>
         </div>
