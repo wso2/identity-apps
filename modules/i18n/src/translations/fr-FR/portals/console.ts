@@ -1165,7 +1165,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     method: {
-                                        hint: "Choisissez la méthode de chiffrement du jeton d'identification.",
+                                        hint: "La liste déroulante contient les méthodes de chiffrement" +
+                                            " de jeton d'identification prises en charge.",
                                         label: "Méthode de chiffrement",
                                         placeholder: "Choisissez la méthode",
                                         validations: {

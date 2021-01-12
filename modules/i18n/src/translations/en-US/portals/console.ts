@@ -1175,7 +1175,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     method: {
-                                        hint: "Choose the method for the ID token encryption.",
+                                        hint: "The dropdown contains the supported ID token encryption methods.",
                                         label: "Encryption method",
                                         placeholder: "Select Method",
                                         validations: {
