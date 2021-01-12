@@ -42,26 +42,24 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>A unique name for the application.</p>
-            <p>E.g., My App</p>
+            <React.Fragment>
+                <Heading as="h5">Name</Heading>
+                <p>A unique name for the application.</p>
+                <p>E.g., My App</p>
+            </React.Fragment>
 
             <Divider />
 
-            <>
+            <React.Fragment>
                 <Heading as="h5">Allowed Redirect URIs</Heading>
                 <p>
                     After user login/logout, the user is redirected to a web page within your application
                     that receives the post-authentication authorization code.
                 </p>
+                <p>Add the list of possible redirect URIs here. You can specify multiple valid URIs.</p>
                 <p>E.g., https://myapp.io/login</p>
+            </React.Fragment>
 
-                <p>
-                    <span>Make sure the protocol is <code>https://</code>
-                         otherwise the redirect may fail in some cases.&nbsp;
-                    </span>
-                </p>
-            </>
         </div>
     );
 };
