@@ -1212,9 +1212,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE (RFC 7636) est une extension du processus par code d'autorisation pour prévenir " +
-                                    "certaines attaques et pour pouvoir effectuer en toute sécurité l'échange OAuth à partir " +
-                                    "de clients publics."
+                                hint: "PKCE est une mesure de sécurité recommandée pour atténuer les attaques " +
+                                    "d'interception de code d'autorisation. Applicable uniquement lors de " +
+                                    "l'utilisation du type de subvention Code."
                             },
                             refreshToken: {
                                 fields: {

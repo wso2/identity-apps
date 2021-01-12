@@ -1225,9 +1225,8 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent " +
-                                    "certain attacks and to be able to securely perform the OAuth exchange from " +
-                                    " public clients."
+                                hint: "PKCE is a recommended security measure used to mitigate Authorization code" +
+                                    " interception attacks. Only applicable when using the Code grant type."
                             },
                             refreshToken: {
                                 fields: {
