@@ -1780,7 +1780,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             (initialValues?.clientId || initialValues?.clientSecret) && (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
                                     <Divider />
-                                    <Divider hidden />
                                 </Grid.Column>
                             )
                         }
