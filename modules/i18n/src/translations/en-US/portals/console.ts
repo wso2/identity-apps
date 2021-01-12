@@ -120,6 +120,22 @@ export const console: ConsoleNS = {
                 secondaryButton: "Logout"
             }
         },
+        notifications: {
+            invalidPEMFile: {
+                error: {
+                    description: "{{ description }}",
+                    message: "Decoding Error"
+                },
+                genericError: {
+                    description: "An error occurred while decoding the certificate.",
+                    message: "Decoding Error"
+                },
+                success: {
+                    description: "Successfully decoded the certificate file.",
+                    message: "Decoding Successful"
+                }
+            }
+        },
         placeholders: {
             404: {
                 action: "Back to home",
@@ -1049,7 +1065,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter allowed redirect URLs",
                                 validations: {
                                     empty: "Please add a valid URL.",
-                                    required: "Note: This field is required for a functional app. " +
+                                    required: "This field is required for a functional app. " +
                                         "However, if you are planning to integrate a sample, " +
                                         "this field can be skipped."
                                 }

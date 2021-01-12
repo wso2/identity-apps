@@ -54,12 +54,6 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                     the
                     application.
                 </p>
-                <Message info>
-                    <a href="#" target="_blank">
-                        Click here
-                    </a>{ " " }
-                    to learn more about supported protocols for agent-based single sign-on.
-                </Message>
             </>
 
             <Divider />

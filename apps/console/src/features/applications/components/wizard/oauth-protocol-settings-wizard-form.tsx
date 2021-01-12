@@ -24,7 +24,7 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Label, Message } from "semantic-ui-react";
+import { Grid, Icon, Label, Message } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../api";
 import {
     ApplicationTemplateListItemInterface,
@@ -388,7 +388,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         }
                         { ((!fields || fields.includes("callbackURLs")) && showCallbackURLField ) && (
                             <Grid.Row column={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <URLInput
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
@@ -445,11 +445,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />
-                                    <Message visible warning>
-                                        {
-                                            t("console:develop.features.applications.forms.inboundOIDC.fields" +
-                                                ".callBackUrls.validations.required")
-                                        }
+                                    <Message className="with-inline-icon" icon visible warning>
+                                        <Icon name="warning sign" size="mini" />
+                                        <Message.Content>
+                                            {
+                                                t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                                    ".callBackUrls.validations.required")
+                                            }
+                                        </Message.Content>
                                     </Message>
                                 </Grid.Column>
                             </Grid.Row>
