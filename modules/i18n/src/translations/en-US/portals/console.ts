@@ -1115,7 +1115,7 @@ export const console: ConsoleNS = {
                                         label: "Token binding type"
                                     },
                                     expiry: {
-                                        hint: "Configure the user access token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the access token in seconds.",
                                         label: "User access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {

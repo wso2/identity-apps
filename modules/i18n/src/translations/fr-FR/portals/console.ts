@@ -1102,7 +1102,7 @@ export const console: ConsoleNS = {
                                         label: "Type de liaison des jetons"
                                     },
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration des jetons d'accès utilisateur (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton d'accès en secondes.",
                                         label: "Délai d'expiration du jeton d'accès utilisateur",
                                         placeholder: "Saisissez l'heure d'expiration des jetons d'accès utilisateur",
                                         validations: {
