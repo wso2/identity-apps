@@ -1212,7 +1212,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "PKCE mandatory"
+                                                label: "Enable (Make PKCE Mandatory)"
                                             },
                                             plainAlg: {
                                                 label: "Support PKCE 'Plain' Transform Algorithm"
