@@ -1008,7 +1008,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 label: "Name",
-                                placeholder: "Enter a name for the application.",
+                                placeholder: "My App",
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
@@ -1053,18 +1053,18 @@ export const console: ConsoleNS = {
                                 hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
                                     "origins to WSO2 Identity Server APIs",
                                 label: "Allowed Origins",
-                                placeholder: "Enter allowed origins",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
                             },
                             callBackUrls: {
                                 hint: "After the authentication, we will only redirect to the above allowed redirect " +
-                                    "URLs and you can specify multiple URLs",
-                                label: "Allowed redirect URLs",
-                                placeholder: "Enter allowed redirect URLs",
+                                    "URIs and you can specify multiple URIs",
+                                label: "Allowed Redirect URIs",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to integrate a sample, " +
                                         "this field can be skipped."
@@ -1092,7 +1092,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Allow the client to authenticate without a client secret.",
+                                hint: "Allow the client to authenticate to Asgardeo without the client secret." +
+                                    " Public clients such as applications running in a browser or on a mobile device" +
+                                    " are unable to use registered client secrets. ",
                                 label: "Public client",
                                 validations: {
                                     empty: "This is a required field."
@@ -1113,7 +1115,7 @@ export const console: ConsoleNS = {
                                         label: "Token binding type"
                                     },
                                     expiry: {
-                                        hint: "Configure the user access token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the access token in seconds.",
                                         label: "User access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {
@@ -1129,7 +1131,8 @@ export const console: ConsoleNS = {
                                         label: "Token type"
                                     },
                                     validateBinding: {
-                                        hint: "Enable token binding validation during the API invocations",
+                                        hint: "Validate the binding attributes at the token validation. The client " +
+                                            "needs to present the access token + cookie for successful authorization.",
                                         label: "Validate token bindings"
                                     }
                                 },
@@ -1140,7 +1143,7 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "Choose encryption algorithm of ID token for the client.",
+                                        hint: "The dropdown contains the supported ID token encryption algorithms.",
                                         label: "Algorithm",
                                         placeholder: "Select Algorithm",
                                         validations: {
@@ -1148,7 +1151,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "The recipients that the ID token is intended for.",
+                                        hint: "Specify the recipient(s) that this ID token is intended for. " +
+                                            "By default, the client ID of this application is added as an audience. ",
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
@@ -1156,14 +1160,14 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Enable ID token encryption.",
+                                        hint: "Define whether to ID token encryption should be enabled or not.",
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
                                         }
                                     },
                                     expiry: {
-                                        hint: "Configure the ID token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the ID token in seconds.",
                                         label: "Id token expiry time",
                                         placeholder: "Enter the ID token expiry time",
                                         validations: {
@@ -1171,7 +1175,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     method: {
-                                        hint: "Choose the method for the ID token encryption.",
+                                        hint: "The dropdown contains the supported ID token encryption methods.",
                                         label: "Encryption method",
                                         placeholder: "Select Method",
                                         validations: {
@@ -1210,7 +1214,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "PKCE mandatory"
+                                                label: "Enable (Make PKCE Mandatory)"
                                             },
                                             plainAlg: {
                                                 label: "Support PKCE 'Plain' Transform Algorithm"
@@ -1223,14 +1227,13 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent " +
-                                    "certain attacks and to be able to securely perform the OAuth exchange from " +
-                                    " public clients."
+                                hint: "PKCE is a recommended security measure used to mitigate Authorization code" +
+                                    " interception attacks. Only applicable when using the Code grant type."
                             },
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Configure the refresh token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the refresh token in seconds.",
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {
@@ -1238,7 +1241,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Issue a new refresh token per request when Refresh Token Grant is used.",
+                                        hint: "Issue a new refresh token per token refresh request.",
                                         label: "Rotate refresh token",
                                         validations: {
                                             empty: "This is a required field."

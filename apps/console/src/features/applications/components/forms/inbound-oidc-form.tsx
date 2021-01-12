@@ -62,11 +62,11 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Current certificate configurations.
      */
     certificate: CertificateInterface;
-    metadata: OIDCMetadataInterface;
-    initialValues: OIDCDataInterface;
-    onSubmit: (values: any) => void;
-    onApplicationRegenerate: () => void;
-    onApplicationRevoke: () => void;
+    metadata?: OIDCMetadataInterface;
+    initialValues?: OIDCDataInterface;
+    onSubmit?: (values: any) => void;
+    onApplicationRegenerate?: () => void;
+    onApplicationRevoke?: () => void;
     /**
      * Make the form read only.
      */
@@ -197,7 +197,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         // When bindingType is set to none, back-end doesn't send the `bindingType` attr. So default to `None`.
         if (!initialValues?.accessToken?.bindingType) {
             setIsTokenBindingTypeSelected(false);
-            
+
             return;
         }
 
@@ -612,7 +612,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 showCallbackURLField && (
                     <>
-                        <div ref={ url }></div>
+                        <div ref={ url }/>
                         <URLInput
                             isAllowEnabled={ false }
                             tenantDomain={ tenantDomain }
@@ -674,7 +674,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                                <div ref={ allowedOrigin }></div>
+                                <div ref={ allowedOrigin }/>
                                 <URLInput
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
@@ -715,10 +715,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     computerWidth={ 10 }
                                     setShowError={ setShowOriginError }
                                     showError={ showOriginError }
-                                    hint={
-                                        t("console:develop.features.applications.forms.inboundOIDC" +
-                                            ".fields.allowedOrigins.hint")
-                                    }
                                     readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -730,6 +726,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     showPredictions={ false }
                                     customLabel={ allowedOriginsErrorLabel }
                                 />
+                                <Hint>
+                                    The HTTP origins that host your web application. You can define multiple web
+                                    origins and wild cards are supported.
+                                    <p className={"mt-0"}>E.g.,&nbsp;&nbsp;
+                                        <code>https://myapp.io, https://localhost:9000, https://*.otherapp.io</code>
+                                    </p>
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     </>
@@ -748,10 +751,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".heading") }
                     </Heading>
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
-                            ".hint") }
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
-                    <Divider hidden />
+                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
+                        { 'The default method used by Asgardeo to generate the challenge is SHA-256. Only select' +
+                        '"Plain" for constrained environments that can not use the SHA-256 transformation.' }
+                    </Message>
                     <Field
                         ref={ pkce }
                         name="PKCE"
@@ -792,11 +797,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
                     </Heading>
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
-                            ".hint") }
-                    </Hint>
-                    <Divider hidden />
                     <Field
                         ref={ type }
                         label={
@@ -814,6 +814,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
+                    <Message compact={false} size={"tiny"} className={"border-less"}>
+                        <p>
+                            Asgardeo has the capability to attach the OAuth2 access token and refresh
+                            token to an external attribute during the token generation and optionally validate the
+                            external attribute during the API invocation.
+                        </p>
+                        <br/>
+                        <Message.Content>
+                            <p><b>None</b> - No Binding.</p>
+                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
+                            <p><b>SSO-Session</b> - Bind the access token to the session.
+                                Asgardeo will generate different tokens for each new browser instance.</p>
+                        </Message.Content>
+                    </Message>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
@@ -841,6 +855,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
+                    <Message compact={false} size={"tiny"} className={"border-less"}>
+                        <Message.Content>
+                            <p>Token Types</p>
+                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
+                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
+                        </Message.Content>
+                    </Message>
+
                 </Grid.Column>
             </Grid.Row>
             {

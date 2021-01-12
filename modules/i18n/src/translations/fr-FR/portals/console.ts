@@ -1000,7 +1000,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 label: "Nom",
-                                placeholder: "Saisissez un nom pour l'application.",
+                                placeholder: "Mon appli",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
                                 }
@@ -1043,18 +1043,18 @@ export const console: ConsoleNS = {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
                                     "depuis des origines tierces vers les APIs de WSO2 Identity Server ",
                                 label: "Origines autorisées",
-                                placeholder: "Entrez les origines autorisées",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Veuillez ajouter une origine valide."
                                 }
                             },
                             callBackUrls: {
-                                hint: "Après l'authentification, nous ne redirigerons que vers les URLs de redirection " +
+                                hint: "Après l'authentification, nous ne redirigerons que vers les URIs de redirection " +
                                     "renseignées ci-dessus",
-                                label: "URLs de redirection",
-                                placeholder: "Saisir les URLs de redirection",
+                                label: "URIs de redirection",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URL valide.",
+                                    empty: "Veuillez ajouter une URI valide.",
                                     required: "ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
@@ -1079,7 +1079,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Autorisez le client à s'authentifier sans secret.",
+                                hint: "Permettez au client de s'authentifier auprès d'Asgardeo sans le secret client." +
+                                    " Les clients publics tels que les applications exécutées dans un navigateur ou" +
+                                    " sur un appareil mobile ne peuvent pas utiliser les secrets client enregistrés.",
                                 label: "Client public",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1100,7 +1102,7 @@ export const console: ConsoleNS = {
                                         label: "Type de liaison des jetons"
                                     },
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration des jetons d'accès utilisateur (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton d'accès en secondes.",
                                         label: "Délai d'expiration du jeton d'accès utilisateur",
                                         placeholder: "Saisissez l'heure d'expiration des jetons d'accès utilisateur",
                                         validations: {
@@ -1116,7 +1118,9 @@ export const console: ConsoleNS = {
                                         label: "Type de token"
                                     },
                                     validateBinding: {
-                                        hint: "Activer la validation de la liaison des jetons pendant les invocations des API",
+                                        hint: "Validez les attributs de liaison lors de la validation du jeton. Le" +
+                                            " client doit présenter le jeton d'accès + cookie pour une" +
+                                            " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
                                     }
                                 },
@@ -1127,7 +1131,8 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "Choisissez l'algorithme de chiffrement du jeton d'identification du client.",
+                                        hint: "La liste déroulante contient les algorithmes de chiffrement" +
+                                            " de jeton d'identification pris en charge.",
                                         label: "Algorithme",
                                         placeholder: "Sélectionner un algorithme",
                                         validations: {
@@ -1135,7 +1140,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "les destinataires auxquels le jeton d'identification est destiné.",
+                                        hint: "Spécifiez le destinataire auquel ce jeton d'ID est destiné. Par " +
+                                            "défaut, l'ID client de cette application est ajouté en tant qu'audience.",
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
@@ -1143,14 +1149,15 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Activez le cryptage des jetons d'identification.",
+                                        hint: "Définissez si le cryptage des jetons d'identification doit" +
+                                            " être activé ou non.",
                                         label: "Activer le chiffrement",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
                                     },
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration du jeton d'identification (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton ID en secondes.",
                                         label: "Délai d'expiration du jeton d'identification",
                                         placeholder: "Entrez l'heure d'expiration du jeton d'identification",
                                         validations: {
@@ -1158,7 +1165,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     method: {
-                                        hint: "Choisissez la méthode de chiffrement du jeton d'identification.",
+                                        hint: "La liste déroulante contient les méthodes de chiffrement" +
+                                            " de jeton d'identification prises en charge.",
                                         label: "Méthode de chiffrement",
                                         placeholder: "Choisissez la méthode",
                                         validations: {
@@ -1197,7 +1205,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "PKCE obligatoire"
+                                                label: "Activer (rendre PKCE obligatoire)"
                                             },
                                             plainAlg: {
                                                 label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"
@@ -1210,14 +1218,14 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE (RFC 7636) est une extension du processus par code d'autorisation pour prévenir " +
-                                    "certaines attaques et pour pouvoir effectuer en toute sécurité l'échange OAuth à partir " +
-                                    "de clients publics."
+                                hint: "PKCE est une mesure de sécurité recommandée pour atténuer les attaques " +
+                                    "d'interception de code d'autorisation. Applicable uniquement lors de " +
+                                    "l'utilisation du type de subvention Code."
                             },
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Configurer le temps d'expiration du jeton de rafraîchissement (en secondes)",
+                                        hint: "Spécifiez la période de validité du jeton d'actualisation en secondes.",
                                         label: "Délai d'expiration du jeton de rafraîchissement",
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
@@ -1225,7 +1233,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Émettre un nouveau jeton de rafraîchissement par requête lorsque le Refresh Token Grant est utilisé.",
+                                        hint: "Émettez un nouveau jeton d'actualisation par demande " +
+                                            "d'actualisation de jeton.",
                                         label: "Faire pivoter le jeton d'actualisation",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."

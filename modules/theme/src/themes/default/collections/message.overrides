@@ -23,6 +23,11 @@
             background: @secondaryColor;
         }
     }
+
+    &.border-less {
+        border: none !important;
+        box-shadow: none;
+    }
 }
 
 /*------------------------
