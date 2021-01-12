@@ -397,7 +397,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     icon={ getInboundProtocolLogos()[ protocol ] }
                                                     size="micro"
                                                     spaced="right"
-                                                    />
+                                                />
                                                 {
                                                     ApplicationManagementUtils.resolveProtocolDisplayName(
                                                             protocol as SupportedAuthProtocolTypes)
