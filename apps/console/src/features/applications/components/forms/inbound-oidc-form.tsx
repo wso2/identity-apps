@@ -823,17 +823,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
-                    <Message compact={false} size={"tiny"} className={"border-less"}>
+                    <Message compact={true} size={"tiny"} className={"border-less"}>
                         <Message.Content>
                             <p>{
                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                     ".accessToken.fields.type.label")
                             }</p>
-                            <p><b>Default</b> - {
+                            <p><b>Default</b> -&nbsp;{
                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                     ".accessToken.fields.type.valueDescriptions.default")
                             }</p>
-                            <p><b>JWT</b> - {
+                            <p><b>JWT</b> -&nbsp;{
                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                     ".accessToken.fields.type.valueDescriptions.jwt")
                             }</p>
@@ -866,7 +866,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
-                    <Message compact={false} size={"tiny"} className={"border-less"}>
+                    <Message compact={true} size={"tiny"} className={"border-less"}>
                         <p>
                             { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.description", {
@@ -875,15 +875,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </p>
                         <br/>
                         <Message.Content>
-                            <p><b>None</b> -
+                            <p><b>None</b> -&nbsp;
                                 { t("console:develop.features.applications.forms" +
                                     ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none") }
                             </p>
-                            <p><b>Cookie</b> -
+                            <p><b>Cookie</b> -&nbsp;
                                 { t("console:develop.features.applications.forms" +
                                     ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie") }
                             </p>
-                            <p><b>SSO-Session</b> -
+                            <p><b>SSO-Session</b> -&nbsp;
                                 { t("console:develop.features.applications.forms" +
                                     ".inboundOIDC.sections.accessToken.fields.bindingType" +
                                     ".valueDescriptions.sso_session", {
