@@ -543,7 +543,7 @@ export const console: ConsoleNS = {
                                 placeholder: "E.g. Starts with etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. Zoom, Salesforce etc."
+                                placeholder: "Enter value to search"
                             }
                         }
                     },
@@ -2231,7 +2231,7 @@ export const console: ConsoleNS = {
                                 placeholder: "E.g. Starts with etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. Google, Github etc."
+                                placeholder: "Enter value to search"
                             }
                         }
                     },

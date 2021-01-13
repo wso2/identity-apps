@@ -547,7 +547,7 @@ export const console: ConsoleNS = {
                                 placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
                             },
                             filterValue: {
-                                placeholder: "උදා. විශාලනය, විකුණුම් බලකාය ආදිය."
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
                             }
                         }
                     },
@@ -2232,7 +2232,7 @@ export const console: ConsoleNS = {
                                 placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
                             },
                             filterValue: {
-                                placeholder: "උදා. ගූගල්, GitHub යනාදිය."
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
                             }
                         }
                     },
@@ -4317,7 +4317,7 @@ export const console: ConsoleNS = {
                                 placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
                             },
                             filterValue: {
-                                placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
                             }
                         }
                     },
@@ -5007,7 +5007,7 @@ export const console: ConsoleNS = {
                                 placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
                             },
                             filterValue: {
-                                placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
                             }
                         }
                     },
@@ -5881,7 +5881,7 @@ export const console: ConsoleNS = {
                                 placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ."
                             },
                             filterValue: {
-                                placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
+                                placeholder: "සෙවීමට අගයක් ඇතුළත් කරන්න"
                             }
                         }
                     },

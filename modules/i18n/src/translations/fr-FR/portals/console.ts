@@ -538,7 +538,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Par exemple, commence par etc."
                             },
                             filterValue: {
-                                placeholder: "Par exemple, Zoom, Salesforce etc."
+                                placeholder: "Saisir une valeur à rechercher"
                             }
                         }
                     },
@@ -2224,7 +2224,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Par exemple, commence par etc."
                             },
                             filterValue: {
-                                placeholder: "Par exemple, Google, Github etc."
+                                placeholder: "Saisir une valeur à rechercher"
                             }
                         }
                     },
@@ -4295,7 +4295,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "Valeur à rechercher"
+                                placeholder: "Saisir une valeur à rechercher"
                             }
                         }
                     },
@@ -5879,7 +5879,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "Valeur à rechercher"
+                                placeholder: "Saisir une valeur à rechercher"
                             }
                         }
                     },
