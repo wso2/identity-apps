@@ -58,7 +58,7 @@
         "appTitle": "Console | WSO2 Identity Server",
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
-        "appLogoPath": "/assets/images/logo.svg",
+        "appLogoPath": "/assets/images/logo-full.svg",
         "features": {
             "applications": {
                 "disabledFeatures": [],
@@ -309,7 +309,7 @@
         },
         "isGroupAndRoleSeparationEnabled": true,
         "isClientSecretHashEnabled": false,
-        "productName": "Identity Server",
+        "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",
