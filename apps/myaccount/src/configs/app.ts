@@ -85,6 +85,7 @@ export class Config {
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
+            preference: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,

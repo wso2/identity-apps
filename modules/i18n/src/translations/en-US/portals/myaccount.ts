@@ -27,6 +27,22 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Code Recovery"
             },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error getting the recovery preference"
+                    },
+                    genericError: {
+                        description: "Error occurred while getting the recovery preference",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the recovery preference",
+                        message: "Recovery preference retrieval successful"
+                    }
+                }
+            },
             emailRecovery: {
                 descriptions: {
                     add: "Add or update recovery email address",

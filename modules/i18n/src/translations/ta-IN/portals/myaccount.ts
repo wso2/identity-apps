@@ -27,6 +27,22 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "குறியீட்டு மீட்பு"
             },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "மீட்டெடுப்பு விருப்பத்தைப் பெறுவதில் பிழை"
+                    },
+                    genericError: {
+                        description: "மீட்பு விருப்பத்தைப் பெறும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    success: {
+                        description: "மீட்பு விருப்பத்தை வெற்றிகரமாக மீட்டெடுத்தது",
+                        message: "மீட்பு விருப்பம் மீட்டெடுப்பு வெற்றிகரமாக"
+                    }
+                }
+            },
             emailRecovery: {
                 descriptions: {
                     add: "மீட்பு மின்னஞ்சல் முகவரிய சேர்க்க",
