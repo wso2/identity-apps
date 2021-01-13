@@ -761,7 +761,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
                     <Message compact={ true } size={ "tiny" } className={"border-less"}>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.description", {
+                        { t("console:develop.features.applications.forms." +
+                            "inboundOIDC.sections.pkce.description", {
                             productName: config.ui.productName
                         }) }
                     </Message>
@@ -1308,6 +1309,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-back-channel-logout-url-input` }
                     />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".logoutURLs.fields.back.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
@@ -1368,6 +1375,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
                     />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".logoutURLs.fields.signatureValidation.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             { /* Scope Validators */ }
