@@ -322,11 +322,11 @@
                 const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
 
-                var errorMessage = $("#error-msg");
+                const errorMessage = $("#error-msg");
                 errorMessage.hide();
 
                 <% if (isFirstNameInClaims){ %>
-                    var firstName = $("#first-name").val();
+                    const firstName = $("#first-name").val();
 
                     if (firstName === "") {
                         errorMessage.text("Please fill the first name.");
@@ -338,9 +338,9 @@
                 <% } %>
 
                 <% if (reCaptchaEnabled) { %>
-                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                    const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
-                    if (reCaptchaResponse.trim() == '') {
+                    if (reCaptchaResponse.trim() === "") {
                         errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
