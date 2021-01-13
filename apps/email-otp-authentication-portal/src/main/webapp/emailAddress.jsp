@@ -114,7 +114,7 @@
 						<div id="alertDiv"></div>
 						<div class="segment-form">
 							<form class="ui large form" id="pin_form" name="pin_form"
-								action="../../commonauth" method="POST">
+								action="../commonauth" method="POST">
 
 								<%
 									String loginFailed = request.getParameter("authFailure");
