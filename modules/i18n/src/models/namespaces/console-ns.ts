@@ -635,6 +635,7 @@ export interface ConsoleNS {
                                 };
                             };
                             pkce: {
+                                description: string;
                                 heading: string;
                                 hint: string;
                                 fields: {
