@@ -63,7 +63,7 @@ export interface StaticRouteInterface {
     /**
      * Name to be displayed on the side panel.
      */
-    name: string;
+    name?: string;
     /**
      * Side panel order.
      */
@@ -75,7 +75,7 @@ export interface StaticRouteInterface {
     /**
      * If the route is protected or not.
      */
-    protected: boolean;
+    protected?: boolean;
     /**
      * Redirect path.
      */

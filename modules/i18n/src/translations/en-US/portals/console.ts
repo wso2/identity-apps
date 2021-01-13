@@ -120,6 +120,22 @@ export const console: ConsoleNS = {
                 secondaryButton: "Logout"
             }
         },
+        notifications: {
+            invalidPEMFile: {
+                error: {
+                    description: "{{ description }}",
+                    message: "Decoding Error"
+                },
+                genericError: {
+                    description: "An error occurred while decoding the certificate.",
+                    message: "Decoding Error"
+                },
+                success: {
+                    description: "Successfully decoded the certificate file.",
+                    message: "Decoding Successful"
+                }
+            }
+        },
         placeholders: {
             404: {
                 action: "Back to home",
@@ -1037,7 +1053,7 @@ export const console: ConsoleNS = {
                                 hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
                                     "origins to WSO2 Identity Server APIs",
                                 label: "Allowed Origins",
-                                placeholder: "Enter allowed origins",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
@@ -1049,7 +1065,7 @@ export const console: ConsoleNS = {
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URI.",
-                                    required: "Note: This field is required for a functional app. " +
+                                    required: "This field is required for a functional app. " +
                                         "However, if you are planning to integrate a sample, " +
                                         "this field can be skipped."
                                 }
@@ -1099,7 +1115,7 @@ export const console: ConsoleNS = {
                                         label: "Token binding type"
                                     },
                                     expiry: {
-                                        hint: "Configure the user access token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the access token in seconds.",
                                         label: "User access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {
@@ -1115,7 +1131,8 @@ export const console: ConsoleNS = {
                                         label: "Token type"
                                     },
                                     validateBinding: {
-                                        hint: "Enable token binding validation during the API invocations",
+                                        hint: "Validate the binding attributes at the token validation. The client " +
+                                            "needs to present the access token + cookie for successful authorization.",
                                         label: "Validate token bindings"
                                     }
                                 },
@@ -1126,7 +1143,7 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "Choose encryption algorithm of ID token for the client.",
+                                        hint: "The dropdown contains the supported ID token encryption algorithms.",
                                         label: "Algorithm",
                                         placeholder: "Select Algorithm",
                                         validations: {
@@ -1134,7 +1151,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "The recipients that the ID token is intended for.",
+                                        hint: "Specify the recipient(s) that this ID token is intended for. " +
+                                            "By default, the client ID of this application is added as an audience. ",
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
@@ -1142,14 +1160,14 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Enable ID token encryption.",
+                                        hint: "Define whether to ID token encryption should be enabled or not.",
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
                                         }
                                     },
                                     expiry: {
-                                        hint: "Configure the ID token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the ID token in seconds.",
                                         label: "Id token expiry time",
                                         placeholder: "Enter the ID token expiry time",
                                         validations: {
@@ -1157,7 +1175,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     method: {
-                                        hint: "Choose the method for the ID token encryption.",
+                                        hint: "The dropdown contains the supported ID token encryption methods.",
                                         label: "Encryption method",
                                         placeholder: "Select Method",
                                         validations: {
@@ -1215,7 +1233,7 @@ export const console: ConsoleNS = {
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Configure the refresh token expiry time (in seconds).",
+                                        hint: "Specify the validity period of the refresh token in seconds.",
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {
@@ -1223,7 +1241,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Issue a new refresh token per request when Refresh Token Grant is used.",
+                                        hint: "Issue a new refresh token per token refresh request.",
                                         label: "Rotate refresh token",
                                         validations: {
                                             empty: "This is a required field."

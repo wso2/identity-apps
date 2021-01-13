@@ -16,21 +16,31 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { URLUtils } from "@wso2is/core/utils";
+import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    CopyInputField,
+    Heading,
+    Hint,
+    LinkButton,
+    URLInput
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, Message } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateListItemInterface,
+    CertificateInterface,
+    CertificateTypeInterface,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -42,16 +52,21 @@ import {
     emptyOIDCConfig
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
+import { CertificateFormFieldModal } from "../modals";
 
 /**
  * Proptypes for the inbound OIDC form component.
  */
 interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
-    metadata: OIDCMetadataInterface;
-    initialValues: OIDCDataInterface;
-    onSubmit: (values: any) => void;
-    onApplicationRegenerate: () => void;
-    onApplicationRevoke: () => void;
+    /**
+     * Current certificate configurations.
+     */
+    certificate: CertificateInterface;
+    metadata?: OIDCMetadataInterface;
+    initialValues?: OIDCDataInterface;
+    onSubmit?: (values: any) => void;
+    onApplicationRegenerate?: () => void;
+    onApplicationRevoke?: () => void;
     /**
      * Make the form read only.
      */
@@ -82,6 +97,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 ): ReactElement => {
 
     const {
+        certificate,
         metadata,
         initialValues,
         onSubmit,
@@ -95,6 +111,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
+
+    const dispatch = useDispatch();
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
@@ -116,6 +134,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     ] = useState<boolean>(false);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
+    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
+    const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
+    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
+    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
 
     const clientSecret = useRef<HTMLElement>();
     const grant = useRef<HTMLElement>();
@@ -175,7 +197,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         // When bindingType is set to none, back-end doesn't send the `bindingType` attr. So default to `None`.
         if (!initialValues?.accessToken?.bindingType) {
             setIsTokenBindingTypeSelected(false);
-            
+
             return;
         }
 
@@ -184,6 +206,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setIsTokenBindingTypeSelected(true);
         }
     }, [ initialValues?.accessToken ]);
+
+    /**
+     * Set initial PEM values.
+     */
+    useEffect(() => {
+        if (CertificateTypeInterface.PEM === certificate?.type) {
+            setPEMSelected(true);
+            if (certificate?.value) {
+                setPEMValue(certificate.value);
+            }
+        }
+    }, [ certificate ]);
 
     /**
      * Handle grant type change.
@@ -303,7 +337,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
-        let formValues: any = {
+        let inboundConfigFormValues: any = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
@@ -344,14 +378,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         // Add the `allowedOrigins` & `callbackURLs` only if the grant types
         // `authorization_code` and `implicit` are selected.
         if (showCallbackURLField) {
-            formValues = {
-                ...formValues,
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
                 allowedOrigins: ApplicationManagementUtils.resolveAllowedOrigins(origin ? origin : allowedOrigins),
                 callbackURLs: [ ApplicationManagementUtils.buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
             };
         } else {
-            formValues = {
-                ...formValues,
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
                 allowedOrigins: [],
                 callbackURLs: []
             };
@@ -359,13 +393,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
         if (!initialValues?.clientId || !initialValues?.clientSecret) {
-            return formValues;
+            return inboundConfigFormValues;
         }
 
         return {
-            ...formValues,
-            clientId: initialValues?.clientId,
-            clientSecret: initialValues?.clientSecret
+            general: {
+                advancedConfigurations: {
+                    certificate: {
+                        type: values.get("type"),
+                        value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
+                    }
+                }
+            },
+            inbound: {
+                ...inboundConfigFormValues,
+                clientId: initialValues?.clientId,
+                clientSecret: initialValues?.clientSecret
+            }
         };
     };
 
@@ -478,6 +522,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * submitOrigin function.
      */
     let submitOrigin: (callback: (origin?: string) => void) => void;
+
+    /**
+     * Construct the details from the pem value.
+     */
+    const viewCertificate = () => {
+        if (isPEMSelected && PEMValue) {
+            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
+                null, PEMValue);
+
+            if (displayCertificate) {
+                setCertificateDisplay(displayCertificate);
+                setShowCertificateModal(true);
+            } else {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
+                }));
+            }
+        }
+    };
 
     /**
      * Renders the list of main OIDC config fields.
@@ -662,11 +727,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     customLabel={ allowedOriginsErrorLabel }
                                 />
                                 <Hint>
-                                    The HTTP origins that host your web application.
-                                    <p>You can define multiple web origins and wild cards are supported.</p>
-                                    <p>E.g,&nbsp;&nbsp;
-                                        <code>https://myapp.io&nbsp;https://localhost:9000
-                                            &nbsp;https://*.otherapp.io</code>
+                                    The HTTP origins that host your web application. You can define multiple web
+                                    origins and wild cards are supported.
+                                    <p className={"mt-0"}>E.g.,&nbsp;&nbsp;
+                                        <code>https://myapp.io, https://localhost:9000, https://*.otherapp.io</code>
                                     </p>
                                 </Hint>
                             </Grid.Column>
@@ -689,9 +753,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Hint>
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
-                    <Message compact={true} size={"mini"}>
-                        The default method used by Asgardeo to generate the challenge is SHA-256. Only select
-                        "Plain" for constrained environments that can not use the SHA-256 transformation.
+                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
+                        { 'The default method used by Asgardeo to generate the challenge is SHA-256. Only select' +
+                        '"Plain" for constrained environments that can not use the SHA-256 transformation.' }
                     </Message>
                     <Field
                         ref={ pkce }
@@ -750,11 +814,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
-                    <Message compact={true} size={"tiny"}>
+                    <Message compact={false} size={"tiny"} className={"border-less"}>
+                        <p>
+                            Asgardeo has the capability to attach the OAuth2 access token and refresh
+                            token to an external attribute during the token generation and optionally validate the
+                            external attribute during the API invocation.
+                        </p>
+                        <br/>
                         <Message.Content>
-                            <Message.Header>Token Types</Message.Header>
-                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
-                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
+                            <p><b>None</b> - No Binding.</p>
+                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
+                            <p><b>SSO-Session</b> - Bind the access token to the session.
+                                Asgardeo will generate different tokens for each new browser instance.</p>
                         </Message.Content>
                     </Message>
                 </Grid.Column>
@@ -784,20 +855,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
-                    <Message compact={true} size={"tiny"}>
-                        <Message.Header>
-                            Asgardeo has the capability to attach the OAuth2 access token and refresh
-                            token to an external attribute during the token generation and optionally validate the
-                            external attribute during the API invocation.
-                        </Message.Header>
-                        <br/>
+                    <Message compact={false} size={"tiny"} className={"border-less"}>
                         <Message.Content>
-                            <p><b>None</b> - No Binding.</p>
-                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
-                            <p><b>SSO-Session</b> - Bind the access token to the session.
-                                Asgardeo will generate different tokens for each new browser instance.</p>
+                            <p>Token Types</p>
+                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
+                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
                         </Message.Content>
                     </Message>
+
                 </Grid.Column>
             </Grid.Row>
             {
@@ -1306,6 +1371,156 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
+            { /* Certificates */ }
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider/>
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                    <Heading as="h5">
+                        {
+                            t("console:develop.features.applications.forms." +
+                                "advancedConfig.sections.certificate.heading") }
+                    </Heading>
+                    <Field
+                        label={
+                            t("console:develop.features.applications.forms." +
+                                "advancedConfig.sections.certificate.fields.type.label")
+                        }
+                        name="type"
+                        default={ CertificateTypeInterface.JWKS }
+                        listen={
+                            (values) => {
+                                setPEMSelected(values.get("type") === "PEM");
+                            }
+                        }
+                        type="radio"
+                        value={ certificate?.type }
+                        children={ [
+                            {
+                                label: t("console:develop.features.applications.forms." +
+                                    "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
+                                value: CertificateTypeInterface.JWKS
+                            },
+                            {
+                                label: t("console:develop.features.applications.forms." +
+                                    "advancedConfig.sections.certificate.fields.type.children.pem.label"),
+                                value: CertificateTypeInterface.PEM
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-certificate-type-radio-group` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    {
+                        isPEMSelected
+                            ?
+                            (
+                                <>
+                                    <Field
+                                        name="certificateValue"
+                                        label={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.pemValue.label")
+                                        }
+                                        required={ false }
+                                        requiredErrorMessage={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.pemValue.validations.empty")
+                                        }
+                                        placeholder={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.pemValue.placeholder")
+                                        }
+                                        type="textarea"
+                                        value={
+                                            (CertificateTypeInterface.PEM === certificate?.type)
+                                            && certificate?.value
+                                        }
+                                        listen={
+                                            (values) => {
+                                                setPEMValue(
+                                                    values.get("certificateValue") as string
+                                                );
+                                            }
+                                        }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-certificate-textarea` }
+                                    />
+                                    < Hint>
+                                        {
+                                            t("console:develop.features.applications.forms." +
+                                                "advancedConfig.sections.certificate.fields.pemValue.hint")
+                                        }
+                                    </Hint>
+                                    <LinkButton
+                                        className="certificate-info-link-button"
+                                        onClick={ () => viewCertificate() }
+                                        disabled={ isEmpty(PEMValue) }
+                                        data-testid={ `${ testId }-certificate-info-button` }
+                                    >
+                                        {
+                                            t("console:develop.features.applications.forms." +
+                                                "advancedConfig.sections.certificate.fields.pemValue.actions.view")
+                                        }
+                                    </LinkButton>
+                                </>
+                            )
+                            : (
+                                <>
+                                    <Field
+                                        name="jwksValue"
+                                        label={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.jwksValue.label")
+                                        }
+                                        required={ false }
+                                        requiredErrorMessage={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.jwksValue.validations.empty")
+                                        }
+                                        placeholder={
+                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                                ".sections.certificate.fields.jwksValue.placeholder") }
+                                        type="text"
+                                        validation={ (value: string, validation: Validation) => {
+                                            if (!FormValidation.url(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    t(
+                                                        "console:develop.features.applications.forms" +
+                                                        ".advancedConfig.sections.certificate.fields.jwksValue" +
+                                                        ".validations.invalid"
+                                                    )
+                                                );
+                                            }
+                                        } }
+                                        value={
+                                            (CertificateTypeInterface.JWKS === certificate?.type)
+                                            && certificate?.value
+                                        }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-jwks-input` }
+                                    />
+                                </>
+                            )
+                    }
+                </Grid.Column>
+            </Grid.Row>
+            {
+                showCertificateModal && (
+                    <CertificateFormFieldModal
+                        open={ showCertificateModal }
+                        certificate={ certificateDisplay }
+                        onClose={ () => {
+                            setShowCertificateModal(false);
+                        } }
+                    />
+                )
+            }
             {
                 !readOnly && (
                     <Grid.Row columns={ 1 }>
@@ -1587,7 +1802,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             (initialValues?.clientId || initialValues?.clientSecret) && (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
                                     <Divider />
-                                    <Divider hidden />
                                 </Grid.Column>
                             )
                         }

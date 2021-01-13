@@ -23,12 +23,16 @@ import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
-import { ApplicationTemplateListItemInterface, SupportedAuthProtocolTypes } from "../../models";
+import { ApplicationTemplateListItemInterface, CertificateInterface, SupportedAuthProtocolTypes } from "../../models";
 
 /**
  * Proptypes for the inbound form factory component.
  */
 interface InboundFormFactoryInterface extends TestableComponentInterface {
+    /**
+     * Current certificate configurations.
+     */
+    certificate: CertificateInterface;
     metadata?: any;
     initialValues: any;
     onSubmit: (values: any) => void;
@@ -65,6 +69,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
 ): ReactElement => {
 
     const {
+        certificate,
         metadata,
         initialValues,
         onSubmit,
@@ -82,6 +87,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OIDC:
             return (
                 <InboundOIDCForm
+                    certificate={ certificate }
                     tenantDomain={ tenantDomain }
                     allowedOriginList={ allowedOrigins }
                     initialValues={ initialValues }
@@ -97,6 +103,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.SAML:
             return (
                 <InboundSAMLForm
+                    certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -107,6 +114,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_TRUST:
             return (
                 <InboundWSTrustForm
+                    certificate={ certificate }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
@@ -117,6 +125,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.WS_FEDERATION:
             return (
                 <InboundPassiveStsForm
+                    certificate={ certificate }
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
@@ -126,6 +135,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.CUSTOM:
             return (
                 <InboundCustomProtocolForm
+                    certificate={ certificate }
                     metadata={ metadata }
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }

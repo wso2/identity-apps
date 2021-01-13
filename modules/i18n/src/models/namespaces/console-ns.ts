@@ -86,6 +86,9 @@ export interface ConsoleNS {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: ModalInterface;
         };
+        notifications: {
+            invalidPEMFile: Notification;
+        };
         placeholders: {
             404: Placeholder;
             accessDenied: Placeholder;

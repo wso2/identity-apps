@@ -33,5 +33,4 @@ export * from "./global";
 export * from "./loaders";
 export * from "./app-config";
 export * from "./reducer-state";
-export * from "./ua-parser";
 export * from "./configs";

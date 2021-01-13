@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive, SemanticICONS } from "semantic-ui-react";
-import { UserAgentParser } from "../../helpers";
-import { UserSession } from "../../models";
 import { UserSessionsEdit } from "./user-sessions-edit";
+import { UserSession } from "../../models";
 
 /**
  * Proptypes for the user sessions list component.

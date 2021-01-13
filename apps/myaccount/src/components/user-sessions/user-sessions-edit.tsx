@@ -16,17 +16,12 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, List, Responsive, SemanticICONS, Table } from "semantic-ui-react";
-import {
-    IBrowser,
-    IDevice,
-    IOS,
-    UserSession
-} from "../../models";
+import { UserSession } from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**

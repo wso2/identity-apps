@@ -370,7 +370,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 { notification }
                             </Grid.Column>
                         </Grid.Row>
-                    )}
+                    ) }
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field

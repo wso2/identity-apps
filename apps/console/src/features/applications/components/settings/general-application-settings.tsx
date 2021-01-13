@@ -34,8 +34,7 @@ import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../co
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,
-    ApplicationTemplateListItemInterface,
-    CertificateInterface
+    ApplicationTemplateListItemInterface
 } from "../../models";
 import { GeneralDetailsForm } from "../forms";
 
@@ -89,10 +88,6 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
-    /**
-     * Current certificate configurations.
-     */
-    certificate: CertificateInterface;
 }
 
 /**
@@ -117,7 +112,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         isLoading,
         onDelete,
         onUpdate,
-        certificate,
         readOnly,
         [ "data-testid" ]: testId
     } = props;
@@ -261,7 +255,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 <>
                     <EmphasizedSegment>
                         <GeneralDetailsForm
-                            certificate={ certificate }
                             name={ name }
                             appId={ appId }
                             description={ description }

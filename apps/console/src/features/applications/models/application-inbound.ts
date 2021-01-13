@@ -135,7 +135,12 @@ export const emptyOIDCConfig: OIDCDataInterface = ({
         supportPlainTransformAlgorithm: false
     },
     publicClient: false,
-    state: undefined
+    state: undefined,
+    idToken: undefined,
+    logout: undefined,
+    refreshToken: undefined,
+    scopeValidators: [],
+    validateRequestObjectSignature: undefined,
 });
 
 /**

@@ -157,7 +157,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                     <Grid>
                         { (!fields || fields.includes("issuer")) && (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         name="issuer"
                                         label={
@@ -191,22 +191,22 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         ) }
                         { (!fields || fields.includes("applicationQualifier")) && (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         name="applicationQualifier"
                                         label={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                                ".label")
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.qualifier.label")
                                         }
                                         required={ false }
                                         requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                                ".validations.empty")
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.qualifier.validations.empty")
                                         }
                                         type="text"
                                         placeholder={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                                ".placeholder")
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.qualifier.placeholder")
                                         }
                                         value={
                                             initialValues?.inboundProtocolConfiguration
@@ -224,58 +224,63 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                             </Grid.Row>
                         ) }
                         { (!fields || fields.includes("assertionConsumerURLs")) && (
-                            <URLInput
-                                urlState={ assertionConsumerUrls }
-                                setURLState={ setAssertionConsumerUrls }
-                                labelName={
-                                    t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
-                                        ".label")
-                                }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
-                                        ".placeholder")
-                                }
-                                validationErrorMsg={
-                                    t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
-                                        ".validations.invalid")
-                                }
-                                validation={ (value: string) => {
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <URLInput
+                                        urlState={ assertionConsumerUrls }
+                                        setURLState={ setAssertionConsumerUrls }
+                                        labelName={
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.assertionURLs.label")
+                                        }
+                                        placeholder={
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.assertionURLs.placeholder")
+                                        }
+                                        validationErrorMsg={
 
-                                    let label: ReactElement = null;
+                                            t("console:develop.features.applications.forms.inboundSAML" +
+                                                ".fields.assertionURLs.validations.invalid")
+                                        }
+                                        validation={ (value: string) => {
 
-                                    if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                        label = (
-                                            <Label basic color="orange" className="mt-2">
-                                                { t("console:common.validations.unrecognizedURL.description") }
-                                            </Label>
-                                        );
-                                    }
+                                            let label: ReactElement = null;
 
-                                    if (!URLUtils.isMobileDeepLink(value)) {
-                                        return false;
-                                    }
+                                            if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                                label = (
+                                                    <Label basic color="orange" className="mt-2">
+                                                        { t("console:common.validations.unrecognizedURL.description") }
+                                                    </Label>
+                                                );
+                                            }
 
-                                    setAssertionConsumerURLsErrorLabel(label);
+                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                                return false;
+                                            }
 
-                                    return true;
-                                } }
-                                computerWidth={ 10 }
-                                required={ true }
-                                showError={ showAssertionConsumerUrlError }
-                                setShowError={ setAssertionConsumerUrlError }
-                                hint={
-                                    !hideFieldHints && t("console:develop.features.applications.forms.inboundSAML" +
-                                        ".fields.assertionURLs.hint")
-                                }
-                                addURLTooltip={ t("common:addURL") }
-                                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                data-testid={ `${ testId }-assertion-consumer-url-input` }
-                                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                    submitUrl = submitFunction;
-                                } }
-                                showPredictions={ false }
-                                customLabel={ assertionConsumerURLsErrorLabel }
-                            />
+                                            setAssertionConsumerURLsErrorLabel(label);
+
+                                            return true;
+                                        } }
+                                        computerWidth={ 10 }
+                                        required={ true }
+                                        showError={ showAssertionConsumerUrlError }
+                                        setShowError={ setAssertionConsumerUrlError }
+                                        hint={
+                                            !hideFieldHints && t("console:develop.features.applications" +
+                                                ".forms.inboundSAML.fields.assertionURLs.hint")
+                                        }
+                                        addURLTooltip={ t("common:addURL") }
+                                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                        data-testid={ `${ testId }-assertion-consumer-url-input` }
+                                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                            submitUrl = submitFunction;
+                                        } }
+                                        showPredictions={ false }
+                                        customLabel={ assertionConsumerURLsErrorLabel }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
                         ) }
                     </Grid>
                 </Forms>

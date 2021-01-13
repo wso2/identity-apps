@@ -390,7 +390,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <GeneralApplicationSettings
                 accessUrl={ application.accessUrl }
                 appId={ application.id }
-                certificate={ application.advancedConfigurations?.certificate }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
                 imageUrl={ application.imageUrl }
@@ -410,6 +409,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AccessConfiguration
                 allowedOriginList={ allowedOrigins }
+                certificate={ application.advancedConfigurations?.certificate }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
                 onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }

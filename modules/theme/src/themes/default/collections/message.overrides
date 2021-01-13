@@ -23,4 +23,21 @@
             background: @secondaryColor;
         }
     }
+
+    &.border-less {
+        border: none !important;
+        box-shadow: none;
+    }
+}
+
+/*------------------------
+    Message With Icon
+-------------------------*/
+
+.ui.message {
+    &.with-inline-icon {
+        >.icon:not(.close) {
+            font-size: 2em;
+        }
+    }
 }
