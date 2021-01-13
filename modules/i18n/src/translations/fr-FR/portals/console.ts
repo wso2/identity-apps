@@ -1202,6 +1202,9 @@ export const console: ConsoleNS = {
                                 heading: "PKCE"
                             },
                             pkce: {
+                                description: "La méthode par défaut utilisée par {{productName}} pour " +
+                                    "générer le défi est SHA-256. Sélectionnez \"Plain\" uniquement pour les " +
+                                    "environnements contraints qui ne peuvent pas utiliser la transformation SHA-256.",
                                 fields: {
                                     pkce: {
                                         children: {
