@@ -1203,7 +1203,7 @@ export const console: ConsoleNS = {
                             logoutURLs: {
                                 fields: {
                                     back: {
-                                        hint: "Asgardeo will directly communicate the logout requests to this " +
+                                        hint: "{{productName}} will directly communicate the logout requests to this " +
                                             "client URL(s), so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "Enter the Back Channel Logout URL",
