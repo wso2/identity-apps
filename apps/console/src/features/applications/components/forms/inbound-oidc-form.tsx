@@ -758,8 +758,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
                     <Message compact={ true } size={ "tiny" } className={"border-less"}>
-                        { 'The default method used by Asgardeo to generate the challenge is SHA-256. Only select' +
-                        '"Plain" for constrained environments that can not use the SHA-256 transformation.' }
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.description", {
+                            productName: config.ui.productName
+                        }) }
                     </Message>
                     <Field
                         ref={ pkce }

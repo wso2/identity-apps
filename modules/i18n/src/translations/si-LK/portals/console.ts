@@ -1213,6 +1213,9 @@ export const console: ConsoleNS = {
                                 heading: "PKCE"
                             },
                             pkce: {
+                                description: "අභියෝගය ජනනය කිරීම සඳහා {{productName}} විසින් භාවිතා කරන පෙරනිමි " +
+                                    "ක්‍රමය වන්නේ SHA-256 ය. SHA-256 පරිණාමනය භාවිතා කළ නොහැකි සීමිත" +
+                                    " පරිසරයන් සඳහා \"සරල\" තෝරන්න.",
                                 fields: {
                                     pkce: {
                                         children: {
