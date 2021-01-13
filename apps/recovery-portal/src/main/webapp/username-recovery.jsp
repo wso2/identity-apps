@@ -319,7 +319,7 @@
 
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
-                const submitButton = $('#recoverySubmit');
+                const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
 
                 var errorMessage = $("#error-msg");
@@ -328,10 +328,10 @@
                 <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
 
-                    if (firstName === '') {
+                    if (firstName === "") {
                         errorMessage.text("Please fill the first name.");
                         errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
@@ -343,7 +343,7 @@
                     if (reCaptchaResponse.trim() == '') {
                         errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
