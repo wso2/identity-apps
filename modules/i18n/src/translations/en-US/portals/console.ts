@@ -1203,6 +1203,8 @@ export const console: ConsoleNS = {
                             logoutURLs: {
                                 fields: {
                                     back: {
+                                        hint: "Asgardeo will directly communicate the logout requests to this " +
+                                            "client URL(s), so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "Enter the Back Channel Logout URL",
                                         validations: {
@@ -1219,6 +1221,10 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     signatureValidation: {
+                                        hint: "{{productName}} supports receiving OIDC authentication request " +
+                                            "parameters from clients in a `request object`. Enable signature " +
+                                            "validation to accept only signed request objects in the" +
+                                            " authorization request.",
                                         label: "Enable request object signature validation"
                                     }
                                 },

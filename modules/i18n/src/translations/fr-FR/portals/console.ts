@@ -1196,6 +1196,9 @@ export const console: ConsoleNS = {
                             logoutURLs: {
                                 fields: {
                                     back: {
+                                        hint: "{{productName}} communiquera directement les demandes de déconnexion" +
+                                            " à cette (ces) URL client, afin que les clients puissent" +
+                                            " invalider la session utilisateur.",
                                         label: "URL de déconnexion amont",
                                         placeholder: "Saisir l'URL de déconnexion amont",
                                         validations: {
@@ -1212,6 +1215,10 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     signatureValidation: {
+                                        hint: "{{productName}} prend en charge la réception des paramètres de " +
+                                            "demande d'authentification OIDC des clients dans un objet de demande. " +
+                                            "Activez la validation de signature pour n'accepter que les objets " +
+                                            "de demande signés dans la demande d'autorisation.",
                                         label: "Activer la validation de la signature de l'objet de la requête"
                                     }
                                 },
