@@ -19,15 +19,8 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import {
-    ConfirmationModal,
-    CopyInputField,
-    Heading,
-    Hint,
-    LinkButton,
-    URLInput
-} from "@wso2is/react-components";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -41,6 +34,7 @@ import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
+    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -48,8 +42,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes,
-    emptyOIDCConfig
+    SupportedAccessTokenBindingTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
@@ -252,7 +245,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 });
             }
         }
-        return allowedList;
+        if (isLabel) {
+            // if the list related to a label then sort the values in
+            // alphabetical order using a ascending comparator.
+            return allowedList.sort((a, b) => {
+                if (a.label < b.label) return -1;
+                if (a.label > b.label) return 1;
+                return 0;
+            });
+        } else {
+            return allowedList;
+        }
     };
 
     /**
@@ -820,17 +823,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
                     <Message compact={false} size={"tiny"} className={"border-less"}>
-                        <p>
-                            Asgardeo has the capability to attach the OAuth2 access token and refresh
-                            token to an external attribute during the token generation and optionally validate the
-                            external attribute during the API invocation.
-                        </p>
-                        <br/>
                         <Message.Content>
-                            <p><b>None</b> - No Binding.</p>
-                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
-                            <p><b>SSO-Session</b> - Bind the access token to the session.
-                                Asgardeo will generate different tokens for each new browser instance.</p>
+                            <p>{
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".accessToken.fields.type.label")
+                            }</p>
+                            <p><b>Default</b> - {
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".accessToken.fields.type.valueDescriptions.default")
+                            }</p>
+                            <p><b>JWT</b> - {
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".accessToken.fields.type.valueDescriptions.jwt")
+                            }</p>
                         </Message.Content>
                     </Message>
                 </Grid.Column>
@@ -861,13 +866,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         } }
                     />
                     <Message compact={false} size={"tiny"} className={"border-less"}>
+                        <p>
+                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.bindingType.description", {
+                                productName: config.ui.productName
+                            }) }
+                        </p>
+                        <br/>
                         <Message.Content>
-                            <p>Token Types</p>
-                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
-                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
+                            <p><b>None</b> -
+                                { t("console:develop.features.applications.forms" +
+                                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none") }
+                            </p>
+                            <p><b>Cookie</b> -
+                                { t("console:develop.features.applications.forms" +
+                                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie") }
+                            </p>
+                            <p><b>SSO-Session</b> -
+                                { t("console:develop.features.applications.forms" +
+                                    ".inboundOIDC.sections.accessToken.fields.bindingType" +
+                                    ".valueDescriptions.sso_session", {
+                                    productName: config.ui.productName
+                                }) }
+                            </p>
                         </Message.Content>
                     </Message>
-
                 </Grid.Column>
             </Grid.Row>
             {

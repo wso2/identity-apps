@@ -1100,7 +1100,19 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
-                                        label: "Type de liaison des jetons"
+                                        label: "Type de liaison des jetons",
+                                        description: "{{productName}} a la capacité d'attacher le jeton" +
+                                            " d'accès OAuth2 et le jeton d'actualisation à un attribut " +
+                                            "externe lors de la génération du jeton et éventuellement de" +
+                                            " valider l'attribut externe lors de l'invocation de l'API.",
+                                        valueDescriptions: {
+                                            none: "Aucune liaison.",
+                                            cookie: "Liez le jeton d'accès à un cookie avec les " +
+                                                "paramètres Secure et httpOnly.",
+                                            sso_session: "Liez le jeton d'accès à la session. {{productName}}" +
+                                                " générera différents jetons pour chaque nouvelle instance " +
+                                                "de navigateur."
+                                        }
                                     },
                                     expiry: {
                                         hint: "Spécifiez la période de validité du jeton d'accès en secondes.",
@@ -1116,7 +1128,11 @@ export const console: ConsoleNS = {
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
-                                        label: "Type de token"
+                                        label: "Type de token",
+                                        valueDescriptions: {
+                                            "default": "Émettez un UUID opaque en tant que jeton.",
+                                            "jwt": "Émettez un jeton JWT autonome."
+                                        }
                                     },
                                     validateBinding: {
                                         hint: "Validez les attributs de liaison lors de la validation du jeton. Le" +
