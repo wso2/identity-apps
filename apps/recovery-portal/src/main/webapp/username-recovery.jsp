@@ -316,28 +316,35 @@
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
-                var errorMessage = $("#error-msg");
+
+                // Prevent clicking multiple times, and notify the user something
+                // is happening in the background.
+                const submitButton = $("#recoverySubmit");
+                submitButton.addClass("loading").attr("disabled", true);
+
+                const errorMessage = $("#error-msg");
                 errorMessage.hide();
 
                 <% if (isFirstNameInClaims){ %>
-                    var firstName = $("#first-name").val();
+                    const firstName = $("#first-name").val();
 
-                    if (firstName == '') {
+                    if (firstName === "") {
                         errorMessage.text("Please fill the first name.");
                         errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                        submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
                 <% } %>
 
                 <% if (reCaptchaEnabled) { %>
-                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                    const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
-                    if (reCaptchaResponse.trim() == '') {
+                    if (reCaptchaResponse.trim() === "") {
                         errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                        submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
                 <% } %>
