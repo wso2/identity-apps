@@ -53,6 +53,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
+import { ConfigReducerStateInterface } from "../../../core";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -138,6 +139,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const clientSecret = useRef<HTMLElement>();
     const grant = useRef<HTMLElement>();
@@ -605,7 +607,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-public-client-checkbox` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint") }
+                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
+                            productName: config.ui.productName
+                        }) }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>

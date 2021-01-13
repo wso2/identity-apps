@@ -1079,7 +1079,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Permettez au client de s'authentifier auprès d'Asgardeo sans le secret client." +
+                                hint: "Permettez au client de s'authentifier auprès d'{{productName}} sans le " +
+                                    "secret client." +
                                     " Les clients publics tels que les applications exécutées dans un navigateur ou" +
                                     " sur un appareil mobile ne peuvent pas utiliser les secrets client enregistrés.",
                                 label: "Client public",
