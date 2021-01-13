@@ -1112,7 +1112,18 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
-                                        label: "Token binding type"
+                                        label: "Token binding type",
+                                        description: "{{productName}} has the capability to attach the OAuth2" +
+                                            " access token and refresh token to an external attribute during" +
+                                            " the token generation and optionally validate the external attribute" +
+                                            " during the API invocation.",
+                                        valueDescriptions: {
+                                            none: "No Binding.",
+                                            cookie: "Bind the access token to a cookie with Secure " +
+                                                "and httpOnly parameters.",
+                                            sso_session: "Bind the access token to the session. {{productName}}" +
+                                                " will generate different tokens for each new browser instance."
+                                        }
                                     },
                                     expiry: {
                                         hint: "Specify the validity period of the access token in seconds.",
@@ -1128,7 +1139,11 @@ export const console: ConsoleNS = {
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
-                                        label: "Token type"
+                                        label: "Token type",
+                                        valueDescriptions: {
+                                            "default": "Issue an opaque UUID as a token.",
+                                            "jwt": "Issue a self-contained JWT token."
+                                        }
                                     },
                                     validateBinding: {
                                         hint: "Validate the binding attributes at the token validation. The client " +

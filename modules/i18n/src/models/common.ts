@@ -81,6 +81,13 @@ export interface Placeholder {
  */
 export interface FormAttributes extends StrictFormAttributes {
     [ key: string ]: any;
+    /**
+     * This property holds a `optional` description for a form field
+     * attribute. For example, if have have multiple radio button
+     * groups as a "form field" then we would use this property to
+     * explain the purpose of each each group.
+     */
+    description?: string;
 }
 
 /**
