@@ -19,7 +19,11 @@
 import isObject from "lodash/isObject";
 import { lazy } from "react";
 import { ExtensionsConfig } from "./config";
-import { ApplicationTemplateExtensionsConfigInterface, ExtensionsConfigInterface } from "./models";
+import {
+    ApplicationTemplateExtensionsConfigInterface,
+    ExtensionsConfigInterface,
+    IdentityProviderTemplateExtensionsConfigInterface
+} from "./models";
 import {
     TemplateConfigInterface,
     TemplateContentInterface
@@ -29,6 +33,10 @@ import {
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface
 } from "../features/applications/models";
+import {
+    IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateInterface, IdentityProviderTemplateListItemInterface
+} from "../features/identity-providers/models";
 
 /**
  * Class to manage extensions.
@@ -104,6 +112,44 @@ export class ExtensionsManager {
             config.templates = config.templates
                 .map((template: TemplateConfigInterface<ApplicationTemplateInterface>) => {
                     return ExtensionsManager.lazyLoadTemplateResources<ApplicationTemplateGroupInterface>(template);
+                });
+        }
+
+        return config;
+    }
+
+
+    /**
+     * Builds and returns the IDP template config.
+     *
+     * @return {IdentityProviderTemplateExtensionsConfigInterface}
+     */
+    public getIdentityProviderTemplatesConfig(): IdentityProviderTemplateExtensionsConfigInterface {
+
+        const config: IdentityProviderTemplateExtensionsConfigInterface = ExtensionsManager.getConfig()
+            .templateExtensions?.identityProviders;
+
+        if (!config) {
+            return {
+                categories: [],
+                templates: []
+            };
+        }
+
+        // If categories exists, try to resolve the category config by lazy loading the resource etc.
+        if (config.categories && Array.isArray(config.categories) && config.categories.length > 0) {
+            config.categories = config.categories
+                .map((category: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>) => {
+                    return ExtensionsManager
+                        .lazyLoadTemplateResources<IdentityProviderTemplateCategoryInterface>(category);
+                });
+        }
+
+        // If templates exists, try to resolve the group config by lazy loading the resource etc.
+        if (config.templates && Array.isArray(config.templates) && config.templates.length > 0) {
+            config.templates = config.templates
+                .map((template: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>) => {
+                    return ExtensionsManager.lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(template);
                 });
         }
 

@@ -1,0 +1,77 @@
+{
+  "id": "d7c8549f-32af-4f53-9013-f66f1a6c67bf",
+  "name": "Facebook",
+  "description": "Authenticate users from Facebook.",
+  "image": "facebook",
+  "category": "DEFAULT",
+  "displayOrder": 2,
+  "services": ["authentication"],
+  "idp": {
+    "name": "Facebook",
+    "description": "Identity provider for Facebook Federation",
+    "image": "",
+    "isPrimary": false,
+    "isFederationHub": false,
+    "homeRealmIdentifier": "",
+    "certificate": {
+      "certificates": []
+    },
+    "alias": "https://localhost:9444/oauth2/token",
+    "claims": {
+      "userIdClaim": {
+        "uri": "http://wso2.org/claims/username"
+      },
+      "roleClaim": {
+        "uri": "http://wso2.org/claims/role"
+      },
+      "provisioningClaims": []
+    },
+    "roles": {
+      "mappings": [],
+      "outboundProvisioningRoles": []
+    },
+    "federatedAuthenticators": {
+      "defaultAuthenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+      "authenticators": [
+        {
+          "authenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+          "isEnabled": true,
+          "properties": [
+            {
+              "key": "Scope",
+              "value": ""
+            },
+            {
+              "key": "UserInfoFields",
+              "value": ""
+            },
+            {
+              "key": "ClientId",
+              "value": ""
+            },
+            {
+              "key": "callBackUrl",
+              "value": ""
+            },
+            {
+              "key": "ClientSecret",
+              "value": ""
+            }
+          ]
+        }
+      ]
+    },
+    "provisioning": {
+      "jit": {
+        "isEnabled": false,
+        "scheme": "PROVISION_SILENTLY",
+        "userstore": "PRIMARY"
+      },
+      "outboundConnectors": {
+        "defaultConnectorId": "",
+        "connectors": []
+      }
+    }
+  }
+}
+

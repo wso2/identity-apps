@@ -1,0 +1,36 @@
+{
+    "category": "DEFAULT",
+    "description": "Create a new Identity Provider with minimum configurations",
+    "displayOrder": 1,
+    "id": "expert-mode",
+    "idp": {
+        "certificate": {},
+        "claims": {
+            "provisioningClaims": [],
+            "roleClaim": {
+                "uri": ""
+            },
+            "userIdClaim": {
+                "uri": ""
+            }
+        },
+        "description": "",
+        "federatedAuthenticators": {
+            "authenticators": [],
+            "defaultAuthenticatorId": ""
+        },
+        "homeRealmIdentifier": "",
+        "image": "",
+        "isFederationHub": false,
+        "isPrimary": false,
+        "name": "",
+        "provisioning": {},
+        "roles": {
+            "mappings": [],
+            "outboundProvisioningRoles": []
+        }
+    },
+    "image": "expert",
+    "name": "Expert Mode",
+    "services": []
+}

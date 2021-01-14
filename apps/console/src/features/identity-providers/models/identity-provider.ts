@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { TemplateContentInterface } from "../data/identity-provider-templates";
 
 /**
  * Available Identity Provider list.
@@ -169,7 +170,7 @@ export interface IdentityProviderTemplateListResponseInterface {
     startIndex?: number;
     count?: number;
     links?: number;
-    templates?: IdentityProviderTemplateListItemResponseInterface[];
+    templates?: IdentityProviderTemplateListItemInterface[];
 }
 
 /**
@@ -191,13 +192,72 @@ export interface IdentityProviderTemplateItemInterface {
  */
 export interface IdentityProviderTemplateInterface extends IdentityProviderTemplateItemInterface {
     services?: SupportedServicesInterface[];
+    content?: TemplateContentInterface;
 }
 
 /**
  *  Identity provider template list item response interface.
  */
-export interface IdentityProviderTemplateListItemResponseInterface extends IdentityProviderTemplateItemInterface {
+export interface IdentityProviderTemplateListItemInterface extends IdentityProviderTemplateItemInterface {
     services?: string[];
+    content?: TemplateContentInterface;
+}
+
+/**
+ * Interface for IDP template categories.
+ */
+export interface IdentityProviderTemplateCategoryInterface {
+    /**
+     * Category id.
+     */
+    id: string;
+    /**
+     * Category Display Name.
+     */
+    displayName: string;
+    /**
+     * Category Description.
+     */
+    description: string;
+    /**
+     * Templates belonging to the category.
+     */
+    templates?: IdentityProviderTemplateInterface[];
+    /**
+     * View configurations.
+     */
+    viewConfigs?: IdentityProviderTemplateCategoryViewConfigInterface;
+}
+
+/**
+ * Interface for the IDP templates category view config.
+ */
+export interface IdentityProviderTemplateCategoryViewConfigInterface {
+    /**
+     * Config for the UI tags displayed on templates.
+     */
+    tags: {
+        /**
+         * Element to render the tag as.
+         */
+        as: "icon" | "label" | "default";
+        /**
+         * Title for the section.
+         */
+        sectionTitle: string;
+        /**
+         * Show/Hide the tag icon.
+         */
+        showTagIcon: boolean;
+        /**
+         * Show/Hide the tags.
+         */
+        showTags: boolean;
+        /**
+         * Where to find the tags in the templates object.
+         */
+        tagsKey: string;
+    };
 }
 
 /**
@@ -392,6 +452,7 @@ export const emptyIdentityProvider = (): StrictIdentityProviderInterface => ({
  * Interface for the identity provider reducer state.
  */
 export interface IdentityProviderReducerStateInterface {
+    templates: IdentityProviderTemplateItemInterface[];
     meta: IdentityProviderMetaInterface;
 }
 

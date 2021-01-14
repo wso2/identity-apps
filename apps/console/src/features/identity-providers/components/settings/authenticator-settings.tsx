@@ -45,7 +45,7 @@ import {
     FederatedAuthenticatorWithMetaInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface
 } from "../../models";
 import { AuthenticatorFormFactory } from "../forms";
@@ -408,7 +408,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param templatesList List of templates.
      */
-    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemResponseInterface[]) {
+    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemInterface[]) {
         const templates: IdentityProviderTemplateInterface[] = [];
         for (const template of templatesList) {
             templates.push(await fetchIDPTemplate(template.id));

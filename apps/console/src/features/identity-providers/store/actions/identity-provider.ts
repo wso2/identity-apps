@@ -16,8 +16,15 @@
  * under the License.
  */
 
-import { IdentityProviderActionTypes, SetAvailableAuthenticatorsMetaInterface } from "./types";
-import { FederatedAuthenticatorListItemInterface } from "../../models";
+import {
+    IdentityProviderActionTypes,
+    SetAvailableAuthenticatorsMetaInterface,
+    SetAvailableIDPTemplateInterface
+} from "./types";
+import {FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface} from "../../models";
+import {
+    SetApplicationTemplatesActionInterface
+} from "../../../applications/store/actions/types";
 
 /**
  * Redux action to set the list of available authenticators.
@@ -30,4 +37,17 @@ export const setAvailableAuthenticatorsMeta = (
 ): SetAvailableAuthenticatorsMetaInterface => ({
     payload: meta,
     type: IdentityProviderActionTypes.SET_AVAILABLE_AUTHENTICATOR_META
+});
+
+/**
+ * Redux action to set the IDP templates.
+ *
+ * @param {IdentityProviderTemplateItemInterface[]} templates - IDP templates list.
+ * @return {SetApplicationTemplatesActionInterface}
+ */
+export const setIdentityProviderTemplates = (
+    templates: IdentityProviderTemplateItemInterface[],
+): SetAvailableIDPTemplateInterface => ({
+    payload: templates,
+    type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES
 });
