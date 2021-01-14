@@ -66,7 +66,7 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface,
+    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies,
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
@@ -182,7 +182,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         setIDPTemplateRequestLoadingStatus(true);
 
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates()
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
+            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
+            IdentityProviderManagementConstants.
+                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
             .finally(() => {
                 setIDPTemplateRequestLoadingStatus(false);
             });

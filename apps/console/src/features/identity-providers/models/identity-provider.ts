@@ -261,6 +261,25 @@ export interface IdentityProviderTemplateCategoryViewConfigInterface {
 }
 
 /**
+ * Enum for IDP template loading strategies.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum IdentityProviderTemplateLoadingStrategies {
+    /**
+     * App will resort to in-app templates.
+     * @type {string}
+     */
+    LOCAL = "LOCAL",
+    /**
+     * App will fetch templates from the template management REST API.
+     * @type {string}
+     */
+    REMOTE = "REMOTE"
+}
+
+/**
  * Enum for the supported quick start template types.
  *
  * @readonly

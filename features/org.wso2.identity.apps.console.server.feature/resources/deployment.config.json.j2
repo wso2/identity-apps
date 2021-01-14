@@ -117,6 +117,9 @@
         {% if console.ui.application_template_loading_strategy is defined %}
         "applicationTemplateLoadingStrategy": "{{ console.ui.application_template_loading_strategy }}",
         {% endif %}
+        {% if console.ui.identity_provider_template_loading_strategy is defined %}
+        "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
+        {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "features": {
             "applications": {
