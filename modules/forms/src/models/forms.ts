@@ -131,6 +131,11 @@ export interface CheckboxChild {
     label: string;
     value: string;
     readOnly?: boolean;
+    /**
+     * Support for disabling an individual checkbox
+     * within a group of checkboxes.
+     */
+    disabled?: boolean;
 }
 
 /**
