@@ -797,7 +797,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
-            { /* PKCE */ }
+            { /* Form Section: PKCE */ }
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                     <Divider />
