@@ -811,12 +811,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Hint>
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
-                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
-                        { t("console:develop.features.applications.forms." +
-                            "inboundOIDC.sections.pkce.description", {
-                            productName: config.ui.productName
-                        }) }
-                    </Message>
                     <Field
                         ref={ pkce }
                         name={ PKCE_KEY }
@@ -845,6 +839,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-pkce-checkbox-group` }
                     />
+                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
+                        { t("console:develop.features.applications.forms." +
+                            "inboundOIDC.sections.pkce.description", {
+                            productName: config.ui.productName
+                        }) }
+                    </Message>
                 </Grid.Column>
             </Grid.Row>
 
