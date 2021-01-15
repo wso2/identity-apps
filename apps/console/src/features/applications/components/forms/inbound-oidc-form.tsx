@@ -819,7 +819,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Message>
                     <Field
                         ref={ pkce }
-                        name="PKCE"
+                        name={ PKCE_KEY }
                         label=""
                         required={ false }
                         requiredErrorMessage={
