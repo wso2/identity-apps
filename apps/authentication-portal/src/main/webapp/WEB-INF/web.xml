@@ -66,6 +66,10 @@
         <param-name>EnableSelfSignUpEndpoint</param-name>
         <param-value>true</param-value>
     </context-param-->
+    <!--context-param>
+        <param-name>AccountRegisterEndpointURL</param-name>
+        <param-value>https://localhost:9443/accountrecoveryendpoint/register.do</param-value>
+    </context-param-->
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     <!--context-param>

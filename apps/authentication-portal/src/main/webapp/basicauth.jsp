@@ -264,6 +264,7 @@
         Boolean isRecoveryEPAvailable = false;
         Boolean isSelfSignUpEPAvailable = false;
         String identityMgtEndpointContext = "";
+        String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
 
@@ -302,6 +303,11 @@
                     request.getRequestDispatcher("error.do").forward(request, response);
                     return;
                 }
+            }
+
+            accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+            if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+                accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
             }
         }
     %>
@@ -380,7 +386,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="button"
-                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters))%>';"
+                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
                 class="ui large button link-button"
                 id="registerLink"
                 tabindex="8"
@@ -413,11 +419,10 @@
                     .forHtmlAttribute(urlEncodedURL);
         }
 
-        private String getRegistrationUrl(String identityMgtEndpointContext, String urlEncodedURL,
+        private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
                 String urlParameters) {
 
-            return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER + "?"
-                    + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+            return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
 
     %>
