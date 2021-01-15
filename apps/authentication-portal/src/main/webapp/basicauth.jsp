@@ -242,6 +242,9 @@
                     data-testid="login-page-password-input"
                 >
                 <i aria-hidden="true" class="lock icon"></i>
+                <button id="passwordUnmask" class="ui icon button basic ml-1 mr-0 outlined">
+                    <i id="passwordUnmaskIcon" class="eye icon"></i>
+                </button>
             </div>
         </div>
     <%
