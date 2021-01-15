@@ -132,10 +132,10 @@
       Product Branding
 ------------------------------*/
 
-@productLogoHeight: 16px;
+@productLogoHeight: 25px;
 @productLogoVerticalAlign: middle;
 @productLogoWidth: 60px;
-@productLogoMargin: 0 5px 0 0;
+@productLogoMargin: -3px 0 0 0;
 
 @productTitleTextTransform: uppercase;
 @productTitleAppNameTextTransform: none;

@@ -199,11 +199,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 />
                             )
                     }
-                    productName={
-                        (state.productName && state.productName !== "")
-                            ? state.productName
-                            : config.ui.productName
-                    }
                     version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
