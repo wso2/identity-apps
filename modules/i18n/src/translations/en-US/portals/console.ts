@@ -1066,8 +1066,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
-                                        "However, if you are planning to integrate a sample, " +
-                                        "this field can be skipped."
+                                        "However, if you are planning to try with a sample, " +
+                                        "this field can be ignored."
                                 }
                             },
                             clientID: {

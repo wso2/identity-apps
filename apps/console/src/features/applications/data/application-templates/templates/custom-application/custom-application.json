@@ -1,7 +1,7 @@
 {
     "id": "custom-application",
     "name": "Custom Application",
-    "description": "Manually configure an application without any predefined templates.",
+    "description": "Applications that uses manual configurations.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",
