@@ -77,6 +77,7 @@ export interface ServiceResourceEndpointsInterface {
     jwks: string;
     logout: string;
     me: string;
+    preference: string;
     profileSchemas: string;
     sessions: string;
     smsOtpResend: string;

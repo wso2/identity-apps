@@ -27,6 +27,22 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Codes de récupération"
             },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur lors de l'obtention de la préférence de récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de l'obtention de la préférence de récupération",
+                        message: "Un problème est survenu"
+                    },
+                    success: {
+                        description: "Récupération réussie de la préférence de récupération",
+                        message: "Récupération des préférences de récupération réussie"
+                    }
+                }
+            },
             emailRecovery: {
                 descriptions: {
                     add: "Ajouter ou mettre à jour l'e-mail de récupération",

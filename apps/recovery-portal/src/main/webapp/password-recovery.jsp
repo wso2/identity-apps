@@ -264,35 +264,41 @@
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
-                var errorMessage = $("#error-msg");
+
+                // Prevent clicking multiple times, and notify the user something
+                // is happening in the background.
+                const submitButton = $("#recoverySubmit");
+                submitButton.addClass("loading").attr("disabled", true);
+
+                const errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                var userName = document.getElementById("username");
-                var usernameUserInput = document.getElementById("usernameUserInput");
+                let userName = document.getElementById("username");
+                const usernameUserInput = document.getElementById("usernameUserInput");
                 if (usernameUserInput) {
                     userName.value = usernameUserInput.value.trim();
                 }
                 // Validate User Name
-                var firstName = $("#username").val();
+                const firstName = $("#username").val();
 
-                if (firstName == '') {
+                if (firstName === "") {
                     errorMessage.text("Please fill the first name.");
                     errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
 
                 // Validate reCaptcha
                 <% if (reCaptchaEnabled) { %>
 
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
-                if (reCaptchaResponse.trim() == '') {
+                if (reCaptchaResponse.trim() === "") {
                     errorMessage.text("Please select reCaptcha.");
                     errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
 

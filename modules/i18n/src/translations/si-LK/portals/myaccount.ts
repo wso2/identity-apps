@@ -27,6 +27,22 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "කේත ප්\u200Dරතිසාධනය"
             },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "ප්‍රතිසාධන මනාපය ලබා ගැනීමේ දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "ප්‍රතිසාධන මනාපය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "ප්‍රතිසාධන මනාපය සාර්ථකව ලබා ගන්නා ලදි",
+                        message: "ප්‍රතිසාධන මනාප ලබා ගැනීම සාර්ථකයි"
+                    }
+                }
+            },
             emailRecovery: {
                 descriptions: {
                     add: "ප්\u200Dරතිසාධන ඊමේල් තැපැල් ලිපිනයක් එක් කරන්න",

@@ -72,6 +72,9 @@ export interface MyAccountNS {
                 };
                 heading: string;
             };
+            preference?: {
+                notifications?: Notification;
+            };
             emailRecovery: {
                 descriptions: {
                     add: string;

@@ -27,6 +27,22 @@ export const myAccount: MyAccountNS = {
                 },
                 heading: "Recuperação de código"
             },
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erro ao obter a preferência de recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao obter a preferência de recuperação",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "A preferência de recuperação foi recuperada com sucesso",
+                        message: "Recuperação de preferência de recuperação bem-sucedida"
+                    }
+                }
+            },
             emailRecovery: {
                 descriptions: {
                     add: "Adicionar um endereço de email de recuperação",
