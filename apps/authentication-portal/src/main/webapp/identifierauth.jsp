@@ -28,11 +28,30 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+
+<%
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+    String usernameLabel = "username";
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+
+    if (isEmailUsernameEnabled == true) {
+        usernameLabel = "email.username";
+    }
+%>
+
+
 <script>
     function submitIdentifier () {
         var userName = document.getElementById("username");
@@ -76,7 +95,7 @@
                 value=""
                 name="usernameUserInput"
                 tabindex="0"
-                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
+                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                 required />
             <i aria-hidden="true" class="user icon"></i>
         </div>
