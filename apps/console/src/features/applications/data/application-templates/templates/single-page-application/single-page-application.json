@@ -34,7 +34,8 @@
         "inboundProtocolConfiguration": {
             "oidc": {
                 "grantTypes": [
-                    "authorization_code"
+                    "authorization_code",
+                    "refresh_token"
                 ],
                 "allowedOrigins": [ "http://localhost:3000" ],
                 "callbackURLs": [ "http://localhost:3000" ],
