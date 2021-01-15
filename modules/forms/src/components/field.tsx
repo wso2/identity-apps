@@ -305,7 +305,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     }
                                     autoFocus={ inputField.autoFocus || false }
                                     readOnly={ inputField.readOnly || checkbox.readOnly }
-                                    disabled={ inputField.disabled }
+                                    disabled={ checkbox.disabled ?? inputField.disabled }
                                     defaultChecked={ inputField.defaultChecked }
                                     onKeyPress={ (event: React.KeyboardEvent) => {
                                         event.key === ENTER_KEY && handleBlur(event, inputField.name);
