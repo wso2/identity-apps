@@ -21,7 +21,7 @@ import merge from "lodash/merge";
 import values from "lodash/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
-import CustomIdentityProviderTemplate from "./templates/custom-identity-provider/custom-identity-provider.json";
+import EnterpriseIdentityProviderTemplate from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import { ExtensionsManager } from "../../../../extensions";
 import {
@@ -79,11 +79,11 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                     },
                     {
                         content: {
-                            wizardHelp: lazy(() => import("./templates/custom-identity-provider/create-wizard-help"))
+                            wizardHelp: lazy(() => import("./templates/enterprise-identity-provider/create-wizard-help"))
                         },
                         enabled: true,
-                        id: CustomIdentityProviderTemplate.id,
-                        resource: CustomIdentityProviderTemplate
+                        id: EnterpriseIdentityProviderTemplate.id,
+                        resource: EnterpriseIdentityProviderTemplate
                     }
                 ], "id"),
                 keyBy(extensionsManager.getIdentityProviderTemplatesConfig().templates, "id")

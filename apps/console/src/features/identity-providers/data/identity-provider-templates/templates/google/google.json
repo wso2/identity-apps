@@ -6,7 +6,6 @@
     "category": "DEFAULT",
     "displayOrder": 1,
     "services": [
-        "provisioning",
         "authentication"
     ],
     "idp": {
@@ -36,66 +35,6 @@
         "federatedAuthenticators": {
             "defaultAuthenticatorId": "",
             "authenticators": []
-        },
-        "provisioning": {
-            "jit": {
-                "isEnabled": false,
-                "scheme": "PROVISION_SILENTLY",
-                "userstore": "PRIMARY"
-            },
-            "outboundConnectors": {
-                "defaultConnectorId": "Z29vZ2xlYXBwcw",
-                "connectors": [
-                    {
-                        "connectorId": "Z29vZ2xlYXBwcw",
-                        "isEnabled": true,
-                        "blockingEnabled": false,
-                        "rulesEnabled": false,
-                        "properties": [
-                            {
-                                "key": "google_prov_domain_name",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_email_claim_dropdown",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_givenname_claim_dropdown",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_familyname_claim_dropdown",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_service_acc_email",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_private_key",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_admin_email",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_application_name",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_pattern",
-                                "value": ""
-                            },
-                            {
-                                "key": "google_prov_separator",
-                                "value": ""
-                            }
-                        ]
-                    }
-                ]
-            }
         }
     }
 }

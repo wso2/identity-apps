@@ -2,7 +2,7 @@
     "category": "DEFAULT",
     "description": "Create a new Identity Provider with minimum configurations",
     "displayOrder": 1,
-    "id": "expert-mode",
+    "id": "enterprise-idp",
     "idp": {
         "certificate": {},
         "claims": {
@@ -31,6 +31,8 @@
         }
     },
     "image": "expert",
-    "name": "Expert Mode",
-    "services": []
+    "name": "Enterprise Identity Provider",
+    "services": [
+        "authentication"
+    ]
 }
