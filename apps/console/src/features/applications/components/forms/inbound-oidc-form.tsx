@@ -832,12 +832,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.mandatory.label"),
-                                value: "mandatory"
+                                value: ENABLE_PKCE_CHECKBOX_VALUE
                             },
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.plainAlg.label"),
-                                value: "supportPlainTransformAlgorithm"
+                                value: SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE,
+                                disabled: !enablePKCE
                             }
                         ] }
                         readOnly={ readOnly }
