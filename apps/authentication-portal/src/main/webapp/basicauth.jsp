@@ -425,4 +425,29 @@
         }
 
     %>
+
+    <script defer>
+
+        /**
+         * Toggles the password visibility using the attribute
+         * type of the input.
+         *
+         * @param event {Event} click target
+         * @description stops propagation
+         */
+        $("#passwordUnmask").click((event) => {
+            event.preventDefault();
+            const passwordInput = $("#password");
+            const maskIcon = $("#passwordUnmaskIcon");
+            if (passwordInput.attr("type") === "password") {
+                maskIcon.addClass("slash outline");
+                passwordInput.attr("type", "text");
+            } else {
+                maskIcon.removeClass("slash outline");
+                passwordInput.attr("type", "password");
+            }
+        });
+
+    </script>
+
 </form>
