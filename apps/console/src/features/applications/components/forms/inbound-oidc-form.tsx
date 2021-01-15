@@ -355,10 +355,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const findPKCE = (pckeConfig: OAuth2PKCEConfigurationInterface): string[] => {
         const selectedValues = [];
         if (pckeConfig.mandatory) {
-            selectedValues.push("mandatory");
+            selectedValues.push(ENABLE_PKCE_CHECKBOX_VALUE);
         }
         if (pckeConfig.supportPlainTransformAlgorithm) {
-            selectedValues.push("supportPlainTransformAlgorithm");
+            selectedValues.push(SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE);
         }
         return selectedValues;
     };
