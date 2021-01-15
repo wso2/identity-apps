@@ -828,6 +828,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={ findPKCE(initialValues.pkce) }
+                        listen={ pkceValuesChangeListener }
                         children={ [
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
