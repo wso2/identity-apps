@@ -24,7 +24,7 @@ import { CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/rea
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash/isEmpty";
 import union from "lodash/union";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
@@ -1573,7 +1573,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 </Hint>
                                                 <LinkButton
                                                     className="certificate-info-link-button"
-                                                    onClick={ () => viewCertificate() }
+                                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                                        e.preventDefault();
+                                                        viewCertificate();
+                                                    } }
                                                     disabled={ isEmpty(PEMValue) }
                                                     data-testid={ `${ testId }-certificate-info-button` }
                                                 >

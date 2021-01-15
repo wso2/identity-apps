@@ -59,7 +59,7 @@ import {
     SupportedAuthProtocolTypes,
     emptyApplication
 } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -140,6 +140,40 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         getApplication(id);
     }, []);
+
+    /**
+     * Load the template that the application is built on.
+     */
+    useEffect(() => {
+
+        if (!application
+            || !(applicationTemplates
+            && applicationTemplates instanceof Array
+            && applicationTemplates.length > 0)) {
+
+            return;
+        }
+
+        const template = applicationTemplates.find((template) => template.id === application.templateId);
+
+        setApplicationTemplate(template);
+    }, [ applicationTemplates, application ]);
+
+    /**
+     * Fetch the application templates if list is not available in redux.
+     */
+    useEffect(() => {
+        if (applicationTemplates !== undefined) {
+            return;
+        }
+
+        setApplicationTemplateRequestLoadingStatus(true);
+
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
+            .finally(() => {
+                setApplicationTemplateRequestLoadingStatus(false);
+            });
+    }, [ applicationTemplates ]);
 
     /**
      * Push to 404 if application edit feature is disabled.
@@ -406,13 +440,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
-
-                const template = applicationTemplates
-                    && applicationTemplates instanceof Array
-                    && applicationTemplates.length > 0
-                    && applicationTemplates.find((template) => template.id === response.templateId);
-
-                setApplicationTemplate(template);
                 setApplication(response);
             })
             .catch((error) => {

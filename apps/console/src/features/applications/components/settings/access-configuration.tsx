@@ -426,7 +426,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         } }
                                         className="selection-card-content"
                                     >
-                                        <div className="integrate-radio mr-2">
+                                        <div className="integrate-radio">
                                             <Radio
                                                 checked={ selectedProtocol === protocol }
                                             />

@@ -23,7 +23,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
@@ -396,7 +396,10 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                         </Hint>
                                         <LinkButton
                                             className="certificate-info-link-button"
-                                            onClick={ () => viewCertificate() }
+                                            onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                                e.preventDefault();
+                                                viewCertificate();
+                                            } }
                                             disabled={ isEmpty(PEMValue) }
                                             data-testid={ `${ testId }-certificate-info-button` }
                                         >
