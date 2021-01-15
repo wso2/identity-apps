@@ -6,7 +6,8 @@
     "category": "DEFAULT",
     "displayOrder": 1,
     "services": [
-        "provisioning"
+        "provisioning",
+        "authentication"
     ],
     "idp": {
         "name": "Google",

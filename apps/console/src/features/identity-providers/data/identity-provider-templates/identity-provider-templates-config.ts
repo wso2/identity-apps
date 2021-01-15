@@ -22,9 +22,7 @@ import values from "lodash/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
 import CustomIdentityProviderTemplate from "./templates/custom-identity-provider/custom-identity-provider.json";
-import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
-import OIDCConnectIDPTemplate from "./templates/oidc-connect/oidc-connect.json";
 import { ExtensionsManager } from "../../../../extensions";
 import {
     IdentityProviderTemplateCategoryInterface,
@@ -73,27 +71,11 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                 keyBy([
                     {
                         content: {
-                            wizardHelp: lazy(() => import("./templates/facebook/create-wizard-help"))
-                        },
-                        enabled: true,
-                        id: FacebookIDPTemplate.id,
-                        resource: FacebookIDPTemplate
-                    },
-                    {
-                        content: {
                             wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
                         },
                         enabled: true,
                         id: GoogleIDPTemplate.id,
                         resource: GoogleIDPTemplate
-                    },
-                    {
-                        content: {
-                            wizardHelp: lazy(() => import("./templates/oidc-connect/create-wizard-help"))
-                        },
-                        enabled: true,
-                        id: OIDCConnectIDPTemplate.id,
-                        resource: OIDCConnectIDPTemplate
                     },
                     {
                         content: {

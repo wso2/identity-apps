@@ -1,7 +1,7 @@
 {
     "id": "DEFAULT",
-    "displayName": "Quick Setup",
-    "description": "sdf wer wer wer werwerwer sd.",
+    "displayName": "",
+    "description": "",
     "viewConfigs": {
         "tags": {
             "as": "label",
