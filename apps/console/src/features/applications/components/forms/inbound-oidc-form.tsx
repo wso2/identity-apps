@@ -158,6 +158,57 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
 
     /**
+     * We use this hook to maintain the toggle state of the PKCE checkbox in the
+     * OIDC form.
+     *
+     * @description Purpose is to enable "Support 'Plain' PKCE Algorithm" checkbox
+     *              field if and only if "Enabled" is checked. Otherwise the 'Plain'
+     *              will be disabled and stay in the unchecked state.
+     */
+    const [ enablePKCE, setEnablePKCE ] = useState<boolean>(false);
+
+    /**
+     * The {@code PKCE_KEY}, {@code ENABLE_PKCE_CHECKBOX_VALUE and
+     * {@code SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE} values are sensitive.
+     * If you inspect the relevant field you will see that those value should
+     * be the same when we are passing it down to the component.
+     */
+    const PKCE_KEY = "PKCE";
+    const ENABLE_PKCE_CHECKBOX_VALUE = "mandatory";
+    const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE = "supportPlainTransformAlgorithm";
+
+    /**
+     * The listener handler for the enable PKCE toggle form field. In this function
+     * we will check if the mandatory is present in the
+     *
+     * @param tempForm {Map<string, FormValue>} a mutable map of form values
+     */
+    const pkceValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
+        /**
+         * A predicate that checks whether the given value is
+         * matching ENABLE_PKCE_CHECKBOX_VALUE
+         * @param val {string} checkbox value
+         */
+        const withPredicate = (val: string): boolean => val === ENABLE_PKCE_CHECKBOX_VALUE;
+
+        if (tempForm.has(PKCE_KEY)) {
+            const value: string[] = tempForm.get(PKCE_KEY) as string[];
+            if (value.find(withPredicate)) {
+                setEnablePKCE(true);
+            } else {
+                /**
+                 * If the "PKCE Enable" checkbox is unchecked then we can't
+                 * let the "Support PKCE Plain" checkbox field be enabled or
+                 * in checked state. So, this step what we do is simply just
+                 * set the selected values to an empty string array.
+                 */
+                tempForm.set(PKCE_KEY, [] as string[]);
+                setEnablePKCE(false);
+            }
+        }
+    };
+
+    /**
      * Check whether to show the callback url or not
      */
     useEffect(() => {
