@@ -380,7 +380,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    showLanguageSwitcher
                     fluid={ !isMobileViewport ? fluid : false }
                 />
             ) }
