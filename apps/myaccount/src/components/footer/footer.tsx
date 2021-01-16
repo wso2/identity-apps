@@ -64,7 +64,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
     return (
         <Footer
             data-testid={ testId }
-            showLanguageSwitcher
+            showLanguageSwitcher={ config.ui.i18nConfigs?.showLanguageSwitcher ?? true }
             currentLanguage={ I18n.instance?.language }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }

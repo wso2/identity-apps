@@ -157,6 +157,10 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     features?: T;
     /**
+     * i18n configurations interface.
+     */
+    i18nConfigs: I18nConfigsInterface;
+    /**
      * Name of the product.
      * ex: `Identity Server`
      */
@@ -170,6 +174,16 @@ export interface CommonUIConfigInterface<T = {}> {
      * Theme configs.
      */
     theme: AppThemeConfigInterface;
+}
+
+/**
+ * i18n configs interface.
+ */
+export interface I18nConfigsInterface {
+    /**
+     * Show/Hide the language switcher.
+     */
+    showLanguageSwitcher?: boolean;
 }
 
 /**

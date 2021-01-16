@@ -465,6 +465,17 @@
            {% endfor %}
            {% endif %}
         },
+        "i18nConfigs": {
+            {% if console.i18n_configs.items() is defined %}
+            {% for key, value in console.i18n_configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
