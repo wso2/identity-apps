@@ -949,7 +949,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     jwksValue: {
                                         label: "වටිනාකම",
-                                        placeholder: "යෙදුම JWKS අන්ත ලක්ෂ්‍ය URL.",
+                                        placeholder: "https://myapp.io/jwks",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
                                             invalid: "මෙය වලංගු URL එකක් නොවේ"

@@ -945,7 +945,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     jwksValue: {
                                         label: "Value",
-                                        placeholder: "Application JWKS endpoint URL.",
+                                        placeholder: "https://myapp.io/jwks",
                                         validations: {
                                             empty: "This is a required field.",
                                             invalid: "This is not a valid URL"
