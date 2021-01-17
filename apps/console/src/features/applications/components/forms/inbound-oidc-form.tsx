@@ -1501,12 +1501,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             {
                                 label: t("console:develop.features.applications.forms." +
                                     "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
-                                value: CertificateTypeInterface.JWKS
+                                value: CertificateTypeInterface.JWKS,
+                                hint: {
+                                    header: t("console:develop.features.applications.forms." +
+                                        "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
+                                    content: t("console:develop.features.applications.forms.advancedConfig" +
+                                        ".sections.certificate.fields.jwksValue.description")
+                                }
                             },
                             {
                                 label: t("console:develop.features.applications.forms." +
                                     "advancedConfig.sections.certificate.fields.type.children.pem.label"),
-                                value: CertificateTypeInterface.PEM
+                                value: CertificateTypeInterface.PEM,
+                                hint: {
+                                    header: t("console:develop.features.applications.forms." +
+                                        "advancedConfig.sections.certificate.fields.type.children.pem.label"),
+                                    content: t("console:develop.features.applications.forms.advancedConfig" +
+                                        ".sections.certificate.fields.pemValue.description")
+                                }
                             }
                         ] }
                         readOnly={ readOnly }
