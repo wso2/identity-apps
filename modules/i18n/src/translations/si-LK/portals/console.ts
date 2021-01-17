@@ -625,7 +625,7 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "මකන්න",
                         header: "යෙදුම මකන්න",
-                        subheader: "ඔබ යෙදුමක් මකා දැමූ පසු, ආපසු යාමක් නොමැත. කරුණාකර ස්ථිර වන්න."
+                        subheader: "යෙදුම ස්ථිරවම මකා දැමෙනු ඇති අතර මෙම යෙදුම භාවිතා කරන සේවාදායකයින් වැඩ කිරීම නවත්වනු ඇත."
                     },
                     header: "අන්තරා කලාපය"
                 },
