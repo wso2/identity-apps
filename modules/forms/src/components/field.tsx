@@ -17,7 +17,7 @@
  */
 
 import classNames from "classnames";
-import React from "react";
+import React, { ReactElement } from "react";
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
@@ -201,6 +201,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
             return (
                 <Form.Group grouped={ true }>
                     { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
+                    { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         const field = (
                             <Form.Field key={ index }>
@@ -283,6 +284,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 : null
                         }
                     </label>
+                    { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((checkbox, index) => {
                         const field = (
                             <Form.Field key={ index }>
@@ -453,3 +455,20 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
         </Form.Field>
     );
 });
+
+/**
+ * A component that creates a text hint. Used mainly within the
+ * form fields. To see usages see {@link Checkbox} and {@link Radio}
+ * conditional rendering sections in {@link InnerField}.
+ *
+ * @param hint {string}
+ * @constructor
+ */
+export const FieldHint: React.FC<{ hint: string }> = ({ hint }: { hint: string }): ReactElement => {
+    return (
+        <div className={ "ui-hint" }>
+            <Icon color="grey" floated="left" name="info circle"/>
+            { hint }
+        </div>
+    )
+};
