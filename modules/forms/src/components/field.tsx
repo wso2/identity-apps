@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React from "react";
-import { Button, Divider, Form, Icon, Radio } from "semantic-ui-react";
+import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
 import {
@@ -202,7 +202,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                 <Form.Group grouped={ true }>
                     { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
                     { inputField.children.map((radio: RadioChild, index: number) => {
-                        return (
+                        const field = (
                             <Form.Field key={ index }>
                                 <Radio
                                     { ...filteredProps }
@@ -225,6 +225,18 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+                        if (radio.hint && radio.hint.content) {
+                            return (
+                                <Popup
+                                    key={ `${ index }-popup` }
+                                    header={ radio.hint.header }
+                                    content={ radio.hint.content }
+                                    trigger={ field }
+                                />
+                            );
+                        } else {
+                            return field;
+                        }
                     }) }
                 </Form.Group>
             );
@@ -272,7 +284,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         }
                     </label>
                     { inputField.children.map((checkbox, index) => {
-                        return (
+                        const field = (
                             <Form.Field key={ index }>
                                 <Form.Checkbox
                                     { ...filteredProps }
@@ -313,6 +325,18 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+                        if (checkbox.hint && checkbox.hint.content) {
+                            return (
+                                <Popup
+                                    key={ `${ index }-popup` }
+                                    header={ checkbox.hint.header }
+                                    content={ checkbox.hint.content }
+                                    trigger={ field }
+                                />
+                            );
+                        } else {
+                            return field;
+                        }
                     }) }
                 </Form.Group>
             );
