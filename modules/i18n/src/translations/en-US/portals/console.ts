@@ -1225,13 +1225,6 @@ export const console: ConsoleNS = {
                                             invalid: "Please add valid URL"
                                         }
                                     },
-                                    signatureValidation: {
-                                        hint: "{{productName}} supports receiving OIDC authentication request " +
-                                            "parameters from clients in a `request object`. Enable signature " +
-                                            "validation to accept only signed request objects in the" +
-                                            " authorization request.",
-                                        label: "Enable request object signature validation"
-                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1278,6 +1271,18 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Refresh Token"
+                            },
+                            requestObjectSignature: {
+                                heading: "Request Object Signature",
+                                description: "{{productName}} supports receiving OIDC authentication request " +
+                                    "parameters from clients in a `request object`. Enable signature " +
+                                    "validation to accept only signed request objects in the" +
+                                    " authorization request.",
+                                fields: {
+                                    signatureValidation: {
+                                        label: "Enable request object signature validation",
+                                    }
+                                },
                             },
                             scopeValidators: {
                                 fields: {
