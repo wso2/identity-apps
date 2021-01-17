@@ -344,7 +344,11 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                             handleUnassignedItemCheckboxChange(user)
                                         }
                                         key={ index }
-                                        listItem={ user.userName }
+                                        listItem={
+                                            user?.userName?.split("/")?.length > 1
+                                                ? user?.userName?.split("/")[1]
+                                                : user?.userName
+                                        }
                                         listItemId={ user.id }
                                         listItemIndex={ index }
                                         isItemChecked={ checkedUnassignedListItems?.includes(user) }
@@ -375,7 +379,11 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                             handleAssignedItemCheckboxChange(user)
                                         }
                                         key={ index }
-                                        listItem={ user.userName }
+                                        listItem={
+                                            user?.userName?.split("/")?.length > 1
+                                                ? user?.userName?.split("/")[1]
+                                                : user?.userName
+                                        }
                                         listItemId={ user.id }
                                         listItemIndex={ index }
                                         isItemChecked={ checkedAssignedListItems?.includes(user) }
@@ -476,7 +484,11 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                                     />
                                                                 </Table.Cell>
                                                                 <Table.Cell>
-                                                                    { user.userName }
+                                                                    {
+                                                                        user?.userName?.split("/")?.length > 1
+                                                                            ? user?.userName?.split("/")[1]
+                                                                            : user?.userName
+                                                                    }
                                                                 </Table.Cell>
                                                             </Table.Row>
                                                         );
