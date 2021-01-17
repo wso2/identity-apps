@@ -747,7 +747,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             showError={ showURLError }
                             setShowError={ setShowURLError }
                             hint={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                                t("console:develop.features.applications." +
+                                    "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                    productName: config.ui.productName
+                                })
                             }
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }

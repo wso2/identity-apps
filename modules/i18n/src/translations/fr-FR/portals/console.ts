@@ -1061,8 +1061,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "Après l'authentification, nous ne redirigerons que vers les URLs de redirection " +
-                                    "renseignées ci-dessus",
+                                hint: "L'URL de redirection détermine vers où le code d'autorisation est envoyé," +
+                                    " la connexion est terminée et vers où l'utilisateur est redirigé une fois" +
+                                    " la déconnexion terminée. Le client doit spécifier l'URL de redirection" +
+                                    " dans la demande d'autorisation ou de déconnexion et {{productName}} la validera" +
+                                    " par rapport aux URL de redirection configurées.",
                                 label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
