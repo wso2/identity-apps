@@ -992,6 +992,7 @@ export const console: ConsoleNS = {
                             },
                             description: {
                                 label: "Description",
+                                description: "Une description textuelle de l'application.",
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {

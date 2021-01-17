@@ -183,6 +183,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-description-textarea` }
                         />
+                        <Hint compact>
+                            { t("console:develop.features.applications.forms" +
+                                ".generalDetails.fields.description.description") }
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 {
