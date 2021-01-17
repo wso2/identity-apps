@@ -944,7 +944,7 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
-                                        label: "Value",
+                                        label: "URL",
                                         placeholder: "https://myapp.io/jwks",
                                         validations: {
                                             empty: "This is a required field.",
@@ -956,7 +956,7 @@ export const console: ConsoleNS = {
                                             view: "View certificate info"
                                         },
                                         hint: "The certificate (in PEM format) of the application.",
-                                        label: "Value",
+                                        label: "Certificate",
                                         placeholder: "Certificate in PEM format.",
                                         validations: {
                                             empty: "This is a required field."
