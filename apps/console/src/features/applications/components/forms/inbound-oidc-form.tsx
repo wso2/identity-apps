@@ -1477,6 +1477,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms." +
                                 "advancedConfig.sections.certificate.heading") }
                     </Heading>
+                    <Hint>
+                        { t("console:develop.features.applications.forms.advancedConfig.sections" +
+                            ".certificate.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                     <Field
                         label={
                             t("console:develop.features.applications.forms." +
