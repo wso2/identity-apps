@@ -1009,8 +1009,10 @@ export const console: ConsoleNS = {
                                 label: "සොයාගත හැකි යෙදුම"
                             },
                             imageUrl: {
-                                label: "යෙදුම් රූපය",
-                                placeholder: "යෙදුම සඳහා අනුරූප url එකක් ඇතුළත් කරන්න",
+                                label: "ලාංඡනය",
+                                description: "දර්ශන අරමුණු සඳහා යෙදුමේ රූපය සඳහා URL ය. සපයා නොමැති නම්, ජනනය " +
+                                    "කරන ලද සිඟිති රූපයක් දර්ශනය වේ. (අපේක්ෂිත යෝජනා සඳහන් කරන්න)",
+                                placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "මෙය වලංගු රූප URL එකක් නොවේ"
                                 }
