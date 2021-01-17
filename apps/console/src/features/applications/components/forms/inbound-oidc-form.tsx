@@ -1405,8 +1405,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
+            { /*Request Object Signature*/ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                    <Heading as="h5">
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObjectSignature.heading") }
+                    </Heading>
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObjectSignature.description", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
+                    <Divider hidden />
                     <Field
                         ref={ enableRequestObjectSignatureValidation }
                         name="enableRequestObjectSignatureValidation"
@@ -1422,19 +1438,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         children={ [
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                    ".sections.logoutURLs.fields.signatureValidation.label"),
+                                    ".sections.requestObjectSignature.fields.signatureValidation.label"),
                                 value: "EnableRequestObjectSignatureValidation"
                             }
                         ] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
                     />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".logoutURLs.fields.signatureValidation.hint", {
-                            productName: config.ui.productName
-                        }) }
-                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             { /* Scope Validators */ }
