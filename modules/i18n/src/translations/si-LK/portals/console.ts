@@ -963,6 +963,7 @@ export const console: ConsoleNS = {
                                         hint: "යෙදුමේ සහතිකය (PEM ආකෘතියෙන්).",
                                         label: "සහතිකය",
                                         placeholder: "PEM ආකෘතියෙන් සහතිකය.",
+                                        description: "සහතිකයේ පෙළ අගය PEM ආකෘතියෙන්.",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
                                         }
