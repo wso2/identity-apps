@@ -903,6 +903,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
                         }
+                        hint={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".accessToken.fields.bindingType.description", {
+                            productName: config.ui.productName
+                        }) }
                         name="bindingType"
                         default={
                             initialValues?.accessToken?.bindingType
