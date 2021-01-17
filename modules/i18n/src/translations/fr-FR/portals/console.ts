@@ -617,7 +617,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
-                        subheader: "Une fois que vous avez supprimé une application, il est impossible de revenir en arrière. Veuillez en être certain."
+                        subheader: "L'application sera supprimée définitivement et les clients" +
+                            " utilisant cette application cesseront de fonctionner.",
                     },
                     header: "Zone de danger"
                 },
