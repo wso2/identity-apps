@@ -862,18 +862,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.plainAlg.label"),
                                 value: SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE,
+                                hint: {
+                                    header: "PKCE 'Plain'",
+                                    content: t("console:develop.features.applications.forms." +
+                                        "inboundOIDC.sections.pkce.description", {
+                                        productName: config.ui.productName
+                                    })
+                                },
                                 disabled: !enablePKCE
                             }
                         ] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-pkce-checkbox-group` }
                     />
-                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
-                        { t("console:develop.features.applications.forms." +
-                            "inboundOIDC.sections.pkce.description", {
-                            productName: config.ui.productName
-                        }) }
-                    </Message>
                 </Grid.Column>
             </Grid.Row>
 
