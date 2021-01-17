@@ -978,12 +978,15 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Les applications détectables sont accessibles via cette URL",
+                                hint: "L'URL de la page de destination de cette application. Il sera utilisé dans" +
+                                    " le catalogue d'applications et les flux de découverte. Si la page de" +
+                                    " connexion expire, l'utilisateur sera redirigé vers l'application" +
+                                    " client via cette URL.",
                                 label: "URL d'accès",
-                                placeholder: "Saisissez l'url d'accès à la page de connexion de l'application",
+                                placeholder: "https://myapp.io/home",
                                 validations: {
-                                    empty: "Une URL d'accès valide doit être définie pour qu'une application soit " +
-                                        "marquée comme étant découvrable",
+                                    empty: "Une URL d'accès valide doit être fournie pour" +
+                                        " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
                                 }
                             },

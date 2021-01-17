@@ -987,12 +987,13 @@ export const console: ConsoleNS = {
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Discoverable applications can be accessed via this URL.",
+                                hint: "The landing page URL for this application. It will be used in the application" +
+                                    " catalog and discovery flows. If the login page times out, the user will " +
+                                    "be redirected to the client application via this URL.",
                                 label: "Access URL",
-                                placeholder: "Enter access url for the application login page",
+                                placeholder: "https://myapp.io/home",
                                 validations: {
-                                    empty: "A valid access URL needs to be defined for an application to be marked " +
-                                        " as discoverable",
+                                    empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "This is not a valid URL"
                                 }
                             },
