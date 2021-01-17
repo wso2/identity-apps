@@ -1001,6 +1001,7 @@ export const console: ConsoleNS = {
                             },
                             description: {
                                 label: "විස්තර",
+                                description: "මෘදුකාංග යෙදුමේ පෙළ විස්තරයක්.",
                                 placeholder: "යෙදුම සඳහා විස්තරයක් ඇතුළත් කරන්න"
                             },
                             discoverable: {
