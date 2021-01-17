@@ -290,6 +290,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     "accessToken.fields.bindingType.valueDescriptions.sso_session", {
                     productName: config.ui.productName
                 });
+            case "default":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.default");
+            case "jwt":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.jwt");
             default:
                 return undefined;
         }
@@ -899,22 +905,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
-                    <Message compact={true} size={"tiny"} className={"border-less"}>
-                        <Message.Content>
-                            <p>{
-                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.type.label")
-                            }</p>
-                            <p><b>Default</b> -&nbsp;{
-                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.type.valueDescriptions.default")
-                            }</p>
-                            <p><b>JWT</b> -&nbsp;{
-                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.type.valueDescriptions.jwt")
-                            }</p>
-                        </Message.Content>
-                    </Message>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
