@@ -570,6 +570,7 @@ export interface ConsoleNS {
                         sections: {
                             certificate: {
                                 heading: string;
+                                hint: string;
                                 fields: {
                                     jwksValue: FormAttributes;
                                     pemValue: FormAttributes;
