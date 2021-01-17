@@ -277,6 +277,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setGrantChanged(!isGrantChanged);
     };
 
+    const getMetadataHints = (element: string) => {
+        switch (element.toLowerCase()) {
+            case "none":
+                return t("console:develop.features.applications.forms" +
+                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none");
+            case "cookie":
+                return t("console:develop.features.applications.forms" +
+                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie");
+            case "sso-session":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections." +
+                    "accessToken.fields.bindingType.valueDescriptions.sso_session", {
+                    productName: config.ui.productName
+                });
+            default:
+                return undefined;
+        }
+    };
+
     /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
@@ -289,7 +307,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (metadataProp) {
             if (isLabel) {
                 metadataProp.options.map((ele) => {
-                    allowedList.push({ label: ele, value: ele });
+                    allowedList.push({
+                        label: ele,
+                        value: ele,
+                        hint: { content: getMetadataHints(ele), header: ele.toUpperCase() }
+                    });
                 });
             } else {
                 metadataProp.options.map((ele) => {
