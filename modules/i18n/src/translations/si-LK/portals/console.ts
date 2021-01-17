@@ -1207,7 +1207,7 @@ export const console: ConsoleNS = {
                                             " කෙලින්ම සන්නිවේදනය කරනු ඇත, එවිට ගනුදෙනුකරුවන්ට පරිශීලක" +
                                             " සැසිය අවලංගු කළ හැකිය.",
                                         label: "ආපසු නාලිකා ලොග්අවුට් URL",
-                                        placeholder: "පසුපස නාලිකා ලොග්අවුට් URL එක ඇතුළත් කරන්න",
+                                        placeholder: "https://myapp.io/logout",
                                         validations: {
                                             empty: "කරුණාකර පසුපස නාලිකා ලොග්අවුට් URL පුරවන්න",
                                             invalid: "කරුණාකර වලංගු URL එක් කරන්න"

@@ -1206,7 +1206,7 @@ export const console: ConsoleNS = {
                                         hint: "{{productName}} will directly communicate the logout requests to this " +
                                             "client URL(s), so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
-                                        placeholder: "Enter the Back Channel Logout URL",
+                                        placeholder: "https://myapp.io/logout",
                                         validations: {
                                             empty: "Please fill the Back Channel Logout URL",
                                             invalid: "Please add valid URL"

@@ -1200,7 +1200,7 @@ export const console: ConsoleNS = {
                                             " à cette (ces) URL client, afin que les clients puissent" +
                                             " invalider la session utilisateur.",
                                         label: "URL de déconnexion amont",
-                                        placeholder: "Saisir l'URL de déconnexion amont",
+                                        placeholder: "https://myapp.io/logout",
                                         validations: {
                                             empty: "Veuillez renseigner l'URL de déconnexion amont",
                                             invalid: "Veuillez ajouter une URL valide"
