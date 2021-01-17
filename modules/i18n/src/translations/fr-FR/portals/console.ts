@@ -966,7 +966,9 @@ export const console: ConsoleNS = {
                                         label: "Type"
                                     }
                                 },
-                                heading: "Certificat"
+                                heading: "Certificat",
+                                hint: "Ce certificat permet de valider les signatures des requêtes signées et de " +
+                                    "décrypter les requêtes cryptées de l'application vers {{productName}}."
                             }
                         }
                     },
