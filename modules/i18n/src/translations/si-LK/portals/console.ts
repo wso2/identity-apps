@@ -950,6 +950,7 @@ export const console: ConsoleNS = {
                                     jwksValue: {
                                         label: "URL",
                                         placeholder: "https://myapp.io/jwks",
+                                        description: "JWKS පොදු යතුරක් ලබා ගැනීමට භාවිතා කරන URL ය.",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
                                             invalid: "මෙය වලංගු URL එකක් නොවේ"

@@ -938,6 +938,7 @@ export const console: ConsoleNS = {
                                     jwksValue: {
                                         label: "URL",
                                         placeholder: "https://myapp.io/jwks",
+                                        description: "L'URL utilisée pour obtenir une clé publique JWKS.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire.",
                                             invalid: "Ceci n'est pas une URL valide"
