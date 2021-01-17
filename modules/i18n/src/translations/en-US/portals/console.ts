@@ -1065,11 +1065,11 @@ export const console: ConsoleNS = {
                             },
                             callBackUrls: {
                                 hint: "After the authentication, we will only redirect to the above allowed redirect " +
-                                    "URIs and you can specify multiple URIs",
-                                label: "Allowed Redirect URIs",
+                                    "URLs and you can specify multiple URLs",
+                                label: "Allowed Redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URI.",
+                                    empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to integrate a sample, " +
                                         "this field can be skipped."
