@@ -920,32 +920,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
-                    <Message compact={true} size={"tiny"} className={"border-less"}>
-                        <p>
-                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.bindingType.description", {
-                                productName: config.ui.productName
-                            }) }
-                        </p>
-                        <br/>
-                        <Message.Content>
-                            <p><b>None</b> -&nbsp;
-                                { t("console:develop.features.applications.forms" +
-                                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none") }
-                            </p>
-                            <p><b>Cookie</b> -&nbsp;
-                                { t("console:develop.features.applications.forms" +
-                                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie") }
-                            </p>
-                            <p><b>SSO-Session</b> -&nbsp;
-                                { t("console:develop.features.applications.forms" +
-                                    ".inboundOIDC.sections.accessToken.fields.bindingType" +
-                                    ".valueDescriptions.sso_session", {
-                                    productName: config.ui.productName
-                                }) }
-                            </p>
-                        </Message.Content>
-                    </Message>
                 </Grid.Column>
             </Grid.Row>
             {
