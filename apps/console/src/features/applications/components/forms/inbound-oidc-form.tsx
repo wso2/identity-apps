@@ -178,8 +178,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE = "supportPlainTransformAlgorithm";
 
     /**
-     * The listener handler for the enable PKCE toggle form field. In this function
-     * we will check if the mandatory is present in the
+     * The listener handler for the enable PKCE toggle form field. This function
+     * check if the "mandatory" value is present in the values array under "PKCE"
+     * field and toggles the {@code enablePKCE} boolean on/off.
      *
      * @param tempForm {Map<string, FormValue>} a mutable map of form values
      */
@@ -199,8 +200,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 /**
                  * If the "PKCE Enable" checkbox is unchecked then we can't
                  * let the "Support PKCE Plain" checkbox field be enabled or
-                 * in checked state. So, this step what we do is simply just
-                 * set the selected values to an empty string array.
+                 * keep in checked state. So, this step what we do is simply
+                 * just set the selected values array to an empty string array.
                  */
                 tempForm.set(PKCE_KEY, [] as string[]);
                 setEnablePKCE(false);
