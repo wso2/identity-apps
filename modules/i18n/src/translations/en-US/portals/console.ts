@@ -1070,8 +1070,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "After the authentication, we will only redirect to the above allowed redirect " +
-                                    "URLs and you can specify multiple URLs",
+                                hint: "The redirect URL determines to where the authorization code is sent, login " +
+                                    "is completed and to where the user is redirected to once the logout is completed." +
+                                    " The client should specify the redirect_url in the authorize or logout" +
+                                    " request and {{productName}} will validate it against this " +
+                                    "configured Redirect URLs.",
                                 label: "Allowed Redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
