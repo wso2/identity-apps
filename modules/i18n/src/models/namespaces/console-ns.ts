@@ -632,7 +632,6 @@ export interface ConsoleNS {
                                 fields: {
                                     back: FormAttributes;
                                     front: FormAttributes;
-                                    signatureValidation: FormAttributes;
                                 };
                             };
                             pkce: {
@@ -648,6 +647,13 @@ export interface ConsoleNS {
                                 fields: {
                                     expiry: FormAttributes;
                                     renew: FormAttributes;
+                                };
+                            };
+                            requestObjectSignature: {
+                                heading: string;
+                                description: string;
+                                fields: {
+                                    signatureValidation: FormAttributes;
                                 };
                             };
                             scopeValidators: {

@@ -1218,13 +1218,6 @@ export const console: ConsoleNS = {
                                             invalid: "Veuillez ajouter une URL valide"
                                         }
                                     },
-                                    signatureValidation: {
-                                        hint: "{{productName}} prend en charge la réception des paramètres de " +
-                                            "demande d'authentification OIDC des clients dans un objet de demande. " +
-                                            "Activez la validation de signature pour n'accepter que les objets " +
-                                            "de demande signés dans la demande d'autorisation.",
-                                        label: "Activer la validation de la signature de l'objet de la requête"
-                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1273,6 +1266,18 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "jeton de rafraîchissement"
+                            },
+                            requestObjectSignature: {
+                                heading: "Signature d'objet de requête HTTP",
+                                description: "{{productName}} prend en charge la réception des paramètres de " +
+                                    "demande d'authentification OIDC des clients dans un objet de demande. " +
+                                    "Activez la validation de signature pour n'accepter que les objets " +
+                                    "de demande signés dans la demande d'autorisation.",
+                                fields: {
+                                    signatureValidation: {
+                                        label: "Activer la validation de la signature de l'objet de la requête",
+                                    }
+                                }
                             },
                             scopeValidators: {
                                 fields: {
