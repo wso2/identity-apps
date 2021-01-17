@@ -1053,12 +1053,12 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "Après l'authentification, nous ne redirigerons que vers les URIs de redirection " +
+                                hint: "Après l'authentification, nous ne redirigerons que vers les URLs de redirection " +
                                     "renseignées ci-dessus",
-                                label: "URIs de redirection",
+                                label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URI valide.",
+                                    empty: "Veuillez ajouter une URL valide.",
                                     required: "ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
