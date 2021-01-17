@@ -948,7 +948,7 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
-                                        label: "වටිනාකම",
+                                        label: "URL",
                                         placeholder: "https://myapp.io/jwks",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
@@ -960,7 +960,7 @@ export const console: ConsoleNS = {
                                             view: "සහතික තොරතුරු බලන්න"
                                         },
                                         hint: "යෙදුමේ සහතිකය (PEM ආකෘතියෙන්).",
-                                        label: "වටිනාකම",
+                                        label: "සහතිකය",
                                         placeholder: "PEM ආකෘතියෙන් සහතිකය.",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
