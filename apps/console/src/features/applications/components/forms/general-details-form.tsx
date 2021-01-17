@@ -215,6 +215,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-application-image-url-input` }
                                 />
+                                <Hint compact>
+                                    { t("console:develop.features.applications.forms" +
+                                        ".generalDetails.fields.imageUrl.description") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     )
