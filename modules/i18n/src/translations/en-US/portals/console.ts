@@ -1007,8 +1007,11 @@ export const console: ConsoleNS = {
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                label: "Application image",
-                                placeholder: "Enter a image url for the application",
+                                label: "Logo",
+                                description: "A URL for the image of the application for display purposes. " +
+                                    "If not provided, a generated thumbnail will be displayed. " +
+                                    "(mention desired resolutions)",
+                                placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "This is not a valid image URL"
                                 }
