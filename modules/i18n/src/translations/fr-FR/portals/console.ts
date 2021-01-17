@@ -996,8 +996,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {
-                                hint: "Si une application est marquée comme détectable, elle sera visible par les " +
-                                    "utilisateurs finaux dans <1>My Account</1><2></2>",
+                                hint: "Activez pour rendre l'application visible aux utilisateurs finaux dans " +
+                                    "le catalogue d'applications. Visible dans <1>My Account</1><2></2>",
                                 label: "Application découvrable"
                             },
                             imageUrl: {

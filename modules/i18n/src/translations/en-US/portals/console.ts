@@ -1003,8 +1003,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "If an application is flagged as discoverable, it will be visible to end users" +
-                                    " in <1>My Account</1><2></2>",
+                                hint: "Enable to make the application visible to end-users in the application catalog." +
+                                    " Visible in <1>My Account</1><2></2>",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
