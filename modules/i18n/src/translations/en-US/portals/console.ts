@@ -974,7 +974,10 @@ export const console: ConsoleNS = {
                                         label: "Type"
                                     }
                                 },
-                                heading: "Certificate"
+                                heading: "Certificate",
+                                hint: "This certificate is used to validate the signatures of the signed " +
+                                    "requests and to decrypt the encrypted requests from the" +
+                                    " application to {{productName}}."
                             }
                         }
                     },
