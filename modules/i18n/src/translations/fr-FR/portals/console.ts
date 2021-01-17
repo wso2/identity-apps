@@ -951,6 +951,7 @@ export const console: ConsoleNS = {
                                         hint: "Le certificat ( au format PEM ) de l'application.",
                                         label: "Certificat",
                                         placeholder: "Certificat au format PEM.",
+                                        description: "La valeur texte du certificat au format PEM.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
