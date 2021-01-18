@@ -30,6 +30,7 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
@@ -111,7 +112,22 @@
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
 %>
 <%
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+    String usernameLabel = "username";
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+
+    if (isEmailUsernameEnabled == true) {
+        usernameLabel = "email.username";
+    }
+
     String resendUsername = request.getParameter("resend_username");
+
     if (StringUtils.isNotBlank(resendUsername)) {
 
         ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
@@ -222,7 +238,7 @@
                     value=""
                     name="usernameUserInput"
                     tabindex="1"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                     data-testid="login-page-username-input"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
