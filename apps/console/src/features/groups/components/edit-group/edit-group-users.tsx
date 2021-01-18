@@ -346,7 +346,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         key={ index }
                                         listItem={
                                             user?.userName?.split("/")?.length > 1
-                                                ? user?.userName?.split("/")[1]
+                                                ? user.userName.split("/")[1]
                                                 : user?.userName
                                         }
                                         listItemId={ user.id }
