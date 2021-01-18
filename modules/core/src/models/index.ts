@@ -30,3 +30,4 @@ export * from "./route";
 export * from "./storage";
 export * from "./ua-parser";
 export * from "./userstores";
+export * from "./url-components";
