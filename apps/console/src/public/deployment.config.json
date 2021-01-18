@@ -58,7 +58,7 @@
         "appTitle": "Console | WSO2 Identity Server",
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
-        "appLogoPath": "/assets/images/logo-full.svg",
+        "appLogoPath": "/assets/images/logo.svg",
         "features": {
             "applications": {
                 "disabledFeatures": [],

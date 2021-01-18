@@ -50,8 +50,8 @@
         display: flex;
 
         .app-header {
-            .product-title .product-title-text {
-                margin: 0;
+            .product-title {
+                margin: @loginPortalProductTitleInHeaderMargin;
             }
         }
 
@@ -115,16 +115,11 @@
             .product-title {
                 .product-logo {
                     padding-left: 0;
+                    margin: @loginPortalProductTitleMargin;
 
                     img {
                         height: @loginPortalProductLogoHeight;
                     }
-                }
-                .product-title-text {
-                    margin: @loginPortalProductTitleTextMargin;
-                    position: @loginPortalProductTitleTextPosition;
-                    font-size: @loginPortalProductTitleTextFontSize;
-                    vertical-align: @loginPortalProductTitleTextVerticalAlign;
                 }
             }
         }
