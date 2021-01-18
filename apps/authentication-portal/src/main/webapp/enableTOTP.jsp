@@ -106,7 +106,6 @@
                                             <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%></div>
                                             <div class="ui divider hidden"></div>
                                 <% } }  %>
-                                <p>You have not enabled TOTP authentication. Please enable it.</p>
 
                                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled.please.enable")%></p>
                                 
