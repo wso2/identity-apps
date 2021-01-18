@@ -53,6 +53,11 @@ export interface LabelWithPopupPropsInterface extends LabelProps {
      * Color of the circular label.
      */
     labelColor: LabelProps["color"];
+    /**
+     * A trigger element for the popup widget. If not provided
+     * then a default trigger (a label) will be applied.
+     */
+    trigger?: ReactElement;
 }
 
 /**
