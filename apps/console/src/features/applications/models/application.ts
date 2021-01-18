@@ -344,6 +344,10 @@ export interface ApplicationTemplateCategoryViewConfigInterface {
          */
         showTags: boolean;
         /**
+         * Tag size.
+         */
+        tagSize: string;
+        /**
          * Where to find the tags in the templates object.
          */
         tagsKey: string;

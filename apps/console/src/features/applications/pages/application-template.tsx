@@ -314,6 +314,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                 showTagIcon: category.viewConfigs?.tags?.showTagIcon,
                                                 showTags:  category.viewConfigs?.tags?.showTags,
                                                 subHeading: category.description,
+                                                tagSize: category.viewConfigs?.tags?.tagSize,
                                                 tagsAs: category.viewConfigs?.tags?.as,
                                                 tagsKey: category.viewConfigs?.tags?.tagsKey,
                                                 tagsSectionTitle: category.viewConfigs?.tags?.sectionTitle
