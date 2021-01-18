@@ -336,8 +336,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 className="cors-details-popup"
                 trigger={
                     <Icon
-                        name={ positive ? "check" : "question circle outline" }
-                        color={ positive ? "green" : "grey" }
+                        name={ positive ? "check" : "exclamation triangle" }
+                        color={ positive ? "green" : "red" }
                     />
                 }
                 popupHeader={
@@ -359,7 +359,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 t("console:develop.features.URLInput.withLabel.negative.content")
                         }
                         <a onClick={ () => setShowMore(!showMore) }>
-                            { showMore ? t("common:showLess") : t("common:showMore") }
+                            &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
                         </a><br/>
                         {
                             showMore && (
@@ -472,9 +472,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     { (labelEnabled && isAllowEnabled && !(allowedOrigins?.includes(origin))) && (
                         <LinkButton
                             basic={ true }
-                            className={ "m-1 p-1 with-no-border with-bold-text orange" }
+                            className={ "m-1 p-2 with-no-border orange" }
                             onClick={ () => handleAllowOrigin(origin) }>
-                            Allow CORS
+                            <span style={ { fontWeight: "bold"} }>Allow</span>
+                            &nbsp;<em>enable CORS for this origin</em>
                         </LinkButton>
                     ) }
                     { labelEnabled && resolveCORSStatusLabel(url) }
