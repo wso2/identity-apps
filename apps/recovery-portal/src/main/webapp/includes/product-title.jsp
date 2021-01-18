@@ -19,9 +19,8 @@
 <jsp:directive.include file="localize.jsp" />
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
-<div class="product-title">
+<div class="product-title" data-testid="product-title">
     <div class="theme-icon inline auto transparent product-logo portal-logo">
         <img src="libs/themes/default/assets/images/logo.svg" alt="product-logo" />
     </div>
-    <h1 class="product-title-text"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Identity.server")%></h1>
 </div>

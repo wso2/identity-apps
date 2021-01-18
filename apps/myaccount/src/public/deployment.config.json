@@ -33,7 +33,7 @@
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
-        "appLogoPath": "/assets/images/logo-full.svg",
+        "appLogoPath": "/assets/images/logo.svg",
         "authenticatorApp": [],
         "features": {
             "applications": {

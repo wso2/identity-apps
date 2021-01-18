@@ -19,9 +19,8 @@
 <%@ include file="localize.jsp" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
-<div class="product-title">
+<div class="product-title" data-testid="product-title">
     <div class="theme-icon inline auto transparent product-logo portal-logo">
         <img src="libs/themes/default/assets/images/logo.svg" alt="product-logo" />
     </div>
-    <h1 class="product-title-text"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%></h1>
 </div>
