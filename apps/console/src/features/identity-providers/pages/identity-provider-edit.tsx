@@ -228,6 +228,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     return (
         <HelpPanelLayout
+            visible={ false }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }

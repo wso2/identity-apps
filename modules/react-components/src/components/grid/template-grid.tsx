@@ -100,6 +100,10 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      */
     templateIcons?: object;
     /**
+     * Tag size.
+     */
+    tagSize?: TemplateCardPropsInterface["tagSize"];
+    /**
      * Element to render the tag as.
      */
     tagsAs?: TemplateCardPropsInterface["tagsAs"];
@@ -193,6 +197,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         selectedTemplate,
         templateIcons,
         tagsAs,
+        tagSize,
         useSelectionCard,
         onSecondaryTemplateSelect,
         secondaryTemplates,
@@ -427,6 +432,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                 id={ template.id }
                                                 onClick={ onTemplateSelect }
                                                 imageSize={ templateIconSize }
+                                                tagSize={ tagSize }
                                                 data-testid={ template.id }
                                             />
                                         ))

@@ -7,6 +7,7 @@
             "as": "icon",
             "showTagIcon": false,
             "showTags": true,
+            "tagSize": "x30",
             "tagsKey": "types"
         }
     }

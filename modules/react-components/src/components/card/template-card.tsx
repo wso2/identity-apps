@@ -35,6 +35,10 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      */
     description: string;
     /**
+     * Tag size.
+     */
+    tagSize?: GenericIconSizes;
+    /**
      * Set of tags for the template.
      */
     tags?: TemplateCardTagInterface[] | string[];
@@ -141,6 +145,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         selected,
         showTags,
         showTagIcon,
+        tagSize,
         tags,
         tagsAs,
         tagsSectionTitle,
@@ -189,7 +194,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                         >
                             <GenericIcon
                                 icon={ tag.logo }
-                                size={ "x22" }
+                                size={ tagSize }
                                 spaced="right"
                                 fill={ false }
                                 data-testid={ `${ testId }-logo` }
@@ -279,6 +284,7 @@ TemplateCard.defaultProps = {
     "data-testid": "template-card",
     imageSize: "tiny",
     inline: true,
+    tagSize: "x22",
     tagsAs: "label",
     textAlign: "center"
 };
