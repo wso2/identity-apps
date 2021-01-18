@@ -26,6 +26,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Label, Message } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../api";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate,
@@ -173,11 +175,19 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     }, [ OIDCMeta ]);
 
     useEffect(() => {
+
+        if (!selectedTemplate) {
+            return;
+        }
+
         const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
-        if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0) {
+
+        if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0
+            && selectedTemplate.id !== SinglePageApplicationTemplate.id) {
+
             setShowRefreshToken(true);
         }
-    }, [ templateValues ]);
+    }, [ templateValues, selectedTemplate ]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.

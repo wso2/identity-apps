@@ -123,6 +123,7 @@ export class Config {
             authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${new Date().getFullYear()}`,
             features: window["AppUtils"].getConfig().ui.features,
+            i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             theme: window["AppUtils"].getConfig().ui.theme,

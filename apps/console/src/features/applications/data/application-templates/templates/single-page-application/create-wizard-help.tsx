@@ -61,7 +61,8 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
                     completed and to where the user is redirected to once the logout is completed.
                 </p>
                 <p>The client should specify the redirect_url in the authorize or logout request and
-                    &nbsp;{ config.ui.productName }&nbsp;will validate it against this configured redirect URLs.</p>
+                    &nbsp;{ config.ui.productName }&nbsp;will validate it against this configured redirect URLs.
+                </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
 

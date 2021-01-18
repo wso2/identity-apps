@@ -355,7 +355,8 @@
         &.radio-selection-card {
             border: none !important;
             box-shadow: none !important;
-            background: transparent;
+            background: @selectionCardWithRadioBackground;
+            border-left: @selectionCardWithRadioBorderLeft !important;
 
             .integrate-radio {
                 flex-grow: 0;
@@ -379,19 +380,32 @@
                 .ui.radio.checkbox label::before {
                     width: 20px !important;
                     height: 20px !important;
-                    border-color: @nobel !important;
+                    border-color: #c8c8c8 !important;
                     border-width: 2px !important;
                 }
             }
 
              &.card-selected {
                  box-shadow: none !important;
-                 background: @galleryGray;
+                 background: @selectionCardWithRadioSelectedBackground;
+                 border-left: @selectionCardWithRadioSelectedBorderLeft !important;
 
                  .integrate-radio {
                      .ui.radio.checkbox label::before {
                          border-color: @primaryColor !important;
                      }
+                 }
+
+                 .selection-card-content {
+                    .meta {
+                        span {
+                            color: @selectionCardWithRadioSelectedSubheaderColor;
+                        }
+                    }
+                 }
+
+                 &:hover {
+                    background: @selectionCardWithRadioSelectedBackground;
                  }
              }
 
@@ -405,7 +419,8 @@
                      font-size: 1.4em;
 
                      span {
-                         color: @primaryColor;
+                         color: @selectionCardWithRadioHighlightedHeaderColor;
+                         font-weight: @selectionCardWithRadioHighlightedHeaderFontWeight;
                      }
                  }
 
@@ -417,7 +432,7 @@
              }
 
              &:hover {
-                background: @galleryGray;
+                background: @selectionCardWithRadioHoverBackground;
              }
         }
     }

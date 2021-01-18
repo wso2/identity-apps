@@ -186,7 +186,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         const application: MainApplicationInterface = merge(templateSettings?.application, protocolFormValues);
 
         application.name = generalFormValues.get("name").toString();
-        application.description = templateSettings.description;
         application.templateId = selectedTemplate.id;
 
         createApplication(application)

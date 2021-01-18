@@ -41,10 +41,24 @@
         opacity: 0.45;
     }
     &.compact {
-        margin: 0;
+        margin: 0 !important;
     }
     &.hidden {
         display: none;
+    }
+    &.spaced {
+        &-top {
+            margin-top: @textTypographySpacer;
+        }
+        &-bottom {
+            margin-bottom: @textTypographySpacer;
+        }
+        &-right {
+            margin-right: @textTypographySpacer;
+        }
+        &-left {
+            margin-left: @textTypographySpacer;
+        }
     }
 }
 

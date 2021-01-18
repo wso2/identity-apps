@@ -49,6 +49,10 @@ export interface TextPropsInterface extends TestableComponentInterface {
      */
     size?: number | string;
     /**
+     * Add a spacer.
+     */
+    spaced?: "top" | "bottom" | "right" | "left";
+    /**
      * Custom styles object.
      */
     styles?: object;
@@ -101,6 +105,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         inline,
         muted,
         size,
+        spaced,
         styles,
         [ "data-testid" ]: testId,
         truncate,
@@ -114,6 +119,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         {
             compact,
             "ellipsis": truncate,
+            [ `spaced-${ spaced }` ]: spaced,
             inline,
             muted
         }
@@ -154,7 +160,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         return {
             ...modified,
             ...overrides
-        }
+        };
     };
 
     return (
@@ -171,6 +177,6 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
  * Default props for the text component.
  */
 Text.defaultProps = {
-    compact: true,
+    compact: false,
     "data-testid": "text"
 };

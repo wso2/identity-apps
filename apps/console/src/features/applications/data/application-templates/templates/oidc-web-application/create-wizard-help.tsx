@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 /**
  * Prop types of the component.
@@ -58,20 +58,18 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
 
             <Divider />
 
-            <>
-                <Heading as="h5">Allowed redirect URLs</Heading>
+            <React.Fragment>
+                <Heading as="h5">Allowed Redirect URIs</Heading>
                 <p>
-                    After user sign-in/sign-out, the user is redirected to a page within your application.
-                    Add the list of possible redirect URLs here. You can specify multiple valid URLs.
-                    Make sure to specify the protocol (https://) otherwise the redirect may fail in some cases.
+                    After user login/logout, the user is redirected to a web page within your application
+                    that receives the post-authentication authorization code.
                 </p>
-                <p>E.g. https://sample.app/login</p>
-
                 <p>
-                    You can also configure this field later under the <strong>Protocol </strong>
-                    tab in application-edit view.
+                    Specify the list of possible redirect URIs here, so that WSO2 Identity Server
+                    will check if it’s a valid URI before sending the authorization code.
                 </p>
-            </>
+                <p>E.g., https://myapp.io/login</p>
+            </React.Fragment>
         </div>
     );
 };
