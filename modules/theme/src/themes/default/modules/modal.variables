@@ -66,6 +66,12 @@
 @sidePanelModalActionPanelBorderTop: @defaultBorderWidth solid @borderColor;
 
 /*-------------------------------
+        Attribute Modal
+--------------------------------*/
+@attributeModalContentHeight: 500px;
+
+
+/*-------------------------------
       Edit Avatar Modal
 --------------------------------*/
 

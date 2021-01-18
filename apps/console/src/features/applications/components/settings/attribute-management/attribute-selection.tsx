@@ -310,7 +310,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 if (initialRequest.includes(claim.mappedLocalClaimURI)) {
                     const newClaim: ExtendedExternalClaimInterface = {
                         ...claim,
-                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI)
+                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
+                        requested: true
                     };
                     initialSelectedClaims.push(newClaim);
 
@@ -400,7 +401,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             ?
             <>
                 <Grid.Row data-testid={ testId }>
-                    <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
+                    <Grid.Column computer={ 10 }>
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
@@ -506,17 +507,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".applications.edit.sections" +
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
-                                                                                        ".requested")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
                                                                                         ".mandatory")
                                                                                 }
                                                                             </strong>
@@ -545,17 +535,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".attributes.selection" +
                                                                                         ".mappingTable.columns" +
                                                                                         ".appAttribute")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".requested")
                                                                                 }
                                                                             </strong>
                                                                         </Table.HeaderCell>
@@ -617,18 +596,33 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 <Table.HeaderCell>
                                                                     <strong>
                                                                         {
-                                                                            t("console:develop.features.applications" +
-                                                                                ".edit.sections.attributes.selection" +
-                                                                                ".mappingTable.columns.attribute")
+                                                                            t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                ".attributes.selection" +
+                                                                                ".mappingTable.columns" +
+                                                                                ".attribute")
                                                                         }
                                                                     </strong>
                                                                 </Table.HeaderCell>
                                                                 <Table.HeaderCell>
                                                                     <strong>
                                                                         {
-                                                                            t("console:develop.features.applications" +
-                                                                                ".edit.sections.attributes.selection" +
-                                                                                ".mappingTable.columns.mandatory")
+                                                                            t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                ".attributes.selection" +
+                                                                                ".mappingTable.columns" +
+                                                                                ".appAttribute")
+                                                                        }
+                                                                    </strong>
+                                                                </Table.HeaderCell>
+                                                                <Table.HeaderCell>
+                                                                    <strong>
+                                                                        {
+                                                                            t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                ".attributes.selection" +
+                                                                                ".mappingTable.columns" +
+                                                                                ".mandatory")
                                                                         }
                                                                     </strong>
                                                                 </Table.HeaderCell>
@@ -646,8 +640,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             localDialect={ false }
                                                                             initialMandatory={ claim.mandatory }
                                                                             selectMandatory={ updateMandatory }
+                                                                            initialRequested={ claim.requested }
                                                                             data-testid={ claim.claimURI }
                                                                             readOnly={ readOnly }
+                                                                            localClaimDisplayName={ 
+                                                                                claim.localClaimDisplayName
+                                                                            }
                                                                         />
                                                                     );
                                                                 })

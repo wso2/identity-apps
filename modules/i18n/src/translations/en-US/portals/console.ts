@@ -642,6 +642,12 @@ export const console: ConsoleNS = {
                             tabName: "Advanced"
                         },
                         attributes: {
+                            attributeMappingChange: {
+                                error: {
+                                    description: "The mapped attributes were changed to default values.",
+                                    message: "Attribute Mapping Changed"
+                                }
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -666,7 +672,7 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Update Attribute Selection",
+                                    header: "Configure Attributes",
                                     steps: {
                                         select: {
                                             transfer: {
@@ -680,7 +686,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Add new attributes or remove existing attributes."
+                                    subHeading: "Select attributes to be included in the authentication response."
                                 },
                                 heading: "Attribute Selection",
                                 mappingTable: {

@@ -449,6 +449,7 @@ export interface ConsoleNS {
                                     searchPlaceholder: string;
                                 };
                             };
+                            attributeMappingChange: Notification;
                             roleMapping: {
                                 heading: string;
                             };

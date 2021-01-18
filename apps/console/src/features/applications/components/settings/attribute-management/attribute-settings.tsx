@@ -232,6 +232,21 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
+    //Get local mapped claim display name for external claims
+    useEffect(() => {
+        externalClaims.forEach((externalClaim) => {
+            const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
+            const matchedLocalClaim = claims.filter(localClaim => {
+                return localClaim.claimURI === mappedLocalClaimUri;
+            });
+
+            if (matchedLocalClaim) {
+                externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
+            }
+        });
+        setExternalClaims(externalClaims);
+    }, [ claims, externalClaims ]);
+
     const findDialectID = (value) => {
         let id = "";
         dialect.map((element: ClaimDialect) => {

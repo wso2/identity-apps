@@ -646,6 +646,12 @@ export const console: ConsoleNS = {
                             tabName: "උසස්"
                         },
                         attributes: {
+                            attributeMappingChange: {
+                                error: {
+                                    description: "වෙනස් කරන ලද ගුණංග නැවතත් පෙරණිමි අගයන් වෙත මාරු කරනලදි",
+                                    message: "ගුණාංග අගයන් වෙනස් කරන ලදි"
+                                }
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {

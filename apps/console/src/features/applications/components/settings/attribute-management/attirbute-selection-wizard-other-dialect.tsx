@@ -25,6 +25,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { union } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -68,7 +69,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     const [tempAvailableClaims, setTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
     const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedExternalClaimInterface[]>([]);
     const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState<boolean | string>(false);
+    const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState<boolean>(false);
 
     const handleAttributeModal = () => {
         setShowAddModal(false);
@@ -81,7 +82,11 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
             setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
-            setFilterTempAvailableClaims(tempAvailableClaims);
+            if (selectedExternalClaims.length > 0) {
+                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
+            } else {
+                setFilterTempAvailableClaims(tempAvailableClaims);
+            }
         }
     };
 
@@ -96,6 +101,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
             checkedRoles.splice(checkedRoles.indexOf(claim), 1);
             setTempSelectedClaims(checkedRoles);
         } else {
+            claim.requested = true;
             checkedRoles.push(claim);
             setTempSelectedClaims(checkedRoles);
         }
@@ -114,8 +120,13 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
      */
     useEffect(() => {
         if (showAddModal) {
-            setTempAvailableClaims(availableExternalClaims);
-            setFilterTempAvailableClaims(availableExternalClaims);
+            if (selectedExternalClaims.length > 0) {
+                setTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
+                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
+            } else {
+                setTempAvailableClaims(availableExternalClaims);
+                setFilterTempAvailableClaims(availableExternalClaims);
+            }
             setTempSelectedClaims(selectedExternalClaims);
         } else {
             setTempAvailableClaims([]);
@@ -129,7 +140,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
      */
     useEffect(() => {
         if (isSelectAssignedAllClaimsChecked) {
-            setTempSelectedClaims(availableExternalClaims);
+            setTempSelectedClaims(filterTempAvailableClaims);
         } else {
             setTempSelectedClaims([]);
         }
@@ -146,7 +157,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
 
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
+        <Modal open={ showAddModal } size="large" className="user-roles attribute-modal" data-testid={ testId }>
             <Modal.Header>
                 { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
@@ -168,11 +179,9 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                         selectionComponent
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ [
-                            t("console:develop.features.applications.edit.sections.attributes.selection.addWizard" +
-                                ".steps.select.transfer.headers.attribute")
-                        ] }
+                        listHeaders={ [ "" ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                        isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }
                         
                     >

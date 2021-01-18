@@ -25,6 +25,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { union } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -83,7 +84,11 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
             setFilterTempAvailableClaims(tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
-            setFilterTempAvailableClaims(tempAvailableClaims);
+            if (selectedClaims.length > 0) {
+                setFilterTempAvailableClaims(union(selectedClaims, availableClaims ));
+            } else {
+                setFilterTempAvailableClaims(tempAvailableClaims);
+            }
         }
     };
 
@@ -98,6 +103,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
             checkedRoles.splice(checkedRoles.indexOf(claim), 1);
             setTempSelectedClaims(checkedRoles);
         } else {
+            claim.requested = true;
             checkedRoles.push(claim);
             setTempSelectedClaims(checkedRoles);
         }
@@ -115,7 +121,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     useEffect(() => {
         if (isSelectAssignedAllClaimsChecked) {
-            setTempSelectedClaims(availableClaims);
+            setTempSelectedClaims(filterTempAvailableClaims);
         } else {
             setTempSelectedClaims([]);
         }
@@ -126,8 +132,13 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     useEffect(() => {
         if (showAddModal) {
-            setTempAvailableClaims(availableClaims);
-            setFilterTempAvailableClaims(availableClaims);
+            if (selectedClaims.length > 0) {
+                setTempAvailableClaims(union(selectedClaims, availableClaims ));
+                setFilterTempAvailableClaims(union(selectedClaims, availableClaims ));
+            } else {
+                setTempAvailableClaims(availableClaims);
+                setFilterTempAvailableClaims(availableClaims);
+            }
             setTempSelectedClaims(selectedClaims);
         } else {
             setTempAvailableClaims([]);
@@ -153,7 +164,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
 
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
+        <Modal open={ showAddModal } size="large" className="user-roles attribute-modal" data-testid={ testId }>
             <Modal.Header>
                 { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
@@ -175,19 +186,9 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         selectionComponent
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ [
-                            <LinkButton 
-                                compact 
-                                key="selectAll" 
-                                data-testid={ testId } 
-                                onClick={ selectAllUnAssignedList } 
-                            >
-                                { 
-                                    t("console:develop.features.applications.edit.sections.attributes.selection." +
-                                        "addWizard.steps.select.transfer.headers.attribute") 
-                                }
-                            </LinkButton>
-                        ] }
+                        listHeaders={ [ "" ] }
+                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                        isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }
                     >
                         {
