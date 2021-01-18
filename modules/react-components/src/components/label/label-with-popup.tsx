@@ -80,6 +80,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
         popupFooterLeftContent,
         popupOptions,
         labelColor,
+        trigger,
         ...rest
     } = props;
 
@@ -92,7 +93,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
             className={ classes }
             position="right center"
             trigger={
-                <Label
+                trigger ?? <Label
                     circular
                     size="mini"
                     className="micro spaced-right status-label-with-popup"
