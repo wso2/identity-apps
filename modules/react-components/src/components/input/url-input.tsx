@@ -397,7 +397,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         { origin }
                     </React.Fragment>
                 }
-                popupOptions={ { basic: true, on: "hover" } }
+                popupOptions={ { basic: true, on: "click" } }
                 labelColor={ positive ? "green" : "red" }
             />
         );
