@@ -83,7 +83,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             if (selectedExternalClaims.length > 0) {
-                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
+                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
             } else {
                 setFilterTempAvailableClaims(tempAvailableClaims);
             }
@@ -121,8 +121,8 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     useEffect(() => {
         if (showAddModal) {
             if (selectedExternalClaims.length > 0) {
-                setTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
-                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims ));
+                setTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
+                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
             } else {
                 setTempAvailableClaims(availableExternalClaims);
                 setFilterTempAvailableClaims(availableExternalClaims);
@@ -136,7 +136,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     }, [showAddModal]);
 
     /**
-     * Select all selected claims.JSON
+     * Select all selected claims
      */
     useEffect(() => {
         if (isSelectAssignedAllClaimsChecked) {

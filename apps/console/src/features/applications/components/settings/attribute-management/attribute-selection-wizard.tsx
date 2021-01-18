@@ -117,7 +117,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     };
 
     /**
-     * Select all selected claims.JSON
+     * Select all selected claims
      */
     useEffect(() => {
         if (isSelectAssignedAllClaimsChecked) {

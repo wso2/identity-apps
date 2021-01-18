@@ -540,10 +540,10 @@
             height: @attributeModalContentHeight;
 
             .transfer-segment {
-                height: 450px;
+                height: @transferComponentSegmentHeight;
 
                 .transfer-list-segment {
-                    height: 370px;
+                    height: @transferComponentListSegmentHeight;
                 }
             }
             
