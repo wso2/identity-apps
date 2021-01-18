@@ -486,7 +486,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                                 <Table.Cell>
                                                                     {
                                                                         user?.userName?.split("/")?.length > 1
-                                                                            ? user?.userName?.split("/")[1]
+                                                                            ? user.userName.split("/")[1]
                                                                             : user?.userName
                                                                     }
                                                                 </Table.Cell>
