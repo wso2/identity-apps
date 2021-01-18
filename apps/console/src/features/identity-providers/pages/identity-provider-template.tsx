@@ -434,6 +434,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     return (
         <HelpPanelLayout
+            visible={ false }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
