@@ -106,7 +106,6 @@
                                             <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%></div>
                                             <div class="ui divider hidden"></div>
                                 <% } }  %>
-                                <p>You have not enabled TOTP authentication. Please enable it.</p>
 
                                 <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.totp.not.enabled.please.enable")%></p>
                                 
