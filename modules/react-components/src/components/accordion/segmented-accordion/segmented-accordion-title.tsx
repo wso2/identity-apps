@@ -57,6 +57,11 @@ export interface SegmentedAccordionTitlePropsInterface extends AccordionTitlePro
      * Flag to determine if emphasized segments should be used.
      */
     useEmphasizedSegments?: boolean;
+    /**
+     * Handle accordion on click method.
+     */
+    handleAccordionOnClick?:
+        (e: MouseEvent<HTMLDivElement>, SegmentedAuthenticatedAccordion: AccordionTitleProps) => void;
 }
 
 /**

@@ -27,10 +27,10 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
@@ -73,6 +73,10 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Initial activeIndexes value.
+     */
+    defaultActiveIndexes?: number[];
 }
 
 /**
@@ -90,6 +94,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         outboundConnectors,
         isLoading,
         onUpdate,
+        defaultActiveIndexes,
         [ "data-testid" ]: testId
     } = props;
 
@@ -106,6 +111,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         deletingConnector,
         setDeletingConnector
     ] = useState<OutboundProvisioningConnectorWithMetaInterface>(undefined);
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+
 
     /**
      * Fetch available connectors for the identity provider.
@@ -258,6 +265,30 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
+    };
+
+
+    /**
      * Handles connector delete button on click action.
      *
      * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
@@ -370,6 +401,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 }
                                                             ]
                                                         }
+                                                        accordionActiveIndexes = { accordionActiveIndexes }
+                                                        accordionIndex = { index }
+                                                        handleAccordionOnClick = { handleAccordionOnClick }
                                                         data-testid={ `${testId}-accordion` }
                                                     />
                                                 );
@@ -485,5 +519,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
  * Default proptypes for the IDP outbound provisioning settings component.
  */
 OutboundProvisioningSettings.defaultProps = {
-    "data-testid": "idp-edit-outbound-provisioning-settings"
+    "data-testid": "idp-edit-outbound-provisioning-settings",
+    defaultActiveIndexes: [ -1 ]
 };
