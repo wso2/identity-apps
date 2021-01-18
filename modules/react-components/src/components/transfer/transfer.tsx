@@ -26,10 +26,11 @@ import { TransferListSearch } from "./transfer-list-search";
  */
 export interface TransferComponentPropsInterface extends TestableComponentInterface {
     handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
-    handleSelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
-    addItems: () => void;
-    removeItems: () => void;
+    handleSelectedListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
+    addItems?: () => void;
+    removeItems?: () => void;
     searchPlaceholder: string;
+    selectionComponent?: boolean;
 }
 
 /**
@@ -48,6 +49,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         removeItems,
         children,
         searchPlaceholder,
+        selectionComponent,
         handleUnelectedListSearch,
         handleSelectedListSearch,
         [ "data-testid" ]: testId
@@ -84,7 +86,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             )
                                         }
                                         {
-                                            index === 0 && (
+                                            index === 0 && !selectionComponent && (
                                                 <Grid.Column
                                                     verticalAlign="middle"
                                                     width={ 1 }

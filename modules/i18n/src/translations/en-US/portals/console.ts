@@ -671,7 +671,7 @@ export const console: ConsoleNS = {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Attribute"
+                                                    attribute: "Select All Attributes"
                                                 },
                                                 searchPlaceholders: {
                                                     attribute: "Search attribute",

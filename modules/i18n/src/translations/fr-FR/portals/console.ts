@@ -667,7 +667,7 @@ export const console: ConsoleNS = {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Attribut"
+                                                    attribute: "Sélectionnez tous les attributs"
                                                 },
                                                 searchPlaceholders: {
                                                     attribute: "Chercher un attribut",

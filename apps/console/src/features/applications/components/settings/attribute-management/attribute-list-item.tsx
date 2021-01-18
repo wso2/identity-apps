@@ -77,6 +77,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
     const [mandatory, setMandatory] = useState(false);
     const [requested, setRequested] = useState(true);
+    const [mappedAttribute, setMappedAttribute] = useState(claimURI);
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -90,6 +91,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     const handleClaimMapping = (e) => {
         const mappingValue = e.target.value;
+            
+        setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
         if (claimMappingError && !_.isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
@@ -143,7 +146,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                             ".mappingTable.listItem.fields.claim.placeholder",
                                             { name: displayName })
                                     }
-                                    value={ mapping?.applicationClaim }
+                                    value={ mappedAttribute }
                                     onChange={ handleClaimMapping }
                                     disabled={ !mappingOn }
                                     readOnly={ readOnly }
