@@ -8,5 +8,6 @@
 
 @textTypographyColor: @textColor;
 @textTypographyFontSize: @fontSize;
-@textTypographyMargin: 0;
+@textTypographyMargin: 0 0 1em;
 @textTypographyMutedColor: @lightTextColor;
+@textTypographySpacer: 1em;

@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Traditional web applications that uses redirection.",
+    "description": "Web applications that use server-side languages.",
     "enabled": true,
     "displayOrder": 1,
     "id": "web-application",

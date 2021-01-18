@@ -56,7 +56,10 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
                     After user login/logout, the user is redirected to a web page within your application
                     that receives the post-authentication authorization code.
                 </p>
-                <p>Add the list of possible redirect URIs here. You can specify multiple valid URIs.</p>
+                <p>
+                    Specify the list of possible redirect URIs here, so that WSO2 Identity Server
+                    will check if it’s a valid URI before sending the authorization code.
+                </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
 

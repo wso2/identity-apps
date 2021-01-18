@@ -141,7 +141,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    showLanguageSwitcher
                     fluid={ !isMobileViewport ? fluid : false }
                 />
             ) }

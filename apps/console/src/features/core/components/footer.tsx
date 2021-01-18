@@ -46,6 +46,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
 
     const {
         currentLanguage,
+        showLanguageSwitcher,
         ...rest
     } = props;
 
@@ -87,6 +88,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
                     to: AppConstants.getPaths().get("PRIVACY")
                 }
             ] }
+            showLanguageSwitcher={ config.ui.i18nConfigs?.showLanguageSwitcher ?? showLanguageSwitcher }
             { ...rest }
         />
     );

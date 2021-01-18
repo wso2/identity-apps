@@ -81,6 +81,7 @@
 @doveGray         : #616161;
 @aliceBlue        : #f7fcff;
 @alabaster        : #f7f7f7;
+@pureBlack        : #000000;
 
 /*-------------------
         Page

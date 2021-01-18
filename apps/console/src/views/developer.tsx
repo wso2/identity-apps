@@ -305,7 +305,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    showLanguageSwitcher
                     fluid={ !isMobileViewport ? fluid : false }
                 />
             ) }
