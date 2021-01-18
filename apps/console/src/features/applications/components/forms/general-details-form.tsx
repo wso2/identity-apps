@@ -113,7 +113,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             description: values.get("description").toString(),
             id: appId,
             name: values.get("name")?.toString(),
-            ...!hiddenFields.includes("imageUrl") && { imageUrl: values.get("imageUrl").toString() }
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.get("imageUrl").toString() }
         };
     };
 
@@ -190,7 +190,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    !hiddenFields.includes("imageUrl") && (
+                    !hiddenFields?.includes("imageUrl") && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
@@ -220,8 +220,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     data-testid={ `${ testId }-application-image-url-input` }
                                 />
                                 <Hint compact>
-                                    { t("console:develop.features.applications.forms" +
-                                        ".generalDetails.fields.imageUrl.description") }
+                                    {
+                                        t("console:develop.features.applications.forms.generalDetails" +
+                                            ".fields.imageUrl.hint")
+                                    }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

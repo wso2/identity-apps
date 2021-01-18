@@ -262,7 +262,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
-                            hiddenFields={ [ "imageUrl" ] }
                             readOnly={
                                 readOnly
                                 || !hasRequiredScopes(

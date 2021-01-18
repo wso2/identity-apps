@@ -282,8 +282,8 @@ export const console: ConsoleNS = {
                     heading: "Disclosure of personal information",
                     legalProcess: {
                         description: "Please note that the organization, entity or individual running WSO2 IS " +
-                        "may be compelled to disclose your personal information with or without your consent " +
-                        "when it is required by law following due and lawful process.",
+                            "may be compelled to disclose your personal information with or without your consent " +
+                            "when it is required by law following due and lawful process.",
                         heading: "Legal process"
                     }
                 },
@@ -304,7 +304,7 @@ export const console: ConsoleNS = {
                     contactUs: {
                         description: {
                             para1: "Please contact WSO2 if you have any question or concerns regarding this " +
-                            "privacy policy."
+                                "privacy policy."
                         },
                         heading: "Contact us"
                     },
@@ -843,7 +843,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     role: {
                                         hint: "This option will append the user store domain that the user resides to" +
-                                        " role",
+                                            " role",
                                         label: "Include userDomain",
                                         validations: {
                                             empty: "Select the role attribute"
@@ -1008,10 +1008,9 @@ export const console: ConsoleNS = {
                                 label: "Discoverable application"
                             },
                             imageUrl: {
+                                hint: "A URL for the image of the application for display purposes. If not provided " +
+                                    "a generated thumbnail will displayed. Recommended size is 200x200 pixels.",
                                 label: "Logo",
-                                description: "A URL for the image of the application for display purposes. " +
-                                    "If not provided, a generated thumbnail will be displayed. " +
-                                    "(mention desired resolutions)",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "This is not a valid image URL"
@@ -3179,7 +3178,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Choose one of the predefined application templates to help you with quick application " +
+                subTitle: "Choose one of the predefined application types to help you with quick application " +
                     "creation.",
                 title: "Select Application Type"
             },
