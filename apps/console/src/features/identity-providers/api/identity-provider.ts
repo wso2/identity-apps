@@ -31,7 +31,7 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
     IdentityProviderRolesInterface,
-    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateInterface,
     IdentityProviderTemplateListResponseInterface,
     JITProvisioningResponseInterface,
     LocalAuthenticatorInterface,
@@ -613,9 +613,9 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
  * Gets the identity provider template.
  *
  * @param templateId Id value of the template.
- * @return {Promise<IdentityProviderTemplateListItemInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateInterface>} A promise containing the response.
  */
-export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateListItemInterface> => {
+export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -639,7 +639,7 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
                     response.config);
             }
 
-            return Promise.resolve(response.data as IdentityProviderTemplateListItemInterface);
+            return Promise.resolve(response.data as IdentityProviderTemplateInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR,

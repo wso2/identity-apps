@@ -28,7 +28,7 @@ import { ApplicationTemplateLoadingStrategies, ApplicationsResourceEndpointsInte
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";
-import { IDPResourceEndpointsInterface } from "../../identity-providers";
+import { IdentityProviderTemplateLoadingStrategies, IDPResourceEndpointsInterface } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -147,6 +147,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * `REMOTE` will fetch templates from the template management REST API.
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
+    /**
+     * How should the IDP templates be loaded.
+     * If `LOCAL` is selected, app will resort to in-app templates.
+     * `REMOTE` will fetch templates from the template management REST API.
+     */
+    identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
     /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */

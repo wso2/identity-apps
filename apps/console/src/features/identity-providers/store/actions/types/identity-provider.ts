@@ -22,7 +22,7 @@
  * @readonly
  * @enum {string}
  */
-import { FederatedAuthenticatorListItemInterface } from "../../../models";
+import {FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface} from "../../../models";
 
 export enum IdentityProviderActionTypes {
     /**
@@ -31,6 +31,13 @@ export enum IdentityProviderActionTypes {
      * @type {string}
      */
     SET_AVAILABLE_AUTHENTICATOR_META = "SET_AVAILABLE_AUTHENTICATOR_META",
+
+    /**
+     * Action type to set the list of available IDP templates.
+     *
+     * @type {string}
+     */
+    SET_AVAILABLE_IDP_TEMPLATES = "SET_AVAILABLE_IDP_TEMPLATES",
 }
 
 /**
@@ -49,6 +56,14 @@ export interface SetAvailableAuthenticatorsMetaInterface extends IdentityProvide
 }
 
 /**
+ * Set the available IDP templates action interface.
+ */
+export interface SetAvailableIDPTemplateInterface extends IdentityProviderBaseActionInterface {
+    payload: IdentityProviderTemplateItemInterface[];
+    type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES;
+}
+
+/**
  * Export action interfaces.
  */
-export type IdentityProviderActions = SetAvailableAuthenticatorsMetaInterface;
+export type IdentityProviderActions = SetAvailableAuthenticatorsMetaInterface | SetAvailableIDPTemplateInterface;

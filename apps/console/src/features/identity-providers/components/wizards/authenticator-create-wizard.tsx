@@ -36,7 +36,7 @@ import {
     FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
-    IdentityProviderTemplateListItemInterface
+    IdentityProviderTemplateInterface
 } from "../../models";
 import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
@@ -49,7 +49,7 @@ interface AddAuthenticatorWizardPropsInterface extends TestableComponentInterfac
     closeWizard: () => void;
     subTitle?: string;
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
-    availableTemplates?: IdentityProviderTemplateListItemInterface[];
+    availableTemplates?: IdentityProviderTemplateInterface[];
     idpId?: string;
 }
 

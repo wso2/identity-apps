@@ -35,6 +35,10 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
             categories: [],
             groups: [],
             templates: []
+        },
+        identityProviders: {
+            categories: [],
+            templates: []
         }
     }
 });

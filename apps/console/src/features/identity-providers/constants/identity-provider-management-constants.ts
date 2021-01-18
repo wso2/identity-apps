@@ -17,6 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
+import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing identity provider management constants.
@@ -68,6 +69,14 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly NEW_IDP__URL_SEARCH_PARAM = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
+
+    /**
+     * Default IDP template loading strategy.
+     * @constant
+     * @type {IdentityProviderTemplateLoadingStrategies}
+     */
+    public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
+        IdentityProviderTemplateLoadingStrategies.LOCAL;
 
     /**
      * Doc key for the IDP create page.
