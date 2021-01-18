@@ -120,6 +120,18 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
+    /**
+     * Listen to location changes and set the active route accordingly.
+     */
+    useEffect(() => {
+
+        if (isEmpty(filteredRoutes) || !location?.pathname) {
+            return;
+        }
+
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
+    }, [ location?.pathname, filteredRoutes ]);
+
     useEffect(() => {
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
         
