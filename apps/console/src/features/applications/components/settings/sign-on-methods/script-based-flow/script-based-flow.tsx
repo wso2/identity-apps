@@ -19,6 +19,7 @@
 import { UIConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -164,6 +165,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         if (!script && authenticationSequence?.steps?.length > 0) {
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            return;
+        }
+
+        if (StringUtils.isValidJSONString(script)) {
+            setSourceCode(JSON.parse(script));
             return;
         }
 
