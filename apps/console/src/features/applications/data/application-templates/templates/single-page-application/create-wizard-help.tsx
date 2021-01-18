@@ -19,7 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { useSelector } from "react-redux";
 
 /**
  * Prop types of the component.
@@ -40,6 +42,8 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
         [ "data-testid" ]: testId
     } = props;
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <div data-testid={ testId }>
             <React.Fragment>
@@ -51,14 +55,13 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Allowed Redirect URIs</Heading>
+                <Heading as="h5">Allowed Redirect URLs</Heading>
                 <p>
-                    After user login/logout, the user is redirected to a web page within your application
-                    that receives the post-authentication authorization code.
+                    The redirect URL determines to where the authorization code is sent, login is
+                    completed and to where the user is redirected to once the logout is completed.
                 </p>
-                <p>
-                    Specify the list of possible redirect URIs here, so that WSO2 Identity Server
-                    will check if it’s a valid URI before sending the authorization code.
+                <p>The client should specify the redirect_url in the authorize or logout request and
+                    &nbsp;{ config.ui.productName }&nbsp;will validate it against this configured redirect URLs.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>

@@ -19,15 +19,8 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import {
-    ConfirmationModal,
-    CopyInputField,
-    Heading,
-    Hint,
-    LinkButton,
-    URLInput
-} from "@wso2is/react-components";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -41,6 +34,7 @@ import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
+    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -48,11 +42,11 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes,
-    emptyOIDCConfig
+    SupportedAccessTokenBindingTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
+import { ConfigReducerStateInterface } from "../../../core";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -138,6 +132,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const clientSecret = useRef<HTMLElement>();
     const grant = useRef<HTMLElement>();
@@ -161,6 +156,58 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const frontChannelLogoutUrl = useRef<HTMLElement>();
     const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
     const scopeValidator = useRef<HTMLElement>();
+
+    /**
+     * We use this hook to maintain the toggle state of the PKCE checkbox in the
+     * OIDC form.
+     *
+     * @description Purpose is to enable "Support 'Plain' PKCE Algorithm" checkbox
+     *              field if and only if "Enabled" is checked. Otherwise the 'Plain'
+     *              will be disabled and stay in the unchecked state.
+     */
+    const [ enablePKCE, setEnablePKCE ] = useState<boolean>(false);
+
+    /**
+     * The {@code PKCE_KEY}, {@code ENABLE_PKCE_CHECKBOX_VALUE and
+     * {@code SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE} values are sensitive.
+     * If you inspect the relevant field you will see that those value should
+     * be the same when we are passing it down to the component.
+     */
+    const PKCE_KEY = "PKCE";
+    const ENABLE_PKCE_CHECKBOX_VALUE = "mandatory";
+    const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE = "supportPlainTransformAlgorithm";
+
+    /**
+     * The listener handler for the enable PKCE toggle form field. This function
+     * check if the "mandatory" value is present in the values array under "PKCE"
+     * field and toggles the {@code enablePKCE} boolean on/off.
+     *
+     * @param tempForm {Map<string, FormValue>} a mutable map of form values
+     */
+    const pkceValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
+        /**
+         * A predicate that checks whether the given value is
+         * matching ENABLE_PKCE_CHECKBOX_VALUE
+         * @param val {string} checkbox value
+         */
+        const withPredicate = (val: string): boolean => val === ENABLE_PKCE_CHECKBOX_VALUE;
+
+        if (tempForm.has(PKCE_KEY)) {
+            const value: string[] = tempForm.get(PKCE_KEY) as string[];
+            if (value.find(withPredicate)) {
+                setEnablePKCE(true);
+            } else {
+                /**
+                 * If the "PKCE Enable" checkbox is unchecked then we can't
+                 * let the "Support PKCE Plain" checkbox field be enabled or
+                 * keep in checked state. So, this step what we do is simply
+                 * just set the selected values array to an empty string array.
+                 */
+                tempForm.set(PKCE_KEY, [] as string[]);
+                setEnablePKCE(false);
+            }
+        }
+    };
 
     /**
      * Check whether to show the callback url or not
@@ -230,6 +277,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setGrantChanged(!isGrantChanged);
     };
 
+    const getMetadataHints = (element: string) => {
+        switch (element.toLowerCase()) {
+            case "none":
+                return t("console:develop.features.applications.forms" +
+                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none");
+            case "cookie":
+                return t("console:develop.features.applications.forms" +
+                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie");
+            case "sso-session":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections." +
+                    "accessToken.fields.bindingType.valueDescriptions.sso_session", {
+                    productName: config.ui.productName
+                });
+            case "default":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.default");
+            case "jwt":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                    ".accessToken.fields.type.valueDescriptions.jwt");
+            default:
+                return undefined;
+        }
+    };
+
     /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
@@ -242,7 +313,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (metadataProp) {
             if (isLabel) {
                 metadataProp.options.map((ele) => {
-                    allowedList.push({ label: ele, value: ele });
+                    allowedList.push({
+                        label: ele,
+                        value: ele,
+                        hint: { content: getMetadataHints(ele), header: ele.toUpperCase() }
+                    });
                 });
             } else {
                 metadataProp.options.map((ele) => {
@@ -250,7 +325,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 });
             }
         }
-        return allowedList;
+        if (isLabel) {
+            // if the list related to a label then sort the values in
+            // alphabetical order using a ascending comparator.
+            return allowedList.sort((a, b) => {
+                if (a.label < b.label) return -1;
+                if (a.label > b.label) return 1;
+                return 0;
+            });
+        } else {
+            return allowedList;
+        }
     };
 
     /**
@@ -299,10 +384,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const findPKCE = (pckeConfig: OAuth2PKCEConfigurationInterface): string[] => {
         const selectedValues = [];
         if (pckeConfig.mandatory) {
-            selectedValues.push("mandatory");
+            selectedValues.push(ENABLE_PKCE_CHECKBOX_VALUE);
         }
         if (pckeConfig.supportPlainTransformAlgorithm) {
-            selectedValues.push("supportPlainTransformAlgorithm");
+            selectedValues.push(SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE);
         }
         return selectedValues;
     };
@@ -605,7 +690,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-public-client-checkbox` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint") }
+                        { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
+                            productName: config.ui.productName
+                        }) }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -660,7 +747,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             showError={ showURLError }
                             setShowError={ setShowURLError }
                             hint={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                                t("console:develop.features.applications." +
+                                    "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                    productName: config.ui.productName
+                                })
                             }
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }
@@ -739,7 +829,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
-            { /* PKCE */ }
+            { /* Form Section: PKCE */ }
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                     <Divider />
@@ -753,13 +843,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Hint>
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
                     </Hint>
-                    <Message compact={ true } size={ "tiny" } className={"border-less"}>
-                        { 'The default method used by Asgardeo to generate the challenge is SHA-256. Only select' +
-                        '"Plain" for constrained environments that can not use the SHA-256 transformation.' }
-                    </Message>
                     <Field
                         ref={ pkce }
-                        name="PKCE"
+                        name={ PKCE_KEY }
                         label=""
                         required={ false }
                         requiredErrorMessage={
@@ -768,16 +854,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={ findPKCE(initialValues.pkce) }
+                        listen={ pkceValuesChangeListener }
                         children={ [
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.mandatory.label"),
-                                value: "mandatory"
+                                value: ENABLE_PKCE_CHECKBOX_VALUE
                             },
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
                                     ".sections.pkce.fields.pkce.children.plainAlg.label"),
-                                value: "supportPlainTransformAlgorithm"
+                                value: SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE,
+                                hint: {
+                                    header: "PKCE 'Plain'",
+                                    content: t("console:develop.features.applications.forms." +
+                                        "inboundOIDC.sections.pkce.description", {
+                                        productName: config.ui.productName
+                                    })
+                                },
+                                disabled: !enablePKCE
                             }
                         ] }
                         readOnly={ readOnly }
@@ -814,20 +909,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                     />
-                    <Message compact={false} size={"tiny"} className={"border-less"}>
-                        <p>
-                            Asgardeo has the capability to attach the OAuth2 access token and refresh
-                            token to an external attribute during the token generation and optionally validate the
-                            external attribute during the API invocation.
-                        </p>
-                        <br/>
-                        <Message.Content>
-                            <p><b>None</b> - No Binding.</p>
-                            <p><b>Cookie</b> - Bind the access token to a cookie with Secure and httpOnly parameters.</p>
-                            <p><b>SSO-Session</b> - Bind the access token to the session.
-                                Asgardeo will generate different tokens for each new browser instance.</p>
-                        </Message.Content>
-                    </Message>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
@@ -838,6 +919,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
                         }
+                        hint={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".accessToken.fields.bindingType.description", {
+                            productName: config.ui.productName
+                        }) }
                         name="bindingType"
                         default={
                             initialValues?.accessToken?.bindingType
@@ -855,14 +940,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
-                    <Message compact={false} size={"tiny"} className={"border-less"}>
-                        <Message.Content>
-                            <p>Token Types</p>
-                            <p><b>JWT</b> - Issue a self-contained JWT token.</p>
-                            <p><b>Default</b> - Issue an opaque UUID as a token.</p>
-                        </Message.Content>
-                    </Message>
-
                 </Grid.Column>
             </Grid.Row>
             {
@@ -1280,6 +1357,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-back-channel-logout-url-input` }
                     />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".logoutURLs.fields.back.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
@@ -1316,8 +1399,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
+            { /*Request Object Signature*/ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                    <Heading as="h5">
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObjectSignature.heading") }
+                    </Heading>
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObjectSignature.description", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
+                    <Divider hidden />
                     <Field
                         ref={ enableRequestObjectSignatureValidation }
                         name="enableRequestObjectSignatureValidation"
@@ -1333,7 +1432,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         children={ [
                             {
                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                    ".sections.logoutURLs.fields.signatureValidation.label"),
+                                    ".sections.requestObjectSignature.fields.signatureValidation.label"),
                                 value: "EnableRequestObjectSignatureValidation"
                             }
                         ] }
@@ -1382,6 +1481,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms." +
                                 "advancedConfig.sections.certificate.heading") }
                     </Heading>
+                    <Hint>
+                        { t("console:develop.features.applications.forms.advancedConfig.sections" +
+                            ".certificate.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                     <Field
                         label={
                             t("console:develop.features.applications.forms." +
@@ -1400,12 +1505,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             {
                                 label: t("console:develop.features.applications.forms." +
                                     "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
-                                value: CertificateTypeInterface.JWKS
+                                value: CertificateTypeInterface.JWKS,
+                                hint: {
+                                    header: t("console:develop.features.applications.forms." +
+                                        "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
+                                    content: t("console:develop.features.applications.forms.advancedConfig" +
+                                        ".sections.certificate.fields.jwksValue.description")
+                                }
                             },
                             {
                                 label: t("console:develop.features.applications.forms." +
                                     "advancedConfig.sections.certificate.fields.type.children.pem.label"),
-                                value: CertificateTypeInterface.PEM
+                                value: CertificateTypeInterface.PEM,
+                                hint: {
+                                    header: t("console:develop.features.applications.forms." +
+                                        "advancedConfig.sections.certificate.fields.type.children.pem.label"),
+                                    content: t("console:develop.features.applications.forms.advancedConfig" +
+                                        ".sections.certificate.fields.pemValue.description")
+                                }
                             }
                         ] }
                         readOnly={ readOnly }

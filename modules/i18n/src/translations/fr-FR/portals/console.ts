@@ -617,7 +617,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
-                        subheader: "Une fois que vous avez supprimé une application, il est impossible de revenir en arrière. Veuillez en être certain."
+                        subheader: "L'application sera supprimée définitivement et les clients" +
+                            " utilisant cette application cesseront de fonctionner.",
                     },
                     header: "Zone de danger"
                 },
@@ -936,8 +937,9 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
-                                        label: "Valeur",
-                                        placeholder: "URL JWKS de l'application.",
+                                        label: "URL",
+                                        placeholder: "https://myapp.io/jwks",
+                                        description: "L'URL utilisée pour obtenir une clé publique JWKS.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire.",
                                             invalid: "Ceci n'est pas une URL valide"
@@ -948,8 +950,9 @@ export const console: ConsoleNS = {
                                             view: "Voir les informations sur le certificat"
                                         },
                                         hint: "Le certificat ( au format PEM ) de l'application.",
-                                        label: "Valeur",
+                                        label: "Certificat",
                                         placeholder: "Certificat au format PEM.",
+                                        description: "La valeur texte du certificat au format PEM.",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
@@ -966,34 +969,43 @@ export const console: ConsoleNS = {
                                         label: "Type"
                                     }
                                 },
-                                heading: "Certificat"
+                                heading: "Certificat",
+                                hint: "Ce certificat permet de valider les signatures des requêtes signées et de " +
+                                    "décrypter les requêtes cryptées de l'application vers {{productName}}."
                             }
                         }
                     },
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Les applications détectables sont accessibles via cette URL",
+                                hint: "L'URL de la page de destination de cette application. Il sera utilisé dans" +
+                                    " le catalogue d'applications et les flux de découverte. Si la page de" +
+                                    " connexion expire, l'utilisateur sera redirigé vers l'application" +
+                                    " client via cette URL.",
                                 label: "URL d'accès",
-                                placeholder: "Saisissez l'url d'accès à la page de connexion de l'application",
+                                placeholder: "https://myapp.io/home",
                                 validations: {
-                                    empty: "Une URL d'accès valide doit être définie pour qu'une application soit " +
-                                        "marquée comme étant découvrable",
+                                    empty: "Une URL d'accès valide doit être fournie pour" +
+                                        " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
                                 }
                             },
                             description: {
                                 label: "Description",
+                                description: "Une description textuelle de l'application.",
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {
-                                hint: "Si une application est marquée comme détectable, elle sera visible par les " +
-                                    "utilisateurs finaux dans <1>My Account</1><2></2>",
+                                hint: "Activez pour rendre l'application visible aux utilisateurs finaux dans " +
+                                    "le catalogue d'applications. Visible dans <1>My Account</1><2></2>",
                                 label: "Application découvrable"
                             },
                             imageUrl: {
-                                label: "Image de l'application",
-                                placeholder: "Entrez une URL d'image pour l'application",
+                                label: "Logo",
+                                description: "Une URL pour l'image de l'application à des fins d'affichage. " +
+                                    "S'il n'est pas fourni, une miniature générée s'affiche." +
+                                    " (mentionner les résolutions souhaitées)",
+                                placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
                                 }
@@ -1049,12 +1061,15 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "Après l'authentification, nous ne redirigerons que vers les URIs de redirection " +
-                                    "renseignées ci-dessus",
-                                label: "URIs de redirection",
+                                hint: "L'URL de redirection détermine vers où le code d'autorisation est envoyé," +
+                                    " la connexion est terminée et vers où l'utilisateur est redirigé une fois" +
+                                    " la déconnexion terminée. Le client doit spécifier l'URL de redirection" +
+                                    " dans la demande d'autorisation ou de déconnexion et {{productName}} la validera" +
+                                    " par rapport aux URL de redirection configurées.",
+                                label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URI valide.",
+                                    empty: "Veuillez ajouter une URL valide.",
                                     required: "ce champ est obligatoire pour une application fonctionnelle."
                                 }
                             },
@@ -1079,7 +1094,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Permettez au client de s'authentifier auprès d'Asgardeo sans le secret client." +
+                                hint: "Permettez au client de s'authentifier auprès d'{{productName}} sans le " +
+                                    "secret client." +
                                     " Les clients publics tels que les applications exécutées dans un navigateur ou" +
                                     " sur un appareil mobile ne peuvent pas utiliser les secrets client enregistrés.",
                                 label: "Client public",
@@ -1099,7 +1115,19 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
-                                        label: "Type de liaison des jetons"
+                                        label: "Type de liaison des jetons",
+                                        description: "{{productName}} a la capacité d'attacher le jeton" +
+                                            " d'accès OAuth2 et le jeton d'actualisation à un attribut " +
+                                            "externe lors de la génération du jeton et éventuellement de" +
+                                            " valider l'attribut externe lors de l'invocation de l'API.",
+                                        valueDescriptions: {
+                                            none: "Aucune liaison.",
+                                            cookie: "Liez le jeton d'accès à un cookie avec les " +
+                                                "paramètres Secure et httpOnly.",
+                                            sso_session: "Liez le jeton d'accès à la session. {{productName}}" +
+                                                " générera différents jetons pour chaque nouvelle instance " +
+                                                "de navigateur."
+                                        }
                                     },
                                     expiry: {
                                         hint: "Spécifiez la période de validité du jeton d'accès en secondes.",
@@ -1115,7 +1143,11 @@ export const console: ConsoleNS = {
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
-                                        label: "Type de token"
+                                        label: "Type de token",
+                                        valueDescriptions: {
+                                            "default": "Émettez un UUID opaque en tant que jeton.",
+                                            "jwt": "Émettez un jeton JWT autonome."
+                                        }
                                     },
                                     validateBinding: {
                                         hint: "Validez les attributs de liaison lors de la validation du jeton. Le" +
@@ -1179,8 +1211,11 @@ export const console: ConsoleNS = {
                             logoutURLs: {
                                 fields: {
                                     back: {
+                                        hint: "{{productName}} communiquera directement les demandes de déconnexion" +
+                                            " à cette (ces) URL client, afin que les clients puissent" +
+                                            " invalider la session utilisateur.",
                                         label: "URL de déconnexion amont",
-                                        placeholder: "Saisir l'URL de déconnexion amont",
+                                        placeholder: "https://myapp.io/logout",
                                         validations: {
                                             empty: "Veuillez renseigner l'URL de déconnexion amont",
                                             invalid: "Veuillez ajouter une URL valide"
@@ -1194,18 +1229,18 @@ export const console: ConsoleNS = {
                                             invalid: "Veuillez ajouter une URL valide"
                                         }
                                     },
-                                    signatureValidation: {
-                                        label: "Activer la validation de la signature de l'objet de la requête"
-                                    }
                                 },
                                 heading: "PKCE"
                             },
                             pkce: {
+                                description: "La méthode par défaut utilisée par {{productName}} pour " +
+                                    "générer le défi est SHA-256. Sélectionnez \"Plain\" uniquement pour les " +
+                                    "environnements contraints qui ne peuvent pas utiliser la transformation SHA-256.",
                                 fields: {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "Activer (rendre PKCE obligatoire)"
+                                                label: "Activer"
                                             },
                                             plainAlg: {
                                                 label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"
@@ -1242,6 +1277,18 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "jeton de rafraîchissement"
+                            },
+                            requestObjectSignature: {
+                                heading: "Signature d'objet de requête HTTP",
+                                description: "{{productName}} prend en charge la réception des paramètres de " +
+                                    "demande d'authentification OIDC des clients dans un objet de demande. " +
+                                    "Activez la validation de signature pour n'accepter que les objets " +
+                                    "de demande signés dans la demande d'autorisation.",
+                                fields: {
+                                    signatureValidation: {
+                                        label: "Activer la validation de la signature de l'objet de la requête",
+                                    }
+                                }
                             },
                             scopeValidators: {
                                 fields: {

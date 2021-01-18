@@ -570,6 +570,7 @@ export interface ConsoleNS {
                         sections: {
                             certificate: {
                                 heading: string;
+                                hint: string;
                                 fields: {
                                     jwksValue: FormAttributes;
                                     pemValue: FormAttributes;
@@ -631,10 +632,10 @@ export interface ConsoleNS {
                                 fields: {
                                     back: FormAttributes;
                                     front: FormAttributes;
-                                    signatureValidation: FormAttributes;
                                 };
                             };
                             pkce: {
+                                description: string;
                                 heading: string;
                                 hint: string;
                                 fields: {
@@ -646,6 +647,13 @@ export interface ConsoleNS {
                                 fields: {
                                     expiry: FormAttributes;
                                     renew: FormAttributes;
+                                };
+                            };
+                            requestObjectSignature: {
+                                heading: string;
+                                description: string;
+                                fields: {
+                                    signatureValidation: FormAttributes;
                                 };
                             };
                             scopeValidators: {

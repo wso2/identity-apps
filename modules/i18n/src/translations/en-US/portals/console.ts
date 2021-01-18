@@ -621,7 +621,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Delete",
                         header: "Delete application",
-                        subheader: "Once you delete an application, there is no going back. Please be certain."
+                        subheader: "The application will be deleted permanently and the " +
+                            "clients using this application will stop working."
                     },
                     header: "Danger Zone"
                 },
@@ -944,8 +945,9 @@ export const console: ConsoleNS = {
                             certificate: {
                                 fields: {
                                     jwksValue: {
-                                        label: "Value",
-                                        placeholder: "Application JWKS endpoint URL.",
+                                        label: "URL",
+                                        placeholder: "https://myapp.io/jwks",
+                                        description: "The URL used to obtain a JWKS public key.",
                                         validations: {
                                             empty: "This is a required field.",
                                             invalid: "This is not a valid URL"
@@ -956,7 +958,8 @@ export const console: ConsoleNS = {
                                             view: "View certificate info"
                                         },
                                         hint: "The certificate (in PEM format) of the application.",
-                                        label: "Value",
+                                        label: "Certificate",
+                                        description: "The text value of the certificate in PEM format.",
                                         placeholder: "Certificate in PEM format.",
                                         validations: {
                                             empty: "This is a required field."
@@ -974,34 +977,42 @@ export const console: ConsoleNS = {
                                         label: "Type"
                                     }
                                 },
-                                heading: "Certificate"
+                                heading: "Certificate",
+                                hint: "This certificate is used to validate the signatures of the signed " +
+                                    "requests and to decrypt the encrypted requests from the" +
+                                    " application to {{productName}}."
                             }
                         }
                     },
                     generalDetails: {
                         fields: {
                             accessUrl: {
-                                hint: "Discoverable applications can be accessed via this URL.",
+                                hint: "The landing page URL for this application. It will be used in the application" +
+                                    " catalog and discovery flows. If the login page times out, the user will " +
+                                    "be redirected to the client application via this URL.",
                                 label: "Access URL",
-                                placeholder: "Enter access url for the application login page",
+                                placeholder: "https://myapp.io/home",
                                 validations: {
-                                    empty: "A valid access URL needs to be defined for an application to be marked " +
-                                        " as discoverable",
+                                    empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "This is not a valid URL"
                                 }
                             },
                             description: {
                                 label: "Description",
+                                description: "A text description of the application.",
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "If an application is flagged as discoverable, it will be visible to end users" +
-                                    " in <1>My Account</1><2></2>",
+                                hint: "Enable to make the application visible to end-users in the application catalog." +
+                                    " Visible in <1>My Account</1><2></2>",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                label: "Application image",
-                                placeholder: "Enter a image url for the application",
+                                label: "Logo",
+                                description: "A URL for the image of the application for display purposes. " +
+                                    "If not provided, a generated thumbnail will be displayed. " +
+                                    "(mention desired resolutions)",
+                                placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "This is not a valid image URL"
                                 }
@@ -1059,12 +1070,15 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "After the authentication, we will only redirect to the above allowed redirect " +
-                                    "URIs and you can specify multiple URIs",
-                                label: "Allowed Redirect URIs",
+                                hint: "The redirect URL determines to where the authorization code is sent, login " +
+                                    "is completed and to where the user is redirected to once the logout is completed." +
+                                    " The client should specify the redirect_url in the authorize or logout" +
+                                    " request and {{productName}} will validate it against this " +
+                                    "configured Redirect URLs.",
+                                label: "Allowed Redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URI.",
+                                    empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try with a sample, " +
                                         "this field can be ignored."
@@ -1092,7 +1106,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             public: {
-                                hint: "Allow the client to authenticate to Asgardeo without the client secret." +
+                                hint: "Allow the client to authenticate to {{productName}} without the client secret." +
                                     " Public clients such as applications running in a browser or on a mobile device" +
                                     " are unable to use registered client secrets. ",
                                 label: "Public client",
@@ -1112,7 +1126,18 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
-                                        label: "Token binding type"
+                                        label: "Token binding type",
+                                        description: "{{productName}} has the capability to attach the OAuth2" +
+                                            " access token and refresh token to an external attribute during" +
+                                            " the token generation and optionally validate the external attribute" +
+                                            " during the API invocation.",
+                                        valueDescriptions: {
+                                            none: "No Binding.",
+                                            cookie: "Bind the access token to a cookie with Secure " +
+                                                "and httpOnly parameters.",
+                                            sso_session: "Bind the access token to the session. {{productName}}" +
+                                                " will generate different tokens for each new browser instance."
+                                        }
                                     },
                                     expiry: {
                                         hint: "Specify the validity period of the access token in seconds.",
@@ -1128,7 +1153,11 @@ export const console: ConsoleNS = {
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
-                                        label: "Token type"
+                                        label: "Token type",
+                                        valueDescriptions: {
+                                            "default": "Issue an opaque UUID as a token.",
+                                            "jwt": "Issue a self-contained JWT token."
+                                        }
                                     },
                                     validateBinding: {
                                         hint: "Validate the binding attributes at the token validation. The client " +
@@ -1188,8 +1217,10 @@ export const console: ConsoleNS = {
                             logoutURLs: {
                                 fields: {
                                     back: {
+                                        hint: "{{productName}} will directly communicate the logout requests to this " +
+                                            "client URL(s), so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
-                                        placeholder: "Enter the Back Channel Logout URL",
+                                        placeholder: "https://myapp.io/logout",
                                         validations: {
                                             empty: "Please fill the Back Channel Logout URL",
                                             invalid: "Please add valid URL"
@@ -1203,18 +1234,18 @@ export const console: ConsoleNS = {
                                             invalid: "Please add valid URL"
                                         }
                                     },
-                                    signatureValidation: {
-                                        label: "Enable request object signature validation"
-                                    }
                                 },
                                 heading: "PKCE"
                             },
                             pkce: {
+                                description: "The default method used by {{productName}} to generate the challenge " +
+                                    "is SHA-256. Only select \"Plain\" for constrained environments that can" +
+                                    " not use the SHA-256 transformation.",
                                 fields: {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "Enable (Make PKCE Mandatory)"
+                                                label: "Enable"
                                             },
                                             plainAlg: {
                                                 label: "Support PKCE 'Plain' Transform Algorithm"
@@ -1249,6 +1280,18 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Refresh Token"
+                            },
+                            requestObjectSignature: {
+                                heading: "Request Object Signature",
+                                description: "{{productName}} supports receiving OIDC authentication request " +
+                                    "parameters from clients in a `request object`. Enable signature " +
+                                    "validation to accept only signed request objects in the" +
+                                    " authorization request.",
+                                fields: {
+                                    signatureValidation: {
+                                        label: "Enable request object signature validation",
+                                    }
+                                },
                             },
                             scopeValidators: {
                                 fields: {

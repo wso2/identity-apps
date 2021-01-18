@@ -111,6 +111,12 @@ export interface PasswordField extends FormRequiredFieldModel {
 export interface RadioChild {
     label: string;
     value: string;
+    /**
+     * Optionally we can pass a hint with a context header and content.
+     * It will be rendered as a popup when the user hover over the
+     * radio button.
+     */
+    hint?: { header: string; content: string }
 }
 
 /**
@@ -131,6 +137,16 @@ export interface CheckboxChild {
     label: string;
     value: string;
     readOnly?: boolean;
+    /**
+     * Support for disabling an individual checkbox
+     * within a group of checkboxes.
+     */
+    disabled?: boolean;
+    /**
+     * Optionally we can pass a hint with a context header and content.
+     * It will be rendered as a popup when the user hover over the checkbox.
+     */
+    hint?: { header: string; content: string }
 }
 
 /**

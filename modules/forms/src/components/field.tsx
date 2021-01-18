@@ -17,8 +17,8 @@
  */
 
 import classNames from "classnames";
-import React from "react";
-import { Button, Divider, Form, Icon, Radio } from "semantic-ui-react";
+import React, { ReactElement } from "react";
+import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
 import {
@@ -201,8 +201,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
             return (
                 <Form.Group grouped={ true }>
                     { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
+                    { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((radio: RadioChild, index: number) => {
-                        return (
+                        const field = (
                             <Form.Field key={ index }>
                                 <Radio
                                     { ...filteredProps }
@@ -225,6 +226,18 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+                        if (radio.hint && radio.hint.content) {
+                            return (
+                                <Popup
+                                    key={ `${ index }-popup` }
+                                    header={ radio.hint.header }
+                                    content={ radio.hint.content }
+                                    trigger={ field }
+                                />
+                            );
+                        } else {
+                            return field;
+                        }
                     }) }
                 </Form.Group>
             );
@@ -271,8 +284,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 : null
                         }
                     </label>
+                    { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((checkbox, index) => {
-                        return (
+                        const field = (
                             <Form.Field key={ index }>
                                 <Form.Checkbox
                                     { ...filteredProps }
@@ -305,7 +319,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     }
                                     autoFocus={ inputField.autoFocus || false }
                                     readOnly={ inputField.readOnly || checkbox.readOnly }
-                                    disabled={ inputField.disabled }
+                                    disabled={ checkbox.disabled ?? inputField.disabled }
                                     defaultChecked={ inputField.defaultChecked }
                                     onKeyPress={ (event: React.KeyboardEvent) => {
                                         event.key === ENTER_KEY && handleBlur(event, inputField.name);
@@ -313,6 +327,18 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 />
                             </Form.Field>
                         );
+                        if (checkbox.hint && checkbox.hint.content) {
+                            return (
+                                <Popup
+                                    key={ `${ index }-popup` }
+                                    header={ checkbox.hint.header }
+                                    content={ checkbox.hint.content }
+                                    trigger={ field }
+                                />
+                            );
+                        } else {
+                            return field;
+                        }
                     }) }
                 </Form.Group>
             );
@@ -429,3 +455,20 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
         </Form.Field>
     );
 });
+
+/**
+ * A component that creates a text hint. Used mainly within the
+ * form fields. To see usages see {@link Checkbox} and {@link Radio}
+ * conditional rendering sections in {@link InnerField}.
+ *
+ * @param hint {string}
+ * @constructor
+ */
+export const FieldHint: React.FC<{ hint: string }> = ({ hint }: { hint: string }): ReactElement => {
+    return (
+        <div className={ "ui-hint" }>
+            <Icon color="grey" floated="left" name="info circle"/>
+            { hint }
+        </div>
+    )
+};
