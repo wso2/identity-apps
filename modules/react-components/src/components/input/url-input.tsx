@@ -443,7 +443,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         hoverable
                         inverted
                     />
-                ) : <span style={ { color: "green" } }>{ protocol }</span> }
+                ) : <span>{ protocol }</span> }
                 <span>://</span>
                 <span>{ host }</span>
             </span>
