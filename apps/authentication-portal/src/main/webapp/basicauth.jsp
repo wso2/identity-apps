@@ -334,10 +334,10 @@
     %>
 
     <div class="buttons">
-        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledByTenantAdmin || isPasswordRecoveryEnabledByTenantAdmin)) { %>
+        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledByTenantAdmin) { %>
+            <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
                 tabindex="5"
@@ -347,10 +347,10 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
             <% }
-              if (isUsernameRecoveryEnabledByTenantAdmin && isPasswordRecoveryEnabledByTenantAdmin) { %>
+              if (isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% }
-              if (isPasswordRecoveryEnabledByTenantAdmin) { %>
+              if (isPasswordRecoveryEnabledInTenant) { %>
             <a
                 id="passwordRecoverLink"
                 tabindex="6"
@@ -408,7 +408,7 @@
 
     <div class="ui two column stackable grid">
         <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
-            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
+            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"

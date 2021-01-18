@@ -88,7 +88,6 @@
 
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
-    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
