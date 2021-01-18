@@ -18,6 +18,7 @@
  */
 
 import { PatternConstants } from "../constants";
+import { URLComponents } from "../models";
 
 /**
  * Utility class for URL operations and validations.
@@ -87,4 +88,36 @@ export class URLUtils {
     public static isMobileDeepLink(url: string): boolean{
         return !!url.trim().match(PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN);
     }
+
+    /**
+     * Splits a given string url into <scheme>://<host> This function does
+     * not handle individual ports or paths related to the url. Instead it
+     * only returns the scheme and host part of the url.
+     *
+     * Please refer specification for other part implementations of the url:
+     * https://www.ietf.org/rfc/rfc2396.txt
+     *
+     * @param url {string} a valid url string.
+     * @returns URLComponents
+     */
+    public static urlComponents(url: string): URLComponents {
+        if (url) {
+            const details = new URL(url.trim());
+            return {
+                protocol: details.protocol.replace(":", ""),
+                host: details.host,
+                origin: details.protocol + "://" + details.host,
+            } as URLComponents;
+        }
+        return null;
+    };
+
+    public static isTLSEnabled(url: string): boolean {
+        return Boolean(URLUtils.urlComponents(url)
+            .protocol
+            .match("https")
+            ?.length
+        );
+    }
+
 }
