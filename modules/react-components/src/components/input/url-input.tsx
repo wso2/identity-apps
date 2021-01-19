@@ -24,7 +24,6 @@ import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
 import { URLUtils } from "@wso2is/core/dist/src/utils";
 import { LinkButton } from "../button";
-import { URLComponents } from "@wso2is/core/dist/src/models";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
@@ -461,7 +460,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     };
 
     const urlChipItemWidget = (url: string): ReactElement => {
-        const { origin } = URLUtils.urlComponents(url) as URLComponents;
+        const { origin } = URLUtils.urlComponents(url);
         return (
             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
