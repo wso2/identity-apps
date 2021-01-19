@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
+import React, {FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect} from "react";
 import { Card, CardProps, Divider, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
@@ -271,7 +271,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                 </div>
                             </div>
                         )
-                        : <Divider hidden/>
+                        : null
                 }
             </Card.Content>
         </Card>
