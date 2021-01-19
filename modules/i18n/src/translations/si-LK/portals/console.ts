@@ -2056,6 +2056,12 @@ export const console: ConsoleNS = {
                             message: "අවලංගු කිරීම සාර්ථකයි"
                         }
                     },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "පළමු පියවරට දෙවන සාධක සත්‍යාපක එකතු කළ නොහැක.",
+                            message: "මෙම පියවරට එකතු කළ නොහැක"
+                        }
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",

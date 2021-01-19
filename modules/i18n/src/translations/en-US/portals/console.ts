@@ -2060,6 +2060,12 @@ export const console: ConsoleNS = {
                             message: "Revoke successful"
                         }
                     },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Cannot add second factor authenticators to the first step.",
+                            message: "Cannot add to this step"
+                        }
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",

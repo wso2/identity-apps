@@ -818,6 +818,7 @@ export interface ConsoleNS {
                     updateOutboundProvisioning: Notification;
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
+                    secondFactorAuthenticatorToFirstStep: Notification;
                 };
                 popups: {
                     appStatus: {
