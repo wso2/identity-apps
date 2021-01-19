@@ -238,44 +238,45 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
-                                let isGroupNameValid = true;
-                                await validateGroupNamePattern().then(regex => {
-                                    isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
-                                });
+                                if (value) {
+                                    let isGroupNameValid = true;
+                                    await validateGroupNamePattern().then(regex => {
+                                        isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
+                                    });
 
-                                if (!isGroupNameValid) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.roles.addRoleWizard" +
-                                        ".forms.roleBasicDetails.roleName.validations.invalid",
-                                        { type: "group" }));
-                                }
-
-                                const searchData: SearchGroupInterface = {
-                                    filter: `displayName eq  ${ userStore }/${ value }`,
-                                    schemas: [
-                                        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-                                    ],
-                                    startIndex: 1
-                                };
-
-                                await searchGroupList(searchData).then(response => {
-                                    if (response?.data?.totalResults !== 0) {
+                                    if (!isGroupNameValid) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:manage.features.roles.addRoleWizard." +
-                                                "forms.roleBasicDetails.roleName.validations.duplicate",
-                                                { type: "Group" }));
+                                        validation.errorMessages.push(t("console:manage.features.roles.addRoleWizard" +
+                                            ".forms.roleBasicDetails.roleName.validations.invalid",
+                                            { type: "group" }));
                                     }
-                                }).catch(() => {
-                                    dispatch(addAlert({
-                                        description: t("console:manage.features.groups.notifications." +
-                                            "fetchGroups.genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("console:manage.features.groups.notifications.fetchGroups." + 
-                                            "genericError.message")
-                                    }));
-                                });
 
+                                    const searchData: SearchGroupInterface = {
+                                        filter: `displayName eq  ${ userStore }/${ value }`,
+                                        schemas: [
+                                            "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                                        ],
+                                        startIndex: 1
+                                    };
+
+                                    await searchGroupList(searchData).then(response => {
+                                        if (response?.data?.totalResults !== 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:manage.features.roles.addRoleWizard." +
+                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                    { type: "Group" }));
+                                        }
+                                    }).catch(() => {
+                                        dispatch(addAlert({
+                                            description: t("console:manage.features.groups.notifications." +
+                                                "fetchGroups.genericError.description"),
+                                            level: AlertLevels.ERROR,
+                                            message: t("console:manage.features.groups.notifications.fetchGroups." +
+                                                "genericError.message")
+                                        }));
+                                    });
+                                }
                             } }
                             value={ initialValues && initialValues.groupName }
                             loading={ isRegExLoading }
