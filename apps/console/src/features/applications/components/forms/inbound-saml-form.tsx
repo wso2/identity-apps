@@ -26,7 +26,7 @@ import isEmpty from "lodash/isEmpty";
 import union from "lodash/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
     CertificateInterface,
