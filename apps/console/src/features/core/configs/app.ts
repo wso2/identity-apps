@@ -157,6 +157,7 @@ export class Config {
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
+            isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui.isSignatureValidationCertificateAliasEnabled,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,

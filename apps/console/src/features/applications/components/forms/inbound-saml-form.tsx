@@ -26,7 +26,7 @@ import isEmpty from "lodash/isEmpty";
 import union from "lodash/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
     CertificateInterface,
@@ -37,6 +37,7 @@ import {
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import {AppState} from "../../../core";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
@@ -80,6 +81,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ audiencesErrorLabel, setAudiencesErrorLabel ] = useState<ReactElement>(null);
     const [ recipientsErrorLabel, setRecipientsErrorLabel ] = useState<ReactElement>(null);
     const [ returnToURLsErrorLabel, setReturnToURLsErrorLabel ] = useState<ReactElement>(null);
+    const isSignatureValidationCertificateAliasEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isSignatureValidationCertificateAliasEnabled);
 
     // creates dropdown options
     const getAllowedOptions = (metadataProp: MetadataPropertyInterface, isLabel?: boolean) => {
@@ -637,34 +640,37 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ signatureValidationCertAlias }
-                                    label={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".requestValidation.fields.signatureValidationCertAlias.label")
-                                    }
-                                    name="signatureValidationCertAlias"
-                                    type="dropdown"
-                                    required={ false }
-                                    disabled={ !isRequestSignatureValidationEnabled }
-                                    value={ initialValues?.requestValidation.signatureValidationCertAlias }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".requestValidation.fields.signatureValidationCertAlias.validations.empty")
-                                    }
-                                    default={ metadata?.certificateAlias.defaultValue }
-                                    children={ getAllowedOptions(metadata?.certificateAlias) }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
-                                />
-                                <Hint disabled={ !isRequestSignatureValidationEnabled }>
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".requestValidation.fields.signatureValidationCertAlias.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            isSignatureValidationCertificateAliasEnabled &&
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        ref={ signatureValidationCertAlias }
+                                        label={
+                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                ".requestValidation.fields.signatureValidationCertAlias.label")
+                                        }
+                                        name="signatureValidationCertAlias"
+                                        type="dropdown"
+                                        required={ false }
+                                        disabled={ !isRequestSignatureValidationEnabled }
+                                        value={ initialValues?.requestValidation.signatureValidationCertAlias }
+                                        requiredErrorMessage={
+                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                ".requestValidation.fields.signatureValidationCertAlias.validations.empty")
+                                        }
+                                        default={ metadata?.certificateAlias.defaultValue }
+                                        children={ getAllowedOptions(metadata?.certificateAlias) }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
+                                    />
+                                    <Hint disabled={ !isRequestSignatureValidationEnabled }>
+                                        { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".requestValidation.fields.signatureValidationCertAlias.hint") }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        }
 
                         {/*Response/Assertion Signing*/ }
                         <Grid.Row columns={ 2 }>
@@ -1654,7 +1660,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                    </Grid>
+                     </Grid>
                 </Forms>
             )
             : null

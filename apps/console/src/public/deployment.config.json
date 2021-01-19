@@ -308,6 +308,7 @@
             "fallback": "404"
         },
         "isGroupAndRoleSeparationEnabled": true,
+        "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
         "productName": "Identity Server",
         "productVersionConfig": {
