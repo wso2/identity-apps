@@ -8,7 +8,7 @@
         "android"
     ],
     "category": "DEFAULT",
-    "displayOrder": 5,
+    "displayOrder": 4,
     "templateGroup": "mobile",
     "application": {
         "name": "",
