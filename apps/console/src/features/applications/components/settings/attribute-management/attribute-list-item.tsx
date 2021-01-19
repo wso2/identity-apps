@@ -85,6 +85,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [requested, setRequested] = useState(true);
     const [mappedAttribute, setMappedAttribute] = useState(claimURI);
     const [defaultMappedAttribute, setDefaultMappedAttribute] = useState(mappedAttribute);
+    const [textAlign, setTextAlign] = useState<"left" | "center" | "right">("left");
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -156,9 +157,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     !localDialect &&
                     <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
                 }
+                {
+                    localDialect && !mappingOn &&
+                    <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
+                }
             </Table.Cell>
             {
-                localDialect &&
+                localDialect && mappingOn &&
                 <>
                     <Table.Cell error={ errorInClaimMapping }>
                         <Input
@@ -185,7 +190,11 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     </Table.Cell>
                 </>
             }
-            <Table.Cell>
+            <Table.Cell
+                { ...(localDialect && !mappingOn && { textAlign: "center" }) }
+                { ...(localDialect && mappingOn && { textAlign: "left" }) }
+                { ...(!localDialect && { textAlign: "center" }) }
+            >
                 <Popup
                     trigger={
                         (
