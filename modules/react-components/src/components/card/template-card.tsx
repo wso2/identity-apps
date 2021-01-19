@@ -193,6 +193,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                             data-testid={ `${ testId }-logo-wrapper` }
                         >
                             <GenericIcon
+                                square
                                 icon={ tag.logo }
                                 size={ tagSize }
                                 spaced="right"
