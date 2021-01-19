@@ -28,7 +28,7 @@ import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
-import { DISABLED } from "../../constants";
+import { CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -383,22 +383,41 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     value={ userStore?.typeName }
                                     data-testid={ `${ testId }-form-type-input` }
                                 />
-                                <Field
-                                    label={ t("console:manage.features.userstores.forms.general.description.label") }
-                                    name="description"
-                                    type="textarea"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder={ t("console:manage.features.userstores.forms.general." +
-                                        "description.placeholder") }
-                                    value={ userStore?.description }
-                                    data-testid={ `${ testId }-form-description-textarea` }
-                                />
+                                {
+                                    id === CONSUMER_USERSTORE_ID ? (
+                                        <Field
+                                            label={ t("console:manage.features.userstores.forms.general.description.label") }
+                                            name="description"
+                                            type="textarea"
+                                            disabled
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            placeholder={ t("console:manage.features.userstores.forms.general." +
+                                                "description.placeholder") }
+                                            value={ userStore?.description }
+                                            data-testid={ `${ testId }-form-description-textarea` }
+                                        />
+                                    )
+                                    : (
+                                        <Field
+                                            label={ t("console:manage.features.userstores.forms.general.description.label") }
+                                            name="description"
+                                            type="textarea"
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            placeholder={ t("console:manage.features.userstores.forms.general." +
+                                                "description.placeholder") }
+                                            value={ userStore?.description }
+                                            data-testid={ `${ testId }-form-description-textarea` }
+                                        />
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
                                 {
+                                    id !== CONSUMER_USERSTORE_ID ?
                                     properties?.required?.map((property: TypeProperty, index: number) => {
                                         const isDisabledField = property.description.split("#")[ 0 ] === DISABLED;
                                         if (isDisabledField) {
@@ -494,7 +513,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                         />
                                                     )
                                         );
-                                    })
+                                    }) : null
                                 }
                             </Grid.Column>
                         </Grid.Row>
@@ -670,37 +689,40 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
             <Divider hidden />
 
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <DangerZoneGroup
-                        sectionHeader={ t("common:dangerZone") }
-                        ata-testid={ `${ testId }-danger-zone-group` }
-                    >
-                        <DangerZone
-                            actionTitle={ t("console:manage.features.userstores.dangerZone.disable.actionTitle") }
-                            header={ t("console:manage.features.userstores.dangerZone.disable.header") }
-                            subheader={ t("console:manage.features.userstores.dangerZone.disable.subheader") }
-                            onActionClick={ undefined }
-                            data-testid={ `${ testId }-delete-danger-zone` }
-                            toggle={ {
-                                checked: enabled !== undefined
-                                    ? enabled
-                                    : properties?.required?.find(
+            {
+                id !== CONSUMER_USERSTORE_ID &&
+                <Grid columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <DangerZoneGroup
+                            sectionHeader={ t("common:dangerZone") }
+                            ata-testid={ `${ testId }-danger-zone-group` }
+                        >
+                            <DangerZone
+                                actionTitle={ t("console:manage.features.userstores.dangerZone.disable.actionTitle") }
+                                header={ t("console:manage.features.userstores.dangerZone.disable.header") }
+                                subheader={ t("console:manage.features.userstores.dangerZone.disable.subheader") }
+                                onActionClick={ undefined }
+                                data-testid={ `${ testId }-delete-danger-zone` }
+                                toggle={ {
+                                    checked: enabled !== undefined
+                                        ? enabled
+                                        : properties?.required?.find(
                                         (property: TypeProperty) => property?.name === DISABLED
                                     )?.value === "false",
-                                onChange: handleUserstoreDisable
-                            } }
-                        />
-                        <DangerZone
-                            actionTitle={ t("console:manage.features.userstores.dangerZone.delete.actionTitle") }
-                            header={ t("console:manage.features.userstores.dangerZone.delete.header") }
-                            subheader={ t("console:manage.features.userstores.dangerZone.delete.subheader") }
-                            onActionClick={ () => setConfirmDelete(true) }
-                            data-testid={ `${ testId }-delete-danger-zone` }
-                        />
-                    </DangerZoneGroup>
-                </Grid.Column>
-            </Grid>
+                                    onChange: handleUserstoreDisable
+                                } }
+                            />
+                            <DangerZone
+                                actionTitle={ t("console:manage.features.userstores.dangerZone.delete.actionTitle") }
+                                header={ t("console:manage.features.userstores.dangerZone.delete.header") }
+                                subheader={ t("console:manage.features.userstores.dangerZone.delete.subheader") }
+                                onActionClick={ () => setConfirmDelete(true) }
+                                data-testid={ `${ testId }-delete-danger-zone` }
+                            />
+                        </DangerZoneGroup>
+                    </Grid.Column>
+                </Grid>
+            }
         </>
     );
 };

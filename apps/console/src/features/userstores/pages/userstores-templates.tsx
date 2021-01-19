@@ -26,7 +26,12 @@ import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../c
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES, USERSTORE_TYPE_IMAGES, USER_STORE_TYPE_DESCRIPTIONS } from "../constants";
+import {
+    USERSTORE_TYPE_DISPLAY_NAMES,
+    USERSTORE_TYPE_IMAGES,
+    USER_STORE_TYPE_DESCRIPTIONS,
+    CONSUMER_USERSTORE_TYPE
+} from "../constants";
 import { TypeResponse, UserstoreType } from "../models";
 
 /**
@@ -105,7 +110,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
             results.forEach((type: UserstoreType) => {
-                if (type) {
+                if (type && type.typeName != CONSUMER_USERSTORE_TYPE) {
                     rawUserstoreTypes.push(type);
                     if (type.typeName.toLowerCase().includes("unique")) {
                         uniqueUserstoreTypes.push(
