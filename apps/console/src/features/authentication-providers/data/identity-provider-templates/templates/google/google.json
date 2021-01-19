@@ -1,0 +1,41 @@
+{
+    "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+    "name": "Google",
+    "description": "Provision users with Google.",
+    "image": "google",
+    "category": "DEFAULT",
+    "displayOrder": 1,
+    "services": [
+        "authentication"
+    ],
+    "idp": {
+        "name": "Google",
+        "description": "Identity provider for Google Federation",
+        "image": "",
+        "isPrimary": false,
+        "isFederationHub": false,
+        "homeRealmIdentifier": "",
+        "certificate": {
+            "certificates": []
+        },
+        "alias": "https://localhost:9444/oauth2/token",
+        "claims": {
+            "userIdClaim": {
+                "uri": "http://wso2.org/claims/username"
+            },
+            "roleClaim": {
+                "uri": "http://wso2.org/claims/role"
+            },
+            "provisioningClaims": []
+        },
+        "roles": {
+            "mappings": [],
+            "outboundProvisioningRoles": []
+        },
+        "federatedAuthenticators": {
+            "defaultAuthenticatorId": "",
+            "authenticators": []
+        }
+    }
+}
+
