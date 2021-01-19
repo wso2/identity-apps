@@ -26,5 +26,8 @@ export interface URLComponentsInterface {
      * Contains host + port (if theres any).
      */
     host: string;
+    /**
+     * protocol + scheme + host
+     */
     origin: string;
 }
