@@ -523,7 +523,9 @@
                 padding: @sidePanelModalContentPadding;
                 line-height: @sidePanelModalContentPadding;
                 overflow: auto;
-                height: @sidePanelModalContentHeight;
+                &:not(.steps-container) {
+                    height: @sidePanelModalContentHeight;
+                }
             }
         }
     }
