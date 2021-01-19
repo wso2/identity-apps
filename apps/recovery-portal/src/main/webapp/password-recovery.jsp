@@ -25,8 +25,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
@@ -84,20 +82,6 @@
     if (request.getAttribute("reCaptcha") != null &&
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
-    }
-
-    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
-        isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
-                        .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
 %>
 
@@ -178,10 +162,7 @@
                             }
                         %>
 
-                        <%
-                            if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
-                                                    && isQuestionBasedPasswordRecoveryEnabledByTenant ) {
-                        %>
+                        <% if (isEmailNotificationEnabled) { %>
                         <div class="ui secondary segment" style="text-align: left;">
                             <div class="field">
                                 <div class="ui radio checkbox">
@@ -197,10 +178,6 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
-                        <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
-                        <div class="field">
-                            <input type="hidden" name="recoveryOption" value="EMAIL"/>
                         </div>
                         <% } else { %>
                         <div class="field">

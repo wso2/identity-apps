@@ -40,10 +40,5 @@
         tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
     } else {
         tenantDomain = request.getParameter("tenantDomain");
-        String tenantDomainFromURL = request.getParameter("t");
-
-        if (!StringUtils.isBlank(tenantDomainFromURL)) {
-            tenantDomain = tenantDomainFromURL;
-        }
     }
 %>
