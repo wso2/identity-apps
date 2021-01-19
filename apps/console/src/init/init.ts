@@ -186,9 +186,7 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
 
         // Keep user session intact if the user is active
         if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-            if (_sessionAgeCounter > _idleSecondsCounter) {
-                sendPromptNoneRequest();
-            }
+            sendPromptNoneRequest();
             _sessionAgeCounter = 0;
         }
     }, 1000);
