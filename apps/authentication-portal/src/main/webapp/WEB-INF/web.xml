@@ -297,11 +297,40 @@
         <jsp-file>/device-success.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>totp_enroll.do</servlet-name>
+        <jsp-file>/enableTOTP.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>totp.do</servlet-name>
+        <jsp-file>/totp.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>totp_error.do</servlet-name>
+        <jsp-file>/totpError.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>totp_enroll.do</servlet-name>
+        <url-pattern>/totp_enroll.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>totp.do</servlet-name>
+        <url-pattern>/totp.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>totp_error.do</servlet-name>
+        <url-pattern>/totp_error.do</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>device.do</servlet-name>
         <url-pattern>/device.do</url-pattern>
     </servlet-mapping>
-
 
     <servlet-mapping>
         <servlet-name>device_success.do</servlet-name>

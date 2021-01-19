@@ -40,3 +40,23 @@ $(document).ready(function(){
 			$('#denyForm').submit();
 	});
 });
+
+function requestTOTPToken() {
+	var endpointURL = "../commonauth";
+	$.ajax({
+		url: endpointURL,
+		type: "GET",
+		data: "&sessionDataKey=" + document.getElementById("sessionDataKey").value + "&sendToken=true",
+		success: function(response) {
+			if (response == "") {
+				alert("Verification is code sent to your email address");
+			} else {
+				alert("Error while sending the code to the email address");
+			}
+			console.log(response);
+		},
+		error: function(request, error) {
+			console.log("Error when generating the verification code ");
+		}
+	});
+}
