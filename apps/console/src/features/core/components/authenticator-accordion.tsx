@@ -29,9 +29,6 @@ import React, {
     Fragment,
     FunctionComponent,
     ReactElement,
-    SyntheticEvent,
-    useEffect,
-    useState
 } from "react";
 
 /**
@@ -42,14 +39,6 @@ export interface AuthenticatorAccordionPropsInterface extends TestableComponentI
      * Set of authenticators.
      */
     authenticators: AuthenticatorAccordionItemInterface[];
-    /**
-     * Initial activeIndexes value.
-     */
-    defaultActiveIndexes?: number[];
-    /**
-     * Expand the accordion if only single item is present.
-     */
-    defaultExpandSingleItemAccordion?: boolean;
     /**
      * Accordion actions.
      */
@@ -62,6 +51,18 @@ export interface AuthenticatorAccordionPropsInterface extends TestableComponentI
      * Attribute to sort the array.
      */
     orderBy?: string;
+    /**
+     * List of active accordion indexes.
+     */
+    accordionActiveIndexes?: number[];
+    /**
+     * Accordion index.
+     */
+    accordionIndex?: number;
+    /**
+     * Handle accordion on click method.
+     */
+    handleAccordionOnClick?: SegmentedAccordionTitlePropsInterface["handleAccordionOnClick"];
 }
 
 /**
@@ -105,50 +106,15 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
 ): ReactElement => {
 
     const {
+        accordionIndex,
+        handleAccordionOnClick,
         globalActions,
         authenticators,
-        defaultActiveIndexes,
-        defaultExpandSingleItemAccordion,
+        accordionActiveIndexes,
         hideChevron,
         orderBy,
         [ "data-testid" ]: testId
     } = props;
-
-    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
-
-    /**
-     * If the authenticator count is 1, always open the authenticator panel.
-     */
-    useEffect(() => {
-        if (!defaultExpandSingleItemAccordion) {
-            return;
-        }
-
-        if (!(authenticators && Array.isArray(authenticators) && authenticators.length === 1)) {
-            return;
-        }
-
-        setAccordionActiveIndexes([ 0 ]);
-    }, [ authenticators ]);
-
-    /**
-     * Handles accordion title click.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {number} index - Clicked on index.
-     */
-    const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
-        const newIndexes = [ ...accordionActiveIndexes ];
-
-        if (newIndexes.includes(index)) {
-            const removingIndex = newIndexes.indexOf(index);
-            newIndexes.splice(removingIndex, 1);
-        } else {
-            newIndexes.push(index);
-        }
-
-        setAccordionActiveIndexes(newIndexes);
-    };
 
     return (authenticators
             ?
@@ -160,12 +126,12 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                     _.sortBy(authenticators, orderBy).map((authenticator, index) => (
                         !authenticator.hidden
                             ? (
-                                <Fragment key={ index }>
+                                <Fragment key={ accordionIndex }>
                                     <SegmentedAccordion.Title
                                         id={ authenticator.id }
                                         data-testid={ `${ testId }-${ authenticator.id }-title` }
-                                        active={ accordionActiveIndexes.includes(index) }
-                                        index={ index }
+                                        active={ accordionActiveIndexes.includes(accordionIndex) }
+                                        accordionIndex={ accordionIndex }
                                         onClick={ handleAccordionOnClick }
                                         content={ (
                                             <>
@@ -188,7 +154,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                         hideChevron={ hideChevron }
                                     />
                                     <SegmentedAccordion.Content
-                                        active={ accordionActiveIndexes.includes(index) }
+                                        active={ accordionActiveIndexes.includes(accordionIndex) }
                                         data-testid={ `${ testId }-${ authenticator.id }-content` }
                                     >
                                         { authenticator.content }
@@ -208,8 +174,6 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
  */
 AuthenticatorAccordion.defaultProps = {
     "data-testid": "authenticator-accordion",
-    defaultActiveIndexes: [ -1 ],
-    defaultExpandSingleItemAccordion: true,
     hideChevron: false,
     orderBy: undefined
 };

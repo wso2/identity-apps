@@ -26,11 +26,23 @@ import {
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, {
+    FormEvent,
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
+import {AccordionTitleProps, CheckboxProps, Grid, Icon} from "semantic-ui-react";
+import {
+    AuthenticatorAccordion,
+    AuthenticatorAccordionItemInterface,
+    getEmptyPlaceholderIllustrations
+} from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -73,6 +85,14 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Initial activeIndexes value.
+     */
+    defaultActiveIndexes?: number[];
+    /**
+     * Expand the accordion if only single item is present.
+     */
+    defaultExpandSingleItemAccordion?: boolean;
 }
 
 /**
@@ -89,6 +109,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         identityProvider,
         isLoading,
         onUpdate,
+        defaultActiveIndexes,
+        defaultExpandSingleItemAccordion,
         [ "data-testid" ]: testId
     } = props;
 
@@ -110,6 +132,23 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+
+    /**
+     * If the authenticator count is 1, always open the authenticator panel.
+     */
+    useEffect(() => {
+        if (!defaultExpandSingleItemAccordion) {
+            return;
+        }
+
+        if (!(availableAuthenticators && Array.isArray(availableAuthenticators)
+            && availableAuthenticators.length === 1)) {
+            return;
+        }
+
+        setAccordionActiveIndexes([ 0 ]);
+    }, [ availableAuthenticators ]);
 
     /**
      * Handles the authenticator config form submit action.
@@ -124,7 +163,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." + 
+                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                         "success.message")
                 }));
                 onUpdate(identityProvider.id);
@@ -135,7 +174,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." + 
+                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
                             "error.message")
                     }));
 
@@ -165,7 +204,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.idp.notifications.getFederatedAuthenticator." + 
+            description: t("console:develop.features.idp.notifications.getFederatedAuthenticator." +
                 "genericError.description"),
             level: AlertLevels.ERROR,
             message: t("console:develop.features.idp.notifications.getFederatedAuthenticator.genericError.message")
@@ -355,6 +394,29 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         setDeletingAuthenticator(deletingAuthenticator.data);
         setShowDeleteConfirmationModal(true);
+    };
+
+    /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
     };
 
     /**
@@ -561,6 +623,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                 }
                                             ]
                                         }
+                                        accordionActiveIndexes = { accordionActiveIndexes }
+                                        accordionIndex = { index }
+                                        handleAccordionOnClick = { handleAccordionOnClick }
                                         data-testid={ `${ testId }-accordion` }
                                     />
                                 );
@@ -650,5 +715,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
  * Default proptypes for the IDP authenticator settings component.
  */
 AuthenticatorSettings.defaultProps = {
-    "data-testid": "idp-edit-authenticator-settings"
+    "data-testid": "idp-edit-authenticator-settings",
+    defaultActiveIndexes: [ -1 ],
+    defaultExpandSingleItemAccordion: true
 };

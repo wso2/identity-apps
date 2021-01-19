@@ -373,7 +373,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 onRowClick={
                     (e: SyntheticEvent, group: GroupsInterface): void => {
                         handleGroupEdit(group?.id);
-                        onListItemClick(e, group);
+                        onListItemClick && onListItemClick(e, group);
                     }
                 }
                 placeholders={ showPlaceholders() }

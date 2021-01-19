@@ -21,10 +21,10 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../core";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
@@ -52,6 +52,10 @@ interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Initial activeIndexes value.
+     */
+    defaultActiveIndexes?: number[];
 }
 
 /**
@@ -69,6 +73,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         provisioningConfigurations,
         onUpdate,
         featureConfig,
+        defaultActiveIndexes,
         readOnly,
         [ "data-testid" ]: testId
     } = props;
@@ -80,6 +85,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
 
     /**
      * Handles the provisioning config form submit action.
@@ -110,6 +117,28 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             });
     };
 
+    /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
+    };
 
     useEffect(() => {
         const userstore: SimpleUserStoreListItemInterface[] = [];
@@ -161,6 +190,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                     }
                                 ]
                             }
+                            accordionActiveIndexes = { accordionActiveIndexes }
+                            accordionIndex = { 0 }
+                            handleAccordionOnClick = { handleAccordionOnClick }
                             data-testid={ `${ testId }-inbound-connector-accordion` }
                         />
                     </Grid.Column>
@@ -175,5 +207,6 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
  * Default props for the application inbound provisioning configurations component.
  */
 InboundProvisioningConfigurations.defaultProps = {
-    "data-testid": "application-inbound-provisioning-configurations"
+    "data-testid": "application-inbound-provisioning-configurations",
+    defaultActiveIndexes: [ -1 ]
 };

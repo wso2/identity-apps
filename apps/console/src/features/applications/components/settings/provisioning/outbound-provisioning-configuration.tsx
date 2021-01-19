@@ -19,10 +19,10 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { AccordionTitleProps, Divider, Grid, Icon, Segment} from "semantic-ui-react";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface, getIdentityProviderList } from "../../../../identity-providers";
 import { updateApplicationConfigurations } from "../../../api";
@@ -53,6 +53,10 @@ interface OutboundProvisioningConfigurationPropsInterface extends TestableCompon
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Initial activeIndexes value.
+     */
+    defaultActiveIndexes?: number[];
 }
 
 /**
@@ -70,6 +74,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         application,
         onUpdate,
         readOnly,
+        defaultActiveIndexes,
         [ "data-testid" ]: testId
     } = props;
 
@@ -80,6 +85,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
 
     const [
         deletingIdp,
@@ -131,6 +137,29 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         ".message")
                 }));
             });
+    };
+
+    /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
     };
 
     const updateConfiguration = (values: any) => {
@@ -204,7 +233,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             <Grid.Column>
                                 {
                                     application?.provisioningConfigurations?.outboundProvisioningIdps?.map(
-                                        (provisioningIdp) => {
+                                        (provisioningIdp, index) => {
                                         return (
                                             <AuthenticatorAccordion
                                                 key={ provisioningIdp.idp }
@@ -240,6 +269,9 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                         }
                                                     ]
                                                 }
+                                                accordionActiveIndexes = { accordionActiveIndexes }
+                                                accordionIndex = { index }
+                                                handleAccordionOnClick = { handleAccordionOnClick }
                                                 data-testid={ `${ testId }-outbound-connector-accordion` }
                                             />
                                         );
@@ -351,5 +383,6 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
  * Default props for the application outbound provisioning configurations component.
  */
 OutboundProvisioningConfiguration.defaultProps = {
-    "data-testid": "application-outbound-provisioning-configurations"
+    "data-testid": "application-outbound-provisioning-configurations",
+    defaultActiveIndexes: [ -1 ]
 };
