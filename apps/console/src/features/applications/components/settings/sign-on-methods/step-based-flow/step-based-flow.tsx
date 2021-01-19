@@ -295,6 +295,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const isValid: boolean = validateStepAddition(authenticator, steps[ stepNo ].options);
 
+        if (
+            stepNo === 0 &&
+            [
+                ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID,
+                    ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID
+            ].includes(authenticatorId)
+        ) {
+            dispatch(addAlert({
+                description: t(
+                    "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        ".genericError.description"
+                ),
+                level: AlertLevels.WARNING,
+                message: t(
+                    "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        ".genericError.message"
+                )
+            }));
+
+            return;
+        }
+
         if (!isValid) {
             return;
         }
