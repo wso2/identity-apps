@@ -186,7 +186,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         selectionComponent
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ [ "" ] }
+                        listHeaders={ [ 
+                            t("console:develop.features.applications.edit.sections.attributes.selection." +
+                                "addWizard.steps.select.transfer.headers.attribute")
+                        ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }

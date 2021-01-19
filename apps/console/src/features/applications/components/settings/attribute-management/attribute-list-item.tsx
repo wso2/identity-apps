@@ -67,7 +67,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         selectMandatory,
         selectRequested,
         mapping,
-        mappedURI,
         initialMandatory,
         initialRequested,
         claimMappingOn,
@@ -155,10 +154,11 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
                 {
                     !localDialect &&
-                    <div className={ "transfer-list-sub-content" }>{ mappedURI }</div>
+                    <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
                 }
             </Table.Cell>
             {
+                localDialect &&
                 <>
                     <Table.Cell error={ errorInClaimMapping }>
                         <Input

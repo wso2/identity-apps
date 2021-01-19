@@ -611,17 +611,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 ".applications.edit.sections" +
                                                                                 ".attributes.selection" +
                                                                                 ".mappingTable.columns" +
-                                                                                ".appAttribute")
-                                                                        }
-                                                                    </strong>
-                                                                </Table.HeaderCell>
-                                                                <Table.HeaderCell>
-                                                                    <strong>
-                                                                        {
-                                                                            t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
-                                                                                ".attributes.selection" +
-                                                                                ".mappingTable.columns" +
                                                                                 ".mandatory")
                                                                         }
                                                                     </strong>
