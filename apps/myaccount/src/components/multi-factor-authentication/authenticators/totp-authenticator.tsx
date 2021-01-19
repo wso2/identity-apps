@@ -82,7 +82,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const verifyCode = (code: string) => {
         validateTOTPCode(code).then((response) => {
             if (response.data.isValid) {
-                setStep(3);
+                setStep(1);
             } else {
                 setError(true);
             }
@@ -163,6 +163,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         </Message>
                     )
                     : null }
+                { renderVerifyCode() }
             </>
         );
     };
@@ -198,16 +199,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
                                     { t(translateKey + "modals.verify.error") }
                                 </Message>
-                                <p>{ t(translateKey + "modals.verify.reScanQuestion") + " " }
-                                    <p
-                                        className="link"
-                                        onClick={
-                                            () => { setError(false); setStep(0); }
-                                        }
-                                    >
-                                        { t(translateKey + "modals.verify.reScan") }
-                                    </p>
-                                </p>
                             </>
                         )
                         : null
@@ -258,34 +249,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             case 0:
                 return renderQRCode();
             case 1:
-                return renderVerifyCode();
-            case 3:
                 return renderSuccess();
-        }
-    };
-
-    /**
-     * Generates illustration based on the input step
-     * @param stepToDisplay The step number
-     */
-    const stepIllustration = (stepToDisplay: number): JSX.Element => {
-        switch (stepToDisplay) {
-            case 0:
-                return (
-                    <GenericIcon
-                        transparent
-                        size="small"
-                        icon={ getQRCodeScanIcon() }
-                    />
-                );
-            case 1:
-                return (
-                    <GenericIcon
-                        transparent
-                        size="small"
-                        icon={ getEnterCodeIcon() }
-                    />
-                );
         }
     };
 
@@ -296,10 +260,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const stepButtonText = (stepToDisplay: number): string => {
         switch (stepToDisplay) {
             case 0:
-                return t("common:continue");
-            case 1:
                 return t("common:verify");
-            case 3:
+            case 1:
                 return t("common:done");
         }
     };
@@ -312,8 +274,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         switch (stepToDisplay) {
             case 0:
                 return t(translateKey + "modals.scan.heading");
-            case 1:
-                return t(translateKey + "modals.verify.heading");
         }
     };
 
@@ -324,12 +284,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const handleModalButtonClick = (stepToStep: number) => {
         switch (stepToStep) {
             case 0:
-                setStep(1);
-                break;
-            case 1:
                 setSubmit();
                 break;
-            case 3:
+            case 1:
                 setOpenWizard(false);
                 break;
         }
@@ -352,7 +309,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     step !== 3
                         ? (
                             < Modal.Header className="totp-header">
-                                <div className="illustration">{ stepIllustration(step) }</div>
+                                <div className="illustration">
+                                    <GenericIcon
+                                        transparent
+                                        size="small"
+                                        icon={ getQRCodeScanIcon() }
+                                    />
+                                </div>
                             </Modal.Header>
                         )
                         : null
