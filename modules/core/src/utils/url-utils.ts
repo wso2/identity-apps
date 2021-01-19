@@ -92,13 +92,13 @@ export class URLUtils {
     /**
      * Splits a given string url into <scheme>://<host> This function does
      * not handle individual ports or paths related to the url. Instead it
-     * only returns the scheme and host part of the url.
+     * only returns the protocol, host, and combined origin of the url.
      *
      * Please refer specification for other part implementations of the url:
      * https://www.ietf.org/rfc/rfc2396.txt
      *
      * @param url {string} a valid url string.
-     * @returns URLComponents
+     * @returns URLComponentsInterface
      */
     public static urlComponents(url: string): URLComponents {
         if (url) {
@@ -112,6 +112,10 @@ export class URLUtils {
         return null;
     };
 
+    /**
+     * Checks whether a given url is a TLS enabled protocol or not.
+     * @param url {string}
+     */
     public static isTLSEnabled(url: string): boolean {
         return Boolean(URLUtils.urlComponents(url)
             .protocol
