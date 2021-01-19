@@ -218,4 +218,6 @@ export class ApplicationManagementConstants {
         "status code while retrieving the request path authenticators.";
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
+    public static readonly TOTP_AUTHENTICATOR_ID = "LOCAL-dG90cA";
+    public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
 }
