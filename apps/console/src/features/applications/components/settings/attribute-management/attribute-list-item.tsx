@@ -16,15 +16,18 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
+    localClaimDisplayName?: string;
     mappedURI: string;
     claimURI: string;
     localDialect: boolean;
@@ -57,12 +60,14 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const {
         claimURI,
         displayName,
+        localClaimDisplayName,
         localDialect,
         updateMapping,
         addToMapping,
         selectMandatory,
         selectRequested,
         mapping,
+        mappedURI,
         initialMandatory,
         initialRequested,
         claimMappingOn,
@@ -73,10 +78,14 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     const { t } = useTranslation();
 
+    const dispatch = useDispatch();
+
     const [mappingOn, setMappingOn] = useState(false);
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
     const [mandatory, setMandatory] = useState(false);
     const [requested, setRequested] = useState(true);
+    const [mappedAttribute, setMappedAttribute] = useState(claimURI);
+    const [defaultMappedAttribute, setDefaultMappedAttribute] = useState(mappedAttribute);
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -90,6 +99,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     const handleClaimMapping = (e) => {
         const mappingValue = e.target.value;
+            
+        setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
         if (claimMappingError && !_.isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
@@ -122,130 +133,88 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     useEffect(() => {
         setMappingOn(claimMappingOn);
+        setMappedAttribute(claimURI);
         if (mapping) {
             addToMapping(claimURI, claimMappingOn);
+        }
+
+        if(!claimMappingOn && defaultMappedAttribute !== mappedAttribute) {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.edit.sections.attributes." +
+                    "attributeMappingChange.error.description"),
+                level: AlertLevels.WARNING,
+                message: t("console:develop.features.applications.edit.sections.attributes." + 
+                    "attributeMappingChange.error.description")
+            }));
         }
     }, [claimMappingOn]);
 
     return (
-        localDialect ?
-            (
-                <Table.Row data-testid={ testId }>
-                    <Table.Cell>
-                        { displayName }
+        <Table.Row data-testid={ testId }>
+            <Table.Cell>
+                <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
+                {
+                    !localDialect &&
+                    <div className={ "transfer-list-sub-content" }>{ mappedURI }</div>
+                }
+            </Table.Cell>
+            {
+                <>
+                    <Table.Cell error={ errorInClaimMapping }>
+                        <Input
+                            placeholder={
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.fields.claim.placeholder",
+                                    { name: displayName })
+                            }
+                            value={ mappingOn ? mappedAttribute : defaultMappedAttribute }
+                            onChange={ handleClaimMapping }
+                            disabled={ !mappingOn }
+                            readOnly={ readOnly }
+                            required
+                        />
+                        { errorInClaimMapping && (
+                            <Label
+                                basic color='red'
+                                pointing='left'
+                            >
+                                { t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.fields.claim.label") }
+                            </Label>
+                        ) }
                     </Table.Cell>
-                    {
-                        <>
-                            <Table.Cell error={ errorInClaimMapping }>
-                                <Input
-                                    placeholder={
-                                        t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                            ".mappingTable.listItem.fields.claim.placeholder",
-                                            { name: displayName })
-                                    }
-                                    value={ mapping?.applicationClaim }
-                                    onChange={ handleClaimMapping }
-                                    disabled={ !mappingOn }
-                                    readOnly={ readOnly }
-                                    required
-                                />
-                                { errorInClaimMapping && (
-                                    <Label
-                                        basic color='red'
-                                        pointing='left'
-                                    >
-                                        { t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                            ".mappingTable.listItem.fields.claim.label") }
-                                    </Label>
-                                ) }
-                            </Table.Cell>
-                            <Table.Cell>
-                                <Popup
-                                    trigger={
-                                        (
-                                            <Checkbox
-                                                defaultChecked={ initialRequested }
-                                                onClick={ handleRequestCheckChange }
-                                                disabled={ !mappingOn }
-                                                readOnly={ readOnly }
-                                            />
-                                        )
-                                    }
-                                    position="top right"
-                                    content={
-                                        requested
-                                            ? t("console:develop.features.applications.edit.sections.attributes" +
-                                            ".selection.mappingTable.listItem.actions.removeRequested")
-                                            : t("console:develop.features.applications.edit.sections.attributes" +
-                                            ".selection.mappingTable.listItem.actions.makeRequested")
-                                    }
-                                    inverted
-                                    disabled={ readOnly || !mappingOn }
-                                />
-                            </Table.Cell>
-                        </>
+                </>
+            }
+            <Table.Cell>
+                <Popup
+                    trigger={
+                        (
+                            <Checkbox
+                                defaultChecked={ initialMandatory }
+                                onClick={ handleMandatoryCheckChange }
+                                disabled={ mappingOn ? !requested : false }
+                                readOnly={ readOnly }
+                            />
+                        )
                     }
-                    <Table.Cell>
-                        <Popup
-                            trigger={
-                                (
-                                    <Checkbox
-                                        defaultChecked={ initialMandatory }
-                                        onClick={ handleMandatoryCheckChange }
-                                        disabled={ mappingOn ? !requested : false }
-                                        readOnly={ readOnly }
-                                    />
-                                )
-                            }
-                            position="top right"
-                            content={
-                                mandatory
-                                    ? t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.actions.removeMandatory")
-                                    : t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.actions.makeMandatory")
-                            }
-                            inverted
-                            disabled={
-                                readOnly
-                                    ? false
-                                    : mappingOn
-                                        ? !requested
-                                        : false
-                            }
-                        />
-                    </Table.Cell>
-                </Table.Row>
-            ) :
-            (
-                <Table.Row data-testid={ testId }>
-                    <Table.Cell>
-                        { displayName }
-                    </Table.Cell>
-                    <Table.Cell>
-                        <Popup
-                            trigger={
-                                (
-                                    <Checkbox
-                                        defaultChecked={ initialMandatory }
-                                        onClick={ handleMandatoryCheckChange }
-                                        readOnly={ readOnly }
-                                    />
-                                )
-                            }
-                            position="top right"
-                            content={
-                                mandatory
-                                    ? t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.actions.removeMandatory")
-                                    : t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.actions.makeMandatory")
-                            }
-                            disabled={ readOnly }
-                            inverted
-                        />
-                    </Table.Cell>
-                </Table.Row>
-            )
+                    position="top right"
+                    content={
+                        mandatory
+                            ? t("console:develop.features.applications.edit.sections.attributes.selection" +
+                            ".mappingTable.listItem.actions.removeMandatory")
+                            : t("console:develop.features.applications.edit.sections.attributes.selection" +
+                            ".mappingTable.listItem.actions.makeMandatory")
+                    }
+                    inverted
+                    disabled={
+                        readOnly
+                            ? false
+                            : mappingOn
+                                ? !requested
+                                : false
+                    }
+                />
+            </Table.Cell>
+        </Table.Row>
     );
 };

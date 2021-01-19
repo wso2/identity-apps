@@ -655,6 +655,12 @@ export const console: ConsoleNS = {
                             tabName: "Avancé"
                         },
                         attributes: {
+                            attributeMappingChange: {
+                                error: {
+                                    description: "Les attributs mappés ont été modifiés en valeurs par défaut.",
+                                    message: "Mappage d'attributs modifié"
+                                }
+                            },
                             forms: {
                                 fields: {
                                     dynamic: {
@@ -679,12 +685,12 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Mettre à jour la sélection des attributs",
+                                    header: "Configurer les attributs",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Attribut"
+                                                    attribute: "Sélectionnez tous les attributs"
                                                 },
                                                 searchPlaceholders: {
                                                     attribute: "Chercher un attribut",
@@ -693,7 +699,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Ajouter de nouveaux attributs ou supprimer des attributs existants."
+                                    subHeading: "Sélectionnez les attributs à inclure dans la réponse d'authentification."
                                 },
                                 heading: "Sélection des attributs",
                                 mappingTable: {

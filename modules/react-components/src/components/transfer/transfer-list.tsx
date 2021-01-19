@@ -36,8 +36,9 @@ export interface TransferListPropsInterface extends TableProps, TestableComponen
     listType: "selected" | "unselected";
     isListEmpty: boolean;
     emptyPlaceholderContent?: string;
-    handleHeaderCheckboxChange: () => void;
-    isHeaderCheckboxChecked: boolean;
+    handleHeaderCheckboxChange?: () => void;
+    selectionComponent?: boolean;
+    isHeaderCheckboxChecked?: boolean;
 }
 
 /**
@@ -59,6 +60,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
         emptyPlaceholderContent,
+        selectionComponent,
         [ "data-testid" ]: testId
     } = props;
 
@@ -81,10 +83,14 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                     {
                                         listHeaders?.map((header, index) => {
                                             return (
-                                                <Table.HeaderCell key={ index }>
+                                                <Table.HeaderCell 
+                                                    colSpan={ !selectionComponent ? 
+                                                        listHeaders.length : listHeaders.length + 1 } 
+                                                    key={ index }
+                                                >
                                                     <strong>{ header }</strong>
                                                 </Table.HeaderCell>
-                                            )
+                                            );
                                         })
                                     }
                                 </Table.Row>

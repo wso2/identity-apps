@@ -75,6 +75,7 @@ export interface ExternalClaim {
     claimURI: string;
     claimDialectURI: string;
     mappedLocalClaimURI: string;
+    localClaimDisplayName: string;
 }
 
 /**

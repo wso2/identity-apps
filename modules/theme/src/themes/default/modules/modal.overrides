@@ -529,6 +529,30 @@
     }
 }
 
+/*-------------------------------
+        Attribute Modal
+--------------------------------*/
+
+.ui.modal {
+    &.attribute-modal {
+
+        .content {
+            height: @attributeModalContentHeight;
+
+            .transfer-segment {
+                height: @transferComponentSegmentHeight;
+
+                .transfer-list-segment {
+                    height: @transferComponentListSegmentHeight;
+                }
+            }
+            
+        }
+
+    }
+}
+
+
 @media only screen and (max-width: 767px) {
     .ui.modal {
         &.modal-with-side-panel {
