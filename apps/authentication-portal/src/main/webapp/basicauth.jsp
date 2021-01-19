@@ -240,6 +240,7 @@
                     tabindex="2"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
                     data-testid="login-page-password-input"
+                    style="padding-right: 2.3em !important;"
                 >
                 <i aria-hidden="true" class="lock icon"></i>
                 <i id="passwordUnmaskIcon"
