@@ -8,7 +8,7 @@
         "dotNet"
     ],
     "category": "DEFAULT",
-    "displayOrder": 4,
+    "displayOrder": 5,
     "templateGroup": "desktop",
     "application": {
         "name": "",
