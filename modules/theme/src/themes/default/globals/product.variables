@@ -144,6 +144,7 @@
 @productTitleAppNameMargin: 0 0 0 5px;
 @productTitleAppNameFontSize: inherit;
 @productTitleAppNameFontWeight: 300;
+@productTitleAppNameColor: inherit;
 
 @productVersionLabelPadding: 3px 6px;
 @productVersionLabelFontSize: 0.6em;
