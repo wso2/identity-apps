@@ -37,7 +37,7 @@ import {
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import {AppState} from "../../../core";
+import { AppState } from "../../../core";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
