@@ -435,15 +435,14 @@
          * @param event {Event} click target
          * @description stops propagation
          */
-        $("#passwordUnmaskIcon").click((event) => {
+        $("#passwordUnmaskIcon").click(function (event) {
             event.preventDefault();
             const passwordInput = $("#password");
-            const maskIcon = $("#passwordUnmaskIcon");
             if (passwordInput.attr("type") === "password") {
-                maskIcon.addClass("slash outline");
+                $(this).addClass("slash outline");
                 passwordInput.attr("type", "text");
             } else {
-                maskIcon.removeClass("slash outline");
+                $(this).removeClass("slash outline");
                 passwordInput.attr("type", "password");
             }
         });
