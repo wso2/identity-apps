@@ -25,7 +25,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { union } from "lodash";
+import { sortBy, union } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -85,9 +85,9 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             if (selectedClaims.length > 0) {
-                setFilterTempAvailableClaims(union(selectedClaims, availableClaims ));
+                setFilterTempAvailableClaims(sortBy(union(selectedClaims, availableClaims ), "displayName"));
             } else {
-                setFilterTempAvailableClaims(tempAvailableClaims);
+                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "displayName"));
             }
         }
     };
@@ -133,11 +133,13 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     useEffect(() => {
         if (showAddModal) {
             if (selectedClaims.length > 0) {
-                setTempAvailableClaims(union(selectedClaims, availableClaims ));
-                setFilterTempAvailableClaims(union(selectedClaims, availableClaims ));
+                const sortedClaims = sortBy(union(selectedClaims, availableClaims ), "displayName");
+                setTempAvailableClaims(sortedClaims);
+                setFilterTempAvailableClaims(sortedClaims);
             } else {
-                setTempAvailableClaims(availableClaims);
-                setFilterTempAvailableClaims(availableClaims);
+                const sortedClaims = sortBy(availableClaims, "displayName");
+                setTempAvailableClaims(sortedClaims);
+                setFilterTempAvailableClaims(sortedClaims);
             }
             setTempSelectedClaims(selectedClaims);
         } else {

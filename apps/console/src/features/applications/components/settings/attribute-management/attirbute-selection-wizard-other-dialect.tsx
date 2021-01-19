@@ -25,7 +25,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { union } from "lodash";
+import { sortBy, union } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -83,9 +83,11 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             if (selectedExternalClaims.length > 0) {
-                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
+                setFilterTempAvailableClaims(sortBy(
+                    union(selectedExternalClaims, availableExternalClaims ), "displayName")
+                );
             } else {
-                setFilterTempAvailableClaims(tempAvailableClaims);
+                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "displayName"));
             }
         }
     };
@@ -121,11 +123,13 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     useEffect(() => {
         if (showAddModal) {
             if (selectedExternalClaims.length > 0) {
-                setTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
-                setFilterTempAvailableClaims(union(selectedExternalClaims, availableExternalClaims));
+                const sortedClaims = sortBy(union(selectedExternalClaims, availableExternalClaims ), "displayName");
+                setTempAvailableClaims(sortedClaims);
+                setFilterTempAvailableClaims(sortedClaims);
             } else {
-                setTempAvailableClaims(availableExternalClaims);
-                setFilterTempAvailableClaims(availableExternalClaims);
+                const sortedClaims = sortBy(availableExternalClaims, "displayName");
+                setTempAvailableClaims(sortedClaims);
+                setFilterTempAvailableClaims(sortedClaims);
             }
             setTempSelectedClaims(selectedExternalClaims);
         } else {
