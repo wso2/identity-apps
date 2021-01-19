@@ -18,7 +18,7 @@
  */
 
 import { PatternConstants } from "../constants";
-import { URLComponents } from "../models";
+import { URLComponentsInterface } from "../models";
 
 /**
  * Utility class for URL operations and validations.
@@ -100,14 +100,14 @@ export class URLUtils {
      * @param url {string} a valid url string.
      * @returns URLComponentsInterface
      */
-    public static urlComponents(url: string): URLComponents {
+    public static urlComponents(url: string): URLComponentsInterface {
         if (url) {
             const details = new URL(url.trim());
             return {
                 protocol: details.protocol.replace(":", ""),
                 host: details.host,
                 origin: details.protocol + "://" + details.host,
-            } as URLComponents;
+            } as URLComponentsInterface;
         }
         return null;
     };
