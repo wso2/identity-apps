@@ -89,15 +89,6 @@ const AUTHENTICATION_STEP_DROPPABLE_ID = "authentication-step-";
 const LOCAL_AUTHENTICATORS_DROPPABLE_ID = "local-authenticators";
 
 /**
- * Droppable id for the second factor authenticators section.
- *
- * @constant
- * @type {string}
- * @default
- */
-const SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
-
-/**
  * Droppable id for the external authenticators section.
  * @constant
  * @type {string}
@@ -149,7 +140,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
                         ].includes(authenticator.id)
                     ) {
-                        secondFactorAuth.push(authenticator);
+                        const newAuthenticator: GenericAuthenticatorInterface = {
+                            ...authenticator,
+                            isEnabled: resolveSecondFactorAuthenticatorsEnableStatus()
+                        };
+                        secondFactorAuth.push(newAuthenticator);
                     } else {
                         localAuth.push(authenticator);
                     }
@@ -212,6 +207,38 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
     }, [ triggerUpdate ]);
 
+    useEffect(() => {
+        const shouldEnable = resolveSecondFactorAuthenticatorsEnableStatus();
+        setSecondFactorAuthenticators(
+            secondFactorAuthenticators.map((authenticator) => {
+                authenticator.isEnabled = shouldEnable;
+                return authenticator;
+            })
+        );
+    }, [ authenticationSteps ]);
+
+    /**
+     * Decides if a second-factor authenticator should be disabled or not.
+     */
+    const resolveSecondFactorAuthenticatorsEnableStatus = () => {
+        if (authenticationSteps.length < 2) {
+            return false;
+        }
+
+        for (const authenticator of authenticationSteps[ 0 ].options) {
+            if (
+                [
+                    ApplicationManagementConstants.BASIC_AUTHENTICATOR,
+                    ApplicationManagementConstants.IDENTIFIER_EXECUTOR
+                ].includes(authenticator.authenticator)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     /**
      * Validates if the addition to the step is valid.
      *
@@ -252,8 +279,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {string} authenticatorId - Id of the authenticator.
      */
     const updateAuthenticationStep = (stepNo: number, authenticatorId: string): void => {
-        const authenticators: GenericAuthenticatorInterface[]
-            = [ ...localAuthenticators, ...federatedAuthenticators, ...secondFactorAuthenticators ];
+        const authenticators: GenericAuthenticatorInterface[] = [
+            ...localAuthenticators,
+            ...federatedAuthenticators,
+            ...secondFactorAuthenticators
+        ];
 
         const authenticator: GenericAuthenticatorInterface = authenticators.find((item) => item.id === authenticatorId);
 
@@ -644,7 +674,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             },
                             {
                                 authenticators: secondFactorAuthenticators,
-                                droppableId: SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID,
+                                droppableId: ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID,
                                 heading: "Second Factor"
                             },
                             {
