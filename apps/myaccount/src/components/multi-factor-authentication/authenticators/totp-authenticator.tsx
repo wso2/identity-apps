@@ -49,15 +49,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     const {
         onAlertFired,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
-    const [openWizard, setOpenWizard] = useState(false);
-    const [qrCode, setQrCode] = useState("");
-    const [step, setStep] = useState(0);
-    const [error, setError] = useState(false);
+    const [ openWizard, setOpenWizard ] = useState(false);
+    const [ qrCode, setQrCode ] = useState("");
+    const [ step, setStep ] = useState(0);
+    const [ error, setError ] = useState(false);
 
-    const [submit, setSubmit] = useTrigger();
+    const [ submit, setSubmit ] = useTrigger();
 
     const { t } = useTranslation();
 
@@ -73,7 +73,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             setError(false);
             setStep(0);
         }
-    }, [openWizard]);
+    }, [ openWizard ]);
 
     /**
      * Makes an API call to verify the code entered by the user
@@ -138,31 +138,31 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Segment textAlign="center" basic>
                     <QRCode value={ qrCode } />
                     <Divider hidden />
-                    <p className="link" onClick={ refreshCode }>{t(translateKey + "modals.scan.generate")}</p>
+                    <p className="link" onClick={ refreshCode }>{ t(translateKey + "modals.scan.generate") }</p>
                 </Segment>
-                {totpConfig?.length > 0
+                { totpConfig?.length > 0
                     ? (
                         <Message info>
-                            <Message.Header>{t(translateKey + "modals.scan.messageHeading")}</Message.Header>
+                            <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
                             <Message.Content>
-                                {t(translateKey + "modals.scan.messageBody") + " "}
+                                { t(translateKey + "modals.scan.messageBody") + " " }
                                 <List bulleted>
-                                    {totpConfig?.map((app, index) => (
+                                    { totpConfig?.map((app, index) => (
                                         <List.Item key={ index } >
                                             <a
                                                 target="_blank"
                                                 href={ app.link }
                                                 rel="noopener noreferrer"
                                             >
-                                                {app.name}
+                                                { app.name }
                                             </a>
                                         </List.Item>
-                                    ))}
+                                    )) }
                                 </List>
                             </Message.Content>
                         </Message>
                     )
-                    : null}
+                    : null }
             </>
         );
     };
@@ -174,14 +174,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         return (
             <>
                 <Forms
-                    data-testid={ `${testId}-code-verification-form` }
+                    data-testid={ `${ testId }-code-verification-form` }
                     onSubmit={ (values: Map<string, string>) => {
                         verifyCode(values.get("code"));
                     } }
                     submitState={ submit }
                 >
                     <Field
-                        data-testid={ `${testId}-code-verification-form-field` }
+                        data-testid={ `${ testId }-code-verification-form-field` }
                         name="code"
                         label={ t(translateKey + "modals.verify.label") }
                         placeholder={ t(translateKey + "modals.verify.placeholder") }
@@ -195,17 +195,17 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         ? (
 
                             <>
-                                <Message error data-testid={ `${testId}-code-verification-form-field-error` }>
-                                    {t(translateKey + "modals.verify.error")}
+                                <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
+                                    { t(translateKey + "modals.verify.error") }
                                 </Message>
-                                <p>{t(translateKey + "modals.verify.reScanQuestion") + " "}
+                                <p>{ t(translateKey + "modals.verify.reScanQuestion") + " " }
                                     <p
                                         className="link"
                                         onClick={
                                             () => { setError(false); setStep(0); }
                                         }
                                     >
-                                        {t(translateKey + "modals.verify.reScan")}
+                                        { t(translateKey + "modals.verify.reScan") }
                                     </p>
                                 </p>
                             </>
@@ -244,7 +244,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         </g>
                     </svg>
                 </div>
-                <p>{t(translateKey + "modals.done")}</p>
+                <p>{ t(translateKey + "modals.done") }</p>
             </Segment>
         );
     };
@@ -341,7 +341,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const totpWizard = (): JSX.Element => {
         return (
             <Modal
-                data-testid={ `${testId}-modal` }
+                data-testid={ `${ testId }-modal` }
                 dimmer="blurring"
                 size="mini"
                 open={ openWizard }
@@ -352,28 +352,28 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     step !== 3
                         ? (
                             < Modal.Header className="totp-header">
-                                <div className="illustration">{stepIllustration(step)}</div>
+                                <div className="illustration">{ stepIllustration(step) }</div>
                             </Modal.Header>
                         )
                         : null
                 }
-                <Modal.Content data-testid={ `${testId}-modal-content` }>
-                    <h3>{stepHeader(step)}</h3>
+                <Modal.Content data-testid={ `${ testId }-modal-content` }>
+                    <h3>{ stepHeader(step) }</h3>
                     <Divider hidden />
-                    {stepContent(step)}
+                    { stepContent(step) }
                 </Modal.Content>
-                <Modal.Actions data-testid={ `${testId}-modal-actions` }>
+                <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                     {
                         step !== 3
                             ? (
                                 < Button onClick={ () => { setOpenWizard(false); } } className="link-button">
-                                    {t("common:cancel")}
+                                    { t("common:cancel") }
                                 </Button>
                             )
                             : null
                     }
                     <Button onClick={ () => { handleModalButtonClick(step); } } primary>
-                        {stepButtonText(step)}
+                        { stepButtonText(step) }
                     </Button>
                 </Modal.Actions>
 
@@ -383,7 +383,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     return (
         <>
-            {totpWizard()}
+            { totpWizard() }
             <Grid padded={ true } data-testid={ testId }>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 11 } className="first-column">
@@ -400,10 +400,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         </List.Content>
                         <List.Content>
                             <List.Header>
-                                {t(translateKey + "heading")}
+                                { t(translateKey + "heading") }
                             </List.Header>
                             <List.Description>
-                                {t(translateKey + "description")}
+                                { t(translateKey + "description") }
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
