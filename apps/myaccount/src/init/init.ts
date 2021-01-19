@@ -23,7 +23,7 @@ import "regenerator-runtime/runtime";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
-        return getItemFromSessionStorage(key);
+        return sessionStorage.getItem(key);
     } catch {
         return "";
     }
@@ -189,9 +189,7 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
 
             // Keep user session intact if the user is active
             if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-                if (_sessionAgeCounter > _idleSecondsCounter) {
-                    sendPromptNoneRequest();
-                }
+                sendPromptNoneRequest();
                 _sessionAgeCounter = 0;
             }
         }
