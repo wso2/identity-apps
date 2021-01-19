@@ -16,18 +16,18 @@
  * under the License.
  */
 
-export * from "./certificates";
-export * from "./claim";
-export * from "./common";
-export * from "./config";
-export * from "./core";
-export * from "./documentation";
-export * from "./http";
-export * from "./profile";
-export * from "./reducer-state";
-export * from "./roles";
-export * from "./route";
-export * from "./storage";
-export * from "./ua-parser";
-export * from "./userstores";
-export * from "./url-components";
+export interface URLComponentsInterface {
+    /**
+     * Does not include any trailing colon(:) from the protocol.
+     * For example: https, http, ftp, etc.
+     */
+    protocol: string;
+    /**
+     * Contains host + port (if theres any).
+     */
+    host: string;
+    /**
+     * protocol + scheme + host
+     */
+    origin: string;
+}

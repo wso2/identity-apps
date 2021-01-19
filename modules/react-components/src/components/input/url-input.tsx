@@ -17,19 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
 import { URLUtils } from "@wso2is/core/dist/src/utils";
+import { LinkButton } from "../button";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
@@ -145,8 +139,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
     const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
-    const [ successShowMore, setSuccessShowMore ] = useState<boolean>(false);
-    const [ warningShowMore, setWarningShowMore ] = useState<boolean>(false);
+    const [ showMore, setShowMore ] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
@@ -330,137 +323,83 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const computerSize: any = (computerWidth) ? computerWidth : 8;
 
     const resolveCORSStatusLabel = (url: string) => {
-        const splitURL = url.split("/");
-        const origin = splitURL[0] + "//" + splitURL[2];
-
+        const { origin } = URLUtils.urlComponents(url);
+        const positive = allowedOrigins?.includes(origin);
         /**
-         * TODO : React Components should not depend on the product 
+         * TODO : React Components should not depend on the product
          * locale bundles.
          * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
          */
-        if (allowedOrigins?.includes(origin)) {
-            return (
-                <LabelWithPopup
-                    className="cors-details-popup"
-                    popupHeader={ t("console:develop.features.URLInput.withLabel.positive.header") }
-                    popupSubHeader={
-                        <>
-                            <Icon name="building outline"/>
-                            { tenantDomain }
-                        </>
-                    }
-                    popupContent={
-                        <>
-                            { t("console:develop.features.URLInput.withLabel.positive.content") }
-                            <a onClick={ () => setSuccessShowMore(!successShowMore) }>
-                                {
-                                    successShowMore
-                                        ? <> { t("common:showLess") }</>
-                                        : <> { t("common:showMore") }</>
-                                }
-                            </a><br/>
-                            {
-                                successShowMore && (
-                                    <>
-                                        <br/>
-                                        { t("console:develop.features.URLInput.withLabel.positive.detailedContent.0") }
-                                        <br/>
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.URLInput.withLabel.positive.detailedContent.1"
-                                            }
-                                            tOptions={ { tenantName: tenantDomain } }
-                                        >
-                                            Therefore enabling CORS for this origin will allow you to access
-                                            Identity Server APIs from the applications registered in the
-                                            <strong>{ tenantDomain }</strong> tenant domain.
-                                        </Trans>
-                                    </>
-                                )
-                            }
-                        </>
-                    }
-                    popupFooterLeftContent={
-                        <>
-                            <Icon name="check" color="green"/>
-                            { origin }
-                        </>
-                    }
-                    popupOptions={ {
-                        basic: true,
-                        on: "click"
-                    } }
-                    labelColor="green"
-                />
-            );
-        } else {
-            return (
-                <LabelWithPopup
-                    className="cors-details-popup"
-                    popupHeader={ t("console:develop.features.URLInput.withLabel.negative.header") }
-                    popupSubHeader={
-                        <>
-                            <Icon name="building outline"/>
-                            { tenantDomain }
-                        </>
-                    }
-                    popupContent={
-                        <>
-                            { t("console:develop.features.URLInput.withLabel.negative.content") }
-                            <a onClick={ () => setWarningShowMore(!warningShowMore) }>
-                                {
-                                    warningShowMore
-                                        ? <> { t("common:showLess") }</>
-                                        : <> { t("common:showMore") }</>
-                                }
-                            </a><br/>
-                            {
-                                warningShowMore && (
-                                    <>
-                                        <br/>
-                                        { t("console:develop.features.URLInput.withLabel.negative.detailedContent.0") }
-                                        <br/>
-                                        <Trans
-                                            i18nKey={
-                                                "console:develop.features.URLInput.withLabel.negative.detailedContent.1"
-                                            }
-                                            tOptions={ { tenantName: tenantDomain } }
-                                        >
-                                            Therefore enabling CORS for this origin will allow you to access
-                                            Identity Server APIs from the applications registered in the
-                                            <strong>{ tenantDomain }</strong> tenant domain.
-                                        </Trans>
-                                    </>
-                                )
-                            }
-                        </>
-                    }
-                    popupFooterRightActions={
-                        isAllowEnabled && (
-                            <Button
-                                onClick={ () => handleAllowOrigin(origin) }
-                                basic
-                                color="orange"
-                                floated="right"
-                            >
-                                { t("console:develop.features.URLInput.withLabel.negative.leftAction") }
-                            </Button>
-                        )
-                    }
-                    popupFooterLeftContent={
-                        <>
-                            <Icon name="times" color="red"/>
-                            { origin }
-                        </>
-                    }
-                    popupOptions={ {
-                        basic: true,
-                        on: "click"
-                    } }
-                    labelColor="red"
-                />
-            );
-        }
+        return (
+            <LabelWithPopup
+                className="cors-details-popup"
+                trigger={
+                    <Icon
+                        name={ positive ? "check" : "exclamation triangle" }
+                        color={ positive ? "green" : "red" }
+                    />
+                }
+                popupHeader={
+                    positive ?
+                        t("console:develop.features.URLInput.withLabel.positive.header") :
+                        t("console:develop.features.URLInput.withLabel.negative.header")
+                }
+                popupSubHeader={
+                    <React.Fragment>
+                        <Icon name="building outline"/>
+                        { tenantDomain }
+                    </React.Fragment>
+                }
+                popupContent={
+                    <React.Fragment>
+                        {
+                            positive ?
+                                t("console:develop.features.URLInput.withLabel.positive.content") :
+                                t("console:develop.features.URLInput.withLabel.negative.content")
+                        }
+                        <a onClick={ () => setShowMore(!showMore) }>
+                            &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
+                        </a><br/>
+                        {
+                            showMore && (
+                                <React.Fragment>
+                                    {
+                                        positive ?
+                                            t("console:develop.features.URLInput." +
+                                                "withLabel.positive.detailedContent.0") :
+                                            t("console:develop.features.URLInput." +
+                                                "withLabel.negative.detailedContent.0")
+                                    }
+                                    <br/>
+                                    <Trans
+                                        i18nKey={
+                                            positive ?
+                                                "console:develop.features.URLInput." +
+                                                "withLabel.positive.detailedContent.1" :
+                                                "console:develop.features.URLInput." +
+                                                "withLabel.negative.detailedContent.1"
+                                        }
+                                        tOptions={ { tenantName: tenantDomain } }
+                                    >
+                                        Therefore enabling CORS for this origin will allow you to access
+                                        Identity Server APIs from the applications registered in the
+                                        <strong>{ tenantDomain }</strong> tenant domain.
+                                    </Trans>
+                                </React.Fragment>
+                            )
+                        }
+                    </React.Fragment>
+                }
+                popupFooterLeftContent={
+                    <React.Fragment>
+                        <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
+                        { origin }
+                    </React.Fragment>
+                }
+                popupOptions={ { basic: true, on: "click" } }
+                labelColor={ positive ? "green" : "red" }
+            />
+        );
     };
 
     /**
@@ -487,6 +426,62 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         return customLabel;
     };
+
+    const urlTextWidget = (url: string): ReactElement => {
+        const { protocol, host } = URLUtils.urlComponents(url);
+        return (
+            <span>
+                { (!URLUtils.isTLSEnabled(url)) ? (
+                    <Popup
+                        trigger={
+                            <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
+                        }
+                        content={ t("console:common.validations.inSecureURL.description") }
+                        position="top left"
+                        size="mini"
+                        hoverable
+                        inverted
+                    />
+                ) : <span>{ protocol }</span> }
+                <span>://</span>
+                <span>{ host }</span>
+            </span>
+        );
+    };
+
+    const urlRemoveButtonWidget = (url: string): ReactElement => {
+        return (
+            <Icon
+                name="delete"
+                onClick={ () => removeValue(url) }
+                data-testid={ `${ testId }-${ url }-delete-button` }
+            />
+        );
+    };
+
+    const urlChipItemWidget = (url: string): ReactElement => {
+        const { origin } = URLUtils.urlComponents(url);
+        return (
+            <Grid.Row key={ url } className={ "urlComponentTagRow" }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
+                    <Label data-testid={ `${ testId }-${ url }` }>
+                        { urlTextWidget(url) }
+                        { !readOnly && urlRemoveButtonWidget(url) }
+                    </Label>
+                    { (labelEnabled && isAllowEnabled && !(allowedOrigins?.includes(origin))) && (
+                        <LinkButton
+                            basic={ true }
+                            className={ "m-1 p-2 with-no-border orange" }
+                            onClick={ () => handleAllowOrigin(origin) }>
+                            <span style={ { fontWeight: "bold"} }>Allow</span>
+                            &nbsp;<em>(enable CORS for this origin)</em>
+                        </LinkButton>
+                    ) }
+                    { labelEnabled && resolveCORSStatusLabel(url) }
+                </Grid.Column>
+            </Grid.Row>
+        );
+    }
 
     return (!hideEntireComponent &&
         <>
@@ -566,41 +561,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
-                    const isUnsecureURL = URLUtils.isHttpUrl(url);
-                    return (
-                        <Grid.Row key={ url } className={ "urlComponentTagRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                                <Label data-testid={ `${ testId }-${ url }` }>
-                                    {
-                                        labelEnabled && (
-                                            resolveCORSStatusLabel(url)
-                                        )
-                                    }
-                                    { url }
-                                    {
-                                        !readOnly && (
-                                            <Icon
-                                                name="delete"
-                                                onClick={ () => removeValue(url) }
-                                                data-testid={ `${ testId }-${ url }-delete-button` }
-                                            />
-                                        )
-                                    }
-                                </Label>
-                                {
-                                    isUnsecureURL && (
-                                        <Popup
-                                            trigger={ <Icon className="ml-1" name="exclamation triangle" color="yellow" /> }
-                                            content={ t("console:common.validations.inSecureURL.description") }
-                                            inverted
-                                            position="top left"
-                                            size="mini"
-                                        />
-                                    )
-                                }
-                            </Grid.Column>
-                        </Grid.Row>
-                    );
+                    return urlChipItemWidget(url);
                 }
             }) }
             { hint && (

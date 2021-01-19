@@ -57,6 +57,13 @@
                 background: @downBackgroundColor;
             }
         }
+        &.with-no-border {
+            border: 0px transparent;
+            box-shadow: none !important;
+        }
+        &.with-bold-text {
+            font-weight: bold;
+        }
     }
     &.positive-modal-link-button {
         background: transparent;
