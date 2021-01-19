@@ -35,7 +35,7 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
-    <main>
+    <main class="cookie-policy-page">
         <div id="app-header" class="ui borderless top fixed app-header menu">
             <div class="ui container">
                 <div class="header item product-logo">
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="app-content" style="padding-top: 62px;">
+        <div class="app-content cookie-policy-content" style="padding-top: 62px;">
             <div class="ui container">
                 <!-- page content -->
                 <%
