@@ -312,6 +312,7 @@
             "showLanguageSwitcher": false
         },
         "isGroupAndRoleSeparationEnabled": true,
+        "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

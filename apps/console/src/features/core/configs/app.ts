@@ -160,6 +160,8 @@ export class Config {
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
+            isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui
+                .isSignatureValidationCertificateAliasEnabled,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,

@@ -162,6 +162,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isGroupAndRoleSeparationEnabled?: boolean;
     /**
+     * Enable signature validation certificate alias.
+     */
+    isSignatureValidationCertificateAliasEnabled?: boolean;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
