@@ -657,7 +657,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         value={ initialValues?.requestValidation.signatureValidationCertAlias }
                                         requiredErrorMessage={
                                             t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                                ".requestValidation.fields.signatureValidationCertAlias.validations.empty")
+                                                ".requestValidation.fields.signatureValidationCertAlias.validations" +
+                                                ".empty")
                                         }
                                         default={ metadata?.certificateAlias.defaultValue }
                                         children={ getAllowedOptions(metadata?.certificateAlias) }
