@@ -699,7 +699,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Sélectionnez les attributs à inclure dans la réponse d'authentification."
+                                    subHeading: "Sélectionnez les attributs utilisateur à inclure dans la réponse d'authentification."
                                 },
                                 heading: "Sélection des attributs",
                                 mappingTable: {

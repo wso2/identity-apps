@@ -527,18 +527,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </strong>
                                                                         </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".appAttribute")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
+                                                                        <Table.HeaderCell textAlign="center">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -604,18 +593,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         }
                                                                     </strong>
                                                                 </Table.HeaderCell>
-                                                                <Table.HeaderCell>
-                                                                    <strong>
-                                                                        {
-                                                                            t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
-                                                                                ".attributes.selection" +
-                                                                                ".mappingTable.columns" +
-                                                                                ".appAttribute")
-                                                                        }
-                                                                    </strong>
-                                                                </Table.HeaderCell>
-                                                                <Table.HeaderCell>
+                                                                <Table.HeaderCell textAlign="center">
                                                                     <strong>
                                                                         {
                                                                             t("console:develop.features" +

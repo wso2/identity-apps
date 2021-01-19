@@ -703,7 +703,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Select attributes to be included in the authentication response."
+                                    subHeading: "Select user attributes to be included in the authentication response."
                                 },
                                 heading: "Attribute Selection",
                                 mappingTable: {

@@ -707,7 +707,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "නව ගුණාංග එකතු කරන්න හෝ පවතින ගුණාංග ඉවත් කරන්න."
+                                    subHeading: "පරිශීලක නව ගුණාංග එකතු කරන්න හෝ පවතින ගුණාංග ඉවත් කරන්න."
                                 },
                                 heading: "ගුණාංග තේරීම",
                                 mappingTable: {
