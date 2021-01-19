@@ -87,14 +87,15 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         });
 
-        const customProperties = values.get("customProperties")?.toString()?.split(",")
-            ?.map((customProperty: string) => {
+        const customProperties = values.get("customProperties") !== ""
+            ? values.get("customProperties")?.toString()?.split(",")?.map((customProperty: string) => {
                 const keyValuePair = customProperty.split("=");
                 return {
                     key: keyValuePair[ 0 ],
                     value: keyValuePair[ 1 ]
                 };
-            });
+            })
+            : [];
 
         customProperties?.length > 0 && properties.push(...customProperties);
 
