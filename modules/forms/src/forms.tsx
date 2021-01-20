@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
@@ -545,6 +545,15 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             return React.Children.map(elements, (element: React.FunctionComponentElement<any>) => {
                 if (element) {
                     if (element.type === Field) {
+
+                        if (element.props.type === "radio") {
+                            element.props.children.forEach((c) => {
+                                if (c.child) {
+                                    c.child = parseChildren(c.child, fields);
+                                }
+                            });
+                        }
+
                         fields.push(element.props);
                         flatReactChildren.push(element);
                         return React.createElement(InnerField, {
