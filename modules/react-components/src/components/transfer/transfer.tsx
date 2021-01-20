@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Button, Grid, Icon, Segment } from "semantic-ui-react";
+import { Button, Checkbox, Grid, Icon, Segment } from "semantic-ui-react";
 import { TransferListSearch } from "./transfer-list-search";
 
 /**
@@ -27,6 +27,8 @@ import { TransferListSearch } from "./transfer-list-search";
 export interface TransferComponentPropsInterface extends TestableComponentInterface {
     handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
     handleSelectedListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
+    handleHeaderCheckboxChange?: () => void;
+    isHeaderCheckboxChecked?: boolean;
     addItems?: () => void;
     removeItems?: () => void;
     searchPlaceholder: string;
@@ -52,6 +54,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         selectionComponent,
         handleUnelectedListSearch,
         handleSelectedListSearch,
+        handleHeaderCheckboxChange,
+        isHeaderCheckboxChecked,
         [ "data-testid" ]: testId
     } = props;
 
@@ -78,6 +82,15 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             handleListSearch={ handleUnelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />
+                                                        {
+                                                            selectionComponent &&
+                                                            <Checkbox 
+                                                                className="all-select"
+                                                                label="Select all attributes"
+                                                                checked={ isHeaderCheckboxChecked }
+                                                                onChange={ handleHeaderCheckboxChange }
+                                                            />
+                                                        }
                                                         <Segment className="transfer-list-segment">
                                                             { list }
                                                         </Segment>

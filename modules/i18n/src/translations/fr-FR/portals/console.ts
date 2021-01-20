@@ -685,15 +685,15 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Configurer les attributs",
+                                    header: "Configurer les attributs utilisateur",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Sélectionnez tous les attributs"
+                                                    attribute: "Sélectionnez tous les attributs utilisateur"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "Chercher un attribut",
+                                                    attribute: "Rechercher un attribut utilisateur",
                                                     role: "Chercher un rôle"
                                                 }
                                             }
@@ -701,7 +701,7 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Sélectionnez les attributs utilisateur à inclure dans la réponse d'authentification."
                                 },
-                                heading: "Sélection des attributs",
+                                heading: "Sélection des attributs utilisateur",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"

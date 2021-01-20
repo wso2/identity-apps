@@ -73,21 +73,20 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                         listHeaders instanceof Array && (
                             <Table.Header>
                                 <Table.Row>
-                                    <Table.HeaderCell>
-                                        <Checkbox
-                                            data-testid={ testId }
-                                            checked={ isHeaderCheckboxChecked }
-                                            onChange={ handleHeaderCheckboxChange }
-                                        />
-                                    </Table.HeaderCell>
+                                    {
+                                        !selectionComponent &&
+                                            <Table.HeaderCell>
+                                                <Checkbox
+                                                    data-testid={ testId }
+                                                    checked={ isHeaderCheckboxChecked }
+                                                    onChange={ handleHeaderCheckboxChange }
+                                                />
+                                            </Table.HeaderCell>
+                                    }
                                     {
                                         listHeaders?.map((header, index) => {
                                             return (
-                                                <Table.HeaderCell 
-                                                    colSpan={ !selectionComponent ? 
-                                                        listHeaders.length : listHeaders.length + 1 } 
-                                                    key={ index }
-                                                >
+                                                <Table.HeaderCell key={ index } >
                                                     <strong>{ header }</strong>
                                                 </Table.HeaderCell>
                                             );

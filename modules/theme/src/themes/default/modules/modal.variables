@@ -70,7 +70,7 @@
 --------------------------------*/
 @attributeModalContentHeight: 500px;
 @transferComponentSegmentHeight: 450px;
-@transferComponentListSegmentHeight: 370px;
+@transferComponentListSegmentHeight: 300px;
 
 /*-------------------------------
       Edit Avatar Modal
