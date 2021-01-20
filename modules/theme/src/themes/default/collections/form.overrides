@@ -92,4 +92,49 @@
 
         }
     }
+
+    /**
+     * This class assumes the parent has 3 form fields as child nodes.
+     * 3 stacked input fields targeted to represent as one giant
+     * field. <Input><Target><Input>
+     *
+     * This style class aggressively resets the nested field margins. By default
+     * all input fields has .5em of margin in all sides.
+     */
+    .tri-stacked-inputs {
+        .prefix {
+            margin: .5em 0 0 0 !important;
+
+            input {
+                .reset-border-radius();
+                border-radius: 3px 3px 0 0 !important;
+            }
+        }
+
+        .target {
+            margin: 0 !important;
+
+            textarea {
+                .reset-border-radius();
+                border-top: 0 !important;
+                border-bottom: 0 !important;
+            }
+        }
+
+        .postfix {
+            margin: 0 0 .5em 0 !important;
+
+            input {
+                .reset-border-radius();
+                border-radius: 0 0 3px 3px !important;
+            }
+        }
+    }
+
+}
+
+.reset-border-radius() {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
