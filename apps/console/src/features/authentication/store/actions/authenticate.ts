@@ -310,7 +310,11 @@ export const handleSignIn = () => {
     const auth = AsgardeoSPAClient.getInstance();
      if (process.env.NODE_ENV === "production") {
          axios.get(window["AppUtils"].getAppBase() + "/auth").then((response) => {
-             auth.signIn(response?.data?.authCode, response?.data?.sessionState);
+             auth.signIn(
+                 { t: window["AppUtils"].getTenantName(true) },
+                 response?.data?.authCode,
+                 response?.data?.sessionState
+             );
          });
      } else {
          auth.signIn();
