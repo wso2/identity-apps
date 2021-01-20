@@ -715,7 +715,7 @@ export const console: ConsoleNS = {
                                         enable: "සිතියම්කරණය සක්‍රීය කරන්න"
                                     },
                                     columns: {
-                                        appAttribute: "යෙදුම් ගුණාංගය",
+                                        appAttribute: "පරිශීලක යෙදුම් ගුණාංගය",
                                         attribute: "පරිශීලක ගුණාංගය",
                                         mandatory: "අනිවාර්යයි",
                                         requested: "ඉල්ලා"
@@ -734,6 +734,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
+                                    mappedAtributeHint: "සුපුරුදු ගුණාංගය යැවීම වෙනුවට, අභිරුචි සිතියම්ගත කළ ගුණාංගය යවනු ලැබේ",
                                     searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
                                 }
                             },

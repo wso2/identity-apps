@@ -711,7 +711,7 @@ export const console: ConsoleNS = {
                                         enable: "Enable mapping"
                                     },
                                     columns: {
-                                        appAttribute: "Application user attribute",
+                                        appAttribute: "Mapped user attribute",
                                         attribute: "Attribute",
                                         mandatory: "Mandatory",
                                         requested: "Requested"
@@ -730,6 +730,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
+                                    mappedAtributeHint: "Instead of sending the default attribute, the custom " +
+                                        "mapped attribute will be sent",
                                     searchPlaceholder: "Search user attributes"
                                 }
                             },

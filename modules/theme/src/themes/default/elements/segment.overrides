@@ -361,6 +361,18 @@
     }
 }
 
+.attributes { 
+
+    .ui.input {
+        margin: 0 5px!important;
+        width: @EditRoleSegmentHeaderWidth;
+    }
+
+    .ui-hint {
+        margin: 0 5px!important;
+    }
+}
+
 /*******************************************
      OIDC Scope Attribute List Variation
 *******************************************/

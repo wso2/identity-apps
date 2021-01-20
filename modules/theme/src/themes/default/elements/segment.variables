@@ -65,7 +65,7 @@
     User edit section Variation
 *************************************/
 
-@EditRoleSegmentHeaderMarginBottom: 0.4em !important;
+@EditRoleSegmentHeaderMarginBottom: 0.4em;
 @EditRoleSegmentHeaderWidth: 270px !important;
 @EditRoleSegmentHeaderButtonMarginBottom: 0.4em !important;
 @EditRoleSegmentFooterHeight: 60px !important;

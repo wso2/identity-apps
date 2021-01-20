@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -499,6 +499,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     ".appAttribute")
                                                                             }
                                                                         </strong>
+                                                                        <Hint icon="info circle" popup>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.mappedAtributeHint" )
+                                                                            }
+                                                                        </Hint>
                                                                     </Table.HeaderCell>
                                                                     <Table.HeaderCell>
                                                                         <strong>

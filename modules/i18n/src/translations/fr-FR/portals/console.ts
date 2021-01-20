@@ -707,7 +707,7 @@ export const console: ConsoleNS = {
                                         enable: "Activer l'association"
                                     },
                                     columns: {
-                                        appAttribute: "Attribut d'application",
+                                        appAttribute: "Attribut utilisateur de l'application mappée",
                                         attribute: "Attribut",
                                         mandatory: "Obligatoire",
                                         requested: "Demandé"
@@ -726,6 +726,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
+                                    mappedAtributeHint: "Au lieu d'envoyer l'attribut par défaut, l'attribut mappé "  +
+                                        "personnalisé sera envoyé",
                                     searchPlaceholder: "Attributs de recherche"
                                 }
                             },
