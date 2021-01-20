@@ -16,26 +16,24 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-spa";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
 import {
-    OIDCApplicationConfigurationInterface,
-    OIDCEndpointsInterface
+    OIDCApplicationConfigurationInterface
 } from "../../models";
 
 /**
  * Get an identity client instance.
  *
  */
-const AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
+const asgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -63,9 +61,8 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         [ "data-testid" ]: testId
     } = props;
 
-    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
 
-    const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
+    const [ endpoints, setEndpoints ] = useState<OIDCEndpoints>(undefined);
 
     useEffect(() => {
         if (endpoints !== undefined) {
@@ -73,7 +70,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         }
 
         // Fetch the server endpoints for OIDC applications.
-        AsgardeoSPAClient.getServiceEndpoints()
+        asgardeoSPAClient.getOIDCServiceEndpoints()
             .then((response) => {
                 setEndpoints(response);
             })
