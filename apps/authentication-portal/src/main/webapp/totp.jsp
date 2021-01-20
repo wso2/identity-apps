@@ -130,19 +130,35 @@
                                 <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                                 <div class="ui divider hidden"></div>
-                                <div class="align-right buttons">
-                                    <a class="ui button link-button" id="genToken" href="#"
-                                       onclick="return requestTOTPToken();">
-                                       <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
-                                    </a>
+                                <div class="ui two column stackable grid">
+
+                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
+                                    <% boolean shouldVerificationCodeBeShown = true; %>
+                                    <% if(shouldVerificationCodeBeShown) { %>
+                                        <a class="ui button link-button" id="genToken" href="#"
+                                        onclick="return requestTOTPToken();">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
+                                        </a>
+                                    <% } else {
+                                        String multiOptionURI = request.getParameter("multiOptionURI");
+                                        if (multiOptionURI != null) {
+                                    %>
+                                        <a class="ui button link-button" id="goBackLink"
+                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                        </a>
+                                    <% } } %>
+                                </div>
+                                <div class="six wide column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
                                     <input type="submit" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>" class="ui primary button">
                                 </div>
+                            </div>
                             </form>
                         </div>
                         <div class="ui divider hidden"></div>
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null) {
+                                if (multiOptionURI != null && shouldVerificationCodeBeShown) {
                             %>
                                 <a class="ui button link-button" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
