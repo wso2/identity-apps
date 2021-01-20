@@ -259,8 +259,12 @@
                     tabindex="2"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
                     data-testid="login-page-password-input"
+                    style="padding-right: 2.3em !important;"
                 >
                 <i aria-hidden="true" class="lock icon"></i>
+                <i id="passwordUnmaskIcon"
+                   class="eye icon mr-0"
+                   style="margin: 0 auto; right: 0; pointer-events: auto; cursor: pointer;"></i>
             </div>
         </div>
     <%
@@ -467,4 +471,29 @@
         }
 
     %>
+
+    <script defer>
+
+        /**
+         * Toggles the password visibility using the attribute
+         * type of the input.
+         *
+         * @param event {Event} click target
+         * @description stops propagation
+         */
+        $("#passwordUnmaskIcon").click(function (event) {
+            event.preventDefault();
+            var $passwordInput = $("#password");
+
+            if ($passwordInput.attr("type") === "password") {
+                $(this).addClass("slash outline");
+                $passwordInput.attr("type", "text");
+            } else {
+                $(this).removeClass("slash outline");
+                $passwordInput.attr("type", "password");
+            }
+        });
+
+    </script>
+
 </form>
