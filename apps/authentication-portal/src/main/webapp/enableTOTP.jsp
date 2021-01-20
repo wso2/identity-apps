@@ -104,27 +104,17 @@
                                 <% } }  %>
 
                                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled.please.enable")%></p>
-                                
+
                                 <input type="hidden" id="ENABLE_TOTP" name="ENABLE_TOTP" value="false"/>
                                 <input type="hidden" name='ske' id='ske' value='<%=Encode.forHtmlAttribute(request.getParameter("ske"))%>'/>
                                 <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
-                                <div class="ui styled fluid accordion">
-                                    <div class="title">
-                                        <i class="dropdown icon"></i>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "show.qr.code")%>
-                                    </div>
-                                    <div class="content">
-                                        <div class="transition hidden">
-                                            <div class="ui center aligned basic segment">
-                                                <form name="qrinp">
-                                                    <input type="numeric" name="ECC" value="1" size="1" style="Display:none" id="ecc">
-                                                    <canvas id="qrcanv">
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="ui center aligned basic segment">
+                                    <form name="qrinp">
+                                        <input type="numeric" name="ECC" value="1" size="1" style="Display:none" id="ecc">
+                                        <canvas id="qrcanv">
+                                    </form>
                                 </div>
 
                                 <div class="align-right buttons">
@@ -136,6 +126,18 @@
                     </div>
                 </div>
             </main>
+
+            <div class="ui modal tiny">
+                <div class="content">
+                    <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "confirm.you.have.scanned.the.qr.code")%></p>
+                </div>
+                <div class="actions">
+                    <div class="align-right buttons">
+                        <input type="button" name="cancelM" id="cancelM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button link-button">
+                        <input type="button" name="continueM" id="continueM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
+                    </div>
+                </div>
+            </div>
 
             <!-- product-footer -->
             <%
@@ -161,19 +163,13 @@
                 $(document).ready(function() {
                     $('#continue').click(function() {
                         document.getElementById("ENABLE_TOTP").value = 'true';
-                        $('#pin_form').submit();
+                        $(".ui.modal").modal("show");
                     });
                     $('#cancel').click(function() {
                         document.getElementById("ENABLE_TOTP").value = 'false';
                         $('#pin_form').submit();
                     });
-                    $('.ui.accordion')
-                        .accordion({
-                            onOpening:function(){
-                                initiateTOTP();
-                            }
-                        })
-                    ;
+                    initiateTOTP();
                 });
                 function initiateTOTP(){
                     var key =  document.getElementById("ske").value;
@@ -181,6 +177,12 @@
                         loadQRCode(key);
                     }
                 }
+                $("#continueM").click(function () {
+                    $('#pin_form').submit();
+                });
+                $("#cancelM").click(function () {
+                    $(".ui.modal").modal("hide");
+                });
             </script>
         </body>
     </html>
