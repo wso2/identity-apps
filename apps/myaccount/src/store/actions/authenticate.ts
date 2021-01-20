@@ -17,17 +17,12 @@
  */
 
 import {
-    AUTHORIZATION_ENDPOINT,
-    AuthenticatedUserInterface,
     Hooks,
     AsgardeoSPAClient,
-    OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
     OIDCEndpoints,
     Storage,
-    TOKEN_ENDPOINT,
-    UserInfo,
-    LOGOUT_URL
+    BasicUserInfo,
 } from "@asgardeo/auth-spa";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
@@ -59,11 +54,12 @@ import {
     onHttpRequestSuccess
 } from "../../utils";
 import { store } from "../index";
+import { AUTH_CODE } from "@asgardeo/auth-spa/dist/src/constants";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = (userInfo: AuthenticatedUserInterface): AuthAction => ({
+export const setSignIn = (userInfo: BasicUserInfo): AuthAction => ({
     payload: userInfo,
     type: authenticateActionTypes.SET_SIGN_IN
 });
@@ -300,25 +296,20 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
     const initialize = (response?: any): void => {
         auth.initialize({
-            authorizationCode: response?.data?.authCode,
-            baseUrls: resolveBaseUrls(),
+            resourceServerURLs: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
-            customParams: {
-                o: window["AppUtils"].getSuperTenant(),
-                t : window["AppUtils"].getTenantName(true)
-            },
+            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
                 ?? true,
             endpoints: {
-                authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
-                jwks: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
-                logout: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
-                oidcSessionIFrame: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
-                revoke: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-                token: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-                wellKnown: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+                authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
+                jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
+                endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
+                checkSessionIframe: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
+                revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
+                tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
+                wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
             },
             responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode
                 ?? responseModeFallback,
@@ -326,7 +317,6 @@ export const initializeAuthentication = () =>(dispatch)=> {
                 ?? [ TokenConstants.SYSTEM_SCOPE ],
             serverOrigin: window["AppUtils"].getConfig().idpConfigs?.serverOrigin
                 ?? window["AppUtils"].getConfig().idpConfigs.serverOrigin,
-            sessionState: response?.data?.sessionState,
             signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             storage: resolveStorage()
@@ -341,15 +331,9 @@ export const initializeAuthentication = () =>(dispatch)=> {
         dispatch(setInitialized(true));
     };
 
-    if (process.env.NODE_ENV === "production") {
-        axios.get(window[ "AppUtils" ].getAppBase() + "/auth").then((response) => {
-            initialize(response);
-        });
-    } else {
-        initialize();
-    }
+    initialize();
 
-    auth.on(Hooks.SignIn, (response: UserInfo) => {
+    auth.on(Hooks.SignIn, (response: BasicUserInfo) => {
 
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
@@ -369,19 +353,18 @@ export const initializeAuthentication = () =>(dispatch)=> {
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (sessionStorage.getItem(LOGOUT_URL)) {
-            let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+        if (sessionStorage.getItem(CommonConstants.LOGOUT_URL)) {
+            let logoutUrl = sessionStorage.getItem(CommonConstants.LOGOUT_URL);
             logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
-            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+            sessionStorage.setItem(CommonConstants.LOGOUT_URL, logoutUrl);
         }
 
         dispatch(
             setSignIn({
+                allowedScopes: response.allowedScopes,
                 displayName: response.displayName,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                display_name: response.displayName,
                 email: response.email,
-                scope: response.allowedScopes,
+                sessionState: response.sessionState,
                 tenantDomain: response.tenantDomain,
                 username: response.username
             })
@@ -390,11 +373,11 @@ export const initializeAuthentication = () =>(dispatch)=> {
         sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
 
         auth
-            .getServiceEndpoints()
+            .getOIDCServiceEndpoints()
             .then((response: OIDCEndpoints) => {
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+                sessionStorage.setItem(CommonConstants.AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                sessionStorage.setItem(CommonConstants.CHECK_SESSION_IFRAME, response.checkSessionIframe);
+                sessionStorage.setItem(CommonConstants.TOKEN_ENDPOINT, response.tokenEndpoint);
 
                 const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
                 rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
@@ -412,7 +395,18 @@ export const initializeAuthentication = () =>(dispatch)=> {
  */
 export const handleSignIn = () =>{
     const auth = AsgardeoSPAClient.getInstance();
-    auth.signIn();
+
+        if (process.env.NODE_ENV === "production") {
+            axios.get(window["AppUtils"].getAppBase() + "/auth").then((response) => {
+                auth.signIn(
+                    { t: window["AppUtils"].getTenantName(true) },
+                    response?.data?.authCode,
+                    response?.data?.sessionState
+                );
+            });
+        } else {
+            auth.signIn();
+        }
 };
 
 /**
@@ -442,10 +436,11 @@ export const handleAccountSwitching = (account: LinkedAccountInterface) => (disp
         .then((response) => {
             dispatch(
                 setSignIn({
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    display_name: response.displayName,
+                    allowedScopes: response.allowedScopes,
+                    displayName: response.displayName,
                     email: response.email,
-                    scope: response.allowedScopes,
+                    sessionState: response.sessionState,
+                    tenantDomain: response.tenantDomain,
                     username: response.username
                 })
             );
