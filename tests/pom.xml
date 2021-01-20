@@ -23,7 +23,11 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
+<<<<<<< HEAD
         <version>1.0.657-SNAPSHOT</version>
+=======
+        <version>1.1.0-SNAPSHOT</version>
+>>>>>>> Remove TOTP source directory
         <relativePath>../pom.xml</relativePath>
     </parent>
 
