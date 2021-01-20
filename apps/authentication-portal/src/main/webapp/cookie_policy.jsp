@@ -34,8 +34,8 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
-    <main>
+<body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout">
+    <main class="policy-page">
         <div id="app-header" class="ui borderless top fixed app-header menu">
             <div class="ui container">
                 <div class="header item product-logo">
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="app-content" style="padding-top: 62px;">
+        <div class="app-content policy-page-content" style="padding-top: 62px;">
             <div class="ui container">
                 <!-- page content -->
                 <%
