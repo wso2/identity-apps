@@ -99,3 +99,4 @@
 @emphasizedSegmentBackgroundColor: @lightPageBackground;
 @emphasizedSegmentBorder: @defaultBorderWidth solid @lightBorderColor;
 @emphasizedSegmentBorderRadius: @defaultBorderRadius;
+@emphasizedSegmentPadding: 35px;
