@@ -33,6 +33,7 @@
 @appHeaderBackground: @lightPageBackground;
 @appHeaderHeight: auto;
 @appHeaderBoxShadow: none;
+@appHeaderBorderBottom: 1px solid @defaultBorderColor;
 
 @appHeaderContainerBackground: inherit;
 
