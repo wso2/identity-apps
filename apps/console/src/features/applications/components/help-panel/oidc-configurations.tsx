@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient } from "@asgardeo/auth-spa";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
@@ -35,7 +35,7 @@ import {
  * Get an identity client instance.
  *
  */
-const identityClient = IdentityClient.getInstance();
+const AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -73,7 +73,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         }
 
         // Fetch the server endpoints for OIDC applications.
-        identityClient.getServiceEndpoints()
+        AsgardeoSPAClient.getServiceEndpoints()
             .then((response) => {
                 setEndpoints(response);
             })

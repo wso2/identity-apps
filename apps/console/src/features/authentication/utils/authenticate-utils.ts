@@ -17,7 +17,7 @@
  */
 
 import {
-    IdentityClient
+    AsgardeoSPAClient
 } from "@asgardeo/auth-spa";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,7 +43,7 @@ export class AuthenticateUtils {
      * Clears the session related information and sign out from the session.
      */
     public static endUserSession(): void {
-        const auth = IdentityClient.getInstance();
+        const auth = AsgardeoSPAClient.getInstance();
 
         auth.endUserSession()
             .then(() => {

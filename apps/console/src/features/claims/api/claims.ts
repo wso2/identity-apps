@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient } from "@asgardeo/auth-spa";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -28,7 +28,7 @@ import { AddExternalClaim } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add a local claim.

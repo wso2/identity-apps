@@ -18,7 +18,7 @@
  */
 
 import {
-    IdentityClient
+    AsgardeoSPAClient
 } from "@asgardeo/auth-spa";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
@@ -28,7 +28,7 @@ import { handleSignIn } from "../store/actions";
  * Clears the session related information and sign out from the session.
  */
 export const endUserSession = (): void => {
-    const auth = IdentityClient.getInstance();
+    const auth = AsgardeoSPAClient.getInstance();
     auth.endUserSession()
         .then(() => {
             store.dispatch(handleSignIn());

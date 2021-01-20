@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient } from "@asgardeo/auth-spa";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
@@ -24,9 +24,9 @@ import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from
 /**
  * Initialize an axios Http client.
  */
-const httpClient = IdentityClient.getInstance()
-    .httpRequest.bind(IdentityClient.getInstance())
-    .bind(IdentityClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance())
+    .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve Role details for a give role id.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient, SignInResponse } from "@asgardeo/auth-spa";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = IdentityClient.getInstance();
+const oAuth = AsgardeoSPAClient.getInstance();
 
 /**
  * Get an axios instance.

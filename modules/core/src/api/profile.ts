@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient } from "@asgardeo/auth-spa";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
@@ -35,7 +35,7 @@ import { ContextUtils, ProfileUtils } from "../utils";
 /**
  * auth instance.
  */
-const auth = IdentityClient.getInstance();
+const auth = AsgardeoSPAClient.getInstance();
 /**
  * Get an http client instance.
  *
