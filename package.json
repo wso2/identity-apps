@@ -30,7 +30,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardio/oidc-js": "^0.1.33",
+        "@asgardeo/auth-spa": "^0.1.0",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",
