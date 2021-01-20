@@ -54,4 +54,28 @@ export class CommonConstants {
      */
     public static readonly TOKEN_ENDPOINT: string = "token_endpoint";
 
+    /**
+     * Session storage key to store authorization endpoint.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
+
+    /**
+     * Session storage key to store check session endpoint.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CHECK_SESSION_IFRAME: string = "check_session_iframe";
+
+    /**
+     * Session storage key to store logout URL.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly LOGOUT_URL: string = "logout-URL";
+
 }
