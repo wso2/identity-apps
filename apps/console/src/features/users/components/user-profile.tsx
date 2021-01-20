@@ -100,6 +100,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -633,7 +634,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             <>
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                        allowedScopes) && !isReadOnly && user.userName !== "admin") && (
+                        allowedScopes) && !isReadOnly && user.userName !== "admin" &&
+                        user.userName !== authenticatedUser) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                         >
