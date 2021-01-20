@@ -20,8 +20,7 @@ import {
     AUTHORIZATION_ENDPOINT,
     AuthenticatedUserInterface,
     Hooks,
-    IdentityClient,
-    LOGOUT_URL,
+    AsgardeoSPAClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
     ServiceResourcesType,
@@ -250,7 +249,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
 export const initializeAuthentication = () =>(dispatch)=> {
 
-    const auth = IdentityClient.getInstance();
+    const auth = AsgardeoSPAClient.getInstance();
 
     const responseModeFallback: ResponseMode = process.env.NODE_ENV === "production"
         ? ResponseMode.formPost
@@ -412,7 +411,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
  * Handle user sign-in
  */
 export const handleSignIn = () =>{
-    const auth = IdentityClient.getInstance();
+    const auth = AsgardeoSPAClient.getInstance();
     auth.signIn();
 };
 
@@ -420,7 +419,7 @@ export const handleSignIn = () =>{
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const auth = IdentityClient.getInstance();
+    const auth = AsgardeoSPAClient.getInstance();
     auth
         .signOut()
         .then(() => {
