@@ -803,7 +803,10 @@ export const console: ConsoleNS = {
                                             },
                                             heading: "Step based configuration",
                                             hint: "Create authentication steps by dragging the local/federated " +
-                                                "authenticators on to the relevant steps."
+                                                "authenticators on to the relevant steps.",
+                                            secondFactorDisabled: "The second-factor authenticators can be used " +
+                                                "only in a step other than the first, and if a basic authenticator " +
+                                                "or identifier-first authenticator has been added to the first step."
                                         }
                                     }
                                 },
@@ -2057,6 +2060,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully revoked the application",
                             message: "Revoke successful"
+                        }
+                    },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Cannot add second factor authenticators to the first step.",
+                            message: "Cannot add to this step"
                         }
                     },
                     updateAdvancedConfig: {

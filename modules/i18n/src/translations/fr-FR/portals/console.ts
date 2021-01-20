@@ -798,7 +798,12 @@ export const console: ConsoleNS = {
                                             },
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les authentificateurs " +
-                                                "locaux/fédérés vers les étapes correspondantes."
+                                                "locaux/fédérés vers les étapes correspondantes.",
+                                            secondFactorDisabled: "Les authentificateurs du second facteur " +
+                                                "ne peuvent être utilisés que dans une étape autre que la " +
+                                                "première, et si un authentificateur de base ou un " +
+                                                "identificateur-premier authentificateur a été ajouté à " +
+                                                "la première étape."
                                         }
                                     }
                                 },
@@ -2054,6 +2059,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Révocation avec succés de l'application",
                             message: "Révocation réussie"
+                        }
+                    },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Impossible d'ajouter des authentificateurs de second " +
+                                "facteur à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
                         }
                     },
                     updateAdvancedConfig: {
