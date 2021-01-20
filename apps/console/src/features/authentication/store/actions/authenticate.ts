@@ -17,17 +17,12 @@
  */
 
 import {
-    AUTHORIZATION_ENDPOINT,
-    AuthenticatedUserInterface,
-    Hooks,
     AsgardeoSPAClient,
-    OIDC_SESSION_IFRAME_ENDPOINT,
-    ResponseMode,
+    BasicUserInfo,
+    Hooks,
     OIDCEndpoints,
-    Storage,
-    TOKEN_ENDPOINT,
-    UserInfo,
-    LOGOUT_URL
+    ResponseMode,
+    Storage
 } from "@asgardeo/auth-spa";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
@@ -206,34 +201,27 @@ export const initializeAuthentication = () => (dispatch) => {
         return [ serverOrigin ];
     };
 
-    const initialize = (response?: any): void => {
+    const initialize = (): void => {
         auth.initialize({
-            authorizationCode: response?.data?.authCode,
-            baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
-            customParams: {
-                o: window["AppUtils"].getSuperTenant(),
-                t: window["AppUtils"].getTenantName(true)
-            },
+            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
             endpoints: {
-                authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
-                jwks: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
-                logout: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
-                oidcSessionIFrame: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
-                revoke: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
-                token: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
-                wellKnown: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+                authorizationEndpoint: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
+                checkSessionIframe: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
+                endSessionEndpoint: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
+                jwksUri: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
+                revocationEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
+                tokenEndpoint: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
+                wellKnownEndpoint: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
             },
-            responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode
-                ?? responseModeFallback,
-            scope: window["AppUtils"].getConfig().idpConfigs?.scope
-                ?? [ TokenConstants.SYSTEM_SCOPE ],
-            serverOrigin: window["AppUtils"].getConfig().idpConfigs?.serverOrigin
-                ?? window["AppUtils"].getConfig().idpConfigs.serverOrigin,
-            sessionState: response?.data?.sessionState,
+            resourceServerURLs: resolveBaseUrls(),
+            responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode ?? responseModeFallback,
+            scope: window["AppUtils"].getConfig().idpConfigs?.scope ?? [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin:
+                window["AppUtils"].getConfig().idpConfigs?.serverOrigin ??
+                window["AppUtils"].getConfig().idpConfigs.serverOrigin,
             signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             storage: resolveStorage()
@@ -248,15 +236,9 @@ export const initializeAuthentication = () => (dispatch) => {
         dispatch(setInitialized(true));
     };
 
-    if (process.env.NODE_ENV === "production") {
-        axios.get(window["AppUtils"].getAppBase() + "/auth").then((response) => {
-            initialize(response);
-        });
-    } else {
-        initialize();
-    }
+    initialize();
 
-    auth.on(Hooks.SignIn, (response: UserInfo) => {
+    auth.on(Hooks.SignIn, (response: BasicUserInfo) => {
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -278,7 +260,7 @@ export const initializeAuthentication = () => (dispatch) => {
         if (!window["AppUtils"].getConfig().accountApp.commonPostLogoutUrl && sessionStorage.getItem(LOGOUT_URL)) {
             let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
             logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
-            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+            sessionStorage.setItem(CommonConstants.LOGOUT_URL, logoutUrl);
         }
 
         auth.getDecodedIDToken()
@@ -303,11 +285,11 @@ export const initializeAuthentication = () => (dispatch) => {
 
         sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
 
-        auth.getServiceEndpoints()
+        auth.getOIDCServiceEndpoints()
             .then((response: OIDCEndpoints) => {
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.checkSessionIframe);
-                sessionStorage.setItem(TOKEN_ENDPOINT, response.tokenEndpoint);
+                sessionStorage.setItem(CommonConstants.AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                sessionStorage.setItem(CommonConstants.CHECK_SESSION_IFRAME, response.checkSessionIframe);
+                sessionStorage.setItem(CommonConstants.TOKEN_ENDPOINT, response.tokenEndpoint);
 
                 const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
                 rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
@@ -326,7 +308,14 @@ export const initializeAuthentication = () => (dispatch) => {
  */
 export const handleSignIn = () => {
     const auth = AsgardeoSPAClient.getInstance();
-    auth.signIn();
+     if (process.env.NODE_ENV === "production") {
+         axios.get(window["AppUtils"].getAppBase() + "/auth").then((response) => {
+             auth.signIn(response?.data?.authCode, response?.data?.sessionState);
+         });
+     } else {
+         auth.signIn();
+     }
+
 };
 
 /**
