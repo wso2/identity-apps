@@ -299,20 +299,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             stepNo === 0 &&
             [
                 ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID,
-                    ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID
+                ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID
             ].includes(authenticatorId)
         ) {
-            dispatch(addAlert({
-                description: t(
-                    "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
                         ".genericError.description"
-                ),
-                level: AlertLevels.WARNING,
-                message: t(
-                    "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
                         ".genericError.message"
-                )
-            }));
+                    )
+                })
+            );
 
             return;
         }
