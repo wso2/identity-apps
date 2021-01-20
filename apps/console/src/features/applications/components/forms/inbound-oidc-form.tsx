@@ -130,9 +130,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
-    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
+    const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
 
     const clientSecret = useRef<HTMLElement>();
     const grant = useRef<HTMLElement>();
@@ -209,6 +211,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const PEM_CERTIFICATE_PREFIX: string = "-----BEGIN CERTIFICATE-----";
+    const PEM_CERTIFICATE_POSTFIX: string = "-----END CERTIFICATE-----";
+
     /**
      * Check whether to show the callback url or not
      */
@@ -260,9 +265,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         if (CertificateTypeInterface.PEM === certificate?.type) {
             setPEMSelected(true);
-            if (certificate?.value) {
-                setPEMValue(certificate.value);
-            }
+            setPEMValue(certificate?.value ?? "");
+        } else {
+            setPEMSelected(false);
+            setJWKSValue(certificate?.value ?? "")
         }
     }, [ certificate ]);
 
@@ -628,6 +634,109 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
         }
     };
+
+    // --
+
+    const PEMSubField: () => ReactElement = (): ReactElement => {
+      return (
+          <React.Fragment>
+              <Field
+                  stacked={ true }
+                  prefix={ PEM_CERTIFICATE_PREFIX }
+                  postfix={ PEM_CERTIFICATE_POSTFIX }
+                  disabled={ !isPEMSelected }
+                  name="certificateValue"
+                  label={
+                      t("console:develop.features.applications.forms.advancedConfig" +
+                          ".sections.certificate.fields.pemValue.label")
+                  }
+                  required={ false }
+                  requiredErrorMessage={
+                      t("console:develop.features.applications.forms.advancedConfig" +
+                          ".sections.certificate.fields.pemValue.validations.empty")
+                  }
+                  placeholder={
+                      "ggEPADCCAQoCggEBAMGPTyynn77hqcYnjWsMwOZDzdhVFY93s2OJntMbuKTHn39B\n" +
+                      "...\n" +
+                      "bml6YXRpb252YWxzaGEyZzIuY3JsMIGgBggrBgEFBQcBAQSBkzCBkDBNBggrBgEF"
+                  }
+                  type="textarea"
+                  value={ PEMValue }
+                  listen={ (values) => {
+                      setPEMValue(
+                          PEM_CERTIFICATE_PREFIX +
+                          (values.get("certificateValue") as string).trim() +
+                          PEM_CERTIFICATE_POSTFIX
+                      );
+                  } }
+                  readOnly={ readOnly }
+                  data-testid={ `${ testId }-certificate-textarea` }
+              />
+              < Hint>
+                  { t("console:develop.features.applications.forms." +
+                      "advancedConfig.sections.certificate.fields.pemValue.hint") }
+              </Hint>
+              <LinkButton
+                  className="certificate-info-link-button"
+                  onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                      e.preventDefault();
+                      viewCertificate();
+                  } }
+                  disabled={ isEmpty(PEMValue) }
+                  data-testid={ `${ testId }-certificate-info-button` }
+              >
+                  { t("console:develop.features.applications.forms." +
+                      "advancedConfig.sections.certificate.fields.pemValue.actions.view") }
+              </LinkButton>
+          </React.Fragment>
+      )
+    };
+
+    const JWKSSubField: () => ReactElement = (): ReactElement => {
+        return (
+            <Field
+                name="jwksValue"
+                disabled={ isPEMSelected }
+                label={
+                    t("console:develop.features.applications.forms.advancedConfig" +
+                        ".sections.certificate.fields.jwksValue.label")
+                }
+                required={ false }
+                requiredErrorMessage={
+                    t("console:develop.features.applications.forms.advancedConfig" +
+                        ".sections.certificate.fields.jwksValue.validations.empty")
+                }
+                placeholder={
+                    t("console:develop.features.applications.forms.advancedConfig" +
+                        ".sections.certificate.fields.jwksValue.placeholder") }
+                type="text"
+                validation={ (value: string, validation: Validation) => {
+                    if (!FormValidation.url(value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push(
+                            t(
+                                "console:develop.features.applications.forms" +
+                                ".advancedConfig.sections.certificate.fields.jwksValue" +
+                                ".validations.invalid"
+                            )
+                        );
+                    }
+                } }
+                listen={ (values) => {
+
+                    console.log("value of JWKS is ", values.get("jwksValue"));
+                    // setPEMValue(
+                    //     PEM_CERTIFICATE_PREFIX +
+                    //     (values.get("certificateValue") as string).trim() +
+                    //     PEM_CERTIFICATE_POSTFIX
+                    // );
+                } }
+                value={ JWKSValue }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-jwks-input` }
+            />
+        );
+    }
 
     /**
      * Renders the list of main OIDC config fields.
@@ -1494,11 +1603,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         name="type"
                         default={ CertificateTypeInterface.JWKS }
-                        listen={
-                            (values) => {
-                                setPEMSelected(values.get("type") === "PEM");
-                            }
-                        }
+                        listen={ (values) => {
+                            console.log("VALUE SWITCHED", values);
+                            const isPEMSelected = values.get("type") === "PEM";
+                            setPEMSelected(isPEMSelected);
+                        } }
                         type="radio"
                         value={ certificate?.type }
                         children={ [
@@ -1511,7 +1620,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
                                     content: t("console:develop.features.applications.forms.advancedConfig" +
                                         ".sections.certificate.fields.jwksValue.description")
-                                }
+                                },
+                                child: !isPEMSelected ? JWKSSubField() : null,
                             },
                             {
                                 label: t("console:develop.features.applications.forms." +
@@ -1522,7 +1632,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         "advancedConfig.sections.certificate.fields.type.children.pem.label"),
                                     content: t("console:develop.features.applications.forms.advancedConfig" +
                                         ".sections.certificate.fields.pemValue.description")
-                                }
+                                },
+                                child: isPEMSelected ? PEMSubField() : null,
                             }
                         ] }
                         readOnly={ readOnly }
@@ -1530,106 +1641,113 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    {
-                        isPEMSelected
-                            ?
-                            (
-                                <>
-                                    <Field
-                                        name="certificateValue"
-                                        label={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.pemValue.label")
-                                        }
-                                        required={ false }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.pemValue.validations.empty")
-                                        }
-                                        placeholder={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.pemValue.placeholder")
-                                        }
-                                        type="textarea"
-                                        value={
-                                            (CertificateTypeInterface.PEM === certificate?.type)
-                                            && certificate?.value
-                                        }
-                                        listen={
-                                            (values) => {
-                                                setPEMValue(
-                                                    values.get("certificateValue") as string
-                                                );
-                                            }
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-certificate-textarea` }
-                                    />
-                                    < Hint>
-                                        {
-                                            t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.pemValue.hint")
-                                        }
-                                    </Hint>
-                                    <LinkButton
-                                        className="certificate-info-link-button"
-                                        onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                            e.preventDefault();
-                                            viewCertificate();
-                                        } }
-                                        disabled={ isEmpty(PEMValue) }
-                                        data-testid={ `${ testId }-certificate-info-button` }
-                                    >
-                                        {
-                                            t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.pemValue.actions.view")
-                                        }
-                                    </LinkButton>
-                                </>
-                            )
-                            : (
-                                <>
-                                    <Field
-                                        name="jwksValue"
-                                        label={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.jwksValue.label")
-                                        }
-                                        required={ false }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.jwksValue.validations.empty")
-                                        }
-                                        placeholder={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.jwksValue.placeholder") }
-                                        type="text"
-                                        validation={ (value: string, validation: Validation) => {
-                                            if (!FormValidation.url(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    t(
-                                                        "console:develop.features.applications.forms" +
-                                                        ".advancedConfig.sections.certificate.fields.jwksValue" +
-                                                        ".validations.invalid"
-                                                    )
-                                                );
-                                            }
-                                        } }
-                                        value={
-                                            (CertificateTypeInterface.JWKS === certificate?.type)
-                                            && certificate?.value
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-jwks-input` }
-                                    />
-                                </>
-                            )
-                    }
-                </Grid.Column>
-            </Grid.Row>
+            {/*<Grid.Row columns={ 1 }>*/}
+            {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>*/}
+            {/*        {*/}
+            {/*            isPEMSelected*/}
+            {/*                ?*/}
+            {/*                (*/}
+            {/*                    <>*/}
+            {/*                        <Field*/}
+            {/*                            stacked={ true }*/}
+            {/*                            prefix={ PEM_CERTIFICATE_PREFIX }*/}
+            {/*                            postfix={ PEM_CERTIFICATE_POSTFIX }*/}
+            {/*                            name="certificateValue"*/}
+            {/*                            label={*/}
+            {/*                                t("console:develop.features.applications.forms.advancedConfig" +*/}
+            {/*                                    ".sections.certificate.fields.pemValue.label")*/}
+            {/*                            }*/}
+            {/*                            required={ false }*/}
+            {/*                            requiredErrorMessage={*/}
+            {/*                                t("console:develop.features.applications.forms.advancedConfig" +*/}
+            {/*                                    ".sections.certificate.fields.pemValue.validations.empty")*/}
+            {/*                            }*/}
+            {/*                            placeholder={*/}
+            {/*                                "ggEPADCCAQoCggEBAMGPTyynn77hqcYnjWsMwOZDzdhVFY93s2OJntMbuKTHn39B\n" +*/}
+            {/*                                "...\n" +*/}
+            {/*                                "bml6YXRpb252YWxzaGEyZzIuY3JsMIGgBggrBgEFBQcBAQSBkzCBkDBNBggrBgEF"*/}
+            {/*                            }*/}
+            {/*                            type="textarea"*/}
+            {/*                            value={*/}
+            {/*                                (CertificateTypeInterface.PEM === certificate?.type)*/}
+            {/*                                && certificate?.value*/}
+            {/*                            }*/}
+            {/*                            listen={*/}
+            {/*                                (values) => {*/}
+            {/*                                    setPEMValue(*/}
+            {/*                                        PEM_CERTIFICATE_PREFIX +*/}
+            {/*                                        (values.get("certificateValue") as string).trim() +*/}
+            {/*                                        PEM_CERTIFICATE_POSTFIX*/}
+            {/*                                    );*/}
+            {/*                                    console.log('PEM',PEMValue)*/}
+            {/*                                }*/}
+            {/*                            }*/}
+            {/*                            readOnly={ readOnly }*/}
+            {/*                            data-testid={ `${ testId }-certificate-textarea` }*/}
+            {/*                        />*/}
+            {/*                        < Hint>*/}
+            {/*                            {*/}
+            {/*                                t("console:develop.features.applications.forms." +*/}
+            {/*                                    "advancedConfig.sections.certificate.fields.pemValue.hint")*/}
+            {/*                            }*/}
+            {/*                        </Hint>*/}
+            {/*                        <LinkButton*/}
+            {/*                            className="certificate-info-link-button"*/}
+            {/*                            onClick={ (e: MouseEvent<HTMLButtonElement>) => {*/}
+            {/*                                e.preventDefault();*/}
+            {/*                                viewCertificate();*/}
+            {/*                            } }*/}
+            {/*                            disabled={ isEmpty(PEMValue) }*/}
+            {/*                            data-testid={ `${ testId }-certificate-info-button` }*/}
+            {/*                        >*/}
+            {/*                            {*/}
+            {/*                                t("console:develop.features.applications.forms." +*/}
+            {/*                                    "advancedConfig.sections.certificate.fields.pemValue.actions.view")*/}
+            {/*                            }*/}
+            {/*                        </LinkButton>*/}
+            {/*                    </>*/}
+            {/*                )*/}
+            {/*                : (*/}
+            {/*                    <>*/}
+            {/*                        <Field*/}
+            {/*                            name="jwksValue"*/}
+            {/*                            label={*/}
+            {/*                                t("console:develop.features.applications.forms.advancedConfig" +*/}
+            {/*                                    ".sections.certificate.fields.jwksValue.label")*/}
+            {/*                            }*/}
+            {/*                            required={ false }*/}
+            {/*                            requiredErrorMessage={*/}
+            {/*                                t("console:develop.features.applications.forms.advancedConfig" +*/}
+            {/*                                    ".sections.certificate.fields.jwksValue.validations.empty")*/}
+            {/*                            }*/}
+            {/*                            placeholder={*/}
+            {/*                                t("console:develop.features.applications.forms.advancedConfig" +*/}
+            {/*                                    ".sections.certificate.fields.jwksValue.placeholder") }*/}
+            {/*                            type="text"*/}
+            {/*                            validation={ (value: string, validation: Validation) => {*/}
+            {/*                                if (!FormValidation.url(value)) {*/}
+            {/*                                    validation.isValid = false;*/}
+            {/*                                    validation.errorMessages.push(*/}
+            {/*                                        t(*/}
+            {/*                                            "console:develop.features.applications.forms" +*/}
+            {/*                                            ".advancedConfig.sections.certificate.fields.jwksValue" +*/}
+            {/*                                            ".validations.invalid"*/}
+            {/*                                        )*/}
+            {/*                                    );*/}
+            {/*                                }*/}
+            {/*                            } }*/}
+            {/*                            value={*/}
+            {/*                                (CertificateTypeInterface.JWKS === certificate?.type)*/}
+            {/*                                && certificate?.value*/}
+            {/*                            }*/}
+            {/*                            readOnly={ readOnly }*/}
+            {/*                            data-testid={ `${ testId }-jwks-input` }*/}
+            {/*                        />*/}
+            {/*                    </>*/}
+            {/*                )*/}
+            {/*        }*/}
+            {/*    </Grid.Column>*/}
+            {/*</Grid.Row>*/}
             {
                 showCertificateModal && (
                     <CertificateFormFieldModal
