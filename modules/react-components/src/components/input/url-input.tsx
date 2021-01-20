@@ -493,7 +493,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             className={ "m-1 p-2 with-no-border orange" }
                             onClick={ () => handleAllowOrigin(origin) }>
                             <span style={ { fontWeight: "bold"} }>Allow</span>
-                            &nbsp;<em>(enable CORS for this origin)</em>
+                            &nbsp;<em>(CORS not allowed for this domain)</em>
                         </LinkButton>
                     ) }
                     { labelEnabled && resolveCORSStatusLabel(url) }
