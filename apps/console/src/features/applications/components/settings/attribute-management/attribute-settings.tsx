@@ -176,7 +176,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const getClaims = () => {
         setIsClaimLoading(true);

@@ -28,7 +28,7 @@ import { CommonConstants } from "../../constants";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
-import { endUserSession } from "../../utils";
+import { revokeAccessToken } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
 /**
@@ -113,7 +113,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     });
 
                     // Terminate the user session.
-                    endUserSession();
+                    revokeAccessToken();
                 }
             })
             .catch((error) => {

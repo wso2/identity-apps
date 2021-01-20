@@ -47,7 +47,7 @@ import {
     ServiceInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { endUserSession } from "../../utils";
+import { revokeAccessToken } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
 import { fetchHomeRealmIdentifiers } from "../../api";
 
@@ -554,7 +554,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
                 // If the revoked app is myaccount, end the session.
                 if (self === 0) {
-                    endUserSession();
+                    revokeAccessToken();
 
                     return;
                 }

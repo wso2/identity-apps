@@ -125,7 +125,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -294,7 +294,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                     }
                                     tOptions={ { name: name } }
                                 >
-                                    Please type 
+                                    Please type
                                     <strong data-testid="application-name-assertion">
                                         { name }
                                     </strong>

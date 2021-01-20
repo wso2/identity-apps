@@ -27,9 +27,9 @@ import { handleSignIn } from "../store/actions";
 /**
  * Clears the session related information and sign out from the session.
  */
-export const endUserSession = (): void => {
+export const revokeAccessToken = (): void => {
     const auth = AsgardeoSPAClient.getInstance();
-    auth.endUserSession()
+    auth.revokeAccessToken()
         .then(() => {
             store.dispatch(handleSignIn());
         })

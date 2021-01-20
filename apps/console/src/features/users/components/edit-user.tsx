@@ -72,7 +72,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 

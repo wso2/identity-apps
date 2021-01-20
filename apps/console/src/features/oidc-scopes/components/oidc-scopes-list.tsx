@@ -144,7 +144,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Redirects to the OIDC scope edit page when the edit button is clicked.

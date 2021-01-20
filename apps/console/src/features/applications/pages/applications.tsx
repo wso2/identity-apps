@@ -32,8 +32,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-    DropdownItemProps, 
+import {
+    DropdownItemProps,
     DropdownProps,
     Icon,
     PaginationProps
@@ -99,7 +99,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -222,14 +222,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @return {React.ReactElement}
      */
     const renderRemoteFetchStatus = (): ReactElement => {
-        
+
         if (!hasRequiredScopes(featureConfig?.remoteFetchConfig,
             featureConfig?.remoteFetchConfig?.scopes?.read,
             allowedScopes)) {
-            
+
             return null;
         }
-        
+
         return <RemoteFetchStatus data-testid={ "remote-fetch" } />;
     };
 

@@ -42,10 +42,10 @@ export class AuthenticateUtils {
     /**
      * Clears the session related information and sign out from the session.
      */
-    public static endUserSession(): void {
+    public static revokeAccessToken(): void {
         const auth = AsgardeoSPAClient.getInstance();
 
-        auth.endUserSession()
+        auth.revokeAccessToken()
             .then(() => {
                 store.dispatch(handleSignIn());
             })

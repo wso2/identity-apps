@@ -145,7 +145,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const tenantName = store.getState().config.deployment.tenant;
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);

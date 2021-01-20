@@ -92,7 +92,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const dispatch = useDispatch();
 

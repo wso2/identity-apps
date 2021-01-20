@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@asgardeo/auth-spa";
+import { BasicUserInfo } from "@asgardeo/auth-spa";
 import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
@@ -47,4 +47,4 @@ export interface HelpPanelReducerStateInterface {
     visibility: boolean;
 }
 
-export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInterface { }
+export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, BasicUserInfo { }

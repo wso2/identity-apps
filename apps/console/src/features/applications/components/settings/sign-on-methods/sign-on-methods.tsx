@@ -96,7 +96,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ showAdvancedFlows, setShowAdvancedFlows ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Toggles the update trigger.

@@ -95,7 +95,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    
+
     const dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);

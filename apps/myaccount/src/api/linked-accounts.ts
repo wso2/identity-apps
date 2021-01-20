@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, SignInResponse } from "@asgardeo/auth-spa";
+import { AsgardeoSPAClient, BasicUserInfo } from "@asgardeo/auth-spa";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
@@ -154,7 +154,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
 
     return oAuth
-        .customGrant({
+        .requestCustomGrant({
             attachToken: false,
             data: {
                 // eslint-disable-next-line @typescript-eslint/camelcase
@@ -168,12 +168,11 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
                 "userstore-domain": account.userStoreDomain
             },
             id: "account-switch",
-            returnResponse: true,
             returnsSession: true,
             signInRequired: true
         })
-        .then((response: SignInResponse) => {
-            return Promise.resolve(response?.data);
+        .then((response: BasicUserInfo) => {
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);

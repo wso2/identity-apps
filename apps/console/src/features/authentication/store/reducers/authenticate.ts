@@ -22,14 +22,14 @@ import { AuthReducerStateInterface } from "../../../core/models";
  * Initial state for the common authenticate reducer.
  */
 export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = {
+    allowedScopes: "",
     displayName: "",
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    display_name: "",
     email: "",
     initialized: false,
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,
-    scope: "",
+    sessionState: "",
+    tenantDomain: "",
     username: ""
 };

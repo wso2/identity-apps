@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@asgardeo/auth-spa";
+import { BasicUserInfo } from "@asgardeo/auth-spa";
 import {
     AlertInterface,
     LinkedAccountInterface,
@@ -62,7 +62,7 @@ export const reducers = combineReducers({
     application: applicationReducer,
     auth: commonAuthenticateReducer<
         AuthReducerStateInterface,
-        AuthenticatedUserInterface>(commonAuthenticateReducerInitialState),
+        BasicUserInfo>(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,

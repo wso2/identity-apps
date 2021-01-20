@@ -106,7 +106,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorsEvaluated, setGovernanceConnectorsEvaluated ] = useState<boolean>(false);
@@ -134,7 +134,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-        
+
         if (governanceConnectorsEvaluated === true) {
             RouteUtils.gracefullyHandleRouting(filteredRoutes,
                 AppConstants.getAdminViewBasePath(),
@@ -184,7 +184,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
             GovernanceConnectorUtils.getGovernanceConnectors();
-            
+
             return;
         }
 
