@@ -437,13 +437,14 @@
          */
         $("#passwordUnmaskIcon").click(function (event) {
             event.preventDefault();
-            const passwordInput = $("#password");
-            if (passwordInput.attr("type") === "password") {
+            var $passwordInput = $("#password");
+
+            if ($passwordInput.attr("type") === "password") {
                 $(this).addClass("slash outline");
-                passwordInput.attr("type", "text");
+                $passwordInput.attr("type", "text");
             } else {
                 $(this).removeClass("slash outline");
-                passwordInput.attr("type", "password");
+                $passwordInput.attr("type", "password");
             }
         });
 
