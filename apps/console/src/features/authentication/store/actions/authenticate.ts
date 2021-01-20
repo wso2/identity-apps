@@ -23,7 +23,7 @@ import {
     AsgardeoSPAClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
-    ServiceResourcesType,
+    OIDCEndpoints,
     Storage,
     TOKEN_ENDPOINT,
     UserInfo,
@@ -304,10 +304,10 @@ export const initializeAuthentication = () => (dispatch) => {
         sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
 
         auth.getServiceEndpoints()
-            .then((response: ServiceResourcesType) => {
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+            .then((response: OIDCEndpoints) => {
+                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.checkSessionIframe);
+                sessionStorage.setItem(TOKEN_ENDPOINT, response.tokenEndpoint);
 
                 const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
                 rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);

@@ -23,7 +23,7 @@ import {
     AsgardeoSPAClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
-    ServiceResourcesType,
+    OIDCEndpoints,
     Storage,
     TOKEN_ENDPOINT,
     UserInfo,
@@ -391,7 +391,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
         auth
             .getServiceEndpoints()
-            .then((response: ServiceResourcesType) => {
+            .then((response: OIDCEndpoints) => {
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
                 sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
