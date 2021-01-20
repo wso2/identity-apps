@@ -346,7 +346,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 trigger={
                     <Icon
                         name={ positive ? "check" : "exclamation triangle" }
-                        color={ positive ? "green" : "red" }
+                        color={ positive ? "green" : "grey" }
                     />
                 }
                 popupHeader={
@@ -364,14 +364,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     <React.Fragment>
                         {
                             positive ?
-                                t("console:develop.features.URLInput.withLabel.positive.content", { 
-                                    productName: productName 
+                                t("console:develop.features.URLInput.withLabel.positive.content", {
+                                    productName: productName
                                 }) :
-                                t("console:develop.features.URLInput.withLabel.negative.content", { 
-                                    productName: productName, urlLink: origin 
+                                t("console:develop.features.URLInput.withLabel.negative.content", {
+                                    productName: productName, urlLink: origin
                                 })
                         }
-                        { !restrictSecondaryContent && 
+                        { !restrictSecondaryContent &&
                             <>
                                 <a onClick={ () => setShowMore(!showMore) }>
                                     &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
@@ -406,7 +406,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 }
                             </>
                         }
-                        
+
                     </React.Fragment>
                 }
                 popupFooterLeftContent={
@@ -446,6 +446,12 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         return customLabel;
     };
 
+    const shouldShowAllowOriginAction = (origin: string): boolean => {
+        return labelEnabled &&
+            isAllowEnabled &&
+            !(allowedOrigins?.includes(origin));
+    };
+
     const urlTextWidget = (url: string): ReactElement => {
         const { protocol, host } = URLUtils.urlComponents(url);
         return (
@@ -483,20 +489,23 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         return (
             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                    <Label data-testid={ `${ testId }-${ url }` }>
-                        { urlTextWidget(url) }
-                        { !readOnly && urlRemoveButtonWidget(url) }
-                    </Label>
-                    { (labelEnabled && isAllowEnabled && !(allowedOrigins?.includes(origin))) && (
-                        <LinkButton
-                            basic={ true }
-                            className={ "m-1 p-2 with-no-border orange" }
-                            onClick={ () => handleAllowOrigin(origin) }>
-                            <span style={ { fontWeight: "bold"} }>Allow</span>
-                            &nbsp;<em>(CORS not allowed for this domain)</em>
-                        </LinkButton>
-                    ) }
-                    { labelEnabled && resolveCORSStatusLabel(url) }
+                    <p>
+                        <Label data-testid={ `${ testId }-${ url }` }>
+                            { urlTextWidget(url) }
+                            { !readOnly && urlRemoveButtonWidget(url) }
+                        </Label>
+                        &nbsp;{ labelEnabled && resolveCORSStatusLabel(url) }
+                        { shouldShowAllowOriginAction(origin) &&
+                            <span className={ "grey" }>&nbsp;<em>(CORS not allowed for this domain)</em></span>
+                        }
+                        { shouldShowAllowOriginAction(origin) && (
+                            <LinkButton
+                                className={ "m-1 p-1 with-no-border orange" }
+                                onClick={ () => handleAllowOrigin(origin) }>
+                                <span style={ { fontWeight: "bold" } }>Allow</span>
+                            </LinkButton>
+                        ) }
+                    </p>
                 </Grid.Column>
             </Grid.Row>
         );
