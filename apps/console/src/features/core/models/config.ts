@@ -162,6 +162,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isGroupAndRoleSeparationEnabled?: boolean;
     /**
+     * Flag to check whether to list all the attribute dialects
+     */
+    listAllAttributeDialects?: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

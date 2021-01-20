@@ -162,6 +162,7 @@ export class Config {
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
             isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui
                 .isSignatureValidationCertificateAliasEnabled,
+            listAllAttributeDialects: window["AppUtils"].getConfig().ui.listAllAttributeDialects,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,

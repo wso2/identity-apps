@@ -73,4 +73,16 @@ export class ClaimManagementConstants {
         "status code while adding a new dialect.";
     public static readonly ADD_LOCAL_CLAIM_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
+
+    /**
+     * Map to access the attribute dialect ids.
+     * @type {Map<string, any>}
+     */
+    public static readonly ATTRIBUTE_DIALECT_IDS: Map<string, any> = new Map<string, any>()
+        .set("AXSCHEMA", "aHR0cDovL2F4c2NoZW1hLm9yZw")
+        .set("EIDAS_LEGAL", "aHR0cDovL2VpZGFzLmV1cm9wYS5ldS9hdHRyaWJ1dGVzL2xlZ2FscGVyc29u")
+        .set("EIDAS_NATURAL", "aHR0cDovL2VpZGFzLmV1cm9wYS5ldS9hdHRyaWJ1dGVzL25hdHVyYWxwZXJzb24")
+        .set("OPENID_NET", "aHR0cDovL3NjaGVtYS5vcGVuaWQubmV0LzIwMDcvMDUvY2xhaW1z")
+        .set("XML_SOAP", "aHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eQ")
+        .set("LOCAL", "local");
 }
