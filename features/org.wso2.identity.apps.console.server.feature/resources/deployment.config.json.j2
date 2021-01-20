@@ -484,6 +484,7 @@
         {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
+        "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "productName": "{{ console.ui.product_name }}",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}
