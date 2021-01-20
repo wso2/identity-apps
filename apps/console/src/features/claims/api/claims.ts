@@ -156,6 +156,24 @@ export const deleteAClaim = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
+            /*
+            TODO:
+            Due to : https://github.com/wso2/product-is/issues/8729. We are hard coding following error response for
+            this particular error code. Once the issue resolved at API level, we can remove this hardcoded response.
+            { Issue Description : When deleting a local attribute which is also having associations, error message
+            contains the word "claim" instead of "attribute" }
+            { Hardcoded solution : Refactor error response by replacing "claim" with "attribute" }
+             */
+            if (error?.response?.data?.code === "CMT-50031") {
+                const hardCodedResponse =
+                    {
+                        code: error?.response?.data?.code,
+                        description: "Unable to remove local attribute while having associations with external claims.",
+                        message: "Unable to remove local attribute.",
+                        traceId: error?.response?.data?.traceId
+                    };
+                return Promise.reject(hardCodedResponse);
+            }
             return Promise.reject(error?.response?.data);
         });
 };
