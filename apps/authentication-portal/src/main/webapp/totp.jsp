@@ -32,9 +32,9 @@
         if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
             idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
         }
-    
+
         boolean isSendVerificationCodeByEmailEnabled = TOTPUtil.isSendVerificationCodeByEmailEnabled();
-    
+
         String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
         String authenticationFailed = "false";
 
@@ -133,8 +133,7 @@
                                 <div class="ui two column stackable grid">
 
                                 <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
-                                    <% boolean shouldVerificationCodeBeShown = true; %>
-                                    <% if(shouldVerificationCodeBeShown) { %>
+                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
                                         <a class="ui button link-button" id="genToken" href="#"
                                         onclick="return requestTOTPToken();">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
@@ -158,7 +157,7 @@
                         <div class="ui divider hidden"></div>
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null && shouldVerificationCodeBeShown) {
+                                if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled) {
                             %>
                                 <a class="ui button link-button" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
