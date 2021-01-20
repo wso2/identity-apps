@@ -18,6 +18,7 @@
 
 import * as React from "react";
 import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import { ReactElement } from "react";
 
 /**
  * Form Field Types
@@ -69,6 +70,7 @@ interface FormFieldModel {
     hidden?: boolean;
     "data-testid"?: string;
     enableReinitialize?: boolean;
+    stacked?: boolean;
 }
 
 /**
@@ -117,6 +119,12 @@ export interface RadioChild {
      * radio button.
      */
     hint?: { header: string; content: string }
+    /**
+     * This property can be used to render another nested child under this
+     * RadioChild element. This can be useful when you need to embed another
+     * form field under this element.
+     */
+    child?: ReactElement;
 }
 
 /**
