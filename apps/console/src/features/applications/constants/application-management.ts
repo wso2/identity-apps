@@ -223,4 +223,5 @@ export class ApplicationManagementConstants {
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_EXECUTOR = "IdentifierExecutor";
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
+    public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
 }

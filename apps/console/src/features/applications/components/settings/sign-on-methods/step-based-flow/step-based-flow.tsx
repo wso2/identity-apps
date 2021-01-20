@@ -40,6 +40,7 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../../models";
+import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the applications settings component.
@@ -704,7 +705,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             {
                                 authenticators: federatedAuthenticators,
                                 droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
-                                heading: "External"
+                                heading: ApplicationManagementConstants.SOCIAL_LOGIN_HEADER
                             }
                         ] }
                         visibility={ showAuthenticatorsSidePanel }

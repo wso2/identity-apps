@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { Message } from "semantic-ui-react";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
+import { getGeneralIcons } from "../../../../configs";
 
 /**
  * Proptypes for the authenticators component.
@@ -79,6 +80,14 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Denotes whether the authenticator is a social login.
+     */
+    isSocialLogin?: boolean;
+    /**
+     * Handles on click of social login add.
+     */
+    handleSocialLoginAdd?: any;
 }
 
 const portal: HTMLElement = document.createElement("div");
@@ -109,6 +118,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         heading,
         isDropDisabled,
         readOnly,
+        isSocialLogin,
+        handleSocialLoginAdd,
         [ "data-testid" ]: testId
     } = props;
 
@@ -155,7 +166,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return ReactDOM.createPortal(child, portal);
     };
 
-    return authenticators && authenticators instanceof Array && authenticators.length > 0
+    return authenticators && authenticators instanceof Array
         ? (
             <>
                 { heading && <Heading as="h6">{ heading }</Heading> }
@@ -202,6 +213,42 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                         ) }
                                 </Draggable>
                             )) }
+                            {
+                                (isSocialLogin)
+                                && (
+                                    <Draggable
+                                        draggableId={ "Add" }
+                                        isDragDisabled={ true }
+                                        index={ 0 }
+                                    >
+                                        {
+                                            (
+                                                draggableProvided: DraggableProvided,
+                                                draggableSnapshot: DraggableStateSnapshot
+                                            ): React.ReactElement<HTMLElement> => (
+                                                <PortalAwareDraggable
+                                                    provided={ draggableProvided }
+                                                    snapshot={ draggableSnapshot }
+                                                >
+                                                    <LabeledCard
+                                                        size="tiny"
+                                                        image={ getGeneralIcons()?.addCircleOutline }
+                                                        label={ "Add" }
+                                                        labelEllipsis={ true }
+                                                        data-testid={
+                                                            `${ testId }-authenticator-add`
+                                                        }
+                                                        imageOptions={ {
+                                                            as: "data-url",
+                                                        } }
+                                                        onClick={ handleSocialLoginAdd }
+                                                    />
+                                                </PortalAwareDraggable>
+                                            )
+                                        }
+                                    </Draggable>
+                                )
+                            }
                             { provided.placeholder }
                         </div>
                     ) }
@@ -219,5 +266,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 Authenticators.defaultProps = {
     "data-testid": "authenticators",
     defaultName: "Unknown",
-    isDropDisabled: true
+    isDropDisabled: true,
+    isSocialLogin: false
 };
