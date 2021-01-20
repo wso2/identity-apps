@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@asgardio/oidc-js";
+import { IdentityClient, SignInResponse } from "@asgardeo/auth-spa";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 

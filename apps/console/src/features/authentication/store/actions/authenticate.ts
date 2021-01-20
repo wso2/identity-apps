@@ -27,8 +27,9 @@ import {
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
-    UserInfo
-} from "@asgardio/oidc-js";
+    UserInfo,
+    LOGOUT_URL
+} from "@asgardeo/auth-spa";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

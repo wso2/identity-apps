@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@asgardio/oidc-js";
+import { AuthenticatedUserInterface } from "@asgardeo/auth-spa";
 import {
     AlertInterface,
     LinkedAccountInterface,

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@asgardeo/auth-spa";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";

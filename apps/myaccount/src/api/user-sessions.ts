@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@asgardeo/auth-spa";
 import { HttpMethods, UserSessions } from "../models";
 import { store } from "../store";
 

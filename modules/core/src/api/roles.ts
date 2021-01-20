@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@asgardio/oidc-js";
+import { IdentityClient, Storage } from "@asgardeo/auth-spa";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { RoleConstants } from "../constants";

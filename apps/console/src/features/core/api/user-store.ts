@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@asgardeo/auth-spa";
 import { HttpMethods } from "@wso2is/core/models";
 import { UserStoreDetails } from "../models";
 import { store } from "../store";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@asgardeo/auth-spa";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";

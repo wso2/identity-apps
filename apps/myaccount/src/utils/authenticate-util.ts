@@ -19,7 +19,7 @@
 
 import {
     IdentityClient
-} from "@asgardio/oidc-js";
+} from "@asgardeo/auth-spa";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
