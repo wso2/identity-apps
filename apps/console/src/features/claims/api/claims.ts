@@ -157,7 +157,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
         })
         .catch((error) => {
             /*
-            Todo:
+            TODO:
             Due to : https://github.com/wso2/product-is/issues/8729. We are hard coding following error response for
             this particular error code. Once the issue resolved at API level, we can remove this hardcoded response.
             { Issue Description : When deleting a local attribute which is also having associations, error message
