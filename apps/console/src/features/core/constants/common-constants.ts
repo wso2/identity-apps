@@ -45,4 +45,13 @@ export class CommonConstants {
      * @default
      */
     public static readonly SESSION_STATE: string = "session_state";
+
+    /**
+     * Session storage key to store token endpoint.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly TOKEN_ENDPOINT: string = "token_endpoint";
+
 }
