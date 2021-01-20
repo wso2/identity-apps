@@ -314,6 +314,7 @@
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
+        "listAllAttributeDialects": false,
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,
