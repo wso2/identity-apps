@@ -155,58 +155,60 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return ReactDOM.createPortal(child, portal);
     };
 
-    return authenticators && authenticators instanceof Array && authenticators.length > 0 ? (
-        <>
-            { heading && <Heading as="h6">{ heading }</Heading> }
-            { ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID &&
-                !authenticators[ 0 ].isEnabled && (
-                    <Message warning>
-                        { t(
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                            ".authenticationFlow.sections.stepBased.secondFactorDisabled"
-                        ) }
-                    </Message>
-                ) }
-            <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
-                { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
-                    <div
-                        ref={ provided.innerRef }
-                        { ...provided.droppableProps }
-                        className={ classes }
-                        data-testid={ testId }
-                    >
-                        { authenticators.map((authenticator, index) => (
-                            <Draggable
-                                key={ `${ authenticator.idp }-${ authenticator.id }` }
-                                draggableId={ authenticator.id }
-                                index={ index }
-                                isDragDisabled={ readOnly || !authenticator.isEnabled }
-                            >
-                                { (
-                                    draggableProvided: DraggableProvided,
-                                    draggableSnapshot: DraggableStateSnapshot
-                                ): React.ReactElement<HTMLElement> => (
-                                        <PortalAwareDraggable
-                                            provided={ draggableProvided }
-                                            snapshot={ draggableSnapshot }
-                                        >
-                                            <LabeledCard
-                                                size="tiny"
-                                                image={ authenticator.image }
-                                                label={ authenticator.displayName || defaultName }
-                                                labelEllipsis={ true }
-                                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
-                                            />
-                                        </PortalAwareDraggable>
-                                    ) }
-                            </Draggable>
-                        )) }
-                        { provided.placeholder }
-                    </div>
-                ) }
-            </Droppable>
-        </>
-    ) : (
+    return authenticators && authenticators instanceof Array && authenticators.length > 0
+        ? (
+            <>
+                { heading && <Heading as="h6">{ heading }</Heading> }
+                { ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID &&
+                    !authenticators[ 0 ].isEnabled && (
+                        <Message warning>
+                            { t(
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                                ".authenticationFlow.sections.stepBased.secondFactorDisabled"
+                            ) }
+                        </Message>
+                    ) }
+                <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
+                    { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
+                        <div
+                            ref={ provided.innerRef }
+                            { ...provided.droppableProps }
+                            className={ classes }
+                            data-testid={ testId }
+                        >
+                            { authenticators.map((authenticator, index) => (
+                                <Draggable
+                                    key={ `${ authenticator.idp }-${ authenticator.id }` }
+                                    draggableId={ authenticator.id }
+                                    index={ index }
+                                    isDragDisabled={ readOnly || !authenticator.isEnabled }
+                                >
+                                    { (
+                                        draggableProvided: DraggableProvided,
+                                        draggableSnapshot: DraggableStateSnapshot
+                                    ): React.ReactElement<HTMLElement> => (
+                                            <PortalAwareDraggable
+                                                provided={ draggableProvided }
+                                                snapshot={ draggableSnapshot }
+                                            >
+                                                <LabeledCard
+                                                    size="tiny"
+                                                    image={ authenticator.image }
+                                                    label={ authenticator.displayName || defaultName }
+                                                    labelEllipsis={ true }
+                                                    data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                                                />
+                                            </PortalAwareDraggable>
+                                        ) }
+                                </Draggable>
+                            )) }
+                            { provided.placeholder }
+                        </div>
+                    ) }
+                </Droppable>
+            </>
+        )
+        : (
             <>{ emptyPlaceholder }</>
         );
 };
