@@ -33,6 +33,8 @@
 @appHeaderBackground: @lightPageBackground;
 @appHeaderHeight: auto;
 @appHeaderBoxShadow: none;
+@appHeaderBorderBottom: 1px solid @galleryGray;
+@appHeaderHamburgerIconColor: inherit;
 
 @appHeaderContainerBackground: inherit;
 
