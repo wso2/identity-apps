@@ -661,8 +661,8 @@ export const console: ConsoleNS = {
                         attributes: {
                             attributeMappingChange: {
                                 error: {
-                                    description: "The mapped attributes were changed to default values.",
-                                    message: "Attribute Mapping Changed"
+                                    description: "The mapped user attributes were changed to default values.",
+                                    message: "User Attribute Mapping Changed"
                                 }
                             },
                             forms: {
@@ -689,15 +689,15 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Configure Attributes",
+                                    header: "Select User Attributes",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Select All Attributes"
+                                                    attribute: "Select All User Attributes"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "Search attribute",
+                                                    attribute: "Search user attribute",
                                                     role: "Search Role"
                                                 }
                                             }
@@ -705,13 +705,13 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select user attributes to be included in the authentication response."
                                 },
-                                heading: "Attribute Selection",
+                                heading: "User Attribute Selection",
                                 mappingTable: {
                                     actions: {
                                         enable: "Enable mapping"
                                     },
                                     columns: {
-                                        appAttribute: "Application attribute",
+                                        appAttribute: "Mapped user attribute",
                                         attribute: "Attribute",
                                         mandatory: "Mandatory",
                                         requested: "Requested"
@@ -730,10 +730,12 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    searchPlaceholder: "Search attributes"
+                                    mappedAtributeHint: "Instead of sending the default attribute, the custom " +
+                                        "mapped attribute will be sent",
+                                    searchPlaceholder: "Search user attributes"
                                 }
                             },
-                            tabName: "Attributes"
+                            tabName: "User Attributes"
                         },
                         general: {
                             tabName: "General"
@@ -2164,9 +2166,9 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyAttributesList: {
-                        action: "Add Attribute",
-                        subtitles: "There are no attributes selected to the application at the moment.",
-                        title: "No attributes added"
+                        action: "Add User Attribute",
+                        subtitles: "There are no user attributes selected to the application at the moment.",
+                        title: "No user attributes added"
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {

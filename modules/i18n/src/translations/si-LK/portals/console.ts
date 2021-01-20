@@ -693,15 +693,15 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "ගුණාංග තේරීම යාවත්කාලීන කරන්න",
+                                    header: "පරිශීලක ගුණාංග තේරීම යාවත්කාලීන කරන්න",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "ගුණාංගය"
+                                                    attribute: "පරිශීලක ගුණාංගය"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "සෙවුම් ගුණාංගය",
+                                                    attribute: "සෙවුම් පරිශීලක ගුණාංගය",
                                                     role: "සෙවුම් කාර්යභාරය"
                                                 }
                                             }
@@ -709,14 +709,14 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "පරිශීලක නව ගුණාංග එකතු කරන්න හෝ පවතින ගුණාංග ඉවත් කරන්න."
                                 },
-                                heading: "ගුණාංග තේරීම",
+                                heading: "පරිශීලක ගුණාංග තේරීම",
                                 mappingTable: {
                                     actions: {
                                         enable: "සිතියම්කරණය සක්‍රීය කරන්න"
                                     },
                                     columns: {
-                                        appAttribute: "යෙදුම් ගුණාංගය",
-                                        attribute: "ගුණාංගය",
+                                        appAttribute: "පරිශීලක යෙදුම් ගුණාංගය",
+                                        attribute: "පරිශීලක ගුණාංගය",
                                         mandatory: "අනිවාර්යයි",
                                         requested: "ඉල්ලා"
                                     },
@@ -734,10 +734,11 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    searchPlaceholder: "ගුණාංග සොයන්න"
+                                    mappedAtributeHint: "සුපුරුදු ගුණාංගය යැවීම වෙනුවට, අභිරුචි සිතියම්ගත කළ ගුණාංගය යවනු ලැබේ",
+                                    searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
                                 }
                             },
-                            tabName: "ගුණාංග"
+                            tabName: "පරිශීලක ගුණාංග"
                         },
                         general: {
                             tabName: "ජනරාල්"

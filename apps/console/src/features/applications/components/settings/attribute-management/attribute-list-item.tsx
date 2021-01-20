@@ -154,11 +154,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             <Table.Cell>
                 <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
                 {
-                    !localDialect &&
-                    <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
-                }
-                {
-                    localDialect && !mappingOn &&
                     <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
                 }
             </Table.Cell>

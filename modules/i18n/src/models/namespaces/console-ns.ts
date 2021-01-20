@@ -438,6 +438,7 @@ export interface ConsoleNS {
                                         mandatory: string;
                                         requested: string;
                                     };
+                                    mappedAtributeHint: string;
                                     listItem: {
                                         actions: {
                                             makeMandatory: string;

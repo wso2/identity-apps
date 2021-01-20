@@ -84,10 +84,10 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         } else {
             if (selectedExternalClaims.length > 0) {
                 setFilterTempAvailableClaims(sortBy(
-                    union(selectedExternalClaims, availableExternalClaims ), "displayName")
+                    union(selectedExternalClaims, availableExternalClaims ), "localClaimDisplayName")
                 );
             } else {
-                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "displayName"));
+                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "localClaimDisplayName"));
             }
         }
     };
@@ -123,11 +123,12 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     useEffect(() => {
         if (showAddModal) {
             if (selectedExternalClaims.length > 0) {
-                const sortedClaims = sortBy(union(selectedExternalClaims, availableExternalClaims ), "displayName");
+                const sortedClaims = sortBy(union(selectedExternalClaims, availableExternalClaims ), 
+                    "localClaimDisplayName");
                 setTempAvailableClaims(sortedClaims);
                 setFilterTempAvailableClaims(sortedClaims);
             } else {
-                const sortedClaims = sortBy(availableExternalClaims, "displayName");
+                const sortedClaims = sortBy(availableExternalClaims, "localClaimDisplayName");
                 setTempAvailableClaims(sortedClaims);
                 setFilterTempAvailableClaims(sortedClaims);
             }
@@ -176,6 +177,8 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                         t("console:develop.features.applications.edit.sections.attributes.selection.addWizard" +
                             ".steps.select.transfer.searchPlaceholders.attribute")
                     }
+                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     handleUnelectedListSearch={ searchTempAvailable }
                     data-testid={ `${ testId }-transfer-component` }
                 >
@@ -183,12 +186,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                         selectionComponent
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ [ 
-                            t("console:develop.features.applications.edit.sections.attributes.selection." +
-                                "addWizard.steps.select.transfer.headers.attribute")
-                        ] }
-                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                        isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }
                         
                     >
@@ -198,13 +195,13 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
                                         key={ claim.claimURI }
-                                        listItem={ claim.claimURI }
+                                        listItem={ claim.localClaimDisplayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
                                         isItemChecked={ tempSelectedClaims.includes(claim) }
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
-                                        listSubItem={ claim.mappedLocalClaimURI }
+                                        listSubItem={ claim.claimURI }
                                         data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
                                 );
