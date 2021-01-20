@@ -129,6 +129,72 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     />
                 );
             } else if (inputField.type === "textarea") {
+
+                /**
+                 * This condition checks whether the the requesting `textarea` field
+                 * is a stacked field. This is exclusive only for `textarea` fields to
+                 * facilitate a `header` (prefix) and a `footer` (postfix) like behaviour.
+                 *
+                 * By default these prefix and postfix fields are readonly and disabled.
+                 * Also, they don't bind any `events` to the handler or `values` to the
+                 * `form values`. Instead it simply just represents a static uneditable
+                 * placeholder text to the user to convey what the prefix and postfix looks
+                 * like for the input value of `textarea`.
+                 */
+                if (inputField.stacked) {
+                    return (
+                        <Form.Group className={ "tri-stacked-inputs" } grouped={ true }>
+                            { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
+                            { inputField.hint && <FieldHint hint={ inputField.hint }/> }
+                            <Form.Input
+                                focus={ false }
+                                readOnly={ true }
+                                disabled={ true }
+                                className={ "prefix" }
+                                value={ inputField.prefix ?? "" }
+                            />
+                            <Form.TextArea
+                                { ...filteredProps }
+                                className={ "target" }
+                                width={ inputField.width }
+                                error={
+                                    isError
+                                        ? {
+                                            content: errorMessages.map((errorMessage: string, index: number) => {
+                                                return <p key={ index }>{ errorMessage }</p>;
+                                            })
+                                        }
+                                        : false
+                                }
+                                type={ inputField.type }
+                                placeholder={ inputField.placeholder }
+                                name={ inputField.name }
+                                value={ form.get(inputField.name)?.toString() || "" }
+                                onBlur={ (event: React.KeyboardEvent) => {
+                                    handleBlur(event, inputField.name);
+                                } }
+                                onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                    handleChange(event.target.value, inputField.name);
+                                } }
+                                autoFocus={ inputField.autoFocus || false }
+                                readOnly={ inputField.readOnly }
+                                disabled={ inputField.disabled }
+                                required={ inputField.label ? inputField.required : false }
+                                onKeyPress={ (event: React.KeyboardEvent) => {
+                                    event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                                } }
+                            />
+                            <Form.Input
+                                focus={ false }
+                                readOnly={ true }
+                                disabled={ true }
+                                className={ "postfix" }
+                                value={ inputField.postfix ?? "" }
+                            />
+                        </Form.Group>
+                    );
+                }
+
                 return (
                     <Form.TextArea
                         { ...filteredProps }
@@ -204,27 +270,31 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         const field = (
-                            <Form.Field key={ index }>
-                                <Radio
-                                    { ...filteredProps }
-                                    label={ radio.label }
-                                    name={ inputField.name }
-                                    value={ radio.value }
-                                    checked={ form.get(inputField.name) === radio.value }
-                                    onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
-                                        handleChange(value.toString(), inputField.name);
-                                    } }
-                                    onBlur={ (event: React.KeyboardEvent) => {
-                                        handleBlur(event, inputField.name);
-                                    } }
-                                    autoFocus={ inputField.autoFocus || false }
-                                    readOnly={ inputField.readOnly }
-                                    disabled={ inputField.disabled }
-                                    onKeyPress={ (event: React.KeyboardEvent) => {
-                                        event.key === ENTER_KEY && handleBlur(event, inputField.name);
-                                    } }
-                                />
-                            </Form.Field>
+                            <React.Fragment>
+                                <Form.Field key={ index }>
+                                    <Radio
+                                        { ...filteredProps }
+                                        label={ radio.label }
+                                        name={ inputField.name }
+                                        value={ radio.value }
+                                        checked={ form.get(inputField.name) === radio.value }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                                            handleChange(value.toString(), inputField.name);
+                                        } }
+                                        onBlur={ (event: React.KeyboardEvent) => {
+                                            handleBlur(event, inputField.name);
+                                        } }
+                                        autoFocus={ inputField.autoFocus || false }
+                                        readOnly={ inputField.readOnly }
+                                        disabled={ inputField.disabled }
+                                        onKeyPress={ (event: React.KeyboardEvent) => {
+                                            event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                                        } }
+                                    />
+                                </Form.Field>
+                                { radio.child }
+                            </React.Fragment>
+
                         );
                         if (radio.hint && radio.hint.content) {
                             return (
