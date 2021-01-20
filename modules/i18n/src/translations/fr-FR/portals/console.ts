@@ -912,7 +912,7 @@ export const console: ConsoleNS = {
                             returnAuthenticatedIdpList: {
                                 hint: " La liste des fournisseurs d'identité authentifiés sera renvoyée dans la réponse " +
                                     "d'authentification.",
-                                label: "Retourne la liste des idP authentifiés",
+                                label: "Retourne la liste des IDP authentifiés",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
                                 }
@@ -5297,7 +5297,7 @@ export const console: ConsoleNS = {
                 approvals: "Approbations",
                 attributeDialects: "Dialectes d'attributs",
                 categories: {
-                    attributes: "Attributs",
+                    attributes: "Attributs Utilisateur",
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",

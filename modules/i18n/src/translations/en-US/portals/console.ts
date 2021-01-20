@@ -918,7 +918,7 @@ export const console: ConsoleNS = {
                             returnAuthenticatedIdpList: {
                                 hint: " The list of authenticated Identity Providers will be returned in the " +
                                     "authentication response.",
-                                label: "Return authenticated idP list",
+                                label: "Return authenticated IDP list",
                                 validations: {
                                     empty: "This is a required field."
                                 }
@@ -5296,7 +5296,7 @@ export const console: ConsoleNS = {
                 approvals: "Approvals",
                 attributeDialects: "Attribute Dialects",
                 categories: {
-                    attributes: "Attributes",
+                    attributes: "User Attributes",
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
