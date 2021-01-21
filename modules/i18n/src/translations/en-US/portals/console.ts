@@ -712,7 +712,7 @@ export const console: ConsoleNS = {
                                     },
                                     columns: {
                                         appAttribute: "Mapped user attribute",
-                                        attribute: "Attribute",
+                                        attribute: "User Attribute",
                                         mandatory: "Mandatory",
                                         requested: "Requested"
                                     },

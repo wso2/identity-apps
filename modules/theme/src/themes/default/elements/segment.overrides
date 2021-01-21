@@ -364,7 +364,7 @@
 .attributes { 
 
     .ui.input {
-        margin: 0 5px!important;
+        margin: 0px !important;
         width: @EditRoleSegmentHeaderWidth;
     }
 

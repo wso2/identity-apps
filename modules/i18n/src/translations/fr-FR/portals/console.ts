@@ -708,7 +708,7 @@ export const console: ConsoleNS = {
                                     },
                                     columns: {
                                         appAttribute: "Attribut utilisateur de l'application mappée",
-                                        attribute: "Attribut",
+                                        attribute: "Attribut utilisateur",
                                         mandatory: "Obligatoire",
                                         requested: "Demandé"
                                     },
