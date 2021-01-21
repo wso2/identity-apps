@@ -18,13 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    Field,
-    FormValue,
-    Forms,
-    Validation,
-    useTrigger
-} from "@wso2is/forms";
+import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
 import {
     ContentLoader,
     Heading,
@@ -41,19 +35,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import {
-    ApplicationListInterface,
-    ApplicationTemplateLoadingStrategies,
-    getApplicationList
-} from "../..";
+import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
 import {
     AppConstants,
     AppState,
     CORSOriginsListInterface,
-    ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
     history,
+    ModalWithSidePanel,
     store
 } from "../../../core";
 import { createApplication, getApplicationTemplateData } from "../../api";
@@ -61,11 +51,7 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
-import {
-    ApplicationTemplateInterface,
-    MainApplicationInterface,
-    SupportedAuthProtocolTypes
-} from "../../models";
+import { ApplicationTemplateInterface, MainApplicationInterface, SupportedAuthProtocolTypes } from "../../models";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -181,6 +167,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             && (template?.authenticationProtocol || template.subTemplates?.length > 0))
             || !generalFormValues) {
             return;
+        }
+
+        /**
+         * Remove the default callbackURLs from the form values if there are
+         * any user defined values (callbackURLs) in the form. We do this to
+         * prevent appending the default `callbackURL` to the model.
+         */
+        if (!isEmpty(protocolFormValues?.inboundProtocolConfiguration?.oidc?.callbackURLs?.filter(x => x))) {
+            templateSettings[ "application" ][ "inboundProtocolConfiguration" ][ "oidc" ][ "callbackURLs" ] = [];
         }
 
         const application: MainApplicationInterface = merge(templateSettings?.application, protocolFormValues);
