@@ -728,6 +728,18 @@ export const console: ConsoleNS = {
                                     },
                                     mappedAtributeHint: "Au lieu d'envoyer l'attribut par défaut, l'attribut mappé "  +
                                         "personnalisé sera envoyé",
+                                    mappingRevert: {
+                                        confirmPrimaryAction: "Confirmer",
+                                        confirmSecondaryAction: "Annuler",
+                                        confirmationContent: "Ces attributs personnalisés mappés aux attributs par " +
+                                            "défaut pertinents seront rétablis aux valeurs mappées par défaut par " +
+                                            "cette action. Veuillez l'utiliser avec précaution car vous ne pourrez " +
+                                            "pas récupérer les valeurs d'attribut personnalisé mappées.",
+                                        confirmationHeading: "Confirmer le basculement du mappage des " + 
+                                            "revendications sur la valeur par défaut",
+                                        confirmationMessage: "Cette action rétablira les valeurs mappées aux " + 
+                                            "valeurs par défaut."
+                                    },
                                     searchPlaceholder: "Attributs de recherche"
                                 }
                             },

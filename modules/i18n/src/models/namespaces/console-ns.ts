@@ -439,6 +439,13 @@ export interface ConsoleNS {
                                         requested: string;
                                     };
                                     mappedAtributeHint: string;
+                                    mappingRevert: {
+                                        confirmationHeading: string;
+                                        confirmationMessage: string;
+                                        confirmationContent: string;
+                                        confirmPrimaryAction: string;
+                                        confirmSecondaryAction: string;
+                                    };
                                     listItem: {
                                         actions: {
                                             makeMandatory: string;
