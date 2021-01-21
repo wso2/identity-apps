@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
-import { getEnterCodeIcon, getMFAIcons, getQRCodeScanIcon } from "../../../configs";
+import { getMFAIcons, getQRCodeScanIcon } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 
