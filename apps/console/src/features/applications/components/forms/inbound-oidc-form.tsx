@@ -440,8 +440,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
          * attach a `index` property to every entry of the `allowedList`
          * and sort the array to ascending order to rearrange the list
          * in-place.
-         *
-         * Running time: O(N)
          */
         if (template && template.id) {
             const arrangement: Map<string, number> = ApplicationManagementConstants
