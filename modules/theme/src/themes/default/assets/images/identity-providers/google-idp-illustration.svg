@@ -18,7 +18,8 @@
  * under the License.
 -->
 
-<svg id="google-idp-illustration" xmlns="http://www.w3.org/2000/svg" width="80" height="80"
+<svg id="google-idp-illustration" xmlns="http://www.w3.org/2000/svg" class="icon"
+     width="100" height="100"
      viewBox="0 0 67.903 67.903">
     <path id="Path_10" data-name="Path 10"
           d="M15.049,160.965l-2.364,8.824-8.639.183a34.011,34.011,0,0,1-.25-31.7h0l7.691,1.41,3.369,7.645a20.262,20.262,0,0,0,.19,13.642Z"
