@@ -339,6 +339,36 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Modifies the grant type label string value. For now we only concatenate
+     * some extra value to the `implicit` field. If you need to do the same for
+     * other checkboxes label then add a condition and bind the values.
+     *
+     * @param value {string} checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
+     * @param label {string} mapping label for value
+     */
+    const modifyGrantTypeLabels = (value: string, label: string): string => {
+        if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
+            return `${ label } (not recommended)`;
+        }
+        return label;
+    };
+
+    /**
+     * Generates a string description/hint for the target {@code value} checkbox.
+     * {@see TEMPLATE_WISE_ALLOWED_GRANT_TYPES} for different types.
+     *
+     * @param value {string}
+     */
+    const getGrantTypeHintDescription = (value: string): string => {
+        switch (value) {
+            case ApplicationManagementConstants.IMPLICIT_GRANT:
+                return "Implicit flow is vulnerable to access token leakage.";
+            default:
+                return null;
+        }
+    };
+
+    /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
      * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
@@ -350,11 +380,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         const allowedList = [];
 
         if (metadataProp) {
-            metadataProp.options.map((grant: GrantTypeInterface) => {
+            metadataProp.options.map(({ name, displayName }: GrantTypeInterface) => {
                 // Hides the grant types specified in the array.
                 // TODO: Remove this once the specified grant types such as `account-switch` are handled properly.
                 // See https://github.com/wso2/product-is/issues/8806.
-                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(grant.name)) {
+                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(name)) {
                     return;
                 }
 
@@ -363,12 +393,36 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     && template.id
                     && get(ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES, template.id)
                     && !ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES[ template.id ]
-                        .includes(grant.name)) {
+                        .includes(name)) {
 
                         return;
                 }
 
-                allowedList.push({ label: grant.displayName, value: grant.name });
+                /**
+                 * Create the checkbox children object. {@code hint} is marked
+                 * as optional because not all children have hint/description
+                 * popups. {@see modules > forms > CheckboxChild}
+                 */
+                const grant: { label: string; value: string; hint?: any } = {
+                    label: modifyGrantTypeLabels(name, displayName),
+                    value: name
+                };
+
+                /**
+                 * Attach hint/description to this specific checkbox value.
+                 * If there's no description provided in {@link getGrantTypeHintDescription}
+                 * then we will not attach any hint popups.
+                 */
+                const description = getGrantTypeHintDescription(name);
+                if (description) {
+                    grant.hint = {
+                        header: displayName,
+                        content: description,
+                    };
+                }
+
+                allowedList.push(grant);
+
             });
         }
 
@@ -386,8 +440,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
          * attach a `index` property to every entry of the `allowedList`
          * and sort the array to ascending order to rearrange the list
          * in-place.
-         *
-         * Running time: O(N)
          */
         if (template && template.id) {
             const arrangement: Map<string, number> = ApplicationManagementConstants
