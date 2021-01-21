@@ -110,4 +110,6 @@ export class IdentityProviderManagementConstants {
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
+    public static readonly X509_AUTHENTICATOR: string = "x509CertificateAuthenticator";
+    public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
 }
