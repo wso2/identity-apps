@@ -496,7 +496,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         </Label>
                         &nbsp;{ labelEnabled && resolveCORSStatusLabel(url) }
                         { shouldShowAllowOriginAction(origin) &&
-                            <span className={ "grey" }>&nbsp;<em>(CORS not allowed for this domain)</em></span>
+                            <span className={ "grey" }>&nbsp;<em>CORS not allowed for this domain</em></span>
                         }
                         { shouldShowAllowOriginAction(origin) && (
                             <LinkButton
