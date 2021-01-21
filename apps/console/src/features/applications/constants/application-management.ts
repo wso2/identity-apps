@@ -224,4 +224,15 @@ export class ApplicationManagementConstants {
     public static readonly IDENTIFIER_EXECUTOR = "IdentifierExecutor";
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
+
+
+    /**
+     * PEM certificate field default placeholder.
+     */
+    public static readonly PEM_CERTIFICATE_PLACEHOLDER = "-----BEGIN CERTIFICATE-----\n" +
+        "MIIFaDCCBFCgAwIBAgISESHkvZFwK9Qz0KsXD3x8p44aMA0GCSqGSIb3DQEBCwUA\n" +
+        "...\n" +
+        "lffygD5IymCSuuDim4qB/9bh7oi37heJ4ObpBIzroPUOthbG4gv/5blW3Dc=\n" +
+        "-----END CERTIFICATE-----";
+
 }
