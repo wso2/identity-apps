@@ -372,6 +372,35 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             });
         }
 
+        /**
+         * Rearranging the allowed list according to the correct order.
+         * Below algorithm assumes that the template's arrange order map
+         * keys length is equals to allowedList.
+         *
+         * Below invariants must be satisfied to complete the operation: -
+         *      - `template` AND `template.id` IS truthy
+         *      - `arrangement` HAS `template.id`
+         *      - `length(arrangement.length)` == `length(allowedList)`
+         *
+         * If all the above invariants are satisfied then we can safely
+         * attach a `index` property to every entry of the `allowedList`
+         * and sort the array to ascending order to rearrange the list
+         * in-place.
+         *
+         * Running time: O(N)
+         */
+        if (template && template.id) {
+            const arrangement: Map<string, number> = ApplicationManagementConstants
+                .TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER[ template.id ];
+            if (arrangement && arrangement.size === allowedList.length) {
+                for (const grant of allowedList) {
+                    const index = arrangement.get(grant.value);
+                    grant[ "index" ] = index ?? Infinity;
+                }
+                allowedList.sort(({ index: a }, { index: b }) => a - b);
+            }
+        }
+
         return allowedList;
     };
 
