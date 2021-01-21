@@ -30,4 +30,16 @@ export interface URLComponentsInterface {
      * protocol + scheme + host
      */
     origin: string;
+    /**
+     * Fully qualified path. With protocols, host, path, params.
+     */
+    href: string;
+    /**
+     * Contains only a value like: localhost:9443/some/long/url
+     */
+    pathWithoutProtocol: string;
+    /**
+     * URL instance.
+     */
+    _url: URL;
 }
