@@ -32,7 +32,7 @@
         "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json"
     },
     "dependencies": {
-        "@wso2/identity-cypress-test-base": "^0.2.2",
+        "@wso2/identity-cypress-test-base": "^0.2.3",
         "cypress-mochawesome-reporter": "^1.0.2",
         "cypress-multi-reporters": "^1.4.0",
         "mocha": "^8.1.3",
