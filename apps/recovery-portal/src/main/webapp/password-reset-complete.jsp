@@ -38,6 +38,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.apache.http.client.utils.URIBuilder" %>
+<%@ page import="java.net.URI" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -213,10 +214,11 @@
                     document.callbackForm.submit();
                     <%
                     } else {
-                        URIBuilder callbackUrlBuilder = new URIBuilder(callback);
-                        callbackUrlBuilder.addParameter("passwordReset", "true");
+                        URIBuilder callbackUrlBuilder = new
+                                URIBuilder(IdentityManagementEndpointUtil.encodeURL(callback));
+                        URI callbackUri = callbackUrlBuilder.addParameter("passwordReset", "true").build();
                     %>
-                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callbackUrlBuilder.toString())%>";
+                    location.href = "<%=callbackUri.toString()%>";
                     <%
                     }
                     } catch (URISyntaxException e) {
