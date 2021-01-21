@@ -1269,7 +1269,7 @@ export const console: ConsoleNS = {
                                                 label: "Enable"
                                             },
                                             plainAlg: {
-                                                label: "Support PKCE 'Plain' Transform Algorithm"
+                                                label: "Support 'Plain' Transform Algorithm"
                                             }
                                         },
                                         label: "{{label}}",

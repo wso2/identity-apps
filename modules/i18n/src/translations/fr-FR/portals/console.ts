@@ -1268,7 +1268,7 @@ export const console: ConsoleNS = {
                                                 label: "Activer"
                                             },
                                             plainAlg: {
-                                                label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"
+                                                label: "Prise en charge de l'algorithme de transformation 'Plain'"
                                             }
                                         },
                                         label: "{{label}}",
