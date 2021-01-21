@@ -21,7 +21,7 @@ import {
     SetAvailableAuthenticatorsMetaInterface,
     SetAvailableIDPTemplateInterface
 } from "./types";
-import {FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface} from "../../models";
+import { FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface } from "../../models";
 import {
     SetApplicationTemplatesActionInterface
 } from "../../../applications/store/actions/types";

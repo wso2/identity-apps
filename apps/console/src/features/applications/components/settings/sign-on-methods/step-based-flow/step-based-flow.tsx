@@ -704,7 +704,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             {
                                 authenticators: federatedAuthenticators,
                                 droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
-                                heading: "External"
+                                heading: ApplicationManagementConstants.SOCIAL_LOGIN_HEADER
                             }
                         ] }
                         visibility={ showAuthenticatorsSidePanel }

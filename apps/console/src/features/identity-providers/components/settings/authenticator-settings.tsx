@@ -37,7 +37,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {AccordionTitleProps, CheckboxProps, Grid, Icon} from "semantic-ui-react";
+import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     AuthenticatorAccordion,
     AuthenticatorAccordionItemInterface,

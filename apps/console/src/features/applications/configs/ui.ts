@@ -128,3 +128,12 @@ export const getHelpPanelIcons = () => {
         }
     };
 };
+
+export const getGeneralIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        addCircleOutline: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/add-circle-outline.svg`)
+    };
+};

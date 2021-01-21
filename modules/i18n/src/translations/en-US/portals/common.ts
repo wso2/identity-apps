@@ -32,6 +32,7 @@ export const common: CommonNS = {
     approve: "Approve",
     assignees: "Assignees",
     authenticator: "Authenticator",
+    authentication: "Authentication",
     // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "Authenticators",
     browser: "Browser",
