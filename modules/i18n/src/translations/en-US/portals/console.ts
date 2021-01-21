@@ -741,7 +741,7 @@ export const console: ConsoleNS = {
                                             "Please proceed with caution since you will not be able to " +
                                             "retrieve the mapped custom attribute values.",
                                         confirmationHeading: "Are you sure?",
-                                        confirmationMessage: "This action will revert mapped values to default values."
+                                        confirmationMessage: "This action will revert mapped custom attribute values to default values."
                                     },
                                     searchPlaceholder: "Search user attributes"
                                 }
