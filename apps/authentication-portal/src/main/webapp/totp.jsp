@@ -91,6 +91,22 @@
                     $('#totpForm').preventDoubleSubmission();
                 });
             </script>
+            <script type="text/javascript">
+                var emailLinkClicked = false;
+
+                function generateInstruction() {
+                    var isEmailCodeEnabled = "<%= isSendVerificationCodeByEmailEnabled %>" === "true" ? true : false;
+                    var authAppCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>';
+                    var emailCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.via.email")%>';
+
+                    var text = isEmailCodeEnabled && emailLinkClicked ? emailCodeText : authAppCodeText;
+                    $("#instruction").empty().append(text);
+                }
+
+                $(document).ready(function() {
+                    generateInstruction();
+                })
+            </script>
         </head>
 
         <body class="login-portal layout totp-portal-layout">
@@ -123,14 +139,7 @@
 
                         <div class="segment-form">
                             <form action="../commonauth" method="post" id="totpForm" class="ui large form">
-                                <p>
-                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or.got.via.email") + "." %>
-                                    <% } else { %>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device") + "."%>
-                                    <% } %>
-                                </p>
+                                <p id="instruction"></p>
                                 <div class="field">
                                     <input type="text" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                                 </div>
