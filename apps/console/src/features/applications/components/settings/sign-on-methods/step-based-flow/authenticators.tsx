@@ -170,7 +170,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         ? (
             <>
                 { heading && <Heading as="h6">{ heading }</Heading> }
-                { ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID &&
+                { ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID && authenticators[0] &&
                     !authenticators[ 0 ].isEnabled && (
                         <Message warning>
                             { t(

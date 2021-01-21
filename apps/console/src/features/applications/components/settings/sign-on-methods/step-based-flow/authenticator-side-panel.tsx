@@ -105,7 +105,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
         const [
             authenticatorsAccordionActiveIndexes,
             setAuthenticatorsAccordionActiveIndexes
-        ] = useState<number[]>([ 0, 1 ]);
+        ] = useState<number[]>([ 0, 1, 2 ]);
 
         const classes = classNames(
             "authenticators-panel",

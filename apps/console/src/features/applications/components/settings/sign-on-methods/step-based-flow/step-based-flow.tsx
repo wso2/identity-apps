@@ -40,7 +40,6 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../../models";
-import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the applications settings component.
