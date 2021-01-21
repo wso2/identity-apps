@@ -175,7 +175,11 @@ export class ApplicationManagementConstants {
      * @type {string[]}
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: object = {
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [ "authorization_code", "refresh_token", "implicit" ]
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+        ]
     };
 
     /**
@@ -189,9 +193,9 @@ export class ApplicationManagementConstants {
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
-            [ "authorization_code", 0 ],
-            [ "refresh_token", 1 ],
-            [ "implicit", 2 ],
+            [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 1 ],
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 2 ],
         ])
     }
 

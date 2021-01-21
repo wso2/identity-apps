@@ -347,7 +347,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param label {string} mapping label for value
      */
     const modifyGrantTypeLabels = (value: string, label: string): string => {
-        if (value === "implicit") {
+        if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
             return `${ label } (not recommended)`;
         }
         return label;
@@ -361,7 +361,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const getGrantTypeHintDescription = (value: string): string => {
         switch (value) {
-            case "implicit":
+            case ApplicationManagementConstants.IMPLICIT_GRANT:
                 return "Implicit flow is vulnerable to access token leakage.";
             default:
                 return null;
