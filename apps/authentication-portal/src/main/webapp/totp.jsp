@@ -32,9 +32,9 @@
         if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
             idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
         }
-    
+
         boolean isSendVerificationCodeByEmailEnabled = TOTPUtil.isSendVerificationCodeByEmailEnabled();
-    
+
         String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
         String authenticationFailed = "false";
 
@@ -91,6 +91,22 @@
                     $('#totpForm').preventDoubleSubmission();
                 });
             </script>
+            <script type="text/javascript">
+                var emailLinkClicked = false;
+
+                function generateInstruction() {
+                    var isEmailCodeEnabled = "<%= isSendVerificationCodeByEmailEnabled %>" === "true" ? true : false;
+                    var authAppCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>';
+                    var emailCodeText = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.via.email")%>';
+
+                    var text = isEmailCodeEnabled && emailLinkClicked ? emailCodeText : authAppCodeText;
+                    $("#instruction").empty().append(text);
+                }
+
+                $(document).ready(function() {
+                    generateInstruction();
+                })
+            </script>
         </head>
 
         <body class="login-portal layout totp-portal-layout">
@@ -123,26 +139,41 @@
 
                         <div class="segment-form">
                             <form action="../commonauth" method="post" id="totpForm" class="ui large form">
-                                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%></p>
+                                <p id="instruction"></p>
                                 <div class="field">
                                     <input type="text" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                                 </div>
                                 <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                                 <div class="ui divider hidden"></div>
-                                <div class="align-right buttons">
-                                    <a class="ui button link-button" id="genToken" href="#"
-                                       onclick="return requestTOTPToken();">
-                                       <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
-                                    </a>
+                                <div class="ui two column stackable grid">
+
+                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
+                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
+                                        <a class="ui button link-button" id="genToken" href="#"
+                                        onclick="return requestTOTPToken();">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
+                                        </a>
+                                    <% } else {
+                                        String multiOptionURI = request.getParameter("multiOptionURI");
+                                        if (multiOptionURI != null) {
+                                    %>
+                                        <a class="ui button link-button" id="goBackLink"
+                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                        </a>
+                                    <% } } %>
+                                </div>
+                                <div class="six wide column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
                                     <input type="submit" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>" class="ui primary button">
                                 </div>
+                            </div>
                             </form>
                         </div>
                         <div class="ui divider hidden"></div>
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null) {
+                                if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled) {
                             %>
                                 <a class="ui button link-button" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
