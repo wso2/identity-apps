@@ -1268,7 +1268,7 @@ export const console: ConsoleNS = {
                                                 label: "Activer"
                                             },
                                             plainAlg: {
-                                                label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"
+                                                label: "Prise en charge de l'algorithme de transformation 'Plain'"
                                             }
                                         },
                                         label: "{{label}}",
@@ -1304,14 +1304,14 @@ export const console: ConsoleNS = {
                                 heading: "jeton de rafraîchissement"
                             },
                             requestObjectSignature: {
-                                heading: "Signature d'objet de requête HTTP",
+                                heading: "Objet de requête HTTP",
                                 description: "{{productName}} prend en charge la réception des paramètres de " +
                                     "demande d'authentification OIDC des clients dans un objet de demande. " +
                                     "Activez la validation de signature pour n'accepter que les objets " +
                                     "de demande signés dans la demande d'autorisation.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Activer la validation de la signature de l'objet de la requête",
+                                        label: "Activer la validation de la signature",
                                     }
                                 }
                             },

@@ -849,7 +849,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     The HTTP origins that host your web application. You can define multiple web
                                     origins and wild cards are supported.
                                     <p className={"mt-0"}>E.g.,&nbsp;&nbsp;
-                                        <code>https://myapp.io, https://localhost:9000, https://*.otherapp.io</code>
+                                        <code>https://myapp.io, https://localhost:3000, https://*.otherapp.io</code>
                                     </p>
                                 </Hint>
                             </Grid.Column>
