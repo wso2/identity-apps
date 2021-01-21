@@ -46,7 +46,7 @@
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <script>
     function goBack() {
-        window.history.back();
+        document.getElementById("restartFlowForm").submit();
     }
 
     // Handle form submission preventing double submission.
@@ -496,4 +496,9 @@
 
     </script>
 
+</form>
+
+<form action="<%=loginFormActionURL%>" method="post" id="restartFlowForm">
+    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+    <input type="hidden" name="restart_flow" value='true'/>
 </form>
