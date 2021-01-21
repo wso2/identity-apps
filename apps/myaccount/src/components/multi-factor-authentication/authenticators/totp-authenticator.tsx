@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
-import { getEnterCodeIcon, getMFAIcons, getQRCodeScanIcon } from "../../../configs";
+import { getMFAIcons, getQRCodeScanIcon } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 
@@ -134,76 +134,84 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      */
     const renderQRCode = (): JSX.Element => {
         return (
-            <>
-                <Segment textAlign="center" basic>
-                    <QRCode value={ qrCode } />
-                    <Divider hidden />
-                    <p className="link" onClick={ refreshCode }>{ t(translateKey + "modals.scan.generate") }</p>
-                </Segment>
-                { totpConfig?.length > 0
-                    ? (
-                        <Message info>
-                            <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
-                            <Message.Content>
-                                { t(translateKey + "modals.scan.messageBody") + " " }
-                                <List bulleted>
-                                    { totpConfig?.map((app, index) => (
-                                        <List.Item key={ index } >
-                                            <a
-                                                target="_blank"
-                                                href={ app.link }
-                                                rel="noopener noreferrer"
-                                            >
-                                                { app.name }
-                                            </a>
-                                        </List.Item>
-                                    )) }
-                                </List>
-                            </Message.Content>
-                        </Message>
-                    )
-                    : null }
-                { renderVerifyCode() }
-            </>
-        );
-    };
-
-    /**
-     * This renders the code verification content
-     */
-    const renderVerifyCode = (): JSX.Element => {
-        return (
-            <>
-                <Forms
-                    data-testid={ `${ testId }-code-verification-form` }
-                    onSubmit={ (values: Map<string, string>) => {
-                        verifyCode(values.get("code"));
-                    } }
-                    submitState={ submit }
-                >
-                    <Field
-                        data-testid={ `${ testId }-code-verification-form-field` }
-                        name="code"
-                        label={ t(translateKey + "modals.verify.label") }
-                        placeholder={ t(translateKey + "modals.verify.placeholder") }
-                        type="text"
-                        required={ true }
-                        requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
-                    />
-                </Forms>
-                {
-                    error
-                        ? (
-
-                            <>
-                                <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
-                                    { t(translateKey + "modals.verify.error") }
+            <Segment basic>
+                <div className="stepper">
+                    <div className="step-number">1</div>
+                    <div className="step-text">
+                        <h5 >{ t(translateKey + "modals.scan.heading") }</h5>
+                        <Segment textAlign="center" basic className="qr-code">
+                            <QRCode value={ qrCode } />
+                            <Divider hidden />
+                            <p className="link" onClick={ refreshCode }>
+                                { t(translateKey + "modals.scan.generate") }
+                            </p>
+                        </Segment>
+                        { totpConfig?.length > 0
+                            ? (
+                                <Message info>
+                                    <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
+                                    <Message.Content>
+                                        { t(translateKey + "modals.scan.messageBody") + " " }
+                                        <List bulleted>
+                                            { totpConfig?.map((app, index) => (
+                                                <List.Item key={ index } >
+                                                    <a
+                                                        target="_blank"
+                                                        href={ app.link }
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        { app.name }
+                                                    </a>
+                                                </List.Item>
+                                            )) }
+                                        </List>
+                                    </Message.Content>
                                 </Message>
-                            </>
-                        )
-                        : null
-                }
-            </>
+                            )
+                            : null }
+                    </div>
+                    <div className="step-connector">
+                        <div className="step-line"></div>
+                    </div>
+                </div>
+                <div className="stepper">
+                    <div className="step-number">2</div>
+                    <div className="stepper-text">
+                        <h5>{ t(translateKey + "modals.verify.heading") }</h5>
+                        <Segment basic>
+                        <Forms
+                            data-testid={ `${ testId }-code-verification-form` }
+                            onSubmit={ (values: Map<string, string>) => {
+                                verifyCode(values.get("code"));
+                            } }
+                            submitState={ submit }
+                        >
+                            <Field
+                                data-testid={ `${ testId }-code-verification-form-field` }
+                                name="code"
+                                label={ t(translateKey + "modals.verify.label") }
+                                placeholder={ t(translateKey + "modals.verify.placeholder") }
+                                type="text"
+                                required={ true }
+                                requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
+                            />
+                        </Forms>
+                        {
+                            error
+                                ? (
+
+                                    <>
+                                        <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
+                                            { t(translateKey + "modals.verify.error") }
+                                        </Message>
+                                    </>
+                                )
+                                : null
+                            }
+                        </Segment>
+                    </div>
+                </div>
+            </Segment>
         );
     };
 
@@ -267,17 +275,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Generates header text based on the input step
-     * @param stepToDisplay The step number
-     */
-    const stepHeader = (stepToDisplay: number): string => {
-        switch (stepToDisplay) {
-            case 0:
-                return t(translateKey + "modals.scan.heading");
-        }
-    };
-
-    /**
      * Generates the right button-click event based on the input step number
      * @param stepToStep The step number
      */
@@ -300,7 +297,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             <Modal
                 data-testid={ `${ testId }-modal` }
                 dimmer="blurring"
-                size="mini"
+                size="tiny"
                 open={ openWizard }
                 onClose={ () => { setOpenWizard(false); } }
                 className="totp"
@@ -320,9 +317,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         )
                         : null
                 }
-                <Modal.Content data-testid={ `${ testId }-modal-content` }>
-                    <h3>{ stepHeader(step) }</h3>
-                    <Divider hidden />
+                <Modal.Content data-testid={ `${ testId }-modal-content` } scrolling>
                     { stepContent(step) }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
