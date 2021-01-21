@@ -17,12 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, GenericIcon, Heading, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
-import { Trans, useTranslation } from "react-i18next";
-import {Accordion, Card, Grid, Icon, Popup} from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { AppConstants, getOperationIcons, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
