@@ -56,6 +56,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     addToClaimMapping: any;
     claimConfigurations: ClaimConfigurationInterface;
     claimMappingOn: boolean;
+    showClaimMappingRevertConfirmation: (confirmation: boolean) => void;
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
     /**
@@ -93,6 +94,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         addToClaimMapping,
         claimConfigurations,
         claimMappingOn,
+        showClaimMappingRevertConfirmation,
         setClaimMappingOn,
         claimMappingError,
         readOnly,
@@ -103,6 +105,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const [availableClaims, setAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
     const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [isDefaultMappingChanged, setIsDefaultMappingChanged] = useState<boolean>(false);
 
     const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
     const [
@@ -330,11 +333,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setShowSelectionModal(true);
     };
 
-    const handelMapButtonClick = () => {
-        const mapping = claimMappingOn;
-        setClaimMappingOn(!mapping);
-    };
-
     useEffect(() => {
         if (claims) {
             setAvailableClaims([...claims]);
@@ -416,7 +414,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     >
                                         <Table.Body>
                                             <Table.Row>
-                                                <Table.Cell>
+                                                <Table.Cell width="6">
                                                     <Input
                                                         icon={ <Icon name="search"/> }
                                                         onChange={ handleChange }
@@ -435,8 +433,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     <Table.Cell textAlign="right">
                                                         <Checkbox
                                                             slider
-                                                            defaultChecked={ claimMappingOn }
-                                                            onChange={ handelMapButtonClick }
+                                                            checked={ claimMappingOn }
+                                                            onChange={ () => {
+                                                                if (!claimMappingOn) {
+                                                                    setClaimMappingOn(true);
+                                                                } else if (isDefaultMappingChanged) {
+                                                                    showClaimMappingRevertConfirmation(true);
+                                                                } else {
+                                                                    setClaimMappingOn(false);
+                                                                }
+                                                            } }
                                                             label={
                                                                 t("console:develop.features.applications" +
                                                                     ".edit.sections.attributes.selection" +
@@ -564,6 +570,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         addToMapping={ addToClaimMapping }
                                                                         mapping={
                                                                             getCurrentMapping(claim.claimURI)
+                                                                        }
+                                                                        isDefaultMappingChanged={
+                                                                            setIsDefaultMappingChanged
                                                                         }
                                                                         initialMandatory={ claim.mandatory }
                                                                         initialRequested={ claim.requested }

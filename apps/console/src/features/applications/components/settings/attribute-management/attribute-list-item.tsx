@@ -35,6 +35,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     addToMapping?: any;
     selectMandatory?: (claimURI: string, mandatory: boolean) => void;
     selectRequested?: (claimURI: string, requested: boolean) => void;
+    isDefaultMappingChanged?: (isChanged: boolean) => void;
     mapping?: ExtendedClaimMappingInterface;
     initialMandatory?: boolean;
     initialRequested?: boolean;
@@ -66,6 +67,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         addToMapping,
         selectMandatory,
         selectRequested,
+        isDefaultMappingChanged,
         mapping,
         initialMandatory,
         initialRequested,
@@ -85,7 +87,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [requested, setRequested] = useState(true);
     const [mappedAttribute, setMappedAttribute] = useState(claimURI);
     const [defaultMappedAttribute, setDefaultMappedAttribute] = useState(mappedAttribute);
-    const [textAlign, setTextAlign] = useState<"left" | "center" | "right">("left");
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {
@@ -105,16 +106,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         if (claimMappingError && !_.isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
         }
-    };
-
-    const handleRequestCheckChange = () => {
-        if (requested) {
-            selectRequested(claimURI, false);
-            setRequested(false);
-        } else {
-            setRequested(true);
-            selectRequested(claimURI, true);
-        }
+        isDefaultMappingChanged(true);
     };
 
     useEffect(() => {
@@ -136,16 +128,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         setMappedAttribute(claimURI);
         if (mapping) {
             addToMapping(claimURI, claimMappingOn);
-        }
-
-        if(!claimMappingOn && defaultMappedAttribute !== mappedAttribute) {
-            dispatch(addAlert({
-                description: t("console:develop.features.applications.edit.sections.attributes." +
-                    "attributeMappingChange.error.description"),
-                level: AlertLevels.WARNING,
-                message: t("console:develop.features.applications.edit.sections.attributes." + 
-                    "attributeMappingChange.error.description")
-            }));
         }
     }, [claimMappingOn]);
 
