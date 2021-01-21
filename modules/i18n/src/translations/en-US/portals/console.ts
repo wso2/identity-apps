@@ -1303,14 +1303,14 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object Signature",
+                                heading: "Request Object",
                                 description: "{{productName}} supports receiving OIDC authentication request " +
                                     "parameters from clients in a `request object`. Enable signature " +
                                     "validation to accept only signed request objects in the" +
                                     " authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable request object signature validation",
+                                        label: "Enable signature validation",
                                     }
                                 },
                             },
