@@ -444,26 +444,21 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests" +
-                            " to WSO2 Identity Server APIs.",
+                        content: "You need to enable CORS for this origin in order to make API requests" +
+                            " to {{productName}} from a Browser.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also " +
-                                "prevent legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server " +
-                                "APIs from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS Not Allowed",
+                        header: "Allow CORS",
                         leftAction: "Allow"
                     },
                     positive: {
-                        content: "The origin of the redirect URL {{url}} is allowed to make CORS requests to WSO2 " +
-                            "Identity Server APIs.",
+                        content: "The origin of the redirect URL {{urlLink}} is allowed to make CORS requests to " +
+                            "{{productName}} APIs.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
-                                "legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity " +
-                                "Server APIs from the applications registered in the <1>{{ tenantName }}</1> " +
-                                "tenant domain."
+                            0: "",
+                            1: ""
                         },
                         header: "CORS is Allowed"
                     }
