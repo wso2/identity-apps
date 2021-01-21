@@ -94,7 +94,7 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     /**
      * Allow showing additional content
      */
-    allowSecondaryContent?: boolean;
+    restrictSecondaryContent?: boolean;
 }
 
 /**
@@ -111,7 +111,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const {
         addURLTooltip,
         allowEmptyValues,
-        allowSecondaryContent,
+        restrictSecondaryContent,
         customLabel,
         duplicateURLErrorMessage,
         isAllowEnabled,
@@ -371,7 +371,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                     productName: productName, urlLink: origin 
                                 })
                         }
-                        { allowSecondaryContent && 
+                        { !restrictSecondaryContent && 
                             <>
                                 <a onClick={ () => setShowMore(!showMore) }>
                                     &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
