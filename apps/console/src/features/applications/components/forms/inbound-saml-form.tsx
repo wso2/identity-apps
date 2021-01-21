@@ -38,6 +38,7 @@ import {
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
 import { AppState } from "../../../core";
+import { ApplicationManagementConstants } from "../../constants";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
@@ -1554,8 +1555,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                             ".sections.certificate.fields.pemValue.validations.empty")
                                                     }
                                                     placeholder={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.placeholder")
+                                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
                                                     }
                                                     type="textarea"
                                                     value={

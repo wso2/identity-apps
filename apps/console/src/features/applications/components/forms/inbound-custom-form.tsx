@@ -28,7 +28,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import {
-    CertificateInterface, CertificateTypeInterface,
+    CertificateInterface,
+    CertificateTypeInterface,
     CustomInboundProtocolConfigurationInterface,
     CustomInboundProtocolMetaDataInterface,
     CustomInboundProtocolPropertyInterface,
@@ -37,6 +38,7 @@ import {
     SubmitFormCustomPropertiesInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the inbound custom protocol form component.
@@ -370,8 +372,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                                     ".sections.certificate.fields.pemValue.validations.empty")
                                             }
                                             placeholder={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
-                                                    ".sections.certificate.fields.pemValue.placeholder")
+                                                ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
                                             }
                                             type="textarea"
                                             value={
