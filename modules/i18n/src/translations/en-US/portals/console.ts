@@ -740,7 +740,7 @@ export const console: ConsoleNS = {
                                             "attributes will be changed back to the default mapped values by this " +
                                             "action. Please use with caution since the you will not be able to " +
                                             "retrieve the mapped custom attribute values.",
-                                        confirmationHeading: "Confirm switching claim mapping to defaults",
+                                        confirmationHeading: "Are you sure?",
                                         confirmationMessage: "This action will revert mapped values to default values."
                                     },
                                     searchPlaceholder: "Search user attributes"
