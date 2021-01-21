@@ -17,13 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
+import { LinkButton } from "../button";
 import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
-import { URLUtils } from "@wso2is/core/dist/src/utils";
-import { LinkButton } from "../button";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
@@ -87,6 +87,14 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Show or hide Allow button
      */
     isAllowEnabled?: boolean;
+    /**
+     * Product name
+     */
+    productName?: string;
+    /**
+     * Allow showing additional content
+     */
+    restrictSecondaryContent?: boolean;
 }
 
 /**
@@ -103,6 +111,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const {
         addURLTooltip,
         allowEmptyValues,
+        restrictSecondaryContent,
         customLabel,
         duplicateURLErrorMessage,
         isAllowEnabled,
@@ -117,6 +126,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         validation,
         validationErrorMsg,
         placeholder,
+        productName,
         labelName,
         value,
         hint,
@@ -354,40 +364,49 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     <React.Fragment>
                         {
                             positive ?
-                                t("console:develop.features.URLInput.withLabel.positive.content") :
-                                t("console:develop.features.URLInput.withLabel.negative.content")
+                                t("console:develop.features.URLInput.withLabel.positive.content", { 
+                                    productName: productName 
+                                }) :
+                                t("console:develop.features.URLInput.withLabel.negative.content", { 
+                                    productName: productName, urlLink: origin 
+                                })
                         }
-                        <a onClick={ () => setShowMore(!showMore) }>
-                            &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
-                        </a><br/>
-                        {
-                            showMore && (
-                                <React.Fragment>
-                                    {
-                                        positive ?
-                                            t("console:develop.features.URLInput." +
-                                                "withLabel.positive.detailedContent.0") :
-                                            t("console:develop.features.URLInput." +
-                                                "withLabel.negative.detailedContent.0")
-                                    }
-                                    <br/>
-                                    <Trans
-                                        i18nKey={
-                                            positive ?
-                                                "console:develop.features.URLInput." +
-                                                "withLabel.positive.detailedContent.1" :
-                                                "console:develop.features.URLInput." +
-                                                "withLabel.negative.detailedContent.1"
-                                        }
-                                        tOptions={ { tenantName: tenantDomain } }
-                                    >
-                                        Therefore enabling CORS for this origin will allow you to access
-                                        Identity Server APIs from the applications registered in the
-                                        <strong>{ tenantDomain }</strong> tenant domain.
-                                    </Trans>
-                                </React.Fragment>
-                            )
+                        { !restrictSecondaryContent && 
+                            <>
+                                <a onClick={ () => setShowMore(!showMore) }>
+                                    &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
+                                </a><br/>
+                                {
+                                    showMore && (
+                                        <React.Fragment>
+                                            {
+                                                positive ?
+                                                    t("console:develop.features.URLInput." +
+                                                        "withLabel.positive.detailedContent.0") :
+                                                    t("console:develop.features.URLInput." +
+                                                        "withLabel.negative.detailedContent.0")
+                                            }
+                                            <br/>
+                                            <Trans
+                                                i18nKey={
+                                                    positive ?
+                                                        "console:develop.features.URLInput." +
+                                                        "withLabel.positive.detailedContent.1" :
+                                                        "console:develop.features.URLInput." +
+                                                        "withLabel.negative.detailedContent.1"
+                                                }
+                                                tOptions={ { tenantName: tenantDomain } }
+                                            >
+                                                Therefore enabling CORS for this origin will allow you to access
+                                                Identity Server APIs from the applications registered in the
+                                                <strong>{ tenantDomain }</strong> tenant domain.
+                                            </Trans>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </>
                         }
+                        
                     </React.Fragment>
                 }
                 popupFooterLeftContent={

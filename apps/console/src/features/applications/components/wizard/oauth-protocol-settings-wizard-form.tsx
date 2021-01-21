@@ -24,7 +24,9 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Label, Message } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
@@ -126,6 +128,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // Maintain the state if the user allowed the CORS for the
     // origin of the configured callback URL(s).
@@ -451,6 +454,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                             submitUrl = submitFunction;
                                         } }
+                                        productName={ config.ui.productName }
+                                        restrictSecondaryContent
                                         required={ false }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
