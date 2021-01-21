@@ -56,7 +56,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     addToClaimMapping: any;
     claimConfigurations: ClaimConfigurationInterface;
     claimMappingOn: boolean;
-    showClaimMappingRevertConfirmation: (confirmation: boolean) => void;
+    showClaimMappingRevertConfirmation?: (confirmation: boolean) => void;
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
     /**
