@@ -736,9 +736,9 @@ export const console: ConsoleNS = {
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirm",
                                         confirmSecondaryAction: "Cancel",
-                                        confirmationContent: "This custom attributes mapped to relevant default " +
-                                            "attributes will be changed back to the default mapped values by this " +
-                                            "action. Please use with caution since the you will not be able to " +
+                                        confirmationContent: "The mapped custom attributes will change  " +
+                                            "back to the default attribute values. " +
+                                            "Please proceed with caution since you will not be able to " +
                                             "retrieve the mapped custom attribute values.",
                                         confirmationHeading: "Are you sure?",
                                         confirmationMessage: "This action will revert mapped values to default values."
