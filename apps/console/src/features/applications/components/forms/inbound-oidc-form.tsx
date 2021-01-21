@@ -798,6 +798,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }
+                                    onlyOrigin={ true }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundOIDC" +
                                             ".fields.allowedOrigins.label")
@@ -821,6 +822,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     { t("console:common.validations.unrecognizedURL.description") }
                                                 </Label>
                                             );
+                                        }
+
+                                        if (!URLUtils.isAValidOriginUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { "Invalid origin URL" }
+                                                </Label>
+                                            );
+                                            setAllowedOriginsErrorLabel(label);
+                                            return false;
                                         }
 
                                         if (!URLUtils.isMobileDeepLink(value)) {
