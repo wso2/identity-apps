@@ -36,7 +36,7 @@
         &.certificate-content {
             display: flex;
             justify-content: center;
-            
+
             &:not(.summary) {
                 padding: 0;
             }
@@ -328,6 +328,22 @@
             }
         }
 
+        .content {
+            min-height: 430px;
+
+            .step-text {
+                .segment {
+                    &.qr-code {
+                        padding-left: 0;
+
+                        & * {
+                            margin-left: -14px;
+                        }
+                    }
+                }
+            }
+        }
+
         .link {
             color: @primaryColor;
             cursor: pointer;
@@ -472,7 +488,7 @@
 
                     .modal-content {
                         height: 568px;
-                        
+
                         p {
                             font-size: 0.9em;
                             color: @doveGray;
@@ -568,10 +584,10 @@
                             top: 0;
                             z-index: 2;
                         }
-                    } 
+                    }
                 }
             }
-            
+
         }
 
     }
@@ -650,7 +666,7 @@
             height: @editAvatarModalContentLoaderContainerHeight;
             width: @editAvatarModalContentLoaderContainerWidth;
         }
-        
+
         .avatar-from-url-field {
             display: @editAvatarModalURLFieldContainerDisplay;
 
