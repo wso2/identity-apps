@@ -95,6 +95,11 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Allow showing additional content
      */
     restrictSecondaryContent?: boolean;
+    /**
+     * Denotes whether this input component url type is
+     * origin or redirect url types.
+     */
+    onlyOrigin?: boolean;
 }
 
 /**
@@ -138,6 +143,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         readOnly,
         getSubmit,
         tenantDomain,
+        onlyOrigin,
         [ "data-testid" ]: testId
     } = props;
 
@@ -157,7 +163,26 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @returns {string} URLs.
      */
     const addUrl = useCallback((): string => {
-        const url = changeUrl;
+
+        let url = changeUrl;
+
+        /**
+         * Normalizes the user input url. This operation is not
+         * strictly applied. If the url is invalid we will inform
+         * the user but not add the input to the form value.
+         */
+        if (URLUtils.isURLValid(changeUrl)) {
+            const normalized = URLUtils.urlComponents(changeUrl).href;
+            if (normalized) {
+                url = normalized;
+                // Also if its not a origin url check then try to strip
+                // out the unnecessary trailing forward slashes.
+                if (!onlyOrigin || !URLUtils.isAValidOriginUrl(changeUrl)) {
+                    url = url.replace(/\/+$/, "");
+                }
+            }
+        }
+
         const urlValid = validation(url);
         setValidURL(urlValid);
         if (urlValid && (urlState === "" || urlState === undefined)) {
@@ -166,18 +191,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             return url;
         } else {
-            const availableURls: string[] = !urlState
-                ? []
-                : urlState?.split(",");
-
-            const duplicate: boolean = availableURls?.includes(url);
-
+            const availableURls: string[] = !urlState ? [] : urlState?.split(",");
+            const urls = new Set([
+                ...(onlyOrigin ? (allowedOrigins ?? []) : []),
+                ...(availableURls ?? [])
+            ]);
+            const duplicate: boolean = urls.has(url);
             urlValid && setDuplicateURL(duplicate);
 
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
-
                 return url + "," + urlState;
             }
         }
@@ -333,8 +357,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const computerSize: any = (computerWidth) ? computerWidth : 8;
 
     const resolveCORSStatusLabel = (url: string) => {
-        const { origin } = URLUtils.urlComponents(url);
-        const positive = allowedOrigins?.includes(origin);
+        const { origin, href } = URLUtils.urlComponents(url);
+        const positive = allowedOrigins?.includes(url);
         /**
          * TODO : React Components should not depend on the product
          * locale bundles.
@@ -345,8 +369,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 className="cors-details-popup"
                 trigger={
                     <Icon
+                        className={ "p-1" }
                         name={ positive ? "check" : "exclamation triangle" }
-                        color={ positive ? "green" : "red" }
+                        color={ positive ? "green" : "grey" }
                     />
                 }
                 popupHeader={
@@ -364,14 +389,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     <React.Fragment>
                         {
                             positive ?
-                                t("console:develop.features.URLInput.withLabel.positive.content", { 
-                                    productName: productName 
+                                t("console:develop.features.URLInput.withLabel.positive.content", {
+                                    productName: productName
                                 }) :
-                                t("console:develop.features.URLInput.withLabel.negative.content", { 
-                                    productName: productName, urlLink: origin 
+                                t("console:develop.features.URLInput.withLabel.negative.content", {
+                                    productName: productName, urlLink: origin
                                 })
                         }
-                        { !restrictSecondaryContent && 
+                        { !restrictSecondaryContent &&
                             <>
                                 <a onClick={ () => setShowMore(!showMore) }>
                                     &nbsp;{ showMore ? t("common:showLess") : t("common:showMore") }
@@ -406,13 +431,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 }
                             </>
                         }
-                        
+
                     </React.Fragment>
                 }
                 popupFooterLeftContent={
                     <React.Fragment>
                         <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
-                        { origin }
+                        { onlyOrigin ? origin : href }
                     </React.Fragment>
                 }
                 popupOptions={ { basic: true, on: "click" } }
@@ -446,11 +471,23 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         return customLabel;
     };
 
+    const shouldShowAllowOriginAction = (url: string): boolean => {
+        return labelEnabled &&
+            (isAllowEnabled &&
+            !(allowedOrigins?.includes(url)));
+    };
+
+    /**
+     * Chip widget that contains the origin or href with a
+     * following remove button.
+     *
+     * @param url {string}
+     */
     const urlTextWidget = (url: string): ReactElement => {
-        const { protocol, host } = URLUtils.urlComponents(url);
+        const { protocol, host, pathWithoutProtocol } = URLUtils.urlComponents(url);
         return (
             <span>
-                { (!URLUtils.isTLSEnabled(url)) ? (
+                { (!URLUtils.isHTTPS(url)) ? (
                     <Popup
                         trigger={
                             <span style={ { color: "red", textDecoration: "line-through" } }>{ protocol }</span>
@@ -463,11 +500,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     />
                 ) : <span>{ protocol }</span> }
                 <span>://</span>
-                <span>{ host }</span>
+                <span>{ onlyOrigin ? host : pathWithoutProtocol }</span>
             </span>
         );
     };
 
+    /**
+     * Added url remove button. In the click event it will send
+     * the full {@code url} regardless of the type {@code onlyOrigin}
+     *
+     * @param url {string}
+     */
     const urlRemoveButtonWidget = (url: string): ReactElement => {
         return (
             <Icon
@@ -479,24 +522,38 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     };
 
     const urlChipItemWidget = (url: string): ReactElement => {
-        const { origin } = URLUtils.urlComponents(url);
+        const { origin, href } = URLUtils.urlComponents(url);
         return (
             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                    <Label data-testid={ `${ testId }-${ url }` }>
-                        { urlTextWidget(url) }
-                        { !readOnly && urlRemoveButtonWidget(url) }
-                    </Label>
-                    { (labelEnabled && isAllowEnabled && !(allowedOrigins?.includes(origin))) && (
-                        <LinkButton
-                            basic={ true }
-                            className={ "m-1 p-2 with-no-border orange" }
-                            onClick={ () => handleAllowOrigin(origin) }>
-                            <span style={ { fontWeight: "bold"} }>Allow</span>
-                            &nbsp;<em>(enable CORS for this origin)</em>
-                        </LinkButton>
-                    ) }
-                    { labelEnabled && resolveCORSStatusLabel(url) }
+                    <p>
+                        {/*Section that contains | https://origin X |*/ }
+                        {/*Chip widget with protocol highlights*/ }
+                        <Label data-testid={ `${ testId }-${ url }` }>
+                            { urlTextWidget(url) }
+                            { !readOnly && urlRemoveButtonWidget(url) }
+                        </Label>
+
+                        {/*Below is the exclamation mark that shows a popup*/ }
+                        {/*when clicked on top of it.*/ }
+                        &nbsp;{ labelEnabled && resolveCORSStatusLabel(url) }
+
+                        {/*Below is the static label text that get rendered*/ }
+                        {/*when the url is not allowed in cors list.*/ }
+                        { shouldShowAllowOriginAction(url) &&
+                        <span className={ "grey" }>&nbsp;<em>CORS not allowed for this domain</em></span>
+                        }
+
+                        {/*Below is the `Allow` button that gets rendered when*/ }
+                        {/*this url is not allowed is cors list.*/ }
+                        { shouldShowAllowOriginAction(url) && (
+                            <LinkButton
+                                className={ "m-1 p-1 with-no-border orange" }
+                                onClick={ () => handleAllowOrigin(onlyOrigin ? origin : href) }>
+                                <span style={ { fontWeight: "bold" } }>Allow</span>
+                            </LinkButton>
+                        ) }
+                    </p>
                 </Grid.Column>
             </Grid.Row>
         );
@@ -606,5 +663,6 @@ URLInput.defaultProps = {
     duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
     isAllowEnabled: true,
     labelEnabled: false,
-    showPredictions: true
+    showPredictions: true,
+    onlyOrigin: false
 };

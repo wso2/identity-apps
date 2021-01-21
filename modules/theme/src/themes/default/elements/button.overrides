@@ -57,12 +57,22 @@
                 background: @downBackgroundColor;
             }
         }
-        &.with-no-border {
-            border: 0px transparent;
-            box-shadow: none !important;
-        }
         &.with-bold-text {
             font-weight: bold;
+        }
+        &.with-no-border {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            border-style: none;
+            border: 0px transparent;
+            box-shadow: none !important;
+
+            &:hover, &:focus, &:active {
+                color: inherit;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
         }
     }
     &.positive-modal-link-button {
