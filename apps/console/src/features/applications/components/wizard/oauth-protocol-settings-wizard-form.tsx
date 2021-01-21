@@ -451,6 +451,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                             submitUrl = submitFunction;
                                         } }
+                                        productName={ window["AppUtils"].getConfig().ui.productName }
                                         required={ false }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }

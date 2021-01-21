@@ -440,27 +440,23 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "L'origine de l'URL de redirection {{url}} n'est pas autorisée à faire des requêtes CORS vers les APIs " +
-                            "de WSO2 Identity Server.",
+                        content: "Vous devez activer CORS pour cette origine afin de faire des requêtes API " +
+                            "à {{productName}} à partir d'un navigateur.",
                         detailedContent: {
-                            0: "Par défaut, les API de WSO2 Identity Server bloquent les requêtes CORS. Mais cela peut aussi " +
-                                "empêcher que des demandes légitimes puissent circuler",
-                            1: "Par conséquent, l'activation de CORS pour cette origine vous permettra d'accéder aux APIs de WSO2 Identity Server " +
-                                "à partir des applications enregistrées dans le domaine du locataire <1>{{ tenantName }}</1>."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS non autorisé",
+                        header: "Autoriser CORS",
                         leftAction: "Autoriser"
                     },
                     positive: {
-                        content: "L'origine de l'URL de redirection {{url}} n'est pas autorisée à faire des requêtes CORS vers les APIs " +
-                         "de WSO2 Identity Server.",
+                        content: "L'origine de l'URL de redirection {{urlLink}} est autorisée à envoyer des " + 
+                            "requêtes CORS aux API {{productName}}.",
                         detailedContent: {
-                           0: "Par défaut, les API de WSO2 Identity Server bloquent les requêtes CORS. Mais cela peut aussi " +
-                                 "empêcher que des demandes légitimes puissent circuler",
-                           1: "Par conséquent, l'activation de CORS pour cette origine vous permettra d'accéder aux APIs de WSO2 Identity Server " +
-                                 "à partir des applications enregistrées dans le domaine du locataire <1>{{ tenantName }}</1>."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS autorisé"
+                        header: "CORS est autorisé"
                     }
                 }
             },
