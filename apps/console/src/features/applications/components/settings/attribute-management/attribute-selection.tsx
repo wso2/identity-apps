@@ -478,7 +478,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         { claimMappingOn
                                                             ? (
                                                                 <Table.Row>
-                                                                    <Table.HeaderCell>
+                                                                    <Table.HeaderCell width="6">
                                                                         <strong>
                                                                             {
                                                                                 t("console:develop.features" +
@@ -489,7 +489,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             }
                                                                         </strong>
                                                                     </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
+                                                                    <Table.HeaderCell width="8">
                                                                         <strong>
                                                                             {
                                                                                 t("console:develop.features" +
