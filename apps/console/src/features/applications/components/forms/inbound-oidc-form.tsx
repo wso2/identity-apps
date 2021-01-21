@@ -348,7 +348,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const modifyGrantTypeLabels = (value: string, label: string): string => {
         if (value === "implicit") {
-            return `${ label } (less secure)`;
+            return `${ label } (not recommended)`;
         }
         return label;
     };
@@ -362,9 +362,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const getGrantTypeHintDescription = (value: string): string => {
         switch (value) {
             case "implicit":
-                return "Implicit flow is less secure than the authorization code flow. " +
-                    "It is vulnerable to access token leakage. We strongly recommend you " +
-                    "to use the authorization code flow.";
+                return "Implicit flow is vulnerable to access token leakage.";
             default:
                 return null;
         }
