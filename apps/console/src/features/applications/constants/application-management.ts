@@ -175,6 +175,23 @@ export class ApplicationManagementConstants {
     };
 
     /**
+     * Holds metadata on how to arrange the values when rendering above
+     * {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES} values in the UI.
+     *
+     * Usage: Map the index => key to rearrange the values.
+     *
+     * @constant
+     * @type { {[ key: string ]: Map<number, string>} }
+     */
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
+            [ "authorization_code", 0 ],
+            [ "refresh_token", 1 ],
+            [ "implicit", 2 ],
+        ])
+    }
+
+    /**
      * Key for the SPA template.
      * @constant
      * @type {string}
