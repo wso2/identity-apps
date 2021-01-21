@@ -123,7 +123,14 @@
 
                         <div class="segment-form">
                             <form action="../commonauth" method="post" id="totpForm" class="ui large form">
-                                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%></p>
+                                <p>
+                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device")%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or.got.via.email") + "." %>
+                                    <% } else { %>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.verification.code.got.by.device") + "."%>
+                                    <% } %>
+                                </p>
                                 <div class="field">
                                     <input type="text" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
                                 </div>
