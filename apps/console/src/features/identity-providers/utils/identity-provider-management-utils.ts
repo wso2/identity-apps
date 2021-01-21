@@ -113,9 +113,10 @@ export class IdentityProviderManagementUtils {
                     }
 
                     if (
-                        authenticator.name ===
-                            IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR ||
-                        authenticator.name === IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR
+                        [IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+                        IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
+                        IdentityProviderManagementConstants.X509_AUTHENTICATOR,
+                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR].includes(authenticator.name)
                     ) {
                         return;
                     }
