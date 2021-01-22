@@ -9,12 +9,15 @@
     "adminApp": {
         "basePath": "/manage",
         "displayName": "Manage",
-        "path": "/manage/users"
+        "path": "/manage/getting-started"
     },
     "developerApp": {
         "basePath": "/develop",
         "displayName": "Develop",
-        "path": "/develop/applications"
+        "path": "/develop/getting-started"
+    },
+    "extensions": {
+        "feedbackEndPoint": "https://dev.portal.asgardio.io/api/cloud/v1/feedback/"
     },
     "documentation": {
         "baseURL": "https://api.github.com",
@@ -42,7 +45,7 @@
     "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
-        "home": "/develop/applications",
+        "home": "/develop/getting-started",
         "login": "/login",
         "logout": "/logout"
     },
@@ -57,8 +60,6 @@
         "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
         "appTitle": "Console | WSO2 Identity Server",
         "appName": "Console",
-        "applicationTemplateLoadingStrategy": "LOCAL",
-        "identityProviderTemplateLoadingStrategy": "LOCAL",
         "appLogoPath": "/assets/images/logo.svg",
         "features": {
             "applications": {
@@ -313,7 +314,6 @@
             "showLanguageSwitcher": false
         },
         "isGroupAndRoleSeparationEnabled": true,
-        "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
         "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": true,
@@ -331,7 +331,7 @@
         "selfAppIdentifier": "Console",
         "systemAppsIdentifiers": [ "Console", "My Account" ],
         "theme": {
-            "name": "default"
+            "name": "asgardio"
         }
     }
 }
