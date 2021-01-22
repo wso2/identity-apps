@@ -29,6 +29,8 @@ import {
 } from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
+import get from "lodash/get";
+import set from "lodash/set";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -172,13 +174,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         /**
          * Remove the default callbackURLs from the form values if theres any user defined values
          * (callbackURLs) in the form. We do this to prevent appending the default `callbackURL`
-         * to the model.
+         * to the model. {@code callbackURLs?.filter(Boolean)} ensures the passing value has no
+         * undefined or falsy values so that {@code isEmpty()} call returns a clean check.
          *
          * If you check the file [single-page-application.json] you can see that there's default
          * value is already populated.
          */
-        if (!isEmpty(protocolFormValues[ "inboundProtocolConfiguration" ][ "oidc" ][ "callbackURLs" ].filter(x => x))) {
-            templateSettings[ "application" ][ "inboundProtocolConfiguration" ][ "oidc" ][ "callbackURLs" ] = [];
+        const callbackURLsPathKey = "inboundProtocolConfiguration.oidc.callbackURLs";
+        const callbackURLs = get(protocolFormValues, callbackURLsPathKey, []);
+        if (!isEmpty(callbackURLs?.filter(Boolean))) {
+            set(templateSettings, `application.${ callbackURLsPathKey }`, []);
         }
 
         const application: MainApplicationInterface = merge(templateSettings?.application, protocolFormValues);
