@@ -19,7 +19,7 @@
 
 /// <reference types="cypress" />
 
-import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/dist/constants";
+import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/ui";
 import { RemoteConfigurationPageConstants } from "../constants";
 
 /**

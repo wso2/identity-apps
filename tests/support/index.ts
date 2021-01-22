@@ -18,7 +18,9 @@
  */
 
 // Import reusable commands.
-import "@wso2/identity-cypress-test-base/commands";
+// TODO: After https://github.com/wso2/product-is/issues/10941 is implemented, we can use
+// "@wso2/identity-cypress-test-base/ui/commands
+import "@wso2/identity-cypress-test-base/ui";
 
 // Import internal commands.
 import "./applications";

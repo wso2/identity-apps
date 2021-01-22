@@ -18,7 +18,7 @@
 
 /// <reference types="cypress" />
 
-import { Header } from "@wso2/identity-cypress-test-base/dist/page-objects";
+import { Header } from "@wso2/identity-cypress-test-base/dist/ui";
 import { RemoteConfigurationPage } from "../../integration/remote-fetch/page-objects";
 
 /**
