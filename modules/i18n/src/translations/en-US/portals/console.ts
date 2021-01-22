@@ -1078,9 +1078,9 @@ export const console: ConsoleNS = {
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
-                                    "origins to WSO2 Identity Server APIs",
+                                    "origins to {{productName}} APIs",
                                 label: "Allowed Origins",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }

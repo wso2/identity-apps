@@ -1083,10 +1083,10 @@ export const console: ConsoleNS = {
                         },
                         fields: {
                             allowedOrigins: {
-                                hint: "අවසර ලත් මූලාරම්භය යනු හරස් ප්‍රභවයේ සිට WSO2 හැඳුනුම් සේවාදායක API " +
+                                hint: "අවසර ලත් මූලාරම්භය යනු හරස් ප්‍රභවයේ සිට {{productName}} API " +
                                     "වෙත ඉල්ලීම් කිරීමට ඉඩ දෙන URL ය",
                                 label: "අවසර ලත් මූලයන්",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "කරුණාකර වලංගු ප්‍රභවයක් එක් කරන්න."
                                 }

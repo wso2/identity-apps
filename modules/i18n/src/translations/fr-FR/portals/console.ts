@@ -1074,9 +1074,9 @@ export const console: ConsoleNS = {
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
-                                    "depuis des origines tierces vers les APIs de WSO2 Identity Server ",
+                                    "depuis des origines tierces vers les APIs de {{productName}} ",
                                 label: "Origines autorisées",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Veuillez ajouter une origine valide."
                                 }
