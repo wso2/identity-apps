@@ -170,11 +170,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         /**
-         * Remove the default callbackURLs from the form values if there are
-         * any user defined values (callbackURLs) in the form. We do this to
-         * prevent appending the default `callbackURL` to the model.
+         * Remove the default callbackURLs from the form values if theres any user defined values
+         * (callbackURLs) in the form. We do this to prevent appending the default `callbackURL`
+         * to the model.
+         *
+         * If you check the file [single-page-application.json] you can see that there's default
+         * value is already populated.
          */
-        if (!isEmpty(protocolFormValues?.inboundProtocolConfiguration?.oidc?.callbackURLs?.filter(x => x))) {
+        if (!isEmpty(protocolFormValues[ "inboundProtocolConfiguration" ][ "oidc" ][ "callbackURLs" ].filter(x => x))) {
             templateSettings[ "application" ][ "inboundProtocolConfiguration" ][ "oidc" ][ "callbackURLs" ] = [];
         }
 
