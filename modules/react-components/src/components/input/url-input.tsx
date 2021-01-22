@@ -181,6 +181,12 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     url = url.replace(/\/+$/, "");
                 }
             }
+        } else {
+            /**
+             * If the entered URL is a silly input, then we won't add
+             * the input to the state.
+             */
+            return;
         }
 
         const urlValid = validation(url);
@@ -636,7 +642,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 )
             }
             { urlState && urlState.split(",").map((url) => {
-                if (url !== "") {
+                if (url !== "" && URLUtils.isURLValid(url)) {
                     return urlChipItemWidget(url);
                 }
             }) }
