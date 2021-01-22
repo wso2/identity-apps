@@ -2307,7 +2307,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Authentication Provider"
+                    addIDP: "New Identity Provider"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -2326,7 +2326,7 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this authentication provider, you will not be able to get it back. All the " +
+                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
                             "applications depending on this also might stop working. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the IDP."
@@ -2334,15 +2334,15 @@ export const console: ConsoleNS = {
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
-                        actionTitle: "Delete Authentication Provider",
-                        header: "Delete authentication provider",
-                        subheader: "Once you delete an authentication provider, there is no going back." +
+                        actionTitle: "Delete Identity Provider",
+                        header: "Delete identity provider",
+                        subheader: "Once you delete an identity provider, there is no going back." +
                             " Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "Disable Authentication Provider",
-                        header: "Disable authentication provider",
-                        subheader: "Once you disable an authentication provider, it can no longer be used until " +
+                        actionTitle: "Disable Identity Provider",
+                        header: "Disable identity provider",
+                        subheader: "Once you disable an identity provider, it can no longer be used until " +
                             "you enable it again. Please be certain."
                     },
                     header: "Danger Zone"
@@ -2350,8 +2350,8 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedConfigs: {
                         alias: {
-                            hint: "If the resident authentication provider is known by an alias at the federated " +
-                                "authentication provider, specify it here.",
+                            hint: "If the resident identity provider is known by an alias at the federated " +
+                                "identity provider, specify it here.",
                             label: "Alias"
                         },
                         certificateType: {
@@ -2374,11 +2374,11 @@ export const console: ConsoleNS = {
                             label: "Select Certificate Type"
                         },
                         federationHub: {
-                            hint: "Check if this points to a federation hub authentication provider",
+                            hint: "Check if this points to a federation hub identity provider",
                             label: "Federation Hub"
                         },
                         homeRealmIdentifier: {
-                            hint: "Enter the home realm identifier for this authentication provider",
+                            hint: "Enter the home realm identifier for this identity provider",
                             label: "Home Realm Identifier"
                         }
                     },
@@ -2390,15 +2390,15 @@ export const console: ConsoleNS = {
                         },
                         attributeMapping: {
                             attributeColumnHeader: "Attribute",
-                            attributeMapColumnHeader: "Authentication Provider attribute",
+                            attributeMapColumnHeader: "Identity Provider attribute",
                             attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
                             componentHeading: "Attributes Mapping",
-                            hint: "Add attributes supported by Authentication Provider"
+                            hint: "Add attributes supported by Identity Provider"
                         },
                         attributeProvisioning: {
                             attributeColumnHeader: {
                                 0: "Attribute",
-                                1: "Authentication Provider attribute"
+                                1: "Identity Provider attribute"
                             },
                             attributeMapColumnHeader: "Default value",
                             attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
@@ -2429,29 +2429,29 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "A text description of the authentication provider.",
+                            hint: "A text description of the identity provider.",
                             label: "Description",
-                            placeholder: "Enter a description of the authentication provider."
+                            placeholder: "Enter a description of the identity provider."
                         },
                         image: {
-                            hint: "A URL for the image of the authentication provider for display purposes. " +
+                            hint: "A URL for the image of the identity provider for display purposes. " +
                                 "If not provided a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
                             label: "Logo",
                             placeholder: "https://myapp-resources.io/my_app_image.png"
                         },
                         name: {
-                            hint: "Enter a unique name for this authentication provider.",
+                            hint: "Enter a unique name for this identity provider.",
                             label: "Name",
-                            placeholder: "Enter a name for the authentication provider.",
+                            placeholder: "Enter a name for the identity provider.",
                             validations: {
-                                duplicate: "An authentication provider already exists with this name",
-                                empty: "Authentication Provider name is required"
+                                duplicate: "An identity provider already exists with this name",
+                                empty: "Identity Provider name is required"
                             }
                         }
                     },
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            hint: "Specifies if users federated from this authentication provider " +
+                            hint: "Specifies if users federated from this identity provider " +
                                 "needs to be provisioned locally.",
                             label: "Enable Just-in-time Provisioning"
                         },
@@ -2482,7 +2482,7 @@ export const console: ConsoleNS = {
                     },
                     outboundProvisioningRoles: {
                         heading: "OutBound Provisioning Roles",
-                        hint: "Select and add as authentication provider outbound provisioning roles",
+                        hint: "Select and add as identity provider outbound provisioning roles",
                         label: "Role",
                         placeHolder: "Select Role",
                         popup: {
@@ -2491,19 +2491,19 @@ export const console: ConsoleNS = {
                     },
                     roleMapping: {
                         heading: "Role Mapping",
-                        hint: "Map local roles with the Authentication Provider roles",
+                        hint: "Map local roles with the Identity Provider roles",
                         keyName: "Local Role",
                         validation: {
                             duplicateKeyErrorMsg: "This role is already mapped. Please select another role",
                             keyRequiredMessage: "Please enter the local role",
                             valueRequiredErrorMessage: "Please enter an IDP role to map to"
                         },
-                        valueName: "Authentication Provider Role"
+                        valueName: "Identity Provider Role"
                     },
                     uriAttributeSettings: {
                         role: {
                             heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Authentication Provider",
+                            hint: "Specifies the attribute that identifies the roles at the Identity Provider",
                             label: "Role Attribute",
                             placeHolder: "Select Attribute",
                             validation: {
@@ -2512,7 +2512,7 @@ export const console: ConsoleNS = {
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "Specifies the attribute that identifies the user at the authentication provider",
+                            hint: "Specifies the attribute that identifies the user at the identity provider",
                             label: "Subject Attribute",
                             placeHolder: "Select Attribute",
                             validation: {
@@ -2527,7 +2527,7 @@ export const console: ConsoleNS = {
                             content: {
                                 docs: {
                                     goBack: "Go back",
-                                    hint: "Click on the following  Authentication Provider types to check out the " +
+                                    hint: "Click on the following  Identity Provider types to check out the " +
                                         "corresponding documentation.",
                                     title: "Select a Template Type"
                                 }
@@ -2542,11 +2542,11 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addAuthenticator: {
-                        subTitle: "Add new authenticator to the authentication provider: {{ idpName }}",
+                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
                         title: "Add New Authenticator"
                     },
                     addCertificate: {
-                        subTitle: "Add new certificate to the authentication provider: {{ idpName }}",
+                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
                         title: "Add New Certificate"
                     },
                     addProvisioningConnector: {
@@ -2582,11 +2582,11 @@ export const console: ConsoleNS = {
                             message: "Create error"
                         },
                         genericError: {
-                            description: "An error occurred while creating the authentication provider.",
+                            description: "An error occurred while creating the identity provider.",
                             message: "Create error"
                         },
                         success: {
-                            description: "Successfully created the authentication provider.",
+                            description: "Successfully created the identity provider.",
                             message: "Create successful"
                         }
                     },
@@ -2621,14 +2621,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         error: {
                             description: "{{ description }}",
-                            message: "Authentication Provider Delete Error"
+                            message: "Identity Provider Delete Error"
                         },
                         genericError: {
-                            description: "An error occurred while deleting the authentication provider",
-                            message: "Authentication Provider Delete Error"
+                            description: "An error occurred while deleting the identity provider",
+                            message: "Identity Provider Delete Error"
                         },
                         success: {
-                            description: "Successfully deleted the authentication provider",
+                            description: "Successfully deleted the identity provider",
                             message: "Delete successful"
                         }
                     },
@@ -2736,7 +2736,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving authentication provider details",
+                            description: "An error occurred while retrieving identity provider details",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2750,7 +2750,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving authentication providers",
+                            description: "An error occurred while retrieving identity providers",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2778,7 +2778,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving authentication provider template list",
+                            description: "An error occurred while retrieving identity provider template list",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2904,11 +2904,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the authentication provider.",
+                            description: "An error occurred while updating the identity provider.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the authentication provider.",
+                            description: "Successfully updated the identity provider.",
                             message: "Update successful"
                         }
                     },
@@ -2918,11 +2918,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the authentication provider certificate.",
+                            description: "An error occurred while updating the identity provider certificate.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the authentication provider certificate.",
+                            description: "Successfully updated the identity provider certificate.",
                             message: "Update successful"
                         }
                     },
@@ -2986,12 +2986,12 @@ export const console: ConsoleNS = {
                 popups: {
                     appStatus: {
                         enabled: {
-                            content: "The authentication provider is enabled.",
+                            content: "The identity provider is enabled.",
                             header: "Enabled",
                             subHeader: ""
                         },
                         disabled: {
-                            content: "The authentication provider is disabled. Please enable the authentication " +
+                            content: "The identity provider is disabled. Please enable the authentication " +
                                 "provider to use it's services.",
                             header: "Disabled",
                             subHeader: ""
@@ -3023,11 +3023,11 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "Currently there are no authentication providers available.",
-                            1: "You can add a new authentication provider easily by following",
-                            2: "the steps in the authentication providers creation wizard."
+                            0: "Currently there are no identity providers available.",
+                            1: "You can add a new identity provider easily by following",
+                            2: "the steps in the identity providers creation wizard."
                         },
-                        title: "Add a new Authentication Provider"
+                        title: "Add a new Identity Provider"
                     },
                     emptyIDPSearchResults: {
                         subtitles: {
@@ -3046,11 +3046,11 @@ export const console: ConsoleNS = {
                 templates: {
                     manualSetup: {
                         heading: "Manual Setup",
-                        subHeading: "Create an authentication provider with custom configurations."
+                        subHeading: "Create an identity provider with custom configurations."
                     },
                     quickSetup: {
                         heading: "Quick Setup",
-                        subHeading: "Predefined set of templates to speed up your authentication provider creation."
+                        subHeading: "Predefined set of templates to speed up your identity provider creation."
                     }
                 },
                 wizards: {
@@ -3077,7 +3077,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     addIDP: {
-                        header: "Fill the basic information about the authentication provider.",
+                        header: "Fill the basic information about the identity provider.",
                         steps: {
                             authenticatorConfiguration: {
                                 title: "Authenticator Configuration"
@@ -3948,8 +3948,8 @@ export const console: ConsoleNS = {
                             subHeading: "Create applications using predefined templates and manage configurations."
                         },
                         authenticationProviders: {
-                            heading: "Authentication Providers",
-                            subHeading: "Create and manage authentication providers."
+                            heading: "Identity Providers",
+                            subHeading: "Create and manage identity providers."
                         },
                         idps: {
                             heading: "Identity Providers",
@@ -3972,12 +3972,12 @@ export const console: ConsoleNS = {
                     general: "General",
                     gettingStarted: "Getting Started",
                     identityProviders: "Identity Providers",
-                    authenticationProviders: "Authentication Providers"
+                    authenticationProviders: "Identity Providers"
                 },
                 customize: "Customize",
-                authenticationProviderEdit: "Authentication Providers Edit",
-                authenticationProviderTemplates: "Authentication Provider Templates",
-                authenticationProviders: "Authentication Providers",
+                authenticationProviderEdit: "Identity Providers Edit",
+                authenticationProviderTemplates: "Identity Provider Templates",
+                authenticationProviders: "Identity Providers",
                 identityProviderEdit: "Identity Providers Edit",
                 identityProviderTemplates: "Identity Provider Templates",
                 identityProviders: "Identity Providers",
@@ -4056,18 +4056,18 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Connect and manage authentication providers to enable users to log in to your " +
+                subTitle: "Connect and manage identity providers to enable users to log in to your " +
                     "application easily. ",
-                title: "Authentication Providers"
+                title: "Identity Providers"
             },
             authenticationProviderTemplate: {
-                backButton: "Go back to Authentication Providers",
-                subTitle: "Choose one of the following authentication provider types.",
+                backButton: "Go back to Identity Providers",
+                subTitle: "Choose one of the following identity provider types.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Authentication Provider Type"
+                title: "Select Identity Provider Type"
             },
             idp: {
                 subTitle: "Create and manage identity providers based on templates and configure authentication.",
