@@ -455,7 +455,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             submitUrl = submitFunction;
                                         } }
                                         productName={ config.ui.productName }
-                                        restrictSecondaryContent
                                         required={ false }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
