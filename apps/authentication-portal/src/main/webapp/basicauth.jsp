@@ -367,7 +367,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
             <% }
-              if (isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
+              if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% }
               if (isPasswordRecoveryEnabledInTenant) { %>
