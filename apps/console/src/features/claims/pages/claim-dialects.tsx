@@ -30,6 +30,7 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     FeatureConfigInterface,
     UIConstants,
     filterList,
@@ -72,6 +73,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         }
     ];
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const listAllAttributeDialects: boolean = useSelector((
         state: AppState) => state.config.ui.listAllAttributeDialects);
@@ -250,7 +252,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             <PageLayout
                 action={
                     (isLoading || !(!searchQuery && filteredDialects?.length <= 0))
-                    && (
+                    && config.ui?.isDialectAddingEnabled !== false && (
                         <PrimaryButton
                             onClick={ () => {
                                 setAddEditClaim(true);

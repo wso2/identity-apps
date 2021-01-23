@@ -159,6 +159,8 @@ export class Config {
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
+            isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
+            isDialectAddingEnabled: window["AppUtils"].getConfig().ui.isDialectAddingEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
             isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui
                 .isSignatureValidationCertificateAliasEnabled,
