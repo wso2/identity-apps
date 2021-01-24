@@ -6266,8 +6266,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Select the method to set the user password",
                                 options: {
-                                    askPassword: "Invite user to set password",
-                                    createPassword: "Set user password"
+                                    askPassword: "Invite the user to set a password",
+                                    createPassword: "Set a temporary user password"
 
                                 }
                             }

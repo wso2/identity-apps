@@ -36,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
+import { CONSUMER_USERSTORE } from "../../../userstores";
 
 /**
  * Proptypes for the role user list component.
@@ -132,7 +133,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response) => {
-                const responseUsers = response.Resources;
+                const responseUsers = response.Resources.filter((user
+                ) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
                 responseUsers.sort((userObject, comparedUserObject) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
