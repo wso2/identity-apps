@@ -245,7 +245,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 }
             });
         } else {
-            console.log("Initial list", initialUserList);
             setSelectedUsers(initialUserList);
         }
     };
