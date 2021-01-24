@@ -664,5 +664,6 @@ URLInput.defaultProps = {
     isAllowEnabled: true,
     labelEnabled: false,
     showPredictions: true,
-    onlyOrigin: false
+    onlyOrigin: false,
+    restrictSecondaryContent: true,
 };
