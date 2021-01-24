@@ -181,6 +181,12 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     url = url.replace(/\/+$/, "");
                 }
             }
+        } else {
+            /**
+             * If the entered URL is a silly input, then we won't add
+             * the input to the state.
+             */
+            return;
         }
 
         const urlValid = validation(url);
@@ -349,7 +355,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
     }, [ hideComponent ]);
 
-    const handleAllowOrigin = (url: string): void => {
+    /**
+     * Once clicked this function will immediately delegates the
+     * action to the parent above this component. Calls -
+     * {@link React.MouseEvent.preventDefault} to avoid accidental
+     * form submission events.
+     *
+     * @param event {React.MouseEvent<HTMLButtonElement>}
+     * @param url {string} user input
+     */
+    const onAllowOriginClick = (event: React.MouseEvent<HTMLButtonElement>, url: string): void => {
+        event.preventDefault();
         handleAddAllowedOrigin(url);
         allowedOrigins.push(url);
     };
@@ -549,7 +565,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         { shouldShowAllowOriginAction(url) && (
                             <LinkButton
                                 className={ "m-1 p-1 with-no-border orange" }
-                                onClick={ () => handleAllowOrigin(onlyOrigin ? origin : href) }>
+                                onClick={ (e) => {
+                                    onAllowOriginClick(e, onlyOrigin ? origin : href)
+                                } }>
                                 <span style={ { fontWeight: "bold" } }>Allow</span>
                             </LinkButton>
                         ) }
@@ -636,7 +654,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 )
             }
             { urlState && urlState.split(",").map((url) => {
-                if (url !== "") {
+                if (url !== "" && URLUtils.isURLValid(url)) {
                     return urlChipItemWidget(url);
                 }
             }) }
