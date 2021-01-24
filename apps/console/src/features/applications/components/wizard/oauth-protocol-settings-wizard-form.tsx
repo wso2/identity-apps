@@ -122,6 +122,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ publicClient, setPublicClient ] = useState<string[]>([]);
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
+    const [ showURLError, setShowURLError ] = useState(false);
+    const [ isCallbackURLMandatory, setIsCallbackURLMandatory ] = useState<boolean>(undefined);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
     const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
@@ -164,6 +166,29 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             setSelectedGrantTypes([ ...templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes ]);
         }
 
+    }, [ templateValues ]);
+
+    /**
+     * Sets the mandatory status of the callback component by reading
+     * the template values. If the template has a callback array defined,
+     * makes the field optional.
+     */
+    useEffect(() => {
+
+        if (!templateValues) {
+            return;
+        }
+
+        const templatedCallbacks: string[] = templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
+
+        if (!templatedCallbacks
+            || ((isCallbackURLMandatory === undefined)
+                && templatedCallbacks
+                && Array.isArray(templatedCallbacks)
+                && isEmpty([ ...templatedCallbacks ].filter(Boolean)))) {
+
+            setIsCallbackURLMandatory(true);
+        }
     }, [ templateValues ]);
 
     useEffect(() => {
@@ -359,6 +384,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     onSubmit={ (values) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
+                                if (isCallbackURLMandatory) {
+                                    if (isEmpty(callBackUrls) && isEmpty(url)) {
+                                        setShowURLError(true);
+                                    } else {
+                                        onSubmit(getFormValues(values, url));
+                                    }
+
+                                    return;
+                                }
+
                                 onSubmit(getFormValues(values, url));
                             });
                         } else {
@@ -444,6 +479,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             return true;
                                         } }
                                         computerWidth={ 10 }
+                                        setShowError={ setShowURLError }
+                                        showError={ showURLError }
                                         hint={
                                             !hideFieldHints && t("console:develop.features.applications" +
                                                 ".forms.inboundOIDC.fields.callBackUrls.hint")
@@ -455,8 +492,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             submitUrl = submitFunction;
                                         } }
                                         productName={ config.ui.productName }
-                                        restrictSecondaryContent
-                                        required={ false }
+                                        required={ isCallbackURLMandatory }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />

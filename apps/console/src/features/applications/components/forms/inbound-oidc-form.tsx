@@ -731,7 +731,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".validations.empty")
                         }
                         children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
-                        value={ initialValues.grantTypes }
+                        value={ initialValues?.grantTypes }
                         readOnly={ readOnly }
                         listen={ (values) => handleGrantTypeChange(values) }
                         data-testid={ `${ testId }-grant-type-checkbox-group` }
@@ -756,7 +756,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={
-                            initialValues.publicClient
+                            initialValues?.publicClient
                                 ? [ "supportPublicClients" ]
                                 : []
                         }
@@ -772,7 +772,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                     <Hint>
                         { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
-                            productName: config.ui.productName
+                            productName: config.ui?.productName
                         }) }
                     </Hint>
                 </Grid.Column>
@@ -794,7 +794,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             required={ true }
                             value={
                                 ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                    initialValues.callbackURLs?.toString())
+                                    initialValues?.callbackURLs?.toString())
                             }
                             placeholder={
                                 t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
@@ -911,8 +911,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>
                                     The HTTP origins that host your web application. You can define multiple web
                                     origins and wild cards are supported.
-                                    <p className={"mt-0"}>E.g.,&nbsp;&nbsp;
-                                        <code>https://myapp.io, https://localhost:3000, https://*.otherapp.io</code>
+                                    <p className="mt-0">E.g.,&nbsp;&nbsp;
+                                        <code>https://myapp.io, https://localhost:3000, https://&#42;.otherapp.io</code>
                                     </p>
                                 </Hint>
                             </Grid.Column>
@@ -945,7 +945,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.pkce.validations.empty")
                         }
                         type="checkbox"
-                        value={ findPKCE(initialValues.pkce) }
+                        value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                         listen={ pkceValuesChangeListener }
                         children={ [
                             {
@@ -992,7 +992,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         name="type"
                         default={
-                            initialValues.accessToken
+                            initialValues?.accessToken
                                 ? initialValues.accessToken.type
                                 : metadata.accessTokenType.defaultValue
                         }
@@ -1047,7 +1047,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        initialValues.accessToken?.validateTokenBinding
+                                        initialValues?.accessToken?.validateTokenBinding
                                             ? [ "validateTokenBinding" ]
                                             : []
                                     }
@@ -1077,7 +1077,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                        initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
                                             ? [ "revokeAccessToken" ]
                                             : []
                                     }
@@ -1115,8 +1115,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".accessToken.fields.expiry.validations.empty")
                         }
                         value={
-                            initialValues.accessToken
-                                ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
+                            initialValues?.accessToken
+                                ? initialValues.accessToken?.userAccessTokenExpiryInSeconds.toString()
                                 : metadata.defaultUserAccessTokenExpiryTime
                         }
                         placeholder={
@@ -1175,7 +1175,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={
-                            initialValues.refreshToken?.renewRefreshToken
+                            initialValues?.refreshToken?.renewRefreshToken
                                 ? [ "refreshToken" ]
                                 : []
                         }
@@ -1213,7 +1213,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.expiry.placeholder")
                         }
-                        value={ initialValues.refreshToken
+                        value={ initialValues?.refreshToken
                             ? initialValues.refreshToken.expiryInSeconds.toString()
                             : metadata.defaultRefreshTokenExpiryTime }
                         type="number"
@@ -1255,7 +1255,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.audience.placeholder")
                         }
-                        value={ initialValues.idToken?.audience.toString() }
+                        value={ initialValues?.idToken?.audience.toString() }
                         type="textarea"
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-audience-textarea` }
@@ -1286,7 +1286,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                         }
                         value={
-                            initialValues.idToken?.encryption.enabled
+                            initialValues?.idToken?.encryption.enabled
                                 ? [ "enableEncryption" ]
                                 : []
                         }
@@ -1322,7 +1322,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.encryption.algorithm
                                 : metadata.idTokenEncryptionAlgorithm.defaultValue
                         }
@@ -1357,7 +1357,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.encryption.method
                                 : metadata.idTokenEncryptionMethod.defaultValue
                         }
@@ -1395,7 +1395,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.expiry.placeholder")
                         }
                         value={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.expiryInSeconds.toString()
                                 : metadata.defaultIdTokenExpiryTime
                         }
@@ -1445,7 +1445,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ));
                             }
                         } }
-                        value={ initialValues.logout?.backChannelLogoutUrl }
+                        value={ initialValues?.logout?.backChannelLogoutUrl }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-back-channel-logout-url-input` }
                     />
@@ -1485,7 +1485,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ));
                             }
                         } }
-                        value={ initialValues.logout?.frontChannelLogoutUrl }
+                        value={ initialValues?.logout?.frontChannelLogoutUrl }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-front-channel-logout-url-input` }
                     />
@@ -1517,7 +1517,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         requiredErrorMessage="this is needed"
                         type="checkbox"
                         value={
-                            initialValues.validateRequestObjectSignature
+                            initialValues?.validateRequestObjectSignature
                                 ? [ "EnableRequestObjectSignatureValidation" ]
                                 : []
                         }
@@ -1555,7 +1555,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".scopeValidators.fields.validator.validations.empty")
                         }
                         type="checkbox"
-                        value={ initialValues.scopeValidators }
+                        value={ initialValues?.scopeValidators }
                         children={ getAllowedList(metadata.scopeValidators, true) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-scope-validator-checkbox` }
@@ -1810,7 +1810,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            initialValues.clientId && (
+                            initialValues?.clientId && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <Form.Field>
@@ -1828,7 +1828,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            (initialValues.clientSecret && (initialValues?.state !== State.REVOKED)) && (
+                            (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <Form.Field>
@@ -1870,7 +1870,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            !readOnly && initialValues.clientSecret && (
+                            !readOnly && initialValues?.clientSecret && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <>

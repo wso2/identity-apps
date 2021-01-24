@@ -22,10 +22,11 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppConstants, history } from "../../../../core";
+import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../../../core";
 import { updateADialect } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types for the `EditDialectDetails` component
@@ -53,6 +54,8 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (
         <Grid>
@@ -93,6 +96,11 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                             placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder") }
                             value={ dialect?.dialectURI }
                             required={ true }
+                            readOnly={
+                                config.ui?.isDefaultDialectEditingEnabled === false
+                                    ? ClaimManagementConstants.DEFAULT_DIALECTS.includes(dialect?.id)
+                                    : false
+                            }
                             requiredErrorMessage={ t("console:manage.features.claims.dialects." +
                                 "forms.dialectURI.requiredErrorMessage") }
                             label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }

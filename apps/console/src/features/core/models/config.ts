@@ -154,6 +154,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
     /**
+     * Should default dialects be allowed for editing.
+     */
+    isDefaultDialectEditingEnabled?: boolean;
+    /**
+     * Should dialects addition be allowed.
+     */
+    isDialectAddingEnabled?: boolean;
+    /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;

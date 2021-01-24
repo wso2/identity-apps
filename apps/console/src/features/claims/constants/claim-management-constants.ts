@@ -84,5 +84,28 @@ export class ClaimManagementConstants {
         .set("EIDAS_NATURAL", "aHR0cDovL2VpZGFzLmV1cm9wYS5ldS9hdHRyaWJ1dGVzL25hdHVyYWxwZXJzb24")
         .set("OPENID_NET", "aHR0cDovL3NjaGVtYS5vcGVuaWQubmV0LzIwMDcvMDUvY2xhaW1z")
         .set("XML_SOAP", "aHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eQ")
-        .set("LOCAL", "local");
+        .set("LOCAL", "local")
+        .set("OIDC", "aHR0cDovL3dzbzIub3JnL29pZGMvY2xhaW0")
+        .set("SCIM2_SCHEMAS_CORE", "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpjb3JlOjIuMA")
+        .set("SCIM2_SCHEMAS_CORE_USER", "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpjb3JlOjIuMDpVc2Vy")
+        .set("SCIM2_SCHEMAS_EXT_ENT_USER",
+            "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
+        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA");
+
+    /**
+     * Set of dialects packed OOTB.
+     * @type {any[]}
+     */
+    public static readonly DEFAULT_DIALECTS: string[] = [
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_LEGAL"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
+    ]
 }
