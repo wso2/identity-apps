@@ -18,7 +18,7 @@
 
 import { IdentityClient } from "@asgardio/oidc-js";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { ConfigurationModel, HttpMethods } from "../models";
+import { HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
@@ -29,23 +29,22 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(
 );
 
 /**
- * Fetches the basic server configurations.
+ * Fetches home realm identifiers list from the server configurations.
  *
  * @see ServiceResourceEndpointsInterface.config
- * @see ConfigurationModel
- * @returns Promise<ConfigurationModel> response.data
+ * @returns Promise<string[]> response.data
  */
-export const fetchServerConfiguration = async (): Promise<ConfigurationModel> => {
+export const fetchHomeRealmIdentifiers = async (): Promise<string[]> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.config
+        url: store.getState().config.endpoints.homeRealmIdentifiers
     };
 
     try {
         const response: AxiosResponse = await httpClient(requestConfig);
-        return Promise.resolve<ConfigurationModel>(response.data);
+        return Promise.resolve<string[]>(response.data);
     } catch (error) {
         return Promise.reject(error);
     }
