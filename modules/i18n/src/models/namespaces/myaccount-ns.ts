@@ -567,6 +567,10 @@ export interface MyAccountNS {
                 generic: {
                     inputs: {
                         placeholder: string;
+                        readonly: {
+                            placeholder: string;
+                            popup: string;
+                        };
                         validations: {
                             empty: string;
                             invalidFormat: string;
