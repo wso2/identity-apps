@@ -20,6 +20,7 @@ import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -299,7 +300,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                     </GridRow>
                 </Grid>
             </Forms>
-            <h5>{ t("console:manage.features.roles.addRoleWizard.wizardSteps.2") }</h5>
+            <Heading size="tiny">{ t("console:manage.features.roles.addRoleWizard.wizardSteps.2") }</Heading>
             <AddGroupUsers
                 data-testid="new-group"
                 isEdit={ false }
