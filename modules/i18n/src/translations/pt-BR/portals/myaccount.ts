@@ -955,6 +955,10 @@ export const myAccount: MyAccountNS = {
                 generic: {
                     inputs: {
                         placeholder: "Insira o seu {{fieldName}}",
+                        readonly: {
+                            placeholder: "Este valor está vazio",
+                            popup: "Contate o administrador para atualizar seu {{fieldName}}"
+                        },
                         validations: {
                             empty: "{{fieldName}} é um campo obrigatório",
                             invalidFormat: "The {{fieldName}} não está no formato correto"

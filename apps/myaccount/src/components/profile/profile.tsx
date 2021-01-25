@@ -22,7 +22,7 @@ import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@ws
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
+import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
@@ -555,34 +555,56 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     : profileInfo.get(schema.name)
                                             )
                                             : (
-                                                <a
-                                                    className="placeholder-text"
-                                                    tabIndex={ 0 }
-                                                    onKeyPress={ (e) => {
-                                                        if (e.key === "Enter") {
-                                                            dispatch(
-                                                                setActiveForm(
-                                                                    CommonConstants.PERSONAL_INFO + schema.name
-                                                                )
-                                                            );
-                                                        }
-                                                    } }
-                                                    onClick={ () => {
-                                                        dispatch(
-                                                            setActiveForm(
-                                                                CommonConstants.PERSONAL_INFO + schema.name
-                                                            )
-                                                        );
-                                                    } }
-                                                >
-                                                    {t("myAccount:components.profile.forms.generic.inputs.placeholder",
-                                                        {
-                                                            fieldName
-                                                        })
-                                                    }
-                                                </a>
-                                            )
-                                    }
+                                                !isReadOnlyUser &&
+                                                schema.mutability !== ProfileConstants.READONLY_SCHEMA ?
+                                                    (
+                                                        <a
+                                                            className="placeholder-text"
+                                                            tabIndex={ 0 }
+                                                            onKeyPress={ (e) => {
+                                                                if (e.key === "Enter") {
+                                                                    dispatch(
+                                                                        setActiveForm(
+                                                                            CommonConstants.PERSONAL_INFO + schema.name
+                                                                        )
+                                                                    );
+                                                                }
+                                                            } }
+                                                            onClick={ () => {
+                                                                dispatch(
+                                                                    setActiveForm(
+                                                                        CommonConstants.PERSONAL_INFO + schema.name
+                                                                    )
+                                                                );
+                                                            } }
+                                                        >
+                                                            { t("myAccount:components.profile.forms.generic." +
+                                                                "inputs.placeholder",
+                                                                {
+                                                                    fieldName
+                                                                } )
+                                                            }
+                                                        </a>
+                                                    ) : (
+                                                        <label className="placeholder-text">
+                                                            <i>
+                                                                {
+                                                                    t("myAccount:components.profile.forms." +
+                                                                        "generic.inputs.readonly.placeholder")
+                                                                }
+                                                            </i>
+                                                            <Hint popup>
+                                                                { t("myAccount:components.profile.forms.generic." +
+                                                                    "inputs.readonly.popup",
+                                                                    {
+                                                                        fieldName
+                                                                    } )
+                                                                }
+                                                            </Hint>
+                                                        </label>
+                                                    )
+                                                )
+                                        }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -614,7 +636,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                     setActiveForm(
                                                                         CommonConstants.PERSONAL_INFO + schema.name
                                                                     )
-                                                                )
+                                                                );
                                                             }
                                                         } }
                                                         onClick={
@@ -637,7 +659,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             inverted={ true }
                                         />
                                     )
-                                    : null}
+                                    : null }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
