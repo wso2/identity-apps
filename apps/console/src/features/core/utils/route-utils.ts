@@ -103,34 +103,58 @@ export class RouteUtils {
         }
 
         const EMPTY_STRING: string = "";
+        const descendants: Set<string> = new Set<string>();
 
         /**
-         * In this chain what we do is, go through all the available
-         * routes and filter out the top level views and map out all
-         * the nested children's path.
+         * In this chain we go through all the available routes and filter
+         * out the top level views and map out all the nested children's path.
          *
-         * Explanation: -
-         * A top level view can be `/console/develop` and we have
-         * nested routes such as [`/console/develop/identity-providers`,
-         * `/console/develop/applications`] and each of those route
-         * paths will have their own children routes.
+         * Explanation
+         * -----------
+         * A top level view can be `/console/develop` or `console/manage`
+         * and in those views we have nested routes such as:-
+         *          [
+         *              `/console/develop/identity-providers`,
+         *              `/console/develop/applications`,
+         *              etc...
+         *          ]
+         * and each of those route paths will also have their own children
+         * routes. You can think of the {@code view} being the parent route
+         * of the navigation hierarchy and {@code routes} as their direct
+         * descendants.
          *
-         * Note on default values: -
+         * Note on default values
+         * ----------------------
          * Since we use lodash here we need to make sure default values
          * are initialized during the chain when the values are null.
+         *
+         * How it works?
+         * -------------
+         * #1 - Filter out the paths that partially matches {@code view}
+         *      This will ensure we won't step into any unrelated child
+         *      paths.
+         * #2 - Keep a reference to the descendants of this {@code view}.
+         *      This makes sure that descendants will also get a chance
+         *      to be evaluated against the {@code pathname}
+         * #3 - Map out all the children paths in each of the descendants.
+         * #4 - Flattens the depth of the array.
+         * #5 - Map out the {@code string} path of each child route.
+         * #6 - Unwraps the lodash chain result.
          */
         const allChildPaths: string[] = chain(routes ?? [])
-            .filter(({ path = EMPTY_STRING }) => path?.match(view))
-            .map(({ children = [] as RouteInterface[] }) => children)
-            .flatten()
-            .map(({ path = EMPTY_STRING }) => path)
-            .value();
+            .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
+            .forEach(({ path }) => descendants.add(path)) // #2
+            .map(({ children = [] as RouteInterface[] }) => children) // #3
+            .flatten() // #4
+            .map(({ path = EMPTY_STRING }) => path) // #5
+            .value(); // #6
 
         /**
-         * If there's no child paths have been found in all the available
-         * routes then return false and navigate to another.
+         * If there's no child paths or descendants have been found in all
+         * the available routes then return {@code false} and navigate to
+         * the ordered route.
          */
-        if (!allChildPaths && !allChildPaths.length) {
+        if ((!allChildPaths || !allChildPaths.length) || !descendants.size) {
             return false;
         }
 
@@ -138,7 +162,8 @@ export class RouteUtils {
          * In this function what we do is escape all the special characters
          * of the URI and replace the path_parameters to match a dynamic string.
          *
-         * Regex explanation: -
+         * Regex explanation
+         * -----------------
          * {@code [\w~\-\\.!*'(),]+} is a set expression that allows the following
          * characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or more times.
          * The expression assumes the path_parameter has at-lease one character and
@@ -147,6 +172,7 @@ export class RouteUtils {
          * Refer RFC-3986 {@link https://tools.ietf.org/html/rfc3986#section-2.3}
          *
          * @param {string} path - A valid URL
+         * @return {RegExp} expression like `some/path/[\w~\-\\.!*'(),]+/another`
          */
         const pathToARegex = (path: string): string => {
             if (!path || !path.trim().length) return EMPTY_STRING;
@@ -159,19 +185,32 @@ export class RouteUtils {
         };
 
         /**
-         * To keep track of the qualified paths that matches exactly the {@code pathname}
+         * First off we will start searching by {@code descendants} and then
+         * {@code allChildPaths}. Since we match the pathname with a strict
+         * expression we don't match partial/optional fragments of the path.
+         */
+        const paths = [ ...Array.from<string>(descendants), ...allChildPaths ];
+
+        /**
+         * To keep track of the qualified paths that matches exactly the
+         * {@code pathname}
          */
         const qualifiedPaths: string[] = [];
 
         /**
          * Validate each of the child paths against the {@code pathname}.
+         * Breaks the search loop after the first successful match. If
+         * you do want to keep searching multiple paths that matches a
+         * certain criteria then you should remove the {@code break}
+         * statement and write your aggregation logic after the loop.
          */
-        for (const childPath of allChildPaths) {
-            if (childPath) {
-                const expression = RegExp(`^${pathToARegex(childPath)}$`);
+        for (const path of paths) {
+            if (path) {
+                const expression = RegExp(`^${pathToARegex(path)}$`);
                 const match = expression.exec(pathname);
                 if (match && match.length > 0) {
                     qualifiedPaths.push(...match);
+                    break;
                 }
             }
         }
