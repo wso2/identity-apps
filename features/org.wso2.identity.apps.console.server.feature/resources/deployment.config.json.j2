@@ -482,6 +482,12 @@
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
+        {% if console.ui.isDefaultDialectEditingEnabled is defined %}
+        "isDefaultDialectEditingEnabled": {{ console.ui.isDefaultDialectEditingEnabled }},
+        {% endif %}
+        {% if console.ui.isDialectAddingEnabled is defined %}
+        "isDialectAddingEnabled": {{ console.ui.isDialectAddingEnabled }},
+        {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
