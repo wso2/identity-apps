@@ -205,7 +205,7 @@ export const initializeAuthentication = () => (dispatch) => {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
+            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
             customParams: {
                 o: window["AppUtils"].getSuperTenant(),
                 t: window["AppUtils"].getTenantName(true)
