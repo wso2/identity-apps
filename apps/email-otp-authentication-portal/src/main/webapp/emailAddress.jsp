@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants"%>
 <%@ page import="java.io.File"%>
 <%@ page import="java.util.Map"%>
+<%@ page import="org.apache.commons.lang.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="includes/localize.jsp" %>
@@ -35,16 +36,22 @@
 			}
 
 			String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-			String authenticationFailed = "false";
+			boolean authenticationFailed = false;
 
 			if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-				authenticationFailed = "true";
+				authenticationFailed = true;
 
 				if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
 					errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
 					if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
 						errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
+					} else if (errorMessage.equalsIgnoreCase("email.duplicate.message")) {
+					    errorMessage = "Email address is already being used by another user. Please try using a different email address";
+					}
+
+					if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
+					    errorMessage = request.getParameter("authFailureInfo");
 					}
 				}
 			}
@@ -94,16 +101,7 @@
 						<h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.email")%></h2>
 						<div class="ui divider hidden"></div>
 						<%
-							if ("true".equals(authenticationFailed)) {
-						%>
-						<div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
-						</div>
-						<div class="ui divider hidden"></div>
-						<%
-							}
-						%>
-						<%
-							if ("true".equals(authenticationFailed)) {
+							if (authenticationFailed) {
 						%>
 						<div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
 						</div>
