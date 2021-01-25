@@ -793,8 +793,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                             required={ true }
                             value={
-                                ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                    initialValues?.callbackURLs?.toString())
+                                initialValues?.callbackURLs?.toString()
+                                    ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                        initialValues.callbackURLs.toString())
+                                    : ""
                             }
                             placeholder={
                                 t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
