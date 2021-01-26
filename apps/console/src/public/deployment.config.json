@@ -308,6 +308,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenAuthenticators": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },

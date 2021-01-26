@@ -157,6 +157,7 @@ export class Config {
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
+            hiddenAuthenticators: window["AppUtils"].getConfig().ui.hiddenAuthenticators,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
