@@ -726,7 +726,7 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Enter the custom attribute that should be requested " + 
+                                    mappedAtributeHint: "Enter the custom attribute that should be requested " +
                                         "instead of the default attribute.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirm",
@@ -4042,8 +4042,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Choose one of the predefined application types to help you with quick application " +
-                    "creation.",
+                subTitle: "Choose one of the predefined application types to connect quickly.",
                 title: "Select Application Type"
             },
             applications: {
