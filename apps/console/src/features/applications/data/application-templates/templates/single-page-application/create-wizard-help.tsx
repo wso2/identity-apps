@@ -57,11 +57,12 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
             <React.Fragment>
                 <Heading as="h5">Allowed Redirect URLs</Heading>
                 <p>
-                    The redirect URL determines to where the authorization code is sent, login is
-                    completed and to where the user is redirected to once the logout is completed.
+                    The redirect URL determines where the authorization code is sent to
+                    once the user is authenticated, and where the user is redirected to
+                    once the logout is completed.
                 </p>
-                <p>The client should specify the redirect_url in the authorize or logout request and
-                    &nbsp;{ config.ui.productName }&nbsp;will validate it against this configured redirect URLs.
+                <p>The redirect URLs sent by the client application along with the authentication
+                    requests and sign-out requests will be validated against the URLs specified here.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>

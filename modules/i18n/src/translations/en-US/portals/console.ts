@@ -617,7 +617,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Delete",
                         header: "Delete application",
                         subheader: "Once the application is deleted, it cannot be recovered and the clients " +
-                            "using this application will no longer work. Please be certain."
+                            "using this application will no longer work."
                     },
                     header: "Danger Zone"
                 },
@@ -933,9 +933,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "Applications are by default restricted for usage by users of the service" +
-                                    " provider's tenant. If this application is SaaS enabled it is opened up for " +
-                                    "all the users of all the tenants.",
+                                hint: "By default, applications can only be used by users belonging to the " +
+                                    "application’s tenant. If this application is SaaS-enabled, this application " +
+                                    "will be open to access by users across tenants.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -1086,17 +1086,17 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines to where the authorization code is sent, login " +
-                                    "is completed and to where the user is redirected to once the logout is completed." +
-                                    " The client should specify the redirect_url in the authorize or logout" +
-                                    " request and {{productName}} will validate it against this " +
-                                    "configured Redirect URLs.",
+                                hint: "The redirect URL determines where the authorization code is sent to once " +
+                                    "the user is authenticated, and where the user is redirected to once the " +
+                                    "logout is completed." +
+                                    "The redirect URLs sent by the client application along with the authentication " +
+                                    "requests and sign-out requests will be validated against the URLs specified here.",
                                 label: "Allowed Redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
-                                        "However, if you are planning to try with a sample, " +
+                                        "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 }
                             },
