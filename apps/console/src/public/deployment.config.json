@@ -314,6 +314,9 @@
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
+        "isDefaultDialectEditingEnabled": true,
+        "isDialectAddingEnabled": true,
+        "isRequestPathAuthenticationEnabled": true,
         "listAllAttributeDialects": false,
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

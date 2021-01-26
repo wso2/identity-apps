@@ -3207,7 +3207,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Veuillez choisir l'un des types d'application suivant.",
+                subTitle: "Choisissez l'un des types d'application prédéfinis pour vous connecter rapidement.",
                 title: "Choisissez le type d'application"
             },
             applications: {

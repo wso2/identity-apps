@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
+import { ConfirmationModal, EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
@@ -27,7 +27,6 @@ import { Authenticators } from "./authenticators";
 import { AppConstants, getOperationIcons, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
-import { ConfirmationModal } from "@wso2is/react-components/src";
 
 /**
  * Proptypes for the authenticator side panel component.
@@ -140,7 +139,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
 
         const closeAddSocialLoginConfirmation = (): void => {
             setAddSocialLoginConfirm(false);
-        }
+        };
 
         /**
          * Shows the aAdd social login confirmation modal
@@ -181,35 +180,93 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
             </ConfirmationModal>
         );
 
+        /**
+         * Render authenticator group.
+         *
+         * @param {AuthenticatorInterface} authenticator - Authenticator.
+         * @param {number} index - Index.
+         * @return {React.ReactElement}
+         */
+        const renderAuthenticatorGroup = (authenticator: AuthenticatorInterface,
+                                                  index: number): ReactElement => (
+
+            <Fragment key={ index }>
+                <Accordion.Title
+                    active={
+                        authenticatorsAccordionActiveIndexes.includes(
+                            index)
+                    }
+                    index={ index }
+                    onClick={ handleAuthenticatorsAccordionOnClick }
+                >
+                    <div className="inline floated right">
+                        <Icon name="angle right"
+                              className="caret-icon"/>
+                    </div>
+                    { authenticator.heading }
+                </Accordion.Title>
+                <Accordion.Content
+                    active={
+                        authenticatorsAccordionActiveIndexes.includes(
+                            index)
+                    }
+                >
+                    <Authenticators
+                        authenticators={ authenticator.authenticators }
+                        droppableId={ authenticator.droppableId }
+                        readOnly={ readOnly }
+                        emptyPlaceholder={ (
+                            <EmptyPlaceholder
+                                subtitle={
+                                    [
+                                        t("console:develop.features" +
+                                            ".applications.placehold" +
+                                            "ers.emptyAuthenticators" +
+                                            "List.subtitles", {
+                                            type: authenticator.heading
+                                        })
+                                    ]
+                                }
+                            />
+                        ) }
+                        isSocialLogin={ authenticator.heading ===
+                        ApplicationManagementConstants.SOCIAL_LOGIN_HEADER }
+                        handleSocialLoginAdd={ handleSocialLoginAdd }
+                        data-testid={ `${testId}-authenticators` }
+                    />
+                </Accordion.Content>
+            </Fragment>
+        );
+
         return (
             <>
                 { AddSocialLoginConfirm && showAddSocialLoginConfirmation() }
                 { visibility && (
-                    <div className={classes} ref={ref} data-testid={testId}>
-                        <Draggable handle=".drag-handle" disabled={readOnly}>
+                    <div className={ classes } ref={ ref } data-testid={ testId }>
+                        <Draggable handle=".drag-handle" disabled={ readOnly }>
                             <Card>
                                 <Card.Content>
-                                    {heading && <Heading as="h6" floated="left" compact>{heading}</Heading>}
+                                    { heading && <Heading as="h6" floated="left" compact>{ heading }</Heading> }
                                     <Popup
-                                        trigger={(
+                                        trigger={ (
                                             <div className="inline floated right mt-1">
                                                 <GenericIcon
                                                     className="drag-handle"
-                                                    icon={getOperationIcons().drag}
+                                                    icon={ getOperationIcons().drag }
                                                     size="nano"
                                                     transparent
                                                 />
                                             </div>
-                                        )}
+                                        ) }
                                         position="top center"
-                                        content={t("common:drag")}
+                                        content={ t("common:drag") }
                                         inverted
                                     />
                                     <Popup
-                                        trigger={(
+                                        trigger={ (
                                             <div
                                                 className="inline floated right mr-2 mt-1"
-                                                onClick={onSidePanelVisibilityToggle}
+                                                onClick={ onSidePanelVisibilityToggle }
                                             >
                                                 <GenericIcon
                                                     icon={
@@ -221,9 +278,9 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                     transparent
                                                 />
                                             </div>
-                                        )}
+                                        ) }
                                         position="top center"
-                                        content={t("common:minimize")}
+                                        content={ t("common:minimize") }
                                         inverted
                                     />
                                 </Card.Content>
@@ -239,52 +296,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                             authenticator?.authenticators
                                                             && authenticator.authenticators instanceof Array
                                                             && (
-                                                                <Fragment key={index}>
-                                                                    <Accordion.Title
-                                                                        active={
-                                                                            authenticatorsAccordionActiveIndexes.includes(
-                                                                                index)
-                                                                        }
-                                                                        index={index}
-                                                                        onClick={handleAuthenticatorsAccordionOnClick}
-                                                                    >
-                                                                        <div className="inline floated right">
-                                                                            <Icon name="angle right"
-                                                                                  className="caret-icon"/>
-                                                                        </div>
-                                                                        {authenticator.heading}
-                                                                    </Accordion.Title>
-                                                                    <Accordion.Content
-                                                                        active={
-                                                                            authenticatorsAccordionActiveIndexes.includes(
-                                                                                index)
-                                                                        }
-                                                                    >
-                                                                        <Authenticators
-                                                                            authenticators={authenticator.authenticators}
-                                                                            droppableId={authenticator.droppableId}
-                                                                            readOnly={readOnly}
-                                                                            emptyPlaceholder={(
-                                                                                <EmptyPlaceholder
-                                                                                    subtitle={
-                                                                                        [
-                                                                                            t("console:develop.features" +
-                                                                                                ".applications.placehold" +
-                                                                                                "ers.emptyAuthenticators" +
-                                                                                                "List.subtitles", {
-                                                                                                type: authenticator.heading
-                                                                                            })
-                                                                                        ]
-                                                                                    }
-                                                                                />
-                                                                            )}
-                                                                            isSocialLogin={ authenticator.heading ===
-                                                                                ApplicationManagementConstants.SOCIAL_LOGIN_HEADER }
-                                                                            handleSocialLoginAdd={ handleSocialLoginAdd }
-                                                                            data-testid={`${testId}-authenticators`}
-                                                                        />
-                                                                    </Accordion.Content>
-                                                                </Fragment>
+                                                                renderAuthenticatorGroup(authenticator, index)
                                                             )
                                                         ))
                                                     }

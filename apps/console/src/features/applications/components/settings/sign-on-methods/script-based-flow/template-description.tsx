@@ -131,17 +131,23 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "templateDescription.description.helpReference")
+                            template.helpLink 
+                            ? t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.helpReference") 
+                            : null
                         }
                     </h4>
-                    <Message icon info>
-                        <Icon name="help circle" />
-                        <Message.Content>
-                            <a target="_blank" href={ template.helpLink } rel="noreferrer">{ template.helpLink }</a>
-                        </Message.Content>
-                    </Message>
-
+                    {
+                        template.helpLink 
+                        ? (
+                            <Message icon info>
+                            <Icon name="help circle" />
+                            <Message.Content>
+                                <a target="_blank" href={ template.helpLink } rel="noreferrer">{ template.helpLink }</a>
+                            </Message.Content>
+                            </Message> )
+                        : null
+                    }
                     <h4>
                         {
                             t("console:develop.features.applications.edit.sections.signOnMethod.sections." +

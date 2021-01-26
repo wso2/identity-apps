@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
-import { AppState, FeatureConfigInterface } from "../../../../core";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -86,6 +86,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const dispatch = useDispatch();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
@@ -333,7 +334,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 authenticationSteps={ steps }
                 isDefaultScript={ isDefaultScript }
             />
-            { requestPathAuthenticators && showRequestPathAuthenticators }
+            {
+                (config?.ui?.isRequestPathAuthenticationEnabled === false)
+                    ? null
+                    : requestPathAuthenticators && showRequestPathAuthenticators
+            }
             {
                 !readOnly
                 && hasRequiredScopes(

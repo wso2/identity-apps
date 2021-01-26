@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Server-side applications that uses browser redirection.",
+    "description": "Web applications that perform application logic on the server",
     "enabled": true,
     "displayOrder": 1,
     "id": "web-application",

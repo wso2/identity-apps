@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.apache.commons.lang.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ page import="static java.util.Base64.getDecoder" %>
@@ -32,29 +33,35 @@
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
     String mobileRegex = null;
+    boolean validateMobileNumberFormat = false;
     String mobileRegexPolicyValidationErrorMessage = null;
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
     if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN))) {
         mobileRegex = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_REGEX_PATTERN)));
+        validateMobileNumberFormat = true;
     }
     if (StringUtils.isNotBlank(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE))) {
         mobileRegexPolicyValidationErrorMessage = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.MOBILE_NUMBER_PATTERN_POLICY_FAILURE_ERROR_MESSAGE)));
     }
 
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-    String authenticationFailed = "false";
+    boolean authenticationFailed = false;
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-        authenticationFailed = "true";
+        authenticationFailed = true;
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
-            }
+                    errorMessage = "Authentication Failed! Please Retry";
+                }
+
+                if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
+                    errorMessage = request.getParameter("authFailureInfo");
+                }
         }
     }
 %>
@@ -94,7 +101,7 @@
                     <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.phone.number")%></h2>
                     <div class="ui divider hidden"></div>
                     <%
-                        if ("true".equals(authenticationFailed)) {
+                        if (authenticationFailed) {
                     %>
                             <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%></div>
                             <div class="ui divider hidden"></div>
@@ -158,7 +165,7 @@
                         document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div>'
                               +'<div class="ui divider hidden"></div>';
-                    } else if (!(mobileNumber.match("<%=mobileRegex%>"))) {
+                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=mobileRegex%>"))) {
                        document.getElementById('alertDiv').innerHTML
                           = '<div id="error-msg" class="ui negative message"><%=mobileRegexPolicyValidationErrorMessage%></div>'
                             +'<div class="ui divider hidden"></div>';

@@ -21,13 +21,13 @@ import {
     AuthenticatedUserInterface,
     Hooks,
     IdentityClient,
+    LOGOUT_URL,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
-    UserInfo,
-    LOGOUT_URL
+    UserInfo
 } from "@asgardio/oidc-js";
 import { getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants, TokenConstants } from "@wso2is/core/constants";
@@ -43,6 +43,7 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
 import { CommonConstants } from "../../constants";
+import { history } from "../../helpers";
 import {
     AlertLevels,
     BasicProfileInterface,
@@ -303,7 +304,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
+            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
             customParams: {
                 o: window["AppUtils"].getSuperTenant(),
                 t : window["AppUtils"].getTenantName(true)
@@ -413,6 +414,8 @@ export const handleSignOut = () => (dispatch) => {
         .then(() => {
             AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.MY_ACCOUNT_APP);
             dispatch(setSignOut());
+        }).catch(() => {
+            history.push(window["AppUtils"].getConfig().routes.home);
         });
 };
 

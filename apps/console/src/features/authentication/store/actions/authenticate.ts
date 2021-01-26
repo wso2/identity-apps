@@ -50,6 +50,7 @@ import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { Config } from "../../../core/configs";
 import { CommonConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { store } from "../../../core/store";
 import { HttpUtils } from "../../../core/utils";
 
@@ -97,7 +98,7 @@ export const getProfileInformation = (
                                 addAlert<AlertInterface>({
                                     description: error.response.data.description,
                                     level: AlertLevels.ERROR,
-                                    message: I18n.instance.t("console:manage.notifications.getProfileSchema." + 
+                                    message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
                                         "error.message")
                                 })
                             );
@@ -139,7 +140,7 @@ export const getProfileInformation = (
 
             dispatch(
                 addAlert({
-                    description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." + 
+                    description: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
                     message: I18n.instance.t("console:manage.notifications.getProfileInfo.genericError.message")
@@ -205,7 +206,7 @@ export const initializeAuthentication = () => (dispatch) => {
             baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            clockTolerance: window["AppUtils"].getConfig().clockTolerance,
+            clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
             customParams: {
                 o: window["AppUtils"].getSuperTenant(),
                 t: window["AppUtils"].getTenantName(true)
@@ -312,5 +313,7 @@ export const handleSignOut = () => (dispatch) => {
         .then(() => {
             AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
             dispatch(setSignOut());
+        }).catch(() => {
+            history.push(window[ "AppUtils" ].getConfig().routes.home);
         });
 };

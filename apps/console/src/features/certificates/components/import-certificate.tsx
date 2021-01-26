@@ -197,7 +197,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 />
             ),
             icon: getImportCertificateWizardStepIcons().general,
-            title: t("console:develop.features.certificates.keystore.wizard.steps.upload")
+            title: t("console:manage.features.certificates.keystore.wizard.steps.upload")
         },
         {
             content: (
@@ -208,7 +208,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 />
             ),
             icon: getImportCertificateWizardStepIcons().general,
-            title: t("console:develop.features.certificates.keystore.wizard.steps.summary")
+            title: t("console:manage.features.certificates.keystore.wizard.steps.summary")
 
         }
     ];

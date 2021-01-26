@@ -47,7 +47,7 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
     return (
         <div data-testid={ testId }>
             <React.Fragment>
-                <Heading as="h5">Name</Heading>
+                <Heading as="h5">Name to identify your application</Heading>
                 <p>A unique name for the application.</p>
                 <p>E.g., My App</p>
             </React.Fragment>
@@ -55,7 +55,7 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Allowed Redirect URLs</Heading>
+                <Heading as="h5">Authorized redirect URIs</Heading>
                 <p>
                     The redirect URL determines where the authorization code is sent to
                     once the user is authenticated, and where the user is redirected to
