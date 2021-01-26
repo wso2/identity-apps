@@ -46,6 +46,9 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+    - name: Run Lint
+      id: run-lint
+      run: npm run lint
     - name: Build
       id: build-with-maven
       run: mvn clean install -U
