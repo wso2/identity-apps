@@ -42,7 +42,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
+            <Heading as="h5">Name to identify your application</Heading>
             <p>Provide a unique name for the application so that it can be easily identified.</p>
             <p>E.g. Zoom, Salesforce, etc.</p>
 

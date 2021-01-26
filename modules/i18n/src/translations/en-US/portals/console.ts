@@ -492,7 +492,7 @@ export const console: ConsoleNS = {
                                     heading: "Audience"
                                 },
                                 callbackURLs: {
-                                    heading: "Allowed redirect URL(s)"
+                                    heading: "Authorized redirect URIs"
                                 },
                                 certificateAlias: {
                                     heading: "Certificate alias"
@@ -1091,7 +1091,7 @@ export const console: ConsoleNS = {
                                     " The client should specify the redirect_url in the authorize or logout" +
                                     " request and {{productName}} will validate it against this " +
                                     "configured Redirect URLs.",
-                                label: "Allowed Redirect URLs",
+                                label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URL.",
@@ -2255,7 +2255,7 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
-                            subHeading: "Use the descriptions below for guidance"
+                            subHeading: "Use the guide below"
                         }
                     }
                 }
