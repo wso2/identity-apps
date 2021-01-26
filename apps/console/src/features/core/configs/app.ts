@@ -162,6 +162,7 @@ export class Config {
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window["AppUtils"].getConfig().ui.isDialectAddingEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
+            isRequestPathAuthenticationEnabled: window["AppUtils"].getConfig().ui.isRequestPathAuthenticationEnabled,
             isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui
                 .isSignatureValidationCertificateAliasEnabled,
             listAllAttributeDialects: window["AppUtils"].getConfig().ui.listAllAttributeDialects,
