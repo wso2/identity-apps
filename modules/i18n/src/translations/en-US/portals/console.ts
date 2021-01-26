@@ -7213,6 +7213,120 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            invite: {
+                inviteButton: "New Invite",
+                subSelection: {
+                    onBoard: "OnBoarded",
+                    invitees: "Invitees"
+                },
+                notifications: {
+                    sendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while sending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't send the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully sent the invite",
+                            message: "Sending invite successful"
+                        }
+                    },
+                    resendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while resending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't resend the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully resent the invite",
+                            message: "Resending invite successful"
+                        }
+                    },
+                    deleteInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't delete the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully delete the invite",
+                            message: "Delete invite successful"
+                        }
+                    }
+                },
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently revoke the invite."
+                    },
+                    resendInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you send this invite, Earlier invite link will be expired. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is  will permanently revoke the earlier invite."
+                    },
+                },
+                placeholder: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    },
+                    emptyResultPlaceholder: {
+                        addButton: "New Invite",
+                        subTitle: {
+                            0: "There are currently no invites available.",
+                            1: "You can send a new invite easily by following the",
+                            2: "steps in the invite creation wizard."
+                        },
+                        title: "Send a New Invite"
+                    },
+                },
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                email: "Email",
+                                username: "Username"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Email etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Email"
+                },
+                form: {
+                    sendmail: {
+                        title: "Invite Admin/Developer",
+                        subTitle: "Send an email invite to add a new admin or developer to your organization"
+                    }
+                }
             }
         },
         notifications: {
@@ -7337,6 +7451,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
+            },
+            invite: {
+                subTitle: "Invite and manage admins and developers.",
+                title: "Admins & Developers"
             }
         },
         placeholders: {
