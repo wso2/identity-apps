@@ -170,6 +170,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isGroupAndRoleSeparationEnabled?: boolean;
     /**
+     * Is Request path section enabled in applications.
+     */
+    isRequestPathAuthenticationEnabled?: boolean;
+    /**
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;

@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, LabeledCard } from "@wso2is/react-components";
+import { Heading, LabeledCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
@@ -35,10 +35,10 @@ import {
 } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
-import { Message } from "semantic-ui-react";
+import { Icon, Label, Popup } from "semantic-ui-react";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
-import { ApplicationManagementConstants } from "../../../../constants";
 import { getGeneralIcons } from "../../../../configs";
+import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the authenticators component.
@@ -170,15 +170,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         ? (
             <>
                 { heading && <Heading as="h6">{ heading }</Heading> }
-                { ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID && authenticators[0] &&
-                    !authenticators[ 0 ].isEnabled && (
-                        <Message warning>
-                            { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                ".authenticationFlow.sections.stepBased.secondFactorDisabled"
-                            ) }
-                        </Message>
-                    ) }
                 <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
                     { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
                         <div
@@ -202,12 +193,43 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                 provided={ draggableProvided }
                                                 snapshot={ draggableSnapshot }
                                             >
-                                                <LabeledCard
-                                                    size="tiny"
-                                                    image={ authenticator.image }
-                                                    label={ authenticator.displayName || defaultName }
-                                                    labelEllipsis={ true }
-                                                    data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                                                <Popup
+                                                    on="hover"
+                                                    disabled={
+                                                        !((droppableId === ApplicationManagementConstants
+                                                                .SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)
+                                                        && authenticators[0]
+                                                        && !authenticators[ 0 ].isEnabled)
+                                                    }
+                                                    content={ (
+                                                        <>
+                                                            <Label attached="top">
+                                                                <Icon name="warning sign" /> Warning
+                                                            </Label>
+                                                            <Text>
+                                                            {
+                                                                t("console:develop.features.applications.edit." +
+                                                                    "sections.signOnMethod.sections." +
+                                                                    "authenticationFlow.sections.stepBased." +
+                                                                    "secondFactorDisabled")
+                                                            }
+                                                            </Text>
+                                                        </>
+                                                    ) }
+                                                    trigger={ (
+                                                        <div>
+                                                            <LabeledCard
+                                                                size="tiny"
+                                                                disabled={ !authenticator.isEnabled }
+                                                                image={ authenticator.image }
+                                                                label={ authenticator.displayName || defaultName }
+                                                                labelEllipsis={ true }
+                                                                data-testid={
+                                                                    `${ testId }-authenticator-${ authenticator.name }`
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) }
                                                 />
                                             </PortalAwareDraggable>
                                         ) }

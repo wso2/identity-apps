@@ -304,6 +304,10 @@ export class ApplicationManagementUtils {
      */
     public static resolveAllowedOrigins = (origins: string): string[] => {
 
+        if (!origins) {
+            return [];
+        }
+
         if (origins.split(",").length > 1) {
             return origins.split(",");
         }

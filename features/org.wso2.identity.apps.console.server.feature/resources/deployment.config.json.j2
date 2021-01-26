@@ -499,6 +499,9 @@
         "isDialectAddingEnabled": {{ console.ui.isDialectAddingEnabled }},
         {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
+        {% if console.ui.isRequestPathAuthenticationEnabled is defined %}
+        "isRequestPathAuthenticationEnabled": {{ console.ui.isRequestPathAuthenticationEnabled }},
+        {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "productName": "{{ console.ui.product_name }}",

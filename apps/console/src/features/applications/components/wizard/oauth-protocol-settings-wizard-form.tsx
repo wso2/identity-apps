@@ -496,15 +496,19 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />
-                                    <Message className="with-inline-icon" icon visible warning>
-                                        <Icon name="warning sign" size="mini" />
-                                        <Message.Content>
-                                            {
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields" +
-                                                    ".callBackUrls.validations.required")
-                                            }
-                                        </Message.Content>
-                                    </Message>
+                                    {
+                                        !isCallbackURLMandatory && (
+                                            <Message className="with-inline-icon" icon visible warning>
+                                                <Icon name="warning sign" size="mini" />
+                                                <Message.Content>
+                                                    {
+                                                        t("console:develop.features.applications.forms" +
+                                                            ".inboundOIDC.fields.callBackUrls.validations.required")
+                                                    }
+                                                </Message.Content>
+                                            </Message>
+                                        )
+                                    }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
