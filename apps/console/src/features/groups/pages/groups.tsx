@@ -199,7 +199,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 response.data.map((store, index) => {
                     getAUserStore(store.id).then((response: UserStorePostData) => {
                         const isDisabled = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled").value === "true";
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
                         if (!isDisabled) {
                             storeOption = {
