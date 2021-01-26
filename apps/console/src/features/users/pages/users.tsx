@@ -463,20 +463,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     };
 
-    const handleUserDelete = (userId: string): void => {
-        deleteUser(userId)
-            .then(() => {
-                handleAlerts({
-                    description: t(
-                        "console:manage.features.users.notifications.deleteUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "console:manage.features.users.notifications.deleteUser.success.message"
-                    )
-                });
-                setListUpdated(true);
-            });
+    const onUserDelete = (): void => {
+        setListUpdated(true);
     };
 
     /**
@@ -664,7 +652,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                         ) }
                         usersList={ usersList }
-                        handleUserDelete={ handleUserDelete }
+                        onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
                         isLoading={ isUserListRequestLoading }
                         realmConfigs={ realmConfigs }

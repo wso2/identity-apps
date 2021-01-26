@@ -384,6 +384,9 @@
             &.no-margin-top {
                 padding-top: 0;
             }
+            .modal-alert-wrapper {
+                padding-bottom: 10px;
+            }
         }
         .actions {
             .fluid {

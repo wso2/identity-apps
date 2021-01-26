@@ -33,7 +33,8 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -155,6 +156,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
 
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+
     /**
      * Fetch the application templates if list is not available in redux.
      */
@@ -214,7 +217,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    dispatch(setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.deleteApplication.error" +
@@ -224,7 +227,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return;
                 }
 
-                dispatch(addAlert({
+                dispatch(setAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
@@ -462,7 +465,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onSecondaryActionClick={ (): void => {
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
@@ -482,6 +488,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
