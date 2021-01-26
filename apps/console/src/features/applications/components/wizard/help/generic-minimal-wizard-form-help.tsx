@@ -104,7 +104,7 @@ export const GenericMinimalWizardFormHelp: FunctionComponent<GenericMinimalWizar
                         {
                             (template.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) && (
                                 <>
-                                    <Heading as="h5">Allowed redirect URLs</Heading>
+                                    <Heading as="h5">Authorized redirect URIs</Heading>
                                     <p>
                                         After user sign-in/sign-out, the user is redirected to a web page within
                                         your application. Add the list of possible redirect URLs here. You can
