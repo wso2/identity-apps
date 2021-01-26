@@ -41,3 +41,24 @@
 --------------------------------*/
 
 @treeArrowBackgroundColor: #bfbfbf;
+
+/*-------------------------------
+    Sign On Authenticator Panel
+--------------------------------*/
+
+@signOnMethodsAuthStepSectionDisplay: flex;
+@signOnMethodsAuthStepSectionOverflow: auto;
+@signOnMethodsAuthStepSectionMaxHeight: 375px;
+@signOnMethodsAuthStepSectionBorder: @defaultBorderWidth solid @defaultBorderColor;
+@signOnMethodsAuthStepSectionPadding: 3em;
+@signOnMethodsAuthStepSectionMaxWidth: 1150px;
+@signOnMethodsAuthStepBorder: 1px dashed rgba(34,36,38,.15);
+@signOnMethodsAuthStepButtonMarginRight: 10px;
+
+@signOnMethodsAuthStepContainerMarginRight: 68px;
+
+@signOnMethodsAuthStepDisplay: flex;
+@signOnMethodsAuthStepWidth: 210px;
+@signOnMethodsAuthStepOverflow: auto;
+@signOnMethodsAuthStepFlexDirection: row;
+@signOnMethodsAuthStepMinHeight: 220px;

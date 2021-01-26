@@ -154,6 +154,13 @@
          }
  
          .authentication-steps-section {
+             display: @signOnMethodsAuthStepSectionDisplay;
+             overflow: @signOnMethodsAuthStepSectionOverflow;
+             max-height: @signOnMethodsAuthStepSectionMaxHeight;
+             border: @signOnMethodsAuthStepSectionBorder;
+             padding: @signOnMethodsAuthStepSectionPadding;
+             max-width: @signOnMethodsAuthStepSectionMaxWidth;
+
              .authentication-step-container {
                  .step-header {
                      display: inline-block;
@@ -169,10 +176,15 @@
                      }
                  }
                  .authentication-step {
-                     min-height: 120px;
                      background-color: @whiteSmoke;
                      padding: 15px;
                      border-radius: @defaultBorderRadius;
+                     display: @signOnMethodsAuthStepDisplay;
+                     width: @signOnMethodsAuthStepWidth;
+                     overflow: @signOnMethodsAuthStepOverflow;
+                     flex-direction: @signOnMethodsAuthStepFlexDirection;
+                     min-height: @signOnMethodsAuthStepMinHeight;
+                     flex-wrap: wrap;
                  }
  
                  .checkboxes {
@@ -185,9 +197,44 @@
                      }
                  }
              }
+
+             .trail {
+                 &:after {
+                     content: '';
+                     margin-top: 0;
+                     margin-left: 10px;
+                     width: 50px;
+                     z-index: 9;
+                     height: 0;
+                     border: @signOnMethodsAuthStepBorder;
+                 }
+             }
  
              .add-step-button {
                  padding-left: 0;
+             }
+
+             .flow-button-container {
+                 text-align: center;
+                 align-items: center;
+                 justify-content: center;
+                 display: flex;
+
+                 &.with-trail {
+                     &:after {
+                         content: '';
+                         margin-top: 0;
+                         margin-left: 10px;
+                         width: 47px;
+                         z-index: 9999;
+                         height: 0;
+                         border: @signOnMethodsAuthStepBorder;
+                     }
+                 }
+
+                 &.with-margin {
+                     margin-right: @signOnMethodsAuthStepButtonMarginRight;
+                 }
              }
          }
          &.flex {
