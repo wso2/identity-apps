@@ -5419,8 +5419,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Sélectionner la méthode d'initialisation du mot de passe",
                                 options: {
-                                    askPassword: "Inviter l'utilisateur à définir un mot de passe",
-                                    createPassword: "Définir le mot de passe de l'utilisateur"
+                                    askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
+                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
 
                                 }
                             }
