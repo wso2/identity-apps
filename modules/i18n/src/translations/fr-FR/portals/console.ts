@@ -933,8 +933,8 @@ export const console: ConsoleNS = {
                             saas: {
                                 hint: "Par défaut, les applications ne peuvent être utilisées que par les " +
                                     "utilisateurs appartenant au locataire de l'application. Si cette application " +
-                                    "est compatible SaaS, cette application sera accessible aux utilisateurs de " +
-                                    "tous les locataires.",
+                                    "est compatible SaaS, elle sera accessible à tous les utilisateurs de tous les " +
+                                    "locataires.",
                                 label: "Application SaaS",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1024,9 +1024,8 @@ export const console: ConsoleNS = {
                             },
                             imageUrl: {
                                 label: "Logo",
-                                description: "Une URL pour l'image de l'application à des fins d'affichage. " +
-                                    "S'il n'est pas fourni, une miniature générée s'affiche." +
-                                    " (mentionner les résolutions souhaitées)",
+                                description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +
+                                    "afficherons une vignette générée à la place. Taille recommandée: 200x200 pixels",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
@@ -1083,12 +1082,12 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "L'URL de redirection détermine où le code d'autorisation est envoyé " +
-                                    "une fois que l'utilisateur est authentifié, et où l'utilisateur est redirigé " +
-                                    "une fois la déconnexion terminée." +
-                                    "Les URL de redirection envoyées par l'application cliente ainsi que les " +
-                                    "demandes d'authentification et de déconnexion seront validées par rapport aux " +
-                                    "URL spécifiées ici.",
+                                hint: "L'URL de redirection détermine où le code d'autorisation est envoyé lors " +
+                                    "de l'authentification de l'utilisateur et vers lequel l'utilisateur est " +
+                                    "redirigé lors de la déconnexion de l'utilisateur. L'application cliente " +
+                                    "doit spécifier l'URL de redirection dans la demande d'autorisation ou de " +
+                                    "déconnexion et {{productName}} la validera par rapport aux URL de redirection " +
+                                    "entrées ici.",
                                 label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {

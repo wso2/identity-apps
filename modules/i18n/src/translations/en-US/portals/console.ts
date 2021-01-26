@@ -934,8 +934,8 @@ export const console: ConsoleNS = {
                             },
                             saas: {
                                 hint: "By default, applications can only be used by users belonging to the " +
-                                    "application’s tenant. If this application is SaaS-enabled, this application " +
-                                    "will be open to access by users across tenants.",
+                                    "application's tenant. If this application is SaaS-enabled, it will be " +
+                                    "accessible to all users across all tenants.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -1025,8 +1025,8 @@ export const console: ConsoleNS = {
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                hint: "A URL for the image of the application for display purposes. If not provided " +
-                                    "a generated thumbnail will displayed. Recommended size is 200x200 pixels.",
+                                hint: "An image URL for the application. If this is not provided, we will display " +
+                                    "a generated thumbnail instead. Recommended size: 200x200 pixels.",
                                 label: "Logo",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
@@ -1086,11 +1086,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines where the authorization code is sent to once " +
-                                    "the user is authenticated, and where the user is redirected to once the " +
-                                    "logout is completed." +
-                                    "The redirect URLs sent by the client application along with the authentication " +
-                                    "requests and sign-out requests will be validated against the URLs specified here.",
+                                hint: "The redirect URL determines to where the authorization code is sent, login " +
+                                    "is completed and to where the user is redirected to once the logout is completed." +
+                                    " The client should specify the redirect_url in the authorize or logout" +
+                                    " request and {{productName}} will validate it against this " +
+                                    "configured Redirect URLs.",
                                 label: "Allowed Redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {

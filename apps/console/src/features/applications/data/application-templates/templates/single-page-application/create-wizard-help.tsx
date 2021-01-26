@@ -61,8 +61,9 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
                     once the user is authenticated, and where the user is redirected to
                     once the logout is completed.
                 </p>
-                <p>The redirect URLs sent by the client application along with the authentication
-                    requests and sign-out requests will be validated against the URLs specified here.
+                <p>
+                    The redirect URL determines where the authorization code is sent to
+                    upon user authentication, and where the user is redirected to upon user logout.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
