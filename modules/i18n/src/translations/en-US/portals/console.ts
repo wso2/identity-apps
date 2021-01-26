@@ -616,8 +616,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Delete",
                         header: "Delete application",
-                        subheader: "The application will be deleted permanently and the " +
-                            "clients using this application will stop working."
+                        subheader: "Once the application is deleted, it cannot be recovered and the clients " +
+                            "using this application will no longer work. Please be certain."
                     },
                     header: "Danger Zone"
                 },
