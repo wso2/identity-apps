@@ -22,16 +22,16 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history } from "../../../core";
+import { Button, Divider, Form, Grid } from "semantic-ui-react";
+import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
-import { deleteGroupById, updateGroupDetails } from "../../api";
-import { GroupsInterface, PatchGroupDataInterface } from "../../models";
+import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
+import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component
@@ -79,10 +79,11 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ labelText, setLableText ] = useState<string>("");
     const [ nameValue, setNameValue ] = useState<string>("");
-    const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
-    const [ isGroupNamePatternValid, setIsGroupNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
-    const [ newGroupName, setNewGroupName ] = useState<string>("");
+    
+    const userStore: string = groupObject?.displayName?.split("/")?.length > 1
+        ? groupObject.displayName.split("/")[0]  
+        : SharedUserStoreConstants.PRIMARY_USER_STORE;
 
     useEffect(() => {
         if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
@@ -93,43 +94,38 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
         }
     }, [ groupObject ]);
 
-    useEffect(() => {
-        if (userStoreRegEx !== "") {
-            return;
-        }
-        fetchUserstoreRegEx()
-            .then((response) => {
-                setUserStoreRegEx(response);
-                setRegExLoading(false);
-            });
-    }, [ nameValue ]);
-
-    const fetchUserstoreRegEx = async (): Promise<string> => {
-        // TODO: Enable when the group object includes user store.
-        // if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
-        //     // Get the role name regEx for the secondary user store
-        //     const userstore = roleObject.displayName.split("/")[0].toString().toLowerCase();
-        //     await getUserstoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-        //         .then((response) => {
-        //             setRegExLoading(true);
-        //             regEx = response;
-        //         })
-        // } else if (roleObject) {
-        //     // Get the role name regEx for the primary user store
-        //     regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
-        // }
-        return PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
-    };
-
     /**
-     * The following function handles the group name change.
-     *
-     * @param event
-     * @param data
+     * The following function validates role name against the user store regEx.
      */
-    const handleGroupNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
-        setIsGroupNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
-        setNewGroupName(data.value);
+    const validateGroupNamePattern = async (): Promise<string> => {
+        let userStoreRegEx = "";
+        if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
+            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+                .then((response) => {
+                    setRegExLoading(true);
+                    userStoreRegEx = response;
+                });
+        } else {
+            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
+                setRegExLoading(true);
+                if (response && response.properties) {
+                    userStoreRegEx = response?.properties?.filter(property => {
+                        return property.name === "RolenameJavaScriptRegEx";
+                    })[ 0 ].value;
+                }
+            });
+        }
+
+        setRegExLoading(false);
+        return new Promise((resolve, reject) => {
+            if (userStoreRegEx !== "") {
+                resolve(userStoreRegEx);
+            } else {
+                reject("");
+            }
+        });
+
     };
 
     /**
@@ -166,7 +162,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      *
      */
     const updateGroupName = (values: Map<string, FormValue>): void => {
-        const newName = newGroupName ? newGroupName : values?.get("groupName")?.toString();
+        const newName = values?.get("groupName")?.toString();
 
         const groupData: PatchGroupDataInterface = {
             Operations: [{
@@ -205,9 +201,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                <Form.Field
-                                    error={ !isGroupNamePatternValid }
-                                >
+                                <Form.Field>
                                     <label
                                         data-testid={
                                             isGroup
@@ -240,7 +234,50 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                 "placeholder")
                                         }
                                         value={ nameValue }
-                                        onChange={ handleGroupNameChange }
+                                        validation={ async (value: string, validation: Validation) => {
+                                            if (value) {
+                                                let isGroupNameValid = true;
+                                                await validateGroupNamePattern().then(regex => {
+                                                    isGroupNameValid = SharedUserStoreUtils
+                                                        .validateInputAgainstRegEx(value, regex);
+                                                });
+
+                                                if (!isGroupNameValid) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(t("console:manage.features." +
+                                                        "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                                        "validations.invalid",
+                                                        { type: "group" }));
+                                                }
+
+                                                const searchData: SearchGroupInterface = {
+                                                    filter: `displayName eq  ${ userStore }/${ value }`,
+                                                    schemas: [
+                                                        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                                                    ],
+                                                    startIndex: 1
+                                                };
+
+                                                await searchGroupList(searchData).then(response => {
+                                                    if (response?.data?.totalResults !== 0) {
+                                                        validation.isValid = false;
+                                                        validation.errorMessages.push(
+                                                            t("console:manage.features.roles.addRoleWizard." +
+                                                                "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                                { type: "Group" }));
+                                                    }
+
+                                                }).catch(() => {
+                                                    dispatch(addAlert({
+                                                        description: t("console:manage.features.groups.notifications." +
+                                                            "fetchGroups.genericError.description"),
+                                                        level: AlertLevels.ERROR,
+                                                        message: t("console:manage.features.groups.notifications." +
+                                                            "fetchGroups.genericError.message")
+                                                    }));
+                                                });
+                                            }
+                                        } }
                                         type="text"
                                         data-testid={
                                             isGroup
@@ -250,15 +287,6 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                         loading={ isRegExLoading }
                                         readOnly={ isReadOnly }
                                     />
-                                    {
-                                        !isGroupNamePatternValid && (
-                                            <Label basic color="red" pointing>
-                                                { t("console:manage.features.roles.addRoleWizard.forms." +
-                                                    "roleBasicDetails.groupName.validations.invalid",
-                                                    { type: "group" }) }
-                                            </Label>
-                                        )
-                                    }
                                 </Form.Field>
                             </Grid.Column>
                         </Grid.Row>
@@ -276,7 +304,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ !isGroupNamePatternValid && !isRegExLoading }
+                                            disabled={ !isRegExLoading }
                                         >
                                             { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>
