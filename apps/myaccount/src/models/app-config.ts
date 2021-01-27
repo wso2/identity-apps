@@ -111,10 +111,11 @@ export interface ServiceResourceEndpointsInterface {
     /**
      * Documentation {@link https://is.docs.wso2.com/en/5.11.0/develop/configs-rest-api/#/Server%20Configs}
      *
-     * Below {@code config} is the route that we use to fetch the server configurations.
-     * @see fetchServerConfiguration to see the usages.
+     * Below {@code homeRealmIdentifiers} is the route that we use to fetch the home realm identifiers
+     * from server configurations.
+     * @see fetchHomeRealmIdentifiers to see the usages.
      */
-    config: string;
+    homeRealmIdentifiers: string;
 }
 
 /**
