@@ -162,12 +162,12 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     ) }
                     content={
                         (
-                            <>
+                            <div>
                                 <Label attached="top">
                                     { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.actions.selectAuthenticator") }
                                 </Label>
-                                <Form className="mt-3 mb-3" data-testid={ `${ testId }-authenticator-selection` }>
+                                <Form data-testid={ `${ testId }-authenticator-selection` }>
                                     {
                                         authenticator?.authenticators?.map((item) => {
                                             return (
@@ -188,7 +188,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         })
                                     }
                                 </Form>
-                            </>
+                            </div>
                         )
                     }
                 >

@@ -18,21 +18,23 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
+import { GenericIcon, Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, DropdownProps, Form, Grid, Label, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { getOperationIcons } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface, getOperationIcons } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils
 } from "../../../../../identity-providers";
+import { getGeneralIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     AuthenticationSequenceInterface,
@@ -115,6 +117,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const authenticatorsSidePanelRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLDivElement>(null);
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ secondFactorAuthenticators, setSecondFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -493,6 +496,33 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         setAuthenticatorsSidePanelVisibility(!showAuthenticatorsSidePanel);
     };
 
+    /**
+     * Filter out the displayable set of authenticators by validating against
+     * the array of authenticators defined to be hidden in the config.
+     *
+     * @param {GenericAuthenticatorInterface[]} authenticators - Authenticators to be filtered.
+     * @return {GenericAuthenticatorInterface[]}
+     */
+    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[]) => {
+
+        if (isEmpty(authenticators)) {
+            return [];
+        }
+
+        // If the config is undefined or empty, return the original.
+        if (!config.ui?.hiddenAuthenticators
+            || !Array.isArray(config.ui.hiddenAuthenticators)
+            || config.ui.hiddenAuthenticators.length < 1) {
+
+            return authenticators;
+        }
+
+        return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            return !config.ui.hiddenAuthenticators
+                .some((hiddenAuthenticator: string) => hiddenAuthenticator === authenticator.name);
+        });
+    };
+
     return (
         <div
             className={ `authentication-flow-section ${ showAuthenticatorsSidePanel ? "flex" : "" }` }
@@ -636,49 +666,65 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         </Form.Field>
                                     </Form>
                                 </Grid.Column>
-                                <Grid.Column computer={ 6 } mobile={ 16 } textAlign="right">
-                                    <PrimaryButton
-                                        onClick={ handleAuthenticationStepAdd }
-                                        data-testid={ `${ testId }-new-authentication-step-button` }
-                                    >
-                                        <Icon name="add" />
-                                        { t(
-                                            "console:develop.features.applications.edit.sections.signOnMethod" +
-                                            ".sections.authenticationFlow.sections.stepBased.actions.addStep"
-                                        ) }
-                                    </PrimaryButton>
-                                </Grid.Column>
                             </Grid.Row>
                         ) }
                         <Grid.Row>
                             <Grid.Column computer={ 16 }>
                                 <div className="authentication-steps-section">
-                                    { authenticationSteps &&
+                                    <div className="flow-button-container with-trail with-margin start">
+                                        <Label basic circular color="blue">Start</Label>
+                                    </div>
+                                    {
+                                        authenticationSteps &&
                                         authenticationSteps instanceof Array &&
                                         authenticationSteps.length > 0
-                                        ? authenticationSteps.map((step, stepIndex) => (
-                                            <Fragment key={ stepIndex }>
-                                                <AuthenticationStep
-                                                    authenticators={ [
-                                                        ...localAuthenticators,
-                                                        ...federatedAuthenticators,
-                                                        ...secondFactorAuthenticators
-                                                    ] }
-                                                    droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
-                                                    onStepDelete={ handleStepDelete }
-                                                    onStepOptionAuthenticatorChange={
-                                                        handleStepOptionAuthenticatorChange
-                                                    }
-                                                    onStepOptionDelete={ handleStepOptionDelete }
-                                                    step={ step }
-                                                    stepIndex={ stepIndex }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
-                                                />
-                                                <Divider hidden />
-                                            </Fragment>
-                                        ))
-                                        : null }
+                                            ? authenticationSteps.map((step, stepIndex) => (
+                                                <Fragment key={ stepIndex }>
+                                                    <AuthenticationStep
+                                                        authenticators={ [
+                                                            ...localAuthenticators,
+                                                            ...federatedAuthenticators,
+                                                            ...secondFactorAuthenticators
+                                                        ] }
+                                                        droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
+                                                        onStepDelete={ handleStepDelete }
+                                                        onStepOptionAuthenticatorChange={
+                                                            handleStepOptionAuthenticatorChange
+                                                        }
+                                                        onStepOptionDelete={ handleStepOptionDelete }
+                                                        step={ step }
+                                                        stepIndex={ stepIndex }
+                                                        readOnly={ readOnly }
+                                                        data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
+                                                    />
+                                                    <div
+                                                        className="flow-button-container with-trail with-margin start"
+                                                    ></div>
+                                                </Fragment>
+                                            ))
+                                            : null
+                                    }
+                                    <div className="flow-button-container with-trail with-margin">
+                                        <Button
+                                            icon
+                                            basic
+                                            circular
+                                            className="mr-0"
+                                            data-testid={ `${ testId }-new-authentication-step-button` }
+                                            onClick={ handleAuthenticationStepAdd }
+                                        >
+                                            <GenericIcon
+                                                link
+                                                transparent
+                                                as="data-url"
+                                                size="x22"
+                                                icon={ getGeneralIcons().plusIcon }
+                                            />
+                                        </Button>
+                                    </div>
+                                    <div className="flow-button-container pr-3">
+                                        <Label basic circular color="green">Done</Label>
+                                    </div>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
@@ -692,17 +738,17 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         ref={ authenticatorsSidePanelRef }
                         authenticatorGroup={ [
                             {
-                                authenticators: localAuthenticators,
+                                authenticators: moderateAuthenticators(localAuthenticators),
                                 droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
                                 heading: "Local"
                             },
                             {
-                                authenticators: secondFactorAuthenticators,
+                                authenticators: moderateAuthenticators(secondFactorAuthenticators),
                                 droppableId: ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID,
                                 heading: "Second Factor"
                             },
                             {
-                                authenticators: federatedAuthenticators,
+                                authenticators: moderateAuthenticators(federatedAuthenticators),
                                 droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
                                 heading: ApplicationManagementConstants.SOCIAL_LOGIN_HEADER
                             }

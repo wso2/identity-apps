@@ -148,6 +148,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
+     * Set of authenticators to be hidden in application sign on methods.
+     */
+    hiddenAuthenticators?: string[];
+    /**
      * How should the IDP templates be loaded.
      * If `LOCAL` is selected, app will resort to in-app templates.
      * `REMOTE` will fetch templates from the template management REST API.
