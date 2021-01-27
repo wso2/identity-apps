@@ -613,8 +613,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
-                        subheader: "L'application sera supprimée définitivement et les clients" +
-                            " utilisant cette application cesseront de fonctionner.",
+                        subheader: "Une fois l'application supprimée, elle ne peut pas être récupérée et les " +
+                            "clients utilisant cette application ne fonctionneront plus.",
                     },
                     header: "Zone de danger"
                 },
@@ -931,9 +931,10 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "L'utilisation des applications est par défaut limitée aux utilisateurs " +
-                                    "du fournisseur de services du locataire. Si cette application est en mode SaaS, elle est ouverte pour " +
-                                    "les usagers de tous les locataires..",
+                                hint: "Par défaut, les applications ne peuvent être utilisées que par les " +
+                                    "utilisateurs appartenant au locataire de l'application. Si cette application " +
+                                    "est compatible SaaS, elle sera accessible à tous les utilisateurs de tous les " +
+                                    "locataires.",
                                 label: "Application SaaS",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1023,9 +1024,8 @@ export const console: ConsoleNS = {
                             },
                             imageUrl: {
                                 label: "Logo",
-                                description: "Une URL pour l'image de l'application à des fins d'affichage. " +
-                                    "S'il n'est pas fourni, une miniature générée s'affiche." +
-                                    " (mentionner les résolutions souhaitées)",
+                                description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +
+                                    "afficherons une vignette générée à la place. Taille recommandée: 200x200 pixels",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
@@ -1082,16 +1082,19 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "L'URL de redirection détermine vers où le code d'autorisation est envoyé," +
-                                    " la connexion est terminée et vers où l'utilisateur est redirigé une fois" +
-                                    " la déconnexion terminée. Le client doit spécifier l'URL de redirection" +
-                                    " dans la demande d'autorisation ou de déconnexion et {{productName}} la validera" +
-                                    " par rapport aux URL de redirection configurées.",
+                                hint: "L'URL de redirection détermine où le code d'autorisation est envoyé lors " +
+                                    "de l'authentification de l'utilisateur et vers lequel l'utilisateur est " +
+                                    "redirigé lors de la déconnexion de l'utilisateur. L'application cliente " +
+                                    "doit spécifier l'URL de redirection dans la demande d'autorisation ou de " +
+                                    "déconnexion et {{productName}} la validera par rapport aux URL de redirection " +
+                                    "entrées ici.",
                                 label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Veuillez ajouter une URL valide.",
-                                    required: "ce champ est obligatoire pour une application fonctionnelle."
+                                    required: "Ce champ est obligatoire pour une application fonctionnelle. " +
+                                        "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
+                                        "ce champ peut être ignoré."
                                 }
                             },
                             clientID: {

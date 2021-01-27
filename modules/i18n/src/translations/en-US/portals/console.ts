@@ -616,8 +616,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Delete",
                         header: "Delete application",
-                        subheader: "The application will be deleted permanently and the " +
-                            "clients using this application will stop working."
+                        subheader: "Once the application is deleted, it cannot be recovered and the clients " +
+                            "using this application will no longer work."
                     },
                     header: "Danger Zone"
                 },
@@ -933,9 +933,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "Applications are by default restricted for usage by users of the service" +
-                                    " provider's tenant. If this application is SaaS enabled it is opened up for " +
-                                    "all the users of all the tenants.",
+                                hint: "By default, applications can only be used by users belonging to the " +
+                                    "application's tenant. If this application is SaaS-enabled, it will be " +
+                                    "accessible to all users across all tenants.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -1025,8 +1025,8 @@ export const console: ConsoleNS = {
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                hint: "A URL for the image of the application for display purposes. If not provided " +
-                                    "a generated thumbnail will displayed. Recommended size is 200x200 pixels.",
+                                hint: "An image URL for the application. If this is not provided, we will display " +
+                                    "a generated thumbnail instead. Recommended size: 200x200 pixels.",
                                 label: "Logo",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
@@ -1086,17 +1086,17 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines to where the authorization code is sent, login " +
-                                    "is completed and to where the user is redirected to once the logout is completed." +
-                                    " The client should specify the redirect_url in the authorize or logout" +
-                                    " request and {{productName}} will validate it against this " +
-                                    "configured Redirect URLs.",
+                                hint: "The redirect URL determines where the authorization code is sent to upon " +
+                                    "user authentication, and where the user is redirected to upon user logout." +
+                                    "The client app should specify the redirect URL in the authorization or logout " +
+                                    "request and {{productName}} will validate it against the redirect URLs " +
+                                    "entered here.",
                                 label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
-                                        "However, if you are planning to try with a sample, " +
+                                        "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 }
                             },
