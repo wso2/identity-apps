@@ -37,14 +37,13 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input, List, Popup } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { ServerConfigurationsConstants } from "../../server-configurations/constants";
-import { ConnectorPropertyInterface } from "../../server-configurations/models";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { deleteUser, getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
 
@@ -450,72 +449,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
-     * Handle admin initiated password reset.
-     */
-    const handleForcePasswordReset = () => {
-        if (configSettings?.forcePasswordReset === "false") {
-            onAlertFired({
-                description: t(
-                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.description"
-                ),
-                level: AlertLevels.WARNING,
-                message: t(
-                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.message"
-                )
-            });
-
-            return;
-        }
-
-        const data = {
-            "Operations": [
-                {
-                    "op": "add",
-                    "value": {
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                            "forcePasswordReset": true
-                        }
-                    }
-                }
-            ],
-            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
-        };
-
-        updateUserInfo(user.id, data).then(() => {
-            onAlertFired({
-                description: t(
-                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.message"
-                )
-            });
-            setForcePasswordTriggered(true);
-        })
-        .catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
-                onAlertFired({
-                    description: error.response.data.description,
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.forcePasswordReset.error." +
-                        "message")
-                });
-
-                return;
-            }
-
-            onAlertFired({
-                description: t("console:manage.features.user.profile.notifications.forcePasswordReset.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.user.profile.notifications.forcePasswordReset.genericError." +
-                    "message")
-            });
-        });
-    };
-
-    /**
      * Handle danger zone toggle actions.
      *
      * @param toggleData
@@ -705,64 +638,41 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    const resolveConfigurationList = (connectorProperties: ConnectorPropertyInterface[]): ReactNode => {
-        return connectorProperties?.map((property, index) => {
-            if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
-                && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
-                && property?.name !== ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-
-                return (
-                    <List.Item key={ index }>
-                        <Icon
-                            color={ property?.value === "true"
-                                ? "green"
-                                : "red" }
-                            name={ property?.value === "true"
-                                ? "check circle"
-                                : "times circle" }/>
-                        { property?.displayName }
-                    </List.Item>
-                );
-            }
-        });
-    };
-
-
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
                 <Field
-                    data-testid={`${ testId }-profile-form-${ schema.name }-input`}
-                    name={schema.name}
-                    required={schema.required}
-                    requiredErrorMessage={fieldName + " " + "is required"}
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " " + "is required" }
                     type="checkbox"
-                    value={profileInfo.get(schema.name) ? [schema.name] : []}
-                    children={[
+                    value={ profileInfo.get(schema.name) ? [schema.name] : [] }
+                    children={ [
                         {
                             label: fieldName,
                             value: schema.name
                         }
-                    ]}
-                    readOnly={isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA}
-                    key={key}
+                    ] }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    key={ key }
                 />
             );
         } else {
             return (
                 <Field
-                    data-testid={`${ testId }-profile-form-${ schema.name }-input`}
-                    name={schema.name}
-                    label={schema.name === "profileUrl" ? "Profile Image URL" : fieldName}
-                    required={schema.required}
-                    requiredErrorMessage={fieldName + " " + "is required"}
-                    placeholder={"Enter your" + " " + fieldName}
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " " + "is required" }
+                    placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    value={profileInfo.get(schema.name)}
-                    key={key}
-                    disabled={schema.name === "userName"}
-                    readOnly={isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA}
-                    validation={(value: string, validation: Validation) => {
+                    value={ profileInfo.get(schema.name) }
+                    key={ key }
+                    disabled={ schema.name === "userName" }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
                             validation.errorMessages
@@ -770,8 +680,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     field: fieldName
                                 }));
                         }
-                    }}
-                    maxLength={30}
+                    } }
+                    maxLength={ 30 }
                 />
             );
         }
@@ -832,58 +742,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 (hasRequiredScopes(featureConfig?.users,
                                     featureConfig?.users?.scopes?.update, allowedScopes) &&
                                     !isReadOnly && user.userName !== "admin") && (
-                                        <>
-                                            {
-                                                connectorProperties && (
-                                                    <Popup
-                                                        trigger={
-                                                            <Button
-                                                                onClick={ handleForcePasswordReset }
-                                                                basic
-                                                                color="grey"
-                                                                floated="right"
-                                                            >
-                                                                <Icon name="redo"/>
-                                                                Reset Password
-                                                            </Button>
-                                                        }
-                                                        position="bottom center"
-                                                        hoverable
-                                                        inverted
-                                                        size="huge"
-                                                        className="list-options-popup"
-                                                    >
-                                                        <Popup.Header>
-                                                            Password Reset Options
-                                                        </Popup.Header>
-                                                        <Divider/>
-                                                        <Popup.Content>
-                                                            {
-                                                                connectorProperties?.length > 1 && (
-                                                                    <List>
-                                                                        { 
-                                                                            resolveConfigurationList(
-                                                                                connectorProperties
-                                                                            ) 
-                                                                        }
-                                                                    </List>
-                                                                )
-                                                            }
-                                                        </Popup.Content>
-                                                    </Popup>
-                                                )
-                                            }
-                                            <Button
-                                                basic
-                                                color="orange"
-                                                onClick={ () => setOpenChangePasswordModal(true) }
-                                                floated="right"
-                                            >
-                                                <Icon name="edit outline" />
-                                                Change Password
-                                            </Button>
-                                        </>
-                                )
+                                        <Button
+                                            basic
+                                            color="orange"
+                                            onClick={ () => setOpenChangePasswordModal(true) }
+                                            floated="right"
+                                        >
+                                            <Icon name="redo" />
+                                            { t("console:manage.features.user.modals.changePasswordModal.button") }
+                                        </Button>
+                                    )
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -1106,6 +974,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 )
             }
             <ChangePasswordComponent
+                handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
+                connectorProperties={ connectorProperties }
                 handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
                 openChangePasswordModal={ openChangePasswordModal }
                 onAlertFired={ onAlertFired }
