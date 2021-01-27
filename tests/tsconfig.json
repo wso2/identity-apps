@@ -18,10 +18,8 @@
         "outDir": "dist",
         "paths": {
             "*": ["types/*"],
-            "@wso2/identity-cypress-test-base/commands": ["node_modules/@wso2/identity-cypress-test-base/dist/commands"],
-            "@wso2/identity-cypress-test-base/constants": ["node_modules/@wso2/identity-cypress-test-base/dist/constants"],
-            "@wso2/identity-cypress-test-base/page-objects": ["node_modules/@wso2/identity-cypress-test-base/dist/page-objects"],
-            "@wso2/identity-cypress-test-base/utils": ["node_modules/@wso2/identity-cypress-test-base/dist/utils"]
+            "@wso2/identity-cypress-test-base/api": ["node_modules/@wso2/identity-cypress-test-base/dist/api/commands"],
+            "@wso2/identity-cypress-test-base/ui": ["node_modules/@wso2/identity-cypress-test-base/dist/ui"]
         },
         "target": "es5",
         "types": [

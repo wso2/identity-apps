@@ -339,6 +339,36 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Modifies the grant type label string value. For now we only concatenate
+     * some extra value to the `implicit` field. If you need to do the same for
+     * other checkboxes label then add a condition and bind the values.
+     *
+     * @param value {string} checkbox key {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES}
+     * @param label {string} mapping label for value
+     */
+    const modifyGrantTypeLabels = (value: string, label: string): string => {
+        if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
+            return `${ label } (not recommended)`;
+        }
+        return label;
+    };
+
+    /**
+     * Generates a string description/hint for the target {@code value} checkbox.
+     * {@see TEMPLATE_WISE_ALLOWED_GRANT_TYPES} for different types.
+     *
+     * @param value {string}
+     */
+    const getGrantTypeHintDescription = (value: string): string => {
+        switch (value) {
+            case ApplicationManagementConstants.IMPLICIT_GRANT:
+                return "Implicit flow is vulnerable to access token leakage.";
+            default:
+                return null;
+        }
+    };
+
+    /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
      * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
@@ -350,11 +380,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         const allowedList = [];
 
         if (metadataProp) {
-            metadataProp.options.map((grant: GrantTypeInterface) => {
+            metadataProp.options.map(({ name, displayName }: GrantTypeInterface) => {
                 // Hides the grant types specified in the array.
                 // TODO: Remove this once the specified grant types such as `account-switch` are handled properly.
                 // See https://github.com/wso2/product-is/issues/8806.
-                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(grant.name)) {
+                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(name)) {
                     return;
                 }
 
@@ -363,13 +393,64 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     && template.id
                     && get(ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES, template.id)
                     && !ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES[ template.id ]
-                        .includes(grant.name)) {
+                        .includes(name)) {
 
                         return;
                 }
 
-                allowedList.push({ label: grant.displayName, value: grant.name });
+                /**
+                 * Create the checkbox children object. {@code hint} is marked
+                 * as optional because not all children have hint/description
+                 * popups. {@see modules > forms > CheckboxChild}
+                 */
+                const grant: { label: string; value: string; hint?: any } = {
+                    label: modifyGrantTypeLabels(name, displayName),
+                    value: name
+                };
+
+                /**
+                 * Attach hint/description to this specific checkbox value.
+                 * If there's no description provided in {@link getGrantTypeHintDescription}
+                 * then we will not attach any hint popups.
+                 */
+                const description = getGrantTypeHintDescription(name);
+                if (description) {
+                    grant.hint = {
+                        header: displayName,
+                        content: description,
+                    };
+                }
+
+                allowedList.push(grant);
+
             });
+        }
+
+        /**
+         * Rearranging the allowed list according to the correct order.
+         * Below algorithm assumes that the template's arrange order map
+         * keys length is equals to allowedList.
+         *
+         * Below invariants must be satisfied to complete the operation: -
+         *      - `template` AND `template.id` IS truthy
+         *      - `arrangement` HAS `template.id`
+         *      - `length(arrangement.length)` == `length(allowedList)`
+         *
+         * If all the above invariants are satisfied then we can safely
+         * attach a `index` property to every entry of the `allowedList`
+         * and sort the array to ascending order to rearrange the list
+         * in-place.
+         */
+        if (template && template.id) {
+            const arrangement: Map<string, number> = ApplicationManagementConstants
+                .TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER[ template.id ];
+            if (arrangement && arrangement.size === allowedList.length) {
+                for (const grant of allowedList) {
+                    const index = arrangement.get(grant.value);
+                    grant[ "index" ] = index ?? Infinity;
+                }
+                allowedList.sort(({ index: a }, { index: b }) => a - b);
+            }
         }
 
         return allowedList;
@@ -650,7 +731,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".validations.empty")
                         }
                         children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
-                        value={ initialValues.grantTypes }
+                        value={ initialValues?.grantTypes }
                         readOnly={ readOnly }
                         listen={ (values) => handleGrantTypeChange(values) }
                         data-testid={ `${ testId }-grant-type-checkbox-group` }
@@ -675,7 +756,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={
-                            initialValues.publicClient
+                            initialValues?.publicClient
                                 ? [ "supportPublicClients" ]
                                 : []
                         }
@@ -691,7 +772,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                     <Hint>
                         { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
-                            productName: config.ui.productName
+                            productName: config.ui?.productName
                         }) }
                     </Hint>
                 </Grid.Column>
@@ -712,8 +793,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                             required={ true }
                             value={
-                                ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                    initialValues.callbackURLs?.toString())
+                                initialValues?.callbackURLs?.toString()
+                                    ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                        initialValues.callbackURLs.toString())
+                                    : ""
                             }
                             placeholder={
                                 t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
@@ -769,6 +852,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }
+                                    onlyOrigin={ true }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundOIDC" +
                                             ".fields.allowedOrigins.label")
@@ -792,6 +876,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     { t("console:common.validations.unrecognizedURL.description") }
                                                 </Label>
                                             );
+                                        }
+
+                                        if (!URLUtils.isAValidOriginUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { "Invalid origin URL" }
+                                                </Label>
+                                            );
+                                            setAllowedOriginsErrorLabel(label);
+                                            return false;
                                         }
 
                                         if (!URLUtils.isMobileDeepLink(value)) {
@@ -819,8 +913,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>
                                     The HTTP origins that host your web application. You can define multiple web
                                     origins and wild cards are supported.
-                                    <p className={"mt-0"}>E.g.,&nbsp;&nbsp;
-                                        <code>https://myapp.io, https://localhost:9000, https://*.otherapp.io</code>
+                                    <p className="mt-0">E.g.,&nbsp;&nbsp;
+                                        <code>https://myapp.io, https://localhost:3000, https://&#42;.otherapp.io</code>
                                     </p>
                                 </Hint>
                             </Grid.Column>
@@ -853,7 +947,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.pkce.validations.empty")
                         }
                         type="checkbox"
-                        value={ findPKCE(initialValues.pkce) }
+                        value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                         listen={ pkceValuesChangeListener }
                         children={ [
                             {
@@ -900,7 +994,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         name="type"
                         default={
-                            initialValues.accessToken
+                            initialValues?.accessToken
                                 ? initialValues.accessToken.type
                                 : metadata.accessTokenType.defaultValue
                         }
@@ -955,7 +1049,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        initialValues.accessToken?.validateTokenBinding
+                                        initialValues?.accessToken?.validateTokenBinding
                                             ? [ "validateTokenBinding" ]
                                             : []
                                     }
@@ -985,7 +1079,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                        initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
                                             ? [ "revokeAccessToken" ]
                                             : []
                                     }
@@ -1023,8 +1117,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".accessToken.fields.expiry.validations.empty")
                         }
                         value={
-                            initialValues.accessToken
-                                ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
+                            initialValues?.accessToken
+                                ? initialValues.accessToken?.userAccessTokenExpiryInSeconds.toString()
                                 : metadata.defaultUserAccessTokenExpiryTime
                         }
                         placeholder={
@@ -1083,7 +1177,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="checkbox"
                         value={
-                            initialValues.refreshToken?.renewRefreshToken
+                            initialValues?.refreshToken?.renewRefreshToken
                                 ? [ "refreshToken" ]
                                 : []
                         }
@@ -1121,7 +1215,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".refreshToken.fields.expiry.placeholder")
                         }
-                        value={ initialValues.refreshToken
+                        value={ initialValues?.refreshToken
                             ? initialValues.refreshToken.expiryInSeconds.toString()
                             : metadata.defaultRefreshTokenExpiryTime }
                         type="number"
@@ -1163,7 +1257,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                 ".fields.audience.placeholder")
                         }
-                        value={ initialValues.idToken?.audience.toString() }
+                        value={ initialValues?.idToken?.audience.toString() }
                         type="textarea"
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-audience-textarea` }
@@ -1194,7 +1288,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                         }
                         value={
-                            initialValues.idToken?.encryption.enabled
+                            initialValues?.idToken?.encryption.enabled
                                 ? [ "enableEncryption" ]
                                 : []
                         }
@@ -1230,7 +1324,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.encryption.algorithm
                                 : metadata.idTokenEncryptionAlgorithm.defaultValue
                         }
@@ -1265,7 +1359,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.encryption.method
                                 : metadata.idTokenEncryptionMethod.defaultValue
                         }
@@ -1303,7 +1397,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.expiry.placeholder")
                         }
                         value={
-                            initialValues.idToken
+                            initialValues?.idToken
                                 ? initialValues.idToken.expiryInSeconds.toString()
                                 : metadata.defaultIdTokenExpiryTime
                         }
@@ -1353,7 +1447,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ));
                             }
                         } }
-                        value={ initialValues.logout?.backChannelLogoutUrl }
+                        value={ initialValues?.logout?.backChannelLogoutUrl }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-back-channel-logout-url-input` }
                     />
@@ -1393,7 +1487,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ));
                             }
                         } }
-                        value={ initialValues.logout?.frontChannelLogoutUrl }
+                        value={ initialValues?.logout?.frontChannelLogoutUrl }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-front-channel-logout-url-input` }
                     />
@@ -1425,7 +1519,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         requiredErrorMessage="this is needed"
                         type="checkbox"
                         value={
-                            initialValues.validateRequestObjectSignature
+                            initialValues?.validateRequestObjectSignature
                                 ? [ "EnableRequestObjectSignatureValidation" ]
                                 : []
                         }
@@ -1463,7 +1557,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".scopeValidators.fields.validator.validations.empty")
                         }
                         type="checkbox"
-                        value={ initialValues.scopeValidators }
+                        value={ initialValues?.scopeValidators }
                         children={ getAllowedList(metadata.scopeValidators, true) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-scope-validator-checkbox` }
@@ -1549,8 +1643,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 ".sections.certificate.fields.pemValue.validations.empty")
                                         }
                                         placeholder={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
-                                                ".sections.certificate.fields.pemValue.placeholder")
+                                            ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
                                         }
                                         type="textarea"
                                         value={
@@ -1719,7 +1812,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            initialValues.clientId && (
+                            initialValues?.clientId && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <Form.Field>
@@ -1737,7 +1830,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            (initialValues.clientSecret && (initialValues?.state !== State.REVOKED)) && (
+                            (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <Form.Field>
@@ -1779,7 +1872,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            !readOnly && initialValues.clientSecret && (
+                            !readOnly && initialValues?.clientSecret && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                         <>

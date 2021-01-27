@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export const APPLICATION_DOMAIN = "Application";
+export const APPLICATION_DOMAIN = "Application/";
 export const INTERNAL_DOMAIN = "Internal";
 export const PRIMARY_DOMAIN = "Primary";
 export const ROLE_VIEW_PATH = "/roles/";

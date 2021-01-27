@@ -30,6 +30,7 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     FeatureConfigInterface,
     UIConstants,
     filterList,
@@ -37,6 +38,7 @@ import {
     sortList
 } from "../../core";
 import { AddDialect, ClaimsList, ListType } from "../components";
+import { ClaimManagementConstants } from "../constants";
 
 /**
  * Props for the Claim Dialects page.
@@ -71,7 +73,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         }
     ];
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const listAllAttributeDialects: boolean = useSelector((
+        state: AppState) => state.config.ui.listAllAttributeDialects);
 
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -111,7 +116,18 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 if (claim.id === "local") {
                     setLocalURI(claim.dialectURI);
                 }
+
+                if (!listAllAttributeDialects) {
+                    return claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
+                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA") &&
+                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_LEGAL") &&
+                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL") &&
+                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET") &&
+                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
+                }
+
                 return claim.id !== "local";
+
             });
 
             setDialects(filteredDialect);
@@ -236,7 +252,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             <PageLayout
                 action={
                     (isLoading || !(!searchQuery && filteredDialects?.length <= 0))
-                    && (
+                    && config.ui?.isDialectAddingEnabled !== false && (
                         <PrimaryButton
                             onClick={ () => {
                                 setAddEditClaim(true);

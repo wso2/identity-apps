@@ -440,27 +440,23 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "L'origine de l'URL de redirection {{url}} n'est pas autorisée à faire des requêtes CORS vers les APIs " +
-                            "de WSO2 Identity Server.",
+                        content: "Vous devez activer CORS pour cette origine afin de faire des requêtes API " +
+                            "à {{productName}} à partir d'un navigateur.",
                         detailedContent: {
-                            0: "Par défaut, les API de WSO2 Identity Server bloquent les requêtes CORS. Mais cela peut aussi " +
-                                "empêcher que des demandes légitimes puissent circuler",
-                            1: "Par conséquent, l'activation de CORS pour cette origine vous permettra d'accéder aux APIs de WSO2 Identity Server " +
-                                "à partir des applications enregistrées dans le domaine du locataire <1>{{ tenantName }}</1>."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS non autorisé",
+                        header: "Autoriser CORS",
                         leftAction: "Autoriser"
                     },
                     positive: {
-                        content: "L'origine de l'URL de redirection {{url}} n'est pas autorisée à faire des requêtes CORS vers les APIs " +
-                         "de WSO2 Identity Server.",
+                        content: "L'origine de l'URL de redirection {{urlLink}} est autorisée à envoyer des " + 
+                            "requêtes CORS aux API {{productName}}.",
                         detailedContent: {
-                           0: "Par défaut, les API de WSO2 Identity Server bloquent les requêtes CORS. Mais cela peut aussi " +
-                                 "empêcher que des demandes légitimes puissent circuler",
-                           1: "Par conséquent, l'activation de CORS pour cette origine vous permettra d'accéder aux APIs de WSO2 Identity Server " +
-                                 "à partir des applications enregistrées dans le domaine du locataire <1>{{ tenantName }}</1>."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS autorisé"
+                        header: "CORS est autorisé"
                     }
                 }
             },
@@ -685,15 +681,15 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Configurer les attributs",
+                                    header: "Configurer les attributs utilisateur",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Sélectionnez tous les attributs"
+                                                    attribute: "Sélectionnez tous les attributs utilisateur"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "Chercher un attribut",
+                                                    attribute: "Rechercher un attribut utilisateur",
                                                     role: "Chercher un rôle"
                                                 }
                                             }
@@ -701,14 +697,14 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Sélectionnez les attributs utilisateur à inclure dans la réponse d'authentification."
                                 },
-                                heading: "Sélection des attributs",
+                                heading: "Sélection des attributs utilisateur",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"
                                     },
                                     columns: {
-                                        appAttribute: "Attribut d'application",
-                                        attribute: "Attribut",
+                                        appAttribute: "Attribut utilisateur de l'application mappée",
+                                        attribute: "Attribut utilisateur",
                                         mandatory: "Obligatoire",
                                         requested: "Demandé"
                                     },
@@ -725,6 +721,20 @@ export const console: ConsoleNS = {
                                                 placeholder: "ex: {{name}} personnalisé, nouveau {{name}}"
                                             }
                                         }
+                                    },
+                                    mappedAtributeHint: "Au lieu d'envoyer l'attribut par défaut, l'attribut mappé "  +
+                                        "personnalisé sera envoyé",
+                                    mappingRevert: {
+                                        confirmPrimaryAction: "Confirmer",
+                                        confirmSecondaryAction: "Annuler",
+                                        confirmationContent: "Ces attributs personnalisés mappés aux attributs par " +
+                                            "défaut pertinents seront rétablis aux valeurs mappées par défaut par " +
+                                            "cette action. Veuillez l'utiliser avec précaution car vous ne pourrez " +
+                                            "pas récupérer les valeurs d'attribut personnalisé mappées.",
+                                        confirmationHeading: "Confirmer le basculement du mappage des " + 
+                                            "revendications sur la valeur par défaut",
+                                        confirmationMessage: "Cette action rétablira les valeurs mappées aux " + 
+                                            "valeurs par défaut."
                                     },
                                     searchPlaceholder: "Attributs de recherche"
                                 }
@@ -796,7 +806,12 @@ export const console: ConsoleNS = {
                                             },
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les authentificateurs " +
-                                                "locaux/fédérés vers les étapes correspondantes."
+                                                "locaux/fédérés vers les étapes correspondantes.",
+                                            secondFactorDisabled: "Les authentificateurs du second facteur " +
+                                                "ne peuvent être utilisés que dans une étape autre que la " +
+                                                "première, et si un authentificateur de base ou un " +
+                                                "identificateur-premier authentificateur a été ajouté à " +
+                                                "la première étape."
                                         }
                                     }
                                 },
@@ -910,7 +925,7 @@ export const console: ConsoleNS = {
                             returnAuthenticatedIdpList: {
                                 hint: " La liste des fournisseurs d'identité authentifiés sera renvoyée dans la réponse " +
                                     "d'authentification.",
-                                label: "Retourne la liste des idP authentifiés",
+                                label: "Retourne la liste des IDP authentifiés",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
                                 }
@@ -1059,9 +1074,9 @@ export const console: ConsoleNS = {
                         fields: {
                             allowedOrigins: {
                                 hint: "Les origines autorisées sont des URL qui seront autorisées à effectuer des requêtes " +
-                                    "depuis des origines tierces vers les APIs de WSO2 Identity Server ",
+                                    "depuis des origines tierces vers les APIs de {{productName}} ",
                                 label: "Origines autorisées",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Veuillez ajouter une origine valide."
                                 }
@@ -1249,7 +1264,7 @@ export const console: ConsoleNS = {
                                                 label: "Activer"
                                             },
                                             plainAlg: {
-                                                label: "Prise en charge de l'algorithme PKCE de transformation 'Plain'"
+                                                label: "Prise en charge de l'algorithme de transformation 'Plain'"
                                             }
                                         },
                                         label: "{{label}}",
@@ -1285,14 +1300,14 @@ export const console: ConsoleNS = {
                                 heading: "jeton de rafraîchissement"
                             },
                             requestObjectSignature: {
-                                heading: "Signature d'objet de requête HTTP",
+                                heading: "Objet de requête HTTP",
                                 description: "{{productName}} prend en charge la réception des paramètres de " +
                                     "demande d'authentification OIDC des clients dans un objet de demande. " +
                                     "Activez la validation de signature pour n'accepter que les objets " +
                                     "de demande signés dans la demande d'autorisation.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Activer la validation de la signature de l'objet de la requête",
+                                        label: "Activer la validation de la signature",
                                     }
                                 }
                             },
@@ -2052,6 +2067,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Révocation avec succés de l'application",
                             message: "Révocation réussie"
+                        }
+                    },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Impossible d'ajouter des authentificateurs de second " +
+                                "facteur à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
                         }
                     },
                     updateAdvancedConfig: {
@@ -3182,7 +3204,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Veuillez choisir l'un des types d'application suivant.",
+                subTitle: "Choisissez l'un des types d'application prédéfinis pour vous connecter rapidement.",
                 title: "Choisissez le type d'application"
             },
             applications: {
@@ -5295,7 +5317,7 @@ export const console: ConsoleNS = {
                 approvals: "Approbations",
                 attributeDialects: "Dialectes d'attributs",
                 categories: {
-                    attributes: "Attributs",
+                    attributes: "Attributs Utilisateur",
                     certificates: "Certificats",
                     configurations: "Configurations",
                     general: "Général",
@@ -5397,8 +5419,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Sélectionner la méthode d'initialisation du mot de passe",
                                 options: {
-                                    askPassword: "Inviter l'utilisateur à définir un mot de passe",
-                                    createPassword: "Définir le mot de passe de l'utilisateur"
+                                    askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
+                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
 
                                 }
                             }

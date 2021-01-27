@@ -1002,6 +1002,10 @@ export const myAccount: MyAccountNS = {
                 generic: {
                     inputs: {
                         placeholder: "{{fieldName}} ஐ உள்ளிடவும்",
+                        readonly: {
+                            placeholder: "இந்த மதிப்பு காலியாக உள்ளது",
+                            popup: "உங்கள் புதுப்பிக்க நிர்வாகியைத் தொடர்பு கொள்ளுங்கள் {{fieldName}}"
+                        },
                         validations: {
                             empty: "{{fieldName}} ஒரு கட்டாயா களமாகும்",
                             invalidFormat: "{{fieldName}} சரியான வடிவத்தில் இல்லை"

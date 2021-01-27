@@ -444,26 +444,21 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests" +
-                            " to WSO2 Identity Server APIs.",
+                        content: "You need to enable CORS for this origin in order to make API requests" +
+                            " to {{productName}} from a Browser.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also " +
-                                "prevent legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server " +
-                                "APIs from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS Not Allowed",
+                        header: "Allow CORS",
                         leftAction: "Allow"
                     },
                     positive: {
-                        content: "The origin of the redirect URL {{url}} is allowed to make CORS requests to WSO2 " +
-                            "Identity Server APIs.",
+                        content: "The origin of the redirect URL {{urlLink}} is allowed to make CORS requests to " +
+                            "{{productName}} APIs.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
-                                "legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity " +
-                                "Server APIs from the applications registered in the <1>{{ tenantName }}</1> " +
-                                "tenant domain."
+                            0: "",
+                            1: ""
                         },
                         header: "CORS is Allowed"
                     }
@@ -497,7 +492,7 @@ export const console: ConsoleNS = {
                                     heading: "Audience"
                                 },
                                 callbackURLs: {
-                                    heading: "Allowed redirect URL(s)"
+                                    heading: "Authorized redirect URIs"
                                 },
                                 certificateAlias: {
                                     heading: "Certificate alias"
@@ -661,8 +656,8 @@ export const console: ConsoleNS = {
                         attributes: {
                             attributeMappingChange: {
                                 error: {
-                                    description: "The mapped attributes were changed to default values.",
-                                    message: "Attribute Mapping Changed"
+                                    description: "The mapped user attributes were changed to default values.",
+                                    message: "User Attribute Mapping Changed"
                                 }
                             },
                             forms: {
@@ -689,30 +684,31 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "Configure Attributes",
+                                    header: "Select User Attributes",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "Select All Attributes"
+                                                    attribute: "Select All User Attributes"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "Search attribute",
+                                                    attribute: "Search user attribute",
                                                     role: "Search Role"
                                                 }
                                             }
                                         }
                                     },
-                                    subHeading: "Select user attributes to be included in the authentication response."
+                                    subHeading: "Select which user attributes to request from the authentication " +
+                                        "provider"
                                 },
-                                heading: "Attribute Selection",
+                                heading: "User Attribute Selection",
                                 mappingTable: {
                                     actions: {
                                         enable: "Enable mapping"
                                     },
                                     columns: {
-                                        appAttribute: "Application attribute",
-                                        attribute: "Attribute",
+                                        appAttribute: "Mapped user attribute",
+                                        attribute: "User Attribute",
                                         mandatory: "Mandatory",
                                         requested: "Requested"
                                     },
@@ -730,10 +726,22 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    searchPlaceholder: "Search attributes"
+                                    mappedAtributeHint: "Enter the custom attribute that should be requested " +
+                                        "instead of the default attribute.",
+                                    mappingRevert: {
+                                        confirmPrimaryAction: "Confirm",
+                                        confirmSecondaryAction: "Cancel",
+                                        confirmationContent: "The mapped custom attributes will change  " +
+                                            "back to the default attribute values. " +
+                                            "Please proceed with caution since you will not be able to " +
+                                            "retrieve the mapped custom attribute values.",
+                                        confirmationHeading: "Are you sure?",
+                                        confirmationMessage: "This action will revert mapped custom attribute values to default values."
+                                    },
+                                    searchPlaceholder: "Search user attributes"
                                 }
                             },
-                            tabName: "Attributes"
+                            tabName: "User Attributes"
                         },
                         general: {
                             tabName: "General"
@@ -801,7 +809,10 @@ export const console: ConsoleNS = {
                                             },
                                             heading: "Step based configuration",
                                             hint: "Create authentication steps by dragging the local/federated " +
-                                                "authenticators on to the relevant steps."
+                                                "authenticators on to the relevant steps.",
+                                            secondFactorDisabled: "The second-factor authenticators can be used " +
+                                                "only in a step other than the first, and if a basic authenticator " +
+                                                "or identifier-first authenticator has been added to the first step."
                                         }
                                     }
                                 },
@@ -916,7 +927,7 @@ export const console: ConsoleNS = {
                             returnAuthenticatedIdpList: {
                                 hint: " The list of authenticated Identity Providers will be returned in the " +
                                     "authentication response.",
-                                label: "Return authenticated idP list",
+                                label: "Return authenticated IDP list",
                                 validations: {
                                     empty: "This is a required field."
                                 }
@@ -1067,9 +1078,9 @@ export const console: ConsoleNS = {
                         fields: {
                             allowedOrigins: {
                                 hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
-                                    "origins to WSO2 Identity Server APIs",
+                                    "origins to {{productName}} APIs",
                                 label: "Allowed Origins",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
@@ -1080,7 +1091,7 @@ export const console: ConsoleNS = {
                                     " The client should specify the redirect_url in the authorize or logout" +
                                     " request and {{productName}} will validate it against this " +
                                     "configured Redirect URLs.",
-                                label: "Allowed Redirect URLs",
+                                label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URL.",
@@ -1253,7 +1264,7 @@ export const console: ConsoleNS = {
                                                 label: "Enable"
                                             },
                                             plainAlg: {
-                                                label: "Support PKCE 'Plain' Transform Algorithm"
+                                                label: "Support 'Plain' Transform Algorithm"
                                             }
                                         },
                                         label: "{{label}}",
@@ -1287,14 +1298,14 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object Signature",
+                                heading: "Request Object",
                                 description: "{{productName}} supports receiving OIDC authentication request " +
                                     "parameters from clients in a `request object`. Enable signature " +
                                     "validation to accept only signed request objects in the" +
                                     " authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable request object signature validation",
+                                        label: "Enable signature validation",
                                     }
                                 },
                             },
@@ -2057,6 +2068,12 @@ export const console: ConsoleNS = {
                             message: "Revoke successful"
                         }
                     },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Cannot add second factor authenticators to the first step.",
+                            message: "Cannot add to this step"
+                        }
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",
@@ -2164,9 +2181,9 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyAttributesList: {
-                        action: "Add Attribute",
-                        subtitles: "There are no attributes selected to the application at the moment.",
-                        title: "No attributes added"
+                        action: "Add User Attribute",
+                        subtitles: "There are no user attributes selected to the application at the moment.",
+                        title: "No user attributes added"
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
@@ -2238,7 +2255,7 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
-                            subHeading: "Use the descriptions below for guidance"
+                            subHeading: "Use the guide below"
                         }
                     }
                 }
@@ -2265,6 +2282,839 @@ export const console: ConsoleNS = {
                             description: "Help panel will always appear {{state}} unless you change explicitly.",
                             message: "Help panel {{state}}"
                         }
+                    }
+                }
+            },
+            authenticationProvider: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Name, Enabled etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by name"
+                },
+                buttons: {
+                    addAttribute: "Add Attribute",
+                    addAuthenticator: "New Authenticator",
+                    addCertificate: "New Certificate",
+                    addConnector: "New Connector",
+                    addIDP: "New Identity Provider"
+                },
+                confirmations: {
+                    deleteAuthenticator: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you delete this authenticator, you will not be able to get it back. All the " +
+                            "applications depending on this also might stop working. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the authenticator."
+                    },
+                    deleteConnector: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you delete this connector, you will not be able to get it back. Please " +
+                            "proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the connector."
+                    },
+                    deleteIDP: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
+                            "applications depending on this also might stop working. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the IDP."
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDP: {
+                        actionTitle: "Delete Identity Provider",
+                        header: "Delete identity provider",
+                        subheader: "Once you delete an identity provider, there is no going back." +
+                            " Please be certain."
+                    },
+                    disableIDP: {
+                        actionTitle: "Disable Identity Provider",
+                        header: "Disable identity provider",
+                        subheader: "Once you disable an identity provider, it can no longer be used until " +
+                            "you enable it again. Please be certain."
+                    },
+                    header: "Danger Zone"
+                },
+                forms: {
+                    advancedConfigs: {
+                        alias: {
+                            hint: "If the resident identity provider is known by an alias at the federated " +
+                                "identity provider, specify it here.",
+                            label: "Alias"
+                        },
+                        certificateType: {
+                            certificateJWKS: {
+                                label: "Use JWKS endpoint",
+                                placeholder: "Value should be the certificate in JWKS format.",
+                                validations: {
+                                    empty: "Certificate value is required"
+                                }
+                            },
+                            certificatePEM: {
+                                label: "Provide certificate",
+                                placeholder: "Value should be a PEM URL.",
+                                validations: {
+                                    empty: "Certificate value is required"
+                                }
+                            },
+                            hint: "If the type is JWKS, the value should be a JWKS URL. If the type is PEM, the" +
+                                " value should be the certificate in PEM format.",
+                            label: "Select Certificate Type"
+                        },
+                        federationHub: {
+                            hint: "Check if this points to a federation hub identity provider",
+                            label: "Federation Hub"
+                        },
+                        homeRealmIdentifier: {
+                            hint: "Enter the home realm identifier for this identity provider",
+                            label: "Home Realm Identifier"
+                        }
+                    },
+                    attributeSettings: {
+                        attributeListItem: {
+                            validation: {
+                                empty: "Please enter a value"
+                            }
+                        },
+                        attributeMapping: {
+                            attributeColumnHeader: "Attribute",
+                            attributeMapColumnHeader: "Identity Provider attribute",
+                            attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
+                            componentHeading: "Attributes Mapping",
+                            hint: "Add attributes supported by Identity Provider"
+                        },
+                        attributeProvisioning: {
+                            attributeColumnHeader: {
+                                0: "Attribute",
+                                1: "Identity Provider attribute"
+                            },
+                            attributeMapColumnHeader: "Default value",
+                            attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
+                            componentHeading: "Provisioning Attributes Selection",
+                            hint: "Specify required attributes for provisioning"
+                        },
+                        attributeSelection: {
+                            searchAttributes: {
+                                placeHolder: "Search attributes"
+                            }
+                        }
+                    },
+                    authenticatorAccordion: {
+                        default: {
+                            0: "Default",
+                            1: "Make default"
+                        },
+                        enable: {
+                            0: "Enabled",
+                            1: "Disabled"
+                        }
+                    },
+                    common: {
+                        customProperties: "Custom Properties",
+                        invalidQueryParamErrorMessage: "These are not valid query parameters",
+                        invalidURLErrorMessage: "This is not a valid URL",
+                        requiredErrorMessage: "This is required"
+                    },
+                    generalDetails: {
+                        description: {
+                            hint: "A text description of the identity provider.",
+                            label: "Description",
+                            placeholder: "Enter a description of the identity provider."
+                        },
+                        image: {
+                            hint: "A URL for the image of the identity provider for display purposes. " +
+                                "If not provided a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
+                            label: "Logo",
+                            placeholder: "https://myapp-resources.io/my_app_image.png"
+                        },
+                        name: {
+                            hint: "Enter a unique name for this identity provider.",
+                            label: "Name",
+                            placeholder: "Enter a name for the identity provider.",
+                            validations: {
+                                duplicate: "An identity provider already exists with this name",
+                                empty: "Identity Provider name is required"
+                            }
+                        }
+                    },
+                    jitProvisioning: {
+                        enableJITProvisioning: {
+                            hint: "Specifies if users federated from this identity provider " +
+                                "needs to be provisioned locally.",
+                            label: "Enable Just-in-time Provisioning"
+                        },
+                        provisioningScheme: {
+                            children: {
+                                0: "Prompt for username, password and consent",
+                                1: "Prompt for password and consent",
+                                2: "Prompt for consent",
+                                3: "Provision silently"
+                            },
+                            hint: "Select the scheme to be used, when users are provisioned.",
+                            label: "Provisioning scheme"
+                        },
+                        provisioningUserStoreDomain: {
+                            hint: "Select user store domain name to provision users.",
+                            label: "User store domain to always provision users"
+                        }
+                    },
+                    outboundConnectorAccordion: {
+                        default: {
+                            0: "Default",
+                            1: "Make default"
+                        },
+                        enable: {
+                            0: "Enabled",
+                            1: "Disabled"
+                        }
+                    },
+                    outboundProvisioningRoles: {
+                        heading: "OutBound Provisioning Roles",
+                        hint: "Select and add as identity provider outbound provisioning roles",
+                        label: "Role",
+                        placeHolder: "Select Role",
+                        popup: {
+                            content: "Add Role"
+                        }
+                    },
+                    roleMapping: {
+                        heading: "Role Mapping",
+                        hint: "Map local roles with the Identity Provider roles",
+                        keyName: "Local Role",
+                        validation: {
+                            duplicateKeyErrorMsg: "This role is already mapped. Please select another role",
+                            keyRequiredMessage: "Please enter the local role",
+                            valueRequiredErrorMessage: "Please enter an IDP role to map to"
+                        },
+                        valueName: "Identity Provider Role"
+                    },
+                    uriAttributeSettings: {
+                        role: {
+                            heading: "Role",
+                            hint: "Specifies the attribute that identifies the roles at the Identity Provider",
+                            label: "Role Attribute",
+                            placeHolder: "Select Attribute",
+                            validation: {
+                                empty: "Please select an attribute for role"
+                            }
+                        },
+                        subject: {
+                            heading: "Subject",
+                            hint: "Specifies the attribute that identifies the user at the identity provider",
+                            label: "Subject Attribute",
+                            placeHolder: "Select Attribute",
+                            validation: {
+                                empty: "Please select an attribute for subject"
+                            }
+                        }
+                    }
+                },
+                helpPanel: {
+                    tabs: {
+                        samples: {
+                            content: {
+                                docs: {
+                                    goBack: "Go back",
+                                    hint: "Click on the following  Identity Provider types to check out the " +
+                                        "corresponding documentation.",
+                                    title: "Select a Template Type"
+                                }
+                            },
+                            heading: "Docs"
+                        }
+                    }
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Name"
+                },
+                modals: {
+                    addAuthenticator: {
+                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                        title: "Add New Authenticator"
+                    },
+                    addCertificate: {
+                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                        title: "Add New Certificate"
+                    },
+                    addProvisioningConnector: {
+                        subTitle: "Follow the steps to add new outbound provisioning connector",
+                        title: "Create outbound provisioning connector"
+                    },
+                    attributeSelection: {
+                        content: {
+                            searchPlaceholder: "Search Attributes"
+                        },
+                        subTitle: "Add new attributes or remove existing attributes.",
+                        title: "Update attribute selection"
+                    }
+                },
+                notifications: {
+                    addFederatedAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Create error"
+                        },
+                        genericError: {
+                            description: "An error occurred while adding the authenticator.",
+                            message: "Create error"
+                        },
+                        success: {
+                            description: "Successfully added the authenticator.",
+                            message: "Create successful"
+                        }
+                    },
+                    addIDP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Create error"
+                        },
+                        genericError: {
+                            description: "An error occurred while creating the identity provider.",
+                            message: "Create error"
+                        },
+                        success: {
+                            description: "Successfully created the identity provider.",
+                            message: "Create successful"
+                        }
+                    },
+                    changeCertType: {
+                        jwks: {
+                            description: "Please note that if you have added a certificate it'll be overridden " +
+                                "by the the JWKS endpoint.",
+                            message: "Warning!"
+                        },
+                        pem: {
+                            description: "Please note that if you have added a JWKS endpoint it'll be overridden " +
+                                "by the certificate.",
+                            message: "Warning!"
+                        }
+                    },
+                    deleteDefaultAuthenticator: {
+                        error: {
+                            description: "The default federated authenticator cannot be deleted.",
+                            message: "Federated Authenticator Deletion Error"
+                        },
+                        genericError: null,
+                        success: null
+                    },
+                    deleteDefaultConnector: {
+                        error: {
+                            description: "The default outbound provisioning connector cannot be deleted.",
+                            message: "Outbound Connector Deletion error"
+                        },
+                        genericError: null,
+                        success: null
+                    },
+                    deleteIDP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Identity Provider Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the identity provider",
+                            message: "Identity Provider Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the identity provider",
+                            message: "Delete successful"
+                        }
+                    },
+                    disableAuthenticator: {
+                        error: {
+                            description: "You cannot disable the default authenticator.",
+                            message: "Data validation error"
+                        },
+                        genericError: {
+                            description: "",
+                            message: ""
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    disableOutboundProvisioningConnector: {
+                        error: {
+                            description: "You cannot disable the default outbound provisioning connector.",
+                            message: "Data validation error"
+                        },
+                        genericError: {
+                            description: "",
+                            message: ""
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    duplicateCertificateUpload: {
+                        error: {
+                            description: "The certificate already exists for the IDP: {{idp}}",
+                            message: "Certificate duplication error "
+                        },
+                        genericError: {
+                            description: "",
+                            message: ""
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving local claims.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getFederatedAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getFederatedAuthenticatorMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving authenticator metadata.",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getFederatedAuthenticatorsList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getIDP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity provider details",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getIDPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity providers",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getIDPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving IDP template.",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getIDPTemplateList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity provider template list",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getOutboundProvisioningConnector: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "An error occurred retrieving the outbound provisioning connector details.",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getOutboundProvisioningConnectorMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "An error occurred retrieving the outbound provisioning connector metadata.",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getOutboundProvisioningConnectorsList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "An error occurred retrieving the outbound provisioning connectors list.",
+                            message: "Retrieval error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getRolesList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving roles",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Need to configure all the mandatory properties.",
+                            message: "Cannot perform update"
+                        },
+                        genericError: {
+                            description: "",
+                            message: ""
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateClaimsConfigs: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating claim configurations.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated claim configurations.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateFederatedAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the federated authenticator.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated the federated authenticator.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateFederatedAuthenticators: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the federated authenticators.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated the federated authenticators.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateIDP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the identity provider.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the identity provider.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateIDPCertificate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the identity provider certificate.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the identity provider certificate.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateIDPRoleMappings: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating outbound provisioning role configurations.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated outbound provisioning role configurations.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateJITProvisioning: {
+                        error: {
+                            description: "",
+                            message: ""
+                        },
+                        genericError: {
+                            description: "An error occurred while the updating JIT provisioning configurations.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the JIT provisioning configurations.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateOutboundProvisioningConnector: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the outbound provisioning connector.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the outbound provisioning connector.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateOutboundProvisioningConnectors: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the outbound provisioning connectors.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the outbound provisioning connectors.",
+                            message: "Update Successful"
+                        }
+                    }
+                },
+                popups: {
+                    appStatus: {
+                        enabled: {
+                            content: "The identity provider is enabled.",
+                            header: "Enabled",
+                            subHeader: ""
+                        },
+                        disabled: {
+                            content: "The identity provider is disabled. Please enable the authentication " +
+                                "provider to use it's services.",
+                            header: "Disabled",
+                            subHeader: ""
+                        }
+                    }
+                },
+                placeHolders: {
+                    emptyAuthenticatorList: {
+                        subtitles: {
+                            0: "There are currently no authenticators available.",
+                            1: "You can add a new authenticator easily by using the",
+                            2: "predefined templates."
+                        },
+                        title: "Add an authenticator"
+                    },
+                    emptyCertificateList: {
+                        subtitles: {
+                            0: "This IDP has no certificates added.",
+                            1: "Add a certificate to view it here."
+                        },
+                        title: "No certificates"
+                    },
+                    emptyConnectorList: {
+                        subtitles: {
+                            0: "This IDP has no outbound provisioning connectors configured.",
+                            1: "Add a connector to view it here."
+                        },
+                        title: "No outbound provisioning connectors"
+                    },
+                    emptyIDPList: {
+                        subtitles: {
+                            0: "Currently there are no identity providers available.",
+                            1: "You can add a new identity provider easily by following",
+                            2: "the steps in the identity providers creation wizard."
+                        },
+                        title: "Add a new Identity Provider"
+                    },
+                    emptyIDPSearchResults: {
+                        subtitles: {
+                            0: "We couldn't find any results for '{{ searchQuery }}'",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    },
+                    noAttributes: {
+                        subtitles: {
+                            0: "There are no attributes selected at the moment."
+                        },
+                        title: "No attributes added"
+                    }
+                },
+                templates: {
+                    manualSetup: {
+                        heading: "Manual Setup",
+                        subHeading: "Create an identity provider with custom configurations."
+                    },
+                    quickSetup: {
+                        heading: "Quick Setup",
+                        subHeading: "Predefined set of templates to speed up your identity provider creation."
+                    }
+                },
+                wizards: {
+                    addAuthenticator: {
+                        header: "Fill the basic information about the authenticator.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "Authenticator Configuration"
+                            },
+                            authenticatorSelection: {
+                                manualSetup: {
+                                    subTitle: "Add a new authenticator with custom configurations.",
+                                    title: "Manual Setup"
+                                },
+                                quickSetup: {
+                                    subTitle: "Predefined authenticator templates to speed up the process.",
+                                    title: "Quick Setup"
+                                },
+                                title: "Authenticator Selection"
+                            },
+                            summary: {
+                                title: "Summary"
+                            }
+                        }
+                    },
+                    addIDP: {
+                        header: "Fill the basic information about the identity provider.",
+                        steps: {
+                            authenticatorConfiguration: {
+                                title: "Authenticator Configuration"
+                            },
+                            generalSettings: {
+                                title: "General settings"
+                            },
+                            provisioningConfiguration: {
+                                title: "Provisioning Configuration"
+                            },
+                            summary: {
+                                title: "Summary"
+                            }
+                        }
+                    },
+                    addProvisioningConnector: {
+                        header: "Fill the basic information about the provisioning connector.",
+                        steps: {
+                            connectorConfiguration: {
+                                title: "Connector Details"
+                            },
+                            connectorSelection: {
+                                defaultSetup: {
+                                    subTitle: "Select the type of the new outbound provisioning connector",
+                                    title: "Connector Types"
+                                },
+                                title: "Connector selection"
+                            },
+                            summary: {
+                                title: "Summary"
+                            }
+                        }
+                    },
+                    buttons: {
+                        finish: "Finish",
+                        next: "Next",
+                        previous: "Previous"
                     }
                 }
             },
@@ -2323,8 +3173,8 @@ export const console: ConsoleNS = {
                             " Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "Enable Identity Provider",
-                        header: "Enable identity provider",
+                        actionTitle: "Disable Identity Provider",
+                        header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
                             "you enable it again. Please be certain."
                     },
@@ -3097,6 +3947,10 @@ export const console: ConsoleNS = {
                             heading: "Applications",
                             subHeading: "Create applications using predefined templates and manage configurations."
                         },
+                        authenticationProviders: {
+                            heading: "Identity Providers",
+                            subHeading: "Create and manage identity providers."
+                        },
                         idps: {
                             heading: "Identity Providers",
                             subHeading: "Create and manage identity providers based on templates and configure " +
@@ -3117,9 +3971,13 @@ export const console: ConsoleNS = {
                     application: "Applications",
                     general: "General",
                     gettingStarted: "Getting Started",
-                    identityProviders: "Identity Providers"
+                    identityProviders: "Identity Providers",
+                    authenticationProviders: "Identity Providers"
                 },
                 customize: "Customize",
+                authenticationProviderEdit: "Identity Providers Edit",
+                authenticationProviderTemplates: "Identity Provider Templates",
+                authenticationProviders: "Identity Providers",
                 identityProviderEdit: "Identity Providers Edit",
                 identityProviderTemplates: "Identity Provider Templates",
                 identityProviders: "Identity Providers",
@@ -3184,8 +4042,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Choose one of the predefined application types to help you with quick application " +
-                    "creation.",
+                subTitle: "Choose one of the predefined application types to connect quickly.",
                 title: "Select Application Type"
             },
             applications: {
@@ -3196,6 +4053,20 @@ export const console: ConsoleNS = {
                 backButton: "Go back to applications",
                 subTitle: null,
                 title: null
+            },
+            authenticationProvider: {
+                subTitle: "Connect and manage identity providers to enable users to log in to your " +
+                    "application easily. ",
+                title: "Identity Providers"
+            },
+            authenticationProviderTemplate: {
+                backButton: "Go back to Identity Providers",
+                subTitle: "Choose one of the following identity provider types.",
+                supportServices: {
+                    authenticationDisplayName: "Authentication",
+                    provisioningDisplayName: "Provisioning"
+                },
+                title: "Select Identity Provider Type"
             },
             idp: {
                 subTitle: "Create and manage identity providers based on templates and configure authentication.",
@@ -5294,7 +6165,7 @@ export const console: ConsoleNS = {
                 approvals: "Approvals",
                 attributeDialects: "Attribute Dialects",
                 categories: {
-                    attributes: "Attributes",
+                    attributes: "User Attributes",
                     certificates: "Certificates",
                     configurations: "Configurations",
                     general: "General",
@@ -5394,8 +6265,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Select the method to set the user password",
                                 options: {
-                                    askPassword: "Invite user to set password",
-                                    createPassword: "Set user password"
+                                    askPassword: "Invite the user to set their own password",
+                                    createPassword: "Set a temporary password for the user"
 
                                 }
                             }
@@ -6342,6 +7213,120 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            invite: {
+                inviteButton: "New Invite",
+                subSelection: {
+                    onBoard: "OnBoarded",
+                    invitees: "Invitees"
+                },
+                notifications: {
+                    sendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while sending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't send the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully sent the invite",
+                            message: "Sending invite successful"
+                        }
+                    },
+                    resendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while resending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't resend the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully resent the invite",
+                            message: "Resending invite successful"
+                        }
+                    },
+                    deleteInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't delete the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully delete the invite",
+                            message: "Delete invite successful"
+                        }
+                    }
+                },
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently revoke the invite."
+                    },
+                    resendInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you send this invite, Earlier invite link will be expired. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is  will permanently revoke the earlier invite."
+                    },
+                },
+                placeholder: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    },
+                    emptyResultPlaceholder: {
+                        addButton: "New Invite",
+                        subTitle: {
+                            0: "There are currently no invites available.",
+                            1: "You can send a new invite easily by following the",
+                            2: "steps in the invite creation wizard."
+                        },
+                        title: "Send a New Invite"
+                    },
+                },
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                email: "Email",
+                                username: "Username"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Email etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Email"
+                },
+                form: {
+                    sendmail: {
+                        title: "Invite Admin/Developer",
+                        subTitle: "Send an email invite to add a new admin or developer to your organization"
+                    }
+                }
             }
         },
         notifications: {
@@ -6466,6 +7451,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
+            },
+            invite: {
+                subTitle: "Invite and manage admins and developers.",
+                title: "Admins & Developers"
             }
         },
         placeholders: {

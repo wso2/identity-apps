@@ -966,6 +966,10 @@ export const myAccount: MyAccountNS = {
                 generic: {
                     inputs: {
                         placeholder: "{{fieldName}} ඇතුල් කරන්න",
+                        readonly: {
+                            placeholder: "මෙම ක්ෂේත්‍රය හිස් ය",
+                            popup: "මෙම ක්ෂේත්‍රය යාවත්කාලීන කිරීමට පරිපාලක අමතන්න {{fieldName}}"
+                        },
                         validations: {
                             empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
                             invalidFormat: "{{fieldName}} නිවැරදි ආකෘතියෙන් නොවේ"

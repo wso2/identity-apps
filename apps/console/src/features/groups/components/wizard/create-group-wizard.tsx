@@ -25,7 +25,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
-import { AddGroupUsers } from "./group-assign-users";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AssignRoles, RolePermissions, history } from "../../../core";
@@ -88,7 +87,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
-    const [ submitGroupUserList, setSubmitGroupUserList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
@@ -339,11 +337,20 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
-            setSelectedUserStore(values.domain);
+            setSelectedUserStore(values.basicDetails.domain);
         }
-
         if (!isEnded) {
             setCurrentWizardStep(currentStep + 1);
+        }
+
+        if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
+            setWizardState({
+                ...wizardState,
+                [ WizardStepsFormTypes.BASIC_DETAILS ]: values.basicDetails,
+                [ WizardStepsFormTypes.USER_LIST ]: values.userList
+            });
+
+            return;
         }
 
         setWizardState({ ...wizardState, [ formType ]: values });
@@ -360,25 +367,17 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             <GroupBasics
                 data-testid="add-group-form"
                 triggerSubmit={ submitGeneralSettings }
-                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                initialValues={ wizardState
+                    && {
+                        basicDetails: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ],
+                        userList: wizardState[ WizardStepsFormTypes.USER_LIST ]
+                    }
+                }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
         icon: getGroupsWizardStepIcons().general,
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
-    },{
-        content: (
-            <AddGroupUsers
-                data-testid="new-group"
-                isEdit={ false }
-                triggerSubmit={ submitGroupUserList }
-                userStore={ selectedUserStore }
-                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.USER_LIST ] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
-            />
-        ),
-        icon: getGroupsWizardStepIcons().users,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.2")
     },{
         content: (
             viewRolePermissions
@@ -429,12 +428,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 setSubmitGeneralSettings();
                 break;
             case 1:
-                setSubmitGroupUserList();
-                break;
-            case 2:
                 setSubmitRoleList();
                 break;
-            case 3:
+            case 2:
                 setFinishSubmit();
                 break;
 

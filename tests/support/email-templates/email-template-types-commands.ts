@@ -18,7 +18,7 @@
 
 /// <reference types="cypress" />
 
-import { Header } from "@wso2/identity-cypress-test-base/page-objects";
+import { Header } from "@wso2/identity-cypress-test-base/ui";
 import { EmailTemplateTypesListPage } from "../../integration/email-templates";
 
 /**

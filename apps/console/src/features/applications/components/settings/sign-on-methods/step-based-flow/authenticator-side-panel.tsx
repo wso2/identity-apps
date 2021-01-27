@@ -17,15 +17,16 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
+import { ConfirmationModal, EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { getOperationIcons } from "../../../../../core";
+import { AppConstants, getOperationIcons, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
+import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the authenticator side panel component.
@@ -98,10 +99,12 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
 
         const { t } = useTranslation();
 
+        const [ AddSocialLoginConfirm, setAddSocialLoginConfirm ] = useState(false);
+
         const [
             authenticatorsAccordionActiveIndexes,
             setAuthenticatorsAccordionActiveIndexes
-        ] = useState<number[]>([ 0 ]);
+        ] = useState<number[]>([ 0, 1, 2 ]);
 
         const classes = classNames(
             "authenticators-panel",
@@ -127,117 +130,187 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
             setAuthenticatorsAccordionActiveIndexes(newIndexes);
         };
 
+        /**
+         * Handles the addition of new social login.
+         */
+        const handleSocialLoginAdd = (): void => {
+            setAddSocialLoginConfirm(true);
+        };
+
+        const closeAddSocialLoginConfirmation = (): void => {
+            setAddSocialLoginConfirm(false);
+        };
+
+        /**
+         * Shows the aAdd social login confirmation modal
+         * @return {ReactElement}
+         */
+        const showAddSocialLoginConfirmation = (): ReactElement => (
+            <ConfirmationModal
+                onClose={ closeAddSocialLoginConfirmation }
+                type="warning"
+                open={ AddSocialLoginConfirm }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ closeAddSocialLoginConfirmation }
+                onPrimaryActionClick={ (): void => {
+                    history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                } }
+                data-testid={ `${ testId }-add-social-login-confirmation-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                >
+                    Confirm You Action
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                >
+                    This action is irreversible.
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                >
+                    To add a new social login we will need to route you to a different page and any unsaved
+                    changes in this page will be lost. Please confirm.
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+
+        /**
+         * Render authenticator group.
+         *
+         * @param {AuthenticatorInterface} authenticator - Authenticator.
+         * @param {number} index - Index.
+         * @return {React.ReactElement}
+         */
+        const renderAuthenticatorGroup = (authenticator: AuthenticatorInterface,
+                                                  index: number): ReactElement => (
+
+            <Fragment key={ index }>
+                <Accordion.Title
+                    active={
+                        authenticatorsAccordionActiveIndexes.includes(
+                            index)
+                    }
+                    index={ index }
+                    onClick={ handleAuthenticatorsAccordionOnClick }
+                >
+                    <div className="inline floated right">
+                        <Icon name="angle right"
+                              className="caret-icon"/>
+                    </div>
+                    { authenticator.heading }
+                </Accordion.Title>
+                <Accordion.Content
+                    active={
+                        authenticatorsAccordionActiveIndexes.includes(
+                            index)
+                    }
+                >
+                    <Authenticators
+                        authenticators={ authenticator.authenticators }
+                        droppableId={ authenticator.droppableId }
+                        readOnly={ readOnly }
+                        emptyPlaceholder={ (
+                            <EmptyPlaceholder
+                                subtitle={
+                                    [
+                                        t("console:develop.features" +
+                                            ".applications.placehold" +
+                                            "ers.emptyAuthenticators" +
+                                            "List.subtitles", {
+                                            type: authenticator.heading
+                                        })
+                                    ]
+                                }
+                            />
+                        ) }
+                        isSocialLogin={ authenticator.heading ===
+                        ApplicationManagementConstants.SOCIAL_LOGIN_HEADER }
+                        handleSocialLoginAdd={ handleSocialLoginAdd }
+                        data-testid={ `${testId}-authenticators` }
+                    />
+                </Accordion.Content>
+            </Fragment>
+        );
+
         return (
-            visibility && (
-                <div className={ classes } ref={ ref } data-testid={ testId }>
-                    <Draggable handle=".drag-handle" disabled={ readOnly }>
-                        <Card>
-                            <Card.Content>
-                                { heading && <Heading as="h6" floated="left" compact>{ heading }</Heading> }
-                                <Popup
-                                    trigger={ (
-                                        <div className="inline floated right mt-1">
-                                            <GenericIcon
-                                                className="drag-handle"
-                                                icon={ getOperationIcons().drag }
-                                                size="nano"
-                                                transparent
-                                            />
-                                        </div>
-                                    ) }
-                                    position="top center"
-                                    content={ t("common:drag") }
-                                    inverted
-                                />
-                                <Popup
-                                    trigger={ (
-                                        <div
-                                            className="inline floated right mr-2 mt-1"
-                                            onClick={ onSidePanelVisibilityToggle }
-                                        >
-                                            <GenericIcon
-                                                icon={
-                                                    visibility
-                                                        ? getOperationIcons().minimize
-                                                        : getOperationIcons().maximize
-                                                }
-                                                size="nano"
-                                                transparent
-                                            />
-                                        </div>
-                                    ) }
-                                    position="top center"
-                                    content={ t("common:minimize") }
-                                    inverted
-                                />
-                            </Card.Content>
-                            <Card.Content>
-                                <div className="authenticators-section">
-                                    {
-                                        authenticatorGroup
-                                        && authenticatorGroup instanceof Array
-                                        && authenticatorGroup.length > 0 && (
-                                            <Accordion>
-                                                {
-                                                    authenticatorGroup.map((authenticator, index: number) => (
-                                                        authenticator?.authenticators
-                                                        && authenticator.authenticators instanceof Array
-                                                        && authenticator.authenticators.length > 0 && (
-                                                            <Fragment key={ index }>
-                                                                <Accordion.Title
-                                                                    active={
-                                                                        authenticatorsAccordionActiveIndexes.includes(
-                                                                            index)
-                                                                    }
-                                                                    index={ index }
-                                                                    onClick={ handleAuthenticatorsAccordionOnClick }
-                                                                >
-                                                                    <div className="inline floated right">
-                                                                        <Icon name="angle right"
-                                                                              className="caret-icon"/>
-                                                                    </div>
-                                                                    { authenticator.heading }
-                                                                </Accordion.Title>
-                                                                <Accordion.Content
-                                                                    active={
-                                                                        authenticatorsAccordionActiveIndexes.includes(
-                                                                            index)
-                                                                    }
-                                                                >
-                                                                    <Authenticators
-                                                                        authenticators={ authenticator.authenticators }
-                                                                        droppableId={ authenticator.droppableId }
-                                                                        readOnly={ readOnly }
-                                                                        emptyPlaceholder={ (
-                                                                            <EmptyPlaceholder
-                                                                                subtitle={
-                                                                                    [
-                                                                                        t("console:develop.features" +
-                                                                                            ".applications.placehold" +
-                                                                                            "ers.emptyAuthenticators" +
-                                                                                            "List.subtitles", {
-                                                                                            type: authenticator.heading
-                                                                                        })
-                                                                                    ]
-                                                                                }
-                                                                            />
-                                                                        ) }
-                                                                        data-testid={ `${ testId }-authenticators` }
-                                                                    />
-                                                                </Accordion.Content>
-                                                            </Fragment>
-                                                        )
-                                                    ))
-                                                }
-                                            </Accordion>
-                                        )
-                                    }
-                                </div>
-                            </Card.Content>
-                        </Card>
-                    </Draggable>
-                </div>
-            )
+            <>
+                { AddSocialLoginConfirm && showAddSocialLoginConfirmation() }
+                { visibility && (
+                    <div className={ classes } ref={ ref } data-testid={ testId }>
+                        <Draggable handle=".drag-handle" disabled={ readOnly }>
+                            <Card>
+                                <Card.Content>
+                                    { heading && <Heading as="h6" floated="left" compact>{ heading }</Heading> }
+                                    <Popup
+                                        trigger={ (
+                                            <div className="inline floated right mt-1">
+                                                <GenericIcon
+                                                    className="drag-handle"
+                                                    icon={ getOperationIcons().drag }
+                                                    size="nano"
+                                                    transparent
+                                                />
+                                            </div>
+                                        ) }
+                                        position="top center"
+                                        content={ t("common:drag") }
+                                        inverted
+                                    />
+                                    <Popup
+                                        trigger={ (
+                                            <div
+                                                className="inline floated right mr-2 mt-1"
+                                                onClick={ onSidePanelVisibilityToggle }
+                                            >
+                                                <GenericIcon
+                                                    icon={
+                                                        visibility
+                                                            ? getOperationIcons().minimize
+                                                            : getOperationIcons().maximize
+                                                    }
+                                                    size="nano"
+                                                    transparent
+                                                />
+                                            </div>
+                                        ) }
+                                        position="top center"
+                                        content={ t("common:minimize") }
+                                        inverted
+                                    />
+                                </Card.Content>
+                                <Card.Content>
+                                    <div className="authenticators-section">
+                                        {
+                                            authenticatorGroup
+                                            && authenticatorGroup instanceof Array
+                                            && authenticatorGroup.length > 0 && (
+                                                <Accordion>
+                                                    {
+                                                        authenticatorGroup.map((authenticator, index: number) => (
+                                                            authenticator?.authenticators
+                                                            && authenticator.authenticators instanceof Array
+                                                            && (
+                                                                renderAuthenticatorGroup(authenticator, index)
+                                                            )
+                                                        ))
+                                                    }
+                                                </Accordion>
+                                            )
+                                        }
+                                    </div>
+                                </Card.Content>
+                            </Card>
+                        </Draggable>
+                    </div>
+                )
+                }
+            </>
         );
     });
 

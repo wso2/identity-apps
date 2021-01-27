@@ -157,9 +157,16 @@ export const AppUtils = (function() {
                 _config.accountAppOrigin = _config.accountApp.origin;
             }
 
+            let skipTenant = false;
+            if (_config.accountApp.skipTenant) {
+                skipTenant = true;
+            }
+
             return {
                 accountApp: {
-                    path: _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path
+                    path: skipTenant ?
+                        _config.accountAppOrigin + _config.accountApp.path:
+                        _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(_config.adminApp.basePath),

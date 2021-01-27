@@ -1,7 +1,7 @@
 {
     "id": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
     "name": "Single-Page Application",
-    "description": "Front-end applications that consume REST APIs.",
+    "description": "Web applications that perform user interface logic in a web browser",
     "image": "spa",
     "authenticationProtocol": "oidc",
     "types": [
@@ -37,8 +37,6 @@
                     "authorization_code",
                     "refresh_token"
                 ],
-                "allowedOrigins": [ "http://localhost:3000" ],
-                "callbackURLs": [ "http://localhost:3000" ],
                 "publicClient": true
             }
         }

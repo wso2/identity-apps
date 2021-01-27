@@ -18,13 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    Field,
-    FormValue,
-    Forms,
-    Validation,
-    useTrigger
-} from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
     ContentLoader,
     Heading,
@@ -33,19 +27,18 @@ import {
     SelectionCard,
     useWizardAlert
 } from "@wso2is/react-components";
+import cloneDeep from "lodash/cloneDeep";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
+import set from "lodash/set";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import {
-    ApplicationListInterface,
-    ApplicationTemplateLoadingStrategies,
-    getApplicationList
-} from "../..";
+import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
 import {
     AppConstants,
     AppState,
@@ -61,11 +54,7 @@ import { getInboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
-import {
-    ApplicationTemplateInterface,
-    MainApplicationInterface,
-    SupportedAuthProtocolTypes
-} from "../../models";
+import { ApplicationTemplateInterface, MainApplicationInterface, SupportedAuthProtocolTypes } from "../../models";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -183,7 +172,28 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return;
         }
 
-        const application: MainApplicationInterface = merge(templateSettings?.application, protocolFormValues);
+        // Get a clone to avoid mutation.
+        const templateSettingsClone = cloneDeep(templateSettings);
+
+        /**
+         * Remove the default(provided by the template) callbackURLs & allowed origins from the
+         * form values if theres any user defined values in the form. We do this to prevent appending
+         * the default `callbackURL` to the model. {@code callbackURLs?.filter(Boolean)} ensures
+         * the passing value has no undefined or falsy values so that {@code isEmpty()} call returns a clean check.
+         *
+         * If you check the file [single-page-application.json] you can see that there's default
+         * value is already populated.
+         */
+        const callbackURLsPathKey = "inboundProtocolConfiguration.oidc.callbackURLs";
+        const allowedOriginsPathKey = "inboundProtocolConfiguration.oidc.allowedOrigins";
+        const callbackURLs = get(protocolFormValues, callbackURLsPathKey, []);
+
+        if (!isEmpty(callbackURLs?.filter(Boolean))) {
+            set(templateSettingsClone, `application.${ callbackURLsPathKey }`, []);
+            set(templateSettingsClone, `application.${ allowedOriginsPathKey }`, []);
+        }
+
+        const application: MainApplicationInterface = merge(templateSettingsClone?.application, protocolFormValues);
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;

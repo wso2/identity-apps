@@ -305,7 +305,22 @@
 .ui.segment {
     &.user-role-edit-header-segment {
         &.attributes {
-           max-height: 300px;
+            max-height: 311px;
+            padding: 0 0 20px 0;
+
+            .transfer-list-sub-content {
+                color: @TransferComponentSegmentApplicationAttributeSecondaryColor;
+            }
+
+            thead tr:first-child {
+
+                th {
+                    position: sticky !important;
+                    position: -webkit-sticky !important;
+                    top: 0;
+                    z-index: 2;
+                }
+            } 
         }
         .ui.input {
             margin-bottom: @EditRoleSegmentHeaderMarginBottom;
@@ -343,6 +358,18 @@
 
     &.user-role-edit-footer-segment {
         height: @EditRoleSegmentFooterHeight;
+    }
+}
+
+.attributes { 
+
+    .ui.input {
+        margin: 0 !important;
+        width: @EditRoleSegmentHeaderWidth;
+    }
+
+    .ui-hint {
+        margin: 0 5px!important;
     }
 }
 
@@ -543,6 +570,7 @@
         background: @emphasizedSegmentBackgroundColor;
         border: @emphasizedSegmentBorder;
         border-radius: @emphasizedSegmentBorderRadius;
+        padding: @emphasizedSegmentPadding;
     }
 }
 

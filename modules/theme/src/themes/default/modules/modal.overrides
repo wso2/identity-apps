@@ -36,7 +36,7 @@
         &.certificate-content {
             display: flex;
             justify-content: center;
-            
+
             &:not(.summary) {
                 padding: 0;
             }
@@ -328,6 +328,22 @@
             }
         }
 
+        .content {
+            min-height: 430px;
+
+            .step-text {
+                .segment {
+                    &.qr-code {
+                        padding-left: 0;
+
+                        & * {
+                            margin-left: -14px;
+                        }
+                    }
+                }
+            }
+        }
+
         .link {
             color: @primaryColor;
             cursor: pointer;
@@ -472,7 +488,7 @@
 
                     .modal-content {
                         height: 568px;
-                        
+
                         p {
                             font-size: 0.9em;
                             color: @doveGray;
@@ -523,7 +539,9 @@
                 padding: @sidePanelModalContentPadding;
                 line-height: @sidePanelModalContentPadding;
                 overflow: auto;
-                height: @sidePanelModalContentHeight;
+                &:not(.steps-container) {
+                    height: @sidePanelModalContentHeight;
+                }
             }
         }
     }
@@ -542,20 +560,36 @@
             .transfer-segment {
                 height: @transferComponentSegmentHeight;
 
+                .ui.checkbox {
+                    &.all-select {
+                        margin: 20px 10px 0px 0px;
+                        border: 1px solid #efefef;
+                        background-color: #fbfbfb;
+                        padding: 10px;
+                        border-radius: 3px;
+                        font-weight: 500;
+                    }
+                }
+
                 .transfer-list-segment {
                     height: @transferComponentListSegmentHeight;
+
+                    .transfer-list-sub-content {
+                        color: #f99467;
+                    }
 
                     thead tr:first-child {
 
                         th {
                             position: sticky !important;
+                            position: -webkit-sticky !important;
                             top: 0;
                             z-index: 2;
                         }
-                    } 
+                    }
                 }
             }
-            
+
         }
 
     }
@@ -634,7 +668,7 @@
             height: @editAvatarModalContentLoaderContainerHeight;
             width: @editAvatarModalContentLoaderContainerWidth;
         }
-        
+
         .avatar-from-url-field {
             display: @editAvatarModalURLFieldContainerDisplay;
 

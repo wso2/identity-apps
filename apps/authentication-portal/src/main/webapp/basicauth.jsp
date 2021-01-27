@@ -46,7 +46,7 @@
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <script>
     function goBack() {
-        window.history.back();
+        document.getElementById("restartFlowForm").submit();
     }
 
     // Handle form submission preventing double submission.
@@ -259,8 +259,12 @@
                     tabindex="2"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
                     data-testid="login-page-password-input"
+                    style="padding-right: 2.3em !important;"
                 >
                 <i aria-hidden="true" class="lock icon"></i>
+                <i id="passwordUnmaskIcon"
+                   class="eye icon mr-0"
+                   style="margin: 0 auto; right: 0; pointer-events: auto; cursor: pointer;"></i>
             </div>
         </div>
     <%
@@ -363,7 +367,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
             <% }
-              if (isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
+              if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% }
               if (isPasswordRecoveryEnabledInTenant) { %>
@@ -467,4 +471,34 @@
         }
 
     %>
+
+    <script defer>
+
+        /**
+         * Toggles the password visibility using the attribute
+         * type of the input.
+         *
+         * @param event {Event} click target
+         * @description stops propagation
+         */
+        $("#passwordUnmaskIcon").click(function (event) {
+            event.preventDefault();
+            var $passwordInput = $("#password");
+
+            if ($passwordInput.attr("type") === "password") {
+                $(this).addClass("slash outline");
+                $passwordInput.attr("type", "text");
+            } else {
+                $(this).removeClass("slash outline");
+                $passwordInput.attr("type", "password");
+            }
+        });
+
+    </script>
+
+</form>
+
+<form action="<%=loginFormActionURL%>" method="post" id="restartFlowForm">
+    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+    <input type="hidden" name="restart_flow" value='true'/>
 </form>

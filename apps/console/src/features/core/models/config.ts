@@ -148,11 +148,23 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
+     * Set of authenticators to be hidden in application sign on methods.
+     */
+    hiddenAuthenticators?: string[];
+    /**
      * How should the IDP templates be loaded.
      * If `LOCAL` is selected, app will resort to in-app templates.
      * `REMOTE` will fetch templates from the template management REST API.
      */
     identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
+    /**
+     * Should default dialects be allowed for editing.
+     */
+    isDefaultDialectEditingEnabled?: boolean;
+    /**
+     * Should dialects addition be allowed.
+     */
+    isDialectAddingEnabled?: boolean;
     /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
@@ -161,6 +173,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable roles and groups separation.
      */
     isGroupAndRoleSeparationEnabled?: boolean;
+    /**
+     * Is Request path section enabled in applications.
+     */
+    isRequestPathAuthenticationEnabled?: boolean;
+    /**
+     * Flag to check whether to list all the attribute dialects
+     */
+    listAllAttributeDialects?: boolean;
     /**
      * Enable signature validation certificate alias.
      */

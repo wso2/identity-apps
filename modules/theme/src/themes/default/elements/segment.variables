@@ -53,19 +53,21 @@
 *************************************/
 
 @TransferComponentSegmentWidth: 100% !important;
+@TransferComponentSegmentheight: 311px !important;
 @TransferComponentSegmentTableFontSize: 12px;
 @TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC;
 @TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
 @TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
 @TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
+@TransferComponentSegmentApplicationAttributeSecondaryColor: #f99467;
 @TransferListSegmentHeight: 210px;
 
 /*************************************
     User edit section Variation
 *************************************/
 
-@EditRoleSegmentHeaderMarginBottom: 0.4em !important;
-@EditRoleSegmentHeaderWidth: 270px !important;
+@EditRoleSegmentHeaderMarginBottom: 0.4em;
+@EditRoleSegmentHeaderWidth: 75% !important;
 @EditRoleSegmentHeaderButtonMarginBottom: 0.4em !important;
 @EditRoleSegmentFooterHeight: 60px !important;
 @EditRoleSegmentMaxHeight: 490px;
@@ -99,3 +101,4 @@
 @emphasizedSegmentBackgroundColor: @lightPageBackground;
 @emphasizedSegmentBorder: @defaultBorderWidth solid @lightBorderColor;
 @emphasizedSegmentBorderRadius: @defaultBorderRadius;
+@emphasizedSegmentPadding: 35px;

@@ -438,6 +438,14 @@ export interface ConsoleNS {
                                         mandatory: string;
                                         requested: string;
                                     };
+                                    mappedAtributeHint: string;
+                                    mappingRevert: {
+                                        confirmationHeading: string;
+                                        confirmationMessage: string;
+                                        confirmationContent: string;
+                                        confirmPrimaryAction: string;
+                                        confirmSecondaryAction: string;
+                                    };
                                     listItem: {
                                         actions: {
                                             makeMandatory: string;
@@ -514,6 +522,7 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
+                                            secondFactorDisabled: string;
                                         };
                                     };
                                 };
@@ -817,6 +826,7 @@ export interface ConsoleNS {
                     updateOutboundProvisioning: Notification;
                     updateProtocol: Notification;
                     fetchOIDCServiceEndpoints: Notification;
+                    secondFactorAuthenticatorToFirstStep: Notification;
                 };
                 popups: {
                     appStatus: {
@@ -849,6 +859,325 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                    };
+                };
+            };
+            authenticationProvider?: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                buttons: {
+                    addIDP: string;
+                    addAuthenticator: string;
+                    addConnector: string;
+                    addAttribute: string;
+                    addCertificate: string;
+                };
+                confirmations: {
+                    deleteIDP: Confirmation;
+                    deleteAuthenticator: Confirmation;
+                    deleteConnector: Confirmation;
+                };
+                dangerZoneGroup: {
+                    header: string;
+                    disableIDP: DangerZone;
+                    deleteIDP: DangerZone;
+                };
+                forms: {
+                    advancedConfigs: {
+                        federationHub: FormAttributes;
+                        homeRealmIdentifier: FormAttributes;
+                        alias: FormAttributes;
+                        certificateType: {
+                            label: string;
+                            hint: string;
+                            certificatePEM: FormAttributes;
+                            certificateJWKS: FormAttributes;
+                        };
+                    };
+                    attributeSettings: {
+                        attributeMapping: {
+                            attributeColumnHeader: string;
+                            attributeMapColumnHeader: string;
+                            attributeMapInputPlaceholderPrefix: string;
+                            componentHeading: string;
+                            hint: string;
+                        };
+                        attributeProvisioning: {
+                            attributeColumnHeader: {
+                                0: string;
+                                1: string;
+                            };
+                            attributeMapColumnHeader: string;
+                            attributeMapInputPlaceholderPrefix: string;
+                            componentHeading: string;
+                            hint: string;
+                        };
+                        attributeListItem: {
+                            validation: {
+                                empty: string;
+                            };
+                        };
+                        attributeSelection: {
+                            searchAttributes: {
+                                placeHolder: string;
+                            };
+                        };
+                    };
+                    authenticatorAccordion: {
+                        default: {
+                            0: string;
+                            1: string;
+                        };
+                        enable: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    outboundConnectorAccordion: {
+                        default: {
+                            0: string;
+                            1: string;
+                        };
+                        enable: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    common: {
+                        requiredErrorMessage: string;
+                        invalidURLErrorMessage: string;
+                        invalidQueryParamErrorMessage: string;
+                        customProperties: string;
+                    };
+                    generalDetails: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        image: FormAttributes;
+                    };
+                    jitProvisioning: {
+                        enableJITProvisioning: FormAttributes;
+                        provisioningUserStoreDomain: FormAttributes;
+                        provisioningScheme: {
+                            hint: string;
+                            label: string;
+                            children: {
+                                0: string;
+                                1: string;
+                                2: string;
+                                3: string;
+                            };
+                        };
+                    };
+                    roleMapping: {
+                        heading: string;
+                        keyName: string;
+                        valueName: string;
+                        validation: {
+                            keyRequiredMessage: string;
+                            valueRequiredErrorMessage: string;
+                            duplicateKeyErrorMsg: string;
+                        };
+                        hint: string;
+                    };
+                    uriAttributeSettings: {
+                        subject: {
+                            heading: string;
+                            hint: string;
+                            placeHolder: string;
+                            label: string;
+                            validation: {
+                                empty: string;
+                            };
+                        };
+                        role: {
+                            heading: string;
+                            hint: string;
+                            placeHolder: string;
+                            label: string;
+                            validation: {
+                                empty: string;
+                            };
+                        };
+                    };
+                    outboundProvisioningRoles: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        popup: {
+                            content: string;
+                        };
+                    };
+                };
+                helpPanel: HelpPanelInterface;
+                templates: {
+                    manualSetup: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    quickSetup: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                };
+                list: {
+                    actions: string;
+                    name: string;
+                };
+                modals: {
+                    addAuthenticator: {
+                        title: string;
+                        subTitle: string;
+                    };
+                    addCertificate: {
+                        title: string;
+                        subTitle: string;
+                    };
+                    addProvisioningConnector: {
+                        title: string;
+                        subTitle: string;
+                    };
+                    attributeSelection: {
+                        title: string;
+                        subTitle: string;
+                        content: {
+                            searchPlaceholder: string;
+                        };
+                    };
+                };
+                notifications: {
+                    addFederatedAuthenticator: Notification;
+                    addIDP: Notification;
+                    changeCertType: {
+                        pem: {
+                            description: string;
+                            message: string;
+                        };
+                        jwks: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    deleteIDP: Notification;
+                    disableAuthenticator: Notification;
+                    disableOutboundProvisioningConnector: Notification;
+                    duplicateCertificateUpload: Notification;
+                    getIDP: Notification;
+                    getIDPList: Notification;
+                    getIDPTemplate: Notification;
+                    getIDPTemplateList: Notification;
+                    getFederatedAuthenticator: Notification;
+                    getFederatedAuthenticatorsList: Notification;
+                    getFederatedAuthenticatorMetadata: Notification;
+                    getOutboundProvisioningConnector: Notification;
+                    getOutboundProvisioningConnectorsList: Notification;
+                    getOutboundProvisioningConnectorMetadata: Notification;
+                    getAllLocalClaims: Notification;
+                    getRolesList: Notification;
+                    submitAttributeSettings: Notification;
+                    deleteDefaultAuthenticator: Notification;
+                    deleteDefaultConnector: Notification;
+                    updateClaimsConfigs: Notification;
+                    updateFederatedAuthenticator: Notification;
+                    updateFederatedAuthenticators: Notification;
+                    updateIDP: Notification;
+                    updateIDPCertificate: Notification;
+                    updateIDPRoleMappings: Notification;
+                    updateJITProvisioning: Notification;
+                    updateOutboundProvisioningConnectors: Notification;
+                    updateOutboundProvisioningConnector: Notification;
+                };
+                popups: {
+                    appStatus: {
+                        enabled: Popup;
+                        disabled: Popup;
+                    };
+                };
+                placeHolders: {
+                    emptyCertificateList: Placeholder;
+                    emptyIDPList: Placeholder;
+                    emptyIDPSearchResults: Placeholder;
+                    emptyAuthenticatorList: Placeholder;
+                    emptyConnectorList: Placeholder;
+                    noAttributes: Placeholder;
+                };
+                wizards: {
+                    addAuthenticator: {
+                        header: string;
+                        steps: {
+                            authenticatorSelection: {
+                                title: string;
+                                quickSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                                manualSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                            };
+                            authenticatorConfiguration: {
+                                title: string;
+                            };
+                            summary: {
+                                title: string;
+                            };
+                        };
+                    };
+                    addIDP: {
+                        header: string;
+                        steps: {
+                            generalSettings: {
+                                title: string;
+                            };
+                            authenticatorConfiguration: {
+                                title: string;
+                            };
+                            provisioningConfiguration: {
+                                title: string;
+                            };
+                            summary: {
+                                title: string;
+                            };
+                        };
+                    };
+                    addProvisioningConnector: {
+                        header: string;
+                        steps: {
+                            connectorSelection: {
+                                title: string;
+                                defaultSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                            };
+                            connectorConfiguration: {
+                                title: string;
+                            };
+                            summary: {
+                                title: string;
+                            };
+                        };
+                    };
+                    buttons: {
+                        next: string;
+                        finish: string;
+                        previous: string;
+
                     };
                 };
             };
@@ -1176,7 +1505,7 @@ export interface ConsoleNS {
                         next: string;
                         finish: string;
                         previous: string;
-    
+
                     };
                 };
             };
@@ -1196,6 +1525,10 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                        authenticationProviders?: {
+                            heading: string;
+                            subHeading: string;
+                        };
                         remoteFetch: {
                             heading: string;
                             subHeading: string;
@@ -1211,12 +1544,16 @@ export interface ConsoleNS {
                     application: string;
                     gettingStarted: string;
                     identityProviders: string;
+                    authenticationProviders?: string;
                     general: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
                 identityProviderTemplates: string;
                 identityProviders: string;
+                authenticationProviderEdit?: string;
+                authenticationProviderTemplates?: string;
+                authenticationProviders?: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
@@ -1236,6 +1573,16 @@ export interface ConsoleNS {
             applicationTemplate: EditPage;
             applications: Page;
             applicationsEdit: EditPage;
+            authenticationProvider?: Page;
+            authenticationProviderTemplate?: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+                supportServices: {
+                    authenticationDisplayName: string;
+                    provisioningDisplayName: string;
+                };
+            };
             idp: Page;
             idpTemplate: {
                 title: string;
@@ -2871,6 +3218,69 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
+            invite?: {
+                inviteButton?: string;
+                subSelection?: {
+                    onBoard?: string;
+                    invitees?: string;
+                };
+                notifications?: {
+                    deleteInvite?: Notification;
+                    resendInvite?: Notification;
+                    sendInvite?: Notification;
+                };
+                confirmationModal?: {
+                    deleteInvite?: Confirmation;
+                    resendInvite?: Confirmation;
+                };
+                placeholder?: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                        };
+                        title: string;
+                    };
+                    emptyResultPlaceholder: {
+                        addButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        title: string;
+                    };
+                };
+                advancedSearch?: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                username: string;
+                                email: string;
+                            };
+                        };
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                form?: {
+                    sendmail?: {
+                        title: string;
+                        subTitle: string;
+                    };
+                };
+            };
         };
         notifications: {
             endSession: Notification;
@@ -2895,6 +3305,7 @@ export interface ConsoleNS {
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;
+            invite?: Page;
         };
         placeholders: {
             emptySearchResult: Placeholder;

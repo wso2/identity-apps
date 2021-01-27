@@ -34,7 +34,15 @@
         background: @appHeaderBackground;
         height: @appHeaderHeight;
         box-shadow: @appHeaderBoxShadow;
+        border-bottom: @appHeaderBorderBottom;
 
+        .app-header-container {
+            background: @appHeaderContainerBackground;
+
+            .icon.bars {
+                color: @appHeaderHamburgerIconColor;
+            }
+        }
         &.has-announcement {
             display: block;
             height: auto;
@@ -59,6 +67,7 @@
             }
             .user-dropdown-trigger {
                 .username {
+                    color: @userDropdownTriggerTextColor;
                     min-width: 100px;
                     display: inline-block;
                     margin-right: 0.7em;

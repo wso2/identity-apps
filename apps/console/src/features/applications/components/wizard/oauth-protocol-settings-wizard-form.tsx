@@ -24,7 +24,9 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Label, Message } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { getAuthProtocolMetadata } from "../../api";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
@@ -120,12 +122,15 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ publicClient, setPublicClient ] = useState<string[]>([]);
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
+    const [ showURLError, setShowURLError ] = useState(false);
+    const [ isCallbackURLMandatory, setIsCallbackURLMandatory ] = useState<boolean>(undefined);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
     const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // Maintain the state if the user allowed the CORS for the
     // origin of the configured callback URL(s).
@@ -161,6 +166,29 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             setSelectedGrantTypes([ ...templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes ]);
         }
 
+    }, [ templateValues ]);
+
+    /**
+     * Sets the mandatory status of the callback component by reading
+     * the template values. If the template has a callback array defined,
+     * makes the field optional.
+     */
+    useEffect(() => {
+
+        if (!templateValues) {
+            return;
+        }
+
+        const templatedCallbacks: string[] = templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
+
+        if (!templatedCallbacks
+            || ((isCallbackURLMandatory === undefined)
+                && templatedCallbacks
+                && Array.isArray(templatedCallbacks)
+                && isEmpty([ ...templatedCallbacks ].filter(Boolean)))) {
+
+            setIsCallbackURLMandatory(true);
+        }
     }, [ templateValues ]);
 
     useEffect(() => {
@@ -356,6 +384,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     onSubmit={ (values) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
+                                if (isCallbackURLMandatory) {
+                                    if (isEmpty(callBackUrls) && isEmpty(url)) {
+                                        setShowURLError(true);
+                                    } else {
+                                        onSubmit(getFormValues(values, url));
+                                    }
+
+                                    return;
+                                }
+
                                 onSubmit(getFormValues(values, url));
                             });
                         } else {
@@ -441,6 +479,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             return true;
                                         } }
                                         computerWidth={ 10 }
+                                        setShowError={ setShowURLError }
+                                        showError={ showURLError }
                                         hint={
                                             !hideFieldHints && t("console:develop.features.applications" +
                                                 ".forms.inboundOIDC.fields.callBackUrls.hint")
@@ -451,19 +491,24 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                             submitUrl = submitFunction;
                                         } }
-                                        required={ false }
+                                        productName={ config.ui.productName }
+                                        required={ isCallbackURLMandatory }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />
-                                    <Message className="with-inline-icon" icon visible warning>
-                                        <Icon name="warning sign" size="mini" />
-                                        <Message.Content>
-                                            {
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields" +
-                                                    ".callBackUrls.validations.required")
-                                            }
-                                        </Message.Content>
-                                    </Message>
+                                    {
+                                        !isCallbackURLMandatory && (
+                                            <Message className="with-inline-icon" icon visible warning>
+                                                <Icon name="warning sign" size="mini" />
+                                                <Message.Content>
+                                                    {
+                                                        t("console:develop.features.applications.forms" +
+                                                            ".inboundOIDC.fields.callBackUrls.validations.required")
+                                                    }
+                                                </Message.Content>
+                                            </Message>
+                                        )
+                                    }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }

@@ -33,6 +33,10 @@
 @appHeaderBackground: @lightPageBackground;
 @appHeaderHeight: auto;
 @appHeaderBoxShadow: none;
+@appHeaderBorderBottom: 1px solid @galleryGray;
+@appHeaderHamburgerIconColor: inherit;
+
+@appHeaderContainerBackground: inherit;
 
 @appHeaderSecondaryPanelDisplay: block;
 @appHeaderSecondaryPanelHeight: 50px;
@@ -131,6 +135,7 @@
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
+@userDropdownTriggerTextColor: inherit;
 
 /*-------------------------------
       Governance Connectors

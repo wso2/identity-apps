@@ -29,7 +29,7 @@
     },
     "idpConfigs": {
         "enablePKCE": true,
-        "clockTolerance": 60,
+        "clockTolerance": 300,
         "responseMode": "query",
         "scope": [ "SYSTEM" ],
         "serverOrigin": "https://localhost:9443",
@@ -308,12 +308,17 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenAuthenticators": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
+        "isDefaultDialectEditingEnabled": true,
+        "isDialectAddingEnabled": true,
+        "isRequestPathAuthenticationEnabled": true,
+        "listAllAttributeDialects": false,
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,

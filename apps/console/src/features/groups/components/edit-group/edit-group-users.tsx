@@ -123,7 +123,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
                 setUsersList(responseUsers);
-                setInitialUserList(responseUsers);
 
                 if (group.members && group.members.length > 0) {
                     const selectedUserList: UserBasicInterface[] = [];
@@ -141,6 +140,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         );
                         setSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
+                        setInitialUserList(selectedUserList);
                     }
                 }
             });

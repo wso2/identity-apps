@@ -2,7 +2,17 @@
     "accountApp": {
         {% if console.applications.account_app.configs is defined %}
         {% for key, value in console.applications.account_app.configs.items() %}
-            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% elif value is iterable %}
+                "{{ key }}": [
+                    {% for item in value %}
+                        "{{ item }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                ]{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
         {% endfor %}
         {% endif %}
     },
@@ -468,6 +478,13 @@
            {% endfor %}
            {% endif %}
         },
+        "hiddenAuthenticators": [
+            {% if console.ui.hiddenAuthenticators is defined %}
+                {% for value in console.ui.hiddenAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.i18n_configs.items() is defined %}
             {% for key, value in console.i18n_configs.items() %}
@@ -482,7 +499,18 @@
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
+        {% if console.ui.isDefaultDialectEditingEnabled is defined %}
+        "isDefaultDialectEditingEnabled": {{ console.ui.isDefaultDialectEditingEnabled }},
+        {% endif %}
+        {% if console.ui.isDialectAddingEnabled is defined %}
+        "isDialectAddingEnabled": {{ console.ui.isDialectAddingEnabled }},
+        {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
+        {% if console.ui.isRequestPathAuthenticationEnabled is defined %}
+        "isRequestPathAuthenticationEnabled": {{ console.ui.isRequestPathAuthenticationEnabled }},
+        {% endif %}
+        "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
+        "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "productName": "{{ console.ui.product_name }}",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}

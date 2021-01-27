@@ -33,6 +33,7 @@ export interface CommonNS {
     approve: string;
     assignees: string;
     authenticator: string;
+    authentication: string;
     authenticator_plural: string;
     browser: string;
     cancel: string;

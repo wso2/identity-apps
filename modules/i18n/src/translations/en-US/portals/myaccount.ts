@@ -536,7 +536,7 @@ export const myAccount: MyAccountNS = {
                 heading: "via Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
-                    done: "Success! Now you can use your Authentication App for two-factor authentication",
+                    done: "Success! Now you can use your Authenticator App for two-factor authentication",
                     scan: {
                         authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
@@ -546,7 +546,7 @@ export const myAccount: MyAccountNS = {
                     },
                     verify: {
                         error: "Verification failed. Please try again.",
-                        heading: "Enter the verification code from the Authentication App",
+                        heading: "Enter the verification code from the Authenticator App",
                         label: "Verification Code",
                         placeholder: "Enter your verification code",
                         reScan: "Re-scan",
@@ -973,6 +973,10 @@ export const myAccount: MyAccountNS = {
                 generic: {
                     inputs: {
                         placeholder: "Enter your {{fieldName}}",
+                        readonly: {
+                            placeholder: "This value is empty",
+                            popup: "Contact the administrator to update your {{fieldName}}"
+                        },
                         validations: {
                             empty: "{{fieldName}} is a required field",
                             invalidFormat: "The {{fieldName}} is not of the correct format"

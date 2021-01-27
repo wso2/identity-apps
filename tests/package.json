@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/integration-tests",
-    "version": "1.0.651",
+    "version": "1.1.31",
     "description": "Cypress integration tests for WSO2 Identity Apps.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -32,7 +32,7 @@
         "tsc:default": "./node_modules/.bin/tsc -p tsconfig.json"
     },
     "dependencies": {
-        "@wso2/identity-cypress-test-base": "^0.2.2",
+        "@wso2/identity-cypress-test-base": "^0.2.3",
         "cypress-mochawesome-reporter": "^1.0.2",
         "cypress-multi-reporters": "^1.4.0",
         "mocha": "^8.1.3",

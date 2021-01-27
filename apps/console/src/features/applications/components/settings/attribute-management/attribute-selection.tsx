@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -56,6 +56,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     addToClaimMapping: any;
     claimConfigurations: ClaimConfigurationInterface;
     claimMappingOn: boolean;
+    showClaimMappingRevertConfirmation?: (confirmation: boolean) => void;
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
     /**
@@ -93,6 +94,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         addToClaimMapping,
         claimConfigurations,
         claimMappingOn,
+        showClaimMappingRevertConfirmation,
         setClaimMappingOn,
         claimMappingError,
         readOnly,
@@ -103,6 +105,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const [availableClaims, setAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
     const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [isDefaultMappingChanged, setIsDefaultMappingChanged] = useState<boolean>(false);
 
     const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
     const [
@@ -330,11 +333,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setShowSelectionModal(true);
     };
 
-    const handelMapButtonClick = () => {
-        const mapping = claimMappingOn;
-        setClaimMappingOn(!mapping);
-    };
-
     useEffect(() => {
         if (claims) {
             setAvailableClaims([...claims]);
@@ -401,240 +399,259 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             ?
             <>
                 <Grid.Row data-testid={ testId }>
-                    <Grid.Column computer={ 10 }>
+                    <Grid.Column computer={ 12 }>
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
-                                <Segment.Group fluid>
-                                    <Segment className="user-role-edit-header-segment clearing attributes">
-                                        <Grid.Row>
-                                            <Table
-                                                data-testid={ `${ testId }-action-bar` }
-                                                basic="very"
-                                                compact
-                                            >
-                                                <Table.Body>
-                                                    <Table.Row>
-                                                        <Table.Cell>
-                                                            <Input
-                                                                icon={ <Icon name="search"/> }
-                                                                onChange={ handleChange }
-                                                                placeholder={
-                                                                    t("console:develop.features.applications.edit" +
-                                                                        ".sections.attributes.selection.mappingTable" +
-                                                                        ".searchPlaceholder")
+                                <>
+                                <Grid.Row className="user-role-edit-header-segment clearing attributes">
+                                    <Table
+                                        data-testid={ `${ testId }-action-bar` }
+                                        basic="very"
+                                        compact
+                                    >
+                                        <Table.Body>
+                                            <Table.Row>
+                                                <Table.Cell width="6">
+                                                    <Input
+                                                        icon={ <Icon name="search"/> }
+                                                        onChange={ handleChange }
+                                                        placeholder={
+                                                            t("console:develop.features.applications.edit" +
+                                                                ".sections.attributes.selection.mappingTable" +
+                                                                ".searchPlaceholder")
+                                                        }
+                                                        floated="left"
+                                                        size="small"
+                                                        data-testid={ `${ testId }-search` }
+                                                    />
+                                                </Table.Cell>
+                                                { selectedDialect.localDialect &&
+                                                (
+                                                    <Table.Cell textAlign="right">
+                                                        <Checkbox
+                                                            slider
+                                                            checked={ claimMappingOn }
+                                                            onChange={ () => {
+                                                                if (!claimMappingOn) {
+                                                                    setClaimMappingOn(true);
+                                                                } else if (isDefaultMappingChanged) {
+                                                                    showClaimMappingRevertConfirmation(true);
+                                                                } else {
+                                                                    setClaimMappingOn(false);
                                                                 }
-                                                                floated="left"
-                                                                size="small"
-                                                                data-testid={ `${ testId }-search` }
+                                                            } }
+                                                            label={
+                                                                t("console:develop.features.applications" +
+                                                                    ".edit.sections.attributes.selection" +
+                                                                    ".mappingTable.actions.enable")
+                                                            }
+                                                            readOnly={ readOnly }
+                                                            data-testid={ `${ testId }-cliam-mapping-toggle` }
+                                                        />
+                                                    </Table.Cell>
+                                                )
+                                                }
+                                                {
+                                                    !readOnly && (
+                                                        <Table.Cell textAlign="right">
+                                                            <Button
+                                                                size="medium"
+                                                                icon="pencil"
+                                                                floated="right"
+                                                                onClick={ handleOpenSelectionModal }
+                                                                data-testid={ `${ testId }-update-button` }
                                                             />
                                                         </Table.Cell>
-                                                        { selectedDialect.localDialect &&
-                                                        (
-                                                            <Table.Cell textAlign="right">
-                                                                <Checkbox
-                                                                    slider
-                                                                    defaultChecked={ claimMappingOn }
-                                                                    onChange={ handelMapButtonClick }
-                                                                    label={
-                                                                        t("console:develop.features.applications" +
-                                                                            ".edit.sections.attributes.selection" +
-                                                                            ".mappingTable.actions.enable")
-                                                                    }
-                                                                    readOnly={ readOnly }
-                                                                    data-testid={ `${ testId }-cliam-mapping-toggle` }
-                                                                />
-                                                            </Table.Cell>
-                                                        )
-                                                        }
-                                                        {
-                                                            !readOnly && (
-                                                                <Table.Cell textAlign="right">
-                                                                    <Button
-                                                                        size="medium"
-                                                                        icon="pencil"
-                                                                        floated="right"
-                                                                        onClick={ handleOpenSelectionModal }
-                                                                        data-testid={ `${ testId }-update-button` }
-                                                                    />
-                                                                </Table.Cell>
+                                                    )
+                                                }
+                                            </Table.Row>
+                                        </Table.Body>
+                                    </Table>
+                                </Grid.Row>
+                                <Segment className="user-role-edit-header-segment clearing attributes">
+                                    <Grid.Row>
+                                        { selectedDialect.localDialect
+                                            ? (
+                                                <Table
+                                                    singleLine
+                                                    compact
+                                                    data-testid={ `${ testId }-list` }
+                                                >
+                                                    <Table.Header>
+                                                        { claimMappingOn
+                                                            ? (
+                                                                <Table.Row>
+                                                                    <Table.HeaderCell width="6">
+                                                                        <strong>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.columns" +
+                                                                                    ".attribute")
+                                                                            }
+                                                                        </strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell width="8">
+                                                                        <strong>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.columns" +
+                                                                                    ".appAttribute")
+                                                                            }
+                                                                        </strong>
+                                                                        <Hint icon="info circle" popup>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.mappedAtributeHint" )
+                                                                            }
+                                                                        </Hint>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.columns" +
+                                                                                    ".mandatory")
+                                                                            }
+                                                                        </strong>
+                                                                    </Table.HeaderCell>
+                                                                </Table.Row>
+                                                            )
+                                                            :
+                                                            (
+                                                                <Table.Row>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.columns" +
+                                                                                    ".attribute")
+                                                                            }
+                                                                        </strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell textAlign="center">
+                                                                        <strong>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mappingTable.columns" +
+                                                                                    ".mandatory")
+                                                                            }
+                                                                        </strong>
+                                                                    </Table.HeaderCell>
+                                                                </Table.Row>
                                                             )
                                                         }
-                                                    </Table.Row>
-                                                </Table.Body>
-                                            </Table>
-                                        </Grid.Row>
-                                        <Grid.Row>
-                                            { selectedDialect.localDialect
-                                                ? (
-                                                    <Table
-                                                        singleLine
-                                                        compact
-                                                        data-testid={ `${ testId }-list` }
-                                                    >
-                                                        <Table.Header>
-                                                            { claimMappingOn
-                                                                ? (
-                                                                    <Table.Row>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".attribute")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                    ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".appAttribute")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".mandatory")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                    </Table.Row>
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Table.Row>
-                                                                        <Table.HeaderCell>
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".attribute")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                        <Table.HeaderCell textAlign="center">
-                                                                            <strong>
-                                                                                {
-                                                                                    t("console:develop.features" +
-                                                                                        ".applications.edit.sections" +
-                                                                                        ".attributes.selection" +
-                                                                                        ".mappingTable.columns" +
-                                                                                        ".mandatory")
-                                                                                }
-                                                                            </strong>
-                                                                        </Table.HeaderCell>
-                                                                    </Table.Row>
-                                                                )
-                                                            }
-                                                        </Table.Header>
-                                                        <Table.Body>
-                                                            {
-                                                                filterSelectedClaims?.map((claim) => {
-                                                                    return (
-                                                                        <AttributeListItem
-                                                                            key={ claim.id }
-                                                                            claimURI={ claim.claimURI }
-                                                                            displayName={ claim.displayName }
-                                                                            mappedURI={ claim.claimURI }
-                                                                            localDialect={ true }
-                                                                            updateMapping={ updateClaimMapping }
-                                                                            addToMapping={ addToClaimMapping }
-                                                                            mapping={
-                                                                                getCurrentMapping(claim.claimURI)
-                                                                            }
-                                                                            initialMandatory={ claim.mandatory }
-                                                                            initialRequested={ claim.requested }
-                                                                            selectMandatory={ updateMandatory }
-                                                                            selectRequested={ updateRequested }
-                                                                            claimMappingOn={ claimMappingOn }
-                                                                            claimMappingError={ claimMappingError }
-                                                                            readOnly={ readOnly }
-                                                                            data-testid={ claim.claimURI }
-                                                                        />
-                                                                    );
+                                                    </Table.Header>
+                                                    <Table.Body>
+                                                        {
+                                                            filterSelectedClaims?.map((claim) => {
+                                                                return (
+                                                                    <AttributeListItem
+                                                                        key={ claim.id }
+                                                                        claimURI={ claim.claimURI }
+                                                                        displayName={ claim.displayName }
+                                                                        mappedURI={ claim.claimURI }
+                                                                        localDialect={ true }
+                                                                        updateMapping={ updateClaimMapping }
+                                                                        addToMapping={ addToClaimMapping }
+                                                                        mapping={
+                                                                            getCurrentMapping(claim.claimURI)
+                                                                        }
+                                                                        isDefaultMappingChanged={
+                                                                            setIsDefaultMappingChanged
+                                                                        }
+                                                                        initialMandatory={ claim.mandatory }
+                                                                        initialRequested={ claim.requested }
+                                                                        selectMandatory={ updateMandatory }
+                                                                        selectRequested={ updateRequested }
+                                                                        claimMappingOn={ claimMappingOn }
+                                                                        claimMappingError={ claimMappingError }
+                                                                        readOnly={ readOnly }
+                                                                        data-testid={ claim.claimURI }
+                                                                    />
+                                                                );
 
-                                                                })
-                                                            }
-                                                        </Table.Body>
-                                                    </Table>
-                                                )
-                                                :
-                                                (
-                                                    <Table
-                                                        singleLine
-                                                        compact
-                                                        data-testid={ `${ testId }-list` }
-                                                    >
-                                                        <Table.Header>
-                                                            <Table.Row>
-                                                                <Table.HeaderCell>
-                                                                    <strong>
-                                                                        {
-                                                                            t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
-                                                                                ".attributes.selection" +
-                                                                                ".mappingTable.columns" +
-                                                                                ".attribute")
+                                                            })
+                                                        }
+                                                    </Table.Body>
+                                                </Table>
+                                            )
+                                            :
+                                            (
+                                                <Table
+                                                    singleLine
+                                                    compact
+                                                    data-testid={ `${ testId }-list` }
+                                                >
+                                                    <Table.Header>
+                                                        <Table.Row>
+                                                            <Table.HeaderCell>
+                                                                <strong>
+                                                                    {
+                                                                        t("console:develop.features" +
+                                                                            ".applications.edit.sections" +
+                                                                            ".attributes.selection" +
+                                                                            ".mappingTable.columns" +
+                                                                            ".attribute")
+                                                                    }
+                                                                </strong>
+                                                            </Table.HeaderCell>
+                                                            <Table.HeaderCell textAlign="center">
+                                                                <strong>
+                                                                    {
+                                                                        t("console:develop.features" +
+                                                                            ".applications.edit.sections" +
+                                                                            ".attributes.selection" +
+                                                                            ".mappingTable.columns" +
+                                                                            ".mandatory")
+                                                                    }
+                                                                </strong>
+                                                            </Table.HeaderCell>
+                                                        </Table.Row>
+                                                    </Table.Header>
+                                                    <Table.Body>
+                                                        {
+                                                            filterSelectedExternalClaims?.map((claim) => {
+                                                                return (
+                                                                    <AttributeListItem
+                                                                        key={ claim.id }
+                                                                        claimURI={ claim.claimURI }
+                                                                        displayName={ claim.claimURI }
+                                                                        mappedURI={ claim.mappedLocalClaimURI }
+                                                                        localDialect={ false }
+                                                                        initialMandatory={ claim.mandatory }
+                                                                        selectMandatory={ updateMandatory }
+                                                                        initialRequested={ claim.requested }
+                                                                        data-testid={ claim.claimURI }
+                                                                        readOnly={ readOnly }
+                                                                        localClaimDisplayName={ 
+                                                                            claim.localClaimDisplayName
                                                                         }
-                                                                    </strong>
-                                                                </Table.HeaderCell>
-                                                                <Table.HeaderCell textAlign="center">
-                                                                    <strong>
-                                                                        {
-                                                                            t("console:develop.features" +
-                                                                                ".applications.edit.sections" +
-                                                                                ".attributes.selection" +
-                                                                                ".mappingTable.columns" +
-                                                                                ".mandatory")
-                                                                        }
-                                                                    </strong>
-                                                                </Table.HeaderCell>
-                                                            </Table.Row>
-                                                        </Table.Header>
-                                                        <Table.Body>
-                                                            {
-                                                                filterSelectedExternalClaims?.map((claim) => {
-                                                                    return (
-                                                                        <AttributeListItem
-                                                                            key={ claim.id }
-                                                                            claimURI={ claim.claimURI }
-                                                                            displayName={ claim.claimURI }
-                                                                            mappedURI={ claim.mappedLocalClaimURI }
-                                                                            localDialect={ false }
-                                                                            initialMandatory={ claim.mandatory }
-                                                                            selectMandatory={ updateMandatory }
-                                                                            initialRequested={ claim.requested }
-                                                                            data-testid={ claim.claimURI }
-                                                                            readOnly={ readOnly }
-                                                                            localClaimDisplayName={ 
-                                                                                claim.localClaimDisplayName
-                                                                            }
-                                                                        />
-                                                                    );
-                                                                })
-                                                            }
-                                                        </Table.Body>
-                                                    </Table>
-                                                )
-                                            }
-                                        </Grid.Row>
-                                    </Segment>
-                                </Segment.Group>
+                                                                    />
+                                                                );
+                                                            })
+                                                        }
+                                                    </Table.Body>
+                                                </Table>
+                                            )
+                                        }
+                                    </Grid.Row>
+                                </Segment>
+                                </>
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder

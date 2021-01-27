@@ -42,14 +42,14 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
+            <Heading as="h5">Name to identify your application</Heading>
             <p>Provide a unique name for the application so that it can be easily identified.</p>
             <p>E.g. Zoom, Salesforce, etc.</p>
 
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Allowed Redirect URIs</Heading>
+                <Heading as="h5">Authorized redirect URIs</Heading>
                 <p>
                     After user login/logout, the user is redirected to a web page within your application
                     that receives the post-authentication authorization code.

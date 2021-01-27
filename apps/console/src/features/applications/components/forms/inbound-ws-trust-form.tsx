@@ -35,6 +35,7 @@ import {
     WSTrustConfigurationInterface,
     WSTrustMetaDataInterface
 } from "../../models";
+import { ApplicationManagementConstants } from "../../constants";
 import { CertificateFormFieldModal } from "../modals";
 
 /**
@@ -283,8 +284,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                             ".sections.certificate.fields.pemValue.validations.empty")
                                                     }
                                                     placeholder={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.placeholder")
+                                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
                                                     }
                                                     type="textarea"
                                                     value={

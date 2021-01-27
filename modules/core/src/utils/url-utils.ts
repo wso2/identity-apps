@@ -99,28 +99,67 @@ export class URLUtils {
      *
      * @param url {string} a valid url string.
      * @returns URLComponentsInterface
+     * @throws Invalid URL | undefined
      */
     public static urlComponents(url: string): URLComponentsInterface {
-        if (url) {
+        try {
             const details = new URL(url.trim());
+            const protocol = details.protocol.replace(":", "");
             return {
-                protocol: details.protocol.replace(":", ""),
-                host: details.host,
-                origin: details.protocol + "://" + details.host,
+                protocol, // https|http
+                host: details.host, // localhost:9443
+                origin: details.origin, // https://localhost:9443
+                href: details.href, // https://localhost:9443/some/long/url
+                _url: details, // URL Instance
+                pathWithoutProtocol: details.href.split("://")[ 1 ],
             } as URLComponentsInterface;
+        } catch (error) {
+            return null;
         }
-        return null;
     };
 
+    public static isURLValid(url: string): boolean {
+        try {
+            const _ = new URL(url.trim());
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     /**
-     * Checks whether a given url is a TLS enabled protocol or not.
+     * Checks whether a given url is a SSL enabled protocol or not.
      * @param url {string}
      */
-    public static isTLSEnabled(url: string): boolean {
-        return Boolean(URLUtils.urlComponents(url)
-            .protocol
-            .match("https")
-            ?.length
-        );
+    public static isHTTPS(url: string): boolean {
+        try {
+            return Boolean(URLUtils.urlComponents(url)
+                .protocol
+                .match("https")
+                ?.length
+            );
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether a given URL is a valid origin or not.
+     * It checks whether theres any pathname, search, or
+     * search parameters are present.
+     *
+     * Will return {@code true} if matches the schema <proto>://<host>
+     *
+     * @param url {string} any url
+     */
+    public static isAValidOriginUrl(url: string): boolean {
+        try {
+            const { _url } = this.urlComponents(url);
+            return (!_url.pathname || _url.pathname === "/") &&
+                !_url.search &&
+                !Array.from(_url.searchParams).length;
+        } catch (error) {
+            return false;
+        }
     }
 }

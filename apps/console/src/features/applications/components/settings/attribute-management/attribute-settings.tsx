@@ -28,12 +28,15 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { AdvanceAttributeSettings } from "./advance-attribute-settings";
+import { AttributeSelection } from "./attribute-selection";
+import { RoleMapping } from "./role-mapping";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { updateClaimConfiguration } from "../../../api/";
 import {
@@ -43,9 +46,6 @@ import {
     RoleMappingInterface,
     SubjectConfigInterface
 } from "../../../models";
-import { AdvanceAttributeSettings } from "./advance-attribute-settings";
-import { AttributeSelection } from "./attribute-selection";
-import { RoleMapping } from "./role-mapping";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -163,6 +163,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Mapping operation.
     const [claimMapping, setClaimMapping] = useState<ExtendedClaimMappingInterface[]>([]);
     const [claimMappingOn, setClaimMappingOn] = useState(false);
+    const [showClaimMappingConfirmation, setShowClaimMappingConfirmation] = useState<boolean>(false);
     // Form submitted with EmptyClaim Mapping
     const [claimMappingError, setClaimMappingError] = useState(false);
 
@@ -188,7 +189,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     description: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError.message")
+                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
+                        ".message")
                 }));
             }).finally(() => {
                 setIsClaimLoading(false);
@@ -205,7 +207,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     description: t("console:manage.features.claims.dialects.notifications.fetchDialects" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects.genericError.message")
+                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -566,6 +569,21 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [advanceSettingValues]);
 
     /**
+     * Util function to handle claim mapping.
+     * 
+     * @param confirmation confirmation state
+     */
+    const handleClaimMapping = (confirmation: boolean): void => {
+        if (confirmation) {
+            setClaimMappingOn(true);
+            setShowClaimMappingConfirmation(false);
+        } else {
+            setClaimMappingOn(false);
+            setShowClaimMappingConfirmation(false);
+        }
+    };
+
+    /**
      * Set initial value for claim mapping.
      */
     useEffect(() => {
@@ -598,6 +616,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         addToClaimMapping={ addToClaimMapping }
                         claimConfigurations={ claimConfigurations }
                         claimMappingOn={ claimMappingOn }
+                        showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
                         setClaimMappingOn={ setClaimMappingOn }
                         claimMappingError={ claimMappingError }
                         readOnly={
@@ -624,6 +643,40 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         }
                         data-testid={ `${ testId }-advanced-attribute-settings-form` }
                     />
+                    <ConfirmationModal
+                        onClose={ (): void => setShowClaimMappingConfirmation(false) }
+                        type={ "warning" }
+                        open={ showClaimMappingConfirmation }
+                        primaryAction={
+                            t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                ".mappingTable.mappingRevert.confirmPrimaryAction" )
+                        }
+                        secondaryAction={
+                            t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                ".mappingTable.mappingRevert.confirmSecondaryAction" )
+                        }
+                        onSecondaryActionClick={ (): void => handleClaimMapping(true) }
+                        onPrimaryActionClick={ (): void => handleClaimMapping(false) }
+                    >
+                        <ConfirmationModal.Header>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.mappingRevert.confirmationHeading" )
+                            }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message warning >
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.mappingRevert.confirmationMessage" )
+                            }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.mappingRevert.confirmationContent" )
+                            }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
                     <RoleMapping
                         submitState={ triggerAdvanceSettingFormSubmission }
                         onSubmit={ setRoleMapping }

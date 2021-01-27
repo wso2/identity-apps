@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, LabeledCard } from "@wso2is/react-components";
+import { Heading, LabeledCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
@@ -34,7 +34,11 @@ import {
     DroppableProvided
 } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
+import { Icon, Label, Popup } from "semantic-ui-react";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
+import { getGeneralIcons } from "../../../../configs";
+import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the authenticators component.
@@ -76,6 +80,14 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Denotes whether the authenticator is a social login.
+     */
+    isSocialLogin?: boolean;
+    /**
+     * Handles on click of social login add.
+     */
+    handleSocialLoginAdd?: any;
 }
 
 const portal: HTMLElement = document.createElement("div");
@@ -106,8 +118,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         heading,
         isDropDisabled,
         readOnly,
+        isSocialLogin,
+        handleSocialLoginAdd,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const classes = classNames("authenticators", className);
 
@@ -150,60 +166,120 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return ReactDOM.createPortal(child, portal);
     };
 
-    return (
-        (authenticators && authenticators instanceof Array && authenticators.length > 0)
-            ? (
-                <>
-                    { heading && <Heading as="h6">{ heading }</Heading> }
-                    <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
-                        { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
-                            <div
-                                ref={ provided.innerRef }
-                                { ...provided.droppableProps }
-                                className={ classes }
-                                data-testid={ testId }
-                            >
-                                {
-                                    authenticators.map((authenticator, index) => (
-                                        <Draggable
-                                            key={ `${ authenticator.idp }-${ authenticator.id }` }
-                                            draggableId={ authenticator.id }
-                                            index={ index }
-                                            isDragDisabled={ readOnly }
-                                        >
-                                            {
-                                                (
-                                                    draggableProvided: DraggableProvided,
-                                                    draggableSnapshot: DraggableStateSnapshot
-                                                ): React.ReactElement<HTMLElement> => (
-                                                    <PortalAwareDraggable
-                                                        provided={ draggableProvided }
-                                                        snapshot={ draggableSnapshot }
-                                                    >
-
-                                                        <LabeledCard
-                                                            size="tiny"
-                                                            image={ authenticator.image }
-                                                            label={ authenticator.displayName || defaultName }
-                                                            labelEllipsis={ true }
-                                                            data-testid={
-                                                                `${ testId }-authenticator-${ authenticator.name }`
+    return authenticators && authenticators instanceof Array
+        ? (
+            <>
+                { heading && <Heading as="h6">{ heading }</Heading> }
+                <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
+                    { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
+                        <div
+                            ref={ provided.innerRef }
+                            { ...provided.droppableProps }
+                            className={ classes }
+                            data-testid={ testId }
+                        >
+                            { authenticators.map((authenticator, index) => (
+                                <Draggable
+                                    key={ `${ authenticator.idp }-${ authenticator.id }` }
+                                    draggableId={ authenticator.id }
+                                    index={ index }
+                                    isDragDisabled={ readOnly || !authenticator.isEnabled }
+                                >
+                                    { (
+                                        draggableProvided: DraggableProvided,
+                                        draggableSnapshot: DraggableStateSnapshot
+                                    ): React.ReactElement<HTMLElement> => (
+                                            <PortalAwareDraggable
+                                                provided={ draggableProvided }
+                                                snapshot={ draggableSnapshot }
+                                            >
+                                                <Popup
+                                                    on="hover"
+                                                    disabled={
+                                                        !((droppableId === ApplicationManagementConstants
+                                                                .SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)
+                                                        && authenticators[0]
+                                                        && !authenticators[ 0 ].isEnabled)
+                                                    }
+                                                    content={ (
+                                                        <>
+                                                            <Label attached="top">
+                                                                <Icon name="warning sign" /> Warning
+                                                            </Label>
+                                                            <Text>
+                                                            {
+                                                                t("console:develop.features.applications.edit." +
+                                                                    "sections.signOnMethod.sections." +
+                                                                    "authenticationFlow.sections.stepBased." +
+                                                                    "secondFactorDisabled")
                                                             }
-                                                        />
-                                                    </PortalAwareDraggable>
-                                                )
-                                            }
-                                        </Draggable>
-                                    ))
-                                }
-                                { provided.placeholder }
-                            </div>
-                        ) }
-                    </Droppable>
-                </>
-            )
-            : <>{ emptyPlaceholder }</>
-    );
+                                                            </Text>
+                                                        </>
+                                                    ) }
+                                                    trigger={ (
+                                                        <div>
+                                                            <LabeledCard
+                                                                size="tiny"
+                                                                disabled={ !authenticator.isEnabled }
+                                                                image={ authenticator.image }
+                                                                label={ authenticator.displayName || defaultName }
+                                                                labelEllipsis={ true }
+                                                                data-testid={
+                                                                    `${ testId }-authenticator-${ authenticator.name }`
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                />
+                                            </PortalAwareDraggable>
+                                        ) }
+                                </Draggable>
+                            )) }
+                            {
+                                (isSocialLogin)
+                                && (
+                                    <Draggable
+                                        draggableId={ "Add" }
+                                        isDragDisabled={ true }
+                                        index={ 0 }
+                                    >
+                                        {
+                                            (
+                                                draggableProvided: DraggableProvided,
+                                                draggableSnapshot: DraggableStateSnapshot
+                                            ): React.ReactElement<HTMLElement> => (
+                                                <PortalAwareDraggable
+                                                    provided={ draggableProvided }
+                                                    snapshot={ draggableSnapshot }
+                                                >
+                                                    <LabeledCard
+                                                        size="tiny"
+                                                        image={ getGeneralIcons()?.addCircleOutline }
+                                                        label={ "Add" }
+                                                        labelEllipsis={ true }
+                                                        data-testid={
+                                                            `${ testId }-authenticator-add`
+                                                        }
+                                                        imageOptions={ {
+                                                            as: "data-url",
+                                                        } }
+                                                        onClick={ handleSocialLoginAdd }
+                                                    />
+                                                </PortalAwareDraggable>
+                                            )
+                                        }
+                                    </Draggable>
+                                )
+                            }
+                            { provided.placeholder }
+                        </div>
+                    ) }
+                </Droppable>
+            </>
+        )
+        : (
+            <>{ emptyPlaceholder }</>
+        );
 };
 
 /**
@@ -212,5 +288,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 Authenticators.defaultProps = {
     "data-testid": "authenticators",
     defaultName: "Unknown",
-    isDropDisabled: true
+    isDropDisabled: true,
+    isSocialLogin: false
 };

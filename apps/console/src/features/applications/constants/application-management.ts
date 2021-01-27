@@ -165,14 +165,39 @@ export class ApplicationManagementConstants {
      */
     public static readonly HIDDEN_GRANT_TYPES: string[] = [ "account_switch" ];
 
+    public static readonly AUTHORIZATION_CODE_GRANT: string = "authorization_code";
+    public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
+    public static readonly IMPLICIT_GRANT: string = "implicit";
+
     /**
      * Set of grant types allowed for certain templates.
      * @constant
      * @type {string[]}
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: object = {
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [ "authorization_code", "refresh_token", "implicit" ]
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+        ]
     };
+
+    /**
+     * Holds metadata on how to arrange the values when rendering above
+     * {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES} values in the UI.
+     *
+     * Usage: Map the index => key to rearrange the values.
+     *
+     * @constant
+     * @type { {[ key: string ]: Map<number, string>} }
+     */
+    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
+            [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 1 ],
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 2 ],
+        ])
+    }
 
     /**
      * Key for the SPA template.
@@ -218,4 +243,21 @@ export class ApplicationManagementConstants {
         "status code while retrieving the request path authenticators.";
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
+    public static readonly TOTP_AUTHENTICATOR_ID = "LOCAL-dG90cA";
+    public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
+    public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
+    public static readonly IDENTIFIER_EXECUTOR = "IdentifierExecutor";
+    public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
+    public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
+
+
+    /**
+     * PEM certificate field default placeholder.
+     */
+    public static readonly PEM_CERTIFICATE_PLACEHOLDER = "-----BEGIN CERTIFICATE-----\n" +
+        "MIIFaDCCBFCgAwIBAgISESHkvZFwK9Qz0KsXD3x8p44aMA0GCSqGSIb3DQEBCwUA\n" +
+        "...\n" +
+        "lffygD5IymCSuuDim4qB/9bh7oi37heJ4ObpBIzroPUOthbG4gv/5blW3Dc=\n" +
+        "-----END CERTIFICATE-----";
+
 }

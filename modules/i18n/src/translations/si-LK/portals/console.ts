@@ -449,25 +449,20 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "යළි-යොමුවීමේ URL හි ආරම්භය {{url}} WSO2 හැඳුනුම් සේවාදායක " +
-                            "API වෙත CORS ඉල්ලීම් කිරීමට අවසර නැත.",
+                        content: "බ්‍රව්සරයකින් API ඉල්ලීම් {{productName}} සෑදීම සඳහා ඔබ මෙම සම්භවය සඳහා CORS සක්‍රීය කළ යුතුය.",
                         detailedContent: {
-                            0: "පෙරනිමියෙන් WSO2 හැඳුනුම් සේවාදායක API මඟින් CORS ඉල්ලීම් අවහිර කරයි. නමුත් මෙය " +
-                                "නීත්‍යානුකූල ඉල්ලීම් දැන ගැනීමෙන් වළක්වා ගත හැකිය",
-                            1: "එබැවින් මෙම සම්භවය සඳහා CORS සක්‍රීය කිරීමෙන් <1>{{ tenantName }}</1> කුලී නිවැසියන්ගේ " +
-                                "ලියාපදිංචි යෙදුම් වලින් හැඳුනුම් සේවාදායක API වෙත ප්‍රවේශ වීමට ඔබට ඉඩ සලසයි."
+                            0: "",
+                            1: ""
                         },
-                        header: "CORS අවසර නැත",
+                        header: "CORS වලට ඉඩ දෙන්න",
                         leftAction: "ඉඩ දෙන්න"
                     },
                     positive: {
-                        content: "යළි-යොමුවීමේ URL හි ආරම්භය {{url}} WSO2 හැඳුනුම් සේවාදායක API " +
-                            "වෙත CORS ඉල්ලීම් කිරීමට අවසර ඇත.",
+                        content: "යළි හරවා යැවීමේ URL {{urlLink} හි මූලාරම්භය CORS ඉල්ලීම් {{productName}} API වෙත" +
+                            " කිරීමට අවසර ඇත.",
                         detailedContent: {
-                            0: "පෙරනිමියෙන් WSO2 හැඳුනුම් සේවාදායක API මඟින් CORS ඉල්ලීම් අවහිර කරයි." +
-                                " නමුත් මෙය නීත්‍යානුකූල ඉල්ලීම් දැන ගැනීමෙන් වළක්වා ගත හැකිය",
-                            1: "එබැවින් මෙම සම්භවය සඳහා CORS සක්‍රීය කිරීමෙන් <1>{{ tenantName }}</1> කුලී නිවැසියන්ගේ" +
-                                " ලියාපදිංචි යෙදුම් වලින් හැඳුනුම් සේවාදායක API වෙත ප්‍රවේශ වීමට ඔබට ඉඩ සලසයි."
+                            0: "",
+                            1: ""
                         },
                         header: "CORS සඳහා අවසර ඇත"
                     }
@@ -693,15 +688,15 @@ export const console: ConsoleNS = {
                             },
                             selection: {
                                 addWizard: {
-                                    header: "ගුණාංග තේරීම යාවත්කාලීන කරන්න",
+                                    header: "පරිශීලක ගුණාංග තේරීම යාවත්කාලීන කරන්න",
                                     steps: {
                                         select: {
                                             transfer: {
                                                 headers: {
-                                                    attribute: "ගුණාංගය"
+                                                    attribute: "පරිශීලක ගුණාංගය"
                                                 },
                                                 searchPlaceholders: {
-                                                    attribute: "සෙවුම් ගුණාංගය",
+                                                    attribute: "සෙවුම් පරිශීලක ගුණාංගය",
                                                     role: "සෙවුම් කාර්යභාරය"
                                                 }
                                             }
@@ -709,14 +704,14 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "පරිශීලක නව ගුණාංග එකතු කරන්න හෝ පවතින ගුණාංග ඉවත් කරන්න."
                                 },
-                                heading: "ගුණාංග තේරීම",
+                                heading: "පරිශීලක ගුණාංග තේරීම",
                                 mappingTable: {
                                     actions: {
                                         enable: "සිතියම්කරණය සක්‍රීය කරන්න"
                                     },
                                     columns: {
-                                        appAttribute: "යෙදුම් ගුණාංගය",
-                                        attribute: "ගුණාංගය",
+                                        appAttribute: "පරිශීලක යෙදුම් ගුණාංගය",
+                                        attribute: "පරිශීලක ගුණාංගය",
                                         mandatory: "අනිවාර්යයි",
                                         requested: "ඉල්ලා"
                                     },
@@ -734,10 +729,20 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    searchPlaceholder: "ගුණාංග සොයන්න"
+                                    mappedAtributeHint: "සුපුරුදු ගුණාංගය යැවීම වෙනුවට, අභිරුචි සිතියම්ගත කළ ගුණාංගය යවනු ලැබේ",
+                                    mappingRevert: {
+                                        confirmPrimaryAction: "තහවුරු කරන්න",
+                                        confirmSecondaryAction: "අවලංගු කරන්න",
+                                        confirmationContent: "අදාළ පෙරනිමි ගුණාංග වලට අනුරූපණය කරන ලද මෙම අභිරුචි ගුණාංග " +
+                                            "මෙම ක්‍රියාව මඟින් පෙරනිමි සිතියම්ගත කළ අගයන් වෙත නැවත වෙනස් වේ. සිතියම්ගත කළ " +
+                                            "අභිරුචි ගුණාංග අගයන් ලබා ගැනීමට ඔබට නොහැකි බැවින් කරුණාකර ප්‍රවේශමෙන් භාවිතා කරන්න",
+                                        confirmationHeading: "හිමිකම් සිතියම්කරණය පෙරනිමියට මාරු කිරීම තහවුරු කරන්න",
+                                        confirmationMessage: "මෙම ක්‍රියාව මඟින් සිතියම්ගත කළ අගයන් පෙරනිමි අගයන් වෙත ආපසු හරවනු ඇත"
+                                    },
+                                    searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
                                 }
                             },
-                            tabName: "ගුණාංග"
+                            tabName: "පරිශීලක ගුණාංග"
                         },
                         general: {
                             tabName: "ජනරාල්"
@@ -805,7 +810,10 @@ export const console: ConsoleNS = {
                                             },
                                             heading: "පියවර පදනම් කරගත් වින්‍යාසය",
                                             hint: "දේශීය / ෆෙඩරල් සත්‍යාපනය කරන්නන් අදාළ පියවර වෙත ඇදගෙන " +
-                                                "යාමෙන් සත්‍යාපන පියවර සාදන්න."
+                                                "යාමෙන් සත්‍යාපන පියවර සාදන්න.",
+                                            secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ පළමු පියවර හැර" +
+                                                " වෙනත් පියවරක දී පමණක් වන අතර, මූලික සත්‍යාපකය හෝ හඳුනාගැනීමේ පළමු " +
+                                                "සත්‍යාපකය පළමු පියවරට එකතු කර තිබේ නම්."
                                         }
                                     }
                                 },
@@ -1075,10 +1083,10 @@ export const console: ConsoleNS = {
                         },
                         fields: {
                             allowedOrigins: {
-                                hint: "අවසර ලත් මූලාරම්භය යනු හරස් ප්‍රභවයේ සිට WSO2 හැඳුනුම් සේවාදායක API " +
+                                hint: "අවසර ලත් මූලාරම්භය යනු හරස් ප්‍රභවයේ සිට {{productName}} API " +
                                     "වෙත ඉල්ලීම් කිරීමට ඉඩ දෙන URL ය",
                                 label: "අවසර ලත් මූලයන්",
-                                placeholder: "https://myapp.io/login",
+                                placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "කරුණාකර වලංගු ප්‍රභවයක් එක් කරන්න."
                                 }
@@ -1251,7 +1259,7 @@ export const console: ConsoleNS = {
                                                 label: "සක්‍රීය කරන්න"
                                             },
                                             plainAlg: {
-                                                label: "PKCE 'ප්ලේන්' ට්‍රාන්ස්ෆෝමර් ඇල්ගොරිතම සඳහා සහය දක්වන්න"
+                                                label: "'ප්ලේන්' ට්‍රාන්ස්ෆෝමර් ඇල්ගොරිතම සඳහා සහය දක්වන්න"
                                             }
                                         },
                                         label: "{{label}}",
@@ -1285,13 +1293,13 @@ export const console: ConsoleNS = {
                                 heading: "ටෝකනය නැවුම් කරන්න"
                             },
                             requestObjectSignature: {
-                              heading: "ඉල්ලීම් වස්තු අත්සන",
+                              heading: "HTTP ඉල්ලීම් වස්තුව",
                               description: "{{productName}} විසින් 'ඉල්ලීම් වස්තුවක්' තුළ සේවාදායකයින්ගෙන් OIDC " +
                                   "සත්‍යාපන ඉල්ලීම් පරාමිතීන් ලබා ගැනීමට සහාය වේ. බලය පැවරීමේ ඉල්ලීමෙහි" +
                                   " අත්සන් කළ ඉල්ලීම් වස්තු පමණක් පිළිගැනීමට අත්සන් වලංගු කිරීම සක්‍රීය කරන්න.",
                               fields: {
                                   signatureValidation: {
-                                      label: "ඉල්ලීම් වස්තු අත්සන වලංගු කිරීම සක්‍රීය කරන්න",
+                                      label: "අත්සන වලංගු කිරීම සක්‍රීය කරන්න",
                                   }
                               }
                             },
@@ -2051,6 +2059,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "යෙදුම සාර්ථකව අවලංගු කරන ලදි",
                             message: "අවලංගු කිරීම සාර්ථකයි"
+                        }
+                    },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "පළමු පියවරට දෙවන සාධක සත්‍යාපක එකතු කළ නොහැක.",
+                            message: "මෙම පියවරට එකතු කළ නොහැක"
                         }
                     },
                     updateAdvancedConfig: {
