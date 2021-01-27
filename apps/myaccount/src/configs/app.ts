@@ -121,7 +121,9 @@ export class Config {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appName: window["AppUtils"].getConfig().ui.appName,
             authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
-            copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${new Date().getFullYear()}`,
+            copyrightText: window["AppUtils"].getConfig().ui.appCopyright
+                .replace("{{copyright}}", "\u00A9")
+                .replace("{{year}}", new Date().getFullYear()),
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
