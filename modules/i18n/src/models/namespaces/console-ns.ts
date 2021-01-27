@@ -2937,6 +2937,11 @@ export interface ConsoleNS {
                     changePasswordModal: {
                         header: string;
                         message: string;
+                        passwordOptions: {
+                            setPassword: string;
+                            forceReset: string;
+                        };
+                        button: string;
                     };
                 };
                 profile: {
