@@ -1195,7 +1195,7 @@ export const console: ConsoleNS = {
                                         label: "ප්‍රේක්ෂකයෝ",
                                         placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
                                         validations: {
-                                            empty: "කරුණාකර සබය පුරවන්න",
+                                            empty: "කරුණාකර audience පුරවන්න",
                                             duplicate: "Audience හි අනුපිටපත් අගයන් අඩංගු වේ"
                                         }
                                     },
