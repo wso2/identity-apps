@@ -1201,7 +1201,8 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
-                                            empty: "Please fill the audience"
+                                            empty: "Please fill the audience",
+                                            duplicate: "Audience contains duplicate values"
                                         }
                                     },
                                     encryption: {
