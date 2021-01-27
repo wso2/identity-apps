@@ -5548,9 +5548,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "පරිශීලක මුරපදය වෙනස් කරන්න",
-                        message: "සටහන" +
-                            "able to log into any application using the current password."
+                        button: "මුරපදය නැවත සකසන්න",
+                        header: "පරිශීලක මුරපදය යළි පිහිටුවන්න",
+                        message: "සටහන: මුරපදය වෙනස් කිරීමෙන් පසුව පරිශීලකයාට වත්මන් මුරපදය භාවිතා කර කිසිදු යෙදුමකට " +
+                            "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
+                        passwordOptions: {
+                            forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",
+                            setPassword: "පරිශීලකයා සඳහා නව මුරපදයක් සකසන්න"
+                        }
                     }
                 },
                 profile: {

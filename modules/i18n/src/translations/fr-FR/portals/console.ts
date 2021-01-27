@@ -5551,9 +5551,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "Changer le mot de passe de l'utilisateur",
+                        button: "réinitialiser le mot de passe",
+                        header: "Réinitialiser le mot de passe de l'utilisateur",
                         message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
-                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
+                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
+                        passwordOptions: {
+                            forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
+                            setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
+                        }
                     }
                 },
                 profile: {
