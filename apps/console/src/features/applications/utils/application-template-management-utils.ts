@@ -272,6 +272,8 @@ export class ApplicationTemplateManagementUtils {
 
                         groupedTemplates.forEach((editingTemplate, index) => {
                             if (editingTemplate.id === template.templateGroup) {
+
+                                // Temporarily removing the SAML protocol selection.
                                 if (template.name !== "SAML") {
                                     groupedTemplates[index] = {
                                         ...group,
