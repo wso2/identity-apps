@@ -861,7 +861,7 @@ export const console: ConsoleNS = {
                                     role: {
                                         hint: "This option will append the user store domain that the user resides to" +
                                             " role",
-                                        label: "Include userDomain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "Select the role attribute"
                                         }
@@ -888,7 +888,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeTenantDomain: {
                                         hint: "This option will append the tenant domain to the local subject " +
                                             " identifier",
-                                        label: "Include Tenant Domain",
+                                        label: "Include tenant domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -896,7 +896,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeUserDomain: {
                                         hint: "This option will append the user store domain that the user resides " +
                                             " in the local subject identifier",
-                                        label: "Include User Domain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -1077,24 +1077,24 @@ export const console: ConsoleNS = {
                     inboundOIDC: {
                         fields: {
                             allowedOrigins: {
-                                hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
+                                hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
                                     "origins to {{productName}} APIs",
-                                label: "Allowed Origins",
+                                label: "Allowed origins",
                                 placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines where the authorization code is sent to upon " +
+                                hint: "The redirect URI determines where the authorization code is sent to upon " +
                                     "user authentication, and where the user is redirected to upon user logout." +
-                                    "The client app should specify the redirect URL in the authorization or logout " +
-                                    "request and {{productName}} will validate it against the redirect URLs " +
+                                    "The client app should specify the redirect URI in the authorization or logout " +
+                                    "request and {{productName}} will validate it against the redirect URIs " +
                                     "entered here.",
                                 label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
