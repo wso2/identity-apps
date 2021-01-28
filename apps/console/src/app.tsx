@@ -62,6 +62,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -192,6 +193,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                         >
                                             <>
                                                 <Helmet>
+                                                    <title>{ appTitle }</title>
                                                     <link
                                                         rel="shortcut icon"
                                                         href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
