@@ -2937,6 +2937,11 @@ export interface ConsoleNS {
                     changePasswordModal: {
                         header: string;
                         message: string;
+                        passwordOptions: {
+                            setPassword: string;
+                            forceReset: string;
+                        };
+                        button: string;
                     };
                 };
                 profile: {
@@ -3218,6 +3223,69 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
+            invite?: {
+                inviteButton?: string;
+                subSelection?: {
+                    onBoard?: string;
+                    invitees?: string;
+                };
+                notifications?: {
+                    deleteInvite?: Notification;
+                    resendInvite?: Notification;
+                    sendInvite?: Notification;
+                };
+                confirmationModal?: {
+                    deleteInvite?: Confirmation;
+                    resendInvite?: Confirmation;
+                };
+                placeholder?: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                        };
+                        title: string;
+                    };
+                    emptyResultPlaceholder: {
+                        addButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        title: string;
+                    };
+                };
+                advancedSearch?: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                username: string;
+                                email: string;
+                            };
+                        };
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                form?: {
+                    sendmail?: {
+                        title: string;
+                        subTitle: string;
+                    };
+                };
+            };
         };
         notifications: {
             endSession: Notification;
@@ -3242,6 +3310,7 @@ export interface ConsoleNS {
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;
+            invite?: Page;
         };
         placeholders: {
             emptySearchResult: Placeholder;

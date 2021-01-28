@@ -613,8 +613,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
-                        subheader: "L'application sera supprimée définitivement et les clients" +
-                            " utilisant cette application cesseront de fonctionner.",
+                        subheader: "Une fois l'application supprimée, elle ne peut pas être récupérée et les " +
+                            "clients utilisant cette application ne fonctionneront plus.",
                     },
                     header: "Zone de danger"
                 },
@@ -931,9 +931,10 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "L'utilisation des applications est par défaut limitée aux utilisateurs " +
-                                    "du fournisseur de services du locataire. Si cette application est en mode SaaS, elle est ouverte pour " +
-                                    "les usagers de tous les locataires..",
+                                hint: "Par défaut, les applications ne peuvent être utilisées que par les " +
+                                    "utilisateurs appartenant au locataire de l'application. Si cette application " +
+                                    "est compatible SaaS, elle sera accessible à tous les utilisateurs de tous les " +
+                                    "locataires.",
                                 label: "Application SaaS",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1023,9 +1024,8 @@ export const console: ConsoleNS = {
                             },
                             imageUrl: {
                                 label: "Logo",
-                                description: "Une URL pour l'image de l'application à des fins d'affichage. " +
-                                    "S'il n'est pas fourni, une miniature générée s'affiche." +
-                                    " (mentionner les résolutions souhaitées)",
+                                description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +
+                                    "afficherons une vignette générée à la place. Taille recommandée: 200x200 pixels",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
@@ -1082,16 +1082,19 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "L'URL de redirection détermine vers où le code d'autorisation est envoyé," +
-                                    " la connexion est terminée et vers où l'utilisateur est redirigé une fois" +
-                                    " la déconnexion terminée. Le client doit spécifier l'URL de redirection" +
-                                    " dans la demande d'autorisation ou de déconnexion et {{productName}} la validera" +
-                                    " par rapport aux URL de redirection configurées.",
+                                hint: "L'URL de redirection détermine où le code d'autorisation est envoyé lors " +
+                                    "de l'authentification de l'utilisateur et vers lequel l'utilisateur est " +
+                                    "redirigé lors de la déconnexion de l'utilisateur. L'application cliente " +
+                                    "doit spécifier l'URL de redirection dans la demande d'autorisation ou de " +
+                                    "déconnexion et {{productName}} la validera par rapport aux URL de redirection " +
+                                    "entrées ici.",
                                 label: "URLs de redirection",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Veuillez ajouter une URL valide.",
-                                    required: "ce champ est obligatoire pour une application fonctionnelle."
+                                    required: "Ce champ est obligatoire pour une application fonctionnelle. " +
+                                        "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
+                                        "ce champ peut être ignoré."
                                 }
                             },
                             clientID: {
@@ -1198,7 +1201,8 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            empty: "Veuillez remplir le public"
+                                            empty: "Veuillez remplir le public",
+                                            duplicate: "L'audience contient des valeurs en double"
                                         }
                                     },
                                     encryption: {
@@ -5419,8 +5423,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Sélectionner la méthode d'initialisation du mot de passe",
                                 options: {
-                                    askPassword: "Inviter l'utilisateur à définir un mot de passe",
-                                    createPassword: "Définir le mot de passe de l'utilisateur"
+                                    askPassword: "Invitez l'utilisateur à définir son propre mot de passe",
+                                    createPassword: "Définissez un mot de passe temporaire pour l'utilisateur"
 
                                 }
                             }
@@ -5547,9 +5551,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "Changer le mot de passe de l'utilisateur",
+                        button: "réinitialiser le mot de passe",
+                        header: "Réinitialiser le mot de passe de l'utilisateur",
                         message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
-                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
+                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
+                        passwordOptions: {
+                            forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
+                            setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
+                        }
                     }
                 },
                 profile: {

@@ -478,6 +478,13 @@
            {% endfor %}
            {% endif %}
         },
+        "hiddenAuthenticators": [
+            {% if console.ui.hiddenAuthenticators is defined %}
+                {% for value in console.ui.hiddenAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.i18n_configs.items() is defined %}
             {% for key, value in console.i18n_configs.items() %}

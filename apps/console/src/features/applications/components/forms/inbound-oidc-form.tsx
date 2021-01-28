@@ -514,7 +514,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             grantTypes: values.get("grant"),
             idToken: {
-                audience: [ values.get("audience") ],
+                audience: values.get("audience") !== "" ? [ values.get("audience") ] : [],
                 encryption: {
                     algorithm: isEncryptionEnabled ?
                         values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
@@ -708,6 +708,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }));
             }
         }
+    };
+
+    /**
+     * Check if audiences contain duplicates.
+     *
+     * @param {string []} audiences - array of audiences.
+     * @return {boolean} if audience list contains duplicates.
+     */
+    const containsDuplicateAudiences = (audiences: string []): boolean => {
+        const uniqueAudiences = [];
+        for (let i = 0; i < audiences.length; ++i) {
+            if (uniqueAudiences.includes(audiences[i])) {
+                return true;
+            }
+            uniqueAudiences.push(audiences[i]);
+        }
+        return false;
     };
 
     /**
@@ -1258,6 +1275,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.audience.placeholder")
                         }
                         value={ initialValues?.idToken?.audience.toString() }
+                        validation={ (value: string, validation: Validation) => {
+                            if (value && containsDuplicateAudiences(value.split(","))) {
+                                validation.isValid = false;
+                                validation.errorMessages.push((
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.audience.validations.duplicate")
+                                ));
+                            }
+                        } }
                         type="textarea"
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-audience-textarea` }

@@ -40,6 +40,8 @@
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
@@ -304,12 +306,23 @@
         }
 
         if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-            String scheme = request.getScheme();
-            String serverName = request.getServerName();
-            int serverPort = request.getServerPort();
-            String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-            String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-            String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+            String urlWithoutEncoding = null;
+            try {
+                ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+                urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
+                                        request.getParameter("sp"));
+            } catch (ApplicationDataRetrievalClientException e) {
+                //ignored and fallback to login page url
+            }
+
+            if (StringUtils.isBlank(urlWithoutEncoding)) {
+                String scheme = request.getScheme();
+                String serverName = request.getServerName();
+                int serverPort = request.getServerPort();
+                String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
+                String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
+                urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+            }
 
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
             urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);

@@ -178,7 +178,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 // Also if its not a origin url check then try to strip
                 // out the unnecessary trailing forward slashes.
                 if (!onlyOrigin || !URLUtils.isAValidOriginUrl(changeUrl)) {
-                    url = url.replace(/\/+$/, "");
+                    url = url.replace(/\/+$/, "/");
                 }
             }
         } else {

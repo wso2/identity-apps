@@ -149,7 +149,9 @@ export class Config {
     public static getUIConfig(): UIConfigInterface {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
-            appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
+            appCopyright: window["AppUtils"].getConfig().ui.appCopyright
+                .replace("${copyright}", "\u00A9")
+                .replace("${year}", new Date().getFullYear()),
             appName: window["AppUtils"].getConfig().ui.appName,
             applicationTemplateLoadingStrategy: window["AppUtils"].getConfig().ui.applicationTemplateLoadingStrategy,
             identityProviderTemplateLoadingStrategy:
@@ -157,6 +159,7 @@ export class Config {
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
+            hiddenAuthenticators: window["AppUtils"].getConfig().ui.hiddenAuthenticators,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,

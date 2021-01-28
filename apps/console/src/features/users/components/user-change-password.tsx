@@ -16,14 +16,16 @@
  * under the License
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
+import { EditSection, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Message, Modal } from "semantic-ui-react";
-import { SharedUserStoreUtils } from "../../core/utils";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores/constants";
+import { Grid, Icon, List, Message, Modal } from "semantic-ui-react";
+import { SharedUserStoreUtils } from "../../core";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "../../server-configurations";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores";
 import { updateUserInfo } from "../api";
 
 /**
@@ -55,6 +57,14 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
      * Handle user update callback.
      */
     handleUserUpdate: (userId: string) => void;
+    /**
+     * Password reset connector properties
+     */
+    connectorProperties: ConnectorPropertyInterface[];
+    /**
+     * Handles force password reset trigger.
+     */
+    handleForcePasswordResetTrigger: () => void;
 }
 
 /**
@@ -73,6 +83,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         handleUserUpdate,
         openChangePasswordModal,
         handleCloseChangePasswordModal,
+        connectorProperties,
+        handleForcePasswordResetTrigger,
         [ "data-testid" ]: testId
     } = props;
 
@@ -81,9 +93,259 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ password, setPassword ] = useState<string>("");
+    const [ passwordResetOption, setPasswordResetOption ] = useState("setPassword");
     const [ triggerSubmit, setTriggerSubmit ] = useState<boolean>(false);
+    const [
+        governanceConnectorProperties,
+        setGovernanceConnectorProperties
+    ] = useState<ConnectorPropertyInterface[]>(undefined);
+    const [ configSettings, setConfigSettings ] = useState({
+        accountDisable: "false",
+        accountLock: "false",
+        forcePasswordReset: "false"
+    });
 
-    const handelChangeUserPassword = (values: Map<string, string | string[]>): void => {
+    useEffect(() => {
+        if (!connectorProperties) {
+            return;
+        }
+
+        if (governanceConnectorProperties === undefined) {
+            setGovernanceConnectorProperties(connectorProperties);
+        }
+    }, [ connectorProperties ]);
+
+    useEffect(() => {
+
+        if (governanceConnectorProperties &&
+            Array.isArray(governanceConnectorProperties) &&
+            governanceConnectorProperties?.length > 0) {
+
+            let configurationStatuses = { ...configSettings } ;
+
+            for (const property of governanceConnectorProperties) {
+                if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
+                    || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
+                    || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
+
+                    if(property.value === "true") {
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            forcePasswordReset: property.value
+                        };
+                    }
+                }
+            }
+
+            setConfigSettings(configurationStatuses);
+        }
+    }, [ governanceConnectorProperties ]);
+
+    const passwordResetOptions = [
+        {
+            label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.setPassword"),
+            value: "setPassword"
+        },
+        {
+            label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.forceReset"),
+            value: "forceReset"
+        }
+    ];
+
+    const resolveConfigurationList = (governanceConnectorProperties: ConnectorPropertyInterface[]): ReactNode => {
+        return governanceConnectorProperties?.map((property, index) => {
+            if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
+                && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+                && property?.name !== ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+
+                return (
+                    <List.Item key={ index }>
+                        <Icon
+                            color={ property?.value === "true"
+                                ? "green"
+                                : "red" }
+                            name={ property?.value === "true"
+                                ? "check circle"
+                                : "times circle" }/>
+                        { property?.displayName }
+                    </List.Item>
+                );
+            }
+        });
+    };
+
+    /**
+     * Handle admin initiated password reset.
+     */
+    const handleForcePasswordReset = () => {
+        if (configSettings?.forcePasswordReset === "false") {
+            onAlertFired({
+                description: t(
+                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.description"
+                ),
+                level: AlertLevels.WARNING,
+                message: t(
+                    "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.message"
+                )
+            });
+
+            return;
+        }
+
+        const data = {
+            "Operations": [
+                {
+                    "op": "add",
+                    "value": {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            "forcePasswordReset": true
+                        }
+                    }
+                }
+            ],
+            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        updateUserInfo(user.id, data).then(() => {
+            onAlertFired({
+                description: t(
+                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "console:manage.features.user.profile.notifications.forcePasswordReset.success.message"
+                )
+            });
+            handleForcePasswordResetTrigger();
+            handleCloseChangePasswordModal();
+            handleUserUpdate(user.id);
+        })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.user.profile.notifications.forcePasswordReset.error." +
+                            "message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t("console:manage.features.user.profile.notifications.forcePasswordReset." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.user.profile.notifications.forcePasswordReset.genericError." +
+                        "message")
+                });
+            });
+    };
+
+    /**
+     * The following method handles the change of password reset option
+     * and renders the relevant component accordingly.
+     */
+    const handlePasswordResetOptionChange = () => {
+        if (passwordResetOption && passwordResetOption === "setPassword") {
+            return (
+                <>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                data-testid="user-mgt-edit-user-form-newPassword-input"
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                                ) }
+                                name="newPassword"
+                                placeholder={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
+                                    "newPassword.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "console:manage.features.user.forms.addUserForm." +
+                                    "inputs.newPassword.validations.empty"
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value=""
+                                listen={ handlePasswordChange }
+                                loading={ isPasswordRegExLoading }
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!isPasswordPatternValid) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
+                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                    }
+                                } }
+                            />
+                            <Suspense fallback={ null } >
+                                <PasswordMeter password={ password } />
+                            </Suspense>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
+                                ) }
+                                name="confirmPassword"
+                                placeholder={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
+                                    "confirmPassword.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "console:manage.features.user.forms.addUserForm." +
+                                    "inputs.confirmPassword.validations.empty"
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value=""
+                                validation={ (value: string, validation: Validation, formValues) => {
+                                    if (formValues.get("newPassword") !== value) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:manage.features.user.forms.addUserForm.inputs" +
+                                                ".confirmPassword.validations.mismatch"));
+                                    }
+                                } }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        } else {
+           return (
+               <>
+                   <Grid.Row>
+                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                           <p>
+                               Following are the password reset options available. Please make sure
+                           you have enabled the required configurations.
+                           </p>
+                           {
+                               governanceConnectorProperties?.length > 1 && (
+                                   <EditSection>
+                                       <List>
+                                           { resolveConfigurationList(governanceConnectorProperties) }
+                                       </List>
+                                   </EditSection>
+                               )
+                           }
+                       </Grid.Column>
+                   </Grid.Row>
+               </>
+           );
+        }
+    };
+
+    const handleChangeUserPassword = (values: Map<string, string | string[]>): void => {
 
         const data = {
             "Operations": [
@@ -170,6 +432,131 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             });
     };
 
+    /**
+     * Resolve the modal content according to the number of password reset options
+     * configured in the server.
+     */
+    const resolveModalContent = () => {
+        if (governanceConnectorProperties?.length > 1) {
+            return (
+                <>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                data-testid="user-mgt-add-user-form-passwordOption-radio-button"
+                                type="radio"
+                                label={ t("console:manage.features.user.forms.addUserForm.buttons." +
+                                    "radioButton.label") }
+                                name="passwordOption"
+                                default="setPassword"
+                                listen={ (values) => {
+                                    setPasswordResetOption(values.get("passwordOption").toString());
+                                } }
+                                children={ passwordResetOptions }
+                                value={ "setPassword" }
+                                tabIndex={ 4 }
+                                maxWidth={ 60 }
+                                width={ 60 }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    { handlePasswordResetOptionChange() }
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Message color="teal">
+                                <Hint>
+                                    { t("console:manage.features.user.modals.changePasswordModal.message") }
+                                </Hint>
+                            </Message>
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        } else {
+            return (
+               <>
+                   <Grid.Row>
+                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                           <Field
+                               data-testid="user-mgt-edit-user-form-newPassword-input"
+                               hidePassword={ t("common:hidePassword") }
+                               label={ t(
+                                   "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                               ) }
+                               name="newPassword"
+                               placeholder={ t(
+                                   "console:manage.features.user.forms.addUserForm.inputs." +
+                                   "newPassword.placeholder"
+                               ) }
+                               required={ true }
+                               requiredErrorMessage={ t(
+                                   "console:manage.features.user.forms.addUserForm." +
+                                   "inputs.newPassword.validations.empty"
+                               ) }
+                               showPassword={ t("common:showPassword") }
+                               type="password"
+                               value=""
+                               listen={ handlePasswordChange }
+                               loading={ isPasswordRegExLoading }
+                               validation={ (value: string, validation: Validation) => {
+                                   if (!isPasswordPatternValid) {
+                                       validation.isValid = false;
+                                       validation.errorMessages.push( t("console:manage.features.user.forms." +
+                                           "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                   }
+                               } }
+                           />
+                           <Suspense fallback={ null } >
+                               <PasswordMeter password={ password } />
+                           </Suspense>
+                       </Grid.Column>
+                   </Grid.Row>
+                   <Grid.Row>
+                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                           <Field
+                               data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                               hidePassword={ t("common:hidePassword") }
+                               label={ t(
+                                   "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
+                               ) }
+                               name="confirmPassword"
+                               placeholder={ t(
+                                   "console:manage.features.user.forms.addUserForm.inputs." +
+                                   "confirmPassword.placeholder"
+                               ) }
+                               required={ true }
+                               requiredErrorMessage={ t(
+                                   "console:manage.features.user.forms.addUserForm." +
+                                   "inputs.confirmPassword.validations.empty"
+                               ) }
+                               showPassword={ t("common:showPassword") }
+                               type="password"
+                               value=""
+                               validation={ (value: string, validation: Validation, formValues) => {
+                                   if (formValues.get("newPassword") !== value) {
+                                       validation.isValid = false;
+                                       validation.errorMessages.push(
+                                           t("console:manage.features.user.forms.addUserForm.inputs" +
+                                               ".confirmPassword.validations.mismatch"));
+                                   }
+                               } }
+                           />
+                       </Grid.Column>
+                   </Grid.Row>
+                   <Grid.Row>
+                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                           <Message color="teal">
+                               <Hint>
+                                   { t("console:manage.features.user.modals.changePasswordModal.message") }
+                               </Hint>
+                           </Message>
+                       </Grid.Column>
+                   </Grid.Row>
+               </>
+            );
+        }
+    };
+
     return (
         <Modal
             data-testid={ testId }
@@ -182,87 +569,17 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             <Modal.Content>
                 <Forms
                     data-testid={ `${ testId }-form` }
-                    onSubmit={ (values) => handelChangeUserPassword(values) }
+                    onSubmit={ (values) => {
+                        if (passwordResetOption === "setPassword") {
+                            handleChangeUserPassword(values);
+                        } else {
+                            handleForcePasswordReset();
+                        }
+                    } }
                     submitState={ triggerSubmit }
                 >
                     <Grid>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Field
-                                    data-testid="user-mgt-edit-user-form-newPassword-input"
-                                    hidePassword={ t("common:hidePassword") }
-                                    label={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
-                                    ) }
-                                    name="newPassword"
-                                    placeholder={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs." +
-                                        "newPassword.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm." +
-                                        "inputs.newPassword.validations.empty"
-                                    ) }
-                                    showPassword={ t("common:showPassword") }
-                                    type="password"
-                                    value=""
-                                    listen={ handlePasswordChange }
-                                    loading={ isPasswordRegExLoading }
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!isPasswordPatternValid) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push( t("console:manage.features.user.forms." +
-                                                "addUserFor1m.inputs.newPassword.validations.regExViolation") );
-                                        }
-                                    } }
-                                />
-                                <Suspense fallback={ null } >
-                                    <PasswordMeter password={ password } />
-                                </Suspense>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Field
-                                    data-testid="user-mgt-edit-user-form-confirmPassword-input"
-                                    hidePassword={ t("common:hidePassword") }
-                                    label={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
-                                    ) }
-                                    name="confirmPassword"
-                                    placeholder={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs." +
-                                        "confirmPassword.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm." +
-                                        "inputs.confirmPassword.validations.empty"
-                                    ) }
-                                    showPassword={ t("common:showPassword") }
-                                    type="password"
-                                    value=""
-                                    validation={ (value: string, validation: Validation, formValues) => {
-                                        if (formValues.get("newPassword") !== value) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(
-                                                t("console:manage.features.user.forms.addUserForm.inputs" +
-                                                    ".confirmPassword.validations.mismatch"));
-                                        }
-                                    } }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Message color='teal'>
-                                    <Hint>
-                                        { t("console:manage.features.user.modals.changePasswordModal.message") }
-                                    </Hint>
-                                </Message>
-                            </Grid.Column>
-                        </Grid.Row>
+                        { resolveModalContent() }
                     </Grid>
                 </Forms>
             </Modal.Content>
@@ -275,12 +592,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 floated="right"
                                 onClick={ () => setTriggerSubmit(true) }
                             >
-                                { t("common:save") }
+                                { t("console:manage.features.user.modals.changePasswordModal.button") }
                             </PrimaryButton>
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }
                                 floated="left"
-                                onClick={ handleCloseChangePasswordModal }
+                                onClick={ () => {
+                                    handleCloseChangePasswordModal();
+                                    setPasswordResetOption("setPassword");
+                                    handleUserUpdate(user.id);
+                                } }
                             >
                                 { t("common:cancel") }
                             </LinkButton>

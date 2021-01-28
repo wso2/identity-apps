@@ -616,8 +616,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Delete",
                         header: "Delete application",
-                        subheader: "The application will be deleted permanently and the " +
-                            "clients using this application will stop working."
+                        subheader: "Once the application is deleted, it cannot be recovered and the clients " +
+                            "using this application will no longer work."
                     },
                     header: "Danger Zone"
                 },
@@ -933,9 +933,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "Applications are by default restricted for usage by users of the service" +
-                                    " provider's tenant. If this application is SaaS enabled it is opened up for " +
-                                    "all the users of all the tenants.",
+                                hint: "By default, applications can only be used by users belonging to the " +
+                                    "application's tenant. If this application is SaaS-enabled, it will be " +
+                                    "accessible to all users across all tenants.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -1025,8 +1025,8 @@ export const console: ConsoleNS = {
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                hint: "A URL for the image of the application for display purposes. If not provided " +
-                                    "a generated thumbnail will displayed. Recommended size is 200x200 pixels.",
+                                hint: "An image URL for the application. If this is not provided, we will display " +
+                                    "a generated thumbnail instead. Recommended size: 200x200 pixels.",
                                 label: "Logo",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
@@ -1086,17 +1086,17 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines to where the authorization code is sent, login " +
-                                    "is completed and to where the user is redirected to once the logout is completed." +
-                                    " The client should specify the redirect_url in the authorize or logout" +
-                                    " request and {{productName}} will validate it against this " +
-                                    "configured Redirect URLs.",
+                                hint: "The redirect URL determines where the authorization code is sent to upon " +
+                                    "user authentication, and where the user is redirected to upon user logout." +
+                                    "The client app should specify the redirect URL in the authorization or logout " +
+                                    "request and {{productName}} will validate it against the redirect URLs " +
+                                    "entered here.",
                                 label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
-                                        "However, if you are planning to try with a sample, " +
+                                        "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 }
                             },
@@ -1201,7 +1201,8 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
-                                            empty: "Please fill the audience"
+                                            empty: "Please fill the audience",
+                                            duplicate: "Audience contains duplicate values"
                                         }
                                     },
                                     encryption: {
@@ -6265,8 +6266,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Select the method to set the user password",
                                 options: {
-                                    askPassword: "Invite the user to set a password",
-                                    createPassword: "Set a temporary user password"
+                                    askPassword: "Invite the user to set their own password",
+                                    createPassword: "Set a temporary password for the user"
 
                                 }
                             }
@@ -6392,9 +6393,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "Change User Password",
+                        button: "Reset Password",
+                        header: "Reset User Password",
                         message: "NOTE: Please note that after changing the password the user will no longer be " +
-                            "able to log into any application using the current password."
+                            "able to log into any application using the current password.",
+                        passwordOptions: {
+                            forceReset: "Invite user to reset the password",
+                            setPassword: "Set a new password for the user"
+                        }
                     }
                 },
                 profile: {
@@ -7213,6 +7219,120 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            invite: {
+                inviteButton: "New Invite",
+                subSelection: {
+                    onBoard: "OnBoarded",
+                    invitees: "Invitees"
+                },
+                notifications: {
+                    sendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while sending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't send the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully sent the invite",
+                            message: "Sending invite successful"
+                        }
+                    },
+                    resendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while resending the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't resend the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully resent the invite",
+                            message: "Resending invite successful"
+                        }
+                    },
+                    deleteInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't delete the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully delete the invite",
+                            message: "Delete invite successful"
+                        }
+                    }
+                },
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently revoke the invite."
+                    },
+                    resendInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you send this invite, Earlier invite link will be expired. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is  will permanently revoke the earlier invite."
+                    },
+                },
+                placeholder: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    },
+                    emptyResultPlaceholder: {
+                        addButton: "New Invite",
+                        subTitle: {
+                            0: "There are currently no invites available.",
+                            1: "You can send a new invite easily by following the",
+                            2: "steps in the invite creation wizard."
+                        },
+                        title: "Send a New Invite"
+                    },
+                },
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                email: "Email",
+                                username: "Username"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Email etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Email"
+                },
+                form: {
+                    sendmail: {
+                        title: "Invite Admin/Developer",
+                        subTitle: "Send an email invite to add a new admin or developer to your organization"
+                    }
+                }
             }
         },
         notifications: {
@@ -7337,6 +7457,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
+            },
+            invite: {
+                subTitle: "Invite and manage admins and developers.",
+                title: "Admins & Developers"
             }
         },
         placeholders: {
