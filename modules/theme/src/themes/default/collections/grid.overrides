@@ -200,7 +200,7 @@
                 padding: @ZeroPadding;
 
                 .decoded-path {
-                    whiteSpace: pre;
+                    white-space: pre;
                 }
            }
 
