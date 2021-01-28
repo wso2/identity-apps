@@ -272,12 +272,14 @@ export class ApplicationTemplateManagementUtils {
 
                         groupedTemplates.forEach((editingTemplate, index) => {
                             if (editingTemplate.id === template.templateGroup) {
-                                groupedTemplates[ index ] = {
-                                    ...group,
-                                    subTemplates: [ ...editingTemplate.subTemplates, template ]
-                                };
+                                if (template.name !== "SAML") {
+                                    groupedTemplates[index] = {
+                                        ...group,
+                                        subTemplates: [...editingTemplate.subTemplates, template]
+                                    };
 
-                                return;
+                                    return;
+                                }
                             }
                         });
 
