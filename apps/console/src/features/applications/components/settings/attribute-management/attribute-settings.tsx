@@ -260,24 +260,25 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return id;
     };
 
-    const createMapping = (claim: Claim) => {
-
-        if (selectedDialect.localDialect) {
-            const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
-            const newClaimMapping: ExtendedClaimMappingInterface = {
-                addMapping: false,
-                applicationClaim: "",
-                localClaim: {
-                    displayName: claim.displayName,
-                    id: claim.id,
-                    uri: claim.claimURI
-                }
-            };
-            if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
-                claimMappingList.push(newClaimMapping);
+    const createMapping = (claims: Claim[]) => {
+            if (selectedDialect.localDialect) {
+                const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+                claims.map((claim) => {
+                    const newClaimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: false,
+                        applicationClaim: "",
+                        localClaim: {
+                            displayName: claim.displayName,
+                            id: claim.id,
+                            uri: claim.claimURI
+                        }
+                    };
+                    if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
+                        claimMappingList.push(newClaimMapping);
+                    }
+                    setClaimMapping(claimMappingList);
+                });
             }
-            setClaimMapping(claimMappingList);
-        }
 
     };
 
