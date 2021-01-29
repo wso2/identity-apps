@@ -164,28 +164,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const addUrl = useCallback((): string => {
 
-        let url = changeUrl;
+        const url: string = changeUrl;
 
         /**
-         * Normalizes the user input url. This operation is not
-         * strictly applied. If the url is invalid we will inform
-         * the user but not add the input to the form value.
+         * If the entered URL is a silly input, then we won't add
+         * the input to the state.
          */
-        if (URLUtils.isURLValid(changeUrl)) {
-            const normalized = URLUtils.urlComponents(changeUrl).href;
-            if (normalized) {
-                url = normalized;
-                // Also if its not a origin url check then try to strip
-                // out the unnecessary trailing forward slashes.
-                if (!onlyOrigin || !URLUtils.isAValidOriginUrl(changeUrl)) {
-                    url = url.replace(/\/+$/, "/");
-                }
-            }
-        } else {
-            /**
-             * If the entered URL is a silly input, then we won't add
-             * the input to the state.
-             */
+        if (!URLUtils.isURLValid(url, true)) {
             return;
         }
 
@@ -654,7 +639,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 )
             }
             { urlState && urlState.split(",").map((url) => {
-                if (url !== "" && URLUtils.isURLValid(url)) {
+                if (url !== "" && URLUtils.isURLValid(url, true)) {
                     return urlChipItemWidget(url);
                 }
             }) }
