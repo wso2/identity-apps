@@ -81,6 +81,52 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
         }
     }, [ copied ]);
 
+    /**
+     * Copies the value to the users clipboard. This function does
+     * support for IE11 as its using obsolete {@link document.execCommand}
+     * if the {@link Clipboard} is unavailable.
+     *
+     * Most browsers don't allow to copy from password fields. So, it's
+     * somewhat tricky to get the value and set it to the clipboard. In this
+     * function we will get the value of the input via it's props.
+     *
+     * @param event {MouseEvent<HTMLButtonElement>)}
+     */
+    const copyValueToClipboard = (event: MouseEvent<HTMLButtonElement>) => {
+
+        event.stopPropagation();
+
+        const onValueCopied = (): void => {
+            setCopied(true);
+            copyButtonRef.current.ref.current.blur();
+            if (window.getSelection) {
+                window.getSelection().removeAllRanges();
+            }
+        };
+
+        // Focus the input node. This will dismount the button's
+        // focus from the view.
+        inputRef.current?.focus();
+        inputRef.current?.select();
+
+        let _selection = window.getSelection().toString();
+
+        // Applying the solution https://stackoverflow.com/a/58859920
+        if (inputRef.current?.props.type === "password") {
+            _selection = inputRef.current?.props[ "value" ] ?? "";
+        }
+
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(_selection).then(onValueCopied);
+        } else {
+            if (document.execCommand) {
+                document.execCommand("copy");
+                onValueCopied();
+            }
+        }
+
+    };
+
     return (
         <Input
             ref={ inputRef }
@@ -99,18 +145,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                                     setCopied(false);
                                 } }
                                 ref={ copyButtonRef as React.RefObject<Button> }
-                                onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                    e.stopPropagation();
-
-                                    inputRef.current?.select();
-                                    setCopied(true);
-                                    document.execCommand("copy");
-                                    copyButtonRef.current.ref.current.blur();
-
-                                    if (window.getSelection) {
-                                        window.getSelection().removeAllRanges();
-                                    }
-                                } }
+                                onClick={ copyValueToClipboard }
                             />
                         )
                     }
