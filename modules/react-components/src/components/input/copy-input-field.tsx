@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
+import { CommonUtils } from "@wso2is/core/dist/src/utils";
 
 /**
  * Copy to clipboard input field props.
@@ -82,49 +83,18 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     }, [ copied ]);
 
     /**
-     * Copies the value to the users clipboard. This function does
-     * support for IE11 as its using obsolete {@link document.execCommand}
-     * if the {@link Clipboard} is unavailable.
-     *
-     * Most browsers don't allow to copy from password fields. So, it's
-     * somewhat tricky to get the value and set it to the clipboard. In this
-     * function we will get the value of the input via it's props.
+     * Copies the value to the users clipboard.
      *
      * @param event {MouseEvent<HTMLButtonElement>)}
      */
-    const copyValueToClipboard = (event: MouseEvent<HTMLButtonElement>) => {
-
+    const copyValueToClipboard = async (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
-
-        const onValueCopied = (): void => {
-            setCopied(true);
-            copyButtonRef.current.ref.current.blur();
-            if (window.getSelection) {
-                window.getSelection().removeAllRanges();
-            }
-        };
-
-        // Focus the input node. This will dismount the button's
-        // focus from the view.
-        inputRef.current?.focus();
-        inputRef.current?.select();
-
-        let _selection = window.getSelection().toString();
-
-        // Applying the solution https://stackoverflow.com/a/58859920
-        if (inputRef.current?.props.type === "password") {
-            _selection = inputRef.current?.props[ "value" ] ?? "";
-        }
-
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(_selection).then(onValueCopied);
-        } else {
-            if (document.execCommand) {
-                document.execCommand("copy");
-                onValueCopied();
-            }
-        }
-
+        /**
+         * Since the reference input component is a {@link Input} we can
+         * directly get the current value from props itself.
+         */
+        const _selection = inputRef.current?.props[ "value" ] ?? "";
+        await CommonUtils.copyTextToClipboard(_selection);
     };
 
     return (
