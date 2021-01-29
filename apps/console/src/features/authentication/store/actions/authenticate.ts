@@ -258,7 +258,7 @@ export const initializeAuthentication = () => (dispatch) => {
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (sessionStorage.getItem(LOGOUT_URL)) {
+        if (!window["AppUtils"].getConfig().accountApp.commonPostLogoutUrl && sessionStorage.getItem(LOGOUT_URL)) {
             let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
             logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);

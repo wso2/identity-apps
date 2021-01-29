@@ -162,11 +162,17 @@ export const AppUtils = (function() {
                 skipTenant = true;
             }
 
+            let commonPostLogoutUrl = false;
+            if (_config.accountApp.useCommonPostLogoutUrl) {
+                commonPostLogoutUrl = true;
+            }
+
             return {
                 accountApp: {
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
-                        _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path
+                        _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,
+                    commonPostLogoutUrl : commonPostLogoutUrl
                 },
                 adminApp: {
                     basePath: this.constructAppPaths(_config.adminApp.basePath),
