@@ -967,7 +967,7 @@ export const console: ConsoleNS = {
                                         description: "The URL used to obtain a JWKS public key.",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     pemValue: {
@@ -1011,7 +1011,7 @@ export const console: ConsoleNS = {
                                 placeholder: "https://myapp.io/home",
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             description: {
@@ -1371,7 +1371,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the meta file url",
                                 validations: {
                                     empty: "Please provide the meta file url",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             mode: {
@@ -1575,7 +1575,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout request URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     responseURL: {
@@ -1583,7 +1583,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout response URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     }
                                 },
@@ -1630,7 +1630,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter Reply URL",
                                 validations: {
                                     empty: "This is a required field.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             }
                         }
@@ -1643,7 +1643,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter audience",
                                 validations: {
                                     empty: "Enter the audience.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             certificateAlias: {
@@ -2344,7 +2344,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -2425,7 +2425,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
@@ -3170,14 +3170,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, there is no going back." +
-                            " Please be certain."
+                        subheader: "Once you delete an identity provider, it cannot be recovered and users " +
+                            "can no longer log in through this provider."
                     },
                     disableIDP: {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -3258,7 +3258,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
