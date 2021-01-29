@@ -17,6 +17,7 @@
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { Text } from "@wso2is/react-components";
 import { addAlert } from "@wso2is/core/store";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -128,6 +129,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         setMappedAttribute(claimURI);
         if (mapping) {
             addToMapping(claimURI, claimMappingOn);
+            updateMapping(claimURI,defaultMappedAttribute);
         }
     }, [claimMappingOn]);
 
@@ -136,7 +138,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             <Table.Cell>
                 <div>{ !localDialect ? localClaimDisplayName : displayName }</div>
                 {
-                    <div className={ "transfer-list-sub-content" }>{ mappedAttribute }</div>
+                    <Popup
+                        content={ claimURI }
+                        inverted
+                        trigger={ <Text className="link pointing primary" truncate width="100%" >{ claimURI }</Text>
+                        }
+                        position="bottom left">
+                    </Popup>
                 }
             </Table.Cell>
             {
