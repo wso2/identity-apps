@@ -861,7 +861,7 @@ export const console: ConsoleNS = {
                                     role: {
                                         hint: "This option will append the user store domain that the user resides to" +
                                             " role",
-                                        label: "Include userDomain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "Select the role attribute"
                                         }
@@ -888,7 +888,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeTenantDomain: {
                                         hint: "This option will append the tenant domain to the local subject " +
                                             " identifier",
-                                        label: "Include Tenant Domain",
+                                        label: "Include tenant domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -896,7 +896,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeUserDomain: {
                                         hint: "This option will append the user store domain that the user resides " +
                                             " in the local subject identifier",
-                                        label: "Include User Domain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -967,7 +967,7 @@ export const console: ConsoleNS = {
                                         description: "The URL used to obtain a JWKS public key.",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     pemValue: {
@@ -1011,7 +1011,7 @@ export const console: ConsoleNS = {
                                 placeholder: "https://myapp.io/home",
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             description: {
@@ -1077,24 +1077,24 @@ export const console: ConsoleNS = {
                     inboundOIDC: {
                         fields: {
                             allowedOrigins: {
-                                hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
+                                hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
                                     "origins to {{productName}} APIs",
-                                label: "Allowed Origins",
+                                label: "Allowed origins",
                                 placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines where the authorization code is sent to upon " +
+                                hint: "The redirect URI determines where the authorization code is sent to upon " +
                                     "user authentication, and where the user is redirected to upon user logout." +
-                                    "The client app should specify the redirect URL in the authorization or logout " +
-                                    "request and {{productName}} will validate it against the redirect URLs " +
+                                    "The client app should specify the redirect URI in the authorization or logout " +
+                                    "request and {{productName}} will validate it against the redirect URIs " +
                                     "entered here.",
                                 label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
@@ -1371,7 +1371,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the meta file url",
                                 validations: {
                                     empty: "Please provide the meta file url",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             mode: {
@@ -1575,7 +1575,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout request URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     responseURL: {
@@ -1583,7 +1583,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout response URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     }
                                 },
@@ -1630,7 +1630,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter Reply URL",
                                 validations: {
                                     empty: "This is a required field.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             }
                         }
@@ -1643,7 +1643,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter audience",
                                 validations: {
                                     empty: "Enter the audience.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             certificateAlias: {
@@ -2344,7 +2344,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -2425,7 +2425,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
@@ -3170,14 +3170,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, there is no going back." +
-                            " Please be certain."
+                        subheader: "Once you delete an identity provider, it cannot be recovered and users " +
+                            "can no longer log in through this provider."
                     },
                     disableIDP: {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -3258,7 +3258,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
