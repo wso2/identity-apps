@@ -213,7 +213,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
     };
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment padded="very">
             <Forms
                 onSubmit={ onSubmitHandler }
             >

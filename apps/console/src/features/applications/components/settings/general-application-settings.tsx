@@ -253,7 +253,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         !isLoading
             ? (
                 <>
-                    <EmphasizedSegment>
+                    <EmphasizedSegment padded="very">
                         <GeneralDetailsForm
                             name={ name }
                             appId={ appId }

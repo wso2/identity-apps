@@ -759,7 +759,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             }
             {
                 !_.isEmpty(profileInfo) && (
-                    <EmphasizedSegment>
+                    <EmphasizedSegment padded="very">
                         <Forms
                             data-testid={ `${ testId }-form` }
                             onSubmit={ (values) => handleSubmit(values) }

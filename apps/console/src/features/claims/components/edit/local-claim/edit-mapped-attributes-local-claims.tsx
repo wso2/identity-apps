@@ -85,7 +85,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     }, []);
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment padded="very">
             <Grid data-testid={ testId }>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
