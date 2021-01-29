@@ -3081,6 +3081,7 @@ export interface ConsoleNS {
                             addUserGroups: Notification;
                             fetchUserGroups: Notification;
                             removeUserGroups: Notification;
+                            updateUserGroups: Notification;
                         };
                     };
                     roles: {
@@ -3114,6 +3115,7 @@ export interface ConsoleNS {
                             addUserRoles: Notification;
                             fetchUserRoles: Notification;
                             removeUserRoles: Notification;
+                            updateUserRoles: Notification;
                         };
                         viewPermissionModal: {
                             backButton: string;

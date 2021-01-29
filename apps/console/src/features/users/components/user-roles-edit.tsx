@@ -352,12 +352,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
                         "success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
                         "success.message"
                     )
                 });
@@ -374,7 +374,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
+                            "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
                             "error.message"
                         )
                     });
@@ -384,12 +384,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.updateUserRoles." +
                         "genericError.message"
                     )
                 });

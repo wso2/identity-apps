@@ -5860,6 +5860,21 @@ export const console: ConsoleNS = {
                                     description: "Suppression des groupes assignés pour l'utilisateur réussi",
                                     message: "Mise à jour des groupes de l'utilisateur réussie"
                                 }
+                            },
+                            updateUserGroups: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
+                                },
+                                genericError: {
+                                    description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
+                                    "l'utilisateur",
+                                    message: "Quelque chose s'est mal passé"
+                                },
+                                success: {
+                                    description: "La mise à jour des rôles attribués à l'utilisateur a réussi",
+                                    message: "Mise à jour des groupes de l'utilisateur réussie"
+                                }
                             }
                         }
                     },
@@ -5934,6 +5949,21 @@ export const console: ConsoleNS = {
                                 },
                                 success: {
                                     description: "Suppression des rôles attribués à l'utilisateur réussie",
+                                    message: "Mise à jour des rôles de l'utilisateur réussie"
+                                }
+                            },
+                            updateUserRoles: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
+                                },
+                                genericError: {
+                                    description: "Une erreur s'est produite lors de la mise à jour des rôles " +
+                                        "de l'utilisateur",
+                                    message: "Quelque chose s'est mal passé"
+                                },
+                                success: {
+                                    description: "La mise à jour des rôles attribués à l'utilisateur a réussi",
                                     message: "Mise à jour des rôles de l'utilisateur réussie"
                                 }
                             }
