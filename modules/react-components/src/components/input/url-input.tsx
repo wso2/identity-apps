@@ -485,7 +485,16 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @param url {string}
      */
     const urlTextWidget = (url: string): ReactElement => {
-        const { protocol, host, pathWithoutProtocol } = URLUtils.urlComponents(url);
+
+        const { protocol, host } = URLUtils.urlComponents(url);
+        let { pathWithoutProtocol } = URLUtils.urlComponents(url);
+
+        // `pathWithoutProtocol` is taken from the `href` attribute returned when parsed using URL constructor.
+        // It always appends a `/` if the URL doesn't have it. Need to get rid of this additional `/`.
+        if (url.slice(-1) !== "/") {
+            pathWithoutProtocol = pathWithoutProtocol.replace(/\/$/, "");
+        }
+
         return (
             <span>
                 { (!URLUtils.isHTTPS(url)) ? (
