@@ -17,6 +17,7 @@
  *
  */
 
+import { sanitizeUrl } from "@braintree/sanitize-url";
 import { PatternConstants } from "../constants";
 import { URLComponentsInterface } from "../models";
 
@@ -116,9 +117,21 @@ export class URLUtils {
         } catch (error) {
             return null;
         }
-    };
+    }
 
-    public static isURLValid(url: string): boolean {
+    public static isURLValid(url: string, checkForSanity?: boolean): boolean {
+
+        // Check if the URL is valid and doesn't contain probable XSS attacks.
+        if (checkForSanity) {
+            const sanitizedURL: string = sanitizeUrl(url);
+
+            // @braintree/sanitize-url returns `about:blank` for invalid URLs.
+            // @see {@link https://github.com/braintree/sanitize-url/blob/master/README.md}
+            if (sanitizedURL === "about:blank") {
+                return false;
+            }
+        }
+
         try {
             const _ = new URL(url.trim());
             return true;

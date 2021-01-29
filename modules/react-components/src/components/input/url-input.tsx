@@ -164,28 +164,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const addUrl = useCallback((): string => {
 
-        let url = changeUrl;
+        const url: string = changeUrl;
 
         /**
-         * Normalizes the user input url. This operation is not
-         * strictly applied. If the url is invalid we will inform
-         * the user but not add the input to the form value.
+         * If the entered URL is a silly input, then we won't add
+         * the input to the state.
          */
-        if (URLUtils.isURLValid(changeUrl)) {
-            const normalized = URLUtils.urlComponents(changeUrl).href;
-            if (normalized) {
-                url = normalized;
-                // Also if its not a origin url check then try to strip
-                // out the unnecessary trailing forward slashes.
-                if (!onlyOrigin || !URLUtils.isAValidOriginUrl(changeUrl)) {
-                    url = url.replace(/\/+$/, "/");
-                }
-            }
-        } else {
-            /**
-             * If the entered URL is a silly input, then we won't add
-             * the input to the state.
-             */
+        if (!URLUtils.isURLValid(url, true)) {
             return;
         }
 
@@ -500,7 +485,16 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @param url {string}
      */
     const urlTextWidget = (url: string): ReactElement => {
-        const { protocol, host, pathWithoutProtocol } = URLUtils.urlComponents(url);
+
+        const { protocol, host } = URLUtils.urlComponents(url);
+        let { pathWithoutProtocol } = URLUtils.urlComponents(url);
+
+        // `pathWithoutProtocol` is taken from the `href` attribute returned when parsed using URL constructor.
+        // It always appends a `/` if the URL doesn't have it. Need to get rid of this additional `/`.
+        if (url.slice(-1) !== "/") {
+            pathWithoutProtocol = pathWithoutProtocol.replace(/\/$/, "");
+        }
+
         return (
             <span>
                 { (!URLUtils.isHTTPS(url)) ? (
@@ -654,7 +648,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 )
             }
             { urlState && urlState.split(",").map((url) => {
-                if (url !== "" && URLUtils.isURLValid(url)) {
+                if (url !== "" && URLUtils.isURLValid(url, true)) {
                     return urlChipItemWidget(url);
                 }
             }) }
