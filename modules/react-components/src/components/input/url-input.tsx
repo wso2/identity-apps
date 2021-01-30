@@ -359,7 +359,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const resolveCORSStatusLabel = (url: string) => {
         const { origin, href } = URLUtils.urlComponents(url);
-        const positive = allowedOrigins?.includes(url);
+        const positive = allowedOrigins?.includes(origin);
         /**
          * TODO : React Components should not depend on the product
          * locale bundles.
@@ -472,10 +472,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         return customLabel;
     };
 
-    const shouldShowAllowOriginAction = (url: string): boolean => {
-        return labelEnabled &&
-            (isAllowEnabled &&
-            !(allowedOrigins?.includes(url)));
+    const shouldShowAllowOriginAction = (origin: string): boolean => {
+        return labelEnabled && (isAllowEnabled && !(allowedOrigins?.includes(origin)));
     };
 
     /**
@@ -550,13 +548,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
                         {/*Below is the static label text that get rendered*/ }
                         {/*when the url is not allowed in cors list.*/ }
-                        { shouldShowAllowOriginAction(url) &&
+                        { shouldShowAllowOriginAction(origin) &&
                         <span className={ "grey" }>&nbsp;<em>CORS not allowed for this domain</em></span>
                         }
 
                         {/*Below is the `Allow` button that gets rendered when*/ }
                         {/*this url is not allowed is cors list.*/ }
-                        { shouldShowAllowOriginAction(url) && (
+                        { shouldShowAllowOriginAction(origin) && (
                             <LinkButton
                                 className={ "m-1 p-1 with-no-border orange" }
                                 onClick={ (e) => {
