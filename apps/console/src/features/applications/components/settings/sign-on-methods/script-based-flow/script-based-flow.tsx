@@ -104,6 +104,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ showAuthTemplatesSidePanel, setAuthTemplatesSidePanelVisibility ] = useState<boolean>(true);
     const [ sourceCode, setSourceCode ] = useState<string | string[]>(undefined);
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState<boolean>(true);
+    const [ internalScript, setInternalScript ] = useState<string | string[]>(undefined);
+    const [ internalStepCount, setInternalStepCount ] = useState<number>(undefined);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -168,13 +170,34 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             return;
         }
 
-        if (StringUtils.isValidJSONString(script)) {
-            setSourceCode(JSON.parse(script));
+        // If a script is defined, checks whether if it is a default. If so, generates the basic default script
+        // based on the number of steps.
+        if (script && AdaptiveScriptUtils
+            .isDefaultScript(internalScript ?? script, internalStepCount ?? authenticationSteps)) {
+
+            setInternalStepCount(authenticationSteps);
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
             return;
         }
 
-        if (script) {
-            setSourceCode(beautify.js(stripSlashes(script)));
+        // If a script is defined, checks whether if it is not a default.
+        if (script && !AdaptiveScriptUtils
+            .isDefaultScript(internalScript ?? script, internalStepCount ?? authenticationSteps)) {
+
+            setInternalStepCount(authenticationSteps);
+
+            // Checks if the editor content is different to the externally provided script.
+            if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)) {
+                setSourceCode(internalScript ?? script);
+                return;
+            }
+
+            if (StringUtils.isValidJSONString(script)) {
+                setSourceCode(JSON.parse(script));
+            } else {
+                setSourceCode(beautify.js(stripSlashes(script)));
+            }
+
             return;
         }
 
@@ -283,6 +306,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
+                                                setInternalScript(value);
                                                 onScriptChange(value);
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }

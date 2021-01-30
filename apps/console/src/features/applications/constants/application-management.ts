@@ -33,9 +33,12 @@ export class ApplicationManagementConstants {
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
+    public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT_HEADER: string = "var onLoginRequest = function(context) {";
+    public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT_FOOTER: string = "};";
+
     public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
-        "var onLoginRequest = function(context) {",
-        "};",
+        ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_HEADER,
+        ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_FOOTER,
         ""
     ];
 
