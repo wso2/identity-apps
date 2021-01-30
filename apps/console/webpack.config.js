@@ -59,7 +59,6 @@ module.exports = (env) => {
 
     // Build configurations.
     const distFolder = path.resolve(__dirname, "build", basename);
-    const titleText = deploymentConfig.ui.appTitle;
 
     // Paths to configs & other required files.
     const PATHS = {
@@ -328,16 +327,14 @@ module.exports = (env) => {
                         : "",
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
-                        : "",
-                    title: titleText
+                        : ""
                 })
                 : new HtmlWebpackPlugin({
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
-                    template: path.join(__dirname, "src", "index.html"),
-                    title: titleText
+                    template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
                 excludeChunks: [ "main", "init" ],

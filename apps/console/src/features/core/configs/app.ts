@@ -150,8 +150,8 @@ export class Config {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appCopyright: window["AppUtils"].getConfig().ui.appCopyright
-                .replace("{{copyright}}", "\u00A9")
-                .replace("{{year}}", new Date().getFullYear()),
+                .replace("${copyright}", "\u00A9")
+                .replace("${year}", new Date().getFullYear()),
             appName: window["AppUtils"].getConfig().ui.appName,
             applicationTemplateLoadingStrategy: window["AppUtils"].getConfig().ui.applicationTemplateLoadingStrategy,
             identityProviderTemplateLoadingStrategy:

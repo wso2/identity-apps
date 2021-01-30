@@ -1201,7 +1201,8 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
-                                            empty: "Veuillez remplir le public"
+                                            empty: "Veuillez remplir le public",
+                                            duplicate: "L'audience contient des valeurs en double"
                                         }
                                     },
                                     encryption: {
@@ -5550,9 +5551,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "Changer le mot de passe de l'utilisateur",
+                        button: "réinitialiser le mot de passe",
+                        header: "Réinitialiser le mot de passe de l'utilisateur",
                         message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
-                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
+                            "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
+                        passwordOptions: {
+                            forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
+                            setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
+                        }
                     }
                 },
                 profile: {
@@ -5854,6 +5860,21 @@ export const console: ConsoleNS = {
                                     description: "Suppression des groupes assignés pour l'utilisateur réussi",
                                     message: "Mise à jour des groupes de l'utilisateur réussie"
                                 }
+                            },
+                            updateUserGroups: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
+                                },
+                                genericError: {
+                                    description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
+                                    "l'utilisateur",
+                                    message: "Quelque chose s'est mal passé"
+                                },
+                                success: {
+                                    description: "La mise à jour des rôles attribués à l'utilisateur a réussi",
+                                    message: "Mise à jour des groupes de l'utilisateur réussie"
+                                }
                             }
                         }
                     },
@@ -5928,6 +5949,21 @@ export const console: ConsoleNS = {
                                 },
                                 success: {
                                     description: "Suppression des rôles attribués à l'utilisateur réussie",
+                                    message: "Mise à jour des rôles de l'utilisateur réussie"
+                                }
+                            },
+                            updateUserRoles: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
+                                },
+                                genericError: {
+                                    description: "Une erreur s'est produite lors de la mise à jour des rôles " +
+                                        "de l'utilisateur",
+                                    message: "Quelque chose s'est mal passé"
+                                },
+                                success: {
+                                    description: "La mise à jour des rôles attribués à l'utilisateur a réussi",
                                     message: "Mise à jour des rôles de l'utilisateur réussie"
                                 }
                             }

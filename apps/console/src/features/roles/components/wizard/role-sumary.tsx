@@ -131,8 +131,8 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
             {
                 summary?.PermissionList &&
                 summary.PermissionList instanceof Array &&
-                summary.PermissionList.length > 0
-                    ? (
+                summary.PermissionList.length > 0 &&
+                     (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div
@@ -161,7 +161,6 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             </Grid.Column>
                         </Grid.Row>
                     )
-                    : <ContentLoader className="p-3" active />
             }
             {
                 summary?.UserList && summary?.UserList instanceof Array &&

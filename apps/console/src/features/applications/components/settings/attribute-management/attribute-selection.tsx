@@ -479,6 +479,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     singleLine
                                                     compact
                                                     data-testid={ `${ testId }-list` }
+                                                    fixed
                                                 >
                                                     <Table.Header>
                                                         { claimMappingOn
@@ -596,6 +597,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     singleLine
                                                     compact
                                                     data-testid={ `${ testId }-list` }
+                                                    fixed
                                                 >
                                                     <Table.Header>
                                                         <Table.Row>

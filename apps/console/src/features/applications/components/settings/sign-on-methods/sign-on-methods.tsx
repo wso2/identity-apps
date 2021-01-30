@@ -358,33 +358,29 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     { showAdvancedFlows ? t("common:showLess") : t("common:showMore") }
                 </LinkButton>
             </div>
-            {
-                showAdvancedFlows && (
-                    <>
-                        <ScriptBasedFlow
-                            authenticationSequence={ sequence }
-                            isLoading={ isLoading }
-                            onTemplateSelect={ handleLoadingDataFromTemplate }
-                            onScriptChange={ handleAdaptiveScriptChange }
-                            readOnly={
-                                readOnly
-                                || !hasRequiredScopes(featureConfig?.applications,
-                                    featureConfig?.applications?.scopes?.update,
-                                    allowedScopes)
-                            }
-                            data-testid={ `${ testId }-script-based-flow` }
-                            authenticationSteps={ steps }
-                            isDefaultScript={ isDefaultScript }
-                        />
-                        {
-                            (config?.ui?.isRequestPathAuthenticationEnabled === false)
-                                ? null
-                                : requestPathAuthenticators && showRequestPathAuthenticators
-                        }
-                        { renderUpdateButton() }
-                    </>
-                )
-            }
+            <div className={ !showAdvancedFlows ? "display-none" : "" }>
+                <ScriptBasedFlow
+                    authenticationSequence={ sequence }
+                    isLoading={ isLoading }
+                    onTemplateSelect={ handleLoadingDataFromTemplate }
+                    onScriptChange={ handleAdaptiveScriptChange }
+                    readOnly={
+                        readOnly
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update,
+                            allowedScopes)
+                    }
+                    data-testid={ `${ testId }-script-based-flow` }
+                    authenticationSteps={ steps }
+                    isDefaultScript={ isDefaultScript }
+                />
+                {
+                    (config?.ui?.isRequestPathAuthenticationEnabled === false)
+                        ? null
+                        : requestPathAuthenticators && showRequestPathAuthenticators
+                }
+                { renderUpdateButton() }
+            </div>
         </EmphasizedSegment>
     );
 };

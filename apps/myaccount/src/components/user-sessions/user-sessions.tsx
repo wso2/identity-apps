@@ -155,23 +155,23 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "myAccount:components.userSessions.notifications.revokeUserSession.error.description",
+                            "myAccount:components.userSessions.notifications.terminateUserSession.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "myAccount:components.userSessions.notifications.revokeUserSession.error.message"
+                            "myAccount:components.userSessions.notifications.terminateUserSession.error.message"
                         )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "myAccount:components.userSessions.notifications.revokeUserSession.genericError." +
+                            "myAccount:components.userSessions.notifications.terminateUserSession.genericError." +
                             "description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "myAccount:components.userSessions.notifications.revokeUserSession.genericError.message"
+                            "myAccount:components.userSessions.notifications.terminateUserSession.genericError.message"
                         )
                     });
                 }

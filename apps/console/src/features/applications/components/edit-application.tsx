@@ -198,6 +198,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 content: template.content.quickStart,
                 inboundProtocolConfig: inboundProtocolConfig,
                 inboundProtocols: inboundProtocolList,
+                onApplicationUpdate: () => {
+                    onUpdate(application?.id);
+                },
                 template: template
             },
             subComponent: "edit",

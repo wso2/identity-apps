@@ -84,7 +84,7 @@ export interface TextPropsInterface extends TestableComponentInterface {
     /**
      * Width of the container.
      */
-    width?: number;
+    width?: string | number;
 }
 
 /**
@@ -146,7 +146,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         if (width) {
             modified = {
                 ...modified,
-                width: width.toString()
+                width: width
             };
         }
         

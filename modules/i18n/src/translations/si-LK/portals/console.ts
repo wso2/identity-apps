@@ -1198,7 +1198,8 @@ export const console: ConsoleNS = {
                                         label: "ප්‍රේක්ෂකයෝ",
                                         placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
                                         validations: {
-                                            empty: "කරුණාකර සබය පුරවන්න"
+                                            empty: "කරුණාකර audience පුරවන්න",
+                                            duplicate: "Audience හි අනුපිටපත් අගයන් අඩංගු වේ"
                                         }
                                     },
                                     encryption: {
@@ -5547,9 +5548,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "පරිශීලක මුරපදය වෙනස් කරන්න",
-                        message: "සටහන" +
-                            "able to log into any application using the current password."
+                        button: "මුරපදය නැවත සකසන්න",
+                        header: "පරිශීලක මුරපදය යළි පිහිටුවන්න",
+                        message: "සටහන: මුරපදය වෙනස් කිරීමෙන් පසුව පරිශීලකයාට වත්මන් මුරපදය භාවිතා කර කිසිදු යෙදුමකට " +
+                            "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
+                        passwordOptions: {
+                            forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",
+                            setPassword: "පරිශීලකයා සඳහා නව මුරපදයක් සකසන්න"
+                        }
                     }
                 },
                 profile: {
@@ -5840,6 +5846,20 @@ export const console: ConsoleNS = {
                                     description: "පරිශීලකයා සඳහා පවරා ඇති කණ්ඩායම් ඉවත් කිරීම සාර්ථකයි",
                                     message: "යාවත්කාලීන පරිශීලක කණ්ඩායම් සාර්ථකයි"
                                 }
+                            },
+                            updateUserGroups: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "පරිශීලකයාගේ කණ්ඩායම් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය"
+                                },
+                                genericError: {
+                                    description: "පරිශීලක කණ්ඩායම් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය",
+                                    message: "යම් දෝෂයක් ඇති වී ඇත"
+                                },
+                                success: {
+                                    description: "පරිශීලකයා සඳහා පවරා ඇති කණ්ඩායම් යාවත්කාලීන කිරීම සාර්ථකයි",
+                                    message: "යාවත්කාලීන පරිශීලක කණ්ඩායම් සාර්ථකයි"
+                                }
                             }
                         }
                     },
@@ -5912,6 +5932,20 @@ export const console: ConsoleNS = {
                                 },
                                 success: {
                                     description: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් ඉවත් කිරීම සාර්ථකයි",
+                                    message: "යාවත්කාලීන පරිශීලක භූමිකාවන් සාර්ථකයි"
+                                }
+                            },
+                            updateUserRoles: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "පරිශීලකයාගේ භූමිකාවන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය"
+                                },
+                                genericError: {
+                                    description: "පරිශීලක භූමිකාවන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය",
+                                    message: "යම් දෝෂයක් ඇති වී ඇත"
+                                },
+                                success: {
+                                    description: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් යාවත්කාලීන කිරීම සාර්ථකයි",
                                     message: "යාවත්කාලීන පරිශීලක භූමිකාවන් සාර්ථකයි"
                                 }
                             }
