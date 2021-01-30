@@ -324,12 +324,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             groupIds.push(group.id);
         });
 
-        const bulkRemoveData: any = {
-            Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
-        };
-
-        const bulkAddData: any = {
+        const bulkData: any = {
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
@@ -385,56 +380,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             });
 
             removeOperations.map((operation) => {
-                bulkRemoveData.Operations.push(operation);
+                bulkData.Operations.push(operation);
             });
+        } 
 
-            updateResources(bulkRemoveData)
-                .then(() => {
-                    onAlertFired({
-                        description: t(
-                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
-                            "success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
-                            "success.message"
-                        )
-                    });
-                    handleCloseAddNewGroupModal();
-                    handleUserUpdate(user.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
-                                "error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
-                    onAlertFired({
-                        description: t(
-                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
-                            "genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.user.updateUser.groups.notifications.removeUserGroups." +
-                            "genericError.message"
-                        )
-                    });
-                });
-        } else {
+        if (groupIds && groupIds?.length > 0) {
             groupIds.map((id) => {
                 addOperation = {
                     ...addOperation,
@@ -444,57 +394,57 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             });
 
             addOperations.map((operation) => {
-                bulkAddData.Operations.push(operation);
+                bulkData.Operations.push(operation);
             });
+        }
 
-            updateResources(bulkAddData)
-                .then(() => {
+        updateResources(bulkData)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "success.message"
+                    )
+                });
+                handleCloseAddNewGroupModal();
+                handleUserUpdate(user.id);
+            })
+            .catch((error) => {
+                if (error?.response?.status === 404) {
+                    return;
+                }
+
+                if (error?.response && error?.response?.data && error?.response?.data?.description) {
                     onAlertFired({
-                        description: t(
-                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
-                            "success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
-                            "success.message"
-                        )
-                    });
-                    handleCloseAddNewGroupModal();
-                    handleUserUpdate(user.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
-                                "error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
-                    onAlertFired({
-                        description: t(
-                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
-                            "genericError.description"
-                        ),
+                        description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.updateUser.groups.notifications.addUserGroups." +
-                            "genericError.message"
+                            "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                            "error.message"
                         )
                     });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "genericError.message"
+                    )
                 });
-        }
-    };
+            });
+        };
 
     const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
         const userGroup = displayName?.split("/");

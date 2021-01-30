@@ -6690,6 +6690,20 @@ export const console: ConsoleNS = {
                                     description: "Removing assigned groups for the user successful",
                                     message: "Update user groups successful"
                                 }
+                            },
+                            updateUserGroups: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Error occurred while updating user groups"
+                                },
+                                genericError: {
+                                    description: "An error occurred while updating user groups",
+                                    message: "Something went wrong"
+                                },
+                                success: {
+                                    description: "Updating assigned groups for the user successful",
+                                    message: "Update user groups successful"
+                                }
                             }
                         }
                     },
@@ -6761,6 +6775,20 @@ export const console: ConsoleNS = {
                                 },
                                 success: {
                                     description: "Removing assigned roles for the user successful",
+                                    message: "Update user roles successful"
+                                }
+                            },
+                            updateUserRoles: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Error occurred while updating the roles of the user"
+                                },
+                                genericError: {
+                                    description: "An error occurred while updating user roles",
+                                    message: "Something went wrong"
+                                },
+                                success: {
+                                    description: "Updating assigned roles for the user successful",
                                     message: "Update user roles successful"
                                 }
                             }
