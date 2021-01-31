@@ -92,6 +92,13 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
 
     /**
+     * Value for sign on authentication param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
+
+    /**
      * Key for the URL search param for application readonly state.
      * @constant
      * @type {string}
@@ -111,6 +118,13 @@ export class ApplicationManagementConstants {
      * @type {string}
      */
     public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
+
+    /**
+     * Value for sign on authentication param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE = "true";
 
     /**
      * Default application template loading strategy.

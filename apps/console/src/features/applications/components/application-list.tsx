@@ -105,6 +105,10 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * Show sign on methods condition
+     */
+    isSetStrongerAuth?: boolean;
 }
 
 /**
@@ -131,6 +135,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         searchQuery,
         selection,
         showListItemActions,
+        isSetStrongerAuth,
         [ "data-testid" ]: testId
     } = props;
 
@@ -173,12 +178,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param {ApplicationAccessTypes} access - Access level of the application.
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
-        history.push({
-            pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
-            search: access === ApplicationAccessTypes.READ
-                ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                : ""
-        });
+        if (isSetStrongerAuth) {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+            });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                search: access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : ""
+            });
+        }
     };
 
     /**
@@ -413,7 +426,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                actions={ resolveTableActions() }
+                actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
