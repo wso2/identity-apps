@@ -799,7 +799,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "Sélectionner une étape"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Utiliser I'identifiant du sujet de",
+                                                        label: "Utiliser l'identifiant du sujet de",
                                                         placeholder: "Sélectionner une étape"
                                                     }
                                                 }

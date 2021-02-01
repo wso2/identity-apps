@@ -589,7 +589,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         </Grid.Row>
                         { !readOnly && (
                             <Grid.Row verticalAlign="middle">
-                                <Grid.Column computer={ 5 } mobile={ 16 }>
+                                <Grid.Column computer={ 6 } mobile={ 16 }>
                                     <Form>
                                         <Form.Field inline>
                                             <Form.Select
@@ -628,7 +628,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         </Form.Field>
                                     </Form>
                                 </Grid.Column>
-                                <Grid.Column computer={ 5 } mobile={ 16 }>
+                                <Grid.Column computer={ 6 } mobile={ 16 }>
                                     <Form>
                                         <Form.Field inline>
                                             <Form.Select
