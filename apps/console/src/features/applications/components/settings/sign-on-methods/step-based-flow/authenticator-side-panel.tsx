@@ -74,7 +74,7 @@ interface AuthenticatorInterface {
     /**
      * Heading for the authenticator section
      */
-    heading: string;
+    heading?: string;
 }
 
 /**
@@ -191,20 +191,24 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                   index: number): ReactElement => (
 
             <Fragment key={ index }>
-                <Accordion.Title
-                    active={
-                        authenticatorsAccordionActiveIndexes.includes(
-                            index)
-                    }
-                    index={ index }
-                    onClick={ handleAuthenticatorsAccordionOnClick }
-                >
-                    <div className="inline floated right">
-                        <Icon name="angle right"
-                              className="caret-icon"/>
-                    </div>
-                    { authenticator.heading }
-                </Accordion.Title>
+                {
+                    authenticator.heading && (
+                        <Accordion.Title
+                            active={
+                                authenticatorsAccordionActiveIndexes.includes(
+                                    index)
+                            }
+                            index={ index }
+                            onClick={ handleAuthenticatorsAccordionOnClick }
+                        >
+                            <div className="inline floated right">
+                                <Icon name="angle right"
+                                      className="caret-icon"/>
+                            </div>
+                            { authenticator.heading }
+                        </Accordion.Title>
+                    )
+                }
                 <Accordion.Content
                     active={
                         authenticatorsAccordionActiveIndexes.includes(

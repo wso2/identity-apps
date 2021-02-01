@@ -739,8 +739,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         authenticatorGroup={ [
                             {
                                 authenticators: moderateAuthenticators(localAuthenticators),
-                                droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
-                                heading: "Local"
+                                droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID
                             },
                             {
                                 authenticators: moderateAuthenticators(secondFactorAuthenticators),

@@ -169,6 +169,7 @@ export class Config {
             isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui
                 .isSignatureValidationCertificateAliasEnabled,
             listAllAttributeDialects: window["AppUtils"].getConfig().ui.listAllAttributeDialects,
+            privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,

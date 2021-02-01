@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, ThemeContext } from "@wso2is/react-components";
+import { Footer, FooterLinkInterface, ThemeContext } from "@wso2is/react-components";
 import React, { ReactElement, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -61,6 +61,25 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
             });
     };
 
+    /**
+     * Generates the links to be displayed on the footer.
+     *
+     * @return {FooterLinkInterface[]}
+     */
+    const generateFooterLinks = (): FooterLinkInterface[] => {
+
+        const links: FooterLinkInterface[] = [];
+
+        if (config.ui?.privacyPolicyConfigs?.visibleOnFooter) {
+            links.push({
+                name: t("common:privacy"),
+                to: AppConstants.getPaths().get("PRIVACY")
+            });
+        }
+
+        return links;
+    };
+
     return (
         <Footer
             data-testid={ testId }
@@ -76,12 +95,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
                     : null
             }
             fixed="bottom"
-            links={ [
-                {
-                    name: t("common:privacy"),
-                    to: AppConstants.getPaths().get("PRIVACY")
-                }
-            ] }
+            links={ generateFooterLinks() }
         />
     );
 };
