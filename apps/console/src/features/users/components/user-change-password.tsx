@@ -277,7 +277,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     if (!isPasswordPatternValid) {
                                         validation.isValid = false;
                                         validation.errorMessages.push( t("console:manage.features.user.forms." +
-                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
                                     }
                                 } }
                             />
@@ -502,7 +502,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                    if (!isPasswordPatternValid) {
                                        validation.isValid = false;
                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
-                                           "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                           "addUserForm.inputs.newPassword.validations.regExViolation") );
                                    }
                                } }
                            />
