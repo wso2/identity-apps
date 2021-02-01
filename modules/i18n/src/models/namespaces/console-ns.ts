@@ -3235,6 +3235,7 @@ export interface ConsoleNS {
                     deleteInvite?: Notification;
                     resendInvite?: Notification;
                     sendInvite?: Notification;
+                    updateInvite: Notification;
                 };
                 confirmationModal?: {
                     deleteInvite?: Confirmation;
@@ -3286,6 +3287,19 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                     };
+                };
+                rolesUpdateModal?: {
+                    header: string;
+                    subHeader: string;
+                    searchPlaceholder: string;
+                };
+            };
+            onboarded?: {
+                notifications?: {
+                    removeUser?: Notification;
+                };
+                confirmationModal?: {
+                    removeUser?: Confirmation;
                 };
             };
         };
