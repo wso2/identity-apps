@@ -43,20 +43,17 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
     return (
         <div data-testid={ testId }>
             <Heading as="h5">Name to identify your application</Heading>
-            <p>Provide a unique name for the application so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
+            <p>A unique name for the application.</p>
+            <p>E.g., My App</p>
 
             <Divider />
 
             <React.Fragment>
                 <Heading as="h5">Authorized redirect URIs</Heading>
                 <p>
-                    After user login/logout, the user is redirected to a web page within your application
-                    that receives the post-authentication authorization code.
-                </p>
-                <p>
-                    Specify the list of possible redirect URIs here, so that WSO2 Identity Server
-                    will check if it’s a valid URI before sending the authorization code.
+                    The redirect URL determines where the authorization code is sent to
+                    once the user is authenticated, and where the user is redirected to
+                    once the logout is completed.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
