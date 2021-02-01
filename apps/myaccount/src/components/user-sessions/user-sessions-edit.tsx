@@ -43,7 +43,7 @@ interface UserSessionsEditProps extends TestableComponentInterface {
      * @description sub has tenant attached (zzz@yyy.com)
      * @type {boolean}
      */
-    showUsernameInApplicationUsingSub: boolean;
+    showUsernameInApplicationUsingSub?: boolean;
 }
 
 /**
