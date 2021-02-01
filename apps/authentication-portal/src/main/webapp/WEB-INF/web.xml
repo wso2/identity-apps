@@ -312,6 +312,21 @@
         <jsp-file>/totpError.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>email_otp_enroll.do</servlet-name>
+        <jsp-file>/emailAddress.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>email_otp.do</servlet-name>
+        <jsp-file>/emailotp.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>email_otp_error.do</servlet-name>
+        <jsp-file>/emailotpError.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -325,6 +340,21 @@
     <servlet-mapping>
         <servlet-name>totp_error.do</servlet-name>
         <url-pattern>/totp_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>email_otp_enroll.do</servlet-name>
+        <url-pattern>/email_otp_enroll.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>email_otp.do</servlet-name>
+        <url-pattern>/email_otp.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>email_otp_error.do</servlet-name>
+        <url-pattern>/email_otp_error.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
