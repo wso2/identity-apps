@@ -76,6 +76,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     }, []);
 
     useEffect(() => {
+        console.log(userList);
         if (basicDetails && userList) {
             onSubmit({ basicDetails, userList });
         }
