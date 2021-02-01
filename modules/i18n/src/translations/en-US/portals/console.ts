@@ -798,7 +798,7 @@ export const console: ConsoleNS = {
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
-                                                        label: "Use Attributes from",
+                                                        label: "Use attributes from",
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
