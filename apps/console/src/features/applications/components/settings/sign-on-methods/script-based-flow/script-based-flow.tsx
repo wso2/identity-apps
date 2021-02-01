@@ -106,6 +106,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState<boolean>(true);
     const [ internalScript, setInternalScript ] = useState<string | string[]>(undefined);
     const [ internalStepCount, setInternalStepCount ] = useState<number>(undefined);
+    const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -162,27 +163,49 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         // If so, return the default script.
         if (!script && authenticationSequence?.steps?.length === 0) {
             setSourceCode(AdaptiveScriptUtils.getDefaultScript());
+            setIsScriptFromTemplate(false);
             return;
         }
 
         if (!script && authenticationSequence?.steps?.length > 0) {
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            setIsScriptFromTemplate(false);
+            return;
+        }
+
+        // Scripts from templates comes in the form of `"["script"]"`. `isValidJSONString` checks for that.
+        if (StringUtils.isValidJSONString(script)) {
+
+            // Checks if the script in the editor is from a template and if the editor content and the sent script
+            // is different. If so, some edits have been made and we shouldn't touch the editor content.
+            if (isScriptFromTemplate
+                && (AdaptiveScriptUtils.minifyScript(internalScript)
+                    !== AdaptiveScriptUtils.minifyScript(JSON.parse(script)))) {
+
+                return;
+            }
+
+            setIsScriptFromTemplate(true);
+            setSourceCode(JSON.parse(script));
             return;
         }
 
         // If a script is defined, checks whether if it is a default. If so, generates the basic default script
         // based on the number of steps.
-        if (script && AdaptiveScriptUtils
-            .isDefaultScript(internalScript ?? script, internalStepCount ?? authenticationSteps)) {
+        if (script
+            && AdaptiveScriptUtils.isDefaultScript(internalScript ?? script,
+                internalStepCount ?? authenticationSteps)) {
 
             setInternalStepCount(authenticationSteps);
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            setIsScriptFromTemplate(false);
             return;
         }
 
         // If a script is defined, checks whether if it is not a default.
-        if (script && !AdaptiveScriptUtils
-            .isDefaultScript(internalScript ?? script, internalStepCount ?? authenticationSteps)) {
+        if (script
+            && !AdaptiveScriptUtils.isDefaultScript(internalScript ?? script,
+                internalStepCount ?? authenticationSteps)) {
 
             setInternalStepCount(authenticationSteps);
 
@@ -192,21 +215,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 return;
             }
 
-            if (StringUtils.isValidJSONString(script)) {
-                setSourceCode(JSON.parse(script));
-            } else {
-                setSourceCode(beautify.js(stripSlashes(script)));
-            }
-
+            setSourceCode(beautify.js(stripSlashes(script)));
+            setIsScriptFromTemplate(false);
             return;
         }
 
         if (isDefaultScript) {
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            setIsScriptFromTemplate(false);
             return;
         }
 
         setSourceCode(script);
+        setIsScriptFromTemplate(false);
     };
 
     /**
