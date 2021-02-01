@@ -464,7 +464,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         return (
-            <EmphasizedSegment className="protocol-settings-section" padded={ "very" }>
+            <EmphasizedSegment className="protocol-settings-section" padded="very">
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
