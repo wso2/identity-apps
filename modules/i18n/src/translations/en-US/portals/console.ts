@@ -7249,7 +7249,7 @@ export const console: ConsoleNS = {
                 }
             },
             invite: {
-                inviteButton: "New Invite",
+                inviteButton: "New Invitation",
                 subSelection: {
                     onBoard: "OnBoarded",
                     invitees: "Invitees"
@@ -7258,43 +7258,57 @@ export const console: ConsoleNS = {
                     sendInvite: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while sending the invite"
+                            message: "Error while sending the invitation"
                         },
                         genericError: {
-                            description: "Couldn't send the invite",
+                            description: "Couldn't send the invitation",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully sent the invite",
-                            message: "Sending invite successful"
+                            description: "Successfully sent the invitation",
+                            message: "Sending the invitation successful"
                         }
                     },
                     resendInvite: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while resending the invite"
+                            message: "Error while resending the invitation"
                         },
                         genericError: {
-                            description: "Couldn't resend the invite",
+                            description: "Couldn't resend the invitation",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully resent the invite",
-                            message: "Resending invite successful"
+                            description: "Successfully resent the invitation",
+                            message: "Resending the invitation successful"
                         }
                     },
                     deleteInvite: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while deleting the invite"
+                            message: "Error while deleting the invitation"
                         },
                         genericError: {
-                            description: "Couldn't delete the invite",
+                            description: "Couldn't delete the invitation",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully delete the invite",
-                            message: "Delete invite successful"
+                            description: "Successfully deleted the invitation",
+                            message: "Invitation deletion successful"
+                        }
+                    },
+                    updateInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't update the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the invite",
+                            message: "Invitation update successful"
                         }
                     }
                 },
@@ -7312,7 +7326,7 @@ export const console: ConsoleNS = {
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is  will permanently revoke the earlier invite."
-                    },
+                    }
                 },
                 placeholder: {
                     emptySearchResultPlaceholder: {
@@ -7324,14 +7338,14 @@ export const console: ConsoleNS = {
                         title: "No results found"
                     },
                     emptyResultPlaceholder: {
-                        addButton: "New Invite",
+                        addButton: "New Invitation",
                         subTitle: {
-                            0: "There are currently no invites available.",
-                            1: "You can send a new invite easily by following the",
-                            2: "steps in the invite creation wizard."
+                            0: "There are currently no invitations available.",
+                            1: "You can create an organization and invite users",
+                            2: "to get onboarded to you organization."
                         },
                         title: "Send a New Invite"
-                    },
+                    }
                 },
                 advancedSearch: {
                     form: {
@@ -7359,6 +7373,38 @@ export const console: ConsoleNS = {
                     sendmail: {
                         title: "Invite Admin/Developer",
                         subTitle: "Send an email invite to add a new admin or developer to your organization"
+                    }
+                },
+                rolesUpdateModal: {
+                    header: "Update Invitee Roles",
+                    searchPlaceholder: "Search by role name",
+                    subHeader: "Add or remove roles from the user that you have invited."
+                }
+            },
+            onboarded: {
+                confirmationModal: {
+                    removeUser: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you remove this user, the user will not be able to access the console " +
+                            "within your organization. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will remove the user from your organization."
+                    }
+                },
+                notifications: {
+                    removeUser: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while removing the user"
+                        },
+                        genericError: {
+                            description: "Couldn't remove the user from the {{tenant}} organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully removed the user from the {{tenant}} organization",
+                            message: "User removed successfully"
+                        }
                     }
                 }
             }
