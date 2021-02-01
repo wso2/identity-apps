@@ -7,7 +7,7 @@
     "types": [
         "react",
         "angular",
-        "vue"
+        "javascript"
     ],
     "category": "DEFAULT",
     "displayOrder": 0,
