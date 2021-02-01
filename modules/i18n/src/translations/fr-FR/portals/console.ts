@@ -594,6 +594,13 @@ export const console: ConsoleNS = {
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement le protocole."
                     },
+                    handlerAuthenticatorAddition: {
+                        assertionHint: "Veuillez taper <1>{{ id }}</1> pour confirmer.",
+                        content: "L'authentificateur que vous essayez d'ajouter est un gestionnaire. Assurez-vous " +
+                            "d'ajouter des authentificateurs dans les autres étapes.",
+                        header: "Vous ajoutez un gestionnaire",
+                        message: "C'est un gestionnaire."
+                    },
                     regenerateSecret: {
                         assertionHint: "Veuillez taper <1>{{ id }}</1> pour confirmer.",
                         content: "Si vous régénérez le secret, toutes les applications qui en dépendent pourraient également " +

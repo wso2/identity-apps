@@ -17,6 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
+import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -246,6 +247,8 @@ export class ApplicationManagementConstants {
         "status code while retrieving the request path authenticators.";
     public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
         "request path authenticators.";
+    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
+        + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
     public static readonly TOTP_AUTHENTICATOR_ID = "LOCAL-dG90cA";
     public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
@@ -253,6 +256,10 @@ export class ApplicationManagementConstants {
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
 
+    // Authenticators that are only handlers.
+    public static readonly HANDLER_AUTHENTICATORS = [
+        ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+    ];
 
     /**
      * PEM certificate field default placeholder.
