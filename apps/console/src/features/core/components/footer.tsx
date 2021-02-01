@@ -80,7 +80,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
 
         const links: FooterLinkInterface[] = [];
 
-        if (config.ui?.privacyPolicy?.visibleOnFooter) {
+        if (config.ui?.privacyPolicyConfigs?.visibleOnFooter) {
             links.push({
                 name: t("common:privacy"),
                 to: AppConstants.getPaths().get("PRIVACY")

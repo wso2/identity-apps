@@ -319,7 +319,7 @@
         "isDialectAddingEnabled": true,
         "isRequestPathAuthenticationEnabled": true,
         "listAllAttributeDialects": false,
-        "privacyPolicy": {
+        "privacyPolicyConfigs": {
             "visibleOnFooter": true
         },
         "productName": "WSO2 Identity Server",

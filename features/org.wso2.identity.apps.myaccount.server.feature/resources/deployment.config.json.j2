@@ -227,9 +227,9 @@
             {% endfor %}
             {% endif %}
         },
-        "privacyPolicy": {
-            {% if console.privacy_policy.items() is defined %}
-            {% for key, value in console.privacy_policy.items() %}
+        "privacyPolicyConfigs": {
+            {% if console.privacy_policy_configs.items() is defined %}
+            {% for key, value in console.privacy_policy_configs.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}

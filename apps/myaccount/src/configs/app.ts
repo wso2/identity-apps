@@ -126,7 +126,7 @@ export class Config {
                 .replace("${year}", new Date().getFullYear()),
             features: window["AppUtils"].getConfig().ui.features,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
-            privacyPolicy: window["AppUtils"].getConfig().ui.privacyPolicy,
+            privacyPolicyConfigs: window["AppUtils"].getConfig().ui.privacyPolicyConfigs,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             theme: window["AppUtils"].getConfig().ui.theme,

@@ -163,7 +163,7 @@ export interface CommonUIConfigInterface<T = {}> {
     /**
      * Privacy Policy configs.
      */
-    privacyPolicy: PrivacyPolicyConfigsInterface;
+    privacyPolicyConfigs: PrivacyPolicyConfigsInterface;
     /**
      * Name of the product.
      * ex: `Identity Server`
