@@ -5,8 +5,7 @@
     "image": "saml",
     "authenticationProtocol": "saml",
     "types": [
-        "java",
-        "dotNet"
+        "java"
     ],
     "category": "DEFAULT",
     "displayOrder": 2,
