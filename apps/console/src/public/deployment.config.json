@@ -315,7 +315,7 @@
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
-        "isDefaultDialectEditingEnabled": true,
+        "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": true,
         "isRequestPathAuthenticationEnabled": true,
         "listAllAttributeDialects": false,
