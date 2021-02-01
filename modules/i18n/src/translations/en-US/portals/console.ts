@@ -802,7 +802,7 @@ export const console: ConsoleNS = {
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Use Subject identifier from",
+                                                        label: "Use subject identifier from",
                                                         placeholder: "Select step"
                                                     }
                                                 }
