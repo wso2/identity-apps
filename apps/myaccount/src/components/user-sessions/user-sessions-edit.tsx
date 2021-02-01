@@ -304,6 +304,6 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
  * See type definitions in {@link UserSessionsEditProps}
  */
 UserSessionsEdit.defaultProps = {
-    showUsernameInApplicationUsingSub: false,
     "data-testid": "user-sessions-edit",
+    showUsernameInApplicationUsingSub: false,
 };
