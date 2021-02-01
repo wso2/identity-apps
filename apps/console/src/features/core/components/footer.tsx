@@ -18,6 +18,7 @@
 
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
+    FooterLinkInterface,
     Footer as ReusableFooter,
     FooterPropsInterface as ReusableFooterPropsInterface,
     ThemeContext
@@ -70,6 +71,25 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
             });
     };
 
+    /**
+     * Generates the links to be displayed on the footer.
+     *
+     * @return {FooterLinkInterface[]}
+     */
+    const generateFooterLinks = (): FooterLinkInterface[] => {
+
+        const links: FooterLinkInterface[] = [];
+
+        if (config.ui?.privacyPolicy?.visibleOnFooter) {
+            links.push({
+                name: t("common:privacy"),
+                to: AppConstants.getPaths().get("PRIVACY")
+            });
+        }
+
+        return links;
+    };
+
     return (
         <ReusableFooter
             currentLanguage={ currentLanguage ?? I18n.instance?.language }
@@ -82,12 +102,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
                         ? config.ui.appCopyright
                         : null
             }
-            links={ [
-                {
-                    name: t("common:privacy"),
-                    to: AppConstants.getPaths().get("PRIVACY")
-                }
-            ] }
+            links={ generateFooterLinks() }
             showLanguageSwitcher={ config.ui.i18nConfigs?.showLanguageSwitcher ?? showLanguageSwitcher }
             { ...rest }
         />

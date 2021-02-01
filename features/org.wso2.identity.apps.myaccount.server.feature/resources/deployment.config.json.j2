@@ -227,6 +227,17 @@
             {% endfor %}
             {% endif %}
         },
+        "privacyPolicy": {
+            {% if console.privacy_policy.items() is defined %}
+            {% for key, value in console.privacy_policy.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "productName": "{{ myaccount.ui.product_name }}",
         "productVersionConfig": {
             {% if myaccount.product_version.configs.items() is defined %}

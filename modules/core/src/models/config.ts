@@ -157,9 +157,13 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     features?: T;
     /**
-     * i18n configurations interface.
+     * i18n configurations.
      */
     i18nConfigs: I18nConfigsInterface;
+    /**
+     * Privacy Policy configs.
+     */
+    privacyPolicy: PrivacyPolicyConfigsInterface;
     /**
      * Name of the product.
      * ex: `Identity Server`
@@ -174,6 +178,16 @@ export interface CommonUIConfigInterface<T = {}> {
      * Theme configs.
      */
     theme: AppThemeConfigInterface;
+}
+
+/**
+ * Privacy Policy configs interface.
+ */
+export interface PrivacyPolicyConfigsInterface {
+    /**
+     * Show/Hide the privacy policy link on footer.
+     */
+    visibleOnFooter?: boolean;
 }
 
 /**
