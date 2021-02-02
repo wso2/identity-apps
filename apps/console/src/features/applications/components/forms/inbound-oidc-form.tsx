@@ -566,7 +566,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             general: {
                 advancedConfigurations: {
                     certificate: {
-                        type: values.get("type"),
+                        type: values.get("certificateType"),
                         value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
                     }
                 }
@@ -1612,11 +1612,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms." +
                                 "advancedConfig.sections.certificate.fields.type.label")
                         }
-                        name="type"
+                        name="certificateType"
                         default={ CertificateTypeInterface.JWKS }
                         listen={
                             (values) => {
-                                setPEMSelected(values.get("type") === "PEM");
+                                setPEMSelected(values.get("certificateType") === "PEM");
                             }
                         }
                         type="radio"
