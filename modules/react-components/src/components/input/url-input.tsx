@@ -153,6 +153,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ predictValue, setPredictValue ] = useState<string[]>([]);
     const [ validURL, setValidURL ] = useState<boolean>(true);
     const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
+    const [ isSillyInput, setIsSillyInput ] = useState<boolean>(false);
     const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
     const [ showMore, setShowMore ] = useState<boolean>(false);
