@@ -314,9 +314,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             if (isLabel) {
                 metadataProp.options.map((ele) => {
                     allowedList.push({
+                        hint: {
+                            content: getMetadataHints(ele)
+                        },
                         label: ele,
-                        value: ele,
-                        hint: { content: getMetadataHints(ele), header: ele.toUpperCase() }
+                        value: ele
                     });
                 });
             } else {

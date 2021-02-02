@@ -116,7 +116,10 @@ export interface RadioChild {
      * It will be rendered as a popup when the user hover over the
      * radio button.
      */
-    hint?: { header: string; content: string }
+    hint?: {
+        header?: string;
+        content: string;
+    };
 }
 
 /**
