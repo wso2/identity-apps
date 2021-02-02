@@ -133,6 +133,7 @@
                 "Password.cannot.be.empty"));
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         request.setAttribute(IdentityManagementEndpointConstants.CALLBACK, callback);
+        request.setAttribute("userstoredomain", userStoreDomain);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         return;
     }
