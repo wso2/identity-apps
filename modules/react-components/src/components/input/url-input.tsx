@@ -178,6 +178,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         const urlValid = validation(url);
         setValidURL(urlValid);
+
+        /**
+         * If the URL is valid and there's no URLs present in the state
+         * we directly set the url because it's the initial. See the
+         * {@code else} block to see how the new URL is appended when
+         * there's URLs in the state,
+         */
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             setChangeUrl("");
@@ -189,9 +196,16 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 ...(onlyOrigin ? (allowedOrigins ?? []) : []),
                 ...(availableURls ?? [])
             ]);
+            /**
+             * Check if the URL is a duplicate one. If yes
+             * then set the error label as duplicate.
+             */
             const duplicate: boolean = urls.has(url);
             urlValid && setDuplicateURL(duplicate);
-
+            /**
+             * If the URL is valid and is not a duplicate
+             * then mutate the URL state.
+             */
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
