@@ -58,6 +58,14 @@
         hiding the scopes being displayed and the approve always button.
     */
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
+
+    List<String> openIdScopes = null;
+    if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
+            // Remove "openid" from the scope list to display.
+           openIdScopes = Stream.of(scopeString.split(" "))
+                    .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
+                    .collect(Collectors.toList());
+    }
 %>
 
 <!doctype html>
@@ -86,11 +94,29 @@
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
+            <%
+                if (!(ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList) || CollectionUtils.isNotEmpty(openIdScopes))){
+            %>
+                <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile2" name="oauth2_authz">
+                    <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
+                    value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
+                    <input type="hidden" name="consent" id="consent" value="approve"/>
+                </form>
+                <script>
+                    document.getElementById("profile2").submit();
+                </script>
+            <%
+                }
+            %>
 
             <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz">
                     <h4><%=Encode.forHtml(request.getParameter("application"))%>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:</h4>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile2")%>
+                        <%=Encode.forHtml(request.getParameter("application"))%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile3")%>
+                    </h4>
 
                     <div class="ui divider hidden"></div>
 
@@ -112,7 +138,7 @@
                                     </div>
                                     <div>
                                         <div class="ui divider hidden"></div>
-                                        <% if (ArrayUtils.isNotEmpty(requestedClaimList) && requestedClaimList.length > 1) { %>
+                                        <% if (ArrayUtils.isNotEmpty(requestedClaimList)) { %>
                                         <div class="select-all">
                                             <div class="ui checkbox claim-cb">
                                                 <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
@@ -157,10 +183,15 @@
                                                 }
                                             %>
                                         </div>
+
                                         <div class="ui divider hidden"></div>
                                         <div class="text-left padding-top-double">
+                                        <% if (ArrayUtils.isNotEmpty(mandatoryClaimList)) { %>
                                             <span class="mandatory"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims.recommendation")%></span>
                                             <span class="required font-medium">( * )</span>
+                                        <%
+                                            }
+                                        %>
                                         </div>
                                     </div>
                                 </div>
@@ -174,11 +205,6 @@
                             } else { %>
                                 <%
                                     if (displayScopes && StringUtils.isNotBlank(scopeString)) {
-                                        // Remove "openid" from the scope list to display.
-                                        List<String> openIdScopes = Stream.of(scopeString.split(" "))
-                                                .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
-                                                .collect(Collectors.toList());
-
                                         if (CollectionUtils.isNotEmpty(openIdScopes)) {
                                 %>
 
@@ -237,25 +263,25 @@
                                     </div>
                                 </div>
 
-                                <div class="ui divider hidden"></div>
-                                <div class="feild">
-                                    <div class="cookie-policy-message">
-                                        <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
-
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                        <%=Encode.forHtml(request.getParameter("application"))%>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
-                                        <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
-                                    </div>
-                                </div>
-
                                 <%
                                         }
                                     }
                                 %>
 
                                 <div class="ui divider hidden"></div>
-                            
+                                <div class="feild">
+                                <div class="cookie-policy-message">
+                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
+
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
+                                    <%=Encode.forHtml(request.getParameter("application"))%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
+                                <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
+                                </div>
+                                </div>
+
+                                <div class="ui divider hidden"></div>
+
                                 <div class="field">
                                     <div class="ui checkbox">
                                         <input
