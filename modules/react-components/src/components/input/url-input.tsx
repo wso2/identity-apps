@@ -188,7 +188,6 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             setChangeUrl("");
-
             return url;
         } else {
             const availableURLs: string[] = !urlState ? [] : urlState?.split(",");
