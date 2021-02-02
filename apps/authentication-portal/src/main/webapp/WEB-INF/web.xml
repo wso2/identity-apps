@@ -313,18 +313,18 @@
     </servlet>
 
     <servlet>
-        <servlet-name>email_otp_enroll.do</servlet-name>
-        <jsp-file>/emailAddress.jsp</jsp-file>
+        <servlet-name>email_capture.do</servlet-name>
+        <jsp-file>/emailAddressCapture.jsp</jsp-file>
     </servlet>
 
     <servlet>
         <servlet-name>email_otp.do</servlet-name>
-        <jsp-file>/emailotp.jsp</jsp-file>
+        <jsp-file>/emailOtp.jsp</jsp-file>
     </servlet>
 
     <servlet>
         <servlet-name>email_otp_error.do</servlet-name>
-        <jsp-file>/emailotpError.jsp</jsp-file>
+        <jsp-file>/emailOtpError.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
@@ -343,8 +343,8 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>email_otp_enroll.do</servlet-name>
-        <url-pattern>/email_otp_enroll.do</url-pattern>
+        <servlet-name>email_capture.do</servlet-name>
+        <url-pattern>/email_capture.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
