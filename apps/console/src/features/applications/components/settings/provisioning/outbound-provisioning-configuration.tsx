@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton, useConfirmationModalAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -86,6 +86,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const [
         deletingIdp,
@@ -187,15 +188,44 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     const handleProvisioningIDPDelete = (deletingIDP: OutboundProvisioningConfigurationInterface): void => {
         const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
             application?.provisioningConfigurations?.outboundProvisioningIdps;
-        outboundConfigs.splice(outboundConfigs.indexOf(deletingIDP), 1);
+        const tempOutboundConfig = [... outboundConfigs];
+        tempOutboundConfig.splice(outboundConfigs.indexOf(deletingIDP), 1);
         const newConfig = {
             provisioningConfigurations: {
-                outboundProvisioningIdps: outboundConfigs
+                outboundProvisioningIdps: tempOutboundConfig
             }
         };
+        updateApplicationConfigurations(application.id, newConfig)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("console:develop.features.applications.notifications.updateApplication.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.applications.notifications.updateApplication.success.message")
+                }));
+                onUpdate(application.id);
+                setShowDeleteConfirmationModal(false);
+            })
+            .catch((error) => {
 
-        addIdentityProvider(application.id, newConfig);
-        setShowDeleteConfirmationModal(false);
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(setAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications." +
+                            "notifications.updateApplication.error.message")
+                    }));
+                    return;
+                }
+                console.log(error);
+                dispatch(setAlert({
+                    description: t("console:develop.features.applications.notifications.updateApplication" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
+                        ".message")
+                }));
+            });
     };
 
     return (
@@ -335,7 +365,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         assertionType="input"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onSecondaryActionClick={ (): void => {
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
                         onPrimaryActionClick={
                             (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
@@ -359,6 +392,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
                         >
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP" +
                                 ".content") }
                         </ConfirmationModal.Content>

@@ -38,7 +38,8 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
@@ -193,6 +194,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+
     list?.forEach((element, index) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
         copyButton.current.push(copyButton.current[ index ] || React.createRef());
@@ -309,7 +312,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 }
             ));
         }).catch(error => {
-            dispatch(addAlert(
+            dispatch(setAlert(
                 {
                     description: error?.description
                         || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.description"),
@@ -431,7 +434,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 assertionType="input"
                 primaryAction={ t("console:manage.features.claims.list.confirmation.action") }
                 secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ (): void => setDeleteConfirm(false) }
+                onSecondaryActionClick={ (): void => {
+                    setDeleteConfirm(false);
+                    setAlert(null);
+                } }
                 onPrimaryActionClick={ () => {
                     deleteType === ListType.EXTERNAL
                         ? listItem.delete(dialectID, deleteItem.id)
@@ -457,6 +463,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
+                    <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                     { t("console:manage.features.claims.list.confirmation.content", {
                         message: listItem.message
                     }) }

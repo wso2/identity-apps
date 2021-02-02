@@ -18,7 +18,7 @@
 
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -28,7 +28,8 @@ import {
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
-    UserAvatar
+    UserAvatar,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -45,6 +46,7 @@ import {
 import { RealmConfigInterface } from "../../server-configurations";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
+import { deleteUser } from "../api";
 
 /**
  * Prop types for the liked accounts component.
@@ -61,11 +63,11 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     defaultListItemLimit?: number;
     /**
-     * User delete callback.
+     * On user delete callback.
      *
      * @param {string} userId - ID of the deleting user.
      */
-    handleUserDelete?: (userId: string) => void;
+    onUserDelete?: () => void;
     /**
      * Callback to inform the new set of visible columns.
      * @param {TableColumnInterface[]} columns - New columns.
@@ -126,7 +128,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const {
         advancedSearch,
         defaultListItemLimit,
-        handleUserDelete,
+        onUserDelete,
         isLoading,
         readOnlyUserStores,
         featureConfig,
@@ -148,6 +150,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
@@ -155,10 +158,37 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
     };
 
-    const deleteUser = (id: string): void => {
-        handleUserDelete(id);
-        setDeletingUser(undefined);
-        setShowDeleteConfirmationModal(false);
+
+    const handleUserDelete = (userId: string): void => {
+        deleteUser(userId)
+            .then(() => {
+                setAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.deleteUser.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.users.notifications.deleteUser.success.message"
+                    )
+                });
+                setDeletingUser(undefined);
+                onUserDelete();
+            }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                setAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                });
+                return;
+            }
+            setAlert({
+                description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.deleteUser.genericError" +
+                    ".message")
+            });
+        });
     };
 
     /**
@@ -425,8 +455,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         assertionType="input"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => deleteUser(deletingUser.id) }
+                        onSecondaryActionClick={ (): void =>{
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
+                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
@@ -440,6 +473,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             { t("console:manage.features.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("console:manage.features.user.deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

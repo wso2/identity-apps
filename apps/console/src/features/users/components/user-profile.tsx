@@ -33,7 +33,8 @@ import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment
+    EmphasizedSegment,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import _ from "lodash";
@@ -118,6 +119,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ accountLock, setAccountLock ] = useState<string>(undefined);
     const [ accountDisable, setAccountDisable ] = useState<string>(undefined);
     const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     useEffect(() => {
 
@@ -283,7 +285,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    onAlertFired({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.users.notifications.deleteUser.error.message")
@@ -292,7 +294,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     return;
                 }
 
-                onAlertFired({
+                setAlert({
                     description: t("console:manage.features.users.notifications.deleteUser.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.users.notifications.deleteUser.genericError" +
@@ -851,7 +853,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onSecondaryActionClick={ (): void => {
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
                         onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
                         closeOnDimmerClick={ false }
                     >
@@ -866,6 +871,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { t("console:manage.features.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("console:manage.features.user.deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
