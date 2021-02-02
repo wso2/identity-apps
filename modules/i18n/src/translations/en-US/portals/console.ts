@@ -597,6 +597,13 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the protocol."
                     },
+                    handlerAuthenticatorAddition: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "The authenticator you are trying to add is a handler. Make sure you add " +
+                            "authenticators in other steps.",
+                        header: "You are adding a Handler",
+                        message: "This is a handler."
+                    },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "If you regenerate this application, All the applications depending on this also " +

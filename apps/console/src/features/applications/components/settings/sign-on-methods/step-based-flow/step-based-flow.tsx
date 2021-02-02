@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Heading, Hint } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
@@ -125,6 +125,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ subjectStepId, setSubjectStepId ] = useState<number>(undefined);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
     const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
+    const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
 
     /**
      * Loads federated authenticators and local authenticators
@@ -297,6 +298,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
         const isValid: boolean = validateStepAddition(authenticator, steps[ stepNo ].options);
+
+        if (ApplicationManagementConstants.HANDLER_AUTHENTICATORS.includes(authenticatorId)) {
+            setShowHandlerDisclaimerModal(true);
+        }
 
         if (
             stepNo === 0 &&
@@ -522,6 +527,41 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .some((hiddenAuthenticator: string) => hiddenAuthenticator === authenticator.name);
         });
     };
+
+    /**
+     * Shows a disclaimer to users when a handler is added.
+     * @return {ReactElement}
+     */
+    const renderHandlerDisclaimerModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ () => setShowHandlerDisclaimerModal(false) }
+            type="warning"
+            open={ showHandlerDisclaimerModal }
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onPrimaryActionClick={ () => setShowHandlerDisclaimerModal(false) }
+            data-testid={ `${ testId }-handler-disclaimer-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+            >
+                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
+                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.message") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+            >
+                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     return (
         <div
@@ -757,6 +797,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     />
                 ) }
             </DragDropContext>
+            { showHandlerDisclaimerModal && renderHandlerDisclaimerModal() }
         </div>
     );
 };

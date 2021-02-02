@@ -117,6 +117,18 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     }, []);
 
     /**
+     * Updates the steps when the authentication sequence updates.
+     */
+    useEffect(() => {
+
+        if (!authenticationSequence || !authenticationSequence?.steps || !Array.isArray(authenticationSequence.steps)) {
+            return;
+        }
+
+        setSteps(authenticationSequence.steps.length);
+    }, [ authenticationSequence ]);
+
+    /**
      * Updates the number of authentication steps.
      *
      * @param {boolean} add - Set to `true` to add and `false` to remove.

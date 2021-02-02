@@ -57,4 +57,52 @@ export class AdaptiveScriptUtils {
         script.splice(1, 0, ...steps);
         return script;
     }
+
+    /**
+     * Checks if the script a default. i.e Just with execute steps.
+     *
+     * @param {string | string[]} script - Script to check.
+     * @param {number} steps - Number of steps.
+     * @return {boolean}
+     */
+    public static isDefaultScript(script: string | string[], steps: number): boolean {
+
+        let scriptBody: string = "";
+        const moderatedScript = Array.isArray(script)
+            ? script.join("")
+            : script;
+        const scriptStringContent: string[] = [];
+
+        for(let i = 0; i < steps; i++) {
+            scriptStringContent.push("executeStep(" + (i + 1) + ");");
+            scriptBody += scriptStringContent[i];
+        }
+
+        const scriptComposed = ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_HEADER
+            + scriptBody
+            + ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT_FOOTER;
+
+        return AdaptiveScriptUtils.minifyScript(moderatedScript) === AdaptiveScriptUtils.minifyScript(scriptComposed);
+    }
+
+    /**
+     * Strips spaces and new lines in the script.
+     *
+     * @param {string | string[]} originalScript - Original script.
+     * @return {string}
+     */
+    public static minifyScript(originalScript: string | string[]): string {
+
+        if (!originalScript) {
+            return "";
+        }
+
+        const script = Array.isArray(originalScript)
+            ? originalScript.join("")
+            : originalScript;
+
+        return script
+            .replace(/(?:\r\n|\r|\n)/g, "")
+            .replace(/\s/g, "");
+    }
 }
