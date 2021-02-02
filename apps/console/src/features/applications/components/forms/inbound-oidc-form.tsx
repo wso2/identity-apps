@@ -348,7 +348,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const modifyGrantTypeLabels = (value: string, label: string): string => {
         if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
-            return `${ label } (not recommended)`;
+            return `${ label } (Deprecated with Oauth 2.1)`;
         }
         return label;
     };
