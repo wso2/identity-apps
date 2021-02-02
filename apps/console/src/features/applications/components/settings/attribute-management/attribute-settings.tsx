@@ -243,7 +243,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 return localClaim.claimURI === mappedLocalClaimUri;
             });
 
-            if (matchedLocalClaim) {
+            if (matchedLocalClaim && matchedLocalClaim[0] && matchedLocalClaim[0].displayName) {
                 externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
             }
         });
