@@ -89,6 +89,7 @@
             "textCase": "uppercase",
             "labelColor": "primary"
         },
+        "isProfileUsernameReadonly": false,
         "theme": {
             "name": "default"
         }
