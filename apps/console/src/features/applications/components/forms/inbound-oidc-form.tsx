@@ -1780,6 +1780,122 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         </>
     );
 
+    /**
+     * Renders the application secret regenerate confirmation modal.
+     * @return {ReactElement}
+     */
+    const renderRegenerateConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ (): void => setShowRegenerateConfirmationModal(false) }
+            type="warning"
+            open={ showRegenerateConfirmationModal }
+            assertion={ initialValues?.clientId }
+            assertionHint={ (
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.confirmations" +
+                            ".regenerateSecret.assertionHint"
+                        }
+                        tOptions={ { id: initialValues?.clientId } }
+                    >
+                        Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                    </Trans>
+                </p>
+            ) }
+            assertionType="input"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onSecondaryActionClick={ (): void =>
+                setShowRegenerateConfirmationModal(false)
+            }
+            onPrimaryActionClick={ (): void => {
+                onApplicationRegenerate();
+                setShowRegenerateConfirmationModal(false);
+            } }
+            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".regenerateSecret.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-message` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".regenerateSecret.message") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-content` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".regenerateSecret.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
+    /**
+     * Renders the application revoke confirmation modal.
+     * @return {ReactElement}
+     */
+    const renderRevokeConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ (): void => setShowRevokeConfirmationModal(false) }
+            type="warning"
+            open={ showRevokeConfirmationModal }
+            assertion={ initialValues?.clientId }
+            assertionHint={ (
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.confirmations" +
+                            ".revokeApplication.assertionHint"
+                        }
+                        tOptions={ { id: initialValues?.clientId } }
+                    >
+                        Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                    </Trans>
+                </p>
+            ) }
+            assertionType="input"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
+            onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
+            onPrimaryActionClick={ (): void => {
+                onApplicationRevoke();
+                setShowRevokeConfirmationModal(false);
+            } }
+            data-testid={ `${ testId }-oidc-revoke-confirmation-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".revokeApplication.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-oidc-revoke-confirmation-modal-message` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".revokeApplication.message") }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
+            >
+                { t("console:develop.features.applications.confirmations" +
+                    ".revokeApplication.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
     return (
         metadata ?
             (
@@ -1846,10 +1962,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 { t("console:develop.features.applications.forms.inboundOIDC.fields" +
                                                     ".clientID.label") }
                                             </label>
-                                            <CopyInputField
-                                                value={ initialValues?.clientId }
-                                                data-testid={ `${ testId }-client-id-readonly-input` }
-                                            />
+                                            <div className="display-flex">
+                                                <CopyInputField
+                                                    value={ initialValues?.clientId }
+                                                    data-testid={ `${ testId }-client-id-readonly-input` }
+                                                />
+                                                {
+                                                    (!readOnly
+                                                        && initialValues?.clientSecret
+                                                        && (initialValues?.state !== State.REVOKED)) && (
+                                                        <Button
+                                                            color="red"
+                                                            className="oidc-action-button"
+                                                            onClick={ handleRevokeButton }
+                                                            data-testid={ `${ testId }-oidc-revoke-button` }
+                                                        >
+                                                            { t("common:revoke") }
+                                                        </Button>
+                                                    )
+                                                }
+                                            </div>
                                         </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -1877,19 +2009,37 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         </Message>
                                                     )
                                                     : (
-                                                        <CopyInputField
-                                                            secret
-                                                            value={ initialValues?.clientSecret }
-                                                            hideSecretLabel={
-                                                                t("console:develop.features.applications.forms." +
-                                                                    "inboundOIDC.fields.clientSecret.hideSecret")
+                                                        <div className="display-flex">
+                                                            <CopyInputField
+                                                                secret
+                                                                value={ initialValues?.clientSecret }
+                                                                hideSecretLabel={
+                                                                    t("console:develop.features.applications.forms." +
+                                                                        "inboundOIDC.fields.clientSecret.hideSecret")
+                                                                }
+                                                                showSecretLabel={
+                                                                    t("console:develop.features.applications.forms." +
+                                                                        "inboundOIDC.fields.clientSecret.showSecret")
+                                                                }
+                                                                data-testid={
+                                                                    `${ testId }-client-secret-readonly-input`
+                                                                }
+                                                            />
+                                                            {
+                                                                !readOnly && (
+                                                                    <Button
+                                                                        color="red"
+                                                                        className="oidc-action-button"
+                                                                        onClick={ handleRegenerateButton }
+                                                                        data-testid={
+                                                                            `${ testId }-oidc-regenerate-button`
+                                                                        }
+                                                                    >
+                                                                        { t("common:regenerate") }
+                                                                    </Button>
+                                                                )
                                                             }
-                                                            showSecretLabel={
-                                                                t("console:develop.features.applications.forms." +
-                                                                    "inboundOIDC.fields.clientSecret.showSecret")
-                                                            }
-                                                            data-testid={ `${ testId }-client-secret-readonly-input` }
-                                                        />
+                                                        </div>
                                                     )
                                             }
                                         </Form.Field>
@@ -1898,154 +2048,33 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            !readOnly && initialValues?.clientSecret && (
+                            !readOnly && initialValues?.clientSecret && (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                                        <>
-                                            <Button
-                                                color={
-                                                    (initialValues?.state === State.REVOKED)
-                                                        ? "green"
-                                                        : "red"
-                                                }
-                                                className="oidc-regenerate-button"
-                                                onClick={ handleRegenerateButton }
-                                                data-testid={ `${ testId }-oidc-regenerate-button` }
-                                            >
-                                                {
-                                                    (initialValues?.state === State.REVOKED)
-                                                        ? t("common:activate")
-                                                        : t("common:regenerate")
-                                                }
-                                            </Button>
-                                            {
-                                                (initialValues?.state !== State.REVOKED) && (
-                                                    <Button
-                                                        color="red"
-                                                        className="oidc-revoke-button"
-                                                        onClick={ handleRevokeButton }
-                                                        data-testid={ `${ testId }-oidc-revoke-button` }
-                                                    >
-                                                        { t("common:revoke") }
-                                                    </Button>
-                                                )
-                                            }
-                                        </>
+                                        <Button
+                                            color="green"
+                                            className="oidc-action-button ml-0"
+                                            onClick={ handleRegenerateButton }
+                                            data-testid={ `${ testId }-oidc-regenerate-button` }
+                                        >
+                                            { t("common:activate") }
+                                        </Button>
                                     </Grid.Column>
-                                    <ConfirmationModal
-                                        onClose={ (): void => setShowRegenerateConfirmationModal(false) }
-                                        type="warning"
-                                        open={ showRegenerateConfirmationModal }
-                                        assertion={ initialValues?.clientId }
-                                        assertionHint={ (
-                                            <p>
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:develop.features.applications.confirmations" +
-                                                        ".regenerateSecret.assertionHint"
-                                                    }
-                                                    tOptions={ { id: initialValues?.clientId } }
-                                                >
-                                                    Please type <strong>{ initialValues?.clientId }</strong> to confirm.
-                                                </Trans>
-                                            </p>
-                                        ) }
-                                        assertionType="input"
-                                        primaryAction={ t("common:confirm") }
-                                        secondaryAction={ t("common:cancel") }
-                                        onSecondaryActionClick={ (): void =>
-                                            setShowRegenerateConfirmationModal(false)
-                                        }
-                                        onPrimaryActionClick={ (): void => {
-                                            onApplicationRegenerate();
-                                            setShowRegenerateConfirmationModal(false);
-                                        } }
-                                        data-testid={ `${ testId }-oidc-regenerate-confirmation-modal` }
-                                        closeOnDimmerClick={ false }
-                                    >
-                                        <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".regenerateSecret.header") }
-                                        </ConfirmationModal.Header>
-                                        <ConfirmationModal.Message
-                                            attached
-                                            warning
-                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-message` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".regenerateSecret.message") }
-                                        </ConfirmationModal.Message>
-                                        <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-content` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".regenerateSecret.content") }
-                                        </ConfirmationModal.Content>
-                                    </ConfirmationModal>
-                                    <ConfirmationModal
-                                        onClose={ (): void => setShowRevokeConfirmationModal(false) }
-                                        type="warning"
-                                        open={ showRevokeConfirmationModal }
-                                        assertion={ initialValues?.clientId }
-                                        assertionHint={ (
-                                            <p>
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:develop.features.applications.confirmations" +
-                                                        ".revokeApplication.assertionHint"
-                                                    }
-                                                    tOptions={ { id: initialValues?.clientId } }
-                                                >
-                                                    Please type <strong>{ initialValues?.clientId }</strong> to confirm.
-                                                </Trans>
-                                            </p>
-                                        ) }
-                                        assertionType="input"
-                                        primaryAction={ t("common:confirm") }
-                                        secondaryAction={ t("common:cancel") }
-                                        onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
-                                        onPrimaryActionClick={ (): void => {
-                                            onApplicationRevoke();
-                                            setShowRevokeConfirmationModal(false);
-                                        } }
-                                        data-testid={ `${ testId }-oidc-revoke-confirmation-modal` }
-                                        closeOnDimmerClick={ false }
-                                    >
-                                        <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".revokeApplication.header") }
-                                        </ConfirmationModal.Header>
-                                        <ConfirmationModal.Message
-                                            attached
-                                            warning
-                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-message` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".revokeApplication.message") }
-                                        </ConfirmationModal.Message>
-                                        <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
-                                        >
-                                            { t("console:develop.features.applications.confirmations" +
-                                                ".revokeApplication.content") }
-                                        </ConfirmationModal.Content>
-                                    </ConfirmationModal>
                                 </Grid.Row>
                             )
                         }
                         {
-                            (initialValues?.clientId || initialValues?.clientSecret) && (
+                            ((initialValues?.clientId || initialValues?.clientSecret)
+                                && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
-                                    <Divider />
+                                    <Divider/>
                                 </Grid.Column>
                             )
                         }
                         { (initialValues?.state !== State.REVOKED) && renderOIDCConfigFields() }
                     </Grid>
+                    { showRegenerateConfirmationModal && renderRegenerateConfirmationModal() }
+                    { showRevokeConfirmationModal && renderRevokeConfirmationModal() }
                 </Forms>
             )
             : null
