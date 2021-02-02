@@ -172,6 +172,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * the input to the state.
          */
         if (!URLUtils.isURLValid(url, true)) {
+            setIsSillyInput(true);
             return;
         }
 
