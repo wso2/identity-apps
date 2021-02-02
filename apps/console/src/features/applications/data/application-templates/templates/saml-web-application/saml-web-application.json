@@ -36,7 +36,14 @@
                     "issuer": "",
                     "assertionConsumerUrls": [
                         ""
-                    ]
+                    ],
+                    "singleLogoutProfile": {
+                        "enabled": true,
+                        "logoutMethod": "BACKCHANNEL",
+                        "idpInitiatedSingleLogout": {
+                            "enabled": false
+                        }
+                    }
                 }
             }
         }
