@@ -478,23 +478,28 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @return {React.ReactElement | React.ReactNode}
      */
     const resolveValidationLabel = (): ReactElement | ReactNode => {
+
+        const createErrorLabel = (str: string): ReactElement => {
+            return (
+                <Label
+                    basic
+                    color="red"
+                    pointing>
+                    { str }
+                </Label>
+            );
+        };
+
         if (!validURL) {
-            return (
-                <Label basic color="red" pointing>
-                    { validationErrorMsg }
-                </Label>
-            );
+            return createErrorLabel(validationErrorMsg);
+        } else if (duplicateURL) {
+            return createErrorLabel(duplicateURLErrorMessage);
+        } else if (isSillyInput) {
+            return createErrorLabel("Input does not qualify as a valid URL");
+        } else {
+            return customLabel;
         }
 
-        if (duplicateURL) {
-            return (
-                <Label basic color="red" pointing>
-                    { duplicateURLErrorMessage }
-                </Label>
-            );
-        }
-
-        return customLabel;
     };
 
     const shouldShowAllowOriginAction = (origin: string): boolean => {
