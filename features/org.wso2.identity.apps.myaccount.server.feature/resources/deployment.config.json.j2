@@ -238,6 +238,9 @@
             {% endfor %}
             {% endif %}
         },
+        {% if myaccount.is_profile_username_readonly is defined %}
+        "isProfileUsernameReadonly": {{ myaccount.is_profile_username_readonly }},
+        {% endif %}
         "productName": "{{ myaccount.ui.product_name }}",
         "productVersionConfig": {
             {% if myaccount.product_version.configs.items() is defined %}
