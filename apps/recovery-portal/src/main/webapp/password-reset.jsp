@@ -30,7 +30,7 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
     String username = request.getParameter("username");
-    String sessionDataKey = request.getParameter("sessionDataKey");
+    String userStoreDomain = request.getParameter("userstoredomain");
     String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     if (tenantDomain == null) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
@@ -38,8 +38,8 @@
     if (username == null) {
         username = (String) request.getAttribute("username");
     }
-    if (sessionDataKey == null) {
-        sessionDataKey = (String) request.getAttribute("sessionDataKey");
+    if (userStoreDomain == null) {
+        userStoreDomain = (String) request.getAttribute("userstoredomain");
     }
 
 %>
@@ -122,11 +122,11 @@
                             %>
 
                             <%
-                                if (sessionDataKey != null) {
+                                if (userStoreDomain != null) {
                             %>
                             <div>
-                                <input type="hidden" name="sessionDataKey"
-                                       value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+                                <input type="hidden" name="userstoredomain"
+                                       value="<%=Encode.forHtmlAttribute(userStoreDomain)%>"/>
                             </div>
                             <%
                                 }
