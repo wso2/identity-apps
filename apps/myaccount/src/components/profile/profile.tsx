@@ -22,7 +22,7 @@ import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@ws
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar, Hint } from "@wso2is/react-components";
+import { EditAvatarModal, Hint, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
