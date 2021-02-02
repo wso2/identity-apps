@@ -191,10 +191,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             return url;
         } else {
-            const availableURls: string[] = !urlState ? [] : urlState?.split(",");
+            const availableURLs: string[] = !urlState ? [] : urlState?.split(",");
             const urls = new Set([
                 ...(onlyOrigin ? (allowedOrigins ?? []) : []),
-                ...(availableURls ?? [])
+                ...(availableURLs ?? [])
             ]);
             /**
              * Check if the URL is a duplicate one. If yes
