@@ -150,7 +150,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                             {
                                 (connectors && Array.isArray(connectors) && connectors.length > 0)
                                     ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
-                                        <EmphasizedSegment key={ index }>
+                                        <EmphasizedSegment key={ index } padded="very">
                                             <div ref={ connector.ref }>
                                                 <DynamicGovernanceConnector
                                                     connector={ connector }

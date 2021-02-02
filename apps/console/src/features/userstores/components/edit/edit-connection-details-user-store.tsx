@@ -265,7 +265,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     };
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment padded="very">
             <Forms
                 onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
                     setFormValue(values);

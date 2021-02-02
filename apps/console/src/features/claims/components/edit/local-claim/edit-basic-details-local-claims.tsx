@@ -224,7 +224,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     return (
         <>
             { confirmDelete && deleteConfirmation() }
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>

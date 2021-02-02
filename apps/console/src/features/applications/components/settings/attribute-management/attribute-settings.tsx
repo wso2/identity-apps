@@ -596,7 +596,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     return (
         !isClaimRequestLoading && selectedDialect && !(isClaimLoading && _.isEmpty(externalClaims))
             ?
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Grid className="claim-mapping">
                     <AttributeSelection
                         claims={ claims }

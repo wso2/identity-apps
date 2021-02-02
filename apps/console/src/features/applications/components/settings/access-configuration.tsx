@@ -19,12 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    ConfirmationModal,
-    ContentLoader,
-    EmphasizedSegment,
-    GenericIcon
-} from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import get from "lodash/get";
 import sortBy from "lodash/orderBy";
@@ -32,11 +27,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Grid, Radio, SemanticWIDTHS } from "semantic-ui-react";
-import {
-    AppState,
-    FeatureConfigInterface,
-    store
-} from "../../../core";
+import { AppState, FeatureConfigInterface, store } from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -473,7 +464,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         return (
-            <EmphasizedSegment className="protocol-settings-section">
+            <EmphasizedSegment className="protocol-settings-section" padded="very">
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (

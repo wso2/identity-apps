@@ -264,7 +264,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     return (
         !isLoading
             ? (
-                <EmphasizedSegment>
+                <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
                         {/* Select attributes for mapping. */ }
                         { selectedClaimsWithMapping &&

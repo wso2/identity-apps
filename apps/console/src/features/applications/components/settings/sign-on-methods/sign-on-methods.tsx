@@ -343,7 +343,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     return (
-        <EmphasizedSegment className="sign-on-methods-tab-content">
+        <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             <StepBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

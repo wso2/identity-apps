@@ -352,7 +352,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
     return (
         <>
             { confirmDelete && deleteConfirmation() }
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Forms
                     onSubmit={ onSubmitHandler }
                 >

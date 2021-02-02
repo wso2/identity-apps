@@ -192,7 +192,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
     return (
         <>
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Forms
                     onSubmit={ (values) => {
                         updateGroupName(values);

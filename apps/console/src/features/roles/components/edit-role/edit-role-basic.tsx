@@ -192,7 +192,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     return (
         <>
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Forms
                     onSubmit={ (values) => {
                         updateRoleName(values);
