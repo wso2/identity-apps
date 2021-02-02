@@ -345,6 +345,34 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
+
+        /**
+         * Makes the "Username" field a READ_ONLY field. By default the
+         * server SCIM2 endpoint sends it as a "READ_WRITE" property.
+         * We are able to enable/disable read-only mode for specific
+         * claim dialects in user-store(s). However, it does not apply to
+         * all the tenants.
+         *
+         * Since we only interested in checking `username` we check the
+         * {@code isProfileUsernameReadonly} condition at top level. So,
+         * if it is {@code false} by default then we won't check the `name`
+         * unnecessarily.
+         *
+         * Match case explanation:-
+         * Ideally it should be the exact attribute name {@code http://wso2.org/claims/username}
+         * `username`. But we will transform the {@code schema.name}
+         * and {@code schema.displayName} to a lowercase string and then check
+         * the value matches.
+         */
+        const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
+        if (isProfileUsernameReadonly) {
+            const { displayName, name } = schema;
+            const usernameClaim = "username";
+            if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
+                schema.mutability = ProfileConstants.READONLY_SCHEMA;
+            }
+        }
+
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
