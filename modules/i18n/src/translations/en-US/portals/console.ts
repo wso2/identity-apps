@@ -761,22 +761,22 @@ export const console: ConsoleNS = {
                             },
                             outbound: {
                                 actions: {
-                                    addIdp: "New Identity Provider"
+                                    addIdp: "New Provisioner"
                                 },
                                 addIdpWizard: {
                                     errors: {
-                                        noProvisioningConnector: "The selected identity provider doesn't have" +
+                                        noProvisioningConnector: "The selected provisioner doesn't have" +
                                             " any provisioning connectors."
                                     },
-                                    heading: "Add Outbound Provisioning IDP",
+                                    heading: "Add Outbound Provisioner",
                                     steps: {
-                                        details: "IDP Details"
+                                        details: "Provisioner Details"
                                     },
-                                    subHeading: "Select the IDP to provision users that self-register to your " +
-                                        "application."
+                                    subHeading: "Select the provisioner to provision users that self-register to" +
+                                        " your application."
                                 },
                                 heading: "Outbound Provisioning",
-                                subHeading: "Configure an identity provider to outbound provision the users of this " +
+                                subHeading: "Configure a provisioner to outbound provision the users of this " +
                                     "application."
                             },
                             tabName: "Provisioning"
@@ -2214,10 +2214,10 @@ export const console: ConsoleNS = {
                         title: "Add a new Application"
                     },
                     emptyOutboundProvisioningIDPs: {
-                        action: "New IDP",
-                        subtitles: "This Application has no outbound provisioning IDPs configured." +
-                            " Add an IDP to view it here.",
-                        title: "No outbound provisioning IDPs"
+                        action: "New Provisioner",
+                        subtitles: "This Application has no outbound provisioners configured." +
+                            " Add a provisioner to view it here.",
+                        title: "No outbound provisioners"
                     },
                     emptyProtocolList: {
                         action: "New Protocol",
