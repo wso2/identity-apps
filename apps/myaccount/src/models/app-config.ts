@@ -135,6 +135,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      */
     copyrightText: string;
     /**
+     * Implies whether the profile username attribute
+     * dialect is readonly or not. By default the value
+     * is {@code false}.
+     */
+    isProfileUsernameReadonly: boolean;
+    /**
      * Title text.
      * ex: `WSO2 Identity Server`
      */
