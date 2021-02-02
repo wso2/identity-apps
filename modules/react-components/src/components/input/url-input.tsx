@@ -262,6 +262,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (key === 13) {
             e.preventDefault();
             addUrl();
+        } else {
+            resetErrorLabelsState();
         }
     };
 
