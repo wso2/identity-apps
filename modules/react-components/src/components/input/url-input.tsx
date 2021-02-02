@@ -159,6 +159,16 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ showMore, setShowMore ] = useState<boolean>(false);
 
     /**
+     * Resets the error labels rendered under the input
+     * field component.
+     */
+    const resetErrorLabelsState = (): void => {
+        setIsSillyInput(false);
+        setDuplicateURL(false);
+        setValidURL(true);
+    };
+
+    /**
      * Add URL to the URL list.
      *
      * @returns {string} URLs.
