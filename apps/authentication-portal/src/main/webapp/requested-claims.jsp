@@ -82,7 +82,7 @@
 
                             <% for (String claim : missingClaimList) { %>
                             <div class="field">
-                                <label"><%=Encode.forHtmlContent(claim)%></label>
+                                <label><%=Encode.forHtmlContent(claim)%></label>
                                 <input type="text" name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                     id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"  required="required" />
                             </div>
