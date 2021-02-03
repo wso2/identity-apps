@@ -1098,7 +1098,7 @@ export const console: ConsoleNS = {
                                     "The client app should specify the redirect URI in the authorization or logout " +
                                     "request and {{productName}} will validate it against the redirect URIs " +
                                     "entered here.",
-                                label: "Authorized redirect URIs",
+                                label: "Authorized URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Please add a valid URI.",
@@ -1336,8 +1336,8 @@ export const console: ConsoleNS = {
                                 hint: "This specifies the assertion Consumer URLs that the browser " +
                                     "should be redirected to after the authentication is successful. " +
                                     "This is the Assertion Consumer Service (ACS) URL of the Application.",
-                                label: "Assertion consumer URLs",
-                                placeholder: "Enter Assertion URL",
+                                label: "Assertion response URLs",
+                                placeholder: "http://localhost:8080/sample-app",
                                 validations: {
                                     invalid: "Please add valid URL"
                                 }
@@ -1367,7 +1367,7 @@ export const console: ConsoleNS = {
                                     "contains the unique identifier of the Application. This is also the issuer value" +
                                     "specified in the SAML Authentication Request issued by the Application.",
                                 label: "Issuer",
-                                placeholder: "Enter the issuer name",
+                                placeholder: "sample-app.com",
                                 validations: {
                                     empty: "Please provide the issuer"
                                 }

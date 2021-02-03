@@ -1096,7 +1096,7 @@ export const console: ConsoleNS = {
                                     "doit spécifier l'URL de redirection dans la demande d'autorisation ou de " +
                                     "déconnexion et {{productName}} la validera par rapport aux URL de redirection " +
                                     "entrées ici.",
-                                label: "URLs de redirection",
+                                label: "URI autorisés",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "Veuillez ajouter une URL valide.",
@@ -1342,8 +1342,8 @@ export const console: ConsoleNS = {
                                 hint: "Elle précise les URL des consommateurs vers lesquels le navigateur " +
                                     "doit être redirigé une fois l'authentification réussie. Il s'agit de l'URL " +
                                     "du service consommateur d'assertions (ACS) de l'application.",
-                                label: "URL du consommateur d'assertions",
-                                placeholder: "Saisir l'URL d'assertion",
+                                label: "URL du réponse d'assertions",
+                                placeholder: "http://localhost:8080/sample-app",
                                 validations: {
                                     invalid: "Veuillez ajouter une URL valide"
                                 }
@@ -1373,7 +1373,7 @@ export const console: ConsoleNS = {
                                     "unique de la demande. C'est également la valeur de l'émetteur" +
                                     "spécifiée dans la demande d'authentification SAML émise par l'application.",
                                 label: "Emetteur",
-                                placeholder: "Saisir le nom de l'émetteur",
+                                placeholder: "sample-app.com",
                                 validations: {
                                     empty: "Veuillez indiquer l'émetteur"
                                 }

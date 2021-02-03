@@ -1105,7 +1105,7 @@ export const console: ConsoleNS = {
                                     "තීරණය වේ. ග්‍රාහක යෙදුම විසින් යළි-යොමුවීම් URL ය අවසර හෝ පිටවීමේ ඉල්ලීමෙහි සඳහන් " +
                                     "කළ යුතු අතර {{productName}} විසින් මෙහි ඇතුළත් කර ඇති යළි-යොමුවීම් URL වලට එරෙහිව එය " +
                                     "වලංගු කරනු ඇත.",
-                                label: "URL යලි හරවන්න",
+                                label: "බලයලත් URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "කරුණාකර වලංගු URL එකක් එක් කරන්න.",
@@ -1333,8 +1333,8 @@ export const console: ConsoleNS = {
                                 hint: "සත්‍යාපනය සාර්ථක වූ පසු බ්‍රව්සරය යළි හරවා යැවිය යුතු බවට පාරිභෝගික " +
                                     "URL ය මෙයින් තහවුරු වේ. මෙය යෙදුමේ " +
                                     "සහතික කිරීමේ පාරිභෝගික සේවය (ACS) URL ය.",
-                                label: "පාරිභෝගික URL ප්‍රකාශ කිරීම",
-                                placeholder: "සහතික කිරීමේ URL ඇතුල් කරන්න",
+                                label: "ප්‍රකාශ ප්‍රතිචාර URLs",
+                                placeholder: "http://localhost:8080/sample-app",
                                 validations: {
                                     invalid: "කරුණාකර වලංගු URL එක් කරන්න"
                                 }
@@ -1364,7 +1364,7 @@ export const console: ConsoleNS = {
                                     "contains the unique identifier of the Application. This is also the issuer value" +
                                     "specified in the SAML Authentication Request issued by the Application.",
                                 label: "නිකුත් කරන්නා",
-                                placeholder: "නිකුත් කරන්නාගේ නම ඇතුළත් කරන්න",
+                                placeholder: "sample-app.com",
                                 validations: {
                                     empty: "කරුණාකර නිකුත් කරන්නාට සපයන්න"
                                 }
