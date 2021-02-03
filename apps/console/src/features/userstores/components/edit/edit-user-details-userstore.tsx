@@ -218,7 +218,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
     };
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment padded="very">
             <Forms
                 onSubmit={ onSubmitHandler }
             >

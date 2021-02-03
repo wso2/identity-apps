@@ -7,7 +7,7 @@
     "types": [
         "react",
         "angular",
-        "vue"
+        "javascript"
     ],
     "category": "DEFAULT",
     "displayOrder": 0,
@@ -15,7 +15,8 @@
     "application": {
         "name": "",
         "advancedConfigurations": {
-            "discoverableByEndUsers": false
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true
         },
         "authenticationSequence": {
             "type": "DEFAULT",

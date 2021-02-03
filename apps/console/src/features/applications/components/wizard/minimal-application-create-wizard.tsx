@@ -430,6 +430,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         );
                                     }
                                 } }
+                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                             />
                         </Grid.Column>
                     </Grid.Row>

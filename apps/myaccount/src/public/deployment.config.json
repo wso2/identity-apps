@@ -30,7 +30,7 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server",
+        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
         "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
         "appLogoPath": "/assets/images/logo.svg",
@@ -79,6 +79,9 @@
         },
         "i18nConfigs": {
             "showLanguageSwitcher": true
+        },
+        "privacyPolicyConfigs": {
+            "visibleOnFooter": true
         },
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

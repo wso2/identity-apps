@@ -366,6 +366,7 @@ export interface ConsoleNS {
                     deleteApplication: Confirmation;
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
+                    handlerAuthenticatorAddition: Confirmation;
                     regenerateSecret: Confirmation;
                     revokeApplication: Confirmation;
                     clientSecretHashDisclaimer: {
@@ -2937,6 +2938,11 @@ export interface ConsoleNS {
                     changePasswordModal: {
                         header: string;
                         message: string;
+                        passwordOptions: {
+                            setPassword: string;
+                            forceReset: string;
+                        };
+                        button: string;
                     };
                 };
                 profile: {
@@ -3076,6 +3082,7 @@ export interface ConsoleNS {
                             addUserGroups: Notification;
                             fetchUserGroups: Notification;
                             removeUserGroups: Notification;
+                            updateUserGroups: Notification;
                         };
                     };
                     roles: {
@@ -3109,6 +3116,7 @@ export interface ConsoleNS {
                             addUserRoles: Notification;
                             fetchUserRoles: Notification;
                             removeUserRoles: Notification;
+                            updateUserRoles: Notification;
                         };
                         viewPermissionModal: {
                             backButton: string;
@@ -3218,6 +3226,83 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
+            invite?: {
+                inviteButton?: string;
+                subSelection?: {
+                    onBoard?: string;
+                    invitees?: string;
+                };
+                notifications?: {
+                    deleteInvite?: Notification;
+                    resendInvite?: Notification;
+                    sendInvite?: Notification;
+                    updateInvite: Notification;
+                };
+                confirmationModal?: {
+                    deleteInvite?: Confirmation;
+                    resendInvite?: Confirmation;
+                };
+                placeholder?: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                        };
+                        title: string;
+                    };
+                    emptyResultPlaceholder: {
+                        addButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        title: string;
+                    };
+                };
+                advancedSearch?: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                username: string;
+                                email: string;
+                            };
+                        };
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                form?: {
+                    sendmail?: {
+                        title: string;
+                        subTitle: string;
+                    };
+                };
+                rolesUpdateModal?: {
+                    header: string;
+                    subHeader: string;
+                    searchPlaceholder: string;
+                };
+            };
+            onboarded?: {
+                notifications?: {
+                    removeUser?: Notification;
+                };
+                confirmationModal?: {
+                    removeUser?: Confirmation;
+                };
+            };
         };
         notifications: {
             endSession: Notification;
@@ -3242,6 +3327,7 @@ export interface ConsoleNS {
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;
+            invite?: Page;
         };
         placeholders: {
             emptySearchResult: Placeholder;

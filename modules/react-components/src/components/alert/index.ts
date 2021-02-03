@@ -19,3 +19,4 @@
 
 export * from "./alert";
 export * from "./wizard-alert";
+export * from "./confirmationModal-alert";

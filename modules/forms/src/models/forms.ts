@@ -108,7 +108,14 @@ export interface PasswordField extends FormRequiredFieldModel {
 /**
  * Radio field child model
  */
-export interface RadioChild {
+export interface RadioChild extends StrictRadioChild {
+    [ key: string ]: any;
+}
+
+/**
+ * Radio field child strict model
+ */
+export interface StrictRadioChild {
     label: string;
     value: string;
     /**
@@ -116,7 +123,10 @@ export interface RadioChild {
      * It will be rendered as a popup when the user hover over the
      * radio button.
      */
-    hint?: { header: string; content: string }
+    hint?: {
+        header?: string;
+        content: string;
+    };
 }
 
 /**

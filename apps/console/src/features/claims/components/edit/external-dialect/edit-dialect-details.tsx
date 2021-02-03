@@ -106,11 +106,21 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                             label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
                             data-testid={ `${ testId }-form-dialect-uri-input` }
-                        />
-                        <Divider hidden />
-                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
-                            { t("console:manage.features.claims.dialects.forms.submit") }
-                        </PrimaryButton>
+                        />                        
+                        {
+                            config.ui?.isDefaultDialectEditingEnabled === false
+                                && ClaimManagementConstants.DEFAULT_DIALECTS.includes(dialect?.id)
+                                ? null
+                                :(
+                                    <>
+                                        <Divider hidden />
+                                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                                            { t("console:manage.features.claims.dialects.forms.submit") }
+                                        </PrimaryButton>
+                                    </>
+                                )
+                        }
+
                     </Forms>
                 </Grid.Column>
             </Grid.Row>

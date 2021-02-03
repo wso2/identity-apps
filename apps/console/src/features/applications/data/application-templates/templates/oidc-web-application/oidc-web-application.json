@@ -5,8 +5,7 @@
     "image": "oidc",
     "authenticationProtocol": "oidc",
     "types": [
-        "java",
-        "dotNet"
+        "java"
     ],
     "category": "DEFAULT",
     "displayOrder": 1,
@@ -14,7 +13,8 @@
     "application": {
         "name": "",
         "advancedConfigurations": {
-            "discoverableByEndUsers": false
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true
         },
         "authenticationSequence": {
             "type": "DEFAULT",

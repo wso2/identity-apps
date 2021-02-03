@@ -87,7 +87,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     };
 
     return (
-        <EmphasizedSegment className="advanced-configuration-section">
+        <EmphasizedSegment className="advanced-configuration-section" padded="very">
             <AdvanceConfigurationsForm
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }

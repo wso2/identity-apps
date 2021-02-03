@@ -5,8 +5,7 @@
     "image": "saml",
     "authenticationProtocol": "saml",
     "types": [
-        "java",
-        "dotNet"
+        "java"
     ],
     "category": "DEFAULT",
     "displayOrder": 2,
@@ -14,7 +13,8 @@
     "application": {
         "name": "",
         "advancedConfigurations": {
-            "discoverableByEndUsers": false
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true
         },
         "authenticationSequence": {
             "type": "DEFAULT",
@@ -36,7 +36,14 @@
                     "issuer": "",
                     "assertionConsumerUrls": [
                         ""
-                    ]
+                    ],
+                    "singleLogoutProfile": {
+                        "enabled": true,
+                        "logoutMethod": "BACKCHANNEL",
+                        "idpInitiatedSingleLogout": {
+                            "enabled": false
+                        }
+                    }
                 }
             }
         }

@@ -35,7 +35,6 @@ import { AppConstants, ConsentConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
-    ConfigurationModel,
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
@@ -50,7 +49,7 @@ import {
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
-import { fetchServerConfiguration } from "../../api";
+import { fetchHomeRealmIdentifiers } from "../../api";
 
 /**
  * Proptypes for the user sessions component.
@@ -137,9 +136,9 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      */
     const createEmptyResidentIDPConsent = async (): Promise<ConsentInterface> => {
 
-        // Just try to fetch the server configuration. If there's any exceptions
-        // thrown it will be handled in @link getConsentedApps function
-        const config: ConfigurationModel = await fetchServerConfiguration();
+        // Fetch the home realm identifiers list from the server configuration. If there's any exceptions
+        // thrown it will be handled in @link getConsentedApps function.
+        const homeRealmIdentifiers: string[] = await fetchHomeRealmIdentifiers();
 
         // Recreate the piiPrincipalId from currently authenticated user's username.
         const fragments = userName.split("@");
@@ -154,7 +153,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 policyUrl: "", // Optional
                 services: [ {
                     purposes: [], // Mandatory length can't be zero
-                    service: config.homeRealmIdentifiers[0], // Mandatory
+                    service: homeRealmIdentifiers[0], // Mandatory
                     serviceDescription: ConsentConstants.SERVICE_DESCRIPTION, // Mandatory
                     serviceDisplayName: ConsentConstants.SERVICE_DISPLAY_NAME, // Mandatory
                     tenantDomain: tenantDomain // Mandatory

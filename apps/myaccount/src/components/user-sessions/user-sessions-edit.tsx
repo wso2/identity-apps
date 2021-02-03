@@ -34,6 +34,16 @@ interface UserSessionsEditProps extends TestableComponentInterface {
     os: IOS;
     onTerminateUserSessionClick: (userSession: UserSession) => void;
     userSession: UserSession;
+    /**
+     * Determines whether to show or hide the username attribute
+     * next to the application name in the active sessions list.
+     * Since the username is mostly common across the applications
+     * we hide this by default.
+     *
+     * @description sub has tenant attached (zzz@yyy.com)
+     * @type {boolean}
+     */
+    showUsernameInApplicationUsingSub?: boolean;
 }
 
 /**
@@ -52,6 +62,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
         os,
         onTerminateUserSessionClick,
         userSession,
+        showUsernameInApplicationUsingSub,
         ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
@@ -210,9 +221,11 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                                 <Table.HeaderCell>
                                                                     { t("common:applicationName") }
                                                                 </Table.HeaderCell>
-                                                                <Table.HeaderCell>
-                                                                    { t("common:user") }
-                                                                </Table.HeaderCell>
+                                                                { showUsernameInApplicationUsingSub && (
+                                                                    <Table.HeaderCell>
+                                                                        { t("common:user") }
+                                                                    </Table.HeaderCell>
+                                                                ) }
                                                             </Table.Row>
                                                         </Table.Header>
                                                         <Table.Body>
@@ -223,9 +236,12 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                                             <Table.Cell>
                                                                                 { app.appName }
                                                                             </Table.Cell>
-                                                                            <Table.Cell>
-                                                                                { app.subject.split("@")[ 0 ] }
-                                                                            </Table.Cell>
+                                                                            {
+                                                                                showUsernameInApplicationUsingSub &&
+                                                                                (<Table.Cell>
+                                                                                    { app.subject.split("@")[0] }
+                                                                                </Table.Cell>)
+                                                                            }
                                                                         </Table.Row>
                                                                     )
                                                                 )
@@ -288,5 +304,6 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
  * See type definitions in {@link UserSessionsEditProps}
  */
 UserSessionsEdit.defaultProps = {
-    "data-testid": "user-sessions-edit"
+    "data-testid": "user-sessions-edit",
+    showUsernameInApplicationUsingSub: false,
 };

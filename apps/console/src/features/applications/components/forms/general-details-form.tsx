@@ -25,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { AppConstants, AppState, UIConfigInterface} from "../../../core";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the applications general details form component.
@@ -159,6 +160,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 type="text"
                                 value={ name }
                                 readOnly={ readOnly }
+                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                                 data-testid={ `${ testId }-application-name-input` }
                             />
                         </Grid.Column>
@@ -254,7 +256,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     "fields.discoverable.hint"
                                 }
                             >
-                                If an application is flagged as discoverable, it will be visible to end users in
+                                Enable to make the application visible to end-users in the application catalog.
+                                Visible in organization&apos;s
                                 <a
                                     href={ AppConstants.getMyAccountPath() }
                                     target="_blank"
@@ -264,6 +267,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     My Account
                                 </a>
                                 <Icon className="ml-1 link primary" name="external"></Icon>
+                                application.
                             </Trans>
                         </Hint>
                     </Grid.Column>

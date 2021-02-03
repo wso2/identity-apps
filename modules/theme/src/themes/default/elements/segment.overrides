@@ -570,7 +570,6 @@
         background: @emphasizedSegmentBackgroundColor;
         border: @emphasizedSegmentBorder;
         border-radius: @emphasizedSegmentBorderRadius;
-        padding: @emphasizedSegmentPadding;
     }
 }
 

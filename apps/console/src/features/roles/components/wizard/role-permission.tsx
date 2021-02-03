@@ -284,7 +284,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     return (
         emphasize
             ? (
-                <EmphasizedSegment data-testid={ testId }>
+                <EmphasizedSegment data-testid={ testId } padded="very">
                     { renderChildren() }
                 </EmphasizedSegment>
             )

@@ -108,7 +108,7 @@
                 }
                 String userstoredomain = queryMap.get("userstoredomain");
                 if (userstoredomain != null) {
-                  username = userstoredomain + "/" + username;
+                  username = userstoredomain + "/" + username + "@" + tenantDomain;
                 }
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
                 JSONObject cookieValueInJson = new JSONObject();

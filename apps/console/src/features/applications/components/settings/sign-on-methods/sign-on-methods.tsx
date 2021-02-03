@@ -20,11 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { EmphasizedSegment, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
@@ -94,6 +94,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
+    const [ showAdvancedFlows, setShowAdvancedFlows ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
@@ -113,7 +114,19 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      */
     useEffect(() => {
         fetchRequestPathAuthenticators();
-    }, [] );
+    }, []);
+
+    /**
+     * Updates the steps when the authentication sequence updates.
+     */
+    useEffect(() => {
+
+        if (!authenticationSequence || !authenticationSequence?.steps || !Array.isArray(authenticationSequence.steps)) {
+            return;
+        }
+
+        setSteps(authenticationSequence.steps.length);
+    }, [ authenticationSequence ]);
 
     /**
      * Updates the number of authentication steps.
@@ -303,8 +316,34 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         </>
     );
 
+    /**
+     * Renders update button.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderUpdateButton = (): ReactElement => {
+
+        if (!(!readOnly && hasRequiredScopes(featureConfig?.applications,
+            featureConfig?.applications?.scopes?.update, allowedScopes))) {
+
+            return null;
+        }
+
+        return (
+            <>
+                <Divider hidden/>
+                <PrimaryButton
+                    onClick={ handleUpdateClick }
+                    data-testid={ `${ testId }-update-button` }
+                >
+                    { t("common:update") }
+                </PrimaryButton>
+            </>
+        );
+    };
+
     return (
-        <EmphasizedSegment className="sign-on-methods-tab-content">
+        <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             <StepBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -319,44 +358,41 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
             />
-            <ScriptBasedFlow
-                authenticationSequence={ sequence }
-                isLoading={ isLoading }
-                onTemplateSelect={ handleLoadingDataFromTemplate }
-                onScriptChange={ handleAdaptiveScriptChange }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
+            <Divider hidden/>
+            { !showAdvancedFlows && renderUpdateButton() }
+            <div className="text-center md-3">
+                <LinkButton
+                    type="button"
+                    onClick={ () => setShowAdvancedFlows(!showAdvancedFlows) }
+                    data-testid={ `${ testId }-show-advanced-flows` }
+                >
+                    <Icon name={ showAdvancedFlows ? "chevron up" : "chevron down" }/>
+                    { showAdvancedFlows ? t("common:showLess") : t("common:showMore") }
+                </LinkButton>
+            </div>
+            <div className={ !showAdvancedFlows ? "display-none" : "" }>
+                <ScriptBasedFlow
+                    authenticationSequence={ sequence }
+                    isLoading={ isLoading }
+                    onTemplateSelect={ handleLoadingDataFromTemplate }
+                    onScriptChange={ handleAdaptiveScriptChange }
+                    readOnly={
+                        readOnly
+                        || !hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update,
+                            allowedScopes)
+                    }
+                    data-testid={ `${ testId }-script-based-flow` }
+                    authenticationSteps={ steps }
+                    isDefaultScript={ isDefaultScript }
+                />
+                {
+                    (config?.ui?.isRequestPathAuthenticationEnabled === false)
+                        ? null
+                        : requestPathAuthenticators && showRequestPathAuthenticators
                 }
-                data-testid={ `${ testId }-script-based-flow` }
-                authenticationSteps={ steps }
-                isDefaultScript={ isDefaultScript }
-            />
-            {
-                (config?.ui?.isRequestPathAuthenticationEnabled === false)
-                    ? null
-                    : requestPathAuthenticators && showRequestPathAuthenticators
-            }
-            {
-                !readOnly
-                && hasRequiredScopes(
-                    featureConfig?.applications,
-                    featureConfig?.applications?.scopes?.update,
-                    allowedScopes)
-                && (
-                    <>
-                        <Divider hidden />
-                        <PrimaryButton
-                            onClick={ handleUpdateClick }
-                            data-testid={ `${ testId }-update-button` }
-                        >
-                            { t("common:update") }
-                        </PrimaryButton>
-                    </>
-                )
-            }
+                { renderUpdateButton() }
+            </div>
         </EmphasizedSegment>
     );
 };

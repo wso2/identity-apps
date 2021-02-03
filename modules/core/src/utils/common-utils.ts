@@ -168,15 +168,9 @@ export class CommonUtils {
 
             try {
                 const copyStatus: boolean = document.execCommand("copy");
-
                 dummyTextArea.remove();
                 document.body.removeChild(dummyTextArea);
-
-                if (copyStatus) {
-                    return Promise.resolve(true);
-                }
-
-                return Promise.resolve(false);
+                return Promise.resolve<boolean>(copyStatus);
             } catch (e) {
                 return Promise.resolve(false);
             }
@@ -186,11 +180,6 @@ export class CommonUtils {
             return fallbackCopyTextToClipboard(text);
         }
 
-        return navigator.clipboard.writeText(text)
-            .then(() => {
-                return true;
-            },() => {
-                return false;
-            });
+        return navigator.clipboard.writeText(text).then(() => true, () => false);
     }
 }

@@ -156,7 +156,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         const selectedClaimsValues = [...tempSelectedClaims];
         const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues?.includes(claim));
         const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
-        added.map((claim) => createMapping(claim));
+        createMapping(added);
         removedClaims.map((claim) => removeMapping(claim));
         // setSelectedClaims(selectedClaimsValues);
         setInitialSelectedClaims(selectedClaimsValues);

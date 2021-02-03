@@ -53,77 +53,62 @@ const PersonalInfoPage = (): ReactElement => {
         >
             <Divider hidden/>
             <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.personalInfo,
-                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
-                            )
-                            ? (
+                {
+                    hasRequiredScopes(accessConfig?.personalInfo,
+                        accessConfig?.personalInfo?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.personalInfo,
+                        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE"))
+                    && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+
                                 <Profile
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.personalInfo,
-                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
-                            )
-                            ? (
-                                <LinkedAccounts onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.personalInfo,
-                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
-                            )
-                            ? (
-                                <FederatedAssociations onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.personalInfo,
-                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
-                            )
-                            ? (
-                                <ProfileExport onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.personalInfo,
+                        accessConfig?.personalInfo?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.personalInfo,
+                        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS"))
+                    && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <LinkedAccounts onAlertFired={ handleAlerts }/>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.personalInfo,
+                        accessConfig?.personalInfo?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.personalInfo,
+                        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS"))
+                    && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <FederatedAssociations onAlertFired={ handleAlerts }/>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.personalInfo,
+                        accessConfig?.personalInfo?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.personalInfo,
+                        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE"))
+                    && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <ProfileExport onAlertFired={ handleAlerts }/>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </InnerPageLayout>
     );

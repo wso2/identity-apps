@@ -138,10 +138,10 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             return;
         }
 
-        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]) {
-            addGroup(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]);
+        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] && wizardState[ WizardStepsFormTypes.USER_LIST ]) {
+            addGroup(wizardState);
         }
-    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] ]);
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] && wizardState[ WizardStepsFormTypes.USER_LIST ]]);
 
     const handleRoleIdSet = (roleId) => {
         setSelectedRoleId(roleId);

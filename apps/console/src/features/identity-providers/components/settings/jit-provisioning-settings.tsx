@@ -117,7 +117,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
     return (
         !isLoading
             ? (
-                <EmphasizedSegment>
+                <EmphasizedSegment padded="very">
                     <JITProvisioningConfigurationsForm
                         initialValues={ jitProvisioningConfigurations }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }

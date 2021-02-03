@@ -478,6 +478,13 @@
            {% endfor %}
            {% endif %}
         },
+        "hiddenAuthenticators": [
+            {% if console.ui.hiddenAuthenticators is defined %}
+                {% for value in console.ui.hiddenAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.i18n_configs.items() is defined %}
             {% for key, value in console.i18n_configs.items() %}
@@ -504,6 +511,17 @@
         {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
+        "privacyPolicyConfigs": {
+            {% if console.privacy_policy_configs.items() is defined %}
+            {% for key, value in console.privacy_policy_configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "productName": "{{ console.ui.product_name }}",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}

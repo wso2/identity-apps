@@ -243,7 +243,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 return localClaim.claimURI === mappedLocalClaimUri;
             });
 
-            if (matchedLocalClaim) {
+            if (matchedLocalClaim && matchedLocalClaim[0] && matchedLocalClaim[0].displayName) {
                 externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
             }
         });
@@ -260,24 +260,25 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return id;
     };
 
-    const createMapping = (claim: Claim) => {
-
-        if (selectedDialect.localDialect) {
-            const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
-            const newClaimMapping: ExtendedClaimMappingInterface = {
-                addMapping: false,
-                applicationClaim: "",
-                localClaim: {
-                    displayName: claim.displayName,
-                    id: claim.id,
-                    uri: claim.claimURI
-                }
-            };
-            if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
-                claimMappingList.push(newClaimMapping);
+    const createMapping = (claims: Claim[]) => {
+            if (selectedDialect.localDialect) {
+                const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+                claims.map((claim) => {
+                    const newClaimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: false,
+                        applicationClaim: "",
+                        localClaim: {
+                            displayName: claim.displayName,
+                            id: claim.id,
+                            uri: claim.claimURI
+                        }
+                    };
+                    if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
+                        claimMappingList.push(newClaimMapping);
+                    }
+                    setClaimMapping(claimMappingList);
+                });
             }
-            setClaimMapping(claimMappingList);
-        }
 
     };
 
@@ -595,7 +596,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     return (
         !isClaimRequestLoading && selectedDialect && !(isClaimLoading && _.isEmpty(externalClaims))
             ?
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Grid className="claim-mapping">
                     <AttributeSelection
                         claims={ claims }

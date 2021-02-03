@@ -8,7 +8,6 @@
     "name": "Traditional Web Application",
     "subTemplatesSectionTitle": "Protocols",
     "types": [
-        "java",
-        "dotNet"
+        "java"
     ]
 }

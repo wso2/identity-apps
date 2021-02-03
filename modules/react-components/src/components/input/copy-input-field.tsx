@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
+import { CommonUtils } from "@wso2is/core/utils";
 
 /**
  * Copy to clipboard input field props.
@@ -81,6 +82,21 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
         }
     }, [ copied ]);
 
+    /**
+     * Copies the value to the users clipboard.
+     *
+     * @param event {MouseEvent<HTMLButtonElement>)}
+     */
+    const copyValueToClipboard = async (event: MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        /**
+         * Since the reference input component is a {@link Input} we can
+         * directly get the current value from props itself.
+         */
+        const _selection = inputRef.current?.props[ "value" ] ?? "";
+        await CommonUtils.copyTextToClipboard(_selection);
+    };
+
     return (
         <Input
             ref={ inputRef }
@@ -99,18 +115,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                                     setCopied(false);
                                 } }
                                 ref={ copyButtonRef as React.RefObject<Button> }
-                                onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                    e.stopPropagation();
-
-                                    inputRef.current?.select();
-                                    setCopied(true);
-                                    document.execCommand("copy");
-                                    copyButtonRef.current.ref.current.blur();
-
-                                    if (window.getSelection) {
-                                        window.getSelection().removeAllRanges();
-                                    }
-                                } }
+                                onClick={ copyValueToClipboard }
                             />
                         )
                     }

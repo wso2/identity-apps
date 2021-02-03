@@ -43,8 +43,8 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
     return (
         <div data-testid={ testId }>
             <Heading as="h5">Name to identify your application</Heading>
-            <p>Provide a unique name for the application so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
+            <p>A unique name for the application.</p>
+            <p>E.g., My App</p>
 
             <>
                 <Divider/>
@@ -67,7 +67,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                     Request
                     issued by the service provider.
                 </p>
-                <p>E.g. saml2-web-app-travelocity.com</p>
+                <p>E.g. my-app.com</p>
 
                 <Divider/>
 
@@ -78,7 +78,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                     successful. This is the Assertion Consumer Service (ACS) URL of the service
                     provider.
                 </p>
-                <p>E.g. http://localhost:8080/travelocity.com/home.jsp</p>
+                <p>E.g. http://my-app.com/home.jsp</p>
             </>
         </div>
     );

@@ -597,6 +597,13 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the protocol."
                     },
+                    handlerAuthenticatorAddition: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "The authenticator you are trying to add is a handler. Make sure you add " +
+                            "authenticators in other steps.",
+                        header: "You are adding a Handler",
+                        message: "This is a handler."
+                    },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "If you regenerate this application, All the applications depending on this also " +
@@ -616,8 +623,8 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         actionTitle: "Delete",
                         header: "Delete application",
-                        subheader: "The application will be deleted permanently and the " +
-                            "clients using this application will stop working."
+                        subheader: "Once the application is deleted, it cannot be recovered and the clients " +
+                            "using this application will no longer work."
                     },
                     header: "Danger Zone"
                 },
@@ -754,22 +761,22 @@ export const console: ConsoleNS = {
                             },
                             outbound: {
                                 actions: {
-                                    addIdp: "New Identity Provider"
+                                    addIdp: "New Provisioner"
                                 },
                                 addIdpWizard: {
                                     errors: {
-                                        noProvisioningConnector: "The selected identity provider doesn't have" +
+                                        noProvisioningConnector: "The selected provisioner doesn't have" +
                                             " any provisioning connectors."
                                     },
-                                    heading: "Add Outbound Provisioning IDP",
+                                    heading: "Add Outbound Provisioner",
                                     steps: {
-                                        details: "IDP Details"
+                                        details: "Provisioner Details"
                                     },
-                                    subHeading: "Select the IDP to provision users that self-register to your " +
-                                        "application."
+                                    subHeading: "Select the provisioner to provision users that self-register to" +
+                                        " your application."
                                 },
                                 heading: "Outbound Provisioning",
-                                subHeading: "Configure an identity provider to outbound provision the users of this " +
+                                subHeading: "Configure a provisioner to outbound provision the users of this " +
                                     "application."
                             },
                             tabName: "Provisioning"
@@ -798,11 +805,11 @@ export const console: ConsoleNS = {
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
-                                                        label: "Use Attributes from",
+                                                        label: "Use attributes from",
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Use Subject identifier from",
+                                                        label: "Use subject identifier from",
                                                         placeholder: "Select step"
                                                     }
                                                 }
@@ -861,7 +868,7 @@ export const console: ConsoleNS = {
                                     role: {
                                         hint: "This option will append the user store domain that the user resides to" +
                                             " role",
-                                        label: "Include userDomain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "Select the role attribute"
                                         }
@@ -888,7 +895,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeTenantDomain: {
                                         hint: "This option will append the tenant domain to the local subject " +
                                             " identifier",
-                                        label: "Include Tenant Domain",
+                                        label: "Include tenant domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -896,7 +903,7 @@ export const console: ConsoleNS = {
                                     subjectIncludeUserDomain: {
                                         hint: "This option will append the user store domain that the user resides " +
                                             " in the local subject identifier",
-                                        label: "Include User Domain",
+                                        label: "Include user domain",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -933,9 +940,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "Applications are by default restricted for usage by users of the service" +
-                                    " provider's tenant. If this application is SaaS enabled it is opened up for " +
-                                    "all the users of all the tenants.",
+                                hint: "By default, applications can only be used by users belonging to the " +
+                                    "application's tenant. If this application is SaaS-enabled, it will be " +
+                                    "accessible to all users across all tenants.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -967,7 +974,7 @@ export const console: ConsoleNS = {
                                         description: "The URL used to obtain a JWKS public key.",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     pemValue: {
@@ -1011,7 +1018,7 @@ export const console: ConsoleNS = {
                                 placeholder: "https://myapp.io/home",
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             description: {
@@ -1020,13 +1027,13 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users in the application catalog." +
-                                    " Visible in <1>My Account</1><2></2>",
+                                hint: "Enable to make the application visible to end-users in the application " +
+                                    "catalog. Visible in organization's <1>My Account</1><2></2><3>application.</3>",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
-                                hint: "A URL for the image of the application for display purposes. If not provided " +
-                                    "a generated thumbnail will displayed. Recommended size is 200x200 pixels.",
+                                hint: "An image URL for the application. If this is not provided, we will display " +
+                                    "a generated thumbnail instead. Recommended size: 200x200 pixels.",
                                 label: "Logo",
                                 placeholder: "https://myapp-resources.io/my_app_image.png",
                                 validations: {
@@ -1077,26 +1084,26 @@ export const console: ConsoleNS = {
                     inboundOIDC: {
                         fields: {
                             allowedOrigins: {
-                                hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
+                                hint: "Allowed origins are URLs that will be allowed to make requests from cross " +
                                     "origins to {{productName}} APIs",
-                                label: "Allowed Origins",
+                                label: "Allowed origins",
                                 placeholder: "https://myapp.io",
                                 validations: {
                                     empty: "Please add a valid origin."
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URL determines to where the authorization code is sent, login " +
-                                    "is completed and to where the user is redirected to once the logout is completed." +
-                                    " The client should specify the redirect_url in the authorize or logout" +
-                                    " request and {{productName}} will validate it against this " +
-                                    "configured Redirect URLs.",
+                                hint: "The redirect URI determines where the authorization code is sent to upon " +
+                                    "user authentication, and where the user is redirected to upon user logout." +
+                                    "The client app should specify the redirect URI in the authorization or logout " +
+                                    "request and {{productName}} will validate it against the redirect URIs " +
+                                    "entered here.",
                                 label: "Authorized redirect URIs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "Please add a valid URI.",
                                     required: "This field is required for a functional app. " +
-                                        "However, if you are planning to try with a sample, " +
+                                        "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 }
                             },
@@ -1201,7 +1208,8 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
-                                            empty: "Please fill the audience"
+                                            empty: "Please fill the audience",
+                                            duplicate: "Audience contains duplicate values"
                                         }
                                     },
                                     encryption: {
@@ -1370,7 +1378,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the meta file url",
                                 validations: {
                                     empty: "Please provide the meta file url",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             mode: {
@@ -1574,7 +1582,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout request URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     },
                                     responseURL: {
@@ -1582,7 +1590,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter single logout response URL",
                                         validations: {
                                             empty: "This is a required field.",
-                                            invalid: "This is not a valid URL"
+                                            invalid: "Enter a valid URL"
                                         }
                                     }
                                 },
@@ -1629,7 +1637,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter Reply URL",
                                 validations: {
                                     empty: "This is a required field.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             }
                         }
@@ -1642,7 +1650,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter audience",
                                 validations: {
                                     empty: "Enter the audience.",
-                                    invalid: "This is not a valid URL"
+                                    invalid: "Enter a valid URL"
                                 }
                             },
                             certificateAlias: {
@@ -2206,10 +2214,10 @@ export const console: ConsoleNS = {
                         title: "Add a new Application"
                     },
                     emptyOutboundProvisioningIDPs: {
-                        action: "New IDP",
-                        subtitles: "This Application has no outbound provisioning IDPs configured." +
-                            " Add an IDP to view it here.",
-                        title: "No outbound provisioning IDPs"
+                        action: "New Provisioner",
+                        subtitles: "This Application has no outbound provisioners configured." +
+                            " Add a provisioner to view it here.",
+                        title: "No outbound provisioners"
                     },
                     emptyProtocolList: {
                         action: "New Protocol",
@@ -2343,7 +2351,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -2424,7 +2432,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
@@ -3169,14 +3177,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, there is no going back." +
-                            " Please be certain."
+                        subheader: "Once you delete an identity provider, it cannot be recovered and users " +
+                            "can no longer log in through this provider."
                     },
                     disableIDP: {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again. Please be certain."
+                            "you enable it again."
                     },
                     header: "Danger Zone"
                 },
@@ -3257,7 +3265,7 @@ export const console: ConsoleNS = {
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
-                        invalidURLErrorMessage: "This is not a valid URL",
+                        invalidURLErrorMessage: "Enter a valid URL",
                         requiredErrorMessage: "This is required"
                     },
                     generalDetails: {
@@ -6265,8 +6273,8 @@ export const console: ConsoleNS = {
                             radioButton: {
                                 label: "Select the method to set the user password",
                                 options: {
-                                    askPassword: "Invite the user to set a password",
-                                    createPassword: "Set a temporary user password"
+                                    askPassword: "Invite the user to set their own password",
+                                    createPassword: "Set a temporary password for the user"
 
                                 }
                             }
@@ -6392,9 +6400,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     changePasswordModal: {
-                        header: "Change User Password",
+                        button: "Reset Password",
+                        header: "Reset User Password",
                         message: "NOTE: Please note that after changing the password the user will no longer be " +
-                            "able to log into any application using the current password."
+                            "able to log into any application using the current password.",
+                        passwordOptions: {
+                            forceReset: "Invite user to reset the password",
+                            setPassword: "Set a new password for the user"
+                        }
                     }
                 },
                 profile: {
@@ -6684,6 +6697,20 @@ export const console: ConsoleNS = {
                                     description: "Removing assigned groups for the user successful",
                                     message: "Update user groups successful"
                                 }
+                            },
+                            updateUserGroups: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Error occurred while updating user groups"
+                                },
+                                genericError: {
+                                    description: "An error occurred while updating user groups",
+                                    message: "Something went wrong"
+                                },
+                                success: {
+                                    description: "Updating assigned groups for the user successful",
+                                    message: "Update user groups successful"
+                                }
                             }
                         }
                     },
@@ -6755,6 +6782,20 @@ export const console: ConsoleNS = {
                                 },
                                 success: {
                                     description: "Removing assigned roles for the user successful",
+                                    message: "Update user roles successful"
+                                }
+                            },
+                            updateUserRoles: {
+                                error: {
+                                    description: "{{description}}",
+                                    message: "Error occurred while updating the roles of the user"
+                                },
+                                genericError: {
+                                    description: "An error occurred while updating user roles",
+                                    message: "Something went wrong"
+                                },
+                                success: {
+                                    description: "Updating assigned roles for the user successful",
                                     message: "Update user roles successful"
                                 }
                             }
@@ -7213,6 +7254,166 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            invite: {
+                inviteButton: "New Invitation",
+                subSelection: {
+                    onBoard: "Onboarded Users",
+                    invitees: "Invitees"
+                },
+                notifications: {
+                    sendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while sending the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't send the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully sent the invitation",
+                            message: "Sending the invitation successful"
+                        }
+                    },
+                    resendInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while resending the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't resend the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully resent the invitation",
+                            message: "Resending the invitation successful"
+                        }
+                    },
+                    deleteInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while deleting the invitation"
+                        },
+                        genericError: {
+                            description: "Couldn't delete the invitation",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully deleted the invitation",
+                            message: "Invitation deletion successful"
+                        }
+                    },
+                    updateInvite: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the invite"
+                        },
+                        genericError: {
+                            description: "Couldn't update the invite",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the invite",
+                            message: "Invitation update successful"
+                        }
+                    }
+                },
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you revoke this invite, the user will not be able to onboard your organization. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently revoke the invite."
+                    },
+                    resendInvite: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you send this invite, Earlier invite link will be expired. " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is  will permanently revoke the earlier invite."
+                    }
+                },
+                placeholder: {
+                    emptySearchResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    },
+                    emptyResultPlaceholder: {
+                        addButton: "New Invitation",
+                        subTitle: {
+                            0: "There are currently no invitations available.",
+                            1: "You can create an organization and invite users",
+                            2: "to get onboarded to you organization."
+                        },
+                        title: "Send a New Invite"
+                    }
+                },
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                email: "Email",
+                                username: "Username"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Email etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Email"
+                },
+                form: {
+                    sendmail: {
+                        title: "Invite Admin/Developer",
+                        subTitle: "Send an email invite to add a new admin or developer to your organization"
+                    }
+                },
+                rolesUpdateModal: {
+                    header: "Update Invitee Roles",
+                    searchPlaceholder: "Search by role name",
+                    subHeader: "Add or remove roles from the user that you have invited."
+                }
+            },
+            onboarded: {
+                confirmationModal: {
+                    removeUser: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you remove this user, the user will not be able to access the console " +
+                            "within your organization. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will remove the user from your organization."
+                    }
+                },
+                notifications: {
+                    removeUser: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while removing the user"
+                        },
+                        genericError: {
+                            description: "Couldn't remove the user from the {{tenant}} organization",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully removed the user from the {{tenant}} organization",
+                            message: "User removed successfully"
+                        }
+                    }
+                }
             }
         },
         notifications: {
@@ -7337,6 +7538,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to users",
                 subTitle: "{{name}}",
                 title: "{{email}}"
+            },
+            invite: {
+                subTitle: "Invite and manage admins and developers.",
+                title: "Admins & Developers"
             }
         },
         placeholders: {

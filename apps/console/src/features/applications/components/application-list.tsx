@@ -33,7 +33,9 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    Text,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -105,6 +107,10 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * Show sign on methods condition
+     */
+    isSetStrongerAuth?: boolean;
 }
 
 /**
@@ -131,6 +137,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         searchQuery,
         selection,
         showListItemActions,
+        isSetStrongerAuth,
         [ "data-testid" ]: testId
     } = props;
 
@@ -149,6 +156,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
+
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -173,12 +182,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param {ApplicationAccessTypes} access - Access level of the application.
      */
     const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
-        history.push({
-            pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
-            search: access === ApplicationAccessTypes.READ
-                ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                : ""
-        });
+        if (isSetStrongerAuth) {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+            });
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                search: access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : ""
+            });
+        }
     };
 
     /**
@@ -201,7 +218,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    dispatch(setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.deleteApplication.error" +
@@ -211,7 +228,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     return;
                 }
 
-                dispatch(addAlert({
+                dispatch(setAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
@@ -286,7 +303,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Label>
                                         )
                                     }
-                                    { app.description }
+                                    <Text width={ 300 } truncate>{ app.description }</Text>
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
@@ -413,7 +430,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                actions={ resolveTableActions() }
+                actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -449,7 +466,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onSecondaryActionClick={ (): void => {
+                            setShowDeleteConfirmationModal(false);
+                            setAlert(null);
+                        } }
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
@@ -469,6 +489,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
+                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

@@ -54,7 +54,7 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server",
+        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
         "appTitle": "Console | WSO2 Identity Server",
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
@@ -308,16 +308,20 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenAuthenticators": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
-        "isDefaultDialectEditingEnabled": true,
+        "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": true,
         "isRequestPathAuthenticationEnabled": true,
         "listAllAttributeDialects": false,
+        "privacyPolicyConfigs": {
+            "visibleOnFooter": true
+        },
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,
