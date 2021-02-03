@@ -254,6 +254,9 @@ export const initializeAuthentication = () => (dispatch) => {
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
 
+        // Remove auth callback once the tenant updates.
+        AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
+
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
