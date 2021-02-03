@@ -27,7 +27,9 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.net.URLDecoder" %>
+<%@ page import="java.util.regex.Pattern" %>
 <%@ page import="javax.ws.rs.core.Response" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
@@ -311,6 +313,8 @@
                 ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
                 urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
                                         request.getParameter("sp"));
+
+                urlWithoutEncoding = replaceURLPlaceholders(urlWithoutEncoding, request);
             } catch (ApplicationDataRetrievalClientException e) {
                 //ignored and fallback to login page url
             }
@@ -481,6 +485,27 @@
                 String urlParameters) {
 
             return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+        }
+
+        private String replaceURLPlaceholders(String accessURL, HttpServletRequest request) {
+
+            if (StringUtils.isBlank(accessURL)) {
+                return accessURL;
+            }
+            if (!accessURL.contains("${UserTenantHint}")) {
+                return accessURL;
+            }
+            String userTenantHint = request.getParameter("ut");
+            if (StringUtils.isBlank(userTenantHint)) {
+                userTenantHint = request.getParameter("t");
+            }
+            if (StringUtils.isBlank(userTenantHint)) {
+                userTenantHint = "carbon.super";
+            }
+
+            return accessURL.replaceAll(Pattern.quote("${UserTenantHint}"), userTenantHint)
+                            .replaceAll(Pattern.quote("/t/carbon.super/"), "/");
+
         }
 
     %>

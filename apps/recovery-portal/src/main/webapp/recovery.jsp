@@ -26,6 +26,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
+<%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
+<%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -48,10 +50,16 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
+    String userTenant = request.getParameter("t");
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+    }
+
+    if (StringUtils.isNotBlank(userTenant)) {
+        username = MultitenantUtils.getTenantAwareUsername(username);
+        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
     }
 
     // Password recovery parameters
