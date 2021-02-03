@@ -48,6 +48,7 @@
     String ERROR_CODE = "errorCode";
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -92,9 +93,18 @@
                 if (userStoreDomain != null) {
                     username = userStoreDomain + "/" + username + "@" + tenantDomain;
                 }
-                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
+                
+                JSONObject contentValueInJson = new JSONObject();
+                contentValueInJson.put("username", username);
+                contentValueInJson.put("createdTime", System.currentTimeMillis());
+                contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+                String content = contentValueInJson.toString();
+        
                 JSONObject cookieValueInJson = new JSONObject();
-                cookieValueInJson.put("username", username);
+                cookieValueInJson.put("content", content);
+        
+                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+        
                 cookieValueInJson.put("signature", signature);
                 Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
                         Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
