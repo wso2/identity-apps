@@ -124,6 +124,24 @@ export class AppConstants {
     }
 
     /**
+     * Get the tenant path. ex: `/t/wso2.com`.
+     *
+     * @return {string}
+     */
+    public static getTenantPath(): string {
+        return window["AppUtils"].getConfig().tenantPath;
+    }
+
+    /**
+     * Get the super tenant. ex: `carbon.super`.
+     *
+     * @return {string}
+     */
+    public static getSuperTenant(): string {
+        return window["AppUtils"].getConfig().superTenant;
+    }
+
+    /**
      * Set of keys used to enable/disable features.
      * @constant
      * @type {Map<string, string>}
