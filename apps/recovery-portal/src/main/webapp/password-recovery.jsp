@@ -230,6 +230,20 @@
                         <%
                             }
                         %>
+                        <%
+                            String userTenant = request.getParameter("ut");
+                            if (StringUtils.isBlank(userTenant)) {
+                                userTenant = request.getParameter("t");
+                            }
+                            if (isSaaSApp && StringUtils.isNotBlank(userTenant)) {
+                        %>
+                        <div>
+                            <input type="hidden" name="t"
+                                   value="<%=Encode.forHtmlAttribute(userTenant) %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
 
                         <%
                             if (reCaptchaEnabled) {
