@@ -25,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { AppConstants, AppState, UIConfigInterface} from "../../../core";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the applications general details form component.
@@ -159,6 +160,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 type="text"
                                 value={ name }
                                 readOnly={ readOnly }
+                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                                 data-testid={ `${ testId }-application-name-input` }
                             />
                         </Grid.Column>

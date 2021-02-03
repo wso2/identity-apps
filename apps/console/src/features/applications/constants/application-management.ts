@@ -284,4 +284,11 @@ export class ApplicationManagementConstants {
         "lffygD5IymCSuuDim4qB/9bh7oi37heJ4ObpBIzroPUOthbG4gv/5blW3Dc=\n" +
         "-----END CERTIFICATE-----";
 
+    /**
+     * Form element constraints.
+     * @type {{APP_NAME_MAX_LENGTH: number}}
+     */
+    public static readonly FORM_FIELD_CONSTRAINTS = {
+        APP_NAME_MAX_LENGTH: 50
+    }
 }
