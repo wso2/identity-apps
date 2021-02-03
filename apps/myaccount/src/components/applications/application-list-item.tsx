@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AnimatedAvatar, AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { Icon, Item, List } from "semantic-ui-react";
 import { Application } from "../../models";
-import { AppAvatar } from "../shared";
 
 /**
  * Proptypes for the application list item component.
@@ -52,12 +52,34 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
         <Item.Group unstackable onClick={ () => onAppNavigate(app.id, app.accessUrl) } data-testid={ testId }>
             <Item className="application-list-item">
                 <List.Content className="icon-container" floated="left">
-                    <AppAvatar
-                        spaced="right"
-                        size={ app.image ? "mini" : "little" }
-                        name={ app.name }
-                        image={ app.image }
-                    />
+                    {
+                        app.image
+                            ? (
+                                <AppAvatar
+                                    square
+                                    size="mini"
+                                    name={ app.name }
+                                    image={ app.image }
+                                    spaced="right"
+                                    data-testid={ `${ testId }-item-image` }
+                                />
+                            )
+                            : (
+                                <AppAvatar
+                                    square
+                                    image={ (
+                                        <AnimatedAvatar
+                                            name={ app.name }
+                                            size="mini"
+                                            data-testid={ `${ testId }-item-image-inner` }
+                                        />
+                                    ) }
+                                    size="mini"
+                                    spaced="right"
+                                    data-testid={ `${ testId }-item-image` }
+                                />
+                            )
+                    }
                 </List.Content>
                 <Item.Content className="text-content-container">
                     <Item.Header as="a">

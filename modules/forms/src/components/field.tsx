@@ -203,14 +203,22 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
                     { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((radio: RadioChild, index: number) => {
+
+                        const {
+                            hint,
+                            label,
+                            value,
+                            ...rest
+                        } = radio;
+
                         const field = (
                             <Form.Field key={ index }>
                                 <Radio
                                     { ...filteredProps }
-                                    label={ radio.label }
+                                    label={ label }
                                     name={ inputField.name }
-                                    value={ radio.value }
-                                    checked={ form.get(inputField.name) === radio.value }
+                                    value={ value }
+                                    checked={ form.get(inputField.name) === value }
                                     onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                                         handleChange(value.toString(), inputField.name);
                                     } }
@@ -223,15 +231,16 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     onKeyPress={ (event: React.KeyboardEvent) => {
                                         event.key === ENTER_KEY && handleBlur(event, inputField.name);
                                     } }
+                                    { ...rest }
                                 />
                             </Form.Field>
                         );
-                        if (radio.hint && radio.hint.content) {
+                        if (hint && hint.content) {
                             return (
                                 <Popup
                                     key={ `${ index }-popup` }
-                                    header={ radio.hint.header }
-                                    content={ radio.hint.content }
+                                    header={ hint.header }
+                                    content={ hint.content }
                                     trigger={ field }
                                 />
                             );

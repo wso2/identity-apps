@@ -38,42 +38,46 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
-                <Grid.Column computer={ 9 } mobile={ 16 }>
-                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
-                        isFeatureEnabled(
-                            accessConfig?.overview,
-                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
-                        ) ? (
-                            <AccountStatusWidget />
-                        ) : null }
-                </Grid.Column>
-                <Grid.Column computer={ 7 } mobile={ 16 }>
-                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
-                        isFeatureEnabled(
-                            accessConfig?.overview,
-                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
-                        ) ? (
-                            <UserSessionsWidget />
-                        ) : null }
-                </Grid.Column>
-                <Grid.Column computer={ 8 } mobile={ 16 }>
-                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
-                        isFeatureEnabled(
-                            accessConfig?.overview,
-                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
-                        ) ? (
-                            <AccountSecurityWidget />
-                        ) : null }
-                </Grid.Column>
-                <Grid.Column computer={ 8 } mobile={ 16 }>
-                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
-                        isFeatureEnabled(
-                            accessConfig?.overview,
-                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
-                        ) ? (
-                            <ConsentManagementWidget />
-                        ) : null }
-                </Grid.Column>
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS"))
+                    && (
+                        <Grid.Column computer={ 9 } mobile={ 16 }>
+                            <AccountStatusWidget/>
+                        </Grid.Column>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY"))
+                    && (
+                        <Grid.Column computer={ 7 } mobile={ 16 }>
+                            <UserSessionsWidget/>
+                        </Grid.Column>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY"))
+                    && (
+                        <Grid.Column computer={ 8 } mobile={ 16 }>
+                            <AccountSecurityWidget/>
+                        </Grid.Column>
+                    )
+                }
+                {
+                    hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(accessConfig?.overview,
+                        AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS"))
+                    && (
+                        <Grid.Column computer={ 8 } mobile={ 16 }>
+                            <ConsentManagementWidget/>
+                        </Grid.Column>
+                    )
+                }
             </Grid.Row>
         </Grid>
     );

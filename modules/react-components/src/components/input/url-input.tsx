@@ -167,10 +167,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         const url: string = changeUrl;
 
         /**
-         * If the entered URL is a silly input, then we won't add
+         * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
         if (!URLUtils.isURLValid(url, true)) {
+            setValidURL(false);
             return;
         }
 
@@ -558,7 +559,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             <LinkButton
                                 className={ "m-1 p-1 with-no-border orange" }
                                 onClick={ (e) => {
-                                    onAllowOriginClick(e, onlyOrigin ? origin : href)
+                                    onAllowOriginClick(e, origin);
                                 } }>
                                 <span style={ { fontWeight: "bold" } }>Allow</span>
                             </LinkButton>

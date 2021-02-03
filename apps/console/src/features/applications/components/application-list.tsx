@@ -34,6 +34,7 @@ import {
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
+    Text,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -302,7 +303,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Label>
                                         )
                                     }
-                                    { app.description }
+                                    <Text width={ 300 } truncate>{ app.description }</Text>
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>

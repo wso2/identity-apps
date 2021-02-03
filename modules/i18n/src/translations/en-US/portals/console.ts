@@ -7258,7 +7258,7 @@ export const console: ConsoleNS = {
             invite: {
                 inviteButton: "New Invitation",
                 subSelection: {
-                    onBoard: "OnBoarded",
+                    onBoard: "Onboarded Users",
                     invitees: "Invitees"
                 },
                 notifications: {
