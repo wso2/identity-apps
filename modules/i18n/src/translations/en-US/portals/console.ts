@@ -3033,7 +3033,7 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Currently there are no identity providers available.",
                             1: "You can add a new identity provider easily by following",
-                            2: "the steps in the identity providers creation wizard."
+                            2: "the steps in the identity provider creation wizard."
                         },
                         title: "Add a new Identity Provider"
                     },
@@ -3850,7 +3850,7 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Currently there are no identity providers available.",
                             1: "You can add a new identity provider easily by following the",
-                            2: "steps in the identity providers creation wizard."
+                            2: "steps in the identity provider creation wizard."
                         },
                         title: "Add a new Identity Provider"
                     },
