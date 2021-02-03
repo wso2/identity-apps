@@ -59,8 +59,10 @@
 @generatePasswordButtonMarginTop: 22px;
 
 /*----------------------------
-   OIDC button
+      OIDC Action button
 ------------------------------*/
-@OIDCButtonMarginRight: 25px;
-@OIDCButtonWidth: 120px;
-@OIDCButtonMarginBottom: 1em;
+
+@OIDCActionButtonMarginLeft: 10px;
+@OIDCActionButtonMinWidth: 100px;
+@OIDCActionButtonPadding: 10px 15px;
+@OIDCActionButtonFontSize: 0.9em;

@@ -254,7 +254,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     "fields.discoverable.hint"
                                 }
                             >
-                                If an application is flagged as discoverable, it will be visible to end users in
+                                Enable to make the application visible to end-users in the application catalog.
+                                Visible in organization&apos;s
                                 <a
                                     href={ AppConstants.getMyAccountPath() }
                                     target="_blank"
@@ -264,6 +265,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     My Account
                                 </a>
                                 <Icon className="ml-1 link primary" name="external"></Icon>
+                                application.
                             </Trans>
                         </Hint>
                     </Grid.Column>

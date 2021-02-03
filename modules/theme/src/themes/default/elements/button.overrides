@@ -284,13 +284,11 @@
 }
 
 .ui.button {
-    &.oidc-regenerate-button {
-        margin-right: @OIDCButtonMarginRight;
-        width: @OIDCButtonWidth;
-        margin-bottom: @OIDCButtonMarginBottom;
-    }
-    &.oidc-revoke-button {
-        width: @OIDCButtonWidth;
+    &.oidc-action-button {
+        min-width: @OIDCActionButtonMinWidth;
+        padding: @OIDCActionButtonPadding;
+        font-size: @OIDCActionButtonFontSize;
+        margin-left: @OIDCActionButtonMarginLeft;
     }
 }
 

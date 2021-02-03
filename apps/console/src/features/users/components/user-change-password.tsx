@@ -18,7 +18,7 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { EditSection, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -94,7 +94,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordResetOption, setPasswordResetOption ] = useState("setPassword");
-    const [ triggerSubmit, setTriggerSubmit ] = useState<boolean>(false);
+    const [ triggerSubmit, setTriggerSubmit ] = useTrigger();
     const [
         governanceConnectorProperties,
         setGovernanceConnectorProperties
@@ -590,7 +590,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             <PrimaryButton
                                 data-testid={ `${ testId }-save-button` }
                                 floated="right"
-                                onClick={ () => setTriggerSubmit(true) }
+                                onClick={ () => setTriggerSubmit() }
                             >
                                 { t("console:manage.features.user.modals.changePasswordModal.button") }
                             </PrimaryButton>
