@@ -139,6 +139,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             });
 
         setAllowedOrigins(allowedCORSOrigins);
+
+        // Remove error alert on protocol switch
+        setAlert(null)
     }, [ selectedTemplate ]);
 
     /**
@@ -252,6 +255,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             "addApplication.error.message"
                         )
                     });
+                    scrollToNotification();
 
                     return;
                 }
@@ -259,8 +263,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 setAlert({
                     description: t(
                         "console:develop.features.applications.notifications." +
-                        "addApplication.genericError" +
-                        ".description"
+                        "addApplication.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
@@ -268,6 +271,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         "addApplication.genericError.message"
                     )
                 });
+                scrollToNotification();
             });
     }, [ protocolFormValues, generalFormValues ]);
 
@@ -358,6 +362,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
     };
 
+    const scrollToNotification = () => {
+        document.getElementById("notification-div").scrollIntoView({behavior: 'smooth'})
+    }
+
     /**
      * Resolves to the applicable content of an application template.
      *
@@ -371,15 +379,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     setSubmitProtocolForm();
                 } }
                 submitState={ submit }
+                id="name-input"
             >
                 <Grid>
-                    { alert && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                { notification }
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) }
+                    <div id="notification-div">
+                        { alert && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                    { notification }
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
+                    </div>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field

@@ -158,7 +158,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
     };
 
-
     const handleUserDelete = (userId: string): void => {
         deleteUser(userId)
             .then(() => {

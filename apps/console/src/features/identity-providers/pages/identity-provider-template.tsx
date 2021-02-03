@@ -202,7 +202,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         IdentityProviderTemplateManagementUtils.categorizeTemplates(identityProviderTemplates)
             .then((response: IdentityProviderTemplateCategoryInterface[]) => {
-                console.log(response)
                 setCategorizedTemplates(response);
             })
             .catch(() => {

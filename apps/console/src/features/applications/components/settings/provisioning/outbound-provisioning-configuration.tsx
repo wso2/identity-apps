@@ -217,7 +217,6 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     }));
                     return;
                 }
-                console.log(error);
                 dispatch(setAlert({
                     description: t("console:develop.features.applications.notifications.updateApplication" +
                         ".genericError.description"),
