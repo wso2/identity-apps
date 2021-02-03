@@ -48,13 +48,14 @@
     String ERROR_CODE = "errorCode";
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-    String sessionDataKey = request.getParameter("sessionDataKey");
+    String userStoreDomain = request.getParameter("userstoredomain");
     String username = request.getParameter("username");
     boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
             tenantDomain));
@@ -89,30 +90,21 @@
             notificationApi.setPasswordPost(resetPasswordRequest);
 
             if (isAutoLoginEnable) {
-                String queryParams = callback.substring(callback.indexOf("?") + 1);
-                String[] parameterList = queryParams.split("&");
-                Map<String, String> queryMap = new HashMap<>();
-                for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
+                if (userStoreDomain != null) {
+                    username = userStoreDomain + "/" + username + "@" + tenantDomain;
                 }
-                sessionDataKey = queryMap.get("sessionDataKey");
-                String referer = request.getHeader("referer");
-                String refererParams = referer.substring(referer.indexOf("?") + 1);
-                parameterList = refererParams.split("&");
-                for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
-                }
-                String userstoredomain = queryMap.get("userstoredomain");
-                if (userstoredomain != null) {
-                  username = userstoredomain + "/" + username + "@" + tenantDomain;
-                }
-                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
+                
+                JSONObject contentValueInJson = new JSONObject();
+                contentValueInJson.put("username", username);
+                contentValueInJson.put("createdTime", System.currentTimeMillis());
+                contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+                String content = contentValueInJson.toString();
+        
                 JSONObject cookieValueInJson = new JSONObject();
-                cookieValueInJson.put("username", username);
+                cookieValueInJson.put("content", content);
+        
+                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+        
                 cookieValueInJson.put("signature", signature);
                 Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
                         Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
@@ -136,6 +128,7 @@
                     }
                     request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
                     request.setAttribute(IdentityManagementEndpointConstants.CALLBACK, callback);
+                    request.setAttribute("userstoredomain", userStoreDomain);
                     request.getRequestDispatcher(PASSWORD_RESET_PAGE).forward(request, response);
                     return;
                 }
@@ -150,6 +143,7 @@
                 "Password.cannot.be.empty"));
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         request.setAttribute(IdentityManagementEndpointConstants.CALLBACK, callback);
+        request.setAttribute("userstoredomain", userStoreDomain);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         return;
     }
@@ -171,28 +165,6 @@
     <% } %>
 </head>
 <body>
-    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
-        <%
-            if (username != null) {
-        %>
-        <div>
-            <input type="hidden" name="username"
-                   value="<%=Encode.forHtmlAttribute(username)%>"/>
-        </div>
-        <%
-            }
-        %>
-        <%
-            if (sessionDataKey != null) {
-        %>
-        <div>
-            <input type="hidden" name="sessionDataKey"
-                   value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-        </div>
-        <%
-            }
-        %>
-    </form>
 
     <!-- footer -->
     <%
@@ -209,18 +181,12 @@
 
             <%
                 try {
-                    if(isAutoLoginEnable) {
-            %>
-                    document.callbackForm.submit();
-                    <%
-                    } else {
                         URIBuilder callbackUrlBuilder = new
                                 URIBuilder(IdentityManagementEndpointUtil.encodeURL(callback));
                         URI callbackUri = callbackUrlBuilder.addParameter("passwordReset", "true").build();
                     %>
                     location.href = "<%=callbackUri.toString()%>";
                     <%
-                    }
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
                         request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
