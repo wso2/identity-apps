@@ -51,7 +51,8 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
 
     return (
         <Card
-            className="application-card recent"
+            as="div"
+            className="application-card basic-card recent"
             onClick={ () => onAppNavigate(app.id, app.accessUrl) }
             link={ false }
             data-testid={ testId }
