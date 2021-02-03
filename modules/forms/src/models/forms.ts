@@ -108,7 +108,14 @@ export interface PasswordField extends FormRequiredFieldModel {
 /**
  * Radio field child model
  */
-export interface RadioChild {
+export interface RadioChild extends StrictRadioChild {
+    [ key: string ]: any;
+}
+
+/**
+ * Radio field child strict model
+ */
+export interface StrictRadioChild {
     label: string;
     value: string;
     /**
