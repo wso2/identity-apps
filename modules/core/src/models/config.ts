@@ -115,6 +115,10 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
      */
     serverOrigin: string;
     /**
+     * Super tenant. ex: `carbon.super`.
+     */
+    superTenant: string;
+    /**
      * Tenant domain.
      * ex: `wso2.com`
      */

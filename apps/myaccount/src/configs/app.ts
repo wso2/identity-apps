@@ -54,6 +54,7 @@ export class Config {
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
+            superTenant: window["AppUtils"].getConfig().superTenant,
             tenant: window["AppUtils"].getConfig().tenant,
             tenantPath: window["AppUtils"].getConfig().tenantPath
         };
