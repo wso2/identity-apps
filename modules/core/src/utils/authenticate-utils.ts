@@ -63,6 +63,18 @@ export class AuthenticateUtils {
     }
 
     /**
+     * Validates the authentication callback URL by checking if starts with the matcher value.
+     *
+     * @param {string} app - The name of the app.
+     * @param {string} matcher - Matcher value.
+     * @return {boolean} Authentication Callback from session.
+     */
+    public static isValidAuthenticationCallbackUrl(app: string, matcher: string): boolean {
+
+        return AuthenticateUtils.getAuthenticationCallbackUrl(app).startsWith(matcher);
+    }
+
+    /**
      * Update the authentication callback URL in the session storage.
      * This is used to improve UX in automatic sign-out scenarios due to session timeouts etc.
      *
