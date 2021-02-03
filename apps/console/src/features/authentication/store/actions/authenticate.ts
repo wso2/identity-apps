@@ -30,7 +30,7 @@ import {
     LOGOUT_URL
 } from "@asgardio/oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
-import { AppConstants, TokenConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
@@ -49,7 +49,7 @@ import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { Config } from "../../../core/configs";
-import { CommonConstants } from "../../../core/constants";
+import { AppConstants, CommonConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { store } from "../../../core/store";
 import { HttpUtils } from "../../../core/utils";
@@ -254,8 +254,16 @@ export const initializeAuthentication = () => (dispatch) => {
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
 
-        // Remove auth callback once the tenant updates.
-        AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
+        // When the tenant domain changes, we have to reset the auth callback in session storage.
+        // If not, it will hang and the app will be unresponsive with in the tab.
+        // We can skip clearing the callback for super tenant since we do not put it in the path.
+        if (response.tenantDomain !== AppConstants.getSuperTenant()) {
+            // If the auth callback already has the logged in tenant's path, we can skip the reset.
+            if (!AuthenticateUtils.isValidAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP,
+                    AppConstants.getTenantPath())) {
+                AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+            }
+        }
 
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -314,7 +322,7 @@ export const handleSignOut = () => (dispatch) => {
     const auth = IdentityClient.getInstance();
     auth.signOut()
         .then(() => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
+            AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
             dispatch(setSignOut());
         }).catch(() => {
             history.push(window[ "AppUtils" ].getConfig().routes.home);

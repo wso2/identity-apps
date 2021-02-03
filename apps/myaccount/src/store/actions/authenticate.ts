@@ -30,7 +30,7 @@ import {
     UserInfo
 } from "@asgardio/oidc-js";
 import { getProfileSchemas } from "@wso2is/core/api";
-import { AppConstants, TokenConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
@@ -42,7 +42,7 @@ import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getUserReadOnlyStatus, switchAccount } from "../../api";
 import { Config } from "../../configs";
-import { CommonConstants } from "../../constants";
+import { AppConstants, CommonConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -354,6 +354,17 @@ export const initializeAuthentication = () =>(dispatch)=> {
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
 
+        // When the tenant domain changes, we have to reset the auth callback in session storage.
+        // If not, it will hang and the app will be unresponsive with in the tab.
+        // We can skip clearing the callback for super tenant since we do not put it in the path.
+        if (response.tenantDomain !== AppConstants.getSuperTenant()) {
+            // If the auth callback already has the logged in tenant's path, we can skip the reset.
+            if (!AuthenticateUtils.isValidAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP,
+                AppConstants.getTenantPath())) {
+                AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
+            }
+        }
+
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
@@ -412,7 +423,7 @@ export const handleSignOut = () => (dispatch) => {
     auth
         .signOut()
         .then(() => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.MY_ACCOUNT_APP);
+            AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.MY_ACCOUNT_APP);
             dispatch(setSignOut());
         }).catch(() => {
             history.push(window["AppUtils"].getConfig().routes.home);
