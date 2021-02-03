@@ -167,10 +167,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         const url: string = changeUrl;
 
         /**
-         * If the entered URL is a silly input, then we won't add
+         * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
         if (!URLUtils.isURLValid(url, true)) {
+            setValidURL(false);
             return;
         }
 
