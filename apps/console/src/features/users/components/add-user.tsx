@@ -116,10 +116,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const passwordOptions = [
         {
+            "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
             value: "createPw"
         },
         {
+            "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
             value: "askPw"
         }
@@ -526,7 +528,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
-                                data-testid="user-mgt-add-user-form-passwordOption-radio-button"
                                 type="radio"
                                 label={ t("console:manage.features.user.forms.addUserForm.buttons.radioButton.label") }
                                 name="passwordOption"
