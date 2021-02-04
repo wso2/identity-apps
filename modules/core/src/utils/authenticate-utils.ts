@@ -71,6 +71,12 @@ export class AuthenticateUtils {
      */
     public static isValidAuthenticationCallbackUrl(app: string, matcher: string): boolean {
 
+        if (!AuthenticateUtils.getAuthenticationCallbackUrl(app)
+            || typeof AuthenticateUtils.getAuthenticationCallbackUrl(app) !== "string" ) {
+
+            return false;
+        }
+
         return AuthenticateUtils.getAuthenticationCallbackUrl(app).startsWith(matcher);
     }
 
