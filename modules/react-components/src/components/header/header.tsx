@@ -26,7 +26,8 @@ import {
     Container,
     Divider,
     Dropdown,
-    DropdownItemProps, Grid,
+    DropdownItemProps,
+    Grid,
     Icon,
     Item,
     Menu,
@@ -36,7 +37,6 @@ import {
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { GenericIcon } from "../icon";
-import {LinkButton} from "../button";
 
 /**
  * Header component prop types.
@@ -492,6 +492,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                               }
                                               {
                                                   tenantAssociations &&
+                                                  tenantAssociations.associatedTenants &&
                                                   Array.isArray(tenantAssociations.associatedTenants)
                                                       ? (
                                                           <Dropdown.Item

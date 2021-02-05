@@ -272,16 +272,12 @@ export class ApplicationTemplateManagementUtils {
 
                         groupedTemplates.forEach((editingTemplate, index) => {
                             if (editingTemplate.id === template.templateGroup) {
+                                groupedTemplates[ index ] = {
+                                    ...group,
+                                    subTemplates: [ ...editingTemplate.subTemplates, template ]
+                                };
 
-                                // Temporarily removing the SAML protocol selection.
-                                if (template.name !== "SAML") {
-                                    groupedTemplates[index] = {
-                                        ...group,
-                                        subTemplates: [...editingTemplate.subTemplates, template]
-                                    };
-
-                                    return;
-                                }
+                                return;
                             }
                         });
 
