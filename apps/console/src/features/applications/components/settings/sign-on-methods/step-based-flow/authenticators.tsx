@@ -24,7 +24,9 @@ import React, {
     PropsWithChildren,
     ReactElement,
     ReactNode,
-    ReactPortal
+    ReactPortal,
+    useEffect,
+    useState
 } from "react";
 import {
     Draggable,
@@ -125,7 +127,133 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const [ draggableAuthenticators, setDraggableAuthenticators ] = useState<ReactElement[]>(null);
+    const [ draggableSocialAuthenticators, setDraggableSocialAuthenticators ] = useState<ReactElement[]>(null);
+
     const classes = classNames("authenticators", className);
+
+    /**
+     * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
+     * triggering every time dom nodes are updated. Having it in a state fixes the flicker.
+     */
+    useEffect(() => {
+
+        if (!authenticators || !Array.isArray(authenticators) || authenticators.length < 1) {
+            return;
+        }
+
+        const draggableNodes: ReactElement[] = [];
+
+        authenticators.map((authenticator, index) => {
+
+            draggableNodes.push(
+                <Draggable
+                    key={ `${ authenticator.idp }-${ authenticator.id }` }
+                    draggableId={ authenticator.id }
+                    index={ index }
+                    isDragDisabled={ readOnly || !authenticator.isEnabled }
+                >
+                    { (
+                        draggableProvided: DraggableProvided,
+                        draggableSnapshot: DraggableStateSnapshot
+                    ): React.ReactElement<HTMLElement> => (
+                        <PortalAwareDraggable
+                            provided={ draggableProvided }
+                            snapshot={ draggableSnapshot }
+                        >
+                            <Popup
+                                on="hover"
+                                disabled={
+                                    !((droppableId === ApplicationManagementConstants
+                                            .SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)
+                                        && authenticators[0]
+                                        && !authenticators[ 0 ].isEnabled)
+                                }
+                                content={ (
+                                    <>
+                                        <Label attached="top">
+                                            <Icon name="warning sign" /> Warning
+                                        </Label>
+                                        <Text>
+                                            {
+                                                t("console:develop.features.applications.edit." +
+                                                    "sections.signOnMethod.sections." +
+                                                    "authenticationFlow.sections.stepBased." +
+                                                    "secondFactorDisabled")
+                                            }
+                                        </Text>
+                                    </>
+                                ) }
+                                trigger={ (
+                                    <div>
+                                        <LabeledCard
+                                            size="tiny"
+                                            disabled={ !authenticator.isEnabled }
+                                            image={ authenticator.image }
+                                            label={ authenticator.displayName || defaultName }
+                                            labelEllipsis={ true }
+                                            data-testid={
+                                                `${ testId }-authenticator-${ authenticator.name }`
+                                            }
+                                        />
+                                    </div>
+                                ) }
+                            />
+                        </PortalAwareDraggable>
+                    ) }
+                </Draggable>
+            );
+        });
+
+        setDraggableAuthenticators(draggableNodes);
+    }, [ authenticators ]);
+
+    /**
+     * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
+     * triggering every time dom nodes are updated. Having it in a state fixes the flicker.
+     */
+    useEffect(() => {
+
+        if (!isSocialLogin) {
+            return;
+        }
+
+        const draggableNodes: ReactElement[] = [];
+
+        draggableNodes.push(
+            <Draggable
+                draggableId="Add"
+                isDragDisabled={ true }
+                index={ 0 }
+            >
+                { (
+                    draggableProvided: DraggableProvided,
+                    draggableSnapshot: DraggableStateSnapshot
+                ): React.ReactElement<HTMLElement> => (
+                    <PortalAwareDraggable
+                        provided={ draggableProvided }
+                        snapshot={ draggableSnapshot }
+                    >
+                        <LabeledCard
+                            size="tiny"
+                            image={ getGeneralIcons()?.addCircleOutline }
+                            label={ "Add" }
+                            labelEllipsis={ true }
+                            data-testid={
+                                `${ testId }-authenticator-add`
+                            }
+                            imageOptions={ {
+                                as: "data-url"
+                            } }
+                            onClick={ handleSocialLoginAdd }
+                        />
+                    </PortalAwareDraggable>
+                ) }
+            </Draggable>
+        );
+
+        setDraggableSocialAuthenticators(draggableNodes);
+    }, [ isSocialLogin ]);
 
     /**
      * Add a wrapper portal so that the `transform` attributes in the parent
@@ -178,99 +306,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             className={ classes }
                             data-testid={ testId }
                         >
-                            { authenticators.map((authenticator, index) => (
-                                <Draggable
-                                    key={ `${ authenticator.idp }-${ authenticator.id }` }
-                                    draggableId={ authenticator.id }
-                                    index={ index }
-                                    isDragDisabled={ readOnly || !authenticator.isEnabled }
-                                >
-                                    { (
-                                        draggableProvided: DraggableProvided,
-                                        draggableSnapshot: DraggableStateSnapshot
-                                    ): React.ReactElement<HTMLElement> => (
-                                            <PortalAwareDraggable
-                                                provided={ draggableProvided }
-                                                snapshot={ draggableSnapshot }
-                                            >
-                                                <Popup
-                                                    on="hover"
-                                                    disabled={
-                                                        !((droppableId === ApplicationManagementConstants
-                                                                .SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)
-                                                        && authenticators[0]
-                                                        && !authenticators[ 0 ].isEnabled)
-                                                    }
-                                                    content={ (
-                                                        <>
-                                                            <Label attached="top">
-                                                                <Icon name="warning sign" /> Warning
-                                                            </Label>
-                                                            <Text>
-                                                            {
-                                                                t("console:develop.features.applications.edit." +
-                                                                    "sections.signOnMethod.sections." +
-                                                                    "authenticationFlow.sections.stepBased." +
-                                                                    "secondFactorDisabled")
-                                                            }
-                                                            </Text>
-                                                        </>
-                                                    ) }
-                                                    trigger={ (
-                                                        <div>
-                                                            <LabeledCard
-                                                                size="tiny"
-                                                                disabled={ !authenticator.isEnabled }
-                                                                image={ authenticator.image }
-                                                                label={ authenticator.displayName || defaultName }
-                                                                labelEllipsis={ true }
-                                                                data-testid={
-                                                                    `${ testId }-authenticator-${ authenticator.name }`
-                                                                }
-                                                            />
-                                                        </div>
-                                                    ) }
-                                                />
-                                            </PortalAwareDraggable>
-                                        ) }
-                                </Draggable>
-                            )) }
-                            {
-                                (isSocialLogin)
-                                && (
-                                    <Draggable
-                                        draggableId={ "Add" }
-                                        isDragDisabled={ true }
-                                        index={ 0 }
-                                    >
-                                        {
-                                            (
-                                                draggableProvided: DraggableProvided,
-                                                draggableSnapshot: DraggableStateSnapshot
-                                            ): React.ReactElement<HTMLElement> => (
-                                                <PortalAwareDraggable
-                                                    provided={ draggableProvided }
-                                                    snapshot={ draggableSnapshot }
-                                                >
-                                                    <LabeledCard
-                                                        size="tiny"
-                                                        image={ getGeneralIcons()?.addCircleOutline }
-                                                        label={ "Add" }
-                                                        labelEllipsis={ true }
-                                                        data-testid={
-                                                            `${ testId }-authenticator-add`
-                                                        }
-                                                        imageOptions={ {
-                                                            as: "data-url",
-                                                        } }
-                                                        onClick={ handleSocialLoginAdd }
-                                                    />
-                                                </PortalAwareDraggable>
-                                            )
-                                        }
-                                    </Draggable>
-                                )
-                            }
+                            { draggableAuthenticators }
+                            { draggableSocialAuthenticators }
                             { provided.placeholder }
                         </div>
                     ) }
