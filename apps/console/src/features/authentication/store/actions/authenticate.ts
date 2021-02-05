@@ -21,18 +21,24 @@ import {
     AuthenticatedUserInterface,
     Hooks,
     IdentityClient,
+    LOGOUT_URL,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ResponseMode,
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT,
-    UserInfo,
-    LOGOUT_URL
+    UserInfo
 } from "@asgardio/oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    TenantListInterface
+} from "@wso2is/core/models";
 import {
     addAlert,
     setInitialized,
@@ -275,17 +281,25 @@ export const initializeAuthentication = () => (dispatch) => {
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
         }
 
-        dispatch(
-            setSignIn<AuthenticatedUserInterface>({
-                displayName: response.displayName,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                display_name: response.displayName,
-                email: response.email,
-                scope: response.allowedScopes,
-                tenantDomain: response.tenantDomain,
-                username: response.username
+        auth.getDecodedIDToken()
+            .then((idToken) => {
+                dispatch(
+                    setSignIn<AuthenticatedUserInterface & TenantListInterface>({
+                        associatedTenants: idToken?.associated_tenants,
+                        defaultTenant: idToken?.default_tenant,
+                        displayName: response.displayName,
+                        // eslint-disable-next-line @typescript-eslint/camelcase
+                        display_name: response.displayName,
+                        email: response.email,
+                        scope: response.allowedScopes,
+                        tenantDomain: response.tenantDomain,
+                        username: response.username
+                    })
+                );
             })
-        );
+            .catch((error) => {
+                throw error;
+            });
 
         sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
 
