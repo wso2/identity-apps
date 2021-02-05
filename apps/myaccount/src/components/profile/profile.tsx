@@ -362,7 +362,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * USER-STORE/userNameString => userNameString
          */
         if (schema.name === "userName") {
-            if (schemaFormValue.indexOf("/") > -1) {
+            if (schemaFormValue?.indexOf("/") > -1) {
                 const fragments = schemaFormValue.split(/\//g);
                 if (fragments && fragments.length > 1) {
                     schemaFormValue = fragments[1];
