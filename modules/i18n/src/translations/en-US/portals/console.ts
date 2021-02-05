@@ -604,6 +604,12 @@ export const console: ConsoleNS = {
                         header: "You are adding a Handler",
                         message: "This is a handler."
                     },
+                    lowOIDCExpiryTimes: {
+                        assertionHint: "Proceed with the existing values.",
+                        content: "You have entered a value less than 60 seconds for the following configuration(s).",
+                        header: "Are you sure?",
+                        message: "Please double check your values."
+                    },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "If you regenerate this application, All the applications depending on this also " +

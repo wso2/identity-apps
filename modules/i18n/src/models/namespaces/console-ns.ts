@@ -367,6 +367,7 @@ export interface ConsoleNS {
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
                     handlerAuthenticatorAddition: Confirmation;
+                    lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
                     revokeApplication: Confirmation;
                     clientSecretHashDisclaimer: {

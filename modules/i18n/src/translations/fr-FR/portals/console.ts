@@ -601,6 +601,13 @@ export const console: ConsoleNS = {
                         header: "Vous ajoutez un gestionnaire",
                         message: "C'est un gestionnaire."
                     },
+                    lowOIDCExpiryTimes: {
+                        assertionHint: "Continuez avec les valeurs existantes.",
+                        content: "Vous avez entré une valeur inférieure à 60 secondes pour la ou les " +
+                            "configuration(s) suivante.",
+                        header: "Etes-vous sûr ?",
+                        message: "Veuillez vérifier vos valeurs."
+                    },
                     regenerateSecret: {
                         assertionHint: "Veuillez taper <1>{{ id }}</1> pour confirmer.",
                         content: "Si vous régénérez le secret, toutes les applications qui en dépendent pourraient également " +

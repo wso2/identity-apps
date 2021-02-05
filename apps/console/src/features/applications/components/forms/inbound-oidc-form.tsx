@@ -19,22 +19,22 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Label, Message } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
+import { ConfigReducerStateInterface } from "../../../core";
 import { AppState } from "../../../core/store";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
-    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -42,11 +42,11 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes
+    SupportedAccessTokenBindingTypes,
+    emptyOIDCConfig
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
-import { ConfigReducerStateInterface } from "../../../core";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -121,6 +121,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
+    const [ showLowExpiryTimesConfirmationModal, setShowLowExpiryTimesConfirmationModal ] = useState<boolean>(false);
+    const [ lowExpiryTimesConfirmationModal, setLowExpiryTimesConfirmationModal ] = useState<ReactElement>(null);
     const [ allowedOrigins, setAllowedOrigins ] = useState("");
     const [
         isTokenBindingTypeSelected,
@@ -1146,6 +1148,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="number"
                         readOnly={ readOnly }
+                        min={ 1 }
                         data-testid={ `${ testId }-access-token-expiry-time-input` }
                     />
                     <Hint>
@@ -1238,6 +1241,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ? initialValues.refreshToken.expiryInSeconds.toString()
                             : metadata.defaultRefreshTokenExpiryTime }
                         type="number"
+                        min={ 1 }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-refresh-token-expiry-time-input` }
                     />
@@ -1430,6 +1434,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 : metadata.defaultIdTokenExpiryTime
                         }
                         type="number"
+                        min={ 1 }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-id-token-expiry-time-input` }
                     />
@@ -1898,26 +1903,137 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         </ConfirmationModal>
     );
 
+    /**
+     * Validates if a confirmation modal to warn users regarding low expiration times.
+     *
+     * @param {Map<string, FormValue>} values - Form values.
+     * @param {string} url - URL.
+     * @param {string} origin - Origin.
+     * @return {boolean}
+     */
+    const isExpiryTimesTooLow = (values: Map<string, FormValue>, url?: string, origin?: string): boolean => {
+
+        const isUserAccessTokenExpiryInSecondsTooLow: boolean = parseInt(
+            values.get("userAccessTokenExpiryInSeconds") as string, 10) < 60;
+        const isExpiryInSecondsTooLow: boolean = parseInt(values.get("expiryInSeconds") as string, 10) < 60;
+        const isIdExpiryInSecondsTooLow: boolean = parseInt(values.get("idExpiryInSeconds") as string, 10) < 60;
+
+        if (isUserAccessTokenExpiryInSecondsTooLow || isExpiryInSecondsTooLow || isIdExpiryInSecondsTooLow) {
+            setShowLowExpiryTimesConfirmationModal(true);
+            setLowExpiryTimesConfirmationModal(
+                <ConfirmationModal
+                    onClose={ (): void => setShowLowExpiryTimesConfirmationModal(false) }
+                    type="warning"
+                    open={ true }
+                    skipAssertion={ true }
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => setShowLowExpiryTimesConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => {
+                        onSubmit(updateConfiguration(values, url, origin));
+                        setShowLowExpiryTimesConfirmationModal(false);
+                    } }
+                    data-testid={ `${ testId }-low-expiry-times-confirmation-modal` }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-testid={ `${ testId }-low-expiry-times-confirmation-modal-header` }
+                    >
+                        { t("console:develop.features.applications.confirmations" +
+                            ".lowOIDCExpiryTimes.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        warning
+                        data-testid={ `${ testId }-low-expiry-times-confirmation-modal-message` }
+                    >
+                        { t("console:develop.features.applications.confirmations" +
+                            ".lowOIDCExpiryTimes.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-testid={ `${ testId }-low-expiry-times-confirmation-modal-content` }
+                    >
+                        <Text>
+                            { t("console:develop.features.applications.confirmations.lowOIDCExpiryTimes.content") }
+                        </Text>
+                        <List bulleted>
+                            {
+                                isUserAccessTokenExpiryInSecondsTooLow && (
+                                    <List.Item>
+                                        { t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".sections.accessToken.fields.expiry.label") }
+                                    </List.Item>
+                                )
+                            }
+                            {
+                                isExpiryInSecondsTooLow && (
+                                    <List.Item>
+                                        { t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".sections.refreshToken.fields.expiry.label") }
+                                    </List.Item>
+                                )
+                            }
+                            {
+                                isIdExpiryInSecondsTooLow && (
+                                    <List.Item>
+                                        { t("console:develop.features.applications.forms.inboundOIDC" +
+                                            ".sections.idToken.fields.expiry.label") }
+                                    </List.Item>
+                                )
+                            }
+                        </List>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            );
+
+            return true;
+        }
+
+        setShowLowExpiryTimesConfirmationModal(false);
+        setLowExpiryTimesConfirmationModal(null);
+        return false;
+    };
+
+    /**
+     * Handle form submit.
+     * @param {Map<string, >} values - Form values.
+     */
+    const handleFormSubmit = (values: Map<string, FormValue>): void => {
+
+        let isExpiryTimesTooLowModalShown: boolean = false;
+
+        if (showCallbackURLField) {
+            submitUrl((url: string) => {
+                if (isEmpty(callBackUrls) && isEmpty(url)) {
+                    setShowURLError(true);
+                    scrollToInValidField("url");
+                } else {
+                    submitOrigin((origin) => {
+
+                        isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, url, origin);
+
+                        if (!isExpiryTimesTooLowModalShown) {
+                            onSubmit(updateConfiguration(values, url, origin));
+                        }
+                    });
+                }
+            });
+
+            return;
+        }
+
+        isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, undefined, undefined);
+
+        if (!isExpiryTimesTooLowModalShown) {
+            onSubmit(updateConfiguration(values, undefined, undefined));
+        }
+    };
+
     return (
         metadata ?
             (
                 <Forms
-                    onSubmit={ (values) => {
-                        if (showCallbackURLField) {
-                            submitUrl((url: string) => {
-                                if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                    setShowURLError(true);
-                                    scrollToInValidField("url");
-                                } else {
-                                    submitOrigin((origin) => {
-                                        onSubmit(updateConfiguration(values, url, origin));
-                                    });
-                                }
-                            });
-                        } else {
-                            onSubmit(updateConfiguration(values, undefined, undefined));
-                        }
-                    } }
+                    onSubmit={ handleFormSubmit }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
                         const iterator = requiredFields.entries();
                         let result = iterator.next();
@@ -2077,6 +2193,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid>
                     { showRegenerateConfirmationModal && renderRegenerateConfirmationModal() }
                     { showRevokeConfirmationModal && renderRevokeConfirmationModal() }
+                    { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
             )
             : null
