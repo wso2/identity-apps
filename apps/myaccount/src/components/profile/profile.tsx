@@ -341,6 +341,34 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
+     * Resolves the current schema value to the form value.
+     * @return {string} schema form value
+     */
+    const resolveProfileInfoSchemaValue = (schema: ProfileSchema): string => {
+
+        let schemaFormValue = profileInfo.get(schema.name);
+
+        /**
+         * Remove the user-store-name prefix from the userName
+         * Match case applies only for secondary user-store.
+         *
+         * Transforms the value: -
+         * USER-STORE/userNameString => userNameString
+         */
+        if (schema.name === "userName") {
+            if (schemaFormValue.indexOf("/") > -1) {
+                const fragments = schemaFormValue.split(/\//g);
+                if (fragments && fragments.length > 1) {
+                    schemaFormValue = fragments[1];
+                }
+            }
+        }
+
+        return schemaFormValue;
+
+    };
+
+    /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
      */
@@ -581,7 +609,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                             </p>
                                                         </>
                                                     )
-                                                    : profileInfo.get(schema.name)
+                                                    : resolveProfileInfoSchemaValue(schema)
                                             )
                                             : (
                                                 !isReadOnlyUser &&
