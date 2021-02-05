@@ -160,6 +160,16 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
     };
 
     /**
+     * Handler for the enter key press down.
+     */
+    const handleKeyDown = (k: KeyboardEvent, e: MouseEvent<HTMLButtonElement> ) => {
+        if (k.key === "Enter" && confirmed) {
+            setAssertionInput("");        
+            onPrimaryActionClick(e);
+        }
+    };
+
+    /**
      * Resolves the animated icon.
      *
      * @param {string} type - Type of the modal.
@@ -270,6 +280,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                     <Input
                         data-testid={ `${ testId }-assertion-input` }
                         onChange={ (e: ChangeEvent<HTMLInputElement>): void => setAssertionInput(e.target?.value) }
+                        onKeyDown={ handleKeyDown }
                         value={ assertionInput }
                         fluid
                     />
