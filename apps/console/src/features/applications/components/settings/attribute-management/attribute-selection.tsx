@@ -222,7 +222,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
         if (selectedDialect.localDialect) {
             setFilterSelectedClaims(selectedClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
@@ -399,7 +399,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             ?
             <>
                 <Grid.Row data-testid={ testId }>
-                    <Grid.Column computer={ 12 }>
+                    <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 12 } widescreen={ 12 } >
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
@@ -414,7 +414,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     >
                                         <Table.Body>
                                             <Table.Row>
-                                                <Table.Cell width="6">
+                                                <Table.Cell collapsing width="6">
                                                     <Input
                                                         icon={ <Icon name="search"/> }
                                                         onChange={ handleChange }

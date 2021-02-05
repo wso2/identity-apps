@@ -104,7 +104,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 >
                     <Grid>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column 
+                                mobile={ 16 } 
+                                tablet={ 16 } 
+                                computer={ 8 } l
+                                largeScreen={ 8 } 
+                                widescreen={ 8 }
+                            >
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.heading") }
@@ -125,6 +131,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     value={ initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value }
                                     children={ dropDownOptions }
                                     readOnly={ readOnly }
+                                    width={ 15 }
                                     data-testid={ `${ testId }-subject-attribute-dropdown` }
                                 />
                                 <Hint>
