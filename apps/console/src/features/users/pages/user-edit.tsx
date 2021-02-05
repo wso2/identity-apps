@@ -59,10 +59,10 @@ const UserEditPage = (): ReactElement => {
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
 
     useEffect(() => {
+        const properties: ConnectorPropertyInterface[] = [];
+
         getGovernanceConnectors(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
             .then((response: GovernanceConnectorInterface[]) => {
-                const properties: ConnectorPropertyInterface[] = [];
-
                 response.map((connector) => {
                     if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
                         || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID) {
@@ -72,35 +72,23 @@ const UserEditPage = (): ReactElement => {
                     }
                 });
 
-                setConnectorProperties(properties);
+                getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                    .then((response: GovernanceConnectorInterface[]) => {
+                        response.map((connector) => {
+                            if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+                                connector.properties.map((property) => {
+                                    if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                                        properties.push(property);
+                                    }
+                                });
+                            }
+                        });
+
+                        setConnectorProperties(properties);
+                    });
             });
 
     }, []);
-
-    useEffect(() => {
-        if(connectorProperties !== undefined) {
-            return;
-        }
-
-        getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-            .then((response: GovernanceConnectorInterface[]) => {
-                const properties: ConnectorPropertyInterface[] = connectorProperties
-                    && Array.isArray(connectorProperties) ? [ ...connectorProperties ] : [];
-
-                response.map((connector) => {
-                    if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-                        connector.properties.map((property) => {
-                            if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-                                properties.push(property);
-                            }
-                        });
-                    }
-                });
-
-                setConnectorProperties(properties);
-            });
-
-    }, [ connectorProperties ]);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");

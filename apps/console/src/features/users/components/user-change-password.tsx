@@ -99,11 +99,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         governanceConnectorProperties,
         setGovernanceConnectorProperties
     ] = useState<ConnectorPropertyInterface[]>(undefined);
-    const [ configSettings, setConfigSettings ] = useState({
-        accountDisable: "false",
-        accountLock: "false",
-        forcePasswordReset: "false"
-    });
+    const [ forcePasswordReset, setForcePasswordReset ] = useState<string>("false");
 
     useEffect(() => {
         if (!connectorProperties) {
@@ -121,25 +117,23 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             Array.isArray(governanceConnectorProperties) &&
             governanceConnectorProperties?.length > 0) {
 
-            let configurationStatuses = { ...configSettings } ;
-
             for (const property of governanceConnectorProperties) {
                 if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
                     || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
                     || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
 
                     if(property.value === "true") {
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            forcePasswordReset: property.value
-                        };
+                        setForcePasswordReset(property.value);
                     }
                 }
             }
-
-            setConfigSettings(configurationStatuses);
         }
     }, [ governanceConnectorProperties ]);
+
+    const handleModalClose = () => {
+        setPassword("");
+        setPasswordResetOption("setPassword");
+    };
 
     const passwordResetOptions = [
         {
@@ -178,7 +172,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * Handle admin initiated password reset.
      */
     const handleForcePasswordReset = () => {
-        if (configSettings?.forcePasswordReset === "false") {
+        if (forcePasswordReset === "false") {
             onAlertFired({
                 description: t(
                     "console:manage.features.user.profile.notifications.noPasswordResetOptions.error.description"
@@ -217,6 +211,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 )
             });
             handleForcePasswordResetTrigger();
+            handleModalClose();
             handleCloseChangePasswordModal();
             handleUserUpdate(user.id);
         })
@@ -239,6 +234,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     message: t("console:manage.features.user.profile.notifications.forcePasswordReset.genericError." +
                         "message")
                 });
+                handleModalClose();
+                handleCloseChangePasswordModal();
             });
     };
 
@@ -370,6 +367,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 )
             });
             handleCloseChangePasswordModal();
+            handleModalClose();
             handleUserUpdate(user.id);
         })
         .catch((error) => {
@@ -391,6 +389,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 message: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
                     "message")
             });
+            handleCloseChangePasswordModal();
+            handleModalClose();
         });
     };
 
@@ -599,8 +599,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 floated="left"
                                 onClick={ () => {
                                     handleCloseChangePasswordModal();
-                                    setPasswordResetOption("setPassword");
-                                    handleUserUpdate(user.id);
+                                    handleModalClose();
                                 } }
                             >
                                 { t("common:cancel") }
