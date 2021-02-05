@@ -348,7 +348,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     "console:manage.features.user.forms.addUserForm." +
                                     "inputs.confirmPassword.validations.empty"
                                 ) }
-                                displayErrorOn="blur"
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.confirmPassword }
