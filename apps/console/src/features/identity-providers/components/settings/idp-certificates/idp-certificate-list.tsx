@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import {
@@ -35,6 +36,8 @@ import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICO
 import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
+import { updateIDPCertificate } from "../../../api";
+import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the IDP certificate list component.
@@ -67,6 +70,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
         [ "data-testid" ]: testId
     } = props;
 
+    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
@@ -156,6 +160,49 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
      */
     const handleViewCertificate = (certificate: DisplayCertificate) => {
         setCertificateDisplay(certificate);
+    };
+
+    /**
+     * Remove the certificate from the certificated list.
+     *
+     * @param certificateIndex
+     */
+    const deleteCertificate = (certificateIndex: number) => {
+
+        const data = [
+            {
+                "operation": "REMOVE",
+                "path": "/certificate/certificates/" + certificateIndex,
+                "value": null
+            }
+        ];
+
+        updateIDPCertificate(editingIDP.id, data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("console:develop.features.idp.notifications.deleteCertificate.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.idp.notifications.deleteCertificate.success.message")
+                }));
+                onUpdate(editingIDP.id);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.idp.notifications.deleteCertificate.error.message")
+                    }));
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t("console:develop.features.idp.notifications.deleteCertificate.genericError" +
+                        ".description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.idp.notifications.deleteCertificate.genericError.message")
+                }));
+            });
     };
 
     /**
@@ -262,9 +309,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                     {
                                                         "data-testid": `${ testId }-delete-cert-${ index }-button`,
                                                         icon: "trash alternate",
-                                                        onClick: (): void => {
-                                                            return null;
-                                                        },
+                                                        onClick: () => deleteCertificate(index),
                                                         popupText: t("console:manage.features.users.usersList.list." +
                                                             "iconPopups.delete"),
                                                         type: "button"

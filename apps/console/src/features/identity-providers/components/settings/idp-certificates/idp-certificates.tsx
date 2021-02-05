@@ -116,13 +116,13 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
      * @param certType
      */
     const handleCertificateTypeChange = (certType: string) => {
-        if (certType === "PEM") {
+        if (certType === "PEM" && editingIDP?.certificate?.jwksUri) {
             dispatch(addAlert({
                 description: t("console:develop.features.idp.notifications.changeCertType.pem.description"),
                 level: AlertLevels.WARNING,
                 message: t("console:develop.features.idp.notifications.changeCertType.pem.message")
             }));
-        } else {
+        } else if (certType === "JWKS" && editingIDP?.certificate?.certificates){
             dispatch(addAlert({
                 description: t("console:develop.features.idp.notifications.changeCertType.jwks" +
                     ".description"),

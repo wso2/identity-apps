@@ -17,6 +17,7 @@
  */
 
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -58,7 +59,7 @@ export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCerti
             return;
         }
         onSubmit({ certificate: certString });
-    }, [ certString, onSubmit ]);
+    }, [ certString ]);
 
     /**
      * This is called when the first step is submitted.
@@ -87,7 +88,7 @@ export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCerti
         setFileDecoded(fileDecoded);
         setFile(file);
         setCertificate(forgeCertificate);
-        setCertString(data.certificate);
+        setCertString(btoa(CertificateManagementUtils.enclosePem(data.certificate)));
     };
 
     const addIDPCertificateForm = (): ReactElement => (

@@ -2598,14 +2598,26 @@ export const console: ConsoleNS = {
                     },
                     changeCertType: {
                         jwks: {
-                            description: "ඔබ සහතිකයක් එකතු කර ඇත්නම් එය JWKS අන්ත ලක්ෂ්‍යය මගින් අභිබවා යනු " +
-                                "ඇති බව කරුණාවෙන් සලකන්න.",
+                            description: "JWKS අවසාන ලක්ෂ්‍යය මගින් සහතික අභිබවා යන බව කරුණාවෙන් සලකන්න.",
                             message: "අවවාදයයි!"
                         },
                         pem: {
-                            description: "ඔබ JWKS අන්ත ලක්ෂ්‍යයක් එකතු කර ඇත්නම් එය සහතිකය මගින් අභිබවා " +
-                                "යනු ඇති බව කරුණාවෙන් සලකන්න.",
+                            description: "JWKS endpoint සහතික මගින් අභිබවා යන බව කරුණාවෙන් සලකන්න.",
                             message: "අවවාදයයි!"
+                        }
+                    },
+                    deleteCertificate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "සහතිකය මකාදැමීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සහතිකය මකාදැමීමේදී දෝෂයක් සිදුවිය.",
+                            message: "සහතිකය මකාදැමීමේ දෝෂයකි"
+                        },
+                        success: {
+                            description: "සහතිකය සාර්ථකව මකා දමන ලදි.",
+                            message: "මකාදැමීම සාර්ථකයි"
                         }
                     },
                     deleteDefaultAuthenticator: {

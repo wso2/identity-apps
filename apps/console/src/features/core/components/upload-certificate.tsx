@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
@@ -247,59 +247,6 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     }, []);
 
     /**
-     * This strips **BEGIN CERTIFICATE** and **END CERTIFICATE** parts from
-     * the PEM encoded string.
-     *
-     * @param {string} pemString The PEM-encoded content of a certificate.
-     *
-     * @returns {string} The PEM string without the **BEGIN CERTIFICATE** and **END CERTIFICATE** parts.
-     */
-    const stripPem = (pemString: string): string => {
-        const pemValue = pemString.split("\n");
-
-        // removes -----BEGIN CERTIFICATE----- if present.
-        pemValue[ 0 ]?.includes(CertificateManagementConstants.CERTIFICATE_BEGIN) && pemValue.shift();
-
-        // removes "\n" if present.
-        pemValue[ pemValue.length - 1 ] === CertificateManagementConstants.END_LINE
-        && pemValue.pop();
-
-        // removes -----END CERTIFICATE----- if present.
-        pemValue[ pemValue.length - 1 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)
-        && pemValue.pop();
-
-        return pemValue.join("\n");
-    };
-
-    /**
-     * This encloses a stripped PEM string with **BEGIN CERTIFICATE** and **END CERTIFICATE**.
-     *
-     * @param {string} pemString The stripped PEM string (usually received as from an API call)
-     *
-     * @returns {string} A full PEM string.
-     */
-    const enclosePem = (pemString: string): string => {
-        const pemValue = pemString.split("\n");
-
-        // adds -----BEGIN CERTIFICATE----- if not present.
-        !pemValue[ 0 ]?.includes(CertificateManagementConstants.CERTIFICATE_BEGIN)
-        && pemValue.unshift(CertificateManagementConstants.CERTIFICATE_BEGIN);
-
-        // adds "\n" if not present.
-        !(pemValue[ pemValue.length - 1 ] === CertificateManagementConstants.END_LINE)
-        && pemValue.push(CertificateManagementConstants.END_LINE);
-
-        // adds -----END CERTIFICATE----- if not present.
-        if (!pemValue[ pemValue.length - 2 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)) {
-            const lastLine = pemValue.pop();
-            pemValue.push(CertificateManagementConstants.CERTIFICATE_END);
-            pemValue.push(lastLine);
-        }
-
-        return pemValue.join("\n");
-    };
-
-    /**
      * Convert PEM string to forge certificate object.
      *
      * @param {string} pem The PEM string.
@@ -307,7 +254,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * @returns {PemCertificate} Object containing the stripped PEM string and the forge certificate.
      */
     const convertFromPem = (pem: string): PemCertificate => {
-        const pemValue = enclosePem(pem);
+        const pemValue = CertificateManagementUtils.enclosePem(pem);
         try {
             const certificateForge = new X509().readCertFromPEM(pemValue);
 
@@ -315,7 +262,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
 
             return {
                 certificate: certificateForge,
-                value: stripPem(pem)
+                value: CertificateManagementUtils.stripPem(pem)
             };
         } catch {
             try {
@@ -326,7 +273,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
 
                 return {
                     certificate: cert,
-                    value: stripPem(pem)
+                    value: CertificateManagementUtils.stripPem(pem)
                 };
             } catch (error) {
                 setFileError(true);
@@ -352,7 +299,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                 const pem = certificate.getPEM();
                 setForgeCertificate(cert);
-                return Promise.resolve(stripPem(pem));
+                return Promise.resolve(CertificateManagementUtils.stripPem(pem));
             } catch {
                 const byteString = forge.util.createBuffer(value);
                 try {
@@ -363,7 +310,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     cert.readCertPEM(pem);
                     setForgeCertificate(cert);
 
-                    return Promise.resolve(stripPem(pem));
+                    return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                 } catch {
                     try {
                         const cert = new X509();
@@ -371,7 +318,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                         const pem = certificate.getPEM();
                         setForgeCertificate(cert);
-                        return Promise.resolve(stripPem(pem));
+                        return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                     } catch {
                         const certificate = forge.pki.certificateFromPem(byteString.data);
                         const pem = forge.pki.certificateToPem(certificate);
@@ -379,7 +326,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         cert.readCertPEM(pem);
                         setForgeCertificate(cert);
 
-                        return Promise.resolve(stripPem(pem));
+                        return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                     }
                 }
             }

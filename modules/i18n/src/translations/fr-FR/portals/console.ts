@@ -2606,14 +2606,28 @@ export const console: ConsoleNS = {
                     },
                     changeCertType: {
                         jwks: {
-                            description: "Veuillez noter que si vous avez ajouté un certificat, il sera remplacé " +
-                                "par l'adresse JWKS.",
+                            description: "Veuillez noter que les certificats seront remplacés par le point de " +
+                                "terminaison JWKS.",
                             message: "Attention !"
                         },
                         pem: {
-                            description: "Veuillez noter que si vous avez ajouté une adresse JWKS, elle sera remplacée " +
-                                "par le certificat.",
+                            description: "Veuillez noter que le point de terminaison JWKS sera remplacé par " +
+                                "les certificats.",
                             message: "Attention !"
+                        }
+                    },
+                    deleteCertificate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de suppression de certificat"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression du certificat.",
+                            message: "Erreur de suppression de certificat"
+                        },
+                        success: {
+                            description: "Le certificat a bien été supprimé.",
+                            message: "Suppression réussie"
                         }
                     },
                     deleteDefaultAuthenticator: {
