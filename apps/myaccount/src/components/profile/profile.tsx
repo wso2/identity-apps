@@ -313,8 +313,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         if (attrKey in value) {
             const oldValue = profileInfo?.get(schema?.name);
             if (oldValue?.indexOf("/") > -1) {
-                const fragments = oldValue.split(/\//g);
-                if (fragments && fragments.length > 1) {
+                const fragments = oldValue.split("/");
+                if (fragments?.length > 1) {
                     value[attrKey] = `${ fragments[0] }/${ value[attrKey] }`;
                 }
             }
@@ -382,8 +382,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          */
         if (schema.name === "userName") {
             if (schemaFormValue?.indexOf("/") > -1) {
-                const fragments = schemaFormValue.split(/\//g);
-                if (fragments && fragments.length > 1) {
+                const fragments = schemaFormValue.split("/");
+                if (fragments?.length > 1) {
                     schemaFormValue = fragments[1];
                 }
             }
