@@ -38,6 +38,14 @@ export interface CommonAuthReducerStateInterface {
      * Flag to determine if logout is initiated.
      */
     logoutInit: boolean;
+    /**
+     * Username decoded from the ID token.
+     */
+    associatedTenants?: string | string[];
+    /**
+     * Username decoded from the ID token.
+     */
+    defaultTenant?: string;
 }
 
 /**

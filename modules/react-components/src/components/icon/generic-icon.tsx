@@ -32,7 +32,7 @@ export interface GenericIconProps extends TestableComponentInterface {
     /**
      * Background fill color.
      */
-    background?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "default" | boolean;
+    background?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "grey" | "default" | boolean;
     /**
      * Should the icon appear bordered.
      */

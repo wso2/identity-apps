@@ -17,8 +17,8 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
+import { AnnouncementBannerInterface, ProfileInfoInterface, TenantAssociationsInterface } from "@wso2is/core/models";
+import { CommonUtils as ReusableCommonUtils, SessionStorageUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     Logo,
@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
+import { getMiscellaneousIcons } from "../configs";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -80,8 +81,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isProfileInfoLoading: boolean = useSelector(
         (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const username: string = useSelector((state: AppState) => state.auth.username);
+    const email: string = useSelector((state: AppState) => state.auth.email);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const defaultTenant: string = useSelector((state: AppState) => state.auth.defaultTenant);
+    const associatedTenants: string | string[] = useSelector((state: AppState) => state.auth.associatedTenants);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+    const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
 
     useEffect(() => {
         if (_.isEmpty(config)) {
@@ -99,6 +106,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             CommonUtils.getSeenAnnouncements()));
     }, [ config ]);
 
+    useEffect(() => {
+
+        const association: TenantAssociationsInterface = {
+            associatedTenants: associatedTenants,
+            currentTenant: tenantDomain,
+            defaultTenant: defaultTenant,
+            username: email ? email : username
+        };
+
+        setTenantAssociations(association);
+    }, [ associatedTenants && defaultTenant ]);
+
     /**
      * Handles announcement dismiss callback.
      */
@@ -114,6 +133,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         setAnnouncement(validAnnouncement);
+    };
+
+    /**
+     * Handle the tenant switch action and redirect the user to the selected
+     * tenant path of the console.
+     */
+    const handleTenantSwitch = (tenantName: string) => {
+        const newTenantedPath = window["AppUtils"].getConfig().clientOrigin + "/t/" + tenantName + "/" +
+            window["AppUtils"].getConfig().appBase;
+
+        // Clear the callback url of the previous tenant.
+        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
+
+        // Redirect the user to the newly selected tenant path.
+        window.location.replace(newTenantedPath);
     };
 
     return (
@@ -186,6 +220,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
+            tenantAssociations={ tenantAssociations }
+            tenantIcon={ getMiscellaneousIcons().tenantIcon }
+            onTenantSwitch={ handleTenantSwitch }
             data-testid={ testId }
             { ...rest }
         >

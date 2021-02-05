@@ -98,6 +98,29 @@
                         }
                     }
                 }
+                .tenants-list {
+                    max-height: 200px;
+                    overflow: auto;
+
+                    .tenant-account {
+                        border-radius: @defaultBorderRadius !important;
+                        margin: @userDropdownTenantMargin;
+                        padding: @userDropdownTenantPadding !important;
+                        border: none;
+                        transition: none !important;
+
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
+                    }
+                }
                 .linked-accounts-list {
                     max-height: 200px;
                     overflow: auto;
@@ -167,6 +190,12 @@
                 padding: @relativeMini @relativeLarge;
             }
         }
+        .ui.dropdown.item.user-dropdown .menu .item.tenant-account {
+                    &, &:not(.filtered) {
+                        display: flex;
+                        padding: @relativeMini @relativeLarge;
+                    }
+                }
         .ui.dropdown.item.user-dropdown .menu .item.header {
             &, &:not(.filtered) {
                 display: flex;
