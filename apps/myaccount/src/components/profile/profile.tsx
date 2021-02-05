@@ -301,6 +301,25 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             }
         }
 
+        /**
+         * If the user belongs to a user-store other than the
+         * primary user-store, the value must be in format i.e.,
+         * `USER-STORE/username`. Since we bind only the username
+         * to the form field value, user does not see the -
+         * `USER-STORE/` segment. This block will re append the
+         * value to the expected format.
+         */
+        const attrKey = "userName";
+        if (attrKey in value) {
+            const oldValue = profileInfo?.get(schema?.name);
+            if (oldValue?.indexOf("/") > -1) {
+                const fragments = oldValue.split(/\//g);
+                if (fragments && fragments.length > 1) {
+                    value[attrKey] = `${ fragments[0] }/${ value[attrKey] }`;
+                }
+            }
+        }
+
         data.Operations[0].value = value;
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
