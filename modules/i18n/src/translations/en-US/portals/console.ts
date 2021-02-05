@@ -814,9 +814,9 @@ export const console: ConsoleNS = {
                                                     }
                                                 }
                                             },
-                                            heading: "Step based configuration",
-                                            hint: "Create authentication steps by dragging the local/federated " +
-                                                "authenticators on to the relevant steps.",
+                                            heading: "Step-based configuration",
+                                            hint: "Create a user login flow by dragging authenticators on to the " +
+                                                "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can be used " +
                                                 "only in a step other than the first, and if a basic authenticator " +
                                                 "or identifier-first authenticator has been added to the first step."
@@ -2195,7 +2195,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Drag and drop any of the above authenticators",
+                            0: "Drag and drop authenticators from the panel",
                             1: "to build an authentication sequence."
                         },
                         title: null
