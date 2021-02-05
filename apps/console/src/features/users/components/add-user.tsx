@@ -21,7 +21,7 @@ import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
-import React, { ReactElement, Suspense, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Grid,
@@ -78,6 +78,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
+    const confirmPasswordRef = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
 
@@ -116,10 +117,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const passwordOptions = [
         {
+            "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
             value: "createPw"
         },
         {
+            "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
             value: "askPw"
         }
@@ -232,6 +235,23 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         };
     };
 
+    /**
+     * Forcefully triggers the confirm password input field validation.
+     */
+    const triggerConfirmPasswordInputValidation = (): void => {
+
+        const confirmInput = confirmPasswordRef?.
+            current?.
+            children[ 0 ]?.
+            children[ 1 ]?.
+            children[ 0 ] as HTMLInputElement;
+
+        if (confirmInput && confirmInput.focus && confirmInput.blur) {
+            confirmInput.focus();
+            confirmInput.blur();
+        }
+    };
+
     const handlePasswordOptions = () => {
         if (passwordOption && passwordOption === "createPw") {
             return (
@@ -258,6 +278,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
                                 validation={ async (value: string, validation: Validation) => {
+
+                                    triggerConfirmPasswordInputValidation();
+
                                     let passwordRegex = "";
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
                                         // Set the username regEx of the secondary user store.
@@ -309,6 +332,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
+                                ref={ confirmPasswordRef }
                                 data-testid="user-mgt-add-user-form-confirmPassword-input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
@@ -333,7 +357,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                         validation.errorMessages.push(
                                             t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
+
+                                        return;
                                     }
+
+                                    validation.isValid = true;
+                                    validation.errorMessages.push(null);
+                                    triggerConfirmPasswordInputValidation();
                                 } }
                                 tabIndex={ 7 }
                                 enableReinitialize={ true }
@@ -368,6 +398,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         <Forms
             data-testid="user-mgt-add-user-form"
             onSubmit={ (values) => {
+
+                triggerConfirmPasswordInputValidation();
+
+                if (values.get("newPassword") !== values.get("confirmPassword")) {
+                    return;
+                }
+
                 onSubmit(getFormValues(values));
             } }
             submitState={ triggerSubmit }
@@ -526,7 +563,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
-                                data-testid="user-mgt-add-user-form-passwordOption-radio-button"
                                 type="radio"
                                 label={ t("console:manage.features.user.forms.addUserForm.buttons.radioButton.label") }
                                 name="passwordOption"

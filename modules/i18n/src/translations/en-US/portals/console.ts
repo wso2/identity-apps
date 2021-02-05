@@ -604,6 +604,12 @@ export const console: ConsoleNS = {
                         header: "You are adding a Handler",
                         message: "This is a handler."
                     },
+                    lowOIDCExpiryTimes: {
+                        assertionHint: "Proceed with the existing values.",
+                        content: "You have entered a value less than 60 seconds for the following configuration(s).",
+                        header: "Are you sure?",
+                        message: "Please double check your values."
+                    },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "If you regenerate this application, All the applications depending on this also " +
@@ -814,9 +820,9 @@ export const console: ConsoleNS = {
                                                     }
                                                 }
                                             },
-                                            heading: "Step based configuration",
-                                            hint: "Create authentication steps by dragging the local/federated " +
-                                                "authenticators on to the relevant steps.",
+                                            heading: "Step-based configuration",
+                                            hint: "Create a user login flow by dragging authenticators on to the " +
+                                                "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can be used " +
                                                 "only in a step other than the first, and if a basic authenticator " +
                                                 "or identifier-first authenticator has been added to the first step."
@@ -2195,7 +2201,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Drag and drop any of the above authenticators",
+                            0: "Drag and drop authenticators from the panel",
                             1: "to build an authentication sequence."
                         },
                         title: null
@@ -3033,7 +3039,7 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Currently there are no identity providers available.",
                             1: "You can add a new identity provider easily by following",
-                            2: "the steps in the identity providers creation wizard."
+                            2: "the steps in the identity provider creation wizard."
                         },
                         title: "Add a new Identity Provider"
                     },
@@ -3850,7 +3856,7 @@ export const console: ConsoleNS = {
                         subtitles: {
                             0: "Currently there are no identity providers available.",
                             1: "You can add a new identity provider easily by following the",
-                            2: "steps in the identity providers creation wizard."
+                            2: "steps in the identity provider creation wizard."
                         },
                         title: "Add a new Identity Provider"
                     },

@@ -249,7 +249,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * @param event React.MouseEvent<HTMLDivElement>
      */
     const onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
-        if (disabled) {
+        if (disabled || !onClick) {
             return;
         }
 
