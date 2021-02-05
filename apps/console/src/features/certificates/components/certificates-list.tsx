@@ -686,11 +686,16 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 renderer: "semantic-icon"
             },
             {
-                hidden: (): boolean => {
-                    const hasScopes: boolean = hasRequiredScopes(featureConfig?.certificates,
-                        featureConfig?.certificates?.scopes?.delete, allowedScopes);
-
-                    return !(type === KEYSTORE && hasScopes) || isSuper;
+                hidden: ({ alias }: Certificate): boolean => {
+                    const hasScopes: boolean = hasRequiredScopes(
+                        featureConfig?.certificates,
+                        featureConfig?.certificates?.scopes?.delete,
+                        allowedScopes
+                    );
+                    // Checks whether the alias of this certificate matches the tenant domain
+                    // or the authenticated user's tenant domain.
+                    const isTenant = tenantDomain === alias || authTenantDomain === alias;
+                    return !(type === KEYSTORE && hasScopes) || isSuper || isTenant;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, certificate: Certificate): void => initDelete(certificate),
