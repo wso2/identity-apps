@@ -22,7 +22,7 @@ import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@ws
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar, Hint } from "@wso2is/react-components";
+import { EditAvatarModal, Hint, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
@@ -67,6 +67,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const config = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -173,8 +174,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param values
      * @param formName
      * @param isExtended
+     * @param schema {ProfileSchema}
      */
-    const handleSubmit = (values: Map<string, string | string[]>, formName: string, isExtended: boolean): void => {
+    const handleSubmit = (
+        values: Map<string, string | string[]>,
+        formName: string,
+        isExtended: boolean,
+        schema: ProfileSchema
+    ): void => {
         const data = {
             Operations: [
                 {
@@ -185,7 +192,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
-        let value = {};
+        let value: any = {};
 
         const schemaNames = formName.split(".");
 
@@ -294,6 +301,25 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             }
         }
 
+        /**
+         * If the user belongs to a user-store other than the
+         * primary user-store, the value must be in format i.e.,
+         * `USER-STORE/username`. Since we bind only the username
+         * to the form field value, user does not see the -
+         * `USER-STORE/` segment. This block will re append the
+         * value to the expected format.
+         */
+        const attrKey = "userName";
+        if (attrKey in value) {
+            const oldValue = profileInfo?.get(schema?.name);
+            if (oldValue?.indexOf("/") > -1) {
+                const fragments = oldValue.split("/");
+                if (fragments?.length > 1) {
+                    value[attrKey] = `${ fragments[0] }/${ value[attrKey] }`;
+                }
+            }
+        }
+
         data.Operations[0].value = value;
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
@@ -340,10 +366,66 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
+     * Resolves the current schema value to the form value.
+     * @return {string} schema form value
+     */
+    const resolveProfileInfoSchemaValue = (schema: ProfileSchema): string => {
+
+        let schemaFormValue = profileInfo.get(schema.name);
+
+        /**
+         * Remove the user-store-name prefix from the userName
+         * Match case applies only for secondary user-store.
+         *
+         * Transforms the value: -
+         * USER-STORE/userNameString => userNameString
+         */
+        if (schema.name === "userName") {
+            if (schemaFormValue?.indexOf("/") > -1) {
+                const fragments = schemaFormValue.split("/");
+                if (fragments?.length > 1) {
+                    schemaFormValue = fragments[1];
+                }
+            }
+        }
+
+        return schemaFormValue;
+
+    };
+
+    /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
+
+        /**
+         * Makes the "Username" field a READ_ONLY field. By default the
+         * server SCIM2 endpoint sends it as a "READ_WRITE" property.
+         * We are able to enable/disable read-only mode for specific
+         * claim dialects in user-store(s). However, it does not apply to
+         * all the tenants.
+         *
+         * Since we only interested in checking `username` we check the
+         * {@code isProfileUsernameReadonly} condition at top level. So,
+         * if it is {@code false} by default then we won't check the `name`
+         * unnecessarily.
+         *
+         * Match case explanation:-
+         * Ideally it should be the exact attribute name {@code http://wso2.org/claims/username}
+         * `username`. But we will transform the {@code schema.name}
+         * and {@code schema.displayName} to a lowercase string and then check
+         * the value matches.
+         */
+        const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
+        if (isProfileUsernameReadonly) {
+            const { displayName, name } = schema;
+            const usernameClaim = "username";
+            if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
+                schema.mutability = ProfileConstants.READONLY_SCHEMA;
+            }
+        }
+
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
@@ -427,7 +509,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 <Grid.Column width={ 12 }>
                                     <Forms
                                         onSubmit={ (values) => {
-                                            handleSubmit(values, schema.name, schema.extended);
+                                            handleSubmit(values, schema.name, schema.extended, schema);
                                         } }
                                     >
                                         <Field
@@ -474,7 +556,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     }
                                                 }
                                             } }
-                                                value={ profileInfo.get(schema.name) }
+                                                value={ resolveProfileInfoSchemaValue(schema) }
                                                 maxLength={ schema.name === "emails" ? 50 : 30 }
                                         />
                                         <Field
@@ -552,7 +634,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                             </p>
                                                         </>
                                                     )
-                                                    : profileInfo.get(schema.name)
+                                                    : resolveProfileInfoSchemaValue(schema)
                                             )
                                             : (
                                                 !isReadOnlyUser &&
