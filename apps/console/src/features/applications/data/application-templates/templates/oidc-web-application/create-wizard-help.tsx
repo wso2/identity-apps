@@ -51,17 +51,16 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
                 <Heading as="h5">Protocol</Heading>
                 <p>
                     The access configuration protocol which will be used to SSO (Single sign-on) to
-                    the
-                    application.
+                    the application.
                 </p>
             </>
 
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Authorized redirect URIs</Heading>
+                <Heading as="h5">Authorized URIs</Heading>
                 <p>
-                    The redirect URL determines where the authorization code is sent to
+                    The authorized URI determines where the authorization code is sent to
                     once the user is authenticated, and where the user is redirected to
                     once the logout is completed.
                 </p>

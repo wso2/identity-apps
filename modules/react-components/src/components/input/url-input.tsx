@@ -328,6 +328,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         setURLState(value);
     }, [ value ]);
 
+
+    useEffect(() => {
+        if (urlState && urlState !== "" && !validURL) {
+            setValidURL(true);
+        }
+    }, [ urlState ]);
+
     useEffect(() => {
         if (showError) {
             setValidURL(false);

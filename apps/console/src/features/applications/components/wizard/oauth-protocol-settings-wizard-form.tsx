@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, URLInput, LinkButton } from "@wso2is/react-components";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -119,11 +119,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const { t } = useTranslation();
 
     const [ callBackUrls, setCallBackUrls ] = useState("");
+    const [ callBackURLFromTemplate, setCallBackURLFromTemplate ] = useState("");
     const [ publicClient, setPublicClient ] = useState<string[]>([]);
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
-    const [ isCallbackURLMandatory, setIsCallbackURLMandatory ] = useState<boolean>(undefined);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
     const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
@@ -144,6 +144,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             setShowGrantTypes(true);
         }
     }, [ selectedTemplate ]);
+
+    useEffect(() => {
+        if (showURLError && callBackUrls && callBackUrls !== "") {
+            setShowURLError(false);
+        }
+    }, [ callBackUrls ]);
 
     /**
      * Check whether to show the callback url or not
@@ -181,13 +187,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
         const templatedCallbacks: string[] = templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
 
-        if (!templatedCallbacks
-            || ((isCallbackURLMandatory === undefined)
-                && templatedCallbacks
-                && Array.isArray(templatedCallbacks)
-                && isEmpty([ ...templatedCallbacks ].filter(Boolean)))) {
-
-            setIsCallbackURLMandatory(true);
+        if (templatedCallbacks && Array.isArray(templatedCallbacks) && templatedCallbacks.length > 0) {
+            setCallBackURLFromTemplate(templatedCallbacks[ 0 ]);
         }
     }, [ templateValues ]);
 
@@ -266,8 +267,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             }
         } else {
             setCallBackUrls(
-                buildCallBackURLWithSeparator(initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[ 0 ]
-                )
+                buildCallBackURLWithSeparator(initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[ 0 ])
             );
             if (initialValues?.inboundProtocolConfiguration?.oidc?.publicClient) {
                 setPublicClient([ "supportPublicClients" ]);
@@ -384,17 +384,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     onSubmit={ (values) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
-                                if (isCallbackURLMandatory) {
-                                    if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                        setShowURLError(true);
-                                    } else {
-                                        onSubmit(getFormValues(values, url));
-                                    }
-
-                                    return;
+                                if (isEmpty(callBackUrls) && isEmpty(url)) {
+                                    setShowURLError(true);
+                                } else {
+                                    onSubmit(getFormValues(values, url));
                                 }
-
-                                onSubmit(getFormValues(values, url));
                             });
                         } else {
                             onSubmit(getFormValues(values));
@@ -492,18 +486,29 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             submitUrl = submitFunction;
                                         } }
                                         productName={ config.ui.productName }
-                                        required={ isCallbackURLMandatory }
+                                        required={ true }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
                                     />
                                     {
-                                        !isCallbackURLMandatory && (
-                                            <Message className="with-inline-icon" icon visible warning>
-                                                <Icon name="warning sign" size="mini" />
+                                        (callBackURLFromTemplate) && (
+                                            <Message className="with-inline-icon" icon visible info>
+                                                <Icon name="info" size="mini" />
                                                 <Message.Content>
+                                                    This field is required for a functional app. However, if you are
+                                                    planning to try-out the sample app, you can
+                                                    use <strong>{ callBackURLFromTemplate }</strong> for now.
                                                     {
-                                                        t("console:develop.features.applications.forms" +
-                                                            ".inboundOIDC.fields.callBackUrls.validations.required")
+                                                        (callBackUrls === undefined || callBackUrls === "") && (
+                                                            <LinkButton
+                                                                className={ "m-1 p-1 with-no-border orange" }
+                                                                onClick={ (e) => {
+                                                                    e.preventDefault();
+                                                                    setCallBackUrls(callBackURLFromTemplate);
+                                                                } }>
+                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                            </LinkButton>
+                                                        )
                                                     }
                                                 </Message.Content>
                                             </Message>
