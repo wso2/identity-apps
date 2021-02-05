@@ -192,7 +192,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
-        let value = {};
+        let value: any = {};
 
         const schemaNames = formName.split(".");
 
