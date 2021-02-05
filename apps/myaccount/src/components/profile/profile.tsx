@@ -490,7 +490,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 <Grid.Column width={ 12 }>
                                     <Forms
                                         onSubmit={ (values) => {
-                                            handleSubmit(values, schema.name, schema.extended);
+                                            handleSubmit(values, schema.name, schema.extended, schema);
                                         } }
                                     >
                                         <Field
