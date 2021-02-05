@@ -51,3 +51,53 @@ export class LocalStorageUtils {
         return localStorage.getItem(key);
     }
 }
+
+/**
+ * Utility class for session storage operations.
+ */
+export class SessionStorageUtils {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    /**
+     * Clear the session storage completely.
+     */
+    public static clearSessionStorage(): void {
+        sessionStorage.clear();
+    }
+
+    /**
+     * Clear a specific item from the session storage.
+     *
+     * @param {string} key - Key of the item to be removed.
+     */
+    public static clearItemFromSessionStorage(key: string): void {
+        sessionStorage.removeItem(key);
+    }
+
+    /**
+     * Set a specific item to the session storage.
+     *
+     * @param {string} key - Key of the item to be set.
+     * @param {string} value - Value of the item to be set.
+     */
+    public static setItemToSessionStorage(key: string, value: string): void {
+        sessionStorage.setItem(key, value);
+    }
+
+    /**
+     * Get a specific item from the session storage.
+     *
+     * @param {string} key - Key of the item to be retrieved.
+     */
+    public static getItemFromSessionStorage(key: string): string {
+        return sessionStorage.getItem(key);
+    }
+}
