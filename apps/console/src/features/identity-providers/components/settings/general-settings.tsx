@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,12 +22,14 @@ import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
+import { CheckboxProps, Divider, List } from "semantic-ui-react";
+import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
-import { IdentityProviderInterface } from "../../models";
+import { IdentityProviderInterface, ConnectedAppsInterface, ConnectedAppInterface } from "../../models";
 import { GeneralDetailsForm } from "../forms";
 import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
+import { getApplicationDetails } from "../../../applications/api";
+import { ApplicationBasicInterface } from "../../../applications/models";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -94,9 +96,51 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const { t } = useTranslation();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
+    const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
+        useState<boolean>(false);
+    const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const handleIdentityProviderDeleteAction = (): void => {
-        setShowDeleteConfirmationModal(true);
+        setIsAppsLoading(true);
+        getIDPConnectedApps(editingIDP.id)
+            .then(async (response: ConnectedAppsInterface) => {
+                if (response.count === 0) {
+                    setShowDeleteConfirmationModal(true);
+                } else {
+                    setShowDeleteErrorDueToConnectedAppsModal(true);
+                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+                        return getApplicationDetails(app.appId);
+                    });
+
+                    const results: ApplicationBasicInterface[] = await Promise.all(
+                        appRequests.map(response => response.catch(error => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    || "Error occurred while trying to retrieve connected applications.",
+                                level: AlertLevels.ERROR,
+                                message: error?.message || "Error Occurred."
+                            }));
+                        }))
+                    );
+
+                    const appNames: string[] = [];
+                    results.forEach((app) => {
+                        appNames.push(app.name);
+                    })
+                    setConnectedApps(appNames);
+                }
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: error?.description || "Error occurred while trying to retrieve connected applications.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Error Occurred."
+                }));
+            })
+            .finally(() => {
+                setIsAppsLoading(false);
+            });
     };
 
     /**
@@ -142,7 +186,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleIdentityProviderDisable = (event: any, data: CheckboxProps) => {
         handleFormSubmit(
             {
-               isEnabled: data.checked
+                isEnabled: data.checked
             }
         );
     };
@@ -223,6 +267,45 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.idp.confirmations.deleteIDP.content") }
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                        )
+                    }
+                    {
+                        showDeleteErrorDueToConnectedAppsModal && (
+                            <ConfirmationModal
+                                onClose={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
+                                type="warning"
+                                open={ showDeleteErrorDueToConnectedAppsModal }
+                                secondaryAction={ t("common:close") }
+                                onSecondaryActionClick={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
+                                data-testid={ `${ testId }-delete-idp-confirmation` }
+                                closeOnDimmerClick={ false }
+                            >
+                                <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
+                                    Unable to Delete the Identity Provider
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message attached warning
+                                                           data-testid={ `${ testId }-delete-idp-confirmation` }>
+                                    Cannot delete an identity provider that contains connected applications.
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
+                                    This identity provider has been used in the following applications.
+                                    <Divider hidden />
+                                    <List ordered className="ml-6">
+                                        {
+                                            isAppsLoading ? (
+                                                    <ContentLoader/>
+                                                ) :
+                                                connectedApps?.map((app, index) => {
+                                                    return (
+                                                        <List.Item key={ index }>{ app }</List.Item>
+                                                    );
+                                                })
+                                        }
+                                    </List>
+                                    <Divider hidden />
+                                    Please make sure to remove these associations before deleting.
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

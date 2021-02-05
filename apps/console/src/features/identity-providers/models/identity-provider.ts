@@ -551,3 +551,22 @@ export interface StrictGenericAuthenticatorInterface {
      */
     image: any;
 }
+
+/**
+ * Connected apps response of IDP
+ */
+export interface ConnectedAppsInterface {
+    totalResults?: number;
+    startIndex?: number;
+    count?: number;
+    links?: LinkInterface[];
+    connectedApps?: ConnectedAppInterface[];
+}
+
+/**
+ * Connected app details of IDP
+ */
+export interface ConnectedAppInterface {
+    appId?: string;
+    self?: string;
+}
