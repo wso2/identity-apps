@@ -174,8 +174,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param values
      * @param formName
      * @param isExtended
+     * @param schema {ProfileSchema}
      */
-    const handleSubmit = (values: Map<string, string | string[]>, formName: string, isExtended: boolean): void => {
+    const handleSubmit = (
+        values: Map<string, string | string[]>,
+        formName: string,
+        isExtended: boolean,
+        schema: ProfileSchema
+    ): void => {
         const data = {
             Operations: [
                 {
