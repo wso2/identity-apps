@@ -80,6 +80,10 @@ export interface ConfirmationModalPropsInterface extends ModalProps, TestableCom
      */
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
     /**
+     * Skip assertion.
+     */
+    skipAssertion?: boolean;
+    /**
      * Text alignment.
      */
     textAlign?: "left" | "center" | "right" | "justified";
@@ -120,6 +124,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         secondaryAction,
         onPrimaryActionClick,
         onSecondaryActionClick,
+        skipAssertion,
         textAlign,
         [ "data-testid" ]: testId,
         ...rest
@@ -332,7 +337,11 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                 <Button
                                     data-testid={ testId + "-confirm-button" }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
-                                    disabled={ !(!assertionType || confirmed) }
+                                    disabled={
+                                        !skipAssertion
+                                            ? !(!assertionType || confirmed)
+                                            : false
+                                    }
                                     onClick={ handlePrimaryActionClick }
                                     fluid={ primaryActionFluid }
                                 >
