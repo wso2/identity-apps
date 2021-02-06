@@ -1074,6 +1074,7 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
+                    deleteCertificate: Notification;
                     deleteIDP: Notification;
                     disableAuthenticator: Notification;
                     disableOutboundProvisioningConnector: Notification;
@@ -1408,6 +1409,7 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
+                    deleteCertificate: Notification;
                     deleteIDP: Notification;
                     disableAuthenticator: Notification;
                     disableOutboundProvisioningConnector: Notification;

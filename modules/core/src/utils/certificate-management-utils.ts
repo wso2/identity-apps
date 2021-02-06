@@ -42,6 +42,15 @@ export class CertificateManagementUtils {
      * @returns {forge.pki.Certificate} The Forge Certificate object.
      */
     public static decodeCertificate(pem: string): forge.pki.Certificate {
+
+        // Check if the certificate content is base 64 encoded.
+        const base64DecodedCert = this.getBase64DecodedCertificate(pem);
+        if (base64DecodedCert !== null) {
+            if (base64DecodedCert.startsWith(CertificateManagementConstants.CERTIFICATE_BEGIN)) {
+                return forge.pki.certificateFromPem(base64DecodedCert);
+            }
+        }
+
         const pemValue = pem?.split("\n");
 
         // appends -----END CERTIFICATE-----.
@@ -183,5 +192,71 @@ export class CertificateManagementUtils {
         });
 
         saveAs(blob, name + ".cer");
+    }
+
+    /**
+     * This strips **BEGIN CERTIFICATE** and **END CERTIFICATE** parts from
+     * the PEM encoded string.
+     *
+     * @param {string} pemString The PEM-encoded content of a certificate.
+     *
+     * @returns {string} The PEM string without the **BEGIN CERTIFICATE** and **END CERTIFICATE** parts.
+     */
+    public static stripPem (pemString: string): string {
+
+        const pemValue = pemString.split("\n");
+
+        // removes -----BEGIN CERTIFICATE----- if present.
+        pemValue[ 0 ]?.includes(CertificateManagementConstants.CERTIFICATE_BEGIN) && pemValue.shift();
+
+        // removes "\n" if present.
+        pemValue[ pemValue.length - 1 ] === CertificateManagementConstants.END_LINE
+        && pemValue.pop();
+
+        // removes -----END CERTIFICATE----- if present.
+        pemValue[ pemValue.length - 1 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)
+        && pemValue.pop();
+        return pemValue.join("\n");
+    };
+
+    /**
+     * This encloses a stripped PEM string with **BEGIN CERTIFICATE** and **END CERTIFICATE**.
+     *
+     * @param {string} pemString The stripped PEM string (usually received as from an API call)
+     *
+     * @returns {string} A full PEM string.
+     */
+    public static enclosePem (pemString: string): string {
+
+        const pemValue = pemString.split("\n");
+
+        // adds -----BEGIN CERTIFICATE----- if not present.
+        !pemValue[ 0 ]?.includes(CertificateManagementConstants.CERTIFICATE_BEGIN)
+        && pemValue.unshift(CertificateManagementConstants.CERTIFICATE_BEGIN);
+
+        // adds "\n" if not present.
+        !(pemValue[ pemValue.length - 1 ] === CertificateManagementConstants.END_LINE)
+        && pemValue.push(CertificateManagementConstants.END_LINE);
+
+        // adds -----END CERTIFICATE----- if not present.
+        if (!pemValue[ pemValue.length - 2 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)) {
+            const lastLine = pemValue.pop();
+            pemValue.push(CertificateManagementConstants.CERTIFICATE_END);
+            pemValue.push(lastLine);
+        }
+        return pemValue.join("\n");
+    };
+
+    /**
+     * Base 64 decodes the certificate content. If not a valid base 64 content, returns null.
+     *
+     * @param {string} certContent to be base 64 decoded.
+     */
+    private static getBase64DecodedCertificate(certContent: string) : string {
+        try {
+            return atob(certContent);
+        } catch (e) {
+            return null;
+        }
     }
 }
