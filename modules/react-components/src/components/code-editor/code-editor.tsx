@@ -201,7 +201,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
             try {
                 window.matchMedia("(prefers-color-scheme:dark)")
                     .removeEventListener("change", (e: MediaQueryListEvent) => callback(e));
-            } catch (error) {
+            } catch (parentError) {
                 try {
                     // Older versions of Safari doesn't support `addEventListener`.
                     window.matchMedia("(prefers-color-scheme:dark)")
