@@ -263,16 +263,30 @@ export class ApplicationManagementConstants {
         "request path authenticators.";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID = IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER
         + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
+    // TODO: Remove this and use the raw authenticator ID instead.
     public static readonly TOTP_AUTHENTICATOR_ID = "LOCAL-dG90cA";
+    // TODO: Remove this and use the raw authenticator ID instead.
     public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
-    public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
-    public static readonly IDENTIFIER_EXECUTOR = "IdentifierExecutor";
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
 
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+    ];
+
+    // First factor authenticators.
+    public static readonly FIRST_FACTOR_AUTHENTICATORS = [
+        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
+        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+    ];
+
+    // Second factor authenticators.
+    public static readonly SECOND_FACTOR_AUTHENTICATORS = [
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+        ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID,
+        ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
     ];
 
     /**

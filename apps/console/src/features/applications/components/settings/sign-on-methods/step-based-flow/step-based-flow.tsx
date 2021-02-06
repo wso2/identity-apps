@@ -138,15 +138,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
                 localAuthenticators.forEach((authenticator) => {
-                    if (
-                        [
-                            ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID,
-                            ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
-                        ].includes(authenticator.id)
-                    ) {
+                    if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
                         const newAuthenticator: GenericAuthenticatorInterface = {
                             ...authenticator,
-                            isEnabled: resolveSecondFactorAuthenticatorsEnableStatus()
+                            isEnabled: hasSpecificFactorsInSteps(
+                                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ])
                         };
                         secondFactorAuth.push(newAuthenticator);
                     } else {
@@ -212,7 +208,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     }, [ triggerUpdate ]);
 
     useEffect(() => {
-        const shouldEnable = resolveSecondFactorAuthenticatorsEnableStatus();
+
+        const shouldEnable = hasSpecificFactorsInSteps(
+            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ]);
+
         setSecondFactorAuthenticators(
             secondFactorAuthenticators.map((authenticator) => {
                 authenticator.isEnabled = shouldEnable;
@@ -220,28 +219,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             })
         );
     }, [ authenticationSteps ]);
-
-    /**
-     * Decides if a second-factor authenticator should be disabled or not.
-     */
-    const resolveSecondFactorAuthenticatorsEnableStatus = () => {
-        if (authenticationSteps.length < 2) {
-            return false;
-        }
-
-        for (const authenticator of authenticationSteps[ 0 ].options) {
-            if (
-                [
-                    ApplicationManagementConstants.BASIC_AUTHENTICATOR,
-                    ApplicationManagementConstants.IDENTIFIER_EXECUTOR
-                ].includes(authenticator.authenticator)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    };
 
     /**
      * Validates if the addition to the step is valid.
@@ -303,13 +280,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             setShowHandlerDisclaimerModal(true);
         }
 
-        if (
-            stepNo === 0 &&
-            [
-                ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID,
-                ApplicationManagementConstants.TOTP_AUTHENTICATOR_ID
-            ].includes(authenticatorId)
-        ) {
+        // If the adding option is a second factor, and if the adding step is the first or there are no
+        // first factor authenticators in previous steps, show a warning and stop adding the option.
+        if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
+            && (stepNo === 0
+                || !hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+                    steps.slice(0, stepNo)))) {
+
             dispatch(
                 addAlert({
                     description: t(
@@ -396,7 +373,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {number} stepIndex - Authentication step.
      */
     const handleStepDelete = (stepIndex: number): void => {
-        const steps = [ ...authenticationSteps ];
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
         if (steps.length <= 1) {
             dispatch(
@@ -416,6 +394,38 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
+        const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
+            ? steps.slice(0, stepIndex)
+            : [];
+        const rightSideSteps: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
+            ? steps.slice(stepIndex + 1)
+            : [];
+
+        const containSecondFactorOnRight: boolean = hasSpecificFactorsInSteps(
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+
+        // If there are second factors in the right side from the step that is to be deleted,
+        // Check if there are first factors on the left. If not, do not delete the step.
+        if (containSecondFactorOnRight) {
+            const containFirstFactorOnLeft: boolean = hasSpecificFactorsInSteps(
+                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+
+            if (!containFirstFactorOnLeft) {
+                dispatch(
+                    addAlert({
+                        description: t("console:develop.features.applications.notifications." +
+                            "authenticationStepDeleteErrorDueToSecondFactors.genericError.description") ,
+                        level: AlertLevels.WARNING,
+                        message: t("console:develop.features.applications.notifications." +
+                            "authenticationStepDeleteErrorDueToSecondFactors.genericError.message"
+                        )
+                    })
+                );
+
+                return;
+            }
+        }
+
         // Remove the step.
         steps.splice(stepIndex, 1);
 
@@ -424,6 +434,33 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         setAuthenticationSteps(steps);
         updateSteps(false);
+    };
+
+    /**
+     * Checks if certain factors are available in the passed in steps.
+     *
+     * @param {string[]} factors - Set of factors to check.
+     * @param {[]} steps - Authentication steps.
+     * @return {boolean}
+     */
+    const hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
+
+        let hasFirstFactors: boolean = false;
+
+        for (const step of steps) {
+            for (const option of step.options) {
+                if (factors.includes(option.authenticator)) {
+                    hasFirstFactors = true;
+                    break;
+                }
+            }
+
+            if (hasFirstFactors) {
+                break;
+            }
+        }
+
+        return hasFirstFactors;
     };
 
     /**

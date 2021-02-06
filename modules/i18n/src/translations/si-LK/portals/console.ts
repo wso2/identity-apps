@@ -1843,6 +1843,13 @@ export const console: ConsoleNS = {
                             message: "නිර්මාණය සාර්ථකයි"
                         }
                     },
+                    authenticationStepDeleteErrorDueToSecondFactors: {
+                        genericError: {
+                            description: "Second factor authenticators need basic authenticator or identifier " +
+                                "first in a prior step.",
+                            message: "Step Delete error"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "අවම වශයෙන් එක් සත්‍යාපන පියවරක් අවශ්‍ය වේ.",
@@ -2080,7 +2087,8 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "පළමු පියවරට දෙවන සාධක සත්‍යාපක එකතු කළ නොහැක.",
+                            description: "දෙවන සාධකය සත්‍යාපනය කරන්නන්ට මූලික පියවරක් තුළ මුලින් මූලික සත්‍යාපකය හෝ අනන්‍යතාවය " +
+                                "අවශ්‍ය වේ.",
                             message: "මෙම පියවරට එකතු කළ නොහැක"
                         }
                     },
