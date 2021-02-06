@@ -162,24 +162,54 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
      */
     useEffect(() => {
-        if (getThemeFromEnvironment && window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches) {
+
+        // If `getThemeFromEnvironment` is false or `matchMedia` is not supported, fallback to dark theme.
+        if (!getThemeFromEnvironment || !window.matchMedia) {
+            setDark(true);
+            return;
+        }
+
+        if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
             setDark(true);
         }
-        const callback = (e) => {
+
+        const callback = (e: MediaQueryListEvent): void => {
             if (e.matches) {
                 setDark(true);
-            } else {
-                setDark(false);
+                return;
             }
-        };
-        getThemeFromEnvironment &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
 
+            setDark(false);
+        };
+
+        try {
+            window.matchMedia("(prefers-color-scheme:dark)")
+                .addEventListener("change", (e: MediaQueryListEvent) => callback(e));
+        } catch (error) {
+            try {
+                // Older versions of Safari doesn't support `addEventListener`.
+                window.matchMedia("(prefers-color-scheme:dark)")
+                    .addListener((e: MediaQueryListEvent) => callback(e));
+            } catch (error) {
+                // Fallback to dark if everything fails.
+                setDark(true);
+            }
+        }
+
+        // Housekeeping. Remove the listeners.
         return () => {
-            getThemeFromEnvironment &&
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
+            try {
+                window.matchMedia("(prefers-color-scheme:dark)")
+                    .removeEventListener("change", (e: MediaQueryListEvent) => callback(e));
+            } catch (parentError) {
+                try {
+                    // Older versions of Safari doesn't support `addEventListener`.
+                    window.matchMedia("(prefers-color-scheme:dark)")
+                        .removeListener((e: MediaQueryListEvent) => callback(e));
+                } catch (error) {
+                    // TODO: Rather than silently failing, add debug logs here.
+                }
+            }
         };
     }, [ getThemeFromEnvironment ]);
 
