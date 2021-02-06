@@ -152,7 +152,19 @@
                             if (StringUtils.isNotEmpty(username) && !error) {
                         %>
                         <div class="field">
-                            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+                            <label for="username">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                            </label>
+                            <input id="usernameUserInput" name="usernameUserInput" value="<%=username%>" type="text" tabindex="0" required>
+                            <input id="username" name="username" type="hidden">
+                            <%
+                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                            %>
+                            <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <%
+                                }
+                            %>
+                            <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                         </div>
                         <%
                         } else {

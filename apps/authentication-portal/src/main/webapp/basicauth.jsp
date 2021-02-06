@@ -391,7 +391,7 @@
             <a
                 id="passwordRecoverLink"
                 tabindex="6"
-                href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters))%>"
+                href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
                 data-testid="login-page-password-recovery-button"
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
@@ -475,6 +475,18 @@
     <%!
         private String getRecoverAccountUrl(String identityMgtEndpointContext, String urlEncodedURL,
                 boolean isUsernameRecovery, String urlParameters) {
+
+            return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_RECOVER + "?" + urlParameters
+                    + "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode
+                    .forHtmlAttribute(urlEncodedURL);
+        }
+
+        private String getRecoverAccountUrlWithUsername(String identityMgtEndpointContext, String urlEncodedURL,
+                boolean isUsernameRecovery, String urlParameters, String username) {
+
+            if (StringUtils.isNotBlank(username)) {
+               urlParameters = urlParameters + "&username=" + Encode.forHtmlAttribute(username);
+            }
 
             return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_RECOVER + "?" + urlParameters
                     + "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode
