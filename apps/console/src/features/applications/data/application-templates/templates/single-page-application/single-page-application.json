@@ -46,6 +46,10 @@
                     "authorization_code",
                     "refresh_token"
                 ],
+                "pkce": {
+                    "mandatory": true,
+                    "supportPlainTransformAlgorithm": false
+                },
                 "publicClient": true
             }
         }
