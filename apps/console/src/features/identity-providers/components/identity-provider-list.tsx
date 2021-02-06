@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,12 +27,13 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    ContentLoader
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import {
     AppConstants,
@@ -40,13 +41,17 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { deleteIdentityProvider } from "../api";
+import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    ConnectedAppInterface,
+    ConnectedAppsInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     StrictIdentityProviderInterface
 } from "../models";
+import { getApplicationDetails } from "../../applications/api";
+import { ApplicationBasicInterface } from "../../applications/models";
 
 /**
  * Proptypes for the identity provider list component.
@@ -125,6 +130,10 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
+    const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
+    const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
+        useState<boolean>(false);
+    const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
 
@@ -143,8 +152,47 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderDeleteAction = (idpId: string): void => {
-        setDeletingIDP(list.identityProviders.find(idp => idp.id === idpId));
-        setShowDeleteConfirmationModal(true);
+
+        setIsAppsLoading(true);
+        getIDPConnectedApps(idpId)
+            .then(async (response: ConnectedAppsInterface) => {
+                if (response.count === 0) {
+                    setDeletingIDP(list.identityProviders.find(idp => idp.id === idpId));
+                    setShowDeleteConfirmationModal(true);
+                } else {
+                    setShowDeleteErrorDueToConnectedAppsModal(true);
+                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
+                        return getApplicationDetails(app.appId);
+                    });
+
+                    const results: ApplicationBasicInterface[] = await Promise.all(
+                        appRequests.map(response => response.catch(error => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    || "Error occurred while trying to retrieve connected applications.",
+                                level: AlertLevels.ERROR,
+                                message: error?.message || "Error Occurred."
+                            }));
+                        }))
+                    );
+
+                    const appNames: string[] = [];
+                    results.forEach((app) => {
+                        appNames.push(app.name);
+                    })
+                    setConnectedApps(appNames);
+                }
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: error?.description || "Error occurred while trying to retrieve connected applications.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Error Occurred."
+                }));
+            })
+            .finally(() => {
+                setIsAppsLoading(false);
+            });
     };
 
     /**
@@ -385,6 +433,45 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
                             { t("console:develop.features.idp.confirmations.deleteIDP.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                showDeleteErrorDueToConnectedAppsModal && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
+                        type="warning"
+                        open={ showDeleteErrorDueToConnectedAppsModal }
+                        secondaryAction={ t("common:close") }
+                        onSecondaryActionClick={ (): void => setShowDeleteErrorDueToConnectedAppsModal(false) }
+                        data-testid={ `${ testId }-delete-idp-confirmation` }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning
+                                                   data-testid={ `${ testId }-delete-idp-confirmation` }>
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.content") }
+                            <Divider hidden />
+                            <List ordered className="ml-6">
+                                {
+                                    isAppsLoading ? (
+                                            <ContentLoader/>
+                                        ) :
+                                        connectedApps?.map((app, index) => {
+                                            return (
+                                                <List.Item key={ index }>{ app }</List.Item>
+                                            );
+                                        })
+                                }
+                            </List>
+                            <Divider hidden />
+                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.contentLine2") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

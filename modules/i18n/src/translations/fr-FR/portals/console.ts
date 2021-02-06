@@ -2359,6 +2359,13 @@ export const console: ConsoleNS = {
                             "qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'IDP."
+                    },
+                    deleteIDPWithConnectedApps: {
+                        assertionHint: "",
+                        content: "Ce fournisseur d'identité a été utilisé dans les applications suivantes.",
+                        contentLine2: "Veuillez vous assurer de supprimer ces associations avant de les supprimer.",
+                        header: "Impossible de supprimer le fournisseur d'identité",
+                        message: "Impossible de supprimer un fournisseur d'identité contenant des applications connectées."
                     }
                 },
                 dangerZoneGroup: {

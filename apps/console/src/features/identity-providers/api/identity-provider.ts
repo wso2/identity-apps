@@ -23,6 +23,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    ConnectedAppsInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -856,6 +857,37 @@ export const updateFederatedAuthenticators = (
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
             return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get connected apps of the IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getIDPConnectedApps = (idpId: string): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/connected-apps/"
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to get connected apps for the IDP: " + idpId)
+                );
+            }
+            return Promise.resolve(response.data as ConnectedAppsInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
