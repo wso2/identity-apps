@@ -3177,6 +3177,13 @@ export const console: ConsoleNS = {
                             "applications depending on this also might stop working. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the IDP."
+                    },
+                    deleteIDPWithConnectedApps: {
+                        assertionHint: "",
+                        content: "This identity provider has been used in the following applications.",
+                        contentLine2: "Please make sure to remove these associations before deleting.",
+                        header: "Unable to Delete the Identity Provider",
+                        message: "Cannot delete an identity provider that contains connected applications."
                     }
                 },
                 dangerZoneGroup: {

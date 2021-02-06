@@ -283,14 +283,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    Unable to Delete the Identity Provider
+                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
                                                            data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    Cannot delete an identity provider that contains connected applications.
+                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    This identity provider has been used in the following applications.
+                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.content") }
                                     <Divider hidden />
                                     <List ordered className="ml-6">
                                         {
@@ -305,7 +305,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                         }
                                     </List>
                                     <Divider hidden />
-                                    Please make sure to remove these associations before deleting.
+                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.contentLine2") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

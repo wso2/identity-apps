@@ -23,6 +23,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    ConnectedAppsInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
@@ -39,7 +40,6 @@ import {
     OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
-import { ConnectedAppsInterface } from "../../../extensions/authentication-providers/models";
 
 /**
  * Get an axios instance.
