@@ -1408,7 +1408,7 @@ export const myAccount: MyAccountNS = {
             heading: "Active Sessions",
             placeholders: {
                 emptySessionList: {
-                    heading: "Não há sessões ativas para este usuário"
+                    heading: "There are no active sessions for this user"
                 }
             }
         }
