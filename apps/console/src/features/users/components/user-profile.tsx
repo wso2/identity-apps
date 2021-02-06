@@ -321,6 +321,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         profileSchema.forEach((schema: ProfileSchemaInterface) => {
+
+            if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
+                return;
+            }
+
             let opValue = {};
 
             const schemaNames = schema.name.split(".");
