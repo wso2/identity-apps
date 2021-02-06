@@ -802,6 +802,7 @@ export interface ConsoleNS {
                 notifications: {
                     addApplication: Notification;
                     authenticationStepMin: Notification;
+                    authenticationStepDeleteErrorDueToSecondFactors: Notification;
                     deleteApplication: Notification;
                     deleteProtocolConfig: Notification;
                     duplicateAuthenticationStep: Notification;

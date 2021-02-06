@@ -1852,6 +1852,13 @@ export const console: ConsoleNS = {
                             message: "Création réussie"
                         }
                     },
+                    authenticationStepDeleteErrorDueToSecondFactors: {
+                        genericError: {
+                            description: "Second factor authenticators need basic authenticator or identifier " +
+                                "first in a prior step.",
+                            message: "Step Delete error"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "Au moins une étape d'authentification est requise.",
@@ -2090,8 +2097,8 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Impossible d'ajouter des authentificateurs de second " +
-                                "facteur à la première étape.",
+                            description: "Les authentificateurs de deuxième facteur ont besoin d'un " +
+                                "authentificateur ou d'un identificateur de base d'abord dans une étape précédente.",
                             message: "Impossible d'ajouter à cette étape"
                         }
                     },

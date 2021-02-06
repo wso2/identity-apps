@@ -824,8 +824,8 @@ export const console: ConsoleNS = {
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can be used " +
-                                                "only in a step other than the first, and if a basic authenticator " +
-                                                "or identifier-first authenticator has been added to the first step."
+                                                "only if a basic authenticator or identifier-first authenticator " +
+                                                "has been added in a previous step."
                                         }
                                     }
                                 },
@@ -1845,10 +1845,17 @@ export const console: ConsoleNS = {
                             message: "Creation successful"
                         }
                     },
+                    authenticationStepDeleteErrorDueToSecondFactors: {
+                        genericError: {
+                            description: "Second factor authenticators need basic authenticator or identifier " +
+                                "first in a prior step.",
+                            message: "Step Delete error"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "At least one authentication step is required.",
-                            message: "Removal error"
+                            message: "Step Delete error"
                         }
                     },
                     deleteApplication: {
@@ -2084,7 +2091,8 @@ export const console: ConsoleNS = {
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Cannot add second factor authenticators to the first step.",
+                            description: "Second factor authenticators need basic authenticator or identifier " +
+                                "first in a prior step.",
                             message: "Cannot add to this step"
                         }
                     },
