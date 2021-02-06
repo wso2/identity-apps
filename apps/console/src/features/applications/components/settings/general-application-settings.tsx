@@ -61,6 +61,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      */
     discoverability?: boolean;
     /**
+     * Set of hidden fields.
+     */
+    hiddenFields?: string[];
+    /**
      * Application logo URL.
      */
     imageUrl?: string;
@@ -107,6 +111,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         description,
         discoverability,
         featureConfig,
+        hiddenFields,
         imageUrl,
         accessUrl,
         isLoading,
@@ -262,6 +267,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
+                            hiddenFields={ hiddenFields }
                             readOnly={
                                 readOnly
                                 || !hasRequiredScopes(
