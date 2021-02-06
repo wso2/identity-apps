@@ -525,6 +525,7 @@ export interface ConsoleNS {
                                                 };
                                             };
                                             secondFactorDisabled: string;
+                                            authenticatorDisabled: string;
                                         };
                                     };
                                 };

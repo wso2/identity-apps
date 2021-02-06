@@ -268,6 +268,7 @@ export class ApplicationManagementConstants {
     // TODO: Remove this and use the raw authenticator ID instead.
     public static readonly FIDO_AUTHENTICATOR_ID = "LOCAL-RklET0F1dGhlbnRpY2F0b3I";
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
+    public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
 
     // Authenticators that are only handlers.
