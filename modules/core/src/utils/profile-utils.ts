@@ -18,7 +18,7 @@
  */
 
 import { CryptoUtils } from "./crypto-utils";
-import { UIConstants } from "../constants";
+import { ProfileConstants, UIConstants } from "../constants";
 import { GravatarFallbackTypes, MultiValueAttributeInterface, ProfileSchemaInterface } from "../models";
 
 /**
@@ -90,7 +90,9 @@ export class ProfileUtils {
             if (schema.subAttributes && schema.subAttributes.length > 0) {
 
                 // Add the email schema.
-                if (schema.multiValued && schema.name !== "roles" && schema.name !== "phoneNumbers") {
+                if (schema.multiValued && schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES") &&
+                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS") &&
+                    schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
                     tempSchemas.push(schema);
                 }
 
