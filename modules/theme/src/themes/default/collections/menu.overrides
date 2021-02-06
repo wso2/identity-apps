@@ -191,11 +191,11 @@
             }
         }
         .ui.dropdown.item.user-dropdown .menu .item.tenant-account {
-                    &, &:not(.filtered) {
-                        display: flex;
-                        padding: @relativeMini @relativeLarge;
-                    }
-                }
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+        }
         .ui.dropdown.item.user-dropdown .menu .item.header {
             &, &:not(.filtered) {
                 display: flex;
