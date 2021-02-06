@@ -145,6 +145,15 @@
         // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
+    
+    String t = request.getParameter("t");
+    String ut = request.getParameter("ut");
+    if (StringUtils.isNotBlank(t)) {
+        loginContextRequestUrl += "&t=" + t;
+    }
+    if (StringUtils.isNotBlank(ut)) {
+        loginContextRequestUrl += "&ut=" + ut;
+    }
 
     if (StringUtils.isNotBlank(usernameIdentifier)) {
         if (usernameIdentifier.split("@").length == 2) {
