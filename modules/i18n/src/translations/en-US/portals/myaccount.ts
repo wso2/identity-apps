@@ -533,7 +533,7 @@ export const myAccount: MyAccountNS = {
             authenticatorApp: {
                 description: "Scan the QR code using an Authenticator App to use TOTP" + " as a second " +
                     "authentication factor",
-                heading: "via Authenticator App",
+                heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
@@ -585,7 +585,7 @@ export const myAccount: MyAccountNS = {
                     remove: "Remove the device",
                     required: "Please enter a name for your security device"
                 },
-                heading: "via Security Device",
+                heading: "Security Device",
                 modals: {
                     deviceRegistrationErrorModal: {
                         description: "The device registration was interrupted. If this was not intentional you " +
@@ -644,7 +644,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "You'll receive a text message containing an one-time verification code",
                 },
-                heading: "via SMS",
+                heading: "SMS Number",
                 notifications: {
                     updateMobile: {
                         error: {
@@ -670,14 +670,14 @@ export const myAccount: MyAccountNS = {
                         update: "Manage account activity"
                     },
                     description: "You are currently logged in from the following device",
-                    header: "Account activity"
+                    header: "Active Sessions"
                 },
                 accountSecurity: {
                     actionTitles: {
                         update: "Update account security"
                     },
                     description: "Settings and recommendations to help you keep your account secure",
-                    header: "Account security"
+                    header: "Account Security"
                 },
                 accountStatus: {
                     complete: "Your profile is complete",
@@ -693,7 +693,7 @@ export const myAccount: MyAccountNS = {
                         manage: "Manage consents"
                     },
                     description: "Control the data you want to share with applications",
-                    header: "Consents control"
+                    header: "Control Consents"
                 }
             }
         },
@@ -961,7 +961,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         email: {
                             label: "Email",
-                            note: "NOTE: This will change the email address in your profile",
+                            note: "NOTE: Editing this changes the email address associated with this account. This " +
+                                "email address is also used for account recovery.",
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
@@ -1144,42 +1145,42 @@ export const myAccount: MyAccountNS = {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving IDP session"
+                        message: "Error retrieving active session"
                     },
                     genericError: {
-                        description: "Couldn't retrieve any IDP sessions",
+                        description: "Couldn't retrieve any active sessions",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully retrieved the IDP sessions",
-                        message: "IDP session retrieval successful"
+                        description: "Successfully retrieved the active sessions",
+                        message: "Active session retrieval successful"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate IDP sessions"
+                        message: "Couldn't terminate active sessions"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating IDP sessions",
-                        message: "Couldn't terminate IDP sessions"
+                        description: "Something went wrong while terminating active sessions",
+                        message: "Couldn't terminate active sessions"
                     },
                     success: {
-                        description: "Successfully terminated all IDP sessions",
-                        message: "Terminated all IDP sessions"
+                        description: "Successfully terminated all active sessions",
+                        message: "Terminated all active sessions"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate the IDP session"
+                        message: "Couldn't terminate the active session"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating the IDP session",
-                        message: "Couldn't terminate the IDP session"
+                        description: "Something went wrong while terminating the active session",
+                        message: "Couldn't terminate the active session"
                     },
                     success: {
-                        description: "Successfully terminated the IDP session",
+                        description: "Successfully terminated the active session",
                         message: "Session terminate success"
                     }
                 }
@@ -1279,12 +1280,12 @@ export const myAccount: MyAccountNS = {
             title: "Applications"
         },
         overview: {
-            subTitle: "Manage your personal information, account security, and privacy",
+            subTitle: "Manage your personal information, account security, and privacy settings",
             title: "Welcome, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Edit and export your personal profile and manage linked accounts",
-            title: "Personal info"
+            subTitle: "Edit or export your personal profile and manage linked accounts",
+            title: "Personal Info"
         },
         privacy: {
             subTitle: "",
@@ -1347,24 +1348,24 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description:
-                "If you forget your password or username, recover your account " +
-                "using email, SMS, or challenge questions",
-            heading: "Account recovery"
+                "Manage recovery information that we can use to help you recover your username or password",
+            heading: "Account Recovery"
         },
         changePassword: {
             actionTitles: {
                 change: "Change your password"
             },
             description: "Update your password regularly and make sure it's unique from other passwords you use.",
-            heading: "Change password"
+            heading: "Change Password"
         },
         consentManagement: {
             actionTitles: {
                 empty: "You have not granted consent to any application"
             },
             description:
-                "Revoke any consent given to an application or personal detail that you " + "have agreed to share",
-            heading: "Manage consents",
+                "Revoke consent collectively for the whole application, or revoke consent for particular personal " +
+                "details that you have agreed to share",
+            heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
@@ -1380,13 +1381,12 @@ export const myAccount: MyAccountNS = {
                 add: "Add account"
             },
             description: "Link/associate your other accounts, and access them seamlessly without re-login",
-            heading: "Linked accounts"
+            heading: "Linked Accounts"
         },
         mfa: {
             description:
-                "Add an extra layer of protection to your account by configuring multiple " +
-                "steps of authentication. You can choose from options like SMS or a security device",
-            heading: "Multi-factor authentication"
+                "Add an extra layer of protection to your account by configuring multiple steps of authentication.",
+            heading: "Multi-Factor Authentication"
         },
         profile: {
             description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
@@ -1394,21 +1394,21 @@ export const myAccount: MyAccountNS = {
         },
         profileExport: {
             actionTitles: {
-                export: "Download as JSON"
+                export: "Download the profile"
             },
             description: "Download all your profile data including personal data, security questions, and consents",
-            heading: "Export profile"
+            heading: "Export Profile"
         },
         userSessions: {
             actionTitles: {
-                empty: "No active IDP sessions",
+                empty: "No active sessions",
                 terminateAll: "Terminate all sessions"
             },
-            description: "Review all the identity provider sessions that are currently active on your account",
-            heading: "Active IDP sessions",
+            description: "Review all the active user sessions for your account",
+            heading: "Active Sessions",
             placeholders: {
                 emptySessionList: {
-                    heading: "There are no active IDP sessions for this user"
+                    heading: "There are no active sessions for this user"
                 }
             }
         }

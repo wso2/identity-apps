@@ -94,15 +94,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         try {
             const apps: ConsentInterface[] = await fetchConsentedApps(ConsentState.ACTIVE, userName);
-            // Now check whether we have the "Resident IDP" consent in the consented apps list.
-            const residentIDP = apps.find(({ spDisplayName }) =>
-                spDisplayName === ConsentConstants.SERVICE_DISPLAY_NAME);
-            if (!residentIDP) {
-                // Try to create an empty "Resident IDP" consent. And push the consent to the apps list.
-                apps.push(await createEmptyResidentIDPConsent());
-            }
-            // Finally set the value to the hook
-            setConsentedApps(apps);
+            // Check whether we have the "Resident IDP" consent in the consented apps list and remove it.
+            const consentedApps = apps.filter(({ spDisplayName }) =>
+                spDisplayName !== ConsentConstants.SERVICE_DISPLAY_NAME);
+
+            setConsentedApps(consentedApps);
         } catch (error) {
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({

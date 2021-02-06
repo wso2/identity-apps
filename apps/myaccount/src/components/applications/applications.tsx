@@ -315,14 +315,16 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                     ? (
                         <>
                             <h3 className="section-header">
-                                {t("myAccount:components.applications.recent.heading")}
+                                { t("myAccount:components.applications.recent.heading") }
                             </h3>
                             <RecentApplications
                                 onAppNavigate={ handleAppNavigation }
                                 recentApps={ recentApplications }
                                 showFavourites={ false }
                             />
-                            <h3 className="section-header">{t("myAccount:components.applications.all.heading")}</h3>
+                            <h3 className="section-header">
+                                { t("myAccount:components.applications.all.heading") }
+                            </h3>
                         </>
                     )
                     : null

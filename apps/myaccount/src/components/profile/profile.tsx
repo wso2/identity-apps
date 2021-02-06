@@ -22,9 +22,9 @@ import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@ws
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, Hint, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
+import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -667,24 +667,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                 } )
                                                             }
                                                         </a>
-                                                    ) : (
-                                                        <label className="placeholder-text">
-                                                            <i>
-                                                                {
-                                                                    t("myAccount:components.profile.forms." +
-                                                                        "generic.inputs.readonly.placeholder")
-                                                                }
-                                                            </i>
-                                                            <Hint popup>
-                                                                { t("myAccount:components.profile.forms.generic." +
-                                                                    "inputs.readonly.popup",
-                                                                    {
-                                                                        fieldName
-                                                                    } )
-                                                                }
-                                                            </Hint>
-                                                        </label>
-                                                    )
+                                                    ) : null
                                                 )
                                         }
                                 </List.Description>
@@ -947,10 +930,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             )
                                             : null
                                     }
-                                    <List.Item key={ index } className="inner-list-item"
-                                               data-testid={ `${testId}-schema-list-item` }>
-                                        { generateSchemaForm(schema) }
-                                    </List.Item>
+                                    {
+                                        !isReadOnlyUser &&
+                                        schema.mutability !== ProfileConstants.READONLY_SCHEMA &&
+                                        !isEmpty(profileInfo.get(schema.name))
+                                            ? (
+                                                <List.Item key={ index } className="inner-list-item"
+                                                           data-testid={ `${testId}-schema-list-item` }>
+                                                    { generateSchemaForm(schema) }
+                                                </List.Item>
+                                            ) : null
+                                    }
                                 </>
                             );
                         }
