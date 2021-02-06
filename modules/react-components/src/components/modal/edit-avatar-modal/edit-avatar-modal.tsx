@@ -94,6 +94,10 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      * Existing profile image url.
      */
     imageUrl?: string;
+    /**
+     * Flag to decide whether to show the hosted URL option.
+     */
+    showHostedURLOption?: boolean;
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -176,6 +180,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         name,
         onCancel,
         onSubmit,
+        showHostedURLOption,
         submitButtonText,
         [ "data-testid" ]: testId,
         translations,
@@ -330,7 +335,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                     selected={ outputURL === value }
                     onClick={ handleGravatarOptionChange }
                 />
-            )
+            );
         }
 
         return elemArray;
@@ -488,10 +493,17 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                 warning
                 visible
                 size="tiny"
-                header={ translations.gravatar.errors.noAssociation.header }
-                content={ translations.gravatar.errors.noAssociation.content }
-            />
-        )
+            >
+                <Message.Header>
+                    { translations.gravatar.errors.noAssociation.header }
+                </Message.Header>
+                <Message.Content>
+                    It seems like the selected email is not registered on Gravatar. Sign up for a Gravatar
+                    account by visiting &nbsp;<a href="https://www.gravatar.com">
+                    Gravatar Official Website</a>&nbsp;or use one of the following.
+                </Message.Content>
+            </Message>
+        );
     };
 
     /**
@@ -634,50 +646,56 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                        <Grid.Row className="pb-0">
-                            <Grid.Column width={ 16 }>
-                                <div className="avatar-from-url-label">
-                                    <Form.Field>
-                                        <Checkbox
-                                            radio
-                                            value={ AvatarTypes.URL }
-                                            label={ translations.hostedAvatar.heading }
-                                            checked={ selectedAvatarType === AvatarTypes.URL }
-                                            onChange={ handleSelectedAvatarTypeChange }
-                                        />
-                                    </Form.Field>
-                                    { resolveHostedURLMessage() }
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column computer={ 10 } tablet={ 10 } mobile={ 16 }>
-                                <div className="avatar-from-url-field">
-                                    <Form.Field
-                                        fluid
-                                        className="hosted-url-input"
-                                        control={ Input }
-                                        placeholder={ translations.hostedAvatar.input.placeholder }
-                                        onFocus={ handleHostedURLFieldOnFocus }
-                                        onChange={ handleHostedURLFieldOnChange }
-                                        error={ hostedURLError }
-                                        loading={ isHostedURLValidationRequestLoading }
-                                        value={ hostedURL }
-                                    />
-                                    {
-                                        hostedURL && isHostedURLValid && (
-                                            <UserAvatar
-                                                spaced="left"
-                                                size="mini"
-                                                isLoading={ isHostedURLValidationRequestLoading }
-                                                image={ hostedURL }
-                                            />
-                                        )
-                                    }
-                                </div>
-                                <Hint>{ translations.hostedAvatar.input.hint }</Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            showHostedURLOption && (
+                                <>
+                                    <Grid.Row className="pb-0">
+                                        <Grid.Column width={ 16 }>
+                                            <div className="avatar-from-url-label">
+                                                <Form.Field>
+                                                    <Checkbox
+                                                        radio
+                                                        value={ AvatarTypes.URL }
+                                                        label={ translations.hostedAvatar.heading }
+                                                        checked={ selectedAvatarType === AvatarTypes.URL }
+                                                        onChange={ handleSelectedAvatarTypeChange }
+                                                    />
+                                                </Form.Field>
+                                                { resolveHostedURLMessage() }
+                                            </div>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row>
+                                        <Grid.Column computer={ 10 } tablet={ 10 } mobile={ 16 }>
+                                            <div className="avatar-from-url-field">
+                                                <Form.Field
+                                                    fluid
+                                                    className="hosted-url-input"
+                                                    control={ Input }
+                                                    placeholder={ translations.hostedAvatar.input.placeholder }
+                                                    onFocus={ handleHostedURLFieldOnFocus }
+                                                    onChange={ handleHostedURLFieldOnChange }
+                                                    error={ hostedURLError }
+                                                    loading={ isHostedURLValidationRequestLoading }
+                                                    value={ hostedURL }
+                                                />
+                                                {
+                                                    hostedURL && isHostedURLValid && (
+                                                        <UserAvatar
+                                                            spaced="left"
+                                                            size="mini"
+                                                            isLoading={ isHostedURLValidationRequestLoading }
+                                                            image={ hostedURL }
+                                                        />
+                                                    )
+                                                }
+                                            </div>
+                                            <Hint>{ translations.hostedAvatar.input.hint }</Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </>
+                            )
+                        }
                     </Grid>
                 </Form>
             </Modal.Content>
@@ -710,6 +728,7 @@ EditAvatarModal.defaultProps = {
     "data-testid": "edit-avatar-modal",
     dimmer: "blurring",
     heading: "Update profile picture",
+    showHostedURLOption: false,
     submitButtonText: "Save",
     translations: {
         gravatar: {
