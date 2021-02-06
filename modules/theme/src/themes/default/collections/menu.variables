@@ -135,6 +135,8 @@
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
+@userDropdownTenantMargin: 5px 0;
+@userDropdownTenantPadding: 5px 10px;
 @userDropdownTriggerTextColor: inherit;
 
 /*-------------------------------

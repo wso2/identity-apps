@@ -170,3 +170,11 @@ export const getCertificateIllustrations = () => {
         uploadPlaceholder: import(`../../../themes/${ theme }/assets/images/icons/upload.svg`)
     };
 };
+
+export const getMiscellaneousIcons = () => {
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        tenantIcon: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/ldap-outline.svg`)
+    };
+};

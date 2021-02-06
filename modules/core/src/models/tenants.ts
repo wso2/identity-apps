@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,12 @@
  * under the License.
  */
 
-export * from "./certificates";
-export * from "./claim";
-export * from "./common";
-export * from "./config";
-export * from "./core";
-export * from "./documentation";
-export * from "./http";
-export * from "./profile";
-export * from "./reducer-state";
-export * from "./roles";
-export * from "./route";
-export * from "./storage";
-export * from "./tenants";
-export * from "./ua-parser";
-export * from "./userstores";
-export * from "./url-components";
+export interface TenantAssociationsInterface extends TenantListInterface {
+    username: string;
+    currentTenant?: string;
+}
+
+export interface TenantListInterface {
+    associatedTenants?: string | string[];
+    defaultTenant?: string;
+}
