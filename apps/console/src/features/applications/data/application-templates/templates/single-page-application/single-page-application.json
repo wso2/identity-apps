@@ -34,11 +34,27 @@
         },
         "inboundProtocolConfiguration": {
             "oidc": {
+                "accessToken": {
+                    "applicationAccessTokenExpiryInSeconds": 3600,
+                    "bindingType": "sso-binding",
+                    "revokeTokensWhenIDPSessionTerminated": true,
+                    "type": "Default",
+                    "userAccessTokenExpiryInSeconds": 3600,
+                    "validateTokenBinding": false
+                },
                 "grantTypes": [
                     "authorization_code",
                     "refresh_token"
                 ],
-                "publicClient": true
+                "pkce": {
+                    "mandatory": true,
+                    "supportPlainTransformAlgorithm": false
+                },
+                "publicClient": true,
+                "refreshToken": {
+                    "expiryInSeconds": 86400,
+                    "renewRefreshToken": true
+                }
             }
         }
     }

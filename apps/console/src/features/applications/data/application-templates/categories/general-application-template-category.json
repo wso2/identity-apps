@@ -5,6 +5,7 @@
     "viewConfigs": {
         "tags": {
             "as": "icon",
+            "sectionTitle": "E.g.,",
             "showTagIcon": false,
             "showTags": true,
             "tagSize": "x30",
