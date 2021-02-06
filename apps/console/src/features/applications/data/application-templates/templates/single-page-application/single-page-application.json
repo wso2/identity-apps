@@ -50,7 +50,11 @@
                     "mandatory": true,
                     "supportPlainTransformAlgorithm": false
                 },
-                "publicClient": true
+                "publicClient": true,
+                "refreshToken": {
+                    "expiryInSeconds": 86400,
+                    "renewRefreshToken": true
+                }
             }
         }
     }
