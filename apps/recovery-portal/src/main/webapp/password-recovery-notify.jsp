@@ -35,6 +35,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -42,6 +43,11 @@
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+    
+    if(isSaaSApp) { //if the app is SaaS we would have the tenant domain by now.
+        username = UserCoreUtil.addTenantDomainToEntry(username, tenantDomain);
+    }
+    
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
     NotificationApi notificationApi = new NotificationApi();

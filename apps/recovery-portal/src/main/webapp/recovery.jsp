@@ -57,9 +57,14 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
 
-    if (StringUtils.isNotBlank(userTenant)) {
-        username = MultitenantUtils.getTenantAwareUsername(username);
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+    username = MultitenantUtils.getTenantAwareUsername(username);
+    
+    if (StringUtils.isBlank(userTenant) && StringUtils.isNotBlank(tenantDomain)) {
+        userTenant = tenantDomain;
+    } else if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank(userTenant)){
+        tenantDomain = userTenant;
+    } else {
+        //If both blank, flow continues as carbon.super. If both present, 'tenantDomain' take precedence.
     }
 
     // Password recovery parameters
