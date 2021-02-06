@@ -529,7 +529,7 @@ export const myAccount: MyAccountNS = {
             authenticatorApp: {
                 description: "Digitalize o código QR usando um aplicativo Authenticator para usar o" +
                     " TOTP como um segundo fator de autenticação",
-                heading: "Authenticator App",
+                heading: "App autenticador",
                 hint: "Mostrar o QR Code",
                 modals: {
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
@@ -668,14 +668,14 @@ export const myAccount: MyAccountNS = {
                         update: "Gerenciar a atividade da conta"
                     },
                     description: "No momento, você está conectado no seguinte dispositivo",
-                    header: "Atividade da conta"
+                    header: "Sessões Ativas"
                 },
                 accountSecurity: {
                     actionTitles: {
                         update: "Atualizar segurança da conta"
                     },
                     description: "Configurações e recomendações para ajudar você a manter sua conta segura",
-                    header: "Segurança da conta"
+                    header: "Segurança da Conta"
                 },
                 accountStatus: {
                     complete: "Seu perfil está completo",
@@ -691,7 +691,7 @@ export const myAccount: MyAccountNS = {
                         manage: "Gerenciar consentimentos"
                     },
                     description: "Controle os dados que você deseja compartilhar com os aplicativos",
-                    header: "Controle de consentimento"
+                    header: "Controle de Consentimento"
                 }
             }
         },
@@ -943,7 +943,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         email: {
                             label: "O email",
-                            note: "NOTA: Isso mudará o endereço de email no seu perfil",
+                            note: "NOTA: Editar isso altera o endereço de e-mail associado a esta conta. Este " +
+                                "endereço de e-mail também é usado para recuperação de conta.",
                             placeholder: "Insira o seu endereço de email",
                             validations: {
                                 empty: "O endereço de email é um campo obrigatório",
@@ -1261,11 +1262,11 @@ export const myAccount: MyAccountNS = {
             title: "Applications"
         },
         overview: {
-            subTitle: "Gerencie suas informações, segurança, privacidade e todas as configurações relacionadas",
+            subTitle: "Gerenciar suas informações pessoais, segurança da conta e configurações de privacidade",
             title: "Bem-vindo, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Gerencie informações sobre você, seus sub-perfis e sua conta em geral",
+            subTitle: "Edite ou exporte seu perfil pessoal e gerencie contas vinculadas",
             title: "Informação pessoal"
         },
         privacy: {
@@ -1330,22 +1331,24 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
-            description: "Ver e gerenciar suas opções de recuperação de conta",
-            heading: "Recuperação de conta"
+            description: "Gerenciar informações de recuperação que podemos usar para ajudá-lo a recuperar " +
+                "seu nome de usuário ou senha",
+            heading: "Recuperação de Conta"
         },
         changePassword: {
             actionTitles: {
                 change: "Mude sua senha"
             },
             description: "Alterar e modificar a senha existente",
-            heading: "Mudar senha"
+            heading: "Mudar Senha"
         },
         consentManagement: {
             actionTitles: {
                 empty: "Você não concedeu consentimento a nenhum aplicativo"
             },
-            description: "Ver e gerenciar aplicativos consentidos da sua conta",
-            heading: "Aplicações consentidas",
+            description: "Revogar o consentimento coletivamente para todo o aplicativo ou revogar o " +
+                "consentimento para detalhes pessoais específicos que você concordou em compartilhar",
+            heading: "Aplicações Consentidas",
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
@@ -1354,18 +1357,19 @@ export const myAccount: MyAccountNS = {
         },
         federatedAssociations: {
             description: "Veja suas contas de outros provedores de identidade que estão vinculados a esta conta",
-            heading: "Logins externos"
+            heading: "Logins Externos"
         },
         linkedAccounts: {
             actionTitles: {
                 add: "Adicionar Conta"
             },
             description: "Gerencie todas as suas contas vinculadas em um só lugar",
-            heading: "Contas ligadas"
+            heading: "Contas Ligadas"
         },
         mfa: {
-            description: "Ver e gerenciar suas opções de autenticação multifator",
-            heading: "Autenticação multifatorial"
+            description: "Adicione uma camada extra de proteção à sua conta configurando várias etapas de " +
+                "autenticação.",
+            heading: "Autenticação Multifatorial"
         },
         profile: {
             description: "Gerencie e atualize suas informações básicas de perfil",
@@ -1373,19 +1377,19 @@ export const myAccount: MyAccountNS = {
         },
         profileExport: {
             actionTitles: {
-                export: "Exportar dados do perfil"
+                export: "Baixe o perfil"
             },
             description: "Faça o download de todos os dados do seu perfil, incluindo dados pessoais, perguntas de " +
                 "segurança e consentimentos",
-            heading: "Exportar perfil"
+            heading: "Exportar Perfil"
         },
         userSessions: {
             actionTitles: {
-                empty: "Nenhuma sessão ativa do IDP",
+                empty: "Sem sessões ativas",
                 terminateAll: "Terminar todas as sessões"
             },
-            description: "Revise todas as sessões IDP atualmente ativas em sua conta",
-            heading: "Sessões ativas do IDP",
+            description: "Reveja todas as sessões que estão atualmente ativas em sua conta",
+            heading: "Sessões Ativas",
             placeholders: {
                 emptySessionList: {
                     heading: "Não há sessões IDP ativas para este usuário"

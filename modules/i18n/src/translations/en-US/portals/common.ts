@@ -75,7 +75,7 @@ export const common: CommonNS = {
     identityProviders: "Identity Providers",
     import: "Import",
     initiator: "Initiator",
-    ipAddress: "ip address",
+    ipAddress: "IP address",
     lastAccessed: "Last accessed",
     lastModified: "Last modified",
     lastSeen: "Last seen",

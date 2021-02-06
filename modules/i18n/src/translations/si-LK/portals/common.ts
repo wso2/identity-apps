@@ -75,7 +75,7 @@ export const common: CommonNS = {
     identityProviders: "හැඳුනුම්පත් සපයන්නා",
     import: "ආනයන",
     initiator: "ආරම්භකයා",
-    ipAddress: "ip ලිපිනය",
+    ipAddress: "IP ලිපිනය",
     lastAccessed: "අවසන් ප්\u200Dරවේශය",
     lastModified: "අවසන් වෙනස් කළ දිනය",
     lastSeen: "අවසන් වරට",

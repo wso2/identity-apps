@@ -533,7 +533,7 @@ export const myAccount: MyAccountNS = {
             authenticatorApp: {
                 description: "Scanner le code QR à l'aide d'une application d'authentification pour "+
                     "utiliser un TOTP comme deuxième facteur d'authentification",
-                heading: "à l'aide d'une application d'authentification",
+                heading: "Application d'authentification",
                 hint: "Afficher le code QR",
                 modals: {
                     done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une authentification en deux étapes",
@@ -671,7 +671,7 @@ export const myAccount: MyAccountNS = {
                         update: "Gérer l'activité de votre compte compte"
                     },
                     description: "Vous êtes actuellement connecté à partir de l'appareil suivant",
-                    header: "Activité du compte"
+                    header: "Sessions actives"
                 },
                 accountSecurity: {
                     actionTitles: {
@@ -962,7 +962,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         email: {
                             label: "Email",
-                            note: "NOTE: Cela modifiera l'adresse e-mail dans votre profil utilisateur",
+                            note: "NOTE: La modification de cela modifie l'adresse e-mail associée à ce compte. " +
+                                "Cette adresse e-mail est également utilisée pour la récupération de compte.",
                             placeholder: "Veuillez saisir votre adresse e-mail",
                             validations: {
                                 empty: "L'adresse e-mail est obligatoire",
@@ -1282,11 +1283,12 @@ export const myAccount: MyAccountNS = {
             title: "Applications"
         },
         overview: {
-            subTitle: "Gérer vos informations personnelles, la sécurité de votre compte et vos options de confidentialité",
+            subTitle: "Gérez vos informations personnelles, la sécurité de votre compte et vos paramètres de " +
+                "confidentialité",
             title: "Bienvenue, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Modifier et exporter votre profil personnel et gérer vos comptes associés",
+            subTitle: "Modifier ou exporter votre profil personnel et gérer vos comptes associés",
             title: "Données personnelles"
         },
         privacy: {
@@ -1294,7 +1296,8 @@ export const myAccount: MyAccountNS = {
             title: "Politique de confidentialité de WSO2 Identity Server"
         },
         security: {
-            subTitle: "Sécurisez votre compte en gérant les consentements, les sessions authentifiées et les paramètres de sécurité",
+            subTitle: "Sécurisez votre compte en gérant les consentements, les sessions authentifiées et les " +
+                "paramètres de sécurité",
             title: "Sécurité"
         }
     },
@@ -1352,8 +1355,8 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description:
-                "Configurez les paramètres de récupération de votre compte " +
-                "en cas d'oubli de votre nom d'utilisateur ou mot de passe.",
+                "Gérez les informations de récupération que nous pouvons utiliser pour vous aider à récupérer " +
+                "votre nom d'utilisateur ou votre mot de passe",
             heading: "Récupération de votre compte"
         },
         changePassword: {
@@ -1368,7 +1371,8 @@ export const myAccount: MyAccountNS = {
                 empty: "Vous n'avez accordé votre consentement à aucune application"
             },
             description:
-                "Révoquer un consentement ou une information personnelle que vous avez accepté de partager.",
+                "Révoquer le consentement collectivement pour l'ensemble de l'application, ou révoquer le " +
+                "consentement pour des détails personnels particuliers que vous avez accepté de partager",
             heading: "Gérer mes consentements",
             placeholders: {
                 emptyConsentList: {
@@ -1390,8 +1394,7 @@ export const myAccount: MyAccountNS = {
         mfa: {
             description:
                 "Renforcez la protection de votre compte en configurant plusieurs " +
-                "étapes d'authentification. Vous pouvez par exemple utiliser un dispositif" +
-                " de sécurité ou recevoir un mot de passe à usage unique",
+                "étapes d'authentification.",
             heading: "Authentification à plusieurs étapes"
         },
         profile: {
@@ -1400,21 +1403,21 @@ export const myAccount: MyAccountNS = {
         },
         profileExport: {
             actionTitles: {
-                export: "Exporter au format JSON"
+                export: "Téléchargez le profil"
             },
             description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, questions de sécurité et consentements",
             heading: "Télécharger mon profil"
         },
         userSessions: {
             actionTitles: {
-                empty: "Pas de sessions authentifiées actives",
+                empty: "Aucune session active",
                 terminateAll: "Mettre fin à toutes les sessions"
             },
-            description: "Examiner toutes les sessions authentifiées avec votre compte",
-            heading: "Activités de votre compte",
+            description: "Passez en revue toutes les sessions actuellement actives sur votre compte",
+            heading: "Sessions Actives",
             placeholders: {
                 emptySessionList: {
-                    heading: "Vous n'avez actuellement aucune session authentifiée"
+                    heading: "Il n'y a pas de sessions actives pour cet utilisateur"
                 }
             }
         }
