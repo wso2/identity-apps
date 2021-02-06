@@ -2600,14 +2600,28 @@ export const console: ConsoleNS = {
                     },
                     changeCertType: {
                         jwks: {
-                            description: "Please note that if you have added a certificate it'll be overridden " +
+                            description: "Please note that the certificates will be overridden " +
                                 "by the the JWKS endpoint.",
                             message: "Warning!"
                         },
                         pem: {
-                            description: "Please note that if you have added a JWKS endpoint it'll be overridden " +
-                                "by the certificate.",
+                            description: "Please note that the JWKS endpoint will be overridden " +
+                                "by the certificates.",
                             message: "Warning!"
+                        }
+                    },
+                    deleteCertificate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Certificate delete error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the certificate.",
+                            message: "Certificate delete error"
+                        },
+                        success: {
+                            description: "Successfully deleted the certificate.",
+                            message: "Delete successful"
                         }
                     },
                     deleteDefaultAuthenticator: {
