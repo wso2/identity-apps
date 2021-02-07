@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 import { store } from "../store";

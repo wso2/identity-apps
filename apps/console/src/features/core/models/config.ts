@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResponseMode, Storage } from "@asgardio/oidc-js";
+import { ResponseMode, Storage } from "@wso2/identity-oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@asgardio/oidc-js";
+import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
 import {
     AlertInterface,
     LinkedAccountInterface,
