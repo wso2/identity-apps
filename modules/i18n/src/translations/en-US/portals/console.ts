@@ -2399,7 +2399,8 @@ export const console: ConsoleNS = {
                                 label: "Use JWKS endpoint",
                                 placeholder: "Value should be the certificate in JWKS format.",
                                 validations: {
-                                    empty: "Certificate value is required"
+                                    empty: "Certificate value is required",
+                                    invalid: "JWKS endpoint should be a valid URI."
                                 }
                             },
                             certificatePEM: {
@@ -3253,7 +3254,8 @@ export const console: ConsoleNS = {
                                 label: "Use JWKS endpoint",
                                 placeholder: "Value should be the certificate in JWKS format.",
                                 validations: {
-                                    empty: "Certificate value is required"
+                                    empty: "Certificate value is required",
+                                    invalid: "JWKS endpoint should be a valid URI."
                                 }
                             },
                             certificatePEM: {

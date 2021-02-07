@@ -74,8 +74,8 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("console:develop.features.idp.forms.common." +
-                                                "invalidQueryParamErrorMessage")
+                                            t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
+                                                "certificateType.certificateJWKS.validations.invalid")
                                         );
                                     }
                                 } }
