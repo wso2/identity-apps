@@ -68,6 +68,11 @@
 
                 .content {
                     vertical-align: @dataTableRowHeaderContentVerticalAlignment;
+                    .sub.header {
+                        &.truncate {
+                            max-width: @dataTableRowSubHeaderMaxWidth;
+                        }
+                    }
                 }
 
                 .theme-icon {

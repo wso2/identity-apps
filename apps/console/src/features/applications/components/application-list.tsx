@@ -291,7 +291,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
-                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                <Header.Subheader className="truncate ellipsis" data-testid={ `${ testId }-item-sub-heading` }>
                                     {
                                         template && (
                                             <Label
@@ -303,7 +303,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Label>
                                         )
                                     }
-                                    <Text width={ 300 } truncate>{ app.description }</Text>
+                                    { app.description }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
