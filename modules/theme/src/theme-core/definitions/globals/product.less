@@ -1830,12 +1830,18 @@ code {
     &.inline-code {
         border-radius: @defaultBorderRadius;
         font-size: 0.9em;
-        padding: 4px 8px;
         color: @inlineCodeBlockColor;
-        background: @inlineCodeBlockBgColor;
 
         .with-border {
             border: @inlineCodeBlockBorder;
+        }
+
+        &:not(.compact) {
+            padding: 4px 8px;
+        }
+
+        &:not(.transparent) {
+            background: @inlineCodeBlockBgColor;
         }
     }
 }

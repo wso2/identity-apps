@@ -28,6 +28,14 @@ export interface CodePropsInterface extends TestableComponentInterface {
      * Extra CSS classes.
      */
     className?: string;
+    /**
+     * Make the component compact.
+     */
+    compact?: string;
+    /**
+     * Should the component render with a background.
+     */
+    withBackground?: boolean;
 }
 
 /**
@@ -42,13 +50,21 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
 ): ReactElement => {
 
     const {
+        withBackground,
         children,
         className,
+        compact,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
-    const classes = classNames("inline-code", className);
+    const classes = classNames("inline-code",
+        {
+            compact,
+            "transparent" : !withBackground
+        },
+        className
+    );
 
     return (
         <code className={ classes } data-testid={ testId } { ...rest }>{ children }</code>
