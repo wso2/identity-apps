@@ -21,6 +21,7 @@ import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
+import { CONSUMER_USERSTORE } from "../../../userstores";
 
 interface AddUserWizardSummaryProps extends TestableComponentInterface {
     summary: any;
@@ -61,26 +62,31 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
         <Grid className="wizard-summary">
             { summary?.BasicDetails && (
                 <>
-                    <Grid.Row className="summary-field" columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div
-                                data-testid={ `${ testId }-domain-label` }
-                                className="label"
-                            >
-                                {
-                                   t("console:manage.features.roles.addRoleWizard.summary.labels.domain.group")
-                                }
-                            </div>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div
-                                data-testid={ `${ testId }-domain-value` }
-                                className="value url"
-                            >
-                                { summary.BasicDetails.domain }
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
+                    {
+                        summary.BasicDetails.domain !== CONSUMER_USERSTORE && (
+                            <Grid.Row className="summary-field" columns={ 2 }>
+                                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                    <div
+                                        data-testid={ `${ testId }-domain-label` }
+                                        className="label"
+                                    >
+                                        {
+                                            t("console:manage.features.roles.addRoleWizard.summary.labels." +
+                                                "domain.group")
+                                        }
+                                    </div>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                    <div
+                                        data-testid={ `${ testId }-domain-value` }
+                                        className="value url"
+                                    >
+                                        { summary.BasicDetails.domain }
+                                    </div>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    }
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div
