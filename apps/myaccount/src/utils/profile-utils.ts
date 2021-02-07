@@ -49,7 +49,9 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
              * The returned attributes are pushed into the `tempSchemas` array.
              */
             tempSchemas.push(...flattenSchemas(schema.subAttributes, schema.name));
-            if (schema.multiValued && schema.name !== "roles" && schema.name !== "phoneNumbers") {
+            if (schema.multiValued && schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES") &&
+                schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS") &&
+                schema.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
                 tempSchemas.push(schema);
             }
         } else {
