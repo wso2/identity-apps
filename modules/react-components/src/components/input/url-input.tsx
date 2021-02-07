@@ -367,7 +367,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const resolveCORSStatusLabel = (url: string) => {
         const { origin, href } = URLUtils.urlComponents(url);
-        const positive = allowedOrigins?.includes(origin);
+        const positive = isOriginIsKnownAndAllowed(url);
         /**
          * TODO : React Components should not depend on the product
          * locale bundles.
@@ -510,7 +510,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     }
 
     const shouldShowAllowOriginAction = (origin: string): boolean => {
-        return labelEnabled && (isAllowEnabled && !(allowedOrigins?.includes(origin)));
+        return labelEnabled && (isAllowEnabled && !isOriginIsKnownAndAllowed(origin));
     };
 
     /**
