@@ -481,7 +481,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     };
 
     /**
-     * This function isa  predicate that checks whether a given
+     * This function is a predicate that checks whether a given
      * URL is already allowed or not. It evaluates against the
      * list {@link allowedOrigins}
      *
@@ -502,7 +502,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         // This is just a "make sure" operation that cleans out any attached
         // paths from the url. Also, if theres any trailing slashes it will
         // even out with the checkingOrigin vice versa. + We need it because
-        // {@link Set} uses "same-value-zero equality" is has() operation.
+        // {@link Set} uses "same-value-zero equality" in has() operation.
         const normalizedOrigins = allowedOrigins?.map(
             (o) => URLUtils.urlComponents(o)?.origin
         );
