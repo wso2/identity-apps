@@ -34,7 +34,6 @@ import {
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
-    Text,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -291,7 +290,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
-                                <Header.Subheader className="truncate ellipsis" data-testid={ `${ testId }-item-sub-heading` }>
+                                <Header.Subheader
+                                    className="truncate ellipsis"
+                                    data-testid={ `${ testId }-item-sub-heading` }
+                                >
                                     {
                                         template && (
                                             <Label
