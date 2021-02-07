@@ -228,9 +228,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     return (
         <HelpPanelLayout
+            enabled={ false }
             visible={ false }
             sidebarDirection="right"
-            sidebarMiniEnabled={ true }
+            sidebarMiniEnabled={ false }
             tabs={ helpPanelTabs }
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
