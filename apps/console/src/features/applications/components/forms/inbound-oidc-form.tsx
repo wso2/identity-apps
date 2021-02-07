@@ -221,10 +221,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         } else {
             setShowCallbackURLField(false);
         }
-        if (!((!selectedGrantTypes?.includes("authorization_code")) && selectedGrantTypes?.includes("refresh_token")) 
+        if (!((!selectedGrantTypes?.includes("authorization_code")) && selectedGrantTypes?.includes("refresh_token"))
         && isRefreshTokenWithoutCodeGrantType) {
             setRefreshTokenWithoutCodeGrantType(false);
-        } 
+        }
 
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -288,7 +288,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         switch (element.toLowerCase()) {
             case "none":
                 return t("console:develop.features.applications.forms" +
-                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none");
+                    ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.none", {
+                    productName: config.ui.productName
+                });
             case "cookie":
                 return t("console:develop.features.applications.forms" +
                     ".inboundOIDC.sections.accessToken.fields.bindingType.valueDescriptions.cookie");
@@ -309,6 +311,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Moderates the metadata labels.
+     *
+     * @param {string} label - Raw label.
+     * @return {string}
+     */
+    const moderateMetadataLabels = (label: string): string => {
+
+        switch (label.toLowerCase()) {
+            case "sso-session":
+                return t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.ssoBinding.label");
+            default:
+                return label;
+        }
+    };
+
+    /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
      * @param {MetadataPropertyInterface} metadataProp - Metadata.
@@ -324,7 +343,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         hint: {
                             content: getMetadataHints(ele)
                         },
-                        label: ele,
+                        label: moderateMetadataLabels(ele),
                         value: ele
                     });
                 });
@@ -357,7 +376,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const modifyGrantTypeLabels = (value: string, label: string): string => {
         if (value === ApplicationManagementConstants.IMPLICIT_GRANT) {
-            return `${ label } (Deprecated with Oauth 2.1)`;
+            return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children.implicit.label",
+                { grantType: label });
         }
         return label;
     };
@@ -371,7 +391,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const getGrantTypeHintDescription = (value: string): string => {
         switch (value) {
             case ApplicationManagementConstants.IMPLICIT_GRANT:
-                return "Implicit flow is vulnerable to access token leakage.";
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
+                    "implicit.hint");
             case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
                 return "Refresh token grant type should be selected along with the Code grant type.";
             default:
@@ -770,7 +791,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             { t("console:develop.features.applications.forms.inboundOIDC.fields.grant" +
                                 ".validation.refreshToken") }
                             </Label>
-                        )                  
+                        )
                     }
                     <Hint>
                         {
@@ -2014,7 +2035,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const checkRefreshTokenWithoutCodeGrantType = (values: Map<string, FormValue>): boolean => {
        const grantTypes = values.get("grant");
-       return((!grantTypes?.includes("authorization_code")) && grantTypes?.includes("refresh_token")) 
+       return((!grantTypes?.includes("authorization_code")) && grantTypes?.includes("refresh_token"))
     }
 
     /**
