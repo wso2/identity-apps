@@ -10,6 +10,7 @@
 @dataTableTransparentBorder: none;
 @dataTableSelectableRowCursor: pointer;
 @dataTableColumnSelectorFloat: right;
+@dataTableRowSubHeaderMaxWidth: 500px;
 
 @dataTableHeaderFontWeight: 500;
 
