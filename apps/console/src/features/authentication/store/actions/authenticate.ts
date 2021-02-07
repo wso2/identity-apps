@@ -213,10 +213,6 @@ export const initializeAuthentication = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
-            customParams: {
-                o: window["AppUtils"].getSuperTenant(),
-                t: window["AppUtils"].getTenantName(true)
-            },
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
             endpoints: {
                 authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
