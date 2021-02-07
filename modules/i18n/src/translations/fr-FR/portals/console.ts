@@ -1032,9 +1032,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisissez une description pour l'application"
                             },
                             discoverable: {
-                                hint: "Activez pour rendre l'application visible aux utilisateurs finaux dans " +
-                                    "le catalogue d'applications. Visible dans l'application " +
-                                    "<1>My Account</1><2></2><3>de l'organisation.</3>",
+                                hint: "Activez pour rendre l'application visible aux utilisateurs finaux sur " +
+                                    "leur catalogue d'applications My Account.",
                                 label: "Application découvrable"
                             },
                             imageUrl: {

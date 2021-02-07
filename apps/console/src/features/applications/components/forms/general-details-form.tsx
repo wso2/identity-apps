@@ -250,25 +250,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
                         <Hint compact>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.forms.generalDetails." +
-                                    "fields.discoverable.hint"
-                                }
-                            >
-                                Enable to make the application visible to end-users in the application catalog.
-                                Visible in organization&apos;s
-                                <a
-                                    href={ AppConstants.getMyAccountPath() }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="link external"
-                                >
-                                    My Account
-                                </a>
-                                <Icon className="ml-1 link primary" name="external"></Icon>
-                                application.
-                            </Trans>
+                            {
+                                t("console:develop.features.applications.forms.generalDetails.fields." +
+                                "discoverable.hint")
+                            }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
