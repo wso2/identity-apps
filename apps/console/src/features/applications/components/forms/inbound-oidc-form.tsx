@@ -113,6 +113,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const isHelpPanelVisible: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
+    const [ isRefreshTokenWithoutCodeGrantType, setRefreshTokenWithoutCodeGrantType ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
@@ -220,6 +221,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         } else {
             setShowCallbackURLField(false);
         }
+        if (!((!selectedGrantTypes?.includes("authorization_code")) && selectedGrantTypes?.includes("refresh_token")) 
+        && isRefreshTokenWithoutCodeGrantType) {
+            setRefreshTokenWithoutCodeGrantType(false);
+        } 
 
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -367,6 +372,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         switch (value) {
             case ApplicationManagementConstants.IMPLICIT_GRANT:
                 return "Implicit flow is vulnerable to access token leakage.";
+            case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
+                return "Refresh token grant type should be selected along with the Code grant type.";
             default:
                 return null;
         }
@@ -757,6 +764,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         listen={ (values) => handleGrantTypeChange(values) }
                         data-testid={ `${ testId }-grant-type-checkbox-group` }
                     />
+                    {
+                        isRefreshTokenWithoutCodeGrantType && (
+                            <Label basic color="orange" className="mt-2" >
+                            { t("console:develop.features.applications.forms.inboundOIDC.fields.grant" +
+                                ".validation.refreshToken") }
+                            </Label>
+                        )                  
+                    }
                     <Hint>
                         {
                             t("console:develop.features.applications.forms.inboundOIDC.fields.grant.hint")
@@ -1993,6 +2008,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setLowExpiryTimesConfirmationModal(null);
         return false;
     };
+    /**
+     * Check refresh token grant type is enabled without code grant type.
+     * @param {Map<string, >} values - Form values.
+     */
+    const checkRefreshTokenWithoutCodeGrantType = (values: Map<string, FormValue>): boolean => {
+       const grantTypes = values.get("grant");
+       return((!grantTypes?.includes("authorization_code")) && grantTypes?.includes("refresh_token")) 
+    }
 
     /**
      * Handle form submit.
@@ -2001,6 +2024,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
 
         let isExpiryTimesTooLowModalShown: boolean = false;
+
+        if (checkRefreshTokenWithoutCodeGrantType(values)) {
+            setRefreshTokenWithoutCodeGrantType(true);
+            scrollToInValidField("grant");
+            return;
+        }
 
         if (showCallbackURLField) {
             submitUrl((url: string) => {

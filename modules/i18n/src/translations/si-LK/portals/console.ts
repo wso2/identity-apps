@@ -1137,6 +1137,9 @@ export const console: ConsoleNS = {
                                 label: "අවසර ලත් වර්ගය",
                                 validations: {
                                     empty: "අවම වශයෙන් ප්‍රදාන වර්ගයක් තෝරන්න"
+                                },
+                                validation: {
+                                    refreshToken:"Code grant වර්ගය සමඟ Refresh token grant type තෝරා ගත යුතුය."
                                 }
                             },
                             public: {
