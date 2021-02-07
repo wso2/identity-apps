@@ -480,6 +480,35 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         return customLabel;
     };
 
+    /**
+     * This function isa  predicate that checks whether a given
+     * URL is already allowed or not. It evaluates against the
+     * list {@link allowedOrigins}
+     *
+     * In this function `origin` refers to the url containing
+     * `<scheme>://<host>:<port>` you should not confuse origin
+     * with host.
+     *
+     * Why check the scheme diff for origin?
+     * {@link https://tools.ietf.org/html/rfc6454#section-3.2.1}
+     * {@link https://stackoverflow.com/a/19542686}
+     *
+     * @param url {string} a URL i.e., https://myapp.io/x/y/z\
+     * @return {boolean} origin allowed or not
+     */
+    const isOriginIsKnownAndAllowed = (url: string): boolean => {
+        // `origin` contains <scheme>://<host>:<port> (port if exists)
+        const { origin: checkingOrigin } = URLUtils.urlComponents(url);
+        // This is just a "make sure" operation that cleans out any attached
+        // paths from the url. Also, if theres any trailing slashes it will
+        // even out with the checkingOrigin vice versa. + We need it because
+        // {@link Set} uses "same-value-zero equality" is has() operation.
+        const normalizedOrigins = allowedOrigins?.map(
+            (o) => URLUtils.urlComponents(o)?.origin
+        );
+        return new Set<string>(normalizedOrigins ?? []).has(checkingOrigin);
+    }
+
     const shouldShowAllowOriginAction = (origin: string): boolean => {
         return labelEnabled && (isAllowEnabled && !(allowedOrigins?.includes(origin)));
     };
