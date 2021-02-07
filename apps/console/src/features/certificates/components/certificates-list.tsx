@@ -47,7 +47,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, UIConstants } from "../../core";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,
@@ -158,7 +158,12 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const [ deleteCertificatePem, setDeleteCertificatePem ] = useState("");
     const [ tenantCertificate, setTenantCertificate ] = useState("");
 
-    const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
+    const tenantDomain: string = useSelector<AppState, string>(
+        (state: AppState) => state.config.deployment.tenant
+    );
+    const authTenantDomain: string = useSelector<AppState, string>(
+        (state: AppState) => state.auth.tenantDomain
+    );
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
@@ -681,11 +686,16 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 renderer: "semantic-icon"
             },
             {
-                hidden: (): boolean => {
-                    const hasScopes: boolean = hasRequiredScopes(featureConfig?.certificates,
-                        featureConfig?.certificates?.scopes?.delete, allowedScopes);
-
-                    return !(type === KEYSTORE && hasScopes) || isSuper;
+                hidden: ({ alias }: Certificate): boolean => {
+                    const hasScopes: boolean = hasRequiredScopes(
+                        featureConfig?.certificates,
+                        featureConfig?.certificates?.scopes?.delete,
+                        allowedScopes
+                    );
+                    // Checks whether the alias of this certificate matches the tenant domain
+                    // or the authenticated user's tenant domain.
+                    const isTenant = tenantDomain === alias || authTenantDomain === alias;
+                    return !(type === KEYSTORE && hasScopes) || isSuper || isTenant;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, certificate: Certificate): void => initDelete(certificate),
