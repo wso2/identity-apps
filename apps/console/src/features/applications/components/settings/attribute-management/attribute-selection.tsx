@@ -403,6 +403,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
+                        <Hint>
+                            { t("console:develop.features.applications.edit.sections.attributes.selection.attributeComponentHint") }
+                        </Hint>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
                                 <>
@@ -467,6 +470,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         </Table.Cell>
                                                     )
                                                 }
+                                            </Table.Row>
+                                            <Table.Row>
+                                                <Table.Cell colSpan='2'>
+                                                    <Hint>
+                                                        { t("console:develop.features.applications.edit.sections.attributes.selection.mandatoryAttributeHint") }
+                                                    </Hint>
+                                                </Table.Cell>
                                             </Table.Row>
                                         </Table.Body>
                                     </Table>

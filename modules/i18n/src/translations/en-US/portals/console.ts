@@ -711,10 +711,14 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subHeading: "Select which user attributes to request from the authentication " +
-                                        "provider"
+                                    subHeading: "Select which user attributes you want to share with the application."
                                 },
                                 heading: "User Attribute Selection",
+                                attributeComponentHint: "Manage the user attributes you want to share with this" +
+                                    " application.",
+                                mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
+                                    " with the application. When logging in, Asgardeo prompts the user to enter the" +
+                                    " attribute value if it is not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Enable mapping"

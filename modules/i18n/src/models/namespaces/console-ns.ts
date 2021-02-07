@@ -430,6 +430,8 @@ export interface ConsoleNS {
                                     };
                                 };
                                 heading: string;
+                                attributeComponentHint: string;
+                                mandatoryAttributeHint: string;
                                 mappingTable: {
                                     actions: {
                                         enable: string;
