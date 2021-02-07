@@ -2404,7 +2404,8 @@ export const console: ConsoleNS = {
                                 label: "JWKS අන්ත ලක්ෂ්‍යය භාවිතා කරන්න",
                                 placeholder: "අගය JWKS ආකෘතියෙන් සහතිකය විය යුතුය.",
                                 validations: {
-                                    empty: "සහතික වටිනාකම අවශ්‍ය වේ"
+                                    empty: "සහතික වටිනාකම අවශ්‍ය වේ",
+                                    invalid: "JWKS අන්ත ලක්ෂ්‍යය වලංගු URI එකක් විය යුතුය."
                                 }
                             },
                             certificatePEM: {

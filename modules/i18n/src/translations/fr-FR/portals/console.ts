@@ -2415,7 +2415,8 @@ export const console: ConsoleNS = {
                                 label: "Utilisez le point d'entrée JWKS",
                                 placeholder: "La valeur doit être le certificat au format JWKS.",
                                 validations: {
-                                    empty: "La valeur du certificat est requise"
+                                    empty: "La valeur du certificat est requise",
+                                    invalid: "Le point de terminaison JWKS doit être un URI valide."
                                 }
                             },
                             certificatePEM: {
