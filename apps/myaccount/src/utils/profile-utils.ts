@@ -108,6 +108,9 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
         // append it to the existing attribute key.
         if (parentAttributeName) {
             key = parentAttributeName + "." + key;
+            if (parentAttributeName === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
+                key = parentAttributeName;
+            }
         }
 
         // Check if the value is an array and if it's a string array

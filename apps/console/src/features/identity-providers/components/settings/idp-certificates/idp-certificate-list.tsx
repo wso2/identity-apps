@@ -164,6 +164,10 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
 
     /**
      * Remove the certificate from the certificated list.
+     * The path attribute of the patch request requires the certificate index.
+     * At the moment, the index of the certificate to be deleted is obtained from the indexes of
+     * @see certificates. This may cause unexpected behaviours if the certificates array is manipulated
+     * for some reason.
      *
      * @param certificateIndex
      */
