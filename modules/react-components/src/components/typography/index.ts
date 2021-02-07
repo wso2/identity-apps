@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./code";
 export * from "./heading";
 export * from "./hint";
 export * from "./text";
