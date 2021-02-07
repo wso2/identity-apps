@@ -107,6 +107,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ internalScript, setInternalScript ] = useState<string | string[]>(undefined);
     const [ internalStepCount, setInternalStepCount ] = useState<number>(undefined);
     const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
+    const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -179,6 +180,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             // Checks if the script in the editor is from a template and if the editor content and the sent script
             // is different. If so, some edits have been made and we shouldn't touch the editor content.
             if (isScriptFromTemplate
+                && !isNewlyAddedScriptTemplate
                 && (AdaptiveScriptUtils.minifyScript(internalScript)
                     !== AdaptiveScriptUtils.minifyScript(JSON.parse(script)))) {
 
@@ -187,6 +189,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
             setIsScriptFromTemplate(true);
             setSourceCode(JSON.parse(script));
+            setIsNewlyAddedScriptTemplate(false);
             return;
         }
 
@@ -243,6 +246,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
      */
     const handleTemplateSelection = (template: AdaptiveAuthTemplateInterface) => {
+        setIsNewlyAddedScriptTemplate(true);
         onTemplateSelect(template);
     };
 
