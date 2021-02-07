@@ -139,9 +139,9 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid>
+            <Grid className="form-container with-max-width">
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="realm"
                             label={
@@ -166,7 +166,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="replyTo"
                             label={ t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.label") }
@@ -240,7 +240,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         {
                             isPEMSelected
                                 ?
@@ -353,7 +353,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 {
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Button
                                     primary
                                     type="submit"

@@ -579,7 +579,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     /**
      * Util function to handle claim mapping.
-     * 
+     *
      * @param confirmation confirmation state
      */
     const handleClaimMapping = (confirmation: boolean): void => {
@@ -603,123 +603,134 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     return (
         !isClaimRequestLoading && selectedDialect && !(isClaimLoading && _.isEmpty(externalClaims))
-            ?
-            <EmphasizedSegment padded="very">
-                <Grid className="claim-mapping">
-                    <AttributeSelection
-                        claims={ claims }
-                        setClaims={ setClaims }
-                        externalClaims={ externalClaims }
-                        setExternalClaims={ setExternalClaims }
-                        selectedClaims={ selectedClaims }
-                        selectedExternalClaims={ selectedExternalClaims }
-                        setSelectedClaims={ setSelectedClaims }
-                        setSelectedExternalClaims={ setSelectedExternalClaims }
-                        selectedDialect={ selectedDialect }
-                        claimMapping={ claimMapping }
-                        setClaimMapping={ setClaimMapping }
-                        createMapping={ createMapping }
-                        removeMapping={ removeMapping }
-                        getCurrentMapping={ getCurrentMapping }
-                        updateClaimMapping={ updateClaimMapping }
-                        addToClaimMapping={ addToClaimMapping }
-                        claimConfigurations={ claimConfigurations }
-                        claimMappingOn={ claimMappingOn }
-                        showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
-                        setClaimMappingOn={ setClaimMappingOn }
-                        claimMappingError={ claimMappingError }
-                        readOnly={
-                            readOnly
-                            || !hasRequiredScopes(featureConfig?.applications,
+            ? (
+                <EmphasizedSegment padded="very">
+                    <Grid className="claim-mapping">
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                <AttributeSelection
+                                    claims={ claims }
+                                    setClaims={ setClaims }
+                                    externalClaims={ externalClaims }
+                                    setExternalClaims={ setExternalClaims }
+                                    selectedClaims={ selectedClaims }
+                                    selectedExternalClaims={ selectedExternalClaims }
+                                    setSelectedClaims={ setSelectedClaims }
+                                    setSelectedExternalClaims={ setSelectedExternalClaims }
+                                    selectedDialect={ selectedDialect }
+                                    claimMapping={ claimMapping }
+                                    setClaimMapping={ setClaimMapping }
+                                    createMapping={ createMapping }
+                                    removeMapping={ removeMapping }
+                                    getCurrentMapping={ getCurrentMapping }
+                                    updateClaimMapping={ updateClaimMapping }
+                                    addToClaimMapping={ addToClaimMapping }
+                                    claimConfigurations={ claimConfigurations }
+                                    claimMappingOn={ claimMappingOn }
+                                    showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
+                                    setClaimMappingOn={ setClaimMappingOn }
+                                    claimMappingError={ claimMappingError }
+                                    readOnly={
+                                        readOnly
+                                        || !hasRequiredScopes(featureConfig?.applications,
+                                            featureConfig?.applications?.scopes?.update,
+                                            allowedScopes)
+                                    }
+                                    data-testid={ `${ testId }-attribute-selection` }
+                                />
+                                <Divider hidden/>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <AdvanceAttributeSettings
+                                    dropDownOptions={ createDropdownOption() }
+                                    triggerSubmission={ triggerAdvanceSettingFormSubmission }
+                                    setSubmissionValues={ setAdvanceSettingValues }
+                                    initialRole={ claimConfigurations?.role }
+                                    initialSubject={ claimConfigurations?.subject }
+                                    claimMappingOn={ claimMappingOn }
+                                    readOnly={
+                                        readOnly
+                                        || !hasRequiredScopes(featureConfig?.applications,
+                                            featureConfig?.applications?.scopes?.update,
+                                            allowedScopes)
+                                    }
+                                    data-testid={ `${ testId }-advanced-attribute-settings-form` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <ConfirmationModal
+                            onClose={ (): void => setShowClaimMappingConfirmation(false) }
+                            type={ "warning" }
+                            open={ showClaimMappingConfirmation }
+                            primaryAction={
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.mappingRevert.confirmPrimaryAction")
+                            }
+                            secondaryAction={
+                                t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.mappingRevert.confirmSecondaryAction")
+                            }
+                            onSecondaryActionClick={ (): void => handleClaimMapping(true) }
+                            onPrimaryActionClick={ (): void => handleClaimMapping(false) }
+                        >
+                            <ConfirmationModal.Header>
+                                {
+                                    t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        ".mappingTable.mappingRevert.confirmationHeading")
+                                }
+                            </ConfirmationModal.Header>
+                            <ConfirmationModal.Message warning>
+                                {
+                                    t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        ".mappingTable.mappingRevert.confirmationMessage")
+                                }
+                            </ConfirmationModal.Message>
+                            <ConfirmationModal.Content>
+                                {
+                                    t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        ".mappingTable.mappingRevert.confirmationContent")
+                                }
+                            </ConfirmationModal.Content>
+                        </ConfirmationModal>
+                        <RoleMapping
+                            submitState={ triggerAdvanceSettingFormSubmission }
+                            onSubmit={ setRoleMapping }
+                            initialMappings={ claimConfigurations?.role?.mappings }
+                            readOnly={
+                                readOnly
+                                || !hasRequiredScopes(featureConfig?.applications,
+                                    featureConfig?.applications?.scopes?.update,
+                                    allowedScopes)
+                            }
+                            data-testid={ `${ testId }-role-mapping` }
+                        />
+                        {
+                            !readOnly
+                            && hasRequiredScopes(featureConfig?.applications,
                                 featureConfig?.applications?.scopes?.update,
                                 allowedScopes)
+                            && (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Button
+                                            primary
+                                            size="small"
+                                            onClick={ updateValues }
+                                            data-testid={ `${ testId }-submit-button` }
+                                        >
+                                            { t("common:update") }
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
                         }
-                        data-testid={ `${ testId }-attribute-selection` }
-                    />
-                    <Divider hidden />
-                    <AdvanceAttributeSettings
-                        dropDownOptions={ createDropdownOption() }
-                        triggerSubmission={ triggerAdvanceSettingFormSubmission }
-                        setSubmissionValues={ setAdvanceSettingValues }
-                        initialRole={ claimConfigurations?.role }
-                        initialSubject={ claimConfigurations?.subject }
-                        claimMappingOn={ claimMappingOn }
-                        readOnly={
-                            readOnly
-                            || !hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update,
-                                allowedScopes)
-                        }
-                        data-testid={ `${ testId }-advanced-attribute-settings-form` }
-                    />
-                    <ConfirmationModal
-                        onClose={ (): void => setShowClaimMappingConfirmation(false) }
-                        type={ "warning" }
-                        open={ showClaimMappingConfirmation }
-                        primaryAction={
-                            t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                ".mappingTable.mappingRevert.confirmPrimaryAction" )
-                        }
-                        secondaryAction={
-                            t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                ".mappingTable.mappingRevert.confirmSecondaryAction" )
-                        }
-                        onSecondaryActionClick={ (): void => handleClaimMapping(true) }
-                        onPrimaryActionClick={ (): void => handleClaimMapping(false) }
-                    >
-                        <ConfirmationModal.Header>
-                            {
-                                t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.mappingRevert.confirmationHeading" )
-                            }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message warning >
-                            {
-                                t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.mappingRevert.confirmationMessage" )
-                            }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            {
-                                t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.mappingRevert.confirmationContent" )
-                            }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                    <RoleMapping
-                        submitState={ triggerAdvanceSettingFormSubmission }
-                        onSubmit={ setRoleMapping }
-                        initialMappings={ claimConfigurations?.role?.mappings }
-                        readOnly={
-                            readOnly
-                            || !hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update,
-                                allowedScopes)
-                        }
-                        data-testid={ `${ testId }-role-mapping` }
-                    />
-                    {
-                        !readOnly
-                        && hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update,
-                            allowedScopes)
-                        && (
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                    <Button
-                                        primary
-                                        size="small"
-                                        onClick={ updateValues }
-                                        data-testid={ `${ testId }-submit-button` }
-                                    >
-                                        { t("common:update") }
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                    }
-                </Grid>
-            </EmphasizedSegment>
+                    </Grid>
+                </EmphasizedSegment>
+            )
             : <ContentLoader/>
     );
 };

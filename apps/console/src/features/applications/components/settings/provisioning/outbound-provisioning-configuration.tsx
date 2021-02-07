@@ -312,7 +312,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 ) : (
                     <Grid>
                         <Grid.Row>
-                            <Grid.Column width={ 8 }>
+                            <Grid.Column width={ 16 }>
                                 <Segment>
                                     <EmptyPlaceholder
                                         title={

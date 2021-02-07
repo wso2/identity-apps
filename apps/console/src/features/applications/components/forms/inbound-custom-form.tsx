@@ -103,7 +103,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             if (config?.availableValues?.length > 0) {
                 return (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
                                 label={ config?.displayName }
                                 name={ config?.name }
@@ -124,7 +124,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             } else if (config?.isConfidential) {
                 return (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
                                 label={ config?.displayName }
                                 name={ config?.name }
@@ -152,7 +152,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             } else if (config?.type === CustomTypeEnum.BOOLEAN) {
                 return (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
                                 name={ config?.name }
                                 label=""
@@ -178,7 +178,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             } else {
                 return (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
                                 label={ config?.displayName }
                                 name={ config?.name }
@@ -309,14 +309,14 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                 onSubmit(updateConfiguration(values));
             } }
         >
-            <Grid>
+            <Grid className="form-container with-max-width">
                 { generateFormElements() }
                 { /* Certificates */ }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Divider/>
                     </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h5">
                             {
                                 t("console:develop.features.applications.forms." +
@@ -354,7 +354,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         {
                             isPEMSelected
                                 ?
@@ -467,7 +467,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                 {
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Button primary type="submit" size="small" className="form-button">
                                     { t("common:update") }
                                 </Button>

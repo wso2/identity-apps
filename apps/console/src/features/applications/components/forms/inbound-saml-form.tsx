@@ -408,9 +408,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                     } }
                 >
-                    <Grid>
+                    <Grid className="form-container with-max-width">
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
                                     initialValues?.issuer
                                         ? (
@@ -454,7 +454,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ applicationQualifier }
                                     name="applicationQualifier"
@@ -532,7 +532,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             customLabel={ assertionConsumerURLsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ defaultAssertionConsumerUrl }
                                     label={
@@ -562,7 +562,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ idpEntityIdAlias }
                                     label={
@@ -593,11 +593,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         {/*Request Validation*/ }
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestValidation.heading") }
@@ -644,7 +644,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         {
                             isSignatureValidationCertificateAliasEnabled &&
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ signatureValidationCertAlias }
                                         label={
@@ -676,17 +676,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         {/*Response/Assertion Signing*/ }
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".responseSigning.heading") }
                                 </Heading>
                                 <Divider hidden/>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ digestAlgorithm }
                                         label={
@@ -710,7 +710,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ signingAlgorithm }
                                     label={
@@ -733,7 +733,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ responseSigning }
                                     name="responseSigning"
@@ -761,11 +761,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         {/*Single SignOn Profile*/ }
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".ssoProfile.heading") }
@@ -812,7 +812,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ signatureValidationForArtifactBinding }
                                     name="signatureValidationForArtifactBinding"
@@ -841,7 +841,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ idPInitiatedSSO }
                                     name="idPInitiatedSSO"
@@ -869,7 +869,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h6">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                         ".heading") }
@@ -1004,7 +1004,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             customLabel={ recipientsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h6">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".encryption.heading") }
@@ -1044,7 +1044,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ assertionEncryptionAlgorithm }
                                     label={
@@ -1071,7 +1071,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ keyEncryptionAlgorithm }
                                     label={
@@ -1098,11 +1098,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".attributeProfile.heading") }
@@ -1143,7 +1143,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ includeAttributesInResponse }
                                     name="includeAttributesInResponse"
@@ -1173,7 +1173,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ attributeConsumingServiceIndex }
                                     label={
@@ -1205,11 +1205,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         {/*Single Logout Profile*/ }
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".sloProfile.heading") }
@@ -1249,7 +1249,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ logoutMethod }
                                     label={
@@ -1290,7 +1290,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ singleLogoutResponseUrl }
                                     name="singleLogoutResponseUrl"
@@ -1325,7 +1325,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ singleLogoutRequestUrl }
                                     name="singleLogoutRequestUrl"
@@ -1360,7 +1360,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h6" disabled={ !isSingleLogoutProfileEnabled }>
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".idpInitiatedSLO.heading") }
@@ -1454,14 +1454,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             customLabel={ returnToURLsErrorLabel }
                         />
 
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Divider/>
                             <Divider hidden/>
                         </Grid.Column>
 
                         {/* Assertion Query/Request Profile */ }
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestProfile.heading") }
@@ -1496,10 +1496,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
                         { /* Certificates */ }
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">
                                     {
                                         t("console:develop.features.applications.forms." +
@@ -1537,7 +1537,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
                                     isPEMSelected
                                         ?
@@ -1650,7 +1650,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         {
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             primary
                                             type="submit"

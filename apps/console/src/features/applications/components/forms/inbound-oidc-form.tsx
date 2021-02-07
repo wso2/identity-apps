@@ -110,7 +110,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
-    const isHelpPanelVisible: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isRefreshTokenWithoutCodeGrantType, setRefreshTokenWithoutCodeGrantType ] = useState(false);
@@ -766,7 +765,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const renderOIDCConfigFields = (): ReactElement => (
         <>
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ grant }
                         name="grant"
@@ -801,7 +800,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ supportPublicClients }
                         name="supportPublicClients"
@@ -903,7 +902,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             customLabel={ callbackURLsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <div ref={ allowedOrigin }/>
                                 <URLInput
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
@@ -982,11 +981,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Form Section: PKCE */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
                             ".heading") }
@@ -1034,11 +1033,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Access Token */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
@@ -1160,7 +1159,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ userAccessTokenExpiryInSeconds }
                         name="userAccessTokenExpiryInSeconds"
@@ -1214,11 +1213,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Refresh Token */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".refreshToken.heading") }
@@ -1256,7 +1255,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ expiryInSeconds }
                         name="expiryInSeconds"
@@ -1290,11 +1289,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* ID Token */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".idToken.heading") }
@@ -1337,7 +1336,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ encryption }
                         name="encryption"
@@ -1377,7 +1376,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ algorithm }
                         name="algorithm"
@@ -1412,7 +1411,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ method }
                         name="method"
@@ -1447,7 +1446,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ idExpiryInSeconds }
                         name="idExpiryInSeconds"
@@ -1483,11 +1482,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">Logout URLs</Heading>
                     <Divider hidden />
                     <Field
@@ -1529,7 +1528,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ frontChannelLogoutUrl }
                         name="frontChannelLogoutUrl"
@@ -1564,11 +1563,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             { /*Request Object Signature*/ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".requestObjectSignature.heading") }
@@ -1606,11 +1605,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             { /* Scope Validators */ }
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider />
                     <Divider hidden />
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".scopeValidators.heading") }
@@ -1635,10 +1634,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             { /* Certificates */ }
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Divider/>
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h5">
                         {
                             t("console:develop.features.applications.forms." +
@@ -1806,7 +1805,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !readOnly && (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Button
                                 primary
                                 type="submit"
@@ -2098,11 +2097,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                     } }
                 >
-                    <Grid>
+                    <Grid className="form-container with-max-width">
                         {
                             (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Message warning visible>
                                             <Message.Header>
                                                 {
@@ -2124,7 +2123,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         {
                             initialValues?.clientId && (
                                 <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
                                                 { t("console:develop.features.applications.forms.inboundOIDC.fields" +
@@ -2158,7 +2157,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         {
                             (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
                                             <label>
                                                 {
@@ -2218,7 +2217,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         {
                             !readOnly && initialValues?.clientSecret && (initialValues?.state === State.REVOKED) && (
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             color="green"
                                             className="oidc-action-button ml-0"
@@ -2234,7 +2233,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         {
                             ((initialValues?.clientId || initialValues?.clientSecret)
                                 && (initialValues?.state !== State.REVOKED)) && (
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 10 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider/>
                                 </Grid.Column>
                             )
