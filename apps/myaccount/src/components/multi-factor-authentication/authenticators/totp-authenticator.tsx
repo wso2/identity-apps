@@ -176,9 +176,21 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 </div>
                 <div className="stepper">
                     <div className="step-number">2</div>
-                    <div className="stepper-text">
+                    <div className="step-text">
                         <h5>{ t(translateKey + "modals.verify.heading") }</h5>
-                        <Segment basic>
+                        <Segment basic className="pl-0">
+                        {
+                            error
+                                ? (
+                                <>
+                                    <Message
+                                        error data-testid={ `${ testId }-code-verification-form-field-error` }>
+                                        { t(translateKey + "modals.verify.error") }
+                                    </Message>
+                                </>
+                                )
+                                : null
+                        }
                         <Forms
                             data-testid={ `${ testId }-code-verification-form` }
                             onSubmit={ (values: Map<string, string>) => {
@@ -196,18 +208,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
                             />
                         </Forms>
-                        {
-                            error
-                                ? (
-
-                                    <>
-                                        <Message error data-testid={ `${ testId }-code-verification-form-field-error` }>
-                                            { t(translateKey + "modals.verify.error") }
-                                        </Message>
-                                    </>
-                                )
-                                : null
-                            }
                         </Segment>
                     </div>
                 </div>
