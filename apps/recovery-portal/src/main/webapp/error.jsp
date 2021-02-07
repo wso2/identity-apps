@@ -21,7 +21,6 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -70,7 +69,18 @@
                 <div class="segment-form">
                     <div class="ui visible negative message" id="server-error-code">
                         <div class="header"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error")%>!</div>
+                        <%
+                            if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()
+                                    .equals(errorCode)) {
+                        %>
+                        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%></p>
+                        <%
+                        } else {
+                        %>
                         <p><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%></p>
+                        <%
+                            }
+                        %>
                     </div>
     
                     <% if (isValidCallback) { %>
