@@ -1388,9 +1388,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues?.idToken
+                            isEncryptionEnabled ? (initialValues?.idToken
                                 ? initialValues.idToken.encryption.algorithm
-                                : metadata.idTokenEncryptionAlgorithm.defaultValue
+                                : metadata.idTokenEncryptionAlgorithm.defaultValue) : ""
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1423,9 +1423,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues?.idToken
+                            isEncryptionEnabled ? (initialValues?.idToken
                                 ? initialValues.idToken.encryption.method
-                                : metadata.idTokenEncryptionMethod.defaultValue
+                                : metadata.idTokenEncryptionMethod.defaultValue) : ""
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
