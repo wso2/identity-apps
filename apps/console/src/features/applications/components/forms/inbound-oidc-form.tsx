@@ -1685,7 +1685,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             t("console:develop.features.applications.forms.advancedConfig" +
                                                 ".sections.certificate.fields.pemValue.label")
                                         }
-                                        required={ false }
+                                        required={ isEncryptionEnabled }
                                         requiredErrorMessage={
                                             t("console:develop.features.applications.forms.advancedConfig" +
                                                 ".sections.certificate.fields.pemValue.validations.empty")
@@ -1738,7 +1738,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             t("console:develop.features.applications.forms.advancedConfig" +
                                                 ".sections.certificate.fields.jwksValue.label")
                                         }
-                                        required={ false }
+                                        required={ isEncryptionEnabled }
                                         requiredErrorMessage={
                                             t("console:develop.features.applications.forms.advancedConfig" +
                                                 ".sections.certificate.fields.jwksValue.validations.empty")
