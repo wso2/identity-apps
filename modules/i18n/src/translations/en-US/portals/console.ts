@@ -1130,7 +1130,13 @@ export const console: ConsoleNS = {
                                 }
                             },
                             grant: {
-                                hint: "This will determine how the application communicates with the token service",
+                                children: {
+                                    implicit: {
+                                        hint: "Using the implicit grant with public applications is not recommended.",
+                                        label: "{{grantType}} (Not recommended)"
+                                    }
+                                },
+                                hint: "This will determine how the application communicates with the token service.",
                                 label: "Allowed grant type",
                                 validations: {
                                     empty: "Select at least a  grant type"
@@ -1160,17 +1166,24 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
+                                        children: {
+                                            ssoBinding: {
+                                                label: "SSO-session"
+                                            }
+                                        },
+                                        description: "{{productName}} can bind the access token and refresh token " +
+                                            "to the login session. This setting determines if the token should be " +
+                                            "bound to the login session or not.",
                                         label: "Token binding type",
-                                        description: "{{productName}} has the capability to attach the OAuth2" +
-                                            " access token and refresh token to an external attribute during" +
-                                            " the token generation and optionally validate the external attribute" +
-                                            " during the API invocation.",
                                         valueDescriptions: {
-                                            none: "No Binding.",
                                             cookie: "Bind the access token to a cookie with Secure " +
                                                 "and httpOnly parameters.",
-                                            sso_session: "Bind the access token to the session. {{productName}}" +
-                                                " will generate different tokens for each new browser instance."
+                                            none: "No binding. {{productName}} will issue a new access token only " +
+                                                "when the token expires or is revoked.",
+                                            // eslint-disable-next-line @typescript-eslint/camelcase
+                                            sso_session: "Binds the access token to the login session. " +
+                                                "{{productName}} will issue a new access token for each new login " +
+                                                "and revoke the token upon logout."
                                         }
                                     },
                                     expiry: {
@@ -1307,7 +1320,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Issue a new refresh token per token refresh request.",
+                                        hint: "Select to issue a new refresh token each time a refresh token is " +
+                                            "exchanged. The existing token will be invalidated.",
                                         label: "Rotate refresh token",
                                         validations: {
                                             empty: "This is a required field."
@@ -2386,7 +2400,8 @@ export const console: ConsoleNS = {
                                 label: "Use JWKS endpoint",
                                 placeholder: "Value should be the certificate in JWKS format.",
                                 validations: {
-                                    empty: "Certificate value is required"
+                                    empty: "Certificate value is required",
+                                    invalid: "JWKS endpoint should be a valid URI."
                                 }
                             },
                             certificatePEM: {
@@ -3240,7 +3255,8 @@ export const console: ConsoleNS = {
                                 label: "Use JWKS endpoint",
                                 placeholder: "Value should be the certificate in JWKS format.",
                                 validations: {
-                                    empty: "Certificate value is required"
+                                    empty: "Certificate value is required",
+                                    invalid: "JWKS endpoint should be a valid URI."
                                 }
                             },
                             certificatePEM: {

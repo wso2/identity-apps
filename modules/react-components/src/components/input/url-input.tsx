@@ -33,7 +33,7 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     placeholder?: string;
     labelName: string;
     computerWidth?: number;
-    validation: (value?) => boolean;
+    validation?: (value?) => boolean;
     validationErrorMsg: string;
     value?: string;
     hint?: string;
@@ -100,6 +100,10 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * origin or redirect url types.
      */
     onlyOrigin?: boolean;
+    /**
+     * Skips URL validation.
+     */
+    skipValidation?: boolean;
 }
 
 /**
@@ -144,6 +148,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         getSubmit,
         tenantDomain,
         onlyOrigin,
+        skipValidation,
         [ "data-testid" ]: testId
     } = props;
 
@@ -170,12 +175,15 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
-        if (!URLUtils.isURLValid(url, true)) {
+        if (!skipValidation && !URLUtils.isURLValid(url, true)) {
             setValidURL(false);
             return;
         }
 
-        const urlValid = validation(url);
+        const urlValid = skipValidation
+            ? true
+            : validation(url);
+
         setValidURL(urlValid);
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
@@ -299,7 +307,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         } else {
             urlsAfterRemoved = "";
         }
+
         setURLState(urlsAfterRemoved);
+
+        // If defined only, perform allowed origins related housekeeping tasks.
+        if (!allowedOrigins) {
+            return;
+        }
+
         if (allowedOrigins.includes(removeURL)) {
             allowedOrigins.splice(allowedOrigins.indexOf(removeURL), 1);
         }
@@ -683,8 +698,25 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 )
             }
             { urlState && urlState.split(",").map((url) => {
-                if (url !== "" && URLUtils.isURLValid(url, true)) {
-                    return urlChipItemWidget(url);
+                if (url !== "") {
+                    if (skipValidation) {
+                        return (
+                            <Grid.Row key={ url } className={ "urlComponentTagRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
+                                    <p>
+                                        <Label data-testid={ `${ testId }-${ url }` }>
+                                            <span>{ url }</span>
+                                            { !readOnly && urlRemoveButtonWidget(url) }
+                                        </Label>
+                                    </p>
+                                </Grid.Column>
+                            </Grid.Row>
+                        );
+                    }
+
+                    if (URLUtils.isURLValid(url, true)) {
+                        return urlChipItemWidget(url);
+                    }
                 }
             }) }
             { hint && (

@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { Text } from "@wso2is/react-components";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Code } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
@@ -141,8 +140,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     <Popup
                         content={ claimURI }
                         inverted
-                        trigger={ <Text className="link pointing primary" truncate width="100%" >{ claimURI }</Text>
-                        }
+                        trigger={ (
+                            <Code compact withBackground={ false }>{ claimURI }</Code>
+                        ) }
                         position="bottom left">
                     </Popup>
                 }

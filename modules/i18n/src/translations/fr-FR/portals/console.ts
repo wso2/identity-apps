@@ -1129,6 +1129,15 @@ export const console: ConsoleNS = {
                                 }
                             },
                             grant: {
+                                children: {
+                                    implicit: {
+                                        hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
+                                            "n'est pas recommandée.",
+                                        label: "{{grantType}} (non recommandé)"
+                                    }
+                                },
+                                hint: "Cela déterminera la manière dont l'application communique avec le service " +
+                                    "de jetons.",
                                 label: "Grant type autorisés",
                                 validations: {
                                     empty: "Sélectionnez au minimum un grant type"
@@ -1159,18 +1168,24 @@ export const console: ConsoleNS = {
                             accessToken: {
                                 fields: {
                                     bindingType: {
-                                        label: "Type de liaison des jetons",
-                                        description: "{{productName}} a la capacité d'attacher le jeton" +
-                                            " d'accès OAuth2 et le jeton d'actualisation à un attribut " +
-                                            "externe lors de la génération du jeton et éventuellement de" +
-                                            " valider l'attribut externe lors de l'invocation de l'API.",
+                                        children: {
+                                            ssoBinding: {
+                                                label: "SSO-session"
+                                            }
+                                        },
+                                        description: "Lie le jeton d'accès à la session de connexion. " +
+                                            "{{productName}} émettra un nouveau jeton d'accès pour chaque " +
+                                            "nouvelle connexion et le révoquera lors de la déconnexion.",
+                                        label: "Type de liaison de jeton",
                                         valueDescriptions: {
-                                            none: "Aucune liaison.",
-                                            cookie: "Liez le jeton d'accès à un cookie avec les " +
-                                                "paramètres Secure et httpOnly.",
-                                            sso_session: "Liez le jeton d'accès à la session. {{productName}}" +
-                                                " générera différents jetons pour chaque nouvelle instance " +
-                                                "de navigateur."
+                                            cookie: "Liez le jeton d'accès à un cookie avec les paramètres Secure " +
+                                                "et httpOnly.",
+                                            none: "Pas de liaison. {{productName}} émettra un nouveau jeton d'accès " +
+                                                "uniquement lorsque le jeton expirera ou sera révoqué.",
+                                            // eslint-disable-next-line @typescript-eslint/camelcase
+                                            sso_session: "Lie le jeton d'accès à la session de connexion. " +
+                                                "{{productName}} émettra un nouveau jeton d'accès pour chaque " +
+                                                "nouvelle connexion et le révoquera lors de la déconnexion."
                                         }
                                     },
                                     expiry: {
@@ -2400,7 +2415,8 @@ export const console: ConsoleNS = {
                                 label: "Utilisez le point d'entrée JWKS",
                                 placeholder: "La valeur doit être le certificat au format JWKS.",
                                 validations: {
-                                    empty: "La valeur du certificat est requise"
+                                    empty: "La valeur du certificat est requise",
+                                    invalid: "Le point de terminaison JWKS doit être un URI valide."
                                 }
                             },
                             certificatePEM: {

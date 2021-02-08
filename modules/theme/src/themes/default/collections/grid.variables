@@ -25,3 +25,9 @@
 @ZeroPadding: 0%;
 @SmallMargin: 0.5%;
 @SmallPadding: 0.5%;
+
+/*----------------------------------
+          Form Grids
+------------------------------------*/
+
+@formGridContainerMaxWidth: 750px;

@@ -102,15 +102,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     submitState={ triggerSubmission }
                 >
-                    <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column 
-                                mobile={ 16 } 
-                                tablet={ 16 } 
-                                computer={ 8 } l
-                                largeScreen={ 8 } 
-                                widescreen={ 8 }
-                            >
+                    <Grid className="form-container with-max-width">
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".subject.heading") }
@@ -131,7 +125,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     value={ initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value }
                                     children={ dropDownOptions }
                                     readOnly={ readOnly }
-                                    width={ 15 }
                                     data-testid={ `${ testId }-subject-attribute-dropdown` }
                                 />
                                 <Hint>
@@ -141,7 +134,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectIncludeUserDomain"
                                     label=""
@@ -172,7 +165,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectIncludeTenantDomain"
                                     label=""
@@ -203,7 +196,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectUseMappedLocalSubject"
                                     label=""
@@ -234,7 +227,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                         ".role.heading") }
@@ -264,7 +257,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="role"
                                     label=""

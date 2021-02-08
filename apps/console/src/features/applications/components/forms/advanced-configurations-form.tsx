@@ -77,9 +77,9 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
     return (
         <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
-            <Grid>
+            <Grid className="form-container with-max-width">
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="saas"
                             label=""
@@ -106,7 +106,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="skipConsentLogin"
                             label=""
@@ -134,7 +134,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="skipConsentLogout"
                             label=""
@@ -162,7 +162,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="returnAuthenticatedIdpList"
                             label=""
@@ -190,7 +190,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="enableAuthorization"
                             label=""
@@ -220,7 +220,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 {
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Button
                                     primary
                                     type="submit"

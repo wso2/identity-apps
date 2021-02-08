@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
+    Code,
     Heading,
     LinkButton,
     PrimaryButton,
@@ -201,7 +202,9 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                         isItemChecked={ tempSelectedClaims.includes(claim) }
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
-                                        listSubItem={ claim.claimURI }
+                                        listSubItem={ (
+                                            <Code compact withBackground={ false }>{ claim.claimURI }</Code>
+                                        ) }
                                         data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
                                 );

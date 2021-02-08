@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { Checkbox, Icon, Label, LabelProps, Popup, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
 
 /**
@@ -43,7 +43,7 @@ interface TransferListItemPropsInterface extends TableRowProps, TestableComponen
     showSecondaryActions: boolean;
     handleOpenPermissionModal?: () => void;
     showListSubItem?: boolean;
-    listSubItem?: string;
+    listSubItem?: ReactNode;
 }
 
 /**

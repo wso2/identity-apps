@@ -138,10 +138,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             onChange={ handleFormValuesOnChange }
         >
-            <Grid>
+            <Grid className="form-container with-max-width">
                 { !UIConfig.systemAppsIdentifiers.includes(name) && (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
                                 name="name"
                                 label={
@@ -167,7 +167,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     </Grid.Row>
                 ) }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="description"
                             label={
@@ -194,7 +194,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 {
                     !hiddenFields?.includes("imageUrl") && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="imageUrl"
                                     label={
@@ -232,7 +232,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     )
                 }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="discoverableByEndUsers"
                             required={ false }
@@ -258,7 +258,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="accessUrl"
                             label={
@@ -295,7 +295,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 {
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Button
                                     primary
                                     type="submit"

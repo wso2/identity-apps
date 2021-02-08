@@ -24,6 +24,7 @@ import { InboundProvisioningConfigurations } from "./inbound-provisioning-config
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models";
+import { Grid } from "semantic-ui-react";
 
 /**
  * Proptypes for the provision settings component.
@@ -72,32 +73,40 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     
     return (
-        <>
-            <InboundProvisioningConfigurations
-                appId={ application.id }
-                provisioningConfigurations={ provisioningConfigurations }
-                onUpdate={ onUpdate }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
-                data-testid={ `${ testId }-inbound-configuration` }
-            />
-            <OutboundProvisioningConfiguration
-                application={ application }
-                provisioningConfigurations={ provisioningConfigurations }
-                onUpdate={ onUpdate }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
-                data-testid={ `${ testId }-outbound-configuration` }
-            />
-        </>
+        <Grid>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                    <InboundProvisioningConfigurations
+                        appId={ application.id }
+                        provisioningConfigurations={ provisioningConfigurations }
+                        onUpdate={ onUpdate }
+                        readOnly={
+                            readOnly
+                            || !hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update,
+                                allowedScopes)
+                        }
+                        data-testid={ `${ testId }-inbound-configuration` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                    <OutboundProvisioningConfiguration
+                        application={ application }
+                        provisioningConfigurations={ provisioningConfigurations }
+                        onUpdate={ onUpdate }
+                        readOnly={
+                            readOnly
+                            || !hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update,
+                                allowedScopes)
+                        }
+                        data-testid={ `${ testId }-outbound-configuration` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 };
 
