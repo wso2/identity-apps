@@ -19,16 +19,16 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { 
-    ConfirmationModal, 
-    CopyInputField, 
-    Heading, 
-    Hint, 
-    LinkButton, 
-    Text, 
-    URLInput, 
-    Code 
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import {
+    Code,
+    ConfirmationModal,
+    CopyInputField,
+    Heading,
+    Hint,
+    LinkButton,
+    Text,
+    URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
@@ -121,9 +121,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
-    const [ 
-        isRefreshTokenWithoutAllowedGrantType, 
-        setRefreshTokenWithoutAlllowdGrantType ] = useState<boolean>(false);
+    const [
+        isRefreshTokenWithoutAllowedGrantType,
+        setRefreshTokenWithoutAlllowdGrantType
+    ] = useState<boolean>(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
@@ -247,7 +248,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         } else {
             setShowCallbackURLField(false);
         }
-        
+
         const selectedRefreshTokenAllowedGrantTypes: string[] = intersection(ApplicationManagementConstants.
             IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED,selectedGrantTypes);
         if (!selectedRefreshTokenAllowedGrantTypes.length && selectedGrantTypes?.includes("refresh_token")) {
@@ -1105,18 +1106,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
                         }
-                        hint={ 
+                        hint={
                             <Trans values={ { productName: config.ui.productName } }
                                 i18nKey={
                                     "console:develop.features.applications.forms.inboundOIDC.sections" +
                                     ".accessToken.fields.bindingType.description"
                                 }
                             >
-                                productName can bind the 
-                                <Code withBackground>access_token</Code> 
+                                productName can bind the
+                                <Code withBackground>access_token</Code>
                                 and
-                                <Code withBackground>refresh_token</Code> 
-                                to the login session. This setting determines if the token should be 
+                                <Code withBackground>refresh_token</Code>
+                                to the login session. This setting determines if the token should be
                                 bound to the login session or not.
                             </Trans>
                         }
@@ -1173,9 +1174,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".accessToken.fields.validateBinding.hint"
                                         }
                                     >
-                                        Validate the binding attributes at the token validation. 
-                                        The client needs to present the 
-                                        <Code withBackground>access_token</Code> 
+                                        Validate the binding attributes at the token validation.
+                                        The client needs to present the
+                                        <Code withBackground>access_token</Code>
                                         + cookie for successful authorization.
                                     </Trans>
                                 </Hint>
@@ -1249,8 +1250,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".accessToken.fields.expiry.hint"
                             }
                         >
-                            Specify the validity period of the 
-                            <Code withBackground>access_token</Code> 
+                            Specify the validity period of the
+                            <Code withBackground>access_token</Code>
                             in seconds.
                         </Trans>
                     </Hint>
@@ -1319,8 +1320,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".refreshToken.fields.renew.hint"
                             }
                         >
-                            Select to issue a new <Code withBackground>refresh_token</Code> 
-                            each time a <Code withBackground>refresh_token</Code> is 
+                            Select to issue a new <Code withBackground>refresh_token</Code>
+                            each time a <Code withBackground>refresh_token</Code> is
                             exchanged. The existing token will be invalidated.
                         </Trans>
                     </Hint>
@@ -1414,7 +1415,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.audience.hint"
                             }
                         >
-                            Specify the recipient(s) that this <Code withBackground>id_token</Code> 
+                            Specify the recipient(s) that this <Code withBackground>id_token</Code>
                             is intended for. By default, the client ID of this application is added as an audience.
                         </Trans>
                     </Hint>
@@ -1463,8 +1464,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.encryption.hint"
                             }
                         >
-                            Select to encrypt the <Code withBackground>id_token</Code>  when issuing the token 
-                            using the public key of your application. To use encryption, configure the JWKS 
+                            Select to encrypt the <Code withBackground>id_token</Code>  when issuing the token
+                            using the public key of your application. To use encryption, configure the JWKS
                             endpoint or the certificate of your application in the Certificate section below.
                         </Trans>
                     </Hint>
@@ -1506,7 +1507,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.algorithm.hint"
                             }
                         >
-                            The dropdown contains the supported <Code withBackground>id_token</Code> 
+                            The dropdown contains the supported <Code withBackground>id_token</Code>
                             encryption algorithms.
                         </Trans>
                     </Hint>
@@ -1687,10 +1688,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".requestObjectSignature.heading") }
                     </Heading>
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObjectSignature.description", {
-                            productName: config.ui.productName
-                        }) }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObjectSignature.description"
+                            }
+                            tOptions={ { productName: config.ui.productName } }
+                        >
+                            WSO2 Identity Server supports receiving an OIDC authentication request as
+                            a request object that is passed in a single, self-contained request
+                            parameter. Enable signature validation to accept only signed
+                            <Code>request</Code> objects in the authorization request.
+                        </Trans>
                     </Hint>
                     <Divider hidden />
                     <Field

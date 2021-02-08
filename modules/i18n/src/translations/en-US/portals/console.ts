@@ -1346,16 +1346,16 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object",
-                                description: "{{productName}} supports receiving OIDC authentication request " +
-                                    "parameters from clients in a `request object`. Enable signature " +
-                                    "validation to accept only signed request objects in the" +
-                                    " authorization request.",
+                                description: "{{productName}} supports receiving an OIDC authentication request as " +
+                                    "a request object that is passed in a single, self-contained <1>request</1> " +
+                                    "parameter. Enable signature validation to accept only signed request objects " +
+                                    "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
                                         label: "Enable signature validation",
                                     }
                                 },
+                                heading: "Request Object"
                             },
                             scopeValidators: {
                                 fields: {
