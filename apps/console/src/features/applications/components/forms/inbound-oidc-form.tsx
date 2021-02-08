@@ -867,71 +867,76 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 showCallbackURLField && (
                     <>
-                        <div ref={ url }/>
-                        <URLInput
-                            isAllowEnabled={ false }
-                            tenantDomain={ tenantDomain }
-                            allowedOrigins={ allowedOriginList }
-                            labelEnabled={ true }
-                            urlState={ callBackUrls }
-                            setURLState={ setCallBackUrls }
-                            labelName={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                            }
-                            required={ true }
-                            value={
-                                initialValues?.callbackURLs?.toString()
-                                    ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                        initialValues.callbackURLs.toString())
-                                    : ""
-                            }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".placeholder")
-                            }
-                            validationErrorMsg={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".validations.empty")
-                            }
-                            validation={ (value: string) => {
-                                let label: ReactElement = null;
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <div ref={ url }/>
+                                <URLInput
+                                    isAllowEnabled={ false }
+                                    tenantDomain={ tenantDomain }
+                                    allowedOrigins={ allowedOriginList }
+                                    labelEnabled={ true }
+                                    urlState={ callBackUrls }
+                                    setURLState={ setCallBackUrls }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                            "callBackUrls.label")
+                                    }
+                                    required={ true }
+                                    value={
+                                        initialValues?.callbackURLs?.toString()
+                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                                initialValues.callbackURLs.toString())
+                                            : ""
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                            "callBackUrls.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                            "callBackUrls.validations.empty")
+                                    }
+                                    validation={ (value: string) => {
+                                        let label: ReactElement = null;
 
-                                const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
+                                        const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
 
-                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
+                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
 
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                                setCallbackURLsErrorLabel(label);
+                                        setCallbackURLsErrorLabel(label);
 
-                                return true;
-                            } }
-                            showError={ showURLError }
-                            setShowError={ setShowURLError }
-                            hint={
-                                t("console:develop.features.applications." +
-                                    "forms.inboundOIDC.fields.callBackUrls.hint", {
-                                    productName: config.ui.productName
-                                })
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-callback-url-input` }
-                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                submitUrl = submitFunction;
-                            } }
-                            showPredictions={ false }
-                            customLabel={ callbackURLsErrorLabel }
-                        />
+                                        return true;
+                                    } }
+                                    showError={ showURLError }
+                                    setShowError={ setShowURLError }
+                                    hint={
+                                        t("console:develop.features.applications." +
+                                            "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                            productName: config.ui.productName
+                                        })
+                                    }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-callback-url-input` }
+                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                        submitUrl = submitFunction;
+                                    } }
+                                    showPredictions={ false }
+                                    customLabel={ callbackURLsErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <div ref={ allowedOrigin }/>
