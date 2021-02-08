@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Message } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 /**
  * Prop types of the component.
@@ -76,6 +76,8 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                 </p>
                 <p>E.g., http://my-app.com/home.jsp</p>
             </>
+
+            <Divider hidden/>
         </div>
     );
 };
