@@ -1280,7 +1280,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     back: {
                                         hint: "{{productName}} will directly communicate the logout requests to this " +
-                                            "client URL(s), so that clients can invalidate the user session.",
+                                            "client URL, so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "https://myapp.io/logout",
                                         validations: {
