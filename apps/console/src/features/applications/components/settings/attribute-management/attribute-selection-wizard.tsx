@@ -82,12 +82,11 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            const displayNameFilterClaims = filterTempAvailableClaims.filter((item) =>
+            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
                 item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = filterTempAvailableClaims.filter((item) =>
+            const uriFilterClaims = tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1)
-            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
-                "displayName"));
+            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             if (selectedClaims.length > 0) {
                 setFilterTempAvailableClaims(sortBy(union(selectedClaims, availableClaims ), "displayName"));

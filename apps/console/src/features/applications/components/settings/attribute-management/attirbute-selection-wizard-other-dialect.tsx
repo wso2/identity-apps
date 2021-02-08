@@ -80,9 +80,9 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            const displayNameFilterClaims = filterTempAvailableClaims.filter((item) =>
+            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
             item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = filterTempAvailableClaims.filter((item) =>
+            const uriFilterClaims = tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1)
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
                 "localClaimDisplayName"));
