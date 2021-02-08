@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
@@ -28,13 +28,13 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
-import { ConfigReducerStateInterface } from "../../../core";
-import { AppState } from "../../../core/store";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
+    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -42,8 +42,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes,
-    emptyOIDCConfig
+    SupportedAccessTokenBindingTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
