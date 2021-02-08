@@ -213,10 +213,6 @@ export const initializeAuthentication = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clockTolerance: window["AppUtils"].getConfig().idpConfigs?.clockTolerance,
-            customParams: {
-                o: window["AppUtils"].getSuperTenant(),
-                t: window["AppUtils"].getTenantName(true)
-            },
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE ?? true,
             endpoints: {
                 authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
@@ -275,9 +271,16 @@ export const initializeAuthentication = () => (dispatch) => {
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (!window["AppUtils"].getConfig().accountApp.commonPostLogoutUrl && sessionStorage.getItem(LOGOUT_URL)) {
+        if (sessionStorage.getItem(LOGOUT_URL)) {
             let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
             logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
+
+            // If an override URL is defined in config, use that instead.
+            if (window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL) {
+                logoutUrl = resolveIdpURLSAfterTenantResolves(logoutUrl,
+                    window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL);
+            }
+
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
         }
 
@@ -305,9 +308,32 @@ export const initializeAuthentication = () => (dispatch) => {
 
         auth.getServiceEndpoints()
             .then((response: ServiceResourcesType) => {
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+
+                let authorizationEndpoint: string = response.authorize;
+                let oidcSessionIframeEndpoint: string = response.oidcSessionIFrame;
+                let tokenEndpoint: string = response.token;
+
+                // If `authorize` endpoint is overridden, save that in the session.
+                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
+                    authorizationEndpoint = resolveIdpURLSAfterTenantResolves(authorizationEndpoint,
+                        window[ "AppUtils" ].getConfig().idpConfigs.authorizeEndpointURL);
+                }
+
+                // If `oidc session iframe` endpoint is overridden, save that in the session.
+                if (window[ "AppUtils" ].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
+                    oidcSessionIframeEndpoint = resolveIdpURLSAfterTenantResolves(oidcSessionIframeEndpoint,
+                        window[ "AppUtils" ].getConfig().idpConfigs.oidcSessionIFrameEndpointURL);
+                }
+
+                // If `token` endpoint is overridden, save that in the session.
+                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
+                    tokenEndpoint = resolveIdpURLSAfterTenantResolves(tokenEndpoint,
+                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL);
+                }
+
+                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
+                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
+                sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
                 const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
                 rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
@@ -319,6 +345,26 @@ export const initializeAuthentication = () => (dispatch) => {
         dispatch(getProfileInformation(Config.getServiceResourceEndpoints().me,
             window[ "AppUtils" ].getConfig().clientOriginWithTenant));
     });
+};
+
+/**
+ * Resolves IDP URLs when the tenant resolves. Returns
+ *
+ * @param {string} originalURL - Original URL.
+ * @param {string} overriddenURL - Overridden URL from config.
+ * @return {string}
+ */
+export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overriddenURL: string): string => {
+
+    const parsedURL: URL = new URL(originalURL);
+    const parsedOverrideURL: URL = new URL(overriddenURL);
+
+    // If the override URL has search params, adjust the params of the original URL accordingly.
+    if (parsedOverrideURL.search) {
+        return overriddenURL + parsedURL.search.replace(parsedURL.search.charAt(0), "&");
+    }
+
+    return overriddenURL + parsedURL.search;
 };
 
 /**
