@@ -803,7 +803,7 @@ export const console: ConsoleNS = {
                                                     heading: "Templates"
                                                 }
                                             },
-                                            heading: "Script based configuration",
+                                            heading: "Script-based configuration",
                                             hint: "Define the authentication flow via an adaptive script. You can " +
                                                 "select one of the templates fom the panel to get started."
                                         },
