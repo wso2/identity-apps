@@ -404,7 +404,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
                         <Hint>
-                            { t("console:develop.features.applications.edit.sections.attributes.selection.attributeComponentHint") }
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes.
+                                  selection.attributeComponentHint")
+                            }
                         </Hint>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
