@@ -1342,11 +1342,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.encryption.validations.empty")
                         }
                         type="checkbox"
-                        listen={
-                            (values) => {
-                                setEncryptionEnable(
-                                    !!values.get("encryption").includes("enableEncryption")
-                                );
+                        listen={ (values: Map<string, FormValue>): void => {
+                            const encryptionEnabled = values.get("encryption").includes("enableEncryption");
+                            if (!encryptionEnabled) {
+                                resolveInitialIDTokenEncryptionValues();
+                                values.set("algorithm", "");
+                                values.set("method", "");
                             }
                         }
                         value={
