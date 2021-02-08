@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
@@ -30,7 +30,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
 
 /**
  * Retrieve server configurations.
- * 
+ *
  * @returns {Promise<any>} a promise containing the server configurations.
  */
 export const getServerConfigs = () => {
@@ -66,5 +66,5 @@ export const getServerConfigs = () => {
                 error.response,
                 error.config);
         });
-    
+
 };

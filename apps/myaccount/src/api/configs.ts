@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityClient } from "@wso2/identity-oidc-js";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { HttpMethods } from "../models";
 import { store } from "../store";

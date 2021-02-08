@@ -18,7 +18,7 @@
 
 import {
     IdentityClient
-} from "@asgardio/oidc-js";
+} from "@wso2/identity-oidc-js";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -66,7 +66,7 @@ export class AuthenticateUtils {
 
                 store.dispatch(
                     addAlert<AlertInterface>({
-                        description: I18n.instance.t("console:manage.notifications.endSession.genericError" + 
+                        description: I18n.instance.t("console:manage.notifications.endSession.genericError" +
                             ".description"),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.notifications.endSession.genericError.message")

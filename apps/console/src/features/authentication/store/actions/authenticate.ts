@@ -28,7 +28,7 @@ import {
     Storage,
     TOKEN_ENDPOINT,
     UserInfo
-} from "@asgardio/oidc-js";
+} from "@wso2/identity-oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

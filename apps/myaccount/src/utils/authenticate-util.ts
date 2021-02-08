@@ -19,7 +19,7 @@
 
 import {
     IdentityClient
-} from "@asgardio/oidc-js";
+} from "@wso2/identity-oidc-js";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
