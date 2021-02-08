@@ -403,6 +403,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         <Heading as="h4">
                             { t("console:develop.features.applications.edit.sections.attributes.selection.heading") }
                         </Heading>
+                        <Hint>
+                            {
+                                t("console:develop.features.applications.edit.sections.attributes.
+                                  selection.attributeComponentHint")
+                            }
+                        </Hint>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
                                 <>
@@ -525,6 +531,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     ".mandatory")
                                                                             }
                                                                         </strong>
+                                                                        <Hint icon="help circle" popup>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mandatoryAttributeHint")
+                                                                            }
+                                                                        </Hint>
                                                                     </Table.HeaderCell>
                                                                 </Table.Row>
                                                             )
@@ -552,6 +566,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     ".mandatory")
                                                                             }
                                                                         </strong>
+                                                                        <Hint icon="help circle" popup>
+                                                                            {
+                                                                                t("console:develop.features" +
+                                                                                    ".applications.edit.sections" +
+                                                                                    ".attributes.selection" +
+                                                                                    ".mandatoryAttributeHint")
+                                                                            }
+                                                                        </Hint>
                                                                     </Table.HeaderCell>
                                                                 </Table.Row>
                                                             )

@@ -712,6 +712,12 @@ export const console: ConsoleNS = {
                                     subHeading: "Sélectionnez les attributs utilisateur à inclure dans la réponse d'authentification."
                                 },
                                 heading: "Sélection des attributs utilisateur",
+                                attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
+                                    " avec cette application.",
+                                mandatoryAttributeHint: "Marquez les attributs que l'utilisateur doit partager avec" +
+                                    " l'application. Lors de la connexion, Asgardeo invite l'utilisateur à saisir la" +
+                                    " valeur de l'attribut si elle n'est pas déjà fournie dans le profil de" +
+                                    " l'utilisateur.",
                                 mappingTable: {
                                     actions: {
                                         enable: "Activer l'association"
