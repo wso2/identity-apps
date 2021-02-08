@@ -368,6 +368,21 @@ export const initializeAuthentication = () =>(dispatch)=> {
         if (sessionStorage.getItem(LOGOUT_URL)) {
             let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
             logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
+
+            // If an override URL is defined in config, use that instead.
+            if (window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL) {
+                const parsedURL: URL = new URL(logoutUrl);
+                const parsedOverrideURL: URL = new URL(window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL);
+
+                // If the override URL has search params, adjust the params of the original URL accordingly.
+                if (parsedOverrideURL.search) {
+                    logoutUrl =  window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL
+                        + parsedURL.search.replace(parsedURL.search.charAt(0), "&");
+                } else {
+                    logoutUrl =  window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL + parsedURL.search;
+                }
+            }
+
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
         }
 
