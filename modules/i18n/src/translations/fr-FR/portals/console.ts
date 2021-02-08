@@ -2482,7 +2482,9 @@ export const console: ConsoleNS = {
                             placeholder: "Saisissez un nom pour le fournisseur d'identité.",
                             validations: {
                                 duplicate: "Un fournisseur d'identité existe déjà avec ce nom",
-                                empty: "Le nom du fournisseur d'identité est requis"
+                                empty: "Le nom du fournisseur d'identité est requis",
+                                maxLengthReached: "Le nom du fournisseur d'identité ne peut pas contenir plus " +
+                                    "de {{ maxLength }} caractères."
                             }
                         }
                     },

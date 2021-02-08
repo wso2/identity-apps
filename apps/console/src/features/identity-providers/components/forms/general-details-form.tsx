@@ -70,6 +70,8 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     enableWizardMode?: boolean;
 }
 
+const IDP_NAME_MAX_LENGTH = 100;
+
 /**
  * Form to edit general details of the identity provider.
  *
@@ -161,10 +163,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     placeholder={ name }
                                     type="text"
                                     validation={ (value: string, validation: Validation) => {
-                                        if (isNameValid === false) {
+                                        if (value.length > IDP_NAME_MAX_LENGTH) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:develop.features.idp.forms." +
-                                                "generalDetails.name.validations.duplicate"));
+                                            validation.errorMessages.push(t("console:develop.features." +
+                                                "idp.forms.generalDetails.name.validations." +
+                                                "maxLengthReached", { maxLength: IDP_NAME_MAX_LENGTH }));
+                                        } else if (isNameValid === false) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:develop.features." +
+                                                "idp.forms.generalDetails.name.validations.duplicate"));
                                         }
                                     } }
                                     value={ name }
@@ -200,7 +207,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     label={ t("console:develop.features.idp.forms.generalDetails.image.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:develop.features.idp.forms.generalDetails.image." + 
+                                    placeholder={ t("console:develop.features.idp.forms.generalDetails.image." +
                                         "placeholder") }
                                     type="text"
                                     validation={ (value: string, validation: Validation) => {
