@@ -1349,7 +1349,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 values.set("algorithm", "");
                                 values.set("method", "");
                             }
-                        }
+                            setEncryptionEnable(encryptionEnabled);
+                        } }
                         value={
                             initialValues?.idToken?.encryption.enabled
                                 ? [ "enableEncryption" ]
