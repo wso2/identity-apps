@@ -405,8 +405,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         </Heading>
                         <Hint>
                             {
-                                t("console:develop.features.applications.edit.sections.attributes.
-                                  selection.attributeComponentHint")
+                                t("console:develop.features.applications.edit.sections.attributes." +
+                                    "selection.attributeComponentHint")
                             }
                         </Hint>
                         {
