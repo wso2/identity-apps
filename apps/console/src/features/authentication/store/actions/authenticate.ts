@@ -354,7 +354,7 @@ export const initializeAuthentication = () => (dispatch) => {
  * @param {string} overriddenURL - Overridden URL from config.
  * @return {string}
  */
-export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overriddenURL: string) => {
+export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overriddenURL: string): string => {
 
     const parsedURL: URL = new URL(originalURL);
     const parsedOverrideURL: URL = new URL(overriddenURL);
