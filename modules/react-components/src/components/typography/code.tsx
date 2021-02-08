@@ -75,5 +75,6 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
  * Default props for the Code component.
  */
 Code.defaultProps = {
-    "data-testid": "code"
+    "data-testid": "code",
+    withBackground: true
 };
