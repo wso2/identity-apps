@@ -323,7 +323,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 attArray.push(attribute);
             }
         }
-
+        if (!attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))) {
+            attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"));
+        }
         return attArray.toString();
     };
 
