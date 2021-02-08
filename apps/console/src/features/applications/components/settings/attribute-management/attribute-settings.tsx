@@ -482,6 +482,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
         }
 
+        // Make the subject attribute mandatory by default.
+        RequestedClaims.push({
+            claim: {
+                uri: advanceSettingValues?.subject.claim
+            },
+            mandatory: true
+        });
+
         // Generate Final Submit value
         const submitValue = {
             claimConfiguration: {
