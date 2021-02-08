@@ -504,7 +504,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         // even out with the checkingOrigin vice versa. + We need it because
         // {@link Set} uses "same-value-zero equality" in has() operation.
         const normalizedOrigins = allowedOrigins?.map(
-            (o) => URLUtils.urlComponents(o)?.origin
+            (url) => URLUtils.urlComponents(url)?.origin
         );
         return new Set<string>(normalizedOrigins ?? []).has(checkingOrigin);
     }
