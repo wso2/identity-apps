@@ -363,8 +363,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 jwksEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.jwksEndpointURL
@@ -372,8 +372,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 logoutEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.logoutEndpointURL
@@ -381,8 +381,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 oidcSessionIFrameEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.oidcSessionIFrameEndpointURL
@@ -390,8 +390,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 tokenEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.tokenEndpointURL
@@ -399,8 +399,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 tokenRevocationEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.tokenRevocationEndpointURL
@@ -408,8 +408,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant()),
                 wellKnownEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.wellKnownEndpointURL
@@ -417,8 +417,8 @@ export const AppUtils = (function() {
                         .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
                         .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                         .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenant())
-                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName(true)
-                            ? this.getTenantName(true)
+                        .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                            ? this.getTenantName()
                             : this.getSuperTenant())
             };
         },
