@@ -1320,8 +1320,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "When selected, as a result of exchanging a refresh token, a new " +
-                                            "refresh token will be issued and the existing token will be invalidated.",
+                                        hint: "Select to issue a new refresh token each time a refresh token is " +
+                                            "exchanged. The existing token will be invalidated.",
                                         label: "Rotate refresh token",
                                         validations: {
                                             empty: "This is a required field."
