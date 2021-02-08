@@ -40,26 +40,6 @@ export const onHttpRequestSuccess = (): void => {
 };
 
 /**
- * Set up the http client by registering the callback functions.
- */
-const endUserSessionWithoutLoops = (): void => {
-    if (!sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME)) {
-        sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-    } else {
-        const currentTime = new Date().getTime();
-        const errorTime = parseInt(sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME), 10);
-        if (currentTime - errorTime >= 10000) {
-            sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            history.push(AppConstants.getAppLogoutPath());
-        } else {
-            sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            return;
-        }
-    }
-};
-
-
-/**
  * Callback to be fired on every Http request error. The error
  * codes are evaluated necessary actions are being taken.
  *
@@ -98,7 +78,7 @@ export const onHttpRequestError = (error: any): null => {
     // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
     // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 403 || error.response.status === 401) {
-        endUserSessionWithoutLoops();
+        history.push(AppConstants.getAppLogoutPath());
     }
 };
 
