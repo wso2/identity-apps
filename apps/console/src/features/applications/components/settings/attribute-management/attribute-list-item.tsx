@@ -29,7 +29,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
     localClaimDisplayName?: string;
     mappedURI: string;
-    claimURI: ReactNode;
+    claimURI: string;
     localDialect: boolean;
     updateMapping?: any;
     addToMapping?: any;

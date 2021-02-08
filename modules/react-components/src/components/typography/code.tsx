@@ -31,7 +31,7 @@ export interface CodePropsInterface extends TestableComponentInterface {
     /**
      * Make the component compact.
      */
-    compact?: string;
+    compact?: boolean;
     /**
      * Should the component render with a background.
      */
