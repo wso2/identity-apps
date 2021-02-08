@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
@@ -28,13 +28,13 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
-import { ConfigReducerStateInterface } from "../../../core";
-import { AppState } from "../../../core/store";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
+    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -42,8 +42,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
-    SupportedAccessTokenBindingTypes,
-    emptyOIDCConfig
+    SupportedAccessTokenBindingTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
@@ -158,6 +157,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const frontChannelLogoutUrl = useRef<HTMLElement>();
     const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
     const scopeValidator = useRef<HTMLElement>();
+
+    /**
+     * Reset the encryption field initial values if its
+     * disabled by the user.
+     */
+    const resolveInitialIDTokenEncryptionValues = (): void => {
+        if (!initialValues?.idToken?.encryption?.enabled) {
+            initialValues.idToken.encryption = {
+                method: "",
+                algorithm: "",
+                enabled: false
+            }
+        }
+    };
+
+    resolveInitialIDTokenEncryptionValues();
 
     /**
      * We use this hook to maintain the toggle state of the PKCE checkbox in the
@@ -1347,13 +1362,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.encryption.validations.empty")
                         }
                         type="checkbox"
-                        listen={
-                            (values) => {
-                                setEncryptionEnable(
-                                    !!values.get("encryption").includes("enableEncryption")
-                                );
+                        listen={ (values: Map<string, FormValue>): void => {
+                            const encryptionEnabled = values.get("encryption").includes("enableEncryption");
+                            if (!encryptionEnabled) {
+                                resolveInitialIDTokenEncryptionValues();
+                                values.set("algorithm", "");
+                                values.set("method", "");
                             }
-                        }
+                            setEncryptionEnable(encryptionEnabled);
+                        } }
                         value={
                             initialValues?.idToken?.encryption.enabled
                                 ? [ "enableEncryption" ]
@@ -1391,9 +1408,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues?.idToken
+                            isEncryptionEnabled ? (initialValues?.idToken
                                 ? initialValues.idToken.encryption.algorithm
-                                : metadata.idTokenEncryptionAlgorithm.defaultValue
+                                : metadata.idTokenEncryptionAlgorithm.defaultValue) : ""
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1426,9 +1443,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         type="dropdown"
                         default={
-                            initialValues?.idToken
+                            isEncryptionEnabled ? (initialValues?.idToken
                                 ? initialValues.idToken.encryption.method
-                                : metadata.idTokenEncryptionMethod.defaultValue
+                                : metadata.idTokenEncryptionMethod.defaultValue) : ""
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
