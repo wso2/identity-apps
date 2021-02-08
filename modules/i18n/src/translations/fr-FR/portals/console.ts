@@ -1300,7 +1300,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "Activer"
+                                                label: "obligatoire"
                                             },
                                             plainAlg: {
                                                 label: "Prise en charge de l'algorithme de transformation 'Plain'"
@@ -1313,9 +1313,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE est une mesure de sécurité recommandée pour atténuer les attaques " +
-                                    "d'interception de code d'autorisation. Applicable uniquement lors de " +
-                                    "l'utilisation du type de subvention Code."
+                                hint: "Sélectionnez pour rendre obligatoire pour l'application d'inclure " +
+                                "le code_challenge dans la demande d'autorisation afin de recevoir un " +
+                                "code d'autorisation d'Asgardeo."
                             },
                             refreshToken: {
                                 fields: {

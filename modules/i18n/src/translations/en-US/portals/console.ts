@@ -1189,6 +1189,7 @@ export const console: ConsoleNS = {
                                     expiry: {
                                         hint: "Specify the validity period of the access token in seconds.",
                                         label: "User access token expiry time",
+                                        labelForSPA: "Access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {
                                             empty: "Please fill the user access token expiry time"
@@ -1293,7 +1294,7 @@ export const console: ConsoleNS = {
                                     pkce: {
                                         children: {
                                             mandatory: {
-                                                label: "Enable"
+                                                label: "Mandatory"
                                             },
                                             plainAlg: {
                                                 label: "Support 'Plain' Transform Algorithm"
@@ -1306,8 +1307,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "PKCE is a recommended security measure used to mitigate Authorization code" +
-                                    " interception attacks. Only applicable when using the Code grant type."
+                                hint: "Select to make it mandatory for the application to include the " + 
+                                "code_challenge in the authorization request in order to receive " +
+                                "an authorization code from Asgardeo."
                             },
                             refreshToken: {
                                 fields: {
