@@ -160,6 +160,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
 
     /**
+     * Reset the encryption field initial values if its
+     * disabled by the user.
+     */
+    const resolveInitialIDTokenEncryptionValues = (): void => {
+        if (!initialValues?.idToken?.encryption?.enabled) {
+            initialValues.idToken.encryption = {
+                method: "",
+                algorithm: "",
+                enabled: false
+            }
+        }
+    };
+
+    resolveInitialIDTokenEncryptionValues();
+
+    /**
      * We use this hook to maintain the toggle state of the PKCE checkbox in the
      * OIDC form.
      *
