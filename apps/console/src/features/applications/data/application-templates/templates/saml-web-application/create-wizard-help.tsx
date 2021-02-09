@@ -42,7 +42,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name to identify your application</Heading>
+            <Heading as="h5">Name</Heading>
             <p>A unique name for the application.</p>
             <p>E.g., My App</p>
 
@@ -60,7 +60,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
             <>
                 <Heading as="h5">Issuer</Heading>
                 <p>
-                    This is the saml:Issuer element that contains the unique identifier of the
+                    This is the <strong>saml:Issuer</strong> element that contains the unique identifier of the
                     application. The value added here should be specified in the SAML authentication
                     request sent by the client application.
                 </p>

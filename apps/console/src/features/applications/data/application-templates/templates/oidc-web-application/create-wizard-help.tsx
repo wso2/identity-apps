@@ -42,7 +42,7 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name to identify your application</Heading>
+            <Heading as="h5">Name</Heading>
             <p>A unique name for the application.</p>
             <p>E.g., My App</p>
 
