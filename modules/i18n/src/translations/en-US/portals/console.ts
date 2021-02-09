@@ -6318,8 +6318,8 @@ export const console: ConsoleNS = {
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                        content: "If you delete this user, the user will not be able to login to the My Account or " +
-                            "any other application the user was subscribed before. Please proceed with caution.",
+                        content: "If you delete this user, the user will not be able to log in to My Account or " +
+                            "any other application the user was subscribed to before. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the user."
                     }
