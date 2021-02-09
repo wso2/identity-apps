@@ -56,6 +56,8 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -2245,6 +2247,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             </div>
                                         </Form.Field>
+                                        { SinglePageApplicationTemplate.id === template.id ?
+                                            (<Message info={ true }>
+                                                { config.ui.productName } does not issue a&nbsp;
+                                                <code><b>client_secret</b></code> to native
+                                                applications or web browser-based applications for the purpose
+                                                of client authentication.
+                                            </Message>) : null
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             )
