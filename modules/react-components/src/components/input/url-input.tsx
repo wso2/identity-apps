@@ -36,7 +36,7 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     validation?: (value?) => boolean;
     validationErrorMsg: string;
     value?: string;
-    hint?: string;
+    hint?: ReactNode;
     showError?: boolean;
     setShowError?: any;
     required?: boolean;
