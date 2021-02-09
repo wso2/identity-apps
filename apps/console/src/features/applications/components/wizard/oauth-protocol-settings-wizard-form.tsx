@@ -494,10 +494,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         (callBackURLFromTemplate) && (
                                             <Message className="with-inline-icon" icon visible info>
                                                 <Icon name="info" size="mini" />
-                                                <Message.Content>
-                                                    This field is required for a functional app. However, if you are
-                                                    planning to try-out the sample app, you can
-                                                    use <strong>{ callBackURLFromTemplate }</strong> for now.
+                                                <Message.Content> {
+                                                t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                                ".callBackUrls.info",{callBackURLFromTemplate: callBackURLFromTemplate })
+                                                }
                                                     {
                                                         (callBackUrls === undefined || callBackUrls === "") && (
                                                             <LinkButton

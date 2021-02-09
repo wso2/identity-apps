@@ -1118,7 +1118,10 @@ export const console: ConsoleNS = {
                                     required: "Ce champ est obligatoire pour une application fonctionnelle. " +
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
-                                }
+                                },
+                                info: "Ce champ est obligatoire pour une application fonctionnelle. Cependant, si " +
+                                "vous prévoyez d'essayer l'exemple d'application, vous pouvez utiliser " +
+                                "{{callBackURLFromTemplate}}."
                             },
                             clientID: {
                                 label: "Identifiant du client"

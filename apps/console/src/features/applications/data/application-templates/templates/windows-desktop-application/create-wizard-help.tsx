@@ -55,7 +55,7 @@ const WindowsDesktopApplicationCreateWizardHelp: FunctionComponent<
                 <p>
                     The redirect URL determines where the authorization code is sent to
                     once the user is authenticated, and where the user is redirected to
-                    once the logout is completed.
+                    once the logout is complete.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
