@@ -117,7 +117,7 @@ export const AppUtils = (function() {
                 return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
             }
 
-            return _config.clientOrigin + "/" + _config.appBaseName + url;
+            return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
         },
 
         /**
@@ -145,7 +145,7 @@ export const AppUtils = (function() {
          * @return {string}
          */
         getAppBaseWithTenant: function() {
-            return this.getTenantPath(true) + "/" + _config.appBaseName;
+            return this.getTenantPath(true) + (_config.appBaseName ? ("/" + _config.appBaseName) : "");
         },
 
         /**
