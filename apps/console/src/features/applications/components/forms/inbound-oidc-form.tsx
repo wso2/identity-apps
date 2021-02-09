@@ -1084,10 +1084,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
                         }
-                        hint={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".accessToken.fields.bindingType.description", {
-                            productName: config.ui.productName
-                        }) }
+                        hint={ 
+                            <Trans values={{productName: config.ui.productName}}
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".accessToken.fields.bindingType.description"
+                                }
+                            >
+                                productName can bind the 
+                                <code><b>access_token</b></code> 
+                                and
+                                <code><b>refresh_token</b></code> 
+                                to the login session. This setting determines if the token should be 
+                                bound to the login session or not.
+                            </Trans>
+                        }
                         name="bindingType"
                         default={
                             initialValues?.accessToken?.bindingType
@@ -1135,8 +1146,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.fields.validateBinding.hint") }
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.validateBinding.hint"
+                                        }
+                                    >
+                                        Validate the binding attributes at the token validation. The client needs to present the 
+                                        <code><b>access_token</b></code> 
+                                        + cookie for successful authorization.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -1202,8 +1221,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-access-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".accessToken.fields.expiry.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.expiry.hint"
+                            }
+                        >
+                            Specify the validity period of the 
+                            <code><b>access_token</b></code> 
+                            in seconds.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1264,8 +1291,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".refreshToken.fields.renew.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.renew.hint"
+                            }
+                        >
+                            Select to issue a new <code><b>refresh_token</b></code> 
+                            each time a <code><b>refresh_token</b></code> is 
+                            exchanged. The existing token will be invalidated.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1296,8 +1331,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-refresh-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".refreshToken.fields.expiry.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.expiry.hint"
+                            }
+                        >
+                            Specify the validity period of the <code><b>refresh_token</b></code> in seconds.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1345,8 +1386,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-audience-textarea` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                            ".fields.audience.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.audience.hint"
+                            }
+                        >
+                            Specify the recipient(s) that this <b><code>id_token</code></b> is intended for. By default, 
+                            the client ID of this application is added as an audience.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1387,8 +1435,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-checkbox` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                            ".fields.encryption.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.encryption.hint"
+                            }
+                        >
+                            Select to encrypt the <b><code>id_token</code></b>  when issuing the token using the 
+                            public key of your application. To use encryption, configure the JWKS endpoint or the 
+                            certificate of your application in the Certificate section below.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1422,8 +1478,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                            ".fields.algorithm.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.algorithm.hint"
+                            }
+                        >
+                            The dropdown contains the supported <b><code>id_token</code></b> encryption algorithms.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1457,8 +1519,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-method-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                            ".fields.method.hint") }
+                    <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.method.hint"
+                            }
+                        >
+                            The dropdown contains the supported <b><code>id_token</code></b> encryption methods.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1491,8 +1559,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-id-token-expiry-time-input` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                            ".fields.expiry.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.expiry.hint"
+                            }
+                        >
+                            Specify the validity period of the <b><code>id_token</code></b> in seconds.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>

@@ -1175,7 +1175,7 @@ export const console: ConsoleNS = {
                                                 label: "SSO-session"
                                             }
                                         },
-                                        description: "{{productName}} can bind the access token and refresh token " +
+                                        description: "{{productName}} can bind the <1><0>access_token</0></1> and <3><0>refresh_token</0></3> " +
                                             "to the login session. This setting determines if the token should be " +
                                             "bound to the login session or not.",
                                         label: "Token binding type",
@@ -1191,7 +1191,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     expiry: {
-                                        hint: "Specify the validity period of the access token in seconds.",
+                                        hint: "Specify the validity period of the <1><0>access_token</0></1> in seconds.",
                                         label: "User access token expiry time",
                                         labelForSPA: "Access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
@@ -1213,7 +1213,7 @@ export const console: ConsoleNS = {
                                     },
                                     validateBinding: {
                                         hint: "Validate the binding attributes at the token validation. The client " +
-                                            "needs to present the access token + cookie for successful authorization.",
+                                            "needs to present the <1><0>access_token</0></1> + cookie for successful authorization.",
                                         label: "Validate token bindings"
                                     }
                                 },
@@ -1224,7 +1224,7 @@ export const console: ConsoleNS = {
                             idToken: {
                                 fields: {
                                     algorithm: {
-                                        hint: "The dropdown contains the supported ID token encryption algorithms.",
+                                        hint: "The dropdown contains the supported <1><0>id_token</0></1> encryption algorithms.",
                                         label: "Algorithm",
                                         placeholder: "Select Algorithm",
                                         validations: {
@@ -1232,8 +1232,8 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "Specify the recipient(s) that this ID token is intended for. " +
-                                            "By default, the client ID of this application is added as an audience. ",
+                                        hint: "Specify the recipient(s) that this <1><0>id_token</0></1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
@@ -1242,22 +1242,24 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Define whether to ID token encryption should be enabled or not.",
+                                        hint: "Select to encrypt the <1><0>id_token</0></1> when issuing the token using the "+
+                                        "public key of your application. To use encryption, configure the JWKS endpoint or the "+
+                                        "certificate of your application in the Certificate section below.",
                                         label: "Enable encryption",
                                         validations: {
                                             empty: "This is a required field."
                                         }
                                     },
                                     expiry: {
-                                        hint: "Specify the validity period of the ID token in seconds.",
-                                        label: "Id token expiry time",
-                                        placeholder: "Enter the ID token expiry time",
+                                        hint: "Specify the validity period of the <1><0>id_token</0></1> in seconds.",
+                                        label: "ID Token expiry time",
+                                        placeholder: "Enter the id token expiry time",
                                         validations: {
-                                            empty: "Please fill the ID token expiry time"
+                                            empty: "Please fill the id token expiry time"
                                         }
                                     },
                                     method: {
-                                        hint: "The dropdown contains the supported ID token encryption methods.",
+                                        hint: "The dropdown contains the supported <1><0>id_token</0></1> encryption methods.",
                                         label: "Encryption method",
                                         placeholder: "Select Method",
                                         validations: {
@@ -1311,14 +1313,14 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "Select to make it mandatory for the application to include the " + 
+                                hint: "Select to make it mandatory for the application to include the " +
                                 "code_challenge in the authorization request in order to receive " +
                                 "an authorization code from Asgardeo."
                             },
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Specify the validity period of the refresh token in seconds.",
+                                        hint: "Specify the validity period of the <1><0>refresh_token</0></1> in seconds.",
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {
@@ -1326,7 +1328,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Select to issue a new refresh token each time a refresh token is " +
+                                        hint: "Select to issue a new <1><0>refresh_token</0></1> each time a <3><0>refresh_token</0></3> is " +
                                             "exchanged. The existing token will be invalidated.",
                                         label: "Rotate refresh token",
                                         validations: {
