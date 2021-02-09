@@ -5452,9 +5452,9 @@ export const console: ConsoleNS = {
                 deleteUser: {
                     confirmationModal: {
                         assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
-                        content: "En supprimant cet utilisateur, il ne sera plus en mesure de " +
-                            "se connecter au portail ou à toute autre application à laquelle il " +
-                            "est actuellement habilité. Êtes-vous ABSOLUMENT certain de vouloir continuer ?",
+                        content: "Si vous supprimez cet utilisateur, l'utilisateur ne pourra pas se " +
+                            "connecter à Mon compte ou à toute autre application à laquelle l'utilisateur " +
+                            "était abonné auparavant. Veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement le compte utilisateur."
                     }
