@@ -1322,9 +1322,8 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "Sélectionnez pour rendre obligatoire pour l'application d'inclure " +
-                                "le code_challenge dans la demande d'autorisation afin de recevoir un " +
-                                "code d'autorisation d'Asgardeo."
+                                hint: "Sélectionnez cette option pour obliger l'application " +
+                                "à inclure un code_challenge dans la demande d'autorisation."
                             },
                             refreshToken: {
                                 fields: {

@@ -1312,8 +1312,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "අස්ගාර්ඩියෝ වෙතින් බලය පැවරීමේ කේතයක් ලබා ගැනීම සඳහා බලයලත් ඉල්ලීමෙහි " +
-                                "code_challenge ඇතුළත් කිරීම යෙදුමට අනිවාර්ය කිරීමට තෝරන්න."
+                                hint: "බලය පැවරීමේ ඉල්ලීමට යෙදුමට code_challenge ඇතුළත් කිරීම අනිවාර්ය කිරීමට තෝරන්න."
                             },
                             refreshToken: {
                                 fields: {

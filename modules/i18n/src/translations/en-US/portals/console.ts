@@ -1313,9 +1313,8 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "Select to make it mandatory for the application to include the " + 
-                                "code_challenge in the authorization request in order to receive " +
-                                "an authorization code from Asgardeo."
+                                hint: "Select to make it mandatory for the application to " +
+                                "include a code_challenge in the authorization request."
                             },
                             refreshToken: {
                                 fields: {
