@@ -2247,7 +2247,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             </div>
                                         </Form.Field>
-                                        { SinglePageApplicationTemplate.id === template.id ?
+                                        { ((initialValues?.state !== State.REVOKED) &&
+                                            SinglePageApplicationTemplate.id === template.id) ?
                                             (<Message info={ true }>
                                                 { config.ui.productName } does not issue a&nbsp;
                                                 <code><b>client_secret</b></code> to native
