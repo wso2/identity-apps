@@ -1519,7 +1519,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-encryption-method-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
-                    <Trans
+                        <Trans
                             i18nKey={
                                 "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                             ".fields.method.hint"
