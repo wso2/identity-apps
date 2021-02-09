@@ -20,7 +20,7 @@ import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInter
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput } from "@wso2is/react-components";
+import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput, Code } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -1092,9 +1092,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 }
                             >
                                 productName can bind the 
-                                <code><b>access_token</b></code> 
+                                <Code withBackground>access_token</Code> 
                                 and
-                                <code><b>refresh_token</b></code> 
+                                <Code withBackground>refresh_token</Code> 
                                 to the login session. This setting determines if the token should be 
                                 bound to the login session or not.
                             </Trans>
@@ -1153,7 +1153,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     >
                                         Validate the binding attributes at the token validation. The client needs to present the 
-                                        <code><b>access_token</b></code> 
+                                        <Code withBackground>access_token</Code> 
                                         + cookie for successful authorization.
                                     </Trans>
                                 </Hint>
@@ -1228,7 +1228,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                         >
                             Specify the validity period of the 
-                            <code><b>access_token</b></code> 
+                            <Code withBackground>access_token</Code> 
                             in seconds.
                         </Trans>
                     </Hint>
@@ -1297,8 +1297,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".refreshToken.fields.renew.hint"
                             }
                         >
-                            Select to issue a new <code><b>refresh_token</b></code> 
-                            each time a <code><b>refresh_token</b></code> is 
+                            Select to issue a new <Code withBackground>refresh_token</Code> 
+                            each time a <Code withBackground>refresh_token</Code> is 
                             exchanged. The existing token will be invalidated.
                         </Trans>
                     </Hint>
@@ -1337,7 +1337,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".refreshToken.fields.expiry.hint"
                             }
                         >
-                            Specify the validity period of the <code><b>refresh_token</b></code> in seconds.
+                            Specify the validity period of the <Code withBackground>refresh_token</Code> in seconds.
                         </Trans>
                     </Hint>
                 </Grid.Column>
@@ -1392,7 +1392,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.audience.hint"
                             }
                         >
-                            Specify the recipient(s) that this <b><code>id_token</code></b> is intended for. By default, 
+                            Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended for. By default, 
                             the client ID of this application is added as an audience.
                         </Trans>
                     </Hint>
@@ -1441,7 +1441,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.encryption.hint"
                             }
                         >
-                            Select to encrypt the <b><code>id_token</code></b>  when issuing the token using the 
+                            Select to encrypt the <Code withBackground>id_token</Code>  when issuing the token using the 
                             public key of your application. To use encryption, configure the JWKS endpoint or the 
                             certificate of your application in the Certificate section below.
                         </Trans>
@@ -1484,7 +1484,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.algorithm.hint"
                             }
                         >
-                            The dropdown contains the supported <b><code>id_token</code></b> encryption algorithms.
+                            The dropdown contains the supported <Code withBackground>id_token</Code> encryption algorithms.
                         </Trans>
                     </Hint>
                 </Grid.Column>
@@ -1525,7 +1525,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.method.hint"
                             }
                         >
-                            The dropdown contains the supported <b><code>id_token</code></b> encryption methods.
+                            The dropdown contains the supported <Code withBackground>id_token</Code> encryption methods.
                         </Trans>
                     </Hint>
                 </Grid.Column>
@@ -1565,7 +1565,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".fields.expiry.hint"
                             }
                         >
-                            Specify the validity period of the <b><code>id_token</code></b> in seconds.
+                            Specify the validity period of the <Code withBackground>id_token</Code> in seconds.
                         </Trans>
                     </Hint>
                 </Grid.Column>

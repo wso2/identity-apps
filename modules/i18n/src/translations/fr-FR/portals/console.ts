@@ -1179,8 +1179,8 @@ export const console: ConsoleNS = {
                                                 label: "SSO-session"
                                             }
                                         },
-                                        description: "Lie le <1><0>jeton_d'accès</0></1> à la session de connexion. " +
-                                            "{{productName}} émettra un nouveau <3><0>jeton_d'accès</0></3> pour chaque " +
+                                        description: "Lie le <1>jeton_d'accès</1> à la session de connexion. " +
+                                            "{{productName}} émettra un nouveau <3>jeton_d'accès</3> pour chaque " +
                                             "nouvelle connexion et le révoquera lors de la déconnexion.",
                                         label: "Type de liaison de jeton",
                                         valueDescriptions: {
@@ -1195,7 +1195,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     expiry: {
-                                        hint: "Spécifiez la période de validité du <1><0>jeton_d'accès</0></1> en secondes.",
+                                        hint: "Spécifiez la période de validité du <1>jeton_d'accès</1> en secondes.",
                                         label: "Délai d'expiration du jeton d'accès utilisateur",
                                         placeholder: "Saisissez l'heure d'expiration des jetons d'accès utilisateur",
                                         validations: {
@@ -1216,7 +1216,7 @@ export const console: ConsoleNS = {
                                     },
                                     validateBinding: {
                                         hint: "Validez les attributs de liaison lors de la validation du jeton. Le" +
-                                            " client doit présenter le <1><0>jeton_d'accès</0></1> + cookie pour une" +
+                                            " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
                                     }
@@ -1229,7 +1229,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     algorithm: {
                                         hint: "La liste déroulante contient les algorithmes de chiffrement" +
-                                            " de <1><0>jeton_d'identification</0></1> pris en charge.",
+                                            " de <1>jeton_d'identification</1> pris en charge.",
                                         label: "Algorithme",
                                         placeholder: "Sélectionner un algorithme",
                                         validations: {
@@ -1237,7 +1237,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "Spécifiez le destinataire auquel ce <1><0>jeton_d'ID</0></1> est destiné. Par " +
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'ID</1> est destiné. Par " +
                                             "défaut, l'ID client de cette application est ajouté en tant qu'audience.",
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
@@ -1247,7 +1247,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Sélectionnez pour crypter le <1><0>jetons_d'identification</0></1> lors de l'émission "+
+                                        hint: "Sélectionnez pour crypter le <1>jetons_d'identification</1> lors de l'émission "+
                                             "du jeton à l'aide de la clé publique de votre application." +
                                             " Pour utiliser le chiffrement, configurez le point de terminaison JWKS ou le certificat "+
                                             "de votre application dans la section Certificat ci-dessous.",
@@ -1257,7 +1257,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     expiry: {
-                                        hint: "Spécifiez la période de validité du <1><0>jeton_ID</0></1> en secondes.",
+                                        hint: "Spécifiez la période de validité du <1>jeton_ID</1> en secondes.",
                                         label: "Délai d'expiration du jeton d'identification",
                                         placeholder: "Entrez l'heure d'expiration du jeton d'identification",
                                         validations: {
@@ -1266,7 +1266,7 @@ export const console: ConsoleNS = {
                                     },
                                     method: {
                                         hint: "La liste déroulante contient les méthodes de chiffrement" +
-                                            " de <1><0>jeton_d'identification</0></1> prises en charge.",
+                                            " de <1>jeton_d'identification</1> prises en charge.",
                                         label: "Méthode de chiffrement",
                                         placeholder: "Choisissez la méthode",
                                         validations: {
@@ -1328,7 +1328,7 @@ export const console: ConsoleNS = {
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Spécifiez la période de validité du <1><0>jeton_d'actualisation</0></1> en secondes.",
+                                        hint: "Spécifiez la période de validité du <1>jeton_d'actualisation</1> en secondes.",
                                         label: "Délai d'expiration du jeton de rafraîchissement",
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
@@ -1336,7 +1336,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     renew: {
-                                        hint: "Émettez un nouveau <1><0>jeton_d'actualisation</0></1> par demande " +
+                                        hint: "Émettez un nouveau <1>jeton_d'actualisation</1> par demande " +
                                             "d'actualisation de jeton.",
                                         label: "Faire pivoter le jeton d'actualisation",
                                         validations: {
