@@ -184,7 +184,12 @@ export const generateBackendPaths = (language: string[],
                                      appBaseName: string,
                                      i18nBundleOptions: I18nModuleOptionsInterface): string => {
 
-    const fullResourcePath = `${ StringUtils.removeSlashesFromPath(appBaseName) }/${
+    // If `appBaseName` is "", avoids adding a forward slash.
+    const resolvedAppBaseName: string = StringUtils.removeSlashesFromPath(appBaseName)
+        ? `${StringUtils.removeSlashesFromPath(appBaseName)}/`
+        : "";
+
+    const fullResourcePath = `${ resolvedAppBaseName }${
         StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath) }`;
 
     if (i18nBundleOptions?.namespaceDirectories.has(namespace[0])) {
