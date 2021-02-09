@@ -20,7 +20,16 @@ import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInter
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, Heading, Hint, LinkButton, Text, URLInput, Code } from "@wso2is/react-components";
+import { 
+    ConfirmationModal, 
+    CopyInputField, 
+    Heading, 
+    Hint, 
+    LinkButton, 
+    Text, 
+    URLInput, 
+    Code 
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -1085,7 +1094,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".accessToken.fields.bindingType.label")
                         }
                         hint={ 
-                            <Trans values={{productName: config.ui.productName}}
+                            <Trans values={ { productName: config.ui.productName } }
                                 i18nKey={
                                     "console:develop.features.applications.forms.inboundOIDC.sections" +
                                     ".accessToken.fields.bindingType.description"
@@ -1152,7 +1161,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".accessToken.fields.validateBinding.hint"
                                         }
                                     >
-                                        Validate the binding attributes at the token validation. The client needs to present the 
+                                        Validate the binding attributes at the token validation. 
+                                        The client needs to present the 
                                         <Code withBackground>access_token</Code> 
                                         + cookie for successful authorization.
                                     </Trans>
@@ -1392,8 +1402,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.audience.hint"
                             }
                         >
-                            Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended for. By default, 
-                            the client ID of this application is added as an audience.
+                            Specify the recipient(s) that this <Code withBackground>id_token</Code> 
+                            is intended for. By default, the client ID of this application is added as an audience.
                         </Trans>
                     </Hint>
                 </Grid.Column>
@@ -1441,9 +1451,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.encryption.hint"
                             }
                         >
-                            Select to encrypt the <Code withBackground>id_token</Code>  when issuing the token using the 
-                            public key of your application. To use encryption, configure the JWKS endpoint or the 
-                            certificate of your application in the Certificate section below.
+                            Select to encrypt the <Code withBackground>id_token</Code>  when issuing the token 
+                            using the public key of your application. To use encryption, configure the JWKS 
+                            endpoint or the certificate of your application in the Certificate section below.
                         </Trans>
                     </Hint>
                 </Grid.Column>
@@ -1484,7 +1494,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             ".fields.algorithm.hint"
                             }
                         >
-                            The dropdown contains the supported <Code withBackground>id_token</Code> encryption algorithms.
+                            The dropdown contains the supported <Code withBackground>id_token</Code> 
+                            encryption algorithms.
                         </Trans>
                     </Hint>
                 </Grid.Column>

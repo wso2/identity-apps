@@ -1225,8 +1225,9 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "Jeton d'accès",
-                                hint: " Configurez l'émetteur du jeton d'accès, l'heure d'expiration du jeton d'accès " +
-                                    "de l'utilisateur, l'heure d'expiration du jeton d'accès de l'application, etc."
+                                hint: " Configurez l'émetteur du jeton d'accès, l'heure d'expiration du jeton " +
+                                    "d'accès de l'utilisateur, l'heure d'expiration du jeton d'accès de "+
+                                    "l'application, etc."
                             },
                             idToken: {
                                 fields: {
@@ -1240,8 +1241,9 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     audience: {
-                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'ID</1> est destiné. Par " +
-                                            "défaut, l'ID client de cette application est ajouté en tant qu'audience.",
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'ID</1> est " +
+                                            "destiné. Par défaut, l'ID client de cette application est "+
+                                            "ajouté en tant qu'audience.",
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
@@ -1250,9 +1252,11 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "Sélectionnez pour crypter le <1>jetons_d'identification</1> lors de l'émission "+
+                                        hint: "Sélectionnez pour crypter le <1>jetons_d'identification</1> "+
+                                            "lors de l'émission "+
                                             "du jeton à l'aide de la clé publique de votre application." +
-                                            " Pour utiliser le chiffrement, configurez le point de terminaison JWKS ou le certificat "+
+                                            " Pour utiliser le chiffrement, configurez le point de terminaison "+
+                                            "JWKS ou le certificat "+
                                             "de votre application dans la section Certificat ci-dessous.",
                                         label: "Activer le chiffrement",
                                         validations: {
@@ -1330,11 +1334,13 @@ export const console: ConsoleNS = {
                             refreshToken: {
                                 fields: {
                                     expiry: {
-                                        hint: "Spécifiez la période de validité du <1>jeton_d'actualisation</1> en secondes.",
+                                        hint: "Spécifiez la période de validité du <1>jeton_d'actualisation</1> " +
+                                        "en secondes.",
                                         label: "Délai d'expiration du jeton de rafraîchissement",
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
-                                            empty: "Veuillez indiquer le délai d'expiration du jeton de rafraîchissement"
+                                            empty: "Veuillez indiquer le délai d'expiration du jeton de " + 
+                                                "rafraîchissement"
                                         }
                                     },
                                     renew: {
