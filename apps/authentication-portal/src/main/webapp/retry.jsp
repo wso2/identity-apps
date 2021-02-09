@@ -31,7 +31,7 @@
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
     String sp = request.getParameter("sp");
-    String urlWithoutEncoding = null;
+    String applicationAccessURLWithoutEncoding = null;
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
         statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
@@ -44,9 +44,9 @@
 
     try {
         ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-        urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
+        applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
                 sp);
-        urlWithoutEncoding = replaceURLPlaceholders(urlWithoutEncoding, request, tenantDomain);
+        applicationAccessURLWithoutEncoding = replaceURLPlaceholders(applicationAccessURLWithoutEncoding, request, tenantDomain);
     } catch (ApplicationDataRetrievalClientException e) {
         //ignored and fallback to login page url
     }
@@ -84,8 +84,8 @@
                     <div class="ui visible negative message">
                         <div class="header"><%=Encode.forHtmlContent(stat)%></div>
                         <p><%=Encode.forHtmlContent(statusMessage)%></p>
-                        <% if (StringUtils.isNotBlank(urlWithoutEncoding)) { %>
-                        <i class="caret left icon orange"></i><a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(urlWithoutEncoding)%>">Back to sign in</a>
+                        <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
+                        <i class="caret left icon orange"></i><a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">Back to sign in</a>
                         <% } %>
                     </div>
                 </div>
