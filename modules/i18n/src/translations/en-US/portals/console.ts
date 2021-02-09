@@ -1117,7 +1117,9 @@ export const console: ConsoleNS = {
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
-                                }
+                                },
+                                info: "This field is required for a functional app. However, if you are"  +
+                                "planning to try out the sample app, you can use {{callBackURLFromTemplate}}."
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1313,9 +1315,8 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 heading: "PKCE",
-                                hint: "Select to make it mandatory for the application to include the " +
-                                "code_challenge in the authorization request in order to receive " +
-                                "an authorization code from Asgardeo."
+                                hint: "Select to make it mandatory for the application to " +
+                                "include a code_challenge in the authorization request."
                             },
                             refreshToken: {
                                 fields: {
