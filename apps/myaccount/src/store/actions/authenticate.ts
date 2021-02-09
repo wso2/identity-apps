@@ -113,7 +113,8 @@ export const setInitialized = (flag: boolean): AuthAction => ({
 /**
  * Get SCIM2 schemas
  */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch): void => {
+export const getScimSchemas = (profileInfo: BasicProfileInterface = null,
+                               isReadOnlyUser: boolean) => (dispatch): void => {
     dispatch(setProfileSchemaLoader(true));
 
     getProfileSchemas()
@@ -122,7 +123,7 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
             dispatch(setScimSchemas(response));
 
             if (profileInfo) {
-                dispatch(getProfileCompletion(profileInfo, response));
+                dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
             }
         })
         .catch(() => {
@@ -156,7 +157,8 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                         if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
-                            dispatch(getScimSchemas(infoResponse));
+                            dispatch(getScimSchemas(infoResponse,
+                                response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]?.isReadOnlyUser));
                         }
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
@@ -164,7 +166,9 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             try {
                                 getProfileCompletion(
                                     infoResponse,
-                                    store.getState().authenticationInformation.profileSchemas
+                                    store.getState().authenticationInformation.profileSchemas,
+                                    response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]
+                                        ?.isReadOnlyUser
                                 );
                             } catch (e) {
                                 dispatch(

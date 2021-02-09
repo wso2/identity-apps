@@ -931,9 +931,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : null
                                     }
                                     {
-                                        !isReadOnlyUser &&
-                                        schema.mutability !== ProfileConstants.READONLY_SCHEMA &&
-                                        !isEmpty(profileInfo.get(schema.name))
+                                        !isEmpty(profileInfo.get(schema.name)) ||
+                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA))
                                             ? (
                                                 <List.Item key={ index } className="inner-list-item"
                                                            data-testid={ `${testId}-schema-list-item` }>

@@ -695,6 +695,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * If the profile schema is read only or the user is read only, the profile detail for a profile schema should
+     * only be displayed in the form only if there is a value for the schema. This function validates whether the
+     * filed should be displayed considering these factors.
+     *
+     * @param {ProfileSchemaInterface} schema
+     * @return {boolean} whether the field for the input schema should be displayed.
+     */
+    const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
+        return (!_.isEmpty(profileInfo.get(schema.name)) ||
+            (!isReadOnly && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)));
+    }
+
+    /**
      * This function generates the user profile details form based on the input Profile Schema
      *
      * @param {ProfileSchemaInterface} schema
@@ -784,7 +797,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             || schema.name === ProfileConstants?.
                                                 SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
                                             || schema.name === ProfileConstants?.
-                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))){
+                                                SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))
+                                            && isFieldDisplayable(schema)) {
                                             return (
                                                 generateProfileEditForm(schema, index)
                                             );
