@@ -80,11 +80,15 @@ export class AppConstants {
 
     /**
      * Get the main view base path.
+     * If `this.getTenantQualifiedAppBasePath()` returns with just "/",
+     * return empty string.
      *
      * @return {string}
      */
     public static getMainViewBasePath(): string {
-        return this.getTenantQualifiedAppBasePath();
+        return this.getTenantQualifiedAppBasePath() !== "/"
+            ? this.getTenantQualifiedAppBasePath()
+            : "";
     }
 
     /**
