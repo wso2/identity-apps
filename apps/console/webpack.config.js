@@ -38,6 +38,9 @@ const isProfilingEnabledInProduction = false;
 const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
+// Build artifacts output path.
+const OUTPUT_PATH = "build/console";
+
 module.exports = (env) => {
 
     // Build Environments.
@@ -56,9 +59,10 @@ module.exports = (env) => {
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9001;
     const publicPath = `/${ basename }`;
+    const isRootContext = publicPath === "/";
 
     // Build configurations.
-    const distFolder = path.resolve(__dirname, "build", basename);
+    const distFolder = path.resolve(__dirname, OUTPUT_PATH);
 
     // Paths to configs & other required files.
     const PATHS = {
@@ -241,7 +245,9 @@ module.exports = (env) => {
                 ? "static/js/[name].[contenthash:8].js"
                 : "static/js/[name].js",
             path: distFolder,
-            publicPath: `${ publicPath }/`
+            publicPath: isRootContext
+                ? publicPath
+                : `${ publicPath }/`
         },
         plugins: [
             isAnalyzeMode && new BundleAnalyzerPlugin(),
@@ -313,7 +319,9 @@ module.exports = (env) => {
                         ? "<%@ page import=\"" +
                         "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
                         : "",
-                    publicPath: publicPath,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "",
                     serverUrl: !isDeployedOnExternalServer
                         ? "<%=getServerURL(\"\", true, true)%>"
                         : "",
@@ -333,14 +341,18 @@ module.exports = (env) => {
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
-                    publicPath: publicPath,
+                    publicPath: !isRootContext
+                        ? publicPath
+                        : "",
                     template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
                 excludeChunks: [ "main", "init" ],
                 filename: path.join(distFolder, "rpIFrame.html"),
                 hash: true,
-                publicPath: publicPath,
+                publicPath: !isRootContext
+                    ? publicPath
+                    : "",
                 template: path.join(__dirname, "src", "rpIFrame.html")
             }),
             new webpack.DefinePlugin({
