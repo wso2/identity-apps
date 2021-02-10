@@ -32,6 +32,7 @@ export class OIDCScopesManagementConstants {
     private constructor() { }
 
     public static readonly OIDC_ATTRIBUTE_ID: string = "aHR0cDovL3dzbzIub3JnL29pZGMvY2xhaW0";
+    public static readonly OPEN_ID_SCOPE: string = "openid";
 
     public static readonly OIDC_SCOPES_FETCH_ERROR: string = "An error occurred while fetching " +
         "the OIDC scopes.";
