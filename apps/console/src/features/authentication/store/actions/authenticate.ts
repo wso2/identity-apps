@@ -245,9 +245,15 @@ export const initializeAuthentication = () => (dispatch) => {
     };
 
     if (process.env.NODE_ENV === "production") {
-        axios.get(window[ "AppUtils" ].getConfig().appBase + "/auth").then((response) => {
-            initialize(response);
-        });
+
+        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            : "";
+
+        axios.get(contextPath + "/auth")
+            .then((response) => {
+                initialize(response);
+            });
     } else {
         initialize();
     }
