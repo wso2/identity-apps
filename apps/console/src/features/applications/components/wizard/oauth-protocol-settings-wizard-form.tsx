@@ -503,7 +503,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                         This field is required for a functional app. 
                                                         However, if you are planning to 
                                                         try out the sample app, 
-                                                        you can use <strong>{callBackURLFromTemplate}</strong>.
+                                                        you can use <strong>{ callBackURLFromTemplate }</strong>.
                                                     </Trans>
                                                 }
                                                     {
