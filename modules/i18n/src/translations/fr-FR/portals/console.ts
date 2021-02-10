@@ -1151,8 +1151,9 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "Sélectionnez au minimum un grant type"
                                 },
-                                validation: {
-                                    refreshToken:"Le type d'octroi Refresh token doit être sélectionné avec le type d'octroi code."
+                                vvalidation: {
+                                    refreshToken:"Le type d'octroi Refresh token doit être sélectionné uniquement " +
+                                    "avec les types d'octroi qui fournissent un jeton d'actualisation."
                                 }
                             },
                             public: {

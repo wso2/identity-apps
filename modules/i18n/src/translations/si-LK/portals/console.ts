@@ -1154,7 +1154,8 @@ export const console: ConsoleNS = {
                                     empty: "අවම වශයෙන් ප්‍රදාන වර්ගයක් තෝරන්න"
                                 },
                                 validation: {
-                                    refreshToken:"Code grant වර්ගය සමඟ Refresh token grant type තෝරා ගත යුතුය."
+                                    refreshToken:"Refresh token ප්‍රදාන වර්ගය තෝරා ගත යුත්තේ ප්‍රබෝධවත් ටෝකනයක් " +
+                                    "සපයන ප්‍රදාන වර්ග සමඟ පමණි."
                                 }
                             },
                             public: {
