@@ -23,7 +23,7 @@ import { ContentLoader, Hint, URLInput, LinkButton } from "@wso2is/react-compone
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Label, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
@@ -495,8 +495,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             <Message className="with-inline-icon" icon visible info>
                                                 <Icon name="info" size="mini" />
                                                 <Message.Content> {
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields" +
-                                                ".callBackUrls.info",{callBackURLFromTemplate: callBackURLFromTemplate })
+                                                    <Trans
+                                                    i18nKey="console:develop.features.applications.forms.
+                                                    inboundOIDC.fieldscallBackUrls.info"
+                                                    tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
+                                                    >
+                                                        This field is required for a functional app. 
+                                                        However, if you are planning to 
+                                                        try out the sample app, 
+                                                        you can use <strong>{ callBackURLFromTemplate }</strong>.
+                                                    </Trans>
                                                 }
                                                     {
                                                         (callBackUrls === undefined || callBackUrls === "") && (
