@@ -553,7 +553,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * Set initial value for claim mapping.
      */
     useEffect(() => {
-        if (claimConfigurations.dialect === "CUSTOM") {
+        if (claimConfigurations?.dialect === "CUSTOM") {
             setClaimMappingOn(true);
         }
     }, [claimConfigurations]);
@@ -597,8 +597,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         dropDownOptions={ createDropdownOption() }
                         triggerSubmission={ triggerAdvanceSettingFormSubmission }
                         setSubmissionValues={ setAdvanceSettingValues }
-                        initialRole={ claimConfigurations.role }
-                        initialSubject={ claimConfigurations.subject }
+                        initialRole={ claimConfigurations?.role }
+                        initialSubject={ claimConfigurations?.subject }
                         claimMappingOn={ claimMappingOn }
                         readOnly={
                             readOnly
@@ -611,7 +611,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <RoleMapping
                         submitState={ triggerAdvanceSettingFormSubmission }
                         onSubmit={ setRoleMapping }
-                        initialMappings={ claimConfigurations.role?.mappings }
+                        initialMappings={ claimConfigurations?.role?.mappings }
                         readOnly={
                             readOnly
                             || !hasRequiredScopes(featureConfig?.applications,

@@ -150,11 +150,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const getInitiallySelectedClaimsURI = ((): string[] => {
         const requestURI: string[] = [];
-        if (claimConfigurations.dialect === "CUSTOM") {
+        if (claimConfigurations?.dialect === "CUSTOM") {
             claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
                 requestURI.push(element.localClaim.uri);
             });
-        } else if (claimConfigurations.dialect === "LOCAL") {
+        } else if (claimConfigurations?.dialect === "LOCAL") {
             claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
                 requestURI.push(element.claim.uri);
             });
@@ -269,7 +269,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             setAvailableClaims(initialAvailableClaims);
 
             //Handle claim mapping initialization
-            if (claimConfigurations.dialect === "CUSTOM") {
+            if (claimConfigurations?.dialect === "CUSTOM") {
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
                 claimConfigurations.claimMappings.map((claim) => {
                     const claimMapping: ExtendedClaimMappingInterface = {
@@ -690,7 +690,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 </Grid.Row>
                 { addSelectionModal() }
             </>
-            : <ContentLoader/>
+            : !initializationFinished
+                ? <ContentLoader/>
+                : null
     );
 };
 

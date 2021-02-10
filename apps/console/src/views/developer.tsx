@@ -115,6 +115,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     useEffect(() => {
 
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
         const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
@@ -131,7 +136,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         }
 
         dispatch(getProfileInformation());
-    }, [ featureConfig, getDeveloperViewRoutes ]);
+    }, [ featureConfig, getDeveloperViewRoutes, allowedScopes ]);
 
     /**
      * Handles side panel toggle click.
