@@ -57,6 +57,7 @@ const UserEditPage = (): ReactElement => {
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
+    const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         const properties: ConnectorPropertyInterface[] = [];
@@ -98,8 +99,11 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
+        setReadOnlyUserStoresLoading(true);
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
             setReadOnlyUserStoresList(response);
+        }).finally(() => {
+            setReadOnlyUserStoresLoading(false);
         });
     }, [ user ]);
 
@@ -237,6 +241,7 @@ const UserEditPage = (): ReactElement => {
                 handleUserUpdate={ handleUserUpdate }
                 readOnlyUserStores={ readOnlyUserStoresList }
                 connectorProperties={ connectorProperties }
+                isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
             />
             {
                 showEditAvatarModal && (

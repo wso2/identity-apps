@@ -31,6 +31,7 @@ import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
+    ContentLoader,
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
@@ -72,6 +73,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Password reset connector properties
      */
     connectorProperties: ConnectorPropertyInterface[];
+    /**
+     * Is read only user stores loading.
+     */
+    isReadOnlyUserStoresLoading?: boolean;
 }
 
 /**
@@ -91,6 +96,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         isReadOnly,
         featureConfig,
         connectorProperties,
+        isReadOnlyUserStoresLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -753,6 +759,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
+        !isReadOnlyUserStoresLoading ? (
         <>
             {
                 <Grid>
@@ -1008,6 +1015,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate={ handleUserUpdate }
             />
         </>
+        ) : <ContentLoader dimmer/>
     );
 };
 
