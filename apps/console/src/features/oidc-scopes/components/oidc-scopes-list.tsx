@@ -33,7 +33,8 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    TableDataInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -49,6 +50,7 @@ import {
 } from "../../core";
 import { deleteOIDCScope } from "../api";
 import { OIDCScopesListInterface } from "../models";
+import { OIDCScopesManagementConstants } from "../constants";
 
 /**
  *
@@ -272,9 +274,12 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         ];
 
         actions.push({
-            hidden: (): boolean => !hasRequiredScopes(
+            hidden: (item: TableDataInterface<OIDCScopesListInterface>): boolean => {
+                return !hasRequiredScopes(
                 featureConfig?.applications,
-                featureConfig?.applications?.scopes?.delete, allowedScopes),
+                    featureConfig?.applications?.scopes?.delete, allowedScopes)
+                    || item.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE;
+            },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
                 setShowDeleteConfirmationModal(true);
