@@ -18,13 +18,20 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="includes/localize.jsp" %>
+<%@include file="includes/init-url.jsp" %>
 
 <%
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
+    String sp = request.getParameter("sp");
+    String applicationAccessURLWithoutEncoding = null;
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
         statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
@@ -34,6 +41,15 @@
         statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
     }
     session.invalidate();
+
+    try {
+        ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+        applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
+                sp);
+        applicationAccessURLWithoutEncoding = replaceURLPlaceholders(applicationAccessURLWithoutEncoding, request, tenantDomain);
+    } catch (ApplicationDataRetrievalClientException e) {
+        //ignored and fallback to login page url
+    }
 %>
 
 <!doctype html>
@@ -68,6 +84,9 @@
                     <div class="ui visible negative message">
                         <div class="header"><%=Encode.forHtmlContent(stat)%></div>
                         <p><%=Encode.forHtmlContent(statusMessage)%></p>
+                        <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
+                        <i class="caret left icon orange"></i><a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">Back to sign in</a>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -93,5 +112,30 @@
     <% } else { %>
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
+    <%!
+        private String replaceURLPlaceholders (String accessURL, HttpServletRequest request, String tenantDomain) {
+
+            if (StringUtils.isBlank(accessURL)) {
+                return accessURL;
+            }
+            if (!accessURL.contains("${UserTenantHint}")) {
+                return accessURL;
+            }
+            String userTenantHint = request.getParameter("ut");
+            if (StringUtils.isBlank(userTenantHint)) {
+                userTenantHint = request.getParameter("t");
+            }
+            if (StringUtils.isBlank(userTenantHint)) {
+                if (StringUtils.isNotBlank(tenantDomain)) {
+                    userTenantHint = tenantDomain;
+                } else {
+                    userTenantHint = "carbon.super";
+                }
+            }
+
+            return accessURL.replaceAll(Pattern.quote("${UserTenantHint}"), userTenantHint)
+                    .replaceAll(Pattern.quote("/t/carbon.super/"), "/");
+        }
+    %>
 </body>
 </html>
