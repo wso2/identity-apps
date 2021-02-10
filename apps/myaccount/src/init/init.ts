@@ -31,6 +31,7 @@ const getItemFromSessionStorage = (key: string): string => {
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
+        contextPath: contextPathGlobal,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal

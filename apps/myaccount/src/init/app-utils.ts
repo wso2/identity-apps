@@ -286,12 +286,13 @@ export const AppUtils = (function() {
             _default = {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
+                "contextPath": _args.contextPath,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;
 
-            const userConfigFile = this.getAppBase() + "/deployment.config.json";
+            const userConfigFile = _config.contextPath + "/deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
                 const configResponse = JSON.parse(response);

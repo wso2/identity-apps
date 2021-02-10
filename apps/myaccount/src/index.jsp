@@ -38,6 +38,7 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
+            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";

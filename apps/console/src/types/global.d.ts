@@ -16,6 +16,7 @@
  * under the License.
  */
 
+declare const contextPathGlobal: string;
 declare const serverOriginGlobal: string;
 declare const superTenantGlobal: string;
 declare const tenantPrefixGlobal: string;
