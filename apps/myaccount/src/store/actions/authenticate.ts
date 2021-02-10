@@ -464,9 +464,15 @@ export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overridde
     const parsedURL: URL = new URL(originalURL);
     const parsedOverrideURL: URL = new URL(overriddenURL);
 
-    // If the override URL has search params, adjust the params of the original URL accordingly.
-    if (parsedOverrideURL.search) {
-        return overriddenURL + parsedURL.search.replace(parsedURL.search.charAt(0), "&");
+    // If the override URL & original URL has search params, try to moderate the URL.
+    if (parsedOverrideURL.search && parsedURL.search) {
+        for (const [ key, value ] of parsedURL.searchParams.entries()) {
+            if (parsedOverrideURL.searchParams.has(key)) {
+                parsedURL.searchParams.append(key, value);
+            }
+        }
+
+        return parsedURL.toString();
     }
 
     return overriddenURL + parsedURL.search;
