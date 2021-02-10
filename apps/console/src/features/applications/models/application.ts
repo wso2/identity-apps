@@ -259,6 +259,7 @@ export interface ApplicationTemplateListItemInterface {
      * Title for the sub template selection section inside the wizard.
      */
     subTemplatesSectionTitle?: string;
+    previewOnly?: boolean;
 }
 
 export interface ApplicationTemplateGroupInterface {
