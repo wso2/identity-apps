@@ -186,7 +186,27 @@ export class ApplicationManagementConstants {
     public static readonly AUTHORIZATION_CODE_GRANT: string = "authorization_code";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
     public static readonly IMPLICIT_GRANT: string = "implicit";
+    public static readonly PASSWORD: string = "password";
+    public static readonly SAML2_BEARER: string = "urn:ietf:params:oauth:grant-type:saml2-bearer";
+    public static readonly JWT_BEARER: string = "urn:ietf:params:oauth:grant-type:jwt-bearer";
+    public static readonly IWA_NTLM: string = "iwa:ntlm";
+    public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
 
+    /**
+     * Currently refresh grant type is recommended to use atleast one of below.
+     * We need to get information from backend rather than hard code.
+     * This isssue is track via https://github.com/wso2-enterprise/asgardeo-product/issues/1852.
+     */
+    public static readonly IS_REFRESH_TOKEN_GRANT_TYPE_ALLOWED = [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.SAML2_BEARER,
+            ApplicationManagementConstants.IWA_NTLM,
+            ApplicationManagementConstants.JWT_BEARER,
+            ApplicationManagementConstants.UMA_TICKET
+    ];
+    
     /**
      * Set of grant types allowed for certain templates.
      * @constant

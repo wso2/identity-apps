@@ -1148,7 +1148,8 @@ export const console: ConsoleNS = {
                                     empty: "Select at least a  grant type"
                                 },
                                 validation: {
-                                    refreshToken:"Refresh token grant type should be selected along with the Code grant type."
+                                    refreshToken:"Refresh token grant type should only be selected along with " +
+                                    "grant types that provide a refresh token."
                                 }
                             },
                             public: {
