@@ -177,9 +177,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const resolveInitialIDTokenEncryptionValues = (): void => {
         if (initialValues?.idToken?.encryption?.enabled === false) {
             initialValues.idToken.encryption = {
-                method: "",
                 algorithm: "",
-                enabled: false
+                enabled: false,
+                method: ""
             };
         }
     };
