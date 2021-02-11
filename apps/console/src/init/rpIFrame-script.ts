@@ -97,7 +97,6 @@ function receiveMessage(e) {
     } else {
         // [RP] session state has changed. Sending prompt=none request...
         const promptNoneIFrame: HTMLIFrameElement = document.getElementById("promptNoneIFrame") as HTMLIFrameElement;
-        const tenantName = window.parent["AppUtils"]?.getTenantName();
         promptNoneIFrame.src =
             getItemFromSessionStorage("authorization_endpoint") +
             "?response_type=code" +
@@ -109,7 +108,6 @@ function receiveMessage(e) {
             "&state=Y2hlY2tTZXNzaW9u" +
             "&prompt=none" +
             "&code_challenge_method=S256&code_challenge=" +
-            getRandomPKCEChallenge() +
-            "&t=" + tenantName;
+            getRandomPKCEChallenge();
     }
 }
