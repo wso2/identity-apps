@@ -69,9 +69,9 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
                 </h3>
 
-                <% if (request.getParameter("postAuthMissingClaimsError") != null) { %>
+                <% if (request.getParameter("errorMessage") != null) { %>
                     <div class="ui visible negative message" id="error-msg" data-testid="page-error-message">
-                        <%= Encode.forHtmlContent(request.getParameter("postAuthMissingClaimsError")) %>
+                        <%= Encode.forHtmlContent(request.getParameter("errorMessage")) %>
                     </div>
                 <% }%>
 
