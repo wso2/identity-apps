@@ -3352,6 +3352,19 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "Nome de {{type}}",
+                        placeholder: "Saisir un nom de {{type}}",
+                        validations: {
+                            duplicate: "Un {{type}} avec ce nom existe déjà.",
+                            empty: "Le nom de {{type}} est obligatoire",
+                            invalid: "Vle nom du {{type}} doit avoir une longueur de 3 à 30 et ne peut pas contenir d'espaces."
+                        }
+                    }
+                }
+            },
             approvals: {
                 list: {
                     columns: {

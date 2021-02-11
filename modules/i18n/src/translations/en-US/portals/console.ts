@@ -4214,6 +4214,19 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "{{type}} Name",
+                        placeholder: "Enter {{type}} Name",
+                        validations: {
+                            duplicate: "A {{type}} already exists with the given {{type}} name.",
+                            empty: "{{type}} Name is required to proceed.",
+                            invalid: "{{type}} name must be of length 3-30 and cannot contain spaces."
+                        }
+                    }
+                }
+            },
             approvals: {
                 list: {
                     columns: {
