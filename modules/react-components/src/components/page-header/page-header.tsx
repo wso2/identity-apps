@@ -82,6 +82,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Title text alignment.
      */
     titleTextAlign?: "left" | "center" | "right" | "justified";
+    /**
+     * Truncate content
+     */
+    truncateContent?: boolean;
 }
 
 /**
@@ -125,6 +129,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         titleAs,
         titleTextAlign,
         pageHeaderMaxWidth,
+        truncateContent,
         [ "data-testid" ]: testId
     } = props;
 
@@ -152,12 +157,20 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     );
 
     const headerContentClasses = classNames(
-        "page-header ellipsis",
+        "page-header",
         {
+            "ellipsis": truncateContent,
             "no-max-width": !pageHeaderMaxWidth
         }
     );
-    
+
+    const subHeaderContentClasses = classNames(
+        "sub-header",
+        {
+            "ellipsis": truncateContent
+        }
+    );
+
     const headingContent = (
         <div className={ innerClasses }>
             { image && (
@@ -211,7 +224,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             </span>
                             { description && (
                                 <Header.Subheader
-                                    className="sub-header ellipsis"
+                                    className={ subHeaderContentClasses }
                                     data-testid={ `${ testId }-sub-title` }
                                 >
                                     { description }

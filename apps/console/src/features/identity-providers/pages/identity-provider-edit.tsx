@@ -273,6 +273,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 titleTextAlign="left"
                 bottomMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
+                pageHeaderMaxWidth={ true }
+                truncateContent={ true }
             >
                 <EditIdentityProvider
                     identityProvider={ identityProvider }

@@ -17,7 +17,7 @@
  */
 
 import { CommonUtils } from "@wso2is/core/utils";
-import { ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import { ErrorBoundary, LinkButton, PageLayout } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Responsive } from "semantic-ui-react";
@@ -27,7 +27,6 @@ import {
     EmptyPlaceholder,
     GlobalLoader,
     Header,
-    PageHeader,
     SidePanelWrapper
 } from "../components";
 import { getEmptyPlaceholderIllustrations } from "../configs";
@@ -115,12 +114,16 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                             />
                         ) }
                     >
-                        <PageHeader
-                            title={ pageTitle }
+                        
+                        <PageLayout
                             description={ pageDescription }
+                            pageHeaderMaxWidth={ false }
+                            title={ pageTitle }
                             titleTextAlign={ pageTitleTextAlign }
-                        />
-                        { children }
+                            truncateContent={ false }
+                        >
+                            { children }
+                        </PageLayout>
                     </ErrorBoundary>
                 </SidePanelWrapper>
             </div>

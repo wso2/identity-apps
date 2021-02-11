@@ -846,7 +846,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 ) }
                 contentTopMargin={ true }
                 description={ (
-                    <div className="with-label">
+                    <div className="with-label ellipsis">
                         { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
                         { application.description }
                     </div>
@@ -875,8 +875,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
-                pageHeaderMaxWidth={ false }
+                pageHeaderMaxWidth={ true }
                 data-testid={ `${ testId }-page-layout` }
+                truncateContent={ true }
             >
                 <EditApplication
                     application={ application }
