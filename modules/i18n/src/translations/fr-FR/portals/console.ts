@@ -902,6 +902,12 @@ export const console: ConsoleNS = {
                                 fields:{
                                     subjectAttribute: {
                                         hint: "Choisissez l'attribut",
+                                        hintOIDC: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
+                                            "comme identifiant de sujet de l'utilisateur. Cela représente la " +
+                                            "revendication <1>sub</1> du <1>id_token</1>.",
+                                        hintSAML: "Sélectionnez les attributs partagés que vous souhaitez utiliser" +
+                                            " comme identifiant de sujet de l'utilisateur. Ceci représente l'élément" +
+                                            " <1>subject</1> de l'assertion SAML.",
                                         label: "Attribut de sujet",
                                         validations: {
                                             empty: "Sélectionner l'attribut de sujet"
