@@ -198,6 +198,10 @@
                 margin-top: @SmallMargin;
                 margin-bottom: @SmallMargin;
                 padding: @ZeroPadding;
+
+                .decoded-path {
+                    white-space: pre;
+                }
            }
 
            &.flex-row {
