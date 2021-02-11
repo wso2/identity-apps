@@ -560,7 +560,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     />
                 ) : <span>{ protocol }</span> }
                 <span>://</span>
-                <span>{ onlyOrigin ? host : pathWithoutProtocol }</span>
+                <span className="decoded-path">
+                    { onlyOrigin ? decodeURIComponent(host) : decodeURIComponent(pathWithoutProtocol) }
+                </span>
             </span>
         );
     };

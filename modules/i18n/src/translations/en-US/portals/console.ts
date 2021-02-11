@@ -425,7 +425,7 @@ export const console: ConsoleNS = {
                 heading: "Insecure URL"
             },
             unrecognizedURL: {
-                description: "The entered URL neither HTTP nor HTTPS. Please proceed with caution.",
+                description: "The entered URL is neither HTTP nor HTTPS. Please proceed with caution.",
                 heading: "Unrecognized URL"
             }
         }
