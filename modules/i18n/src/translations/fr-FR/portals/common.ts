@@ -41,6 +41,7 @@ export const common: CommonNS = {
     change: "Modifier",
     claim: "Claim",
     close: "Fermer",
+    comingSoon: "Bientôt disponible",
     completed: "Terminé",
     configure: "Configurer",
     confirm: "Confirmer",
