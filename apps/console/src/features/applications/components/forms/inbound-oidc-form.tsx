@@ -175,7 +175,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * disabled by the user.
      */
     const resolveInitialIDTokenEncryptionValues = (): void => {
-        if (!initialValues?.idToken?.encryption?.enabled) {
+        if (initialValues?.idToken?.encryption?.enabled === false) {
             initialValues.idToken.encryption = {
                 method: "",
                 algorithm: "",
