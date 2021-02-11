@@ -71,7 +71,7 @@
 
                 <% if (request.getParameter("errorMessage") != null) { %>
                     <div class="ui visible negative message" id="error-msg" data-testid="page-error-message">
-                        <%= Encode.forHtmlContent(request.getParameter("errorMessage")) %>
+                        <%= Encode.forHtmlContent(AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("errorMessage"))) %>
                     </div>
                 <% }%>
 
