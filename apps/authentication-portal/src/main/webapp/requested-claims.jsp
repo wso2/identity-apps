@@ -69,6 +69,12 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
                 </h3>
 
+                <% if (request.getParameter("postAuthMissingClaimsError") != null) { %>
+                    <div class="ui visible negative message" id="error-msg" data-testid="page-error-message">
+                        <%= Encode.forHtmlContent(request.getParameter("postAuthMissingClaimsError")) %>
+                    </div>
+                <% }%>
+
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="claimForm">
                     <div class="ui divider hidden"></div>
                     <p>
