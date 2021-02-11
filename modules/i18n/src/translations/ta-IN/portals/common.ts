@@ -41,6 +41,7 @@ export const common: CommonNS = {
     change: "மாற்று",
     claim: "கோர்",
     close: "நெருக்கமான",
+    comingSoon: "விரைவில்",
     completed: "பூரணப்படுத்தப்பட்டவை",
     configure: "கட்டமை",
     confirm: "உறுதிப்படுத்தவும்",

@@ -485,7 +485,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                                 data-testid={ `${ testId }-${ subTemplate.id }-card` }
                                                             />
                                                         }
-                                                        content={ "Coming soon" }
+                                                        content={
+                                                            t("common:comingSoon" )
+                                                        }
                                                         inverted
                                                         position="top center"
                                                         size="mini"
