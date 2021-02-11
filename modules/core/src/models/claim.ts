@@ -87,4 +87,5 @@ export interface ClaimsGetParams {
     filter: string;
     sort: string;
     attributes?: string;
+    "exclude-identity-claims"?: boolean;
 }
