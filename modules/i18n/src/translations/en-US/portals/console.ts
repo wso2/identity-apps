@@ -899,6 +899,12 @@ export const console: ConsoleNS = {
                                 fields:{
                                     subjectAttribute: {
                                         hint: "Choose the attribute",
+                                        hintOIDC: "Select which of the shared attributes you want to use as the" +
+                                            " subject identifier of the user. This represents the <1>sub</1> claim of" +
+                                            " the <1>id_token</1>.",
+                                        hintSAML: "Select which of the shared attributes you want to use as the" +
+                                            " subject identifier of the user. This represents the <1>subject</1>" +
+                                            " element of the SAML assertion.",
                                         label: "Subject attribute",
                                         validations: {
                                             empty: "Select the subject attribute"
