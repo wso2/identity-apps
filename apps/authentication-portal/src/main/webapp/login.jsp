@@ -208,7 +208,7 @@
                 <h3 class="ui header ellipsis">
                     <% if (isIdentifierFirstLogin(inputType)) { %>
                         <div class="display-inline"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " "%></div>
-                        <div id="user-name" class="display-inline" data-position="top left" data-variation="inverted" data-content="<%=usernameIdentifier%>"><%=usernameIdentifier%></div>
+                        <div id="user-name-label" class="display-inline" data-position="top left" data-variation="inverted" data-content="<%=usernameIdentifier%>"><%=usernameIdentifier%></div>
                     <% } else { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
                     <% } %>
@@ -438,7 +438,7 @@
         }
 
         $(document).ready(function () {
-            $('#user-name').popup({
+            $('#user-name-label').popup({
                 lastResort: 'top left'
             });
             $('.main-link').click(function () {
