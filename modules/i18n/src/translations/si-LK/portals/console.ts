@@ -549,6 +549,12 @@ export const console: ConsoleNS = {
                     placeholder: "යෙදුම් නාමයෙන් සොයන්න"
                 },
                 confirmations: {
+                    addSocialLogin: {
+                        content : "නව සමාජ පිවිසුමක් එක් කිරීම සඳහා අපි ඔබව වෙනත් පිටුවකට යොමු කළ යුතු අතර මෙම පිටුවෙහි " +
+                            "කිසියම් සුරකින ලද වෙනස්කම් නැති වනු ඇත. කරුණාකර තහවුරු කරන්න.",
+                        header: "ඔබේ ක්‍රියාව තහවුරු කරන්න",
+                        subHeader: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැක."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {

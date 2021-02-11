@@ -163,20 +163,19 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
                 >
-                    Confirm You Action
+                     { t("console:develop.features.applications.confirmations.addSocialLogin.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     warning
                     data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
-                    This action is irreversible.
+                    { t("console:develop.features.applications.confirmations.addSocialLogin.subHeader") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
-                    To add a new social login we will need to route you to a different page and any unsaved
-                    changes in this page will be lost. Please confirm.
+                    { t("console:develop.features.applications.confirmations.addSocialLogin.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );

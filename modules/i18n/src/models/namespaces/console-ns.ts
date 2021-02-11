@@ -363,6 +363,7 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 confirmations: {
+                    addSocialLogin: Popup;
                     deleteApplication: Confirmation;
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
