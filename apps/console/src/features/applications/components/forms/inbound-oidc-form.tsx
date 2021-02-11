@@ -180,7 +180,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 method: "",
                 algorithm: "",
                 enabled: false
-            }
+            };
         }
     };
 
