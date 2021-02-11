@@ -170,7 +170,7 @@ const UserEditPage = (): ReactElement => {
 
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description || error.response.data.detail,
-                        level: AlertLevels.SUCCESS,
+                        level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.user.profile.notifications.updateProfileInfo.error.message"
                         )
@@ -183,7 +183,7 @@ const UserEditPage = (): ReactElement => {
                     description: t(
                         "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.description"
                     ),
-                    level: AlertLevels.SUCCESS,
+                    level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.message"
                     )
