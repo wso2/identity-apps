@@ -94,6 +94,7 @@
                 id="usernameUserInput"
                 value=""
                 name="usernameUserInput"
+                maxlength="50"
                 tabindex="0"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                 required />
