@@ -16,15 +16,18 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { getAllExternalClaims } from "@wso2is/core/api";
+import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, PageLayout } from "@wso2is/react-components";
+import { AnimatedAvatar, ListLayout, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AppConstants, history } from "../../core";
+import { Input } from "semantic-ui-react";
+import { AppConstants, UIConstants, history } from "../../core";
 import { getOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
+import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
 
 /**
@@ -42,27 +45,112 @@ type OIDCScopesEditPageInterface = TestableComponentInterface;
 const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
     props: OIDCScopesEditPageInterface
 ): ReactElement => {
-
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+    const { ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const [ scope, setScope ] = useState<OIDCScopesListInterface>({});
-    const [ isScopeRequestLoading, setScopeRequestLoading ] = useState<boolean>(false);
+    const [scope, setScope] = useState<OIDCScopesListInterface>({});
+    const [isScopeRequestLoading, setScopeRequestLoading] = useState<boolean>(true);
+    const [listItemLimit, setListItemLimit] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [OIDCAttributes, setOIDCAttributes] = useState<ExternalClaim[]>(undefined);
+    const [selectedAttributes, setSelectedAttributes] = useState<ExternalClaim[]>([]);
+    const [tempSelectedAttributes, setTempSelectedAttributes] = useState<ExternalClaim[]>([]);
+    const [unselectedAttributes, setUnselectedAttributes] = useState<ExternalClaim[]>([]);
+
+    useEffect(() => {
+        if (OIDCAttributes) {
+            return;
+        }
+        const OIDCAttributeId = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
+        getOIDCAttributes(OIDCAttributeId);
+    }, []);
+
+    useEffect(() => {
+        if (OIDCAttributes == undefined) {
+            return;
+        }
+
+        mapSelectedAttributes();
+    }, [OIDCAttributes, scope]);
+
+    const mapSelectedAttributes = () => {
+        if (!scope.claims) {
+            return;
+        }
+
+        const selected = [];
+        scope?.claims?.map((claim) => {
+            selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
+        });
+
+        setSelectedAttributes(selected);
+        setTempSelectedAttributes(selected);
+        setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
+    };
 
     /**
      * Fetch the scope details on initial component load.
      */
     useEffect(() => {
         const path = history.location.pathname.split("/");
-        const scope = path[ path.length - 1 ];
+        const scope = path[path.length - 1];
 
         getScope(scope);
     }, []);
+
+    const getOIDCAttributes = (claimId: string) => {
+        setScopeRequestLoading(true);
+        getAllExternalClaims(claimId, null)
+            .then((response) => {
+                setOIDCAttributes(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.oidcScopes.notifications.fetchOIDClaims.error" + ".message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
+                                ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDClaims" + ".genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                setScopeRequestLoading(false);
+            });
+    };
+
+    const searchSelectedAttributes = (event) => {
+        const changeValue = event.target.value;
+        if (changeValue.length > 0) {
+            setTempSelectedAttributes(
+                selectedAttributes.filter(
+                    (claim: ExternalClaim) => claim.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+                )
+            );
+        } else {
+            setTempSelectedAttributes(selectedAttributes);
+        }
+    };
 
     /**
      * Retrieves scope details from the API.
@@ -78,28 +166,34 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope.error.message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope.error.message")
+                        })
+                    );
 
                     return;
                 }
 
-                dispatch(addAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError." +
-                        "message")
-                }));
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
+                                ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError." + "message"
+                        )
+                    })
+                );
             })
             .finally(() => {
                 setScopeRequestLoading(false);
             });
     };
-
 
     /**
      * Handles the back button click event.
@@ -114,27 +208,47 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
             title={ t("console:manage.pages.oidcScopesEdit.title", { name: scope.name }) }
             contentTopMargin={ true }
             description={ t("console:manage.pages.oidcScopesEdit.subTitle") }
-            image={
-                <AnimatedAvatar
-                    name={ scope.name }
-                    size="tiny"
-                    floated="left"
-                />
-            }
+            image={ <AnimatedAvatar name={ scope.name } size="tiny" floated="left" /> }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.oidcScopesEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
+            data-testid={ `${testId}-page-layout` }
         >
-            <EditOIDCScope
-                scope={ scope }
-                isLoading={ isScopeRequestLoading }
-                onUpdate={ getScope }
-                data-testid={ testId }
-            />
+            <ListLayout
+                showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
+                listItemLimit={ listItemLimit }
+                showPagination={ false }
+                onPageChange={ () => null }
+                totalPages={ Math.ceil(scope.claims?.length / listItemLimit) }
+                data-testid={ `${testId}-list-layout` }
+                leftActionPanel={
+                    <div className="advanced-search-wrapper aligned-left fill-default">
+                        <Input
+                            className="advanced-search with-add-on"
+                            data-testid={ `${testId}-list-search-input` }
+                            icon="search"
+                            iconPosition="left"
+                            onChange={ searchSelectedAttributes }
+                            placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
+                            floated="right"
+                            size="small"
+                        />
+                    </div>
+                }
+            >
+                <EditOIDCScope
+                    scope={ scope }
+                    isLoading={ isScopeRequestLoading }
+                    onUpdate={ getScope }
+                    data-testid={ testId }
+                    selectedAttributes={ tempSelectedAttributes }
+                    unselectedAttributes={ unselectedAttributes }
+                    isRequestLoading={ isScopeRequestLoading }
+                />
+            </ListLayout>
         </PageLayout>
     );
 };
