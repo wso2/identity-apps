@@ -633,7 +633,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 <label>{ labelName }</label>
                             </div>
                         ) : (
-                                <label>{ labelName }</label>
+                                <div className={ "field" }>
+                                    <label>{ labelName }</label>
+                                </div>
                             )
                     }
                 </Grid.Column>

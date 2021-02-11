@@ -285,14 +285,17 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
         } else if (isCheckBoxField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    <label>
-                        { inputField.label }
-                        {
-                            inputField.label && inputField.required
-                                ? <span className="ui text color red">*</span>
-                                : null
-                        }
-                    </label>
+                    {
+                        inputField.label && inputField.required ? (
+                            <div className={ "required field" }>
+                                <label>{ inputField.label }</label>
+                            </div>
+                        ) : (
+                                <div className={ "field" }>
+                                    <label>{ inputField.label }</label>
+                                </div>
+                            )
+                    }
                     { inputField.hint && <FieldHint hint={ inputField.hint }/> }
                     { inputField.children.map((checkbox, index) => {
                         const field = (
