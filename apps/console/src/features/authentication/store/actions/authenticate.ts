@@ -371,15 +371,21 @@ export const initializeAuthentication = () => (dispatch) => {
  */
 export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overriddenURL: string): string => {
 
-    const parsedURL: URL = new URL(originalURL);
+    const parsedOriginalURL: URL = new URL(originalURL);
     const parsedOverrideURL: URL = new URL(overriddenURL);
 
-    // If the override URL has search params, adjust the params of the original URL accordingly.
-    if (parsedOverrideURL.search) {
-        return overriddenURL + parsedURL.search.replace(parsedURL.search.charAt(0), "&");
+    // If the override URL & original URL has search params, try to moderate the URL.
+    if (parsedOverrideURL.search && parsedOriginalURL.search) {
+        for (const [ key, value ] of parsedOriginalURL.searchParams.entries()) {
+            if (!parsedOverrideURL.searchParams.has(key)) {
+                parsedOverrideURL.searchParams.append(key, value);
+            }
+        }
+
+        return parsedOverrideURL.toString();
     }
 
-    return overriddenURL + parsedURL.search;
+    return overriddenURL + parsedOriginalURL.search;
 };
 
 /**
