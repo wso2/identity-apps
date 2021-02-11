@@ -1868,10 +1868,10 @@ export const console: ConsoleNS = {
                     addApplication: {
                         error: {
                             description: "{{description}}",
-                            message: "Creation Error"
+                            message: "Creation error"
                         },
                         genericError: {
-                            description: "Failed to create the application",
+                            description: "Failed to create the application.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -1881,15 +1881,15 @@ export const console: ConsoleNS = {
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators need basic authenticator or identifier " +
-                                "first in a prior step.",
-                            message: "Step Delete error"
+                            description: "Second factor authenticators require having a basic or identifier-first" +
+                                "authenticator in a prior step.",
+                            message: "Step cannot be deleted"
                         }
                     },
                     authenticationStepMin: {
                         genericError: {
                             description: "At least one authentication step is required.",
-                            message: "Step Delete error"
+                            message: "Step cannot be deleted"
                         }
                     },
                     deleteApplication: {
@@ -1898,12 +1898,12 @@ export const console: ConsoleNS = {
                             message: "Removal Error"
                         },
                         genericError: {
-                            description: "Failed to delete the application",
+                            description: "Failed to delete the application.",
                             message: "Something went wrong"
                         },
                         success: {
                             description: "Successfully deleted the application.",
-                            message: "Removal successful"
+                            message: "Application deleted"
                         }
                     },
                     deleteProtocolConfig: {
@@ -1917,12 +1917,12 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Successfully deleted the {{protocol}} protocol configurations.",
-                            message: "Removal successful"
+                            message: "Configurations deleted"
                         }
                     },
                     duplicateAuthenticationStep: {
                         genericError: {
-                            description: "The same authenticator is not allowed to repeated in a single step.",
+                            description: "The same authenticator is not allowed more than once in a single step.",
                             message: "Not allowed"
                         }
                     },
@@ -1981,7 +1981,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the custom inbound protocols.",
+                            description: "An error occurred while retrieving the custom inbound protocols.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -1995,7 +1995,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the available inbound protocols.",
+                            description: "An error occurred while retrieving the available inbound protocols.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2009,7 +2009,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the IDP configurations for the OIDC " +
+                            description: "An error occurred while retrieving the IDP configurations for the OIDC " +
                                 "application.",
                             message: "Retrieval error"
                         },
@@ -2020,8 +2020,8 @@ export const console: ConsoleNS = {
                     },
                     fetchOIDCServiceEndpoints: {
                         genericError: {
-                            description: "An error occurred retrieving the server endpoints for OIDC applications.",
-                            message: "Un problème est survenu"
+                            description: "An error occurred while retrieving the server endpoints for OIDC applications.",
+                            message: "Something went wrong"
                         }
                     },
                     fetchProtocolMeta: {
@@ -2030,7 +2030,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the protocol metadata.",
+                            description: "An error occurred while retrieving the protocol metadata.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2044,7 +2044,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the IDP configurations for the SAML" +
+                            description: "An error occurred while retrieving the IDP configurations for the SAML" +
                                 " application.",
                             message: "Retrieval error"
                         },
@@ -2059,7 +2059,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving application template data",
+                            description: "An error occurred while retrieving application template data.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -2087,7 +2087,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred retrieving the protocol configurations.",
+                            description: "An error occurred while retrieving the protocol configurations.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -2101,11 +2101,11 @@ export const console: ConsoleNS = {
                             message: "Regenerate error"
                         },
                         genericError: {
-                            description: "An error occurred while regenerating the application",
+                            description: "An error occurred while regenerating the application.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully regenerated the application",
+                            description: "Successfully regenerated the application.",
                             message: "Regenerate successful"
                         }
                     },
@@ -2115,18 +2115,18 @@ export const console: ConsoleNS = {
                             message: "Revoke error"
                         },
                         genericError: {
-                            description: "An error occurred while revoking the application",
+                            description: "An error occurred while revoking the application.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully revoked the application",
+                            description: "Successfully revoked the application.",
                             message: "Revoke successful"
                         }
                     },
                     secondFactorAuthenticatorToFirstStep: {
                         genericError: {
-                            description: "Second factor authenticators need basic authenticator or identifier " +
-                                "first in a prior step.",
+                            description: "Second factor authenticators require having a basic or identifier-first" +
+                                "authenticator in a prior step.",
                             message: "Cannot add to this step"
                         }
                     },
@@ -2136,7 +2136,7 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while the advanced configurations.",
+                            description: "An error occurred while retrieving the advanced configurations.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -2150,7 +2150,7 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "Failed to update the applications",
+                            description: "Failed to update the application.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -2164,11 +2164,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating authentication flow of the application",
+                            description: "An error occurred while updating the authentication flow of the application.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the authentication flow of the application",
+                            description: "Successfully updated the authentication flow of the application.",
                             message: "Update successful"
                         }
                     },
@@ -2178,21 +2178,21 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the claim configuration",
+                            description: "An error occurred while updating the attribute settings.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the claim configuration",
+                            description: "Successfully updated the attribute settings.",
                             message: "Update successful"
                         }
                     },
                     updateInboundProtocolConfig: {
                         error: {
                             description: "{{description}}",
-                            message: "Update Error"
+                            message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating inbound protocol configurations.",
+                            description: "An error occurred while updating the inbound protocol configurations.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -2203,10 +2203,10 @@ export const console: ConsoleNS = {
                     updateInboundProvisioningConfig: {
                         error: {
                             description: "{{description}}",
-                            message: "Update Error"
+                            message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while the provisioning configurations.",
+                            description: "An error occurred while updating the provisioning configurations.",
                             message: "Something went wrong"
                         },
                         success: {
@@ -2217,16 +2217,16 @@ export const console: ConsoleNS = {
                     updateOutboundProvisioning: {
                         genericError: {
                             description: "The outbound provisioning IDP already exists.",
-                            message: "Update Error"
+                            message: "Update error"
                         }
                     },
                     updateProtocol: {
                         error: {
                             description: "{{description}}",
-                            message: "Update Error"
+                            message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the application",
+                            description: "An error occurred while updating the application.",
                             message: "Something went wrong"
                         },
                         success: {
