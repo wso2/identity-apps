@@ -338,9 +338,15 @@ export const initializeAuthentication = () =>(dispatch)=> {
     };
 
     if (process.env.NODE_ENV === "production") {
-        axios.get(window[ "AppUtils" ].getAppBase() + "/auth").then((response) => {
-            initialize(response);
-        });
+
+        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+            ? `/${ window[ "AppUtils" ].getConfig().appBase }`
+            : "";
+
+        axios.get(contextPath + "/auth")
+            .then((response) => {
+                initialize(response);
+            });
     } else {
         initialize();
     }
@@ -366,8 +372,17 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
         if (sessionStorage.getItem(LOGOUT_URL)) {
+
             let logoutUrl = sessionStorage.getItem(LOGOUT_URL);
-            logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase() , window["AppUtils"].getAppBaseWithTenant());
+
+            // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
+            if (window["AppUtils"].getConfig().appBase) {
+                logoutUrl = logoutUrl.replace(window["AppUtils"].getAppBase(),
+                    window["AppUtils"].getAppBaseWithTenant());
+            } else {
+                logoutUrl = logoutUrl.replace(window["AppUtils"].getConfig().logoutCallbackURL,
+                    (window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login));
+            }
 
             // If an override URL is defined in config, use that instead.
             if (window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL) {

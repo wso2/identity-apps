@@ -117,7 +117,7 @@ export const AppUtils = (function() {
                 return _config.clientOrigin + this.getTenantPath(true) + "/" + _config.appBaseName + url;
             }
 
-            return _config.clientOrigin + "/" + _config.appBaseName + url;
+            return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
         },
 
         /**
@@ -145,7 +145,7 @@ export const AppUtils = (function() {
          * @return {string}
          */
         getAppBaseWithTenant: function() {
-            return this.getTenantPath(true) + "/" + _config.appBaseName;
+            return this.getTenantPath(true) + (_config.appBaseName ? ("/" + _config.appBaseName) : "");
         },
 
         /**
@@ -318,12 +318,13 @@ export const AppUtils = (function() {
             _default = {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
+                "contextPath": _args.contextPath,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;
 
-            const userConfigFile = this.getAppBase() + "/deployment.config.json";
+            const userConfigFile = _config.contextPath + "/deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
                 const configResponse = JSON.parse(response);

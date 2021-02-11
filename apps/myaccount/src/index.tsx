@@ -56,12 +56,17 @@ I18n.init({
     Config.getI18nConfig()?.xhrBackendPluginEnabled)
     .then(() => {
 
+        // If `appBaseNameWithoutTenant` is "", avoids adding a forward slash.
+        const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
+            Config.getDeploymentConfig().appBaseNameWithoutTenant)
+            ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
+            : "";
+
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
-        const metaPath = `/${
-            StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }/${
+        const metaPath = `${ resolvedAppBaseNameWithoutTenant }/${
             StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/${
             I18nModuleConstants.META_FILENAME
             }`;
