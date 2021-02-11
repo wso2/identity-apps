@@ -178,13 +178,16 @@ const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface
  *
  * @param {BasicProfileInterface} profileInfo - Profile information.
  * @param {ProfileSchema[]} profileSchemas - Profile schemas.
+ * @param {boolean} isReadOnlyUser - Whether the user is read only.
  * @return {ProfileCompletion}
  */
 export const getProfileCompletion = (
     profileInfo: BasicProfileInterface,
-    profileSchemas: ProfileSchema[]
+    profileSchemas: ProfileSchema[],
+    isReadOnlyUser: boolean
 ): ProfileCompletion => {
     const completion: ProfileCompletion = emptyProfileCompletion();
+    const skippedAttributed = [];
 
     for (const schema of flattenSchemas([...profileSchemas])) {
         // Skip `Roles`
@@ -209,6 +212,17 @@ export const getProfileCompletion = (
         for (const info of flattenProfileInfo(profileInfo)) {
             for (const [key, value] of Object.entries(info)) {
                 if (schema.name === key) {
+                    if (!value && (schema.mutability === ProfileConstants.READONLY_SCHEMA || isReadOnlyUser)) {
+                        if (!skippedAttributed.includes(attribute.name)) {
+                            if (schema.required) {
+                                completion.required.totalCount--;
+                            } else {
+                                completion.optional.totalCount--;
+                            }
+                        }
+                        skippedAttributed.push(attribute.name);
+                        continue;
+                    }
                     if (schema.required) {
                         if (
                             value ||
@@ -238,6 +252,17 @@ export const getProfileCompletion = (
 
         // If the schema couldn't be mapped, add it to in-completed list.
         if (!isMapped) {
+            if (schema.mutability === ProfileConstants.READONLY_SCHEMA || isReadOnlyUser) {
+                if (!skippedAttributed.includes(attribute.name)) {
+                    if (schema.required) {
+                        completion.required.totalCount--;
+                    } else {
+                        completion.optional.totalCount--;
+                    }
+                }
+                skippedAttributed.push(attribute.name);
+                continue;
+            }
             if (schema.required) {
                 if (schema.name !== "profileUrl" || !isProfileImageComplete(schema.name, profileInfo)) {
                     completion.required.incompleteAttributes.push(attribute);

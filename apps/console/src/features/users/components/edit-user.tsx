@@ -50,6 +50,10 @@ interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
      * Password reset connector properties
      */
     connectorProperties: ConnectorPropertyInterface[];
+    /**
+     * Is read only user stores loading.
+     */
+    isReadOnlyUserStoresLoading?: boolean;
 }
 
 /**
@@ -66,7 +70,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         handleUserUpdate,
         featureConfig,
         readOnlyUserStores,
-        connectorProperties
+        connectorProperties,
+        isReadOnlyUserStoresLoading
     } = props;
 
     const { t } = useTranslation();
@@ -110,6 +115,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                         isReadOnly={ isReadOnly }
                         connectorProperties={ connectorProperties }
+                        isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                     />
                 </ResourceTab.Pane>
             )
