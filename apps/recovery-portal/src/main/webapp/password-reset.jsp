@@ -75,7 +75,7 @@
                     </h2>
 
                     <% if (error) { %>
-                    <div class="ui visible negative message">
+                    <div class="ui visible negative message" id="server-error-msg">
                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                     </div>
                     <% } %>
