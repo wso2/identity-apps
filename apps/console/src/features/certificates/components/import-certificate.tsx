@@ -232,6 +232,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      */
     const previous = (): void => {
         setCurrentWizardStep(currentWizardStep - 1);
+        setAlert(null);
     };
 
     return (
