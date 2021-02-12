@@ -31,15 +31,13 @@ h6.ui.header .sub.header {
 
 .ui.header {
     &.page-header {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
         .sub-header {
             margin-top: @pageHeaderInnerMargin;
         }
 
-        max-width: 50%;
+        &:not(.no-max-width) {
+            max-width: 50%;
+        }
     }
 }
 
