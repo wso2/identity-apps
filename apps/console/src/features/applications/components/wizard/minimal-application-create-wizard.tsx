@@ -141,7 +141,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         setAllowedOrigins(allowedCORSOrigins);
 
         // Remove error alert on protocol switch
-        setAlert(null)
+        setAlert(null);
     }, [ selectedTemplate ]);
 
     /**
@@ -363,8 +363,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     const scrollToNotification = () => {
-        document.getElementById("notification-div").scrollIntoView({behavior: 'smooth'})
-    }
+        document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
+    };
 
     /**
      * Resolves to the applicable content of an application template.
@@ -475,7 +475,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                                 onClick={ () => {
                                                                     if (!subTemplate.previewOnly) {
                                                                         setSelectedTemplate(subTemplate);
-                                                                        loadTemplateDetails(subTemplate.id, subTemplate);
+                                                                        loadTemplateDetails(subTemplate.id,
+                                                                            subTemplate);
                                                                     }
                                                                 } }
                                                                 imageSize="mini"
