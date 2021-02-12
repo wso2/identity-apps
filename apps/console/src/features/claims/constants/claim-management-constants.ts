@@ -108,4 +108,15 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
     ]
+
+    public static readonly OIDC_MAPPING: string[] = [
+        "http://wso2.org/oidc/claim"
+    ];
+
+    public static readonly SCIM_MAPPING: string[] = [
+        "urn:ietf:params:scim:schemas:core:2.0:User",
+        "urn:scim:schemas:core:1.0",
+        "urn:ietf:params:scim:schemas:core:2.0",
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+    ]
 }
