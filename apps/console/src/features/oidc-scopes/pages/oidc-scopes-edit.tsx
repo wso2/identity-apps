@@ -23,7 +23,7 @@ import { AnimatedAvatar, ListLayout, PageLayout } from "@wso2is/react-components
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Input } from "semantic-ui-react";
+import { Icon, Input } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
 import { getOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
@@ -232,7 +232,8 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
                             icon="search"
                             iconPosition="left"
                             onChange={ searchSelectedAttributes }
-                            placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
+                            placeholder={ t("console:manage.features.oidcScopes.editScope." +
+                                "claimList.searchClaims") }
                             floated="right"
                             size="small"
                         />
