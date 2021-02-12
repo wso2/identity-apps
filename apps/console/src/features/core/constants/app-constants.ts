@@ -230,7 +230,7 @@ export class AppConstants {
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
-            .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/manage-attributes-and-mappings`)
+            .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
             .set("CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize`)
             .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
             .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
