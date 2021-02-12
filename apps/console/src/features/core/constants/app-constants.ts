@@ -201,6 +201,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the client origin with tenant. ex: `https://localhost:9443/t/wso2.comn`.
+     *
+     * @return {string}
+     */
+    public static getClientOriginWithTenant(): string {
+        return window["AppUtils"].getConfig().clientOriginWithTenant;
+    }
+
+    /**
      * URL param for email template add state.
      * NOTE: Not needed if the same component is not used for edit and add,
      * @type {string}
