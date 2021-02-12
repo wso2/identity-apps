@@ -25,7 +25,7 @@ import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButto
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup } from "semantic-ui-react";
+import { Divider, DropdownProps, Grid, Header, Icon, Image, List, PaginationProps, Popup } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -43,7 +43,7 @@ import { ClaimManagementConstants } from "../constants";
 /**
  * Props for the Claim Dialects page.
  */
-type ClaimDialectsPageInterface = TestableComponentInterface
+type ClaimDialectsPageInterface = TestableComponentInterface;
 
 /**
  * This displays a list fo claim dialects.
@@ -55,10 +55,7 @@ type ClaimDialectsPageInterface = TestableComponentInterface
 const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     props: ClaimDialectsPageInterface
 ): ReactElement => {
-
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+    const { [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -75,8 +72,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const listAllAttributeDialects: boolean = useSelector((
-        state: AppState) => state.config.ui.listAllAttributeDialects);
+    const listAllAttributeDialects: boolean = useSelector(
+        (state: AppState) => state.config.ui.listAllAttributeDialects
+    );
 
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -111,42 +109,52 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             limit,
             offset,
             sort
-        }).then((response: ClaimDialect[]) => {
-            const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
-                if (claim.id === "local") {
-                    setLocalURI(claim.dialectURI);
-                }
+        })
+            .then((response: ClaimDialect[]) => {
+                const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
+                    if (claim.id === "local") {
+                        setLocalURI(claim.dialectURI);
+                    }
 
-                if (!listAllAttributeDialects) {
-                    return claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_LEGAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
-                }
+                    if (!listAllAttributeDialects) {
+                        return (
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_LEGAL") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
+                        );
+                    }
 
-                return claim.id !== "local";
+                    return claim.id !== "local";
+                });
 
+                setDialects(filteredDialect);
+                setFilteredDialects(filteredDialect);
+            })
+            .catch((error) => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.response?.data?.description ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                ".genericError.description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.response?.data?.message ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                ".genericError.message"
+                            )
+                    })
+                );
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
-
-            setDialects(filteredDialect);
-            setFilteredDialects(filteredDialect);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.response?.data?.description
-                        || t("console:manage.features.claims.dialects.notifications.fetchDialects" +
-                            ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        || t("console:manage.features.claims.dialects.notifications.fetchDialects" +
-                            ".genericError.message")
-                }
-            ));
-        }).finally(() => {
-            setIsLoading(false);
-        });
     };
 
     useEffect(() => {
@@ -177,7 +185,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
      * @param {data} data.
      */
     const handleItemsPerPageDropdownChange = (
-        event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps
+        event: React.MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps
     ): void => {
         setListItemLimit(data.value as number);
     };
@@ -189,7 +198,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
      * @param {PaginationProps} data.
      */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setOffset((data.activePage as number - 1) * listItemLimit);
+        setOffset(((data.activePage as number) - 1) * listItemLimit);
     };
 
     /**
@@ -199,7 +208,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
      * @param {DropdownProps} data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option) => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -223,7 +232,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         setSearchQuery(query);
         setOffset(0);
         setResetPagination();
-
     };
 
     /**
@@ -237,29 +245,27 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     return (
         <>
-            { addEditClaim &&
-                (
-                    <AddDialect
-                        open={ addEditClaim }
-                        onClose={ () => {
-                            setAddEditClaim(false);
-                        } }
-                        update={ getDialect }
-                        data-testid={ `${ testId }-add-dialect-wizard` }
-                    />
-                )
-            }
+            { addEditClaim && (
+                <AddDialect
+                    open={ addEditClaim }
+                    onClose={ () => {
+                        setAddEditClaim(false);
+                    } }
+                    update={ getDialect }
+                    data-testid={ `${ testId }-add-dialect-wizard` }
+                />
+            ) }
             <PageLayout
                 action={
-                    (isLoading || !(!searchQuery && filteredDialects?.length <= 0))
-                    && config.ui?.isDialectAddingEnabled !== false && (
+                    (isLoading || !(!searchQuery && filteredDialects?.length <= 0)) &&
+                    config.ui?.isDialectAddingEnabled !== false && (
                         <PrimaryButton
                             onClick={ () => {
                                 setAddEditClaim(true);
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add"/>
+                            <Icon name="add" />
                             { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
                         </PrimaryButton>
                     )
@@ -269,153 +275,127 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
-                {
-                    hasRequiredScopes(
-                        featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.read,
-                        allowedScopes) && (
-                        <EmphasizedSegment data-testid={ `${ testId }-local-dialect-container` } >
-                            <List>
-                                <List.Item>
-                                    <Grid>
-                                        <Grid.Row columns={ 2 }>
-                                            <Grid.Column width={ 12 }>
-                                                <Image
-                                                    floated="left"
-                                                    verticalAlign="middle"
-                                                    rounded
-                                                    centered
-                                                    size="mini"
-                                                >
-                                                    <AnimatedAvatar primary />
-                                                    <span className="claims-letter">
-                                                        L
-                                                    </span>
-                                                </Image>
-                                                <List.Header>
-                                                    { t("console:manage.features.claims.dialects.localDialect") }
-                                                </List.Header>
-                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
-                                                    { localURI }
-                                                </List.Description>
-                                            </Grid.Column>
-                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Popup
-                                                    inverted
-                                                    trigger={
-                                                        <span
-                                                            className="local-dialect-direct"
-                                                            onClick={ () => {
-                                                                history.push(
-                                                                    AppConstants.getPaths().get("LOCAL_CLAIMS")
-                                                                );
-                                                            } }
-                                                            data-testid={ `${ testId }-local-dialect-view-button` }
-                                                        >
-                                                            <Icon
-                                                                name="arrow right"
-                                                            />
-                                                        </span>
-                                                    }
-                                                    position="top center"
-                                                    content={ t("console:manage.features.claims.dialects" +
-                                                        ".pageLayout.list.view") }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </List.Item>
-                            </List>
-                        </EmphasizedSegment>
-                    )
-                }
+                { hasRequiredScopes(
+                    featureConfig?.attributeDialects,
+                    featureConfig?.attributeDialects?.scopes?.read,
+                    allowedScopes
+                ) && (
+                        <>
+                            <Header as="h4">
+                                Manage Attributes
+                            <div className="sub header ellipsis">View and manage attributes native to Asgardeo.</div>
+                            </Header>
+                            <EmphasizedSegment data-testid={ `${ testId }-local-dialect-container` }>
+                                <List>
+                                    <List.Item>
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 12 }>
+                                                    <Image
+                                                        floated="left"
+                                                        verticalAlign="middle"
+                                                        rounded
+                                                        centered
+                                                        size="mini"
+                                                    >
+                                                        <AnimatedAvatar primary />
+                                                        <span className="claims-letter">L</span>
+                                                    </Image>
+                                                    <List.Header>
+                                                        { t("console:manage.features.claims.dialects.localDialect") }
+                                                    </List.Header>
+                                                    <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                        { localURI }
+                                                    </List.Description>
+                                                </Grid.Column>
+                                                <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                    <Popup
+                                                        inverted
+                                                        trigger={
+                                                            <span
+                                                                className="local-dialect-direct"
+                                                                onClick={ () => {
+                                                                    history.push(
+                                                                        AppConstants.getPaths().get("LOCAL_CLAIMS")
+                                                                    );
+                                                                } }
+                                                                data-testid={ `${ testId }-local-dialect-view-button` }
+                                                            >
+                                                                <Icon name="arrow right" />
+                                                            </span>
+                                                        }
+                                                        position="top center"
+                                                        content={ t(
+                                                            "console:manage.features.claims.dialects" +
+                                                            ".pageLayout.list.view"
+                                                        ) }
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </List.Item>
+                                </List>
+                            </EmphasizedSegment>
+                        </>
+                    ) }
                 <Divider hidden />
-                <ListLayout
-                    advancedSearch={
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleDialectFilter }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
-                                    value: "dialectURI"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterAttribute" +
-                                    ".placeholder")
-                            }
-                            filterConditionsPlaceholder={
-                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("console:manage.features.claims.dialects.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("console:manage.features.claims.dialects.advancedSearch.placeholder") }
-                            defaultSearchAttribute="dialectURI"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            data-testid={ `${ testId }-advanced-search` }
-                        />
-                    }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    onSortOrderChange={ handleSortOrderChange }
-                    resetPagination={ resetPagination }
-                    showPagination={ true }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    showTopActionPanel={ isLoading || !(!searchQuery && filteredDialects?.length <= 0) }
-                    totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
-                    totalListSize={ filteredDialects?.length }
-                >
-                    <ClaimsList
-                        advancedSearch={
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleDialectFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
-                                        value: "dialectURI"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
-                                        ".filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
-                                        ".filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.claims.dialects.advancedSearch.form.inputs" +
-                                        ".filterValue.placeholder")
-                                }
-                                placeholder={
-                                    t("console:manage.features.claims.dialects.advancedSearch.placeholder")
-                                }
-                                defaultSearchAttribute="dialectURI"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-advanced-search` }
-                            />
-                        }
-                        isLoading={ isLoading }
-                        list={ paginate(filteredDialects, listItemLimit, offset) }
-                        localClaim={ ListType.DIALECT }
-                        update={ getDialect }
-                        onEmptyListPlaceholderActionClick={ () => setAddEditClaim(true) }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        data-testid={ `${ testId }-list` }
-                    />
-                </ListLayout>
+                <Divider />
+                <Header as="h4">
+                    Manage Attribute Mappings
+                    <div className="sub header ellipsis">
+                        View and manage how attributes in Asgardeo are mapped and transformed
+                        when interacting with APIs or your applications.
+                    </div>
+                </Header>
+                <EmphasizedSegment data-testid={ `${ testId }-oidc-dialect-container` }>
+                    <List>
+                        <List.Item>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 12 }>
+                                        <Image
+                                            floated="left"
+                                            verticalAlign="middle"
+                                            rounded
+                                            centered
+                                            size="mini"
+                                        >
+                                            <AnimatedAvatar primary />
+                                            <span className="claims-letter">L</span>
+                                        </Image>
+                                        <List.Header>
+                                            OpenID Connect
+                                        </List.Header>
+                                        <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                            Communicate information about the user for applications that uses
+                                            OpenID Connect to authenticate.
+                                        </List.Description>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                        <Popup
+                                            inverted
+                                            trigger={
+                                                <span
+                                                    className="local-dialect-direct"
+                                                    onClick={ () => {
+                                                        history.push(
+                                                            AppConstants.getPaths().get("LOCAL_CLAIMS")
+                                                        );
+                                                    } }
+                                                    data-testid={ `${ testId }-oidc-dialect-view-button` }
+                                                >
+                                                    <Icon name="arrow right" />
+                                                </span>
+                                            }
+                                            position="top center"
+                                            content="View OpenID Connect Attribute Mappings"
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </List.Item>
+                    </List>
+                </EmphasizedSegment>
             </PageLayout>
         </>
     );
