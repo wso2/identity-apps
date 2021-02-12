@@ -232,9 +232,12 @@
             border-bottom: @defaultBorderWidth solid @defaultBorderColor;
         }
         .content-container {
-            height: @wizardContentHeight;
             padding-left: @wizardContentHorizontalPadding;
             padding-right: @wizardContentHorizontalPadding;
+
+            &:not(.height-auto) {
+                height: @wizardContentHeight;
+            }
 
             .wizard-summary {
                 .summary-field {
