@@ -966,7 +966,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
-                                invalidFormat: "The email address is not of the correct format"
+                                invalidFormat: "Please enter a valid email address"
                             }
                         }
                     }
@@ -992,7 +992,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your mobile number",
                             validations: {
                                 empty: "Mobile number is a required field",
-                                invalidFormat: "The mobile number is not of the right format"
+                                invalidFormat: "Please enter a valid mobile number"
                             }
                         }
                     }
