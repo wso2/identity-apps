@@ -191,7 +191,7 @@ export interface ToggleField extends FormRequiredFieldModel {
  * Dropdown field child model
  */
 export interface DropdownChild {
-    text: string;
+    text: React.ReactNode;
     value: string;
     key: string | number;
 }
