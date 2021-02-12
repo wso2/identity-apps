@@ -95,6 +95,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
          */
         const _selection = inputRef.current?.props[ "value" ] ?? "";
         await CommonUtils.copyTextToClipboard(_selection);
+        setCopied(true);
     };
 
     return (
@@ -165,7 +166,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
             }
             data-testid={ `${ testId }-wrapper` }
         />
-    )
+    );
 };
 
 /**
