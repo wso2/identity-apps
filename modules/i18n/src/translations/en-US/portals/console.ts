@@ -2779,7 +2779,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving local claims.",
+                            description: "An error occurred while retrieving attributes.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3635,7 +3635,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving local claims.",
+                            description: "An error occurred while retrieving attributes.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4513,7 +4513,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. Dialect URI etc."
+                                    placeholder: "E.g. Attribute Mapping URI etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4523,64 +4523,64 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by Dialect URI"
+                        placeholder: "Search by Attribute Mapping URI"
                     },
                     attributes: {
-                        dialectURI: "Dialect URI"
+                        dialectURI: "Attribute Mapping URI"
                     },
                     confirmations: {
                         action: "Confirm",
-                        content: "If you delete this external dialect, all the associated external attributes will "
+                        content: "If you delete this attribute mapping, all the associated external attributes will "
                             + "also be deleted.Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected external " +
-                            "dialect."
+                        message: "This action is irreversible and will permanently delete the selected attribute " +
+                            "mapping."
                     },
                     dangerZone: {
-                        actionTitle: "Delete External Dialect",
-                        header: "Delete External Dialect",
-                        subheader: "Once you delete an external dialect, there is no going back. " +
+                        actionTitle: "Delete Attribute Mapping",
+                        header: "Delete Attribute Mapping",
+                        subheader: "Once you delete an attribute mapping, there is no going back. " +
                             "Please be certain."
                     },
                     forms: {
                         dialectURI: {
-                            label: "Dialect URI",
-                            placeholder: "Enter a dialect URI",
-                            requiredErrorMessage: "Enter a dialect URI"
+                            label: "Attribute Mapping URI",
+                            placeholder: "Enter an attribute mapping URI",
+                            requiredErrorMessage: "Enter an attribute mapping URI"
                         },
                         submit: "Update"
                     },
-                    localDialect: "Local Dialect",
+                    localDialect: "Attributes",
                     notifications: {
                         addDialect: {
                             error: {
-                                description: "An error occurred while adding the external dialect.",
+                                description: "An error occurred while adding the attribute mapping",
                                 message: "Something went wrong"
                             },
                             genericError: {
-                                description: "The external dialect has been added but not all external ."
+                                description: "The attribute mapping has been added but not all external "
                                     + "attributes were added successfully",
                                 message: "External attributes couldn't be added"
                             },
                             success: {
-                                description: "The external dialect has been added successfully.",
-                                message: "External Dialect added successfully"
+                                description: "The attribute mapping has been added successfully",
+                                message: "Attribute Mapping added successfully"
                             }
                         },
                         deleteDialect: {
                             genericError: {
-                                description: "There was an error while deleting the dialect.",
+                                description: "There was an error while deleting the attribute mapping",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The dialect has been deleted successfully!",
-                                message: "Dialect deleted successfully"
+                                description: "The attribute mapping has been deleted successfully!",
+                                message: "Attribute Mapping deleted successfully"
                             }
                         },
                         fetchADialect: {
                             genericError: {
-                                description: "There was an error while fetching the external dialect.",
+                                description: "There was an error while fetching the attribute mapping",
                                 message: "Something went wrong"
                             }
                         },
@@ -4606,40 +4606,40 @@ export const console: ConsoleNS = {
                         },
                         updateDialect: {
                             genericError: {
-                                description: "An error occurred while updating the dialect.",
+                                description: "An error occurred while updating the attribute mapping",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The dialect has been successfully updated.",
-                                message: "Dialect update successful"
+                                description: "The attribute mapping has been successfully updated.",
+                                message: "Attribute Mapping update successful"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to attribute dialects",
-                            description: "Edit external dialect and its attributes.",
-                            updateDialectURI: "Update Dialect URI",
-                            updateExternalAttributes: "Update External Attributes"
+                            back: "Go back to attribute mappings",
+                            description: "Edit attribute mapping",
+                            updateDialectURI: "Update Attribute Mapping URI",
+                            updateExternalAttributes: "Update Attribute Mapping"
                         },
                         list: {
-                            description: "Create and manage attribute dialects.",
-                            primaryAction: "New External Dialect",
-                            title: "Attribute Dialects",
-                            view: "View local claims"
+                            description: "Create and manage attribute dialects",
+                            primaryAction: "New Attribute Mapping",
+                            title: "Attributes and Mappings",
+                            view: "View attributes"
                         }
                     },
                     wizard: {
-                        header: "Add External Dialect",
+                        header: "Add Attribute Mapping",
                         steps: {
-                            dialectURI: "Dialect URI",
-                            externalAttribute: "External attributes",
+                            dialectURI: "Attribute Mapping URI",
+                            externalAttribute: "External Attribute",
                             summary: "Summary"
                         },
                         summary: {
                             externalAttribute: "External Attribute URI",
-                            mappedAttribute: "Mapped Local Attribute URI",
-                            notFound: "No external attribute was added."
+                            mappedAttribute: "Mapped Attribute URI",
+                            notFound: "No external attribute has been added."
                         }
                     }
                 },
@@ -4663,7 +4663,7 @@ export const console: ConsoleNS = {
                     },
                     attributes: {
                         attributeURI: "Attribute URI",
-                        mappedClaim: "Mapped Local Attribute URI"
+                        mappedClaim: "Mapped Attribute URI"
                     },
                     forms: {
                         attributeURI: {
@@ -4672,9 +4672,9 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Attribute URI is required"
                         },
                         localAttribute: {
-                            label: "Local attribute URI to map to",
-                            placeholder: "Select a Local Attribute",
-                            requiredErrorMessage: "Select a local attribute to map to"
+                            label: "Attribute URI to map to",
+                            placeholder: "Select an Attribute",
+                            requiredErrorMessage: "Select an attribute to map to"
                         },
                         submit: "Add External Attribute"
                     },
@@ -4685,7 +4685,8 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been added to the dialect successfully!",
+                                description: "The external attribute has been added to the attribute mapping" +
+                                    " successfully!",
                                 message: "External attribute added successfully"
                             }
                         },
@@ -4739,7 +4740,7 @@ export const console: ConsoleNS = {
                     placeholders: {
                         empty: {
                             subtitle: "Currently, there are no external attributes available for "
-                                + "this dialect.",
+                                + "this attribute mapping.",
                             title: "No External Attributes"
                         }
                     }
@@ -4748,16 +4749,16 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         claimURI: "Claim URI",
-                        dialectURI: "Dialect URI",
+                        dialectURI: "Attribute Mapping URI",
                         name: "Name"
                     },
                     confirmation: {
                         action: "Confirm",
                         content: "{{message}} Please proceed with caution.",
                         dialect: {
-                            message: "If you delete this external dialect, all the"
+                            message: "If you delete this attribute mapping, all the"
                                 + " associated external attributes will also be deleted.",
-                            name: "external dialect"
+                            name: "attribute mapping"
                         },
                         external: {
                             message: "This will permanently delete the external attribute.",
@@ -4766,9 +4767,9 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         hint: "Please type <1>{{assertion}}</1> to confirm.",
                         local: {
-                            message: "If you delete this local attribute, the user data belonging "
+                            message: "If you delete this attribute, the user data belonging "
                                 + "to this attribute will also be deleted.",
-                            name: "local attribute"
+                            name: "attribute"
                         },
                         message: "This action is irreversible and will permanently delete the selected {{name}}."
                     },
@@ -4777,14 +4778,14 @@ export const console: ConsoleNS = {
                             action: {
                                 dialect: "New External Attribute",
                                 external: "New External Attribute",
-                                local: "New Local Attribute"
+                                local: "New Attribute"
                             },
                             subtitle: "There are currently no results available."
                                 + "You can add a new item easily by following the" + "steps in the creation wizard.",
                             title: {
-                                dialect: "Add an External Dialect",
+                                dialect: "Add an Attribute Mapping",
                                 external: "Add an External Attribute",
-                                local: "Add a Local Attribute"
+                                local: "Add an Attribute"
                             }
                         },
                         emptySearch: {
@@ -4826,18 +4827,18 @@ export const console: ConsoleNS = {
                         attributeURI: "Attribute URI"
                     },
                     confirmation: {
-                        content: "If you delete this local attribute, the user data belonging to this attribute "
+                        content: "If you delete this attribute, the user data belonging to this attribute "
                             + "will also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{name}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected local " +
+                        message: "This action is irreversible and will permanently delete the selected " +
                             "attribute.",
                         primaryAction: "Confirm"
                     },
                     dangerZone: {
-                        actionTitle: "Delete Local Attribute",
-                        header: "Delete Local Attribute",
-                        subheader: "Once you delete a local attribute, there is no going back. "
+                        actionTitle: "Delete Attribute",
+                        header: "Delete Attribute",
+                        subheader: "Once you delete an attribute, there is no going back. "
                             + "Please be certain."
                     },
                     forms: {
@@ -4846,7 +4847,7 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
-                            + " The ID will be appended to the dialect URI to create a attribute URI",
+                            + " The ID will be appended to the attribute mapping URI to create a attribute URI",
                         attributeID: {
                             label: "Attribute ID",
                             placeholder: "Enter an attribute ID",
@@ -4891,22 +4892,22 @@ export const console: ConsoleNS = {
                     notifications: {
                         addLocalClaim: {
                             genericError: {
-                                description: "There was an error while adding the local attribute.",
+                                description: "There was an error while adding the attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The local attribute has been added successfully!",
-                                message: "Local attribute added successfully"
+                                description: "The attribute has been added successfully!",
+                                message: "Attribute added successfully"
                             }
                         },
                         deleteClaim: {
                             genericError: {
-                                description: "There was an error while deleting the local attribute.",
+                                description: "There was an error while deleting the attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The local claim has been deleted successfully!",
-                                message: "Local attribute deleted successfully"
+                                description: "The attribute has been deleted successfully!",
+                                message: "Attribute deleted successfully"
                             }
                         },
                         fetchLocalClaims: {
@@ -4915,48 +4916,48 @@ export const console: ConsoleNS = {
                                 message: "Retrieval error"
                             },
                             genericError: {
-                                description: "Couldn't retrieve local claims.",
+                                description: "Couldn't retrieve attributes.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "Successfully retrieved local claims.",
+                                description: "Successfully retrieved attributes.",
                                 message: "Retrieval successful"
                             }
                         },
                         getAClaim: {
                             genericError: {
-                                description: "There was an error while fetching the local attribute.",
+                                description: "There was an error while fetching the attribute",
                                 message: "Something went wrong"
                             }
                         },
                         getClaims: {
                             genericError: {
-                                description: "There was an error while fetching the local attributes.",
+                                description: "There was an error while fetching the attributes",
                                 message: "Something went wrong"
                             }
                         },
                         getLocalDialect: {
                             genericError: {
-                                description: "There was an error while fetching the local dialect.",
+                                description: "There was an error while fetching the attributes",
                                 message: "Something went wrong"
                             }
                         },
                         updateClaim: {
                             genericError: {
-                                description: "There was an error while updating the" + " local attribute",
+                                description: "There was an error while updating the" + " attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "This local attribute has been "
+                                description: "This attribute has been "
                                     + "updated successfully!",
-                                message: "Local attribute updated successfully"
+                                message: "Attribute updated successfully"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to Local Attributes",
-                            description: "Edit local attribute.",
+                            back: "Go back to Attributes",
+                            description: "Edit attribute",
                             tabs: {
                                 additionalProperties: "Additional Properties",
                                 general: "General",
@@ -4964,14 +4965,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         local: {
-                            action: "New Local Attribute",
-                            back: "Go back to attribute dialects",
-                            description: "Create and manage local attributes.",
-                            title: "Local Attributes"
+                            action: "New Attribute",
+                            back: "Go back to attributes and attribute mappings",
+                            description: "Create and manage attributes",
+                            title: "Attributes"
                         }
                     },
                     wizard: {
-                        header: "Add Local Attribute",
+                        header: "Add Attribute",
                         steps: {
                             general: "General",
                             mapAttributes: "Map Attributes",
@@ -6300,7 +6301,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                attributeDialects: "Attribute Dialects",
+                attributeDialects: "Attributes & Mappings",
                 categories: {
                     attributes: "User Attributes",
                     certificates: "Certificates",
@@ -6312,9 +6313,9 @@ export const console: ConsoleNS = {
                 certificates: "Certificates",
                 configurations: "Configurations",
                 editEmailTemplate: "Email Templates",
-                editExternalDialect: "Edit External Dialect",
+                editExternalDialect: "Edit Attribute Mapping",
                 editGroups: "Edit Group",
-                editLocalClaims: "Edit Local Claims",
+                editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit Userstore",
@@ -6322,7 +6323,7 @@ export const console: ConsoleNS = {
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
                 groups: "Groups",
-                localDialect: "Local Dialect",
+                localDialect: "Attributes",
                 overview: "Overview",
                 roles: "Roles",
                 users: "Users",
