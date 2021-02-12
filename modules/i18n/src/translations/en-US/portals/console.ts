@@ -2408,8 +2408,8 @@ export const console: ConsoleNS = {
                             " Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "Disable Identity Provider",
-                        header: "Disable identity provider",
+                        actionTitle: "{{ state }} Identity Provider",
+                        header: "{{ state }} identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
                             "you enable it again."
                     },
@@ -4164,8 +4164,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Connect and manage identity providers to allow users to log in to your " +
-                    "applications with ease. ",
+                subTitle: "Manage identity providers to allow social login to applications.",
                 title: "Identity Providers"
             },
             authenticationProviderTemplate: {
@@ -4175,20 +4174,20 @@ export const console: ConsoleNS = {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider Type"
+                title: "Select Identity Provider"
             },
             idp: {
-                subTitle: "Create and manage identity providers based on templates and configure authentication.",
+                subTitle: "Manage identity providers to allow social login to applications.",
                 title: "Identity Providers"
             },
             idpTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Please choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity provider types.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider Type"
+                title: "Select Identity Provider"
             },
             overview: {
                 subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +

@@ -143,4 +143,6 @@ export interface CommonNS {
     okay: string;
     enabled: string;
     disabled: string;
+    enable: string;
+    disable: string;
 }
