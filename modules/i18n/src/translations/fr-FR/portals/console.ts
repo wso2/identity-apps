@@ -541,6 +541,13 @@ export const console: ConsoleNS = {
                     placeholder: "Chercher par nom d'application"
                 },
                 confirmations: {
+                    addSocialLogin: {
+                        content : "Pour ajouter une nouvelle connexion sociale, nous devrons vous diriger " +
+                            "vers une autre page et toutes les modifications non enregistrées de cette page " +
+                            "seront perdues. Veuillez confirmer.",
+                        header: "Confirmez votre action",
+                        subHeader: "Cette action est irréversible."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {

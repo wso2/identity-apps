@@ -545,6 +545,12 @@ export const console: ConsoleNS = {
                     placeholder: "Search by application name"
                 },
                 confirmations: {
+                    addSocialLogin: {
+                        content : "To add a new social login we will need to route you to a different page and " +
+                            "any unsaved changes in this page will be lost. Please confirm.",
+                        header: "Confirm Your Action",
+                        subHeader: "This action is irreversible."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {
