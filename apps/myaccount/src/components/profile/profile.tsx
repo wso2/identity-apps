@@ -529,31 +529,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             ) }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
-                                                if (checkSchemaType(schema.name, "emails")) {
-                                                    if (!FormValidation.email(value)) {
-                                                        validation.errorMessages.push(
-                                                            t(
-                                                                "myAccount:components.profile.forms." +
-                                                                "generic.inputs.validations.invalidFormat",
-                                                                {
-                                                                    fieldName
-                                                                }
-                                                            )
-                                                        );
-                                                        validation.isValid = false;
-                                                    }
-                                                }
-                                                if (checkSchemaType(schema.name, "mobile")) {
-                                                    if (!FormValidation.mobileNumber(value)) {
-                                                        validation.errorMessages.push(t(
+                                                if (!RegExp(schema.regEx).test(value)) {
+                                                    validation.errorMessages.push(
+                                                        t(
                                                             "myAccount:components.profile.forms." +
                                                             "generic.inputs.validations.invalidFormat",
                                                             {
                                                                 fieldName
                                                             }
-                                                        ));
-                                                        validation.isValid = false;
-                                                    }
+                                                        )
+                                                    );
+                                                    validation.isValid = false;
                                                 }
                                             } }
                                                 value={ resolveProfileInfoSchemaValue(schema) }
