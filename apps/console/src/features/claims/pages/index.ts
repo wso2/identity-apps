@@ -20,3 +20,4 @@ export * from "./claim-dialects";
 export * from "./external-dialect-edit";
 export * from "./local-claims";
 export * from "./local-claims-edit";
+export * from "./attribute-mappings";
