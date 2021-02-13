@@ -529,8 +529,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             ) }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
-                                                if (checkSchemaType(schema.name, "emails")) {
-                                                    if (!FormValidation.email(value)) {
+                                                if (!RegExp(schema.regEx).test(value)) {
+                                                    validation.isValid = false;
+                                                    if (checkSchemaType(schema.name, "emails")) {
+                                                        validation.errorMessages.push(t(
+                                                            "myAccount:components.profile.forms.emailChangeForm." +
+                                                            "inputs.email.validations.invalidFormat"
+                                                        ));
+                                                    } else if (checkSchemaType(schema.name, "phoneNumbers")) {
+                                                        validation.errorMessages.push(t(
+                                                            "myAccount:components.profile.forms.mobileChangeForm." +
+                                                            "inputs.mobile.validations.invalidFormat"
+                                                        ));
+                                                    } else {
                                                         validation.errorMessages.push(
                                                             t(
                                                                 "myAccount:components.profile.forms." +
@@ -540,19 +551,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                 }
                                                             )
                                                         );
-                                                        validation.isValid = false;
-                                                    }
-                                                }
-                                                if (checkSchemaType(schema.name, "mobile")) {
-                                                    if (!FormValidation.mobileNumber(value)) {
-                                                        validation.errorMessages.push(t(
-                                                            "myAccount:components.profile.forms." +
-                                                            "generic.inputs.validations.invalidFormat",
-                                                            {
-                                                                fieldName
-                                                            }
-                                                        ));
-                                                        validation.isValid = false;
                                                     }
                                                 }
                                             } }

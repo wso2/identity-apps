@@ -110,6 +110,7 @@ export interface ProfileSchema {
     required: boolean;
     subAttributes?: ProfileSchema[];
     extended?: boolean;
+    regEx?: string;
 }
 
 /**
