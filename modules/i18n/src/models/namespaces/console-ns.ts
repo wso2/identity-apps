@@ -464,6 +464,7 @@ export interface ConsoleNS {
                                     };
                                     searchPlaceholder: string;
                                 };
+                                selectAll: string;
                             };
                             attributeMappingChange: Notification;
                             roleMapping: {

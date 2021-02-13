@@ -764,7 +764,8 @@ export const console: ConsoleNS = {
                                             "valeurs par défaut."
                                     },
                                     searchPlaceholder: "Attributs de recherche"
-                                }
+                                },
+                                selectAll: "Sélectionnez tous les attributs"
                             },
                             tabName: "Attributs"
                         },
