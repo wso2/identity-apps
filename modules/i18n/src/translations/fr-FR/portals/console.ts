@@ -1196,9 +1196,11 @@ export const console: ConsoleNS = {
                                                 label: "SSO-session"
                                             }
                                         },
-                                        description: "Lie le <1>jeton_d'accès</1> à la session de connexion. " +
-                                            "{{productName}} émettra un nouveau <3>jeton_d'accès</3> pour chaque " +
-                                            "nouvelle connexion et le révoquera lors de la déconnexion.",
+                                        description: "Sélectionnez le type <1>SSO-session</1> pour permettre à " +
+                                            "{{productName}} de lier le <3>jeton_d'accès</3> et <5>d'actualiser " +
+                                            "le jeton</5> à la session de connexion et d'émettre un nouveau jeton " +
+                                            "par session. À la fin de la session d'application, les jetons seront " +
+                                            "également révoqués.",
                                         label: "Type de liaison de jeton",
                                         valueDescriptions: {
                                             cookie: "Liez le jeton d'accès à un cookie avec les paramètres Secure " +

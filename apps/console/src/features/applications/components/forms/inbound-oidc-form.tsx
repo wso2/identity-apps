@@ -867,71 +867,76 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 showCallbackURLField && (
                     <>
-                        <div ref={ url }/>
-                        <URLInput
-                            isAllowEnabled={ false }
-                            tenantDomain={ tenantDomain }
-                            allowedOrigins={ allowedOriginList }
-                            labelEnabled={ true }
-                            urlState={ callBackUrls }
-                            setURLState={ setCallBackUrls }
-                            labelName={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                            }
-                            required={ true }
-                            value={
-                                initialValues?.callbackURLs?.toString()
-                                    ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                        initialValues.callbackURLs.toString())
-                                    : ""
-                            }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".placeholder")
-                            }
-                            validationErrorMsg={
-                                t("console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".validations.empty")
-                            }
-                            validation={ (value: string) => {
-                                let label: ReactElement = null;
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <div ref={ url }/>
+                                <URLInput
+                                    isAllowEnabled={ false }
+                                    tenantDomain={ tenantDomain }
+                                    allowedOrigins={ allowedOriginList }
+                                    labelEnabled={ true }
+                                    urlState={ callBackUrls }
+                                    setURLState={ setCallBackUrls }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                            ".callBackUrls.label")
+                                    }
+                                    required={ true }
+                                    value={
+                                        initialValues?.callbackURLs?.toString()
+                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                                initialValues.callbackURLs.toString())
+                                            : ""
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                            ".callBackUrls.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields" +
+                                            ".callBackUrls.validations.empty")
+                                    }
+                                    validation={ (value: string) => {
+                                        let label: ReactElement = null;
 
-                                const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
+                                        const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
 
-                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
+                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
 
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                                setCallbackURLsErrorLabel(label);
+                                        setCallbackURLsErrorLabel(label);
 
-                                return true;
-                            } }
-                            showError={ showURLError }
-                            setShowError={ setShowURLError }
-                            hint={
-                                t("console:develop.features.applications." +
-                                    "forms.inboundOIDC.fields.callBackUrls.hint", {
-                                    productName: config.ui.productName
-                                })
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-callback-url-input` }
-                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                submitUrl = submitFunction;
-                            } }
-                            showPredictions={ false }
-                            customLabel={ callbackURLsErrorLabel }
-                        />
+                                        return true;
+                                    } }
+                                    showError={ showURLError }
+                                    setShowError={ setShowURLError }
+                                    hint={
+                                        t("console:develop.features.applications." +
+                                            "forms.inboundOIDC.fields.callBackUrls.hint", {
+                                            productName: config.ui.productName
+                                        })
+                                    }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-callback-url-input` }
+                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                        submitUrl = submitFunction;
+                                    } }
+                                    showPredictions={ false }
+                                    customLabel={ callbackURLsErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <div ref={ allowedOrigin }/>
@@ -1017,13 +1022,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
                             ".heading") }
                     </Heading>
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
-                    </Hint>
                     <Field
                         ref={ pkce }
                         name={ PKCE_KEY }
@@ -1059,6 +1061,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-pkce-checkbox-group` }
                     />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.pkce.hint") }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
 
@@ -1069,7 +1074,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".accessToken.heading") }
                     </Heading>
@@ -1093,27 +1098,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ bindingType }
                         label={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.bindingType.label")
-                        }
-                        hint={ 
-                            <Trans values={ { productName: config.ui.productName } }
-                                i18nKey={
-                                    "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.bindingType.description"
-                                }
-                            >
-                                productName can bind the 
-                                <Code withBackground>access_token</Code> 
-                                and
-                                <Code withBackground>refresh_token</Code> 
-                                to the login session. This setting determines if the token should be 
-                                bound to the login session or not.
-                            </Trans>
                         }
                         name="bindingType"
                         default={
@@ -1132,13 +1122,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             );
                         } }
                     />
+                    <Hint>
+                        <Trans values={ { productName: config.ui.productName } }
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.bindingType.description"
+                            }
+                        >
+                            Select type <Code withBackground>SSO-session</Code> to allow productName to bind the 
+                            <Code withBackground>access_token</Code> 
+                            and the 
+                            <Code withBackground>refresh_token</Code> 
+                            to the login session and issue a new token per session. When the application 
+                            session ends, the tokens will also be revoked.
+                        </Trans>
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             {
                 isTokenBindingTypeSelected && (
                     <>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ validateTokenBinding }
                                     name="ValidateTokenBinding"
@@ -1177,7 +1182,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     ref={ revokeAccessToken }
                                     name="RevokeAccessToken"
@@ -1277,7 +1282,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".refreshToken.heading") }
                     </Heading>
@@ -1367,7 +1372,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".idToken.heading") }
                     </Heading>
@@ -1596,7 +1601,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">Logout URLs</Heading>
+                    <Heading as="h4">Logout URLs</Heading>
                     <Divider hidden />
                     <Field
                         ref={ backChannelLogoutUrl }
@@ -1677,16 +1682,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".requestObjectSignature.heading") }
                     </Heading>
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObjectSignature.description", {
-                            productName: config.ui.productName
-                        }) }
-                    </Hint>
                     <Divider hidden />
                     <Field
                         ref={ enableRequestObjectSignatureValidation }
@@ -1710,6 +1709,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
                     />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObjectSignature.description", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             { /* Scope Validators */ }
@@ -1719,7 +1724,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider hidden />
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                             ".scopeValidators.heading") }
                     </Heading>
@@ -1747,17 +1752,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Divider/>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         {
                             t("console:develop.features.applications.forms." +
                                 "advancedConfig.sections.certificate.heading") }
                     </Heading>
-                    <Hint>
-                        { t("console:develop.features.applications.forms.advancedConfig.sections" +
-                            ".certificate.hint", {
-                            productName: config.ui.productName
-                        }) }
-                    </Hint>
                     <Field
                         label={
                             t("console:develop.features.applications.forms." +
@@ -1802,7 +1801,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
                         isPEMSelected
                             ?
@@ -1898,6 +1897,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </>
                             )
                     }
+                    <Hint>
+                        { t("console:develop.features.applications.forms.advancedConfig.sections" +
+                            ".certificate.hint", {
+                            productName: config.ui.productName
+                        }) }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             {

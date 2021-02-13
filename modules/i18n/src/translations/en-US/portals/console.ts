@@ -1190,10 +1190,10 @@ export const console: ConsoleNS = {
                                                 label: "SSO-session"
                                             }
                                         },
-                                        description: "{{productName}} can bind the <1>access_token</1> and "+
-                                            "<3>refresh_token</3> " +
-                                            "to the login session. This setting determines if the token should be " +
-                                            "bound to the login session or not.",
+                                        description: "Select type <1>SSO-session</1> to allow {{productName}} to " +
+                                            "bind the <3>access_token</3> and the <5>refresh_token</5> to the "+
+                                            "login session and issue a new token per session. When the application " +
+                                            "session ends, the tokens will also be revoked.",
                                         label: "Token binding type",
                                         valueDescriptions: {
                                             cookie: "Bind the access token to a cookie with Secure " +
