@@ -1896,31 +1896,31 @@ export const console: ConsoleNS = {
                             message: "Erreur de création"
                         },
                         genericError: {
-                            description: "Echec de la création de l'application",
+                            description: "Echec de la création de l'application.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Création avec succès de l'application",
+                            description: "Création avec succès de l'application.",
                             message: "Création réussie"
                         }
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators need basic authenticator or identifier " +
-                                "first in a prior step.",
-                            message: "Step Delete error"
+                            description: "Les authentificateurs de second facteur nécessitent d'avoir" +
+                                "un authentificateur de base ou identifiant-d'abord dans une étape préalable.",
+                            message: "Erreur de suppression"
                         }
                     },
                     authenticationStepMin: {
                         genericError: {
                             description: "Au moins une étape d'authentification est requise.",
-                            message: "Erreur de retrait"
+                            message: "Erreur de suppression"
                         }
                     },
                     deleteApplication: {
                         error: {
                             description: "{{description}}",
-                            message: "Erreur de retrait"
+                            message: "Erreur de suppression"
                         },
                         genericError: {
                             description: "N'a pas réussi à supprimer l'application",
@@ -1928,7 +1928,7 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Suppression avec succès de l'application.",
-                            message: "Suppression réussie"
+                            message: "Application supprimée"
                         }
                     },
                     deleteProtocolConfig: {
@@ -1937,17 +1937,17 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la suppression des configurations de protocoles entrants.",
+                            description: "Une erreur s'est produite lors de la suppression des configurations de protocole entrant.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
                             description: "Suppression avec succés des configurations du protocole {{protocol}}.",
-                            message: "Suppression réussie"
+                            message: "Configurations supprimées"
                         }
                     },
                     duplicateAuthenticationStep: {
                         genericError: {
-                            description: "Le même authentificateur ne peut être utilisé deux fois au sein d'une même étape.",
+                            description: "Le même authentificateur n'est pas autorisé plus d'une fois en une seule étape.",
                             message: "Non autorisé"
                         }
                     },
@@ -2020,7 +2020,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite en récupérant les protocoles entrants disponibles.",
+                            description: "Une erreur s'est produite lors de la récupération des protocoles entrants disponibles.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2034,7 +2034,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des configurations IDP pour l'application OIDC.",
+                            description: "Une erreur s'est produite lors de la récupération des configurations IDP " +
+                                 "pour l'application OIDC.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -2202,11 +2203,11 @@ export const console: ConsoleNS = {
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à jour de la configuration de la demande",
+                            description: "Une erreur s'est produite lors de la mise à jour des paramètres d'attribut.",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Mise à jour réussie de la configuration des demandes",
+                            description: "Mise à jour réussie des paramètres d'attribut.",
                             message: "Mise à jour réussie"
                         }
                     },
