@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Button, Checkbox, Grid, Icon, Segment } from "semantic-ui-react";
 import { TransferListSearch } from "./transfer-list-search";
 
@@ -54,6 +54,10 @@ export interface TransferComponentPropsInterface extends TestableComponentInterf
     removeItems?: () => void;
     searchPlaceholder: string;
     selectionComponent?: boolean;
+    /**
+     * Select all checkbox label.
+     */
+    selectAllCheckboxLabel?: ReactNode;
 }
 
 /**
@@ -76,6 +80,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         isLoading,
         removeItems,
         children,
+        selectAllCheckboxLabel,
         searchPlaceholder,
         selectionComponent,
         handleUnelectedListSearch,
@@ -127,7 +132,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             selectionComponent &&
                                                             <Checkbox 
                                                                 className="all-select"
-                                                                label="Select all attributes"
+                                                                label={ selectAllCheckboxLabel }
                                                                 checked={ isHeaderCheckboxChecked }
                                                                 onChange={ handleHeaderCheckboxChange }
                                                                 disabled={ isLoading }
@@ -217,5 +222,6 @@ TransferComponent.defaultProps = {
     basic: false,
     bordered: true,
     "data-testid": "transfer-component",
-    isLoading: false
+    isLoading: false,
+    selectAllCheckboxLabel: "Select all"
 };
