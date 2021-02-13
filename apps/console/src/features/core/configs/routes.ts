@@ -299,6 +299,18 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                                 path: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../claims/pages/attribute-mappings")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "attributeMappings",
+                                name: "console.manage.features.sidePanel.attributeMappings",
+                                path: AppConstants.getPaths().get("ATTRIBUTE_MAPPINGS"),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() => import("../../claims/pages/claim-dialects")),
@@ -457,7 +469,8 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                     {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() =>
-                            import("../../remote-repository-configuration/pages/remote-repository-config")),
+                            import("../../remote-repository-configuration/pages/remote-repository-config")
+                        ),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().remoteFetch
@@ -480,7 +493,8 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     }
-                ], "id"
+                ],
+                "id"
             ),
             keyBy(EXTENSION_ROUTES().manage, "id")
         )
