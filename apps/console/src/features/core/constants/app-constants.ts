@@ -240,7 +240,7 @@ export class AppConstants {
             .set("EMAIL_TEMPLATE_ADD", `${
                 AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
                 AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`)
-            .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:id`)
+            .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id`)
             .set("GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups`)
             .set("GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id`)
             .set("IDP", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`)
@@ -265,7 +265,8 @@ export class AppConstants {
             .set("USERSTORES", `${ AppConstants.getAdminViewBasePath() }/user-stores`)
             .set("USERSTORES_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-user-store/:id`)
             .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
-            .set("STORING_DATA_DISABLED",`${ AppConstants.getMainViewBasePath() }/storing_data_disabled`);
+            .set("STORING_DATA_DISABLED", `${ AppConstants.getMainViewBasePath() }/storing_data_disabled`)
+            .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`);
     }
 
     /**
