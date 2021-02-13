@@ -5105,6 +5105,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
+                                hint: "Un nom pour le groupe d'utilisateurs.",
                                 label: "Nome de {{type}}",
                                 placeholder: "Saisir un nom de {{type}}",
                                 validations: {
@@ -5139,6 +5140,7 @@ export const console: ConsoleNS = {
                     users: {
                         assignUserModal: {
                             heading: "Mettre à jour le {{type}} d'utilisateurs",
+                            hint: "Sélectionnez des utilisateurs pour les ajouter au groupe d'utilisateurs.",
                             list: {
                                 listHeader: "Nom",
                                 searchPlaceholder: "Rechercher des utilisateurs"

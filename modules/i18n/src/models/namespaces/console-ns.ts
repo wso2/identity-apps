@@ -2623,6 +2623,7 @@ export interface ConsoleNS {
                     users: {
                         assignUserModal: {
                             heading: string;
+                            hint: string;
                             subHeading: string;
                             list: {
                                 searchPlaceholder: string;

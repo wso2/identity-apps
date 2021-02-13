@@ -5963,6 +5963,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
+                                hint: "A name for the user group.",
                                 label: "{{type}} Name",
                                 placeholder: "Enter {{type}} Name",
                                 validations: {
@@ -5981,7 +5982,7 @@ export const console: ConsoleNS = {
                             update: "Update"
                         }
                     },
-                    subHeading: "Create a new {{type}} in the system with specific permissions",
+                    subHeading: "Create a new {{type}} in the system.",
                     summary: {
                         labels: {
                             domain: {
@@ -5997,6 +5998,7 @@ export const console: ConsoleNS = {
                     users: {
                         assignUserModal: {
                             heading: "Update {{type}} Users",
+                            hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
                                 searchPlaceholder: "Search users"
