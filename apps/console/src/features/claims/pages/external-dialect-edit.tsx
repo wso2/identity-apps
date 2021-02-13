@@ -20,18 +20,15 @@ import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment,
-    PageLayout
+    EmphasizedSegment
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { Divider, Grid, Header, Image } from "semantic-ui-react";
+import { Divider, Grid, Header } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
@@ -39,12 +36,7 @@ import { EditDialectDetails, EditExternalClaims } from "../components";
 /**
  * Props for the External Dialects edit page.
  */
-type ExternalDialectEditPageInterface = TestableComponentInterface
-
-/**
- * Route parameters interface.
- */
-interface RouteParams {
+interface ExternalDialectEditPageInterface extends TestableComponentInterface {
     id: string;
 }
 
@@ -56,15 +48,13 @@ interface RouteParams {
  * @return {React.ReactElement}
  */
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
-    props: ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>
+    props: ExternalDialectEditPageInterface
 ): ReactElement => {
 
     const {
-        match,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        id: dialectId
     } = props;
-
-    const dialectId = match.params.id;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
     const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
@@ -83,7 +73,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             assertion={ dialect.dialectURI }
             assertionHint={
                 <p>
-                <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
+                    <Trans i18nKey="console:manage.features.claims.dialects.confirmations.hint">
                         Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
                     </Trans>
                 </p>
@@ -163,7 +153,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 {
                     description: error?.response?.data?.description
                         || t("console:manage.features.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.description") ,
+                            "fetchExternalClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
                         || t("console:manage.features.claims.dialects.notifications." +
@@ -180,16 +170,6 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     }, [ dialectId ]);
 
     /**
-     * This generates the first letter of a dialect
-     * @param {string} name
-     * @return {string} The first letter of a dialect
-     */
-    const generateDialectLetter = (name: string): string => {
-        const stringArray = name.replace("http://", "").split("/");
-        return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
-    };
-
-    /**
      * This deletes a dialect
      * @param {string} dialectID
      */
@@ -199,7 +179,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             dispatch(addAlert(
                 {
                     description: t("console:manage.features.claims.dialects.notifications." +
-                        "deleteDialect.success.description") ,
+                        "deleteDialect.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.dialects.notifications." +
                         "deleteDialect.success.message")
@@ -210,7 +190,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 {
                     description: error?.description
                         || t("console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.genericError.description") ,
+                            "deleteDialect.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
                         || t("console:manage.features.claims.dialects.notifications." +
@@ -221,35 +201,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     };
 
     return (
-        <PageLayout
-            showBottomDivider
-            isLoading={ isLoading }
-            image={
-                <Image
-                    floated="left"
-                    verticalAlign="middle"
-                    rounded
-                    centered
-                    size="tiny"
-                >
-                    <AnimatedAvatar />
-                    <span className="claims-letter">
-                        { dialect && generateDialectLetter(dialect.dialectURI) }
-                    </span>
-                </Image>
-            }
-            title={ dialect?.dialectURI }
-            description={ t("console:manage.features.claims.dialects.pageLayout.edit.description") }
-            backButton={ {
-                onClick: () => {
-                    history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
-                },
-                text: t ("console:manage.features.claims.dialects.pageLayout.edit.back")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
-        >
+        <>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
@@ -276,10 +228,10 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 </Grid.Column>
             </Grid>
 
-            <Divider hidden/>
+            <Divider hidden />
 
             <EmphasizedSegment>
-                <Divider hidden/>
+                <Divider hidden />
                 <EditExternalClaims
                     dialectID={ dialectId }
                     isLoading={ isLoading }
@@ -310,7 +262,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 </Grid.Row>
             </Grid>
             { confirmDelete && deleteConfirmation() }
-        </PageLayout>
+        </>
     );
 };
 
