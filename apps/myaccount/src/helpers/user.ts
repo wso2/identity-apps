@@ -35,11 +35,11 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
         return givenName + familyName;
     } else if (state.profileInfo.userName) {
-        return state.profileInfo.userName;
+        return getUserNameWithoutDomain(state.profileInfo.userName);
     } else if (state.displayName) {
         return state.displayName;
     } else if (state.username) {
-        return state.username;
+        return getUserNameWithoutDomain(state.username);
     }
 
     return null;
@@ -85,4 +85,21 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     }
 
     return username;
+};
+
+/**
+ * This function returns the username without the user store domain prefix.
+ *
+ * @param {string} userNameWithDomain - Username of the user with the userStore domain.
+ * @return {string} User name without domain.
+ */
+export const getUserNameWithoutDomain = (userNameWithDomain: string): string => {
+
+    if (userNameWithDomain.indexOf("/") > -1) {
+        const fragments = userNameWithDomain.split("/");
+        if (fragments?.length > 1) {
+            return fragments[1];
+        }
+    }
+    return userNameWithDomain;
 };

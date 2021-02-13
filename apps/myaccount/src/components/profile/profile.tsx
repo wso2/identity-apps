@@ -37,6 +37,7 @@ import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
+import { getUserNameWithoutDomain } from "../../helpers";
 
 /**
  * Prop types for the basic details component.
@@ -381,12 +382,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * USER-STORE/userNameString => userNameString
          */
         if (schema.name === "userName") {
-            if (schemaFormValue?.indexOf("/") > -1) {
-                const fragments = schemaFormValue.split("/");
-                if (fragments?.length > 1) {
-                    schemaFormValue = fragments[1];
-                }
-            }
+            schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
         }
 
         return schemaFormValue;
