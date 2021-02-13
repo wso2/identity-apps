@@ -304,9 +304,21 @@
                              min-width: 50px !important;
                          }
                      }
-
                  }
              }
+         }
+
+         &.compact {
+            .transfer-list-column {
+                padding: 0;
+            }
+         }
+
+         &.bordered {
+            .transfer-segment {
+                border: @defaultBorderWidth solid @defaultBorderColor;
+                border-radius: @defaultBorderRadius;
+            }
          }
      }
 }
