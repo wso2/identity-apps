@@ -39,7 +39,7 @@
 
 <%
     String app = request.getParameter("application");
-    String scopeString = request.getParameter("scope");
+    String consentRequiredScopes = request.getParameter("consentRequiredScopes");
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
 
     String[] requestedClaimList = new String[0];
@@ -59,10 +59,10 @@
     */
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
 
-    List<String> openIdScopes = null;
-    if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
+    List<String> consentRequiredScopesList = null;
+    if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(consentRequiredScopes)) {
             // Remove "openid" from the scope list to display.
-           openIdScopes = Stream.of(scopeString.split(" "))
+           consentRequiredScopesList = Stream.of(consentRequiredScopes.split(" "))
                     .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
                     .collect(Collectors.toList());
     }
@@ -95,7 +95,8 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
             <%
-                if (!(ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList) || CollectionUtils.isNotEmpty(openIdScopes))){
+                if (!(ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList) ||
+                        CollectionUtils.isNotEmpty(consentRequiredScopesList))){
             %>
                 <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile2" name="oauth2_authz">
                     <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
@@ -204,8 +205,8 @@
                                 // scopes in the consent page
                             } else { %>
                                 <%
-                                    if (displayScopes && StringUtils.isNotBlank(scopeString)) {
-                                        if (CollectionUtils.isNotEmpty(openIdScopes)) {
+                                    if (displayScopes && StringUtils.isNotBlank(consentRequiredScopes)) {
+                                        if (CollectionUtils.isNotEmpty(consentRequiredScopesList)) {
                                 %>
 
                                 <div class="ui segment" style="text-align: left;">
@@ -213,14 +214,14 @@
                                     <div class="scopes-list ui list">
                                         <%
                                             try {
-                                                String scopesAsString = String.join(" ", openIdScopes);
+                                                String scopesAsString = String.join(" ", consentRequiredScopesList);
                                                 Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
                                                         true, scopesAsString);
 
                                                 for (Scope scope : scopes) {
                                                     String displayName = scope.getDisplayName();
                                                     String description = scope.getDescription();
-                                                    openIdScopes.remove(scope.getName());
+                                                    consentRequiredScopesList.remove(scope.getName());
 
                                                     if (displayName != null) {
                                         %>
@@ -245,8 +246,8 @@
                                             }
 
                                             // Unregistered scopes if exist, get the consent with provided scope name.
-                                            if (CollectionUtils.isNotEmpty(openIdScopes)) {
-                                                for (String scope : openIdScopes) {
+                                            if (CollectionUtils.isNotEmpty(consentRequiredScopesList)) {
+                                                for (String scope : consentRequiredScopesList) {
                                         %>
                                         <div class="item">
                                             <i class="check circle outline icon"></i>
