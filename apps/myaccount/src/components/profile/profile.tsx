@@ -18,7 +18,8 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails,
+    getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -153,13 +154,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     if (schemaNames[0] === "name") {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
                     } else {
-                        const subValue = profileDetails.profileInfo[schemaNames[0]]
-                            && profileDetails.profileInfo[schemaNames[0]]
-                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                        tempProfileInfo.set(
-                            schema.name,
-                            subValue ? subValue.value : ""
-                        );
+                        if (schema.extended) {
+                            tempProfileInfo.set(schema.name,
+                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                                    ? profileDetails
+                                    ?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
+                                    : "");
+                        } else {
+                            const subValue = profileDetails.profileInfo[schemaNames[0]]
+                                && profileDetails.profileInfo[schemaNames[0]]
+                                    .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                            tempProfileInfo.set(
+                                schema.name,
+                                subValue ? subValue.value : ""
+                            );
+                        }
                     }
                 }
             });
@@ -284,7 +293,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     value = { [schemaNames[0]]: values.get(formName) };
                 }
             } else {
-                if (schemaNames[0] === "name") {
+                if (isExtended) {
+                    value = {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            [schemaNames[0]]: {
+                                [schemaNames[1]]: values.get(formName)
+                            }
+                        }
+                    };
+                } else if (schemaNames[0] === "name") {
                     value = {
                         name: { [schemaNames[1]]: values.get(formName) }
                     };
@@ -381,12 +398,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * USER-STORE/userNameString => userNameString
          */
         if (schema.name === "userName") {
-            if (schemaFormValue?.indexOf("/") > -1) {
-                const fragments = schemaFormValue.split("/");
-                if (fragments?.length > 1) {
-                    schemaFormValue = fragments[1];
-                }
-            }
+            schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
         }
 
         return schemaFormValue;
@@ -529,8 +541,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             ) }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
-                                                if (checkSchemaType(schema.name, "emails")) {
-                                                    if (!FormValidation.email(value)) {
+                                                if (!RegExp(schema.regEx).test(value)) {
+                                                    validation.isValid = false;
+                                                    if (checkSchemaType(schema.name, "emails")) {
+                                                        validation.errorMessages.push(t(
+                                                            "myAccount:components.profile.forms.emailChangeForm." +
+                                                            "inputs.email.validations.invalidFormat"
+                                                        ));
+                                                    } else if (checkSchemaType(schema.name, "phoneNumbers")) {
+                                                        validation.errorMessages.push(t(
+                                                            "myAccount:components.profile.forms.mobileChangeForm." +
+                                                            "inputs.mobile.validations.invalidFormat"
+                                                        ));
+                                                    } else {
                                                         validation.errorMessages.push(
                                                             t(
                                                                 "myAccount:components.profile.forms." +
@@ -540,19 +563,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                 }
                                                             )
                                                         );
-                                                        validation.isValid = false;
-                                                    }
-                                                }
-                                                if (checkSchemaType(schema.name, "mobile")) {
-                                                    if (!FormValidation.mobileNumber(value)) {
-                                                        validation.errorMessages.push(t(
-                                                            "myAccount:components.profile.forms." +
-                                                            "generic.inputs.validations.invalidFormat",
-                                                            {
-                                                                fieldName
-                                                            }
-                                                        ));
-                                                        validation.isValid = false;
                                                     }
                                                 }
                                             } }

@@ -198,9 +198,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                         updateGroupName(values);
                     } }
                 >
-                    <Grid>
+                    <Grid className="form-container with-max-width">
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Form.Field>
                                     <label
                                         data-testid={
@@ -291,7 +291,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
                                     !isReadOnly && (
                                         <Button
@@ -391,7 +391,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                             { type: isGroup ? "group." : "role." }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("console:manage.features.groups.edit.basics.confirmation.content",
+                        { t("console:manage.features.roles.edit.basics.confirmation.content",
                             { type: isGroup ? "group." : "role." }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

@@ -764,7 +764,8 @@ export const console: ConsoleNS = {
                                             "valeurs par défaut."
                                     },
                                     searchPlaceholder: "Attributs de recherche"
-                                }
+                                },
+                                selectAll: "Sélectionnez tous les attributs"
                             },
                             tabName: "Attributs"
                         },
@@ -863,7 +864,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    subTitle: "Les authentificateurs locaux pour l'authentification par chemin de requête.",
+                                    subTitle: "Les authentificateurs locaux pour l'authentification par chemin de " +
+                                        "requête.",
                                     title: "Authentification du chemin de requête"
                                 },
                                 templateDescription: {
@@ -888,8 +890,8 @@ export const console: ConsoleNS = {
                             role: {
                                 fields: {
                                     role: {
-                                        hint: "Cette option ajoutera au rôle le domaine de l'annuaire dans lequel l'utilisateur " +
-                                            "réside",
+                                        hint: "Cette option ajoutera au rôle le domaine de l'annuaire dans lequel " +
+                                            "l'utilisateur réside",
                                         label: "Inclure le domaine utilisateur",
                                         validations: {
                                             empty: "Sélectionner l'attribut de rôle"
@@ -2939,7 +2941,7 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving roles",
+                            description: "An error occurred while retrieving roles.",
                             message: "Erreur de récupération"
                         },
                         success: {
@@ -3368,6 +3370,19 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "Nome de {{type}}",
+                        placeholder: "Saisir un nom de {{type}}",
+                        validations: {
+                            duplicate: "Un {{type}} avec ce nom existe déjà.",
+                            empty: "Le nom de {{type}} est obligatoire",
+                            invalid: "Vle nom du {{type}} doit avoir une longueur de 3 à 30 et ne peut pas contenir d'espaces."
+                        }
+                    }
+                }
+            },
             approvals: {
                 list: {
                     columns: {
@@ -3730,7 +3745,7 @@ export const console: ConsoleNS = {
                     pageLayout: {
                         edit: {
                             back: "Retournez aux attributs des dialectes",
-                            description: "Modifier le dialecte externe et ses attributs",
+                            description: "Modifier le dialecte externe et ses attributs.",
                             updateDialectURI: "Mettre à jour l'URI du dialecte",
                             updateExternalAttributes: "Mettre à jour les attributs externes"
                         },
@@ -5108,6 +5123,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
+                                hint: "Un nom pour le groupe d'utilisateurs.",
                                 label: "Nome de {{type}}",
                                 placeholder: "Saisir un nom de {{type}}",
                                 validations: {
@@ -5142,6 +5158,7 @@ export const console: ConsoleNS = {
                     users: {
                         assignUserModal: {
                             heading: "Mettre à jour le {{type}} d'utilisateurs",
+                            hint: "Sélectionnez des utilisateurs pour les ajouter au groupe d'utilisateurs.",
                             list: {
                                 listHeader: "Nom",
                                 searchPlaceholder: "Rechercher des utilisateurs"

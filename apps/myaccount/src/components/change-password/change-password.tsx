@@ -142,16 +142,25 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         )
                     });
                 } else if (error.response && error.response.data && error.response.data.detail) {
-                    // reset the form.
-                    resetForm();
-                    // hide the change password form
-                    dispatch(setActiveForm(null));
+
+                    /**
+                     * Removes the un-readable segment from the
+                     * error message. i.e., removes strings like
+                     * SUS-605000 , 60501 - , 60502 |
+                     */
+                    let message = error.response?.data?.detail ?? "";
+                    if (message.match(/^\w+?\d{1,5}/g)) {
+                        const fragments = message.split(",");
+                        if (fragments?.length > 1) {
+                            message = fragments[1]?.trim();
+                        }
+                    }
 
                     onAlertFired({
                         description: t(
                             "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "submitError.description",
-                            { description: error.response.data.detail }
+                            { description: message }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(

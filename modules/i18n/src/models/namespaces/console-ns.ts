@@ -464,6 +464,7 @@ export interface ConsoleNS {
                                     };
                                     searchPlaceholder: string;
                                 };
+                                selectAll: string;
                             };
                             attributeMappingChange: Notification;
                             roleMapping: {
@@ -1630,6 +1631,11 @@ export interface ConsoleNS {
     };
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: FormAttributes;
+                };
+            };
             users: {
                 confirmations: {
                     terminateAllSessions: Confirmation;
@@ -2623,6 +2629,7 @@ export interface ConsoleNS {
                     users: {
                         assignUserModal: {
                             heading: string;
+                            hint: string;
                             subHeading: string;
                             list: {
                                 searchPlaceholder: string;

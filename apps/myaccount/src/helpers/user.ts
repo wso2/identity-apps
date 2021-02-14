@@ -17,6 +17,7 @@
  */
 
 import { isEmpty } from "lodash";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AppConstants } from "../constants";
 import { AuthStateInterface } from "../models";
 
@@ -35,11 +36,11 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
         return givenName + familyName;
     } else if (state.profileInfo.userName) {
-        return state.profileInfo.userName;
+        return getUserNameWithoutDomain(state.profileInfo.userName);
     } else if (state.displayName) {
         return state.displayName;
     } else if (state.username) {
-        return state.username;
+        return getUserNameWithoutDomain(state.username);
     }
 
     return null;

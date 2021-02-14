@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
+import { ContentLoader } from "../loader";
 import { EmptyPlaceholder } from "../placeholder";
 
 interface TransferListItemInterface {
@@ -39,6 +40,10 @@ export interface TransferListPropsInterface extends TableProps, TestableComponen
     handleHeaderCheckboxChange?: () => void;
     selectionComponent?: boolean;
     isHeaderCheckboxChecked?: boolean;
+    /**
+     * Show loading placeholders.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -61,62 +66,68 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         isHeaderCheckboxChecked,
         emptyPlaceholderContent,
         selectionComponent,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
     return (
         <>
             {
-                !isListEmpty ? (
-                <Table>
-                    {
-                        listHeaders instanceof Array && (
-                            <Table.Header>
-                                <Table.Row>
-                                    {
-                                        !selectionComponent &&
-                                            <Table.HeaderCell>
-                                                <Checkbox
-                                                    data-testid={ testId }
-                                                    checked={ isHeaderCheckboxChecked }
-                                                    onChange={ handleHeaderCheckboxChange }
-                                                />
-                                            </Table.HeaderCell>
-                                    }
-                                    {
-                                        listHeaders?.map((header, index) => {
-                                            return (
-                                                <Table.HeaderCell key={ index } >
-                                                    <strong>{ header }</strong>
-                                                </Table.HeaderCell>
-                                            );
-                                        })
-                                    }
-                                </Table.Row>
-                            </Table.Header>
+                !isListEmpty
+                    ? isLoading
+                        ? <ContentLoader/>
+                        : (
+                            <Table>
+                                {
+                                    listHeaders instanceof Array && (
+                                        <Table.Header>
+                                            <Table.Row>
+                                                {
+                                                    !selectionComponent &&
+                                                    <Table.HeaderCell>
+                                                        <Checkbox
+                                                            data-testid={ testId }
+                                                            checked={ isHeaderCheckboxChecked }
+                                                            onChange={ handleHeaderCheckboxChange }
+                                                        />
+                                                    </Table.HeaderCell>
+                                                }
+                                                {
+                                                    listHeaders?.map((header, index) => {
+                                                        return (
+                                                            <Table.HeaderCell key={ index }>
+                                                                <strong>{ header }</strong>
+                                                            </Table.HeaderCell>
+                                                        );
+                                                    })
+                                                }
+                                            </Table.Row>
+                                        </Table.Header>
+                                    )
+                                }
+                                <Table.Body>
+                                    { children }
+                                </Table.Body>
+                            </Table>
                         )
-                        }
-                        <Table.Body>
-                            { children }
-                        </Table.Body>
-                </Table>
-                ) : (
-                    /**
-                     * TODO : React Components should not depend on the product 
-                     * locale bundles.
-                     * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
-                     */
-                    <div className={ "empty-placeholder-center" }>
-                        <EmptyPlaceholder
-                            subtitle={ [
-                                emptyPlaceholderContent
-                                    ? emptyPlaceholderContent
-                                    : t("console:manage.features.transferList.list.emptyPlaceholders.default")
-                            ] }
-                            data-testid={ `${ testId }-placeholder` }
-                        />
-                    </div>
-                )
+                    : (
+                        /**
+                         * TODO : React Components should not depend on the product
+                         * locale bundles.
+                         * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
+                         */
+                        <div className={ "empty-placeholder-center" }>
+                            <EmptyPlaceholder
+                                subtitle={ [
+                                    emptyPlaceholderContent
+                                        ? emptyPlaceholderContent
+                                        : t("console:manage.features.transferList.list.emptyPlaceholders.default")
+                                ] }
+                                data-testid={ `${ testId }-placeholder` }
+                            />
+                        </div>
+                    )
+
             }
         </>
     );

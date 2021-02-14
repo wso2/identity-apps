@@ -248,6 +248,14 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             response.data.map((schema) => {
                 schema.attributes.map((attribute) => {
                     if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
+                        const modifiedSubAttributes = [];
+                        if(attribute.type === "COMPLEX") {
+                            attribute.subAttributes.map((subAttribute) => {
+                                modifiedSubAttributes.push({ ...subAttribute,  extended: true});
+                            }
+                        )
+                        attribute.subAttributes = modifiedSubAttributes;
+                        }
                         schemaAttributes.push({ ...attribute, extended: true });
                         return;
                     }

@@ -28,6 +28,8 @@ import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
+import { getUsersList } from "../../../users/api";
+import { UserBasicInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
 import { GroupsInterface } from "../../models";
 
@@ -70,10 +72,16 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
+    const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
+    const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
+    const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+
+    useEffect(() => {
+
+        getUserList();
+    }, [ group ]);
 
     useEffect(() => {
         if(!group) {
@@ -89,6 +97,60 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             setReadOnly(true);
         }
     }, [ group, readOnlyUserStores ]);
+
+    /**
+     * Get the users list.
+     */
+    const getUserList = (): void => {
+
+        const userstore: string = group?.displayName?.indexOf("/") === -1
+            ? "primary"
+            : group?.displayName?.split("/")[ 0 ];
+
+        setIsUsersFetchRequestLoading(true);
+
+        getUsersList(null, null, null, null, userstore)
+            .then((response) => {
+                setUsersList(response.Resources);
+                setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+            })
+            .finally(() => {
+                setIsUsersFetchRequestLoading(false);
+            });
+    };
+
+    /**
+     * Filter out the members of the group.
+     *
+     * @param {[]} usersToFilter - Original users list.
+     * @return {UserBasicInterface[]}
+     */
+    const filterUsersList = (usersToFilter: UserBasicInterface[]): UserBasicInterface[] => {
+
+        if (!group?.members || !Array.isArray(group.members) || group.members.length < 1) {
+            return;
+        }
+
+        const selectedUserList: UserBasicInterface[] = [];
+
+        usersToFilter
+            .slice()
+            .reverse()
+            .forEach((user: UserBasicInterface) => {
+                group.members.forEach(assignedUser => {
+                    if (user.id === assignedUser.value) {
+                        selectedUserList.push(user);
+                        usersToFilter.splice(usersToFilter.indexOf(user), 1);
+                    }
+                });
+            });
+
+        selectedUserList.sort((userObject, comparedUserObject) =>
+            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+        );
+
+        return selectedUserList;
+    };
 
     const resolveResourcePanes = () => {
         const panes = [
@@ -108,11 +170,14 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             },{
                 menuItem: t("console:manage.features.roles.edit.menuItems.users"),
                 render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <ResourceTab.Pane controlledSegmentation attached={ false } loading={ isUsersFetchRequestLoading }>
                         <GroupUsersList
                             data-testid="group-mgt-edit-group-users"
                             isGroup={ true }
                             group={ group }
+                            users={ usersList }
+                            selectedUsers={ selectedUsersList }
+                            isLoading={ isUsersFetchRequestLoading }
                             onGroupUpdate={ onGroupUpdate }
                             isReadOnly={ isReadOnly }
                         />
