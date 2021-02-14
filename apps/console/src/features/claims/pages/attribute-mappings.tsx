@@ -26,9 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
-import {
-    AppConstants, AppState, getTechnologyLogos, history
-} from "../../core";
+import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
 
@@ -91,14 +89,14 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const resolvePageDescription = (): string => {
             switch (type) {
                 case ClaimManagementConstants.OIDC:
-                    return "The OpenID Connect protocol representation for user " +
-                        "attributes that will be used in the OpenID Connect API.";
+                    return (
+                        "The OpenID Connect protocol representation for user " +
+                        "attributes that will be used in the OpenID Connect API."
+                    );
                 case ClaimManagementConstants.SCIM:
-                    return "The SCIM2 protocol representation for user " +
-                        "attributes that will be used in the SCIM2 API.";
+                    return "The SCIM2 protocol representation for user " + "attributes that will be used in the SCIM2 API.";
                 default:
-                    return "The custom protocol representation for user " +
-                        "attributes that will be used in custom API.";
+                    return "The custom protocol representation for user " + "attributes that will be used in custom API.";
             }
         };
 
@@ -177,16 +175,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     const attributeMappings: ClaimDialect[] = [];
 
                     filteredDialect.forEach((attributeMapping: ClaimDialect) => {
-                        if (
-                            ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI) &&
-                            type === ClaimManagementConstants.OIDC
-                        ) {
-                            attributeMappings.push(attributeMapping);
-                        } else if (
-                            ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI) &&
-                            type === ClaimManagementConstants.SCIM
-                        ) {
-                            attributeMappings.push(attributeMapping);
+                        if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
+                            type === ClaimManagementConstants.OIDC && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.SCIM_MAPPING.includes(attributeMapping.dialectURI)) {
+                            type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {
                             attributeMappings.push(attributeMapping);
                         }
@@ -257,19 +249,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 data-testid={ `${ testId }-page-layout` }
                 image={ resolvePageHeaderImage() }
                 backButton={ {
-                    onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
+                    onClick: () => {
+                        history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
+                    },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")
                 } }
             >
-                {
-                    dialects?.length > 1
-                        ? (
-                            <ResourceTab panes={ generatePanes() } data-testid={ `${ testId }-tabs` } />
-                        )
-                        : (
-                            <ExternalDialectEditPage id={ dialects && dialects[ 0 ]?.id } />
-                        )
-                }
+                { dialects?.length > 1 ? (
+                    <ResourceTab panes={ generatePanes() } data-testid={ `${ testId }-tabs` } />
+                ) : (
+                        <ExternalDialectEditPage id={ dialects && dialects[ 0 ]?.id } />
+                    ) }
             </PageLayout>
         );
     };
