@@ -30,7 +30,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Image, List, Placeholder } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -180,7 +180,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
-                description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
+                description={ "View and manage how user attributes in Asgardeo are mapped and transformed when interacting with APIs or your applications." }
                 data-testid={ `${testId}-page-layout` }
             >
                 { hasRequiredScopes(
@@ -341,7 +341,15 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 ) }
                 { !isLoading ? (
                     otherAttributeMappings.length > 0 && (
-                        <EmphasizedSegment data-testid={ `${testId}-other-dialect-container` }>
+                        <EmphasizedSegment onClick={ () => {
+                            history.push(
+                                AppConstants.getPaths()
+                                    .get("ATTRIBUTE_MAPPINGS")
+                                    .replace(
+                                        ":type",
+                                        ClaimManagementConstants.OTHERS
+                                    )
+                            ); } } className="clickable" data-testid={ `${testId}-other-dialect-container` }>
                             <List>
                                 <List.Item>
                                     <Grid>
@@ -354,8 +362,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     centered
                                                     size="mini"
                                                 >
-                                                    <AnimatedAvatar primary />
-                                                    <span className="claims-letter">L</span>
+                                                    <AnimatedAvatar />
+                                                    <span className="claims-letter">C</span>
                                                 </Image>
                                                 <List.Header>Custom Attribute Mapping</List.Header>
                                                 <List.Description data-testid={ `${testId}-local-dialect` }>
@@ -363,32 +371,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Popup
-                                                    inverted
-                                                    trigger={
-                                                        <span
-                                                            className="local-dialect-direct"
-                                                            onClick={ () => {
-                                                                history.push(
-                                                                    AppConstants.getPaths()
-                                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                                        .replace(
-                                                                            ":type",
-                                                                            ClaimManagementConstants.OTHERS
-                                                                        )
-                                                                );
-                                                                history.push(
-                                                                    AppConstants.getPaths().get("LOCAL_CLAIMS")
-                                                                );
-                                                            } }
-                                                            data-testid={ `${testId}-oidc-dialect-view-button` }
-                                                        >
+
                                                             <Icon name="arrow right" />
-                                                        </span>
-                                                    }
-                                                    position="top center"
-                                                    content="View Other Attribute Mappings"
-                                                />
+
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
