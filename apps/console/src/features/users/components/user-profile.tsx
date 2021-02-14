@@ -229,13 +229,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
                             );
                     } else {
-                        const subValue = userInfo[schemaNames[0]]
-                            && userInfo[schemaNames[0]]
-                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                        tempProfileInfo.set(
-                            schema.name,
-                            subValue ? subValue.value : ""
-                        );
+                        if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                            const complexEnterprise = schemaNames[0] && schemaNames[1] &&
+                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]] &&
+                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
+                                tempProfileInfo.set(schema.name,
+                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
+                                );
+                        } else {
+                            const subValue = userInfo[schemaNames[0]]
+                                && userInfo[schemaNames[0]]
+                                    .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                            tempProfileInfo.set(
+                                schema.name,
+                                subValue ? subValue.value : ""
+                            );
+                        }
                     }
                 }
             });
@@ -392,7 +401,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     : { [schemaNames[0]]: values.get(schemaNames[0]) };
                             }
                         } else {
-                            if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
+                            if(schema.extended) {
+                                opValue = {
+                                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                        [schemaNames[0]]: {
+                                            [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                !!values.get(schema.name)?.includes(schema.name) :
+                                                values.get(schema.name)
+                                        }
+                                    }
+                                };
+                            } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
                                 const name = values.get(schema.name) && (
                                     opValue = {
                                         name: { [schemaNames[1]]: values.get(schema.name) }

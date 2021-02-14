@@ -154,13 +154,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     if (schemaNames[0] === "name") {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
                     } else {
-                        const subValue = profileDetails.profileInfo[schemaNames[0]]
-                            && profileDetails.profileInfo[schemaNames[0]]
-                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                        tempProfileInfo.set(
-                            schema.name,
-                            subValue ? subValue.value : ""
-                        );
+                        if (schema.extended) {
+                            tempProfileInfo.set(schema.name,
+                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                                    ? profileDetails
+                                    ?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
+                                    : "");
+                        } else {
+                            const subValue = profileDetails.profileInfo[schemaNames[0]]
+                                && profileDetails.profileInfo[schemaNames[0]]
+                                    .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                            tempProfileInfo.set(
+                                schema.name,
+                                subValue ? subValue.value : ""
+                            );
+                        }
                     }
                 }
             });
@@ -285,7 +293,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     value = { [schemaNames[0]]: values.get(formName) };
                 }
             } else {
-                if (schemaNames[0] === "name") {
+                if (isExtended) {
+                    value = {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            [schemaNames[0]]: {
+                                [schemaNames[1]]: values.get(formName)
+                            }
+                        }
+                    };
+                } else if (schemaNames[0] === "name") {
                     value = {
                         name: { [schemaNames[1]]: values.get(formName) }
                     };
