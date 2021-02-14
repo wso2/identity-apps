@@ -19,12 +19,12 @@
 import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
 import { AddExternalClaim } from "../../models";
 
@@ -196,8 +196,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             submitState={ triggerSubmit }
         >
             <Grid>
-                <Grid.Row columns={ 3 }>
-                    <Grid.Column width={ 7 }>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 8 }>
                         <Field
                             name="claimURI"
                             label={ t("console:manage.features.claims.external.forms.attributeURI.label") }
@@ -207,12 +207,18 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
                             type="text"
                             data-testid={ `${ testId }-form-claim-uri-input` }
+                            validation={ (value: string, validation: Validation) => {
+                                for (const claim of externalClaims) {
+                                    if (claim.claimURI === value) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push("Claim URI already exists.");
+                                        break;
+                                    }
+                                }
+                            }}
                         />
                     </Grid.Column>
-                    <Grid.Column width={ 2 } textAlign="center" verticalAlign="middle">
-                        <Icon className="map-icon" name="arrow right" size="large"/>
-                    </Grid.Column>
-                    <Grid.Column width={ 7 }>
+                    <Grid.Column width={ 8 }>
                         <Field
                             type="dropdown"
                             name="localClaim"
