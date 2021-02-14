@@ -134,7 +134,7 @@
             }
 
             return accessURL.replaceAll(Pattern.quote("${UserTenantHint}"), userTenantHint)
-                    .replaceAll(Pattern.quote("/t/carbon.super/"), "/");
+                    .replaceAll(Pattern.quote("/t/carbon.super"), "");
         }
     %>
 </body>
