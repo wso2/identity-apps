@@ -39,15 +39,11 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
         const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
         return givenName + familyName;
     } else if (profileInfo.userName) {
-        let userName = "";
-        profileInfo.userName.split("/").length > 1
-            ?  userName = profileInfo?.userName.split("/")[1]
-            : userName = profileInfo?.userName;
-        return userName;
+        return getUserNameWithoutDomain(profileInfo.userName);
     } else if (authState && authState.displayName) {
         return authState.displayName;
     } else if (authState && authState.username) {
-        return authState.username;
+        return getUserNameWithoutDomain(authState.username);
     }
 
     return fallback;
@@ -116,4 +112,21 @@ export const resolveUserEmails = (emails: (string | MultiValueAttributeInterface
 
         return email as string;
     });
+};
+
+/**
+ * This function returns the username without the user store domain prefix.
+ *
+ * @param {string} userNameWithDomain - Username of the user with the userStore domain.
+ * @return {string} User name without domain.
+ */
+export const getUserNameWithoutDomain = (userNameWithDomain: string): string => {
+
+    if (userNameWithDomain.indexOf("/") > -1) {
+        const fragments = userNameWithDomain.split("/");
+        if (fragments?.length > 1) {
+            return fragments[1];
+        }
+    }
+    return userNameWithDomain;
 };

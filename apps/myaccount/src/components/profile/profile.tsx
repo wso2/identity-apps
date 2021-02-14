@@ -18,7 +18,8 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails,
+    getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -37,7 +38,6 @@ import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
-import { getUserNameWithoutDomain } from "../../helpers";
 
 /**
  * Prop types for the basic details component.

@@ -17,6 +17,7 @@
  */
 
 import { isEmpty } from "lodash";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AppConstants } from "../constants";
 import { AuthStateInterface } from "../models";
 
@@ -85,21 +86,4 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     }
 
     return username;
-};
-
-/**
- * This function returns the username without the user store domain prefix.
- *
- * @param {string} userNameWithDomain - Username of the user with the userStore domain.
- * @return {string} User name without domain.
- */
-export const getUserNameWithoutDomain = (userNameWithDomain: string): string => {
-
-    if (userNameWithDomain.indexOf("/") > -1) {
-        const fragments = userNameWithDomain.split("/");
-        if (fragments?.length > 1) {
-            return fragments[1];
-        }
-    }
-    return userNameWithDomain;
 };
