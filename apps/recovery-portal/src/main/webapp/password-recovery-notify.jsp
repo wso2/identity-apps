@@ -51,8 +51,8 @@
     String callback = (String) request.getAttribute("callback");
     String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     if (StringUtils.isBlank(callback)) {
-        callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+        IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
     List<Property> properties = new ArrayList<Property>();
     Property property = new Property();

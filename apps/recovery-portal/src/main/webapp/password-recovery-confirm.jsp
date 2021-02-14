@@ -70,8 +70,8 @@
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
     if (StringUtils.isBlank(callback)) {
-        callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+        IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
     
     if (StringUtils.isNotBlank(confirmationKey)) {
