@@ -20,12 +20,25 @@ import { getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, EmphasizedSegment, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    EmphasizedSegment,
+    GenericIcon,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Image, List, Popup } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    getSidePanelIcons,
+    getTechnologyLogos,
+    history
+} from "../../core";
 import { AddDialect } from "../components";
 import { ClaimManagementConstants } from "../constants";
 
@@ -44,18 +57,18 @@ type ClaimDialectsPageInterface = TestableComponentInterface;
 const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     props: ClaimDialectsPageInterface
 ): ReactElement => {
-    const { [ "data-testid" ]: testId } = props;
+    const { ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const [ addEditClaim, setAddEditClaim ] = useState(false);
-    const [ localURI, setLocalURI ] = useState("");
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ oidcAttributeMappings, setOidcAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [addEditClaim, setAddEditClaim] = useState(false);
+    const [localURI, setLocalURI] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [oidcAttributeMappings, setOidcAttributeMappings] = useState<ClaimDialect[]>([]);
+    const [scimAttributeMappings, setScimAttributeMappings] = useState<ClaimDialect[]>([]);
+    const [otherAttributeMappings, setOtherAttributeMappings] = useState<ClaimDialect[]>([]);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const dispatch = useDispatch();
@@ -125,14 +138,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             error?.response?.data?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.description"
+                                    ".genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.response?.data?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.message"
+                                    ".genericError.message"
                             )
                     })
                 );
@@ -155,7 +168,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         setAddEditClaim(false);
                     } }
                     update={ getDialect }
-                    data-testid={ `${ testId }-add-dialect-wizard` }
+                    data-testid={ `${testId}-add-dialect-wizard` }
                 />
             ) }
             <PageLayout
@@ -164,7 +177,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         onClick={ () => {
                             setAddEditClaim(true);
                         } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
+                        data-testid={ `${testId}-list-layout-add-button` }
                     >
                         <Icon name="add" />
                         { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
@@ -173,71 +186,58 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
-                data-testid={ `${ testId }-page-layout` }
+                data-testid={ `${testId}-page-layout` }
             >
                 { hasRequiredScopes(
                     featureConfig?.attributeDialects,
                     featureConfig?.attributeDialects?.scopes?.read,
                     allowedScopes
                 ) && (
-                        <>
-                            <Header as="h4">
-                                Manage Attributes
+                    <>
+                        <Header as="h4">
+                            Manage Attributes
                             <div className="sub header ellipsis">View and manage attributes native to Asgardeo.</div>
-                            </Header>
-                            <EmphasizedSegment data-testid={ `${ testId }-local-dialect-container` }>
-                                <List>
-                                    <List.Item>
-                                        <Grid>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 12 }>
-                                                    <Image
-                                                        floated="left"
-                                                        verticalAlign="middle"
-                                                        rounded
-                                                        centered
-                                                        size="mini"
-                                                    >
-                                                        <AnimatedAvatar primary />
-                                                        <span className="claims-letter">L</span>
-                                                    </Image>
-                                                    <List.Header>
-                                                        { t("console:manage.features.claims.dialects.localDialect") }
-                                                    </List.Header>
-                                                    <List.Description data-testid={ `${ testId }-local-dialect` }>
-                                                        { localURI }
-                                                    </List.Description>
-                                                </Grid.Column>
-                                                <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                    <Popup
-                                                        inverted
-                                                        trigger={
-                                                            <span
-                                                                className="local-dialect-direct"
-                                                                onClick={ () => {
-                                                                    history.push(
-                                                                        AppConstants.getPaths().get("LOCAL_CLAIMS")
-                                                                    );
-                                                                } }
-                                                                data-testid={ `${ testId }-local-dialect-view-button` }
-                                                            >
-                                                                <Icon name="arrow right" />
-                                                            </span>
-                                                        }
-                                                        position="top center"
-                                                        content={ t(
-                                                            "console:manage.features.claims.dialects" +
-                                                            ".pageLayout.list.view"
-                                                        ) }
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Item>
-                                </List>
-                            </EmphasizedSegment>
-                        </>
-                    ) }
+                        </Header>
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
+                            } }
+                            className="clickable"
+                            data-testid={ `${testId}-local-dialect-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    fill="primary"
+                                                    transparent
+                                                    rounded
+                                                    icon={ getSidePanelIcons().claims }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+
+                                                <List.Header>
+                                                    { t("console:manage.features.claims.dialects.localDialect") }
+                                                </List.Header>
+                                                <List.Description data-testid={ `${testId}-local-dialect` }>
+                                                    Each attribute contains a piece of user data stored within Asgardeo.
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Icon name="arrow right" />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    </>
+                ) }
                 <Divider hidden />
                 <Divider />
                 <Header as="h4">
@@ -247,140 +247,167 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         or your applications.
                     </div>
                 </Header>
-                { oidcAttributeMappings.length > 0 && (
-                    <EmphasizedSegment data-testid={ `${ testId }-oidc-dialect-container` }>
-                        <List>
-                            <List.Item>
-                                <Grid>
-                                    <Grid.Row columns={ 2 }>
-                                        <Grid.Column width={ 12 }>
-                                            <Image floated="left" verticalAlign="middle" rounded centered size="mini">
-                                                <AnimatedAvatar primary />
-                                                <span className="claims-letter">L</span>
-                                            </Image>
-                                            <List.Header>OpenID Connect</List.Header>
-                                            <List.Description data-testid={ `${ testId }-local-dialect` }>
-                                                Communicate information about the user for applications that uses OpenID
-                                                Connect to authenticate.
-                                            </List.Description>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                            <Popup
-                                                inverted
-                                                trigger={
-                                                    <span
-                                                        className="local-dialect-direct"
-                                                        onClick={ () => {
-                                                            history.push(
-                                                                AppConstants.getPaths()
-                                                                    .get("ATTRIBUTE_MAPPINGS")
-                                                                    .replace(":type", ClaimManagementConstants.OIDC)
-                                                            );
-                                                        } }
-                                                        data-testid={ `${ testId }-oidc-dialect-view-button` }
-                                                    >
-                                                        <Icon name="arrow right" />
-                                                    </span>
-                                                }
-                                                position="top center"
-                                                content="View OpenID Connect Attribute Mappings"
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        </List>
-                    </EmphasizedSegment>
+                { !isLoading ? (
+                    oidcAttributeMappings.length > 0 && (
+                        <EmphasizedSegment className="clickable" data-testid={ `${testId}-oidc-dialect-container` }>
+                            <List>
+                                <List.Item
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths()
+                                                .get("ATTRIBUTE_MAPPINGS")
+                                                .replace(":type", ClaimManagementConstants.OIDC)
+                                        );
+                                    } }
+                                >
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    transparent
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().oidc }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>OpenID Connect</List.Header>
+                                                <List.Description data-testid={ `${testId}-local-dialect` }>
+                                                    Communicate information about the user for applications that uses
+                                                    OpenID Connect to authenticate.
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Icon name="arrow right" />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )
+                ) : (
+                    <Placeholder fluid>
+                        <Placeholder.Header image>
+                            <Placeholder.Line length="full" />
+                            <Placeholder.Line length="medium" />
+                        </Placeholder.Header>
+                    </Placeholder>
                 ) }
-                { scimAttributeMappings.length > 0 && (
-                    <EmphasizedSegment data-testid={ `${ testId }-scim-dialect-container` }>
-                        <List>
-                            <List.Item>
-                                <Grid>
-                                    <Grid.Row columns={ 2 }>
-                                        <Grid.Column width={ 12 }>
-                                            <Image floated="left" verticalAlign="middle" rounded centered size="mini">
-                                                <AnimatedAvatar primary />
-                                                <span className="claims-letter">L</span>
-                                            </Image>
-                                            <List.Header>System for Cross-Domain Identity Management </List.Header>
-                                            <List.Description data-testid={ `${ testId }-local-dialect` }>
-                                                Communicate information about the user via the API compliance with SCIM2
-                                                standards.
-                                            </List.Description>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                            <Popup
-                                                inverted
-                                                trigger={
-                                                    <span
-                                                        className="local-dialect-direct"
-                                                        onClick={ () => {
-                                                            history.push(
-                                                                AppConstants.getPaths()
-                                                                    .get("ATTRIBUTE_MAPPINGS")
-                                                                    .replace(":type", ClaimManagementConstants.SCIM)
-                                                            );
-                                                        } }
-                                                        data-testid={ `${ testId }-oidc-dialect-view-button` }
-                                                    >
-                                                        <Icon name="arrow right" />
-                                                    </span>
-                                                }
-                                                position="top center"
-                                                content="View SCIM Connect Attribute Mappings"
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        </List>
-                    </EmphasizedSegment>
+                { !isLoading ? (
+                    scimAttributeMappings.length > 0 && (
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(
+                                    AppConstants.getPaths()
+                                        .get("ATTRIBUTE_MAPPINGS")
+                                        .replace(":type", ClaimManagementConstants.SCIM)
+                                );
+                            } }
+                            className="clickable"
+                            data-testid={ `${testId}-scim-dialect-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().scim }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>System for Cross-Domain Identity Management </List.Header>
+                                                <List.Description data-testid={ `${testId}-local-dialect` }>
+                                                    Communicate information about the user via the API compliance with
+                                                    SCIM2 standards.
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Icon name="arrow right" />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )
+                ) : (
+                    <Placeholder fluid>
+                        <Placeholder.Header image>
+                            <Placeholder.Line length="full" />
+                            <Placeholder.Line length="medium" />
+                        </Placeholder.Header>
+                    </Placeholder>
                 ) }
-                { otherAttributeMappings.length > 0 && (
-                    <EmphasizedSegment data-testid={ `${ testId }-other-dialect-container` }>
-                        <List>
-                            <List.Item>
-                                <Grid>
-                                    <Grid.Row columns={ 2 }>
-                                        <Grid.Column width={ 12 }>
-                                            <Image floated="left" verticalAlign="middle" rounded centered size="mini">
-                                                <AnimatedAvatar primary />
-                                                <span className="claims-letter">L</span>
-                                            </Image>
-                                            <List.Header>System for Cross-Domain Identity Management </List.Header>
-                                            <List.Description data-testid={ `${ testId }-local-dialect` }>
-                                                Communicate information about the user via other mappings.
-                                            </List.Description>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                            <Popup
-                                                inverted
-                                                trigger={
-                                                    <span
-                                                        className="local-dialect-direct"
-                                                        onClick={ () => {
-                                                            history.push(
-                                                                AppConstants.getPaths()
-                                                                    .get("ATTRIBUTE_MAPPINGS")
-                                                                    .replace(":type", ClaimManagementConstants.OTHERS)
-                                                            );
-                                                            history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
-                                                        } }
-                                                        data-testid={ `${ testId }-oidc-dialect-view-button` }
-                                                    >
-                                                        <Icon name="arrow right" />
-                                                    </span>
-                                                }
-                                                position="top center"
-                                                content="View Other Attribute Mappings"
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        </List>
-                    </EmphasizedSegment>
+                { !isLoading ? (
+                    otherAttributeMappings.length > 0 && (
+                        <EmphasizedSegment data-testid={ `${testId}-other-dialect-container` }>
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <Image
+                                                    floated="left"
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    centered
+                                                    size="mini"
+                                                >
+                                                    <AnimatedAvatar primary />
+                                                    <span className="claims-letter">L</span>
+                                                </Image>
+                                                <List.Header>System for Cross-Domain Identity Management </List.Header>
+                                                <List.Description data-testid={ `${testId}-local-dialect` }>
+                                                    Communicate information about the user via other mappings.
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Popup
+                                                    inverted
+                                                    trigger={
+                                                        <span
+                                                            className="local-dialect-direct"
+                                                            onClick={ () => {
+                                                                history.push(
+                                                                    AppConstants.getPaths()
+                                                                        .get("ATTRIBUTE_MAPPINGS")
+                                                                        .replace(
+                                                                            ":type",
+                                                                            ClaimManagementConstants.OTHERS
+                                                                        )
+                                                                );
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("LOCAL_CLAIMS")
+                                                                );
+                                                            } }
+                                                            data-testid={ `${testId}-oidc-dialect-view-button` }
+                                                        >
+                                                            <Icon name="arrow right" />
+                                                        </span>
+                                                    }
+                                                    position="top center"
+                                                    content="View Other Attribute Mappings"
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )
+                ) : (
+                    <Placeholder fluid>
+                        <Placeholder.Header image>
+                            <Placeholder.Line length="full" />
+                            <Placeholder.Line length="medium" />
+                        </Placeholder.Header>
+                    </Placeholder>
                 ) }
             </PageLayout>
         </>
