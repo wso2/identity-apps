@@ -125,10 +125,10 @@ export class ClaimManagementConstants {
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS = [
-        { name: "Enterprise", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
-        { name: "User", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
-        { name: "Core", uri: "urn:ietf:params:scim:schemas:core:2.0" },
-        { name: "Core 1.0", uri: "urn:scim:schemas:core:1.0" }
+        { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
+        { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
+        { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
+        { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
     ]
 
 }
