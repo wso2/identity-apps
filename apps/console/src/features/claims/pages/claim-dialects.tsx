@@ -64,7 +64,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [addEditClaim, setAddEditClaim] = useState(false);
-    const [localURI, setLocalURI] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [oidcAttributeMappings, setOidcAttributeMappings] = useState<ClaimDialect[]>([]);
     const [scimAttributeMappings, setScimAttributeMappings] = useState<ClaimDialect[]>([]);
@@ -95,10 +94,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         })
             .then((response: ClaimDialect[]) => {
                 const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
-                    if (claim.id === "local") {
-                        setLocalURI(claim.dialectURI);
-                    }
-
                     if (!listAllAttributeDialects) {
                         return (
                             claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
@@ -362,9 +357,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     <AnimatedAvatar primary />
                                                     <span className="claims-letter">L</span>
                                                 </Image>
-                                                <List.Header>System for Cross-Domain Identity Management </List.Header>
+                                                <List.Header>Custom Attribute Mapping</List.Header>
                                                 <List.Description data-testid={ `${testId}-local-dialect` }>
-                                                    Communicate information about the user via other mappings.
+                                                    Communicate information about the user via custom mappings.
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
