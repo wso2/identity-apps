@@ -324,7 +324,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     data-testid={ `${ testId }-code-editor-mode-toggle` }
                                                     slider
                                                 />
-                                                { !isDefaultScript &&
                                                 <Popup
                                                     trigger={ (
                                                         <Icon
@@ -336,7 +335,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     position="top center"
                                                     content={ "Reset to Default" }
                                                     inverted
-                                                /> }
+                                                />
                                             </Menu.Item>
                                             { !readOnly && (
                                                 <Menu.Menu position="right">
