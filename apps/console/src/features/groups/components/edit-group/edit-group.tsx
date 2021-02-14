@@ -73,7 +73,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(false);
+    const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
@@ -170,7 +170,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             },{
                 menuItem: t("console:manage.features.roles.edit.menuItems.users"),
                 render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <ResourceTab.Pane controlledSegmentation attached={ false } loading={ isUsersFetchRequestLoading }>
                         <GroupUsersList
                             data-testid="group-mgt-edit-group-users"
                             isGroup={ true }
