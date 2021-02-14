@@ -128,7 +128,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     };
 
     useEffect(() => {
-        getDialect();
+        dialectId && getDialect();
     }, [ dialectId ]);
 
     /**
