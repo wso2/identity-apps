@@ -1129,6 +1129,10 @@ export const console: ConsoleNS = {
                                     "please regenerate the secret again.",
                                 hideSecret: "Hide secret",
                                 label: "Client secret",
+                                message: "{{productName}} does not issue a <1>client_secret</1> " +
+                                    "to native " +
+                                    "applications or web browser-based applications for the purpose " +
+                                    "of client authentication.",
                                 placeholder: "Enter Client Secret",
                                 showSecret: "Show secret",
                                 validations: {
