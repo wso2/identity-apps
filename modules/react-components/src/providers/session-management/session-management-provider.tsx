@@ -171,6 +171,10 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
      * Handles session timeout abort.
      */
     const handleSessionTimeoutAbort = (): void => {
+        if (sessionTimedOut) {
+            handleLoginAgain();
+            return;
+        }
         const parsedURL: URL = new URL(sessionTimeoutEventState.url);
 
         if (parsedURL && parsedURL.searchParams) {
