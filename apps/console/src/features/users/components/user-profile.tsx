@@ -231,11 +231,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } else {
                         if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
                             const complexEnterprise = schemaNames[0] && schemaNames[1] &&
-                            userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]] &&
-                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] &&
-                            (
-                                tempProfileInfo.set(schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
-                            );
+                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]] &&
+                                userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]] && (
+                                tempProfileInfo.set(schema.name,
+                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]])
+                                );
                         } else {
                             const subValue = userInfo[schemaNames[0]]
                                 && userInfo[schemaNames[0]]

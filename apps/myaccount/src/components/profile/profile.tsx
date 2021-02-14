@@ -156,7 +156,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         if (schema.extended) {
                             tempProfileInfo.set(schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                                    ? profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
+                                    ? profileDetails
+                                    ?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][schemaNames[1]]
                                     : "");
                         } else {
                             const subValue = profileDetails.profileInfo[schemaNames[0]]
