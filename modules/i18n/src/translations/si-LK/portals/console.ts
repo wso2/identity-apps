@@ -801,6 +801,13 @@ export const console: ConsoleNS = {
                                     sections: {
                                         scriptBased: {
                                             editor: {
+                                                resetConfirmation: {
+                                                    content: "මෙම ක්‍රියාව අනුවර්තී සත්‍යාපන ස්ක්‍රිප්ට් නැවත" +
+                                                        " පෙරනිමියට යලි " +
+                                                        "සකසනු ඇත. ඉදිරියට යාමට 'තහවුරු කරන්න' ක්ලික් කරන්න.",
+                                                    heading: "ඔයාට විශ්වාස ද?",
+                                                    message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැක."
+                                                },
                                                 templates: {
                                                     darkMode: "අඳුරු ප්‍රකාරය",
                                                     heading: "සැකිලි"

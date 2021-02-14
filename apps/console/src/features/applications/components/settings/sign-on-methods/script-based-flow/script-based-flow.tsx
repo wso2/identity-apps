@@ -389,17 +389,22 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
-                    Are you sure?
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.heading") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     warning
                     data-testid={ `${ testId }-reset-confirmation-modal-message` }>
-                    This action is irreversible.
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
-                    This action will reset the adaptive authentication script back to default. Click
-                    <code> Confirm </code>to proceed.
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
