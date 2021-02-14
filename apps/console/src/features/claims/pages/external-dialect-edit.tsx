@@ -1,34 +1,29 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the 'License'); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    ConfirmationModal,
-    DangerZone,
-    DangerZoneGroup,
-    EmphasizedSegment
-} from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Header } from "semantic-ui-react";
+import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
@@ -50,16 +45,12 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
+    const { ["data-testid"]: testId, id: dialectId } = props;
 
-    const {
-        [ "data-testid" ]: testId,
-        id: dialectId
-    } = props;
-
-    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ confirmDelete, setConfirmDelete ] = useState(false);
+    const [dialect, setDialect] = useState<ClaimDialect>(null);
+    const [claims, setClaims] = useState<ExternalClaim[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -83,24 +74,16 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
-            data-testid={ `${ testId }-delete-confirmation-modal` }
+            data-testid={ `${testId}-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
-            >
+            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message
-                attached
-                warning
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
-            >
+            <ConfirmationModal.Message attached warning data-testid={ `${testId}-delete-confirmation-modal-message` }>
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
-            >
+            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                 { t("console:manage.features.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -110,26 +93,34 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
      * Fetch the dialect.
      */
     const getDialect = () => {
-        getADialect(dialectId).then(response => {
-            setDialect(response);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "fetchADialect.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "fetchADialect.genericError.message")
-                }
-            ));
-        });
+        getADialect(dialectId)
+            .then((response) => {
+                setDialect(response);
+            })
+            .catch((error) => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.description ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                    "fetchADialect.genericError.description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                    "fetchADialect.genericError.message"
+                            )
+                    })
+                );
+            });
     };
 
     useEffect(() => {
         dialectId && getDialect();
-    }, [ dialectId ]);
+    }, [dialectId]);
 
     /**
      * Fetch external claims.
@@ -141,63 +132,85 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectId && setIsLoading(true);
-        dialectId && getAllExternalClaims(dialectId, {
-            filter,
-            limit,
-            offset,
-            sort
-        }).then(response => {
-            setClaims(response);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.response?.data?.description
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.message")
-                }
-            ));
-        }).finally(() => {
-            setIsLoading(false);
-        });
+        dialectId && setClaims([]);
+        dialectId &&
+            getAllExternalClaims(dialectId, {
+                filter,
+                limit,
+                offset,
+                sort
+            })
+                .then((response) => {
+                    setClaims(response);
+                })
+                .catch((error) => {
+                    dispatch(
+                        addAlert({
+                            description:
+                                error?.response?.data?.description ||
+                                t(
+                                    "console:manage.features.claims.dialects.notifications." +
+                                        "fetchExternalClaims.genericError.description"
+                                ),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error?.response?.data?.message ||
+                                t(
+                                    "console:manage.features.claims.dialects.notifications." +
+                                        "fetchExternalClaims.genericError.message"
+                                )
+                        })
+                    );
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
     };
 
     useEffect(() => {
         getExternalClaims();
-    }, [ dialectId ]);
+    }, [dialectId]);
 
     /**
      * This deletes a dialect
      * @param {string} dialectID
      */
     const deleteDialect = (dialectID: string) => {
-        deleteADialect(dialectID).then(() => {
-            history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
-            dispatch(addAlert(
-                {
-                    description: t("console:manage.features.claims.dialects.notifications." +
-                        "deleteDialect.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.claims.dialects.notifications." +
-                        "deleteDialect.success.message")
-                }
-            ));
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.genericError.message")
-                }
-            ));
-        });
+        deleteADialect(dialectID)
+            .then(() => {
+                history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.claims.dialects.notifications." +
+                                "deleteDialect.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.claims.dialects.notifications." + "deleteDialect.success.message"
+                        )
+                    })
+                );
+            })
+            .catch((error) => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.description ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                    "deleteDialect.genericError.description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message ||
+                            t(
+                                "console:manage.features.claims.dialects.notifications." +
+                                    "deleteDialect.genericError.message"
+                            )
+                    })
+                );
+            });
     };
 
     return (
@@ -209,10 +222,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI") }
                         </Header>
                         <EmphasizedSegment>
-                            <EditDialectDetails
-                                dialect={ dialect }
-                                data-testid={ `${ testId }-edit-dialect-details` }
-                            />
+                            { isLoading ? (
+                                <Placeholder>
+                                    <Placeholder.Line length="short" />
+                                    <Placeholder.Line length="medium" />
+                                </Placeholder>
+                            ) : (
+                                <EditDialectDetails dialect={ dialect } data-testid={ `${testId}-edit-dialect-details` } />
+                            ) }
                         </EmphasizedSegment>
                     </Grid.Column>
                 </Grid.Row>
@@ -230,16 +247,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             <Divider hidden />
 
-            <EmphasizedSegment>
-                <Divider hidden />
-                <EditExternalClaims
-                    dialectID={ dialectId }
-                    isLoading={ isLoading }
-                    claims={ claims }
-                    update={ getExternalClaims }
-                    data-testid={ `${ testId }-edit-external-claims` }
-                />
-            </EmphasizedSegment>
+            <Divider hidden />
+            <EditExternalClaims
+                dialectID={ dialectId }
+                isLoading={ isLoading }
+                claims={ claims }
+                update={ getExternalClaims }
+                data-testid={ `${testId}-edit-external-claims` }
+            />
 
             <Divider hidden />
 
@@ -248,14 +263,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
-                            data-testid={ `${ testId }-danger-zone-group` }
+                            data-testid={ `${testId}-danger-zone-group` }
                         >
                             <DangerZone
                                 actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle") }
                                 header={ t("console:manage.features.claims.dialects.dangerZone.header") }
                                 subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader") }
                                 onActionClick={ () => setConfirmDelete(true) }
-                                data-testid={ `${ testId }-dialect-delete-danger-zone` }
+                                data-testid={ `${testId}-dialect-delete-danger-zone` }
                             />
                         </DangerZoneGroup>
                     </Grid.Column>
