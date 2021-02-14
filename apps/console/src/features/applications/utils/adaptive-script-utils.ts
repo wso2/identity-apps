@@ -126,4 +126,12 @@ export class AdaptiveScriptUtils {
             .replace(/\s/g, "")
             .trim();
     }
+
+    public static isEmptyScript(script: string | string[]): boolean {
+        return !script ||
+            (Array.isArray(script) && (script.length === 0 || script.join("").trim().length == 0)) ||
+            (script instanceof String && script.trim().length === 0) ||
+            !AdaptiveScriptUtils.minifyScript(script);
+    }
+
 }

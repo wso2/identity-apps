@@ -274,18 +274,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Handles the update button click event.
      */
     const handleUpdateClick = (): void => {
-        if (isScriptEmpty(adaptiveScript)) {
+        if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
             setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
             setIsDefaultScript(true);
         }
         setUpdateTrigger(true);
-    };
-
-    const isScriptEmpty = (script: string | string[]): boolean => {
-        return !script ||
-            (Array.isArray(script) && script.length === 0) ||
-            (script instanceof String && script.trim().length === 0) ||
-            !AdaptiveScriptUtils.minifyScript(script);
     };
 
     const showRequestPathAuthenticators: ReactElement = (
