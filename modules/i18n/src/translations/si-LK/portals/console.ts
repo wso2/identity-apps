@@ -765,7 +765,8 @@ export const console: ConsoleNS = {
                                         confirmationMessage: "මෙම ක්‍රියාව මඟින් සිතියම්ගත කළ අගයන් පෙරනිමි අගයන් වෙත ආපසු හරවනු ඇත"
                                     },
                                     searchPlaceholder: "පරිශීලක ගුණාංග සොයන්න"
-                                }
+                                },
+                                selectAll: "සියලුම ගුණාංග තෝරන්න"
                             },
                             tabName: "පරිශීලක ගුණාංග"
                         },
@@ -5092,6 +5093,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
+                                hint: "පරිශීලක කණ්ඩායම සඳහා නමක්.",
                                 label: "{{type}} නම",
                                 placeholder: "Enter {{type}} නම ඇතුළත් කරන්න",
                                 validations: {
@@ -5126,6 +5128,7 @@ export const console: ConsoleNS = {
                     users: {
                         assignUserModal: {
                             heading: "යාවත්කාලීන කරන්න {{type}} පරිශීලකයින්",
+                            hint: "පරිශීලක කණ්ඩායමට එකතු කිරීමට පරිශීලකයින් තෝරන්න.",
                             list: {
                                 listHeader: "නම",
                                 searchPlaceholder: "පරිශීලකයින් සොයන්න"

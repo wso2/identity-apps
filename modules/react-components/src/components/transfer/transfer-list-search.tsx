@@ -26,6 +26,10 @@ import { Grid, Icon, Input } from "semantic-ui-react";
 export interface TransferListSearchPropsInterface extends TestableComponentInterface {
     placeholder: string;
     handleListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
+    /**
+     * Is the search content loading.
+     */
+    isLoading?: boolean;
 }
 
 /**
@@ -42,12 +46,14 @@ export const TransferListSearch: FunctionComponent<TransferListSearchPropsInterf
     const {
         handleListSearch,
         placeholder,
+        isLoading,
         [ "data-testid" ]: testId
     } = props;
 
     return (
         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
             <Input
+                loading={ isLoading }
                 data-testid={ testId }
                 icon={ <Icon name="search"/> }
                 fluid
@@ -62,5 +68,6 @@ export const TransferListSearch: FunctionComponent<TransferListSearchPropsInterf
  * Default props for the transfer list search component.
  */
 TransferListSearch.defaultProps = {
-    "data-testid": "transfer-list-search"
+    "data-testid": "transfer-list-search",
+    isLoading: false
 };

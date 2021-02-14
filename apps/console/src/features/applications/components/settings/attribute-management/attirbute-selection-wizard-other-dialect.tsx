@@ -185,6 +185,9 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     handleUnelectedListSearch={ searchTempAvailable }
+                    selectAllCheckboxLabel={
+                        t("console:develop.features.applications.edit.sections.attributes.selection.selectAll")
+                    }
                     data-testid={ `${ testId }-transfer-component` }
                 >
                     <TransferList

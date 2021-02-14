@@ -17,7 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import classNames from "classnames";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Button, Checkbox, Grid, Icon, Segment } from "semantic-ui-react";
 import { TransferListSearch } from "./transfer-list-search";
 
@@ -25,14 +26,38 @@ import { TransferListSearch } from "./transfer-list-search";
  * Proptypes transfer component.
  */
 export interface TransferComponentPropsInterface extends TestableComponentInterface {
+    /**
+     * Render segments with basic formatting.
+     */
+    basic?: boolean;
+    /**
+     * Add border to segments.
+     */
+    bordered?: boolean;
+    /**
+     * Render with compact formatting. i.e. No padding etc.
+     */
+    compact?: boolean;
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
     handleSelectedListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
     handleHeaderCheckboxChange?: () => void;
+    /**
+     * Show loading placeholders.
+     */
+    isLoading?: boolean;
     isHeaderCheckboxChecked?: boolean;
     addItems?: () => void;
     removeItems?: () => void;
     searchPlaceholder: string;
     selectionComponent?: boolean;
+    /**
+     * Select all checkbox label.
+     */
+    selectAllCheckboxLabel?: ReactNode;
 }
 
 /**
@@ -48,8 +73,14 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
 
     const {
         addItems,
+        basic,
+        bordered,
+        compact,
+        className,
+        isLoading,
         removeItems,
         children,
+        selectAllCheckboxLabel,
         searchPlaceholder,
         selectionComponent,
         handleUnelectedListSearch,
@@ -59,8 +90,17 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         [ "data-testid" ]: testId
     } = props;
 
+    const classes = classNames(
+        "transfer-list",
+        {
+            bordered,
+            compact
+        },
+        className
+    );
+
     return (
-        <Grid className="transfer-list">
+        <Grid className={ classes }>
             {
                 React.Children.count(children) > 0 && (
                     <Grid.Row columns={ 3 } className="transfer-list-row">
@@ -70,8 +110,13 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                     <>
                                         {
                                             list.props.listType === "unselected" && (
-                                                <Grid.Column width={ 7 }>
+                                                <Grid.Column
+                                                    width={ 7 }
+                                                    className="transfer-list-column transfer-list-unassigned-column"
+                                                >
                                                     <Segment
+                                                        basic={ basic }
+                                                        disabled={ isLoading }
                                                         data-testid={
                                                             `${ testId }-unselected-groups`
                                                         }
@@ -81,14 +126,16 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ testId + "-unselected-groups-search-input" }
                                                             handleListSearch={ handleUnelectedListSearch }
                                                             placeholder={ searchPlaceholder }
+                                                            isLoading={ isLoading }
                                                         />
                                                         {
                                                             selectionComponent &&
                                                             <Checkbox 
                                                                 className="all-select"
-                                                                label="Select all attributes"
+                                                                label={ selectAllCheckboxLabel }
                                                                 checked={ isHeaderCheckboxChecked }
                                                                 onChange={ handleHeaderCheckboxChange }
+                                                                disabled={ isLoading }
                                                             />
                                                         }
                                                         <Segment className="transfer-list-segment">
@@ -134,8 +181,13 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                         }
                                         {
                                             list.props.listType === "selected" && (
-                                                <Grid.Column width={ 7 } className="transfer-list-assigned-column">
+                                                <Grid.Column
+                                                    width={ 7 }
+                                                    className="transfer-list-column transfer-list-assigned-column"
+                                                >
                                                     <Segment
+                                                        basic={ basic }
+                                                        disabled={ isLoading }
                                                         data-testid={ `${ testId }-selected-groups` }
                                                         className="transfer-segment"
                                                     >
@@ -143,6 +195,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ `${ testId }-selected-groups-search-input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
+                                                            isLoading={ isLoading }
                                                         />
                                                         <Segment className="transfer-list-segment">
                                                             { list }
@@ -166,5 +219,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
  * Default props for the transfer component.
  */
 TransferComponent.defaultProps = {
-    "data-testid": "transfer-component"
+    basic: false,
+    bordered: true,
+    "data-testid": "transfer-component",
+    isLoading: false,
+    selectAllCheckboxLabel: "Select all"
 };
