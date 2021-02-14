@@ -39,6 +39,7 @@
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.apache.http.client.utils.URIBuilder" %>
 <%@ page import="java.net.URI" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -56,7 +57,7 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String userStoreDomain = request.getParameter("userstoredomain");
-    String username = request.getParameter("username");
+    String username = null;
     boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
             tenantDomain));
 
@@ -87,7 +88,9 @@
         resetPasswordRequest.setProperties(properties);
 
         try {
-            notificationApi.setPasswordPost(resetPasswordRequest);
+            User user = notificationApi.setUserPasswordPost(resetPasswordRequest);
+            username = user.getUsername();
+            userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
                 if (userStoreDomain != null) {
