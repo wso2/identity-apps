@@ -19,24 +19,18 @@
 import { getDialects } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
-import { ListLayout, PageLayout, PrimaryButton, ResourceTab } from "@wso2is/react-components";
+import { AnimatedAvatar, GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownProps, Icon, PaginationProps, StrictTabProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    ConfigReducerStateInterface,
-    UIConstants,
-    filterList,
-    sortList
-} from "../../core";
-import { ClaimsList, ListType } from "../components";
-import { ClaimManagementConstants } from "../constants";
-import { RouterProps, RouteComponentProps, RouteChildrenProps } from "react-router";
+import { RouteChildrenProps } from "react-router";
+import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
+import {
+    AppConstants, AppState, getTechnologyLogos, history
+} from "../../core";
+import { } from "../components";
+import { ClaimManagementConstants } from "../constants";
 
 /**
  * Props for the Edit Attribute Mappings page.
@@ -65,39 +59,88 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             (state: AppState) => state.config.ui.listAllAttributeDialects
         );
         const { t } = useTranslation();
-        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-        /**
-         * Sets the attributes by which the list can be sorted.
-         */
-        const SORT_BY = [
-            {
-                key: 0,
-                text: t("console:manage.features.claims.dialects.attributes.dialectURI"),
-                value: "dialectURI"
-            }
-        ];
-
-        const [ addEditClaim, setAddEditClaim ] = useState(false);
-        const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
-        const [ sortOrder, setSortOrder ] = useState(true);
-        const [ localURI, setLocalURI ] = useState("");
-        const [ searchQuery, setSearchQuery ] = useState<string>("");
         const [ isLoading, setIsLoading ] = useState(true);
-        const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
-        const [ offset, setOffset ] = useState(0);
-        const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-        const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-        const [ resetPagination, setResetPagination ] = useTrigger();
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
 
         useEffect(() => {
             getDialect();
         }, []);
 
-        useEffect(() => {
-            setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
-        }, [ sortBy, sortOrder ]);
+        /**
+         * Resolves page heading based on the `type`.
+         *
+         * @return {string} - The page heading.
+         */
+        const resolvePageHeading = (): string => {
+            switch (type) {
+                case ClaimManagementConstants.OIDC:
+                    return "OpenID Connect";
+                case ClaimManagementConstants.SCIM:
+                    return "System for Cross-Domain Identity Management";
+                default:
+                    return "Custom Attributes";
+            }
+        };
+
+        /**
+         * Resolves page description based on the `type`.
+         *
+         * @return {string} - The page description.
+         */
+        const resolvePageDescription = (): string => {
+            switch (type) {
+                case ClaimManagementConstants.OIDC:
+                    return "The OpenID Connect protocol representation for user " +
+                        "attributes that will be used in the OpenID Connect API.";
+                case ClaimManagementConstants.SCIM:
+                    return "The SCIM2 protocol representation for user " +
+                        "attributes that will be used in the SCIM2 API.";
+                default:
+                    return "The custom protocol representation for user " +
+                        "attributes that will be used in custom API.";
+            }
+        };
+
+        /**
+         * Resolves page header image based on `type`.
+         *
+         * @return {ReactElement} - Image.
+         */
+        const resolvePageHeaderImage = (): ReactElement => {
+            switch (type) {
+                case ClaimManagementConstants.OIDC:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().oidc }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                            transparent
+                        />
+                    );
+                case ClaimManagementConstants.SCIM:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().scim }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                default:
+                    return (
+                        <Image floated="left" verticalAlign="middle" rounded centered size="tiny">
+                            <AnimatedAvatar />
+                            <span className="claims-letter">C</span>
+                        </Image>
+                    );
+            }
+        };
 
         /**
          * Fetches all the dialects.
@@ -117,10 +160,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             })
                 .then((response: ClaimDialect[]) => {
                     const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
-                        if (claim.id === "local") {
-                            setLocalURI(claim.dialectURI);
-                        }
-
                         if (!listAllAttributeDialects) {
                             return (
                                 claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
@@ -212,24 +251,15 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
         return (
             <PageLayout
-                action={
-                    (isLoading || !(!searchQuery && filteredDialects?.length <= 0)) &&
-                    config.ui?.isDialectAddingEnabled !== false && (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setAddEditClaim(true);
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
-                        </PrimaryButton>
-                    )
-                }
                 isLoading={ isLoading }
-                title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
-                description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
+                title={ resolvePageHeading() }
+                description={ resolvePageDescription() }
                 data-testid={ `${ testId }-page-layout` }
+                image={ resolvePageHeaderImage() }
+                backButton={ {
+                    onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
+                    text: t("console:manage.features.claims.local.pageLayout.local.back")
+                } }
             >
                 {
                     dialects?.length > 1
