@@ -18,7 +18,8 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails,
+    getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -381,12 +382,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
          * USER-STORE/userNameString => userNameString
          */
         if (schema.name === "userName") {
-            if (schemaFormValue?.indexOf("/") > -1) {
-                const fragments = schemaFormValue.split("/");
-                if (fragments?.length > 1) {
-                    schemaFormValue = fragments[1];
-                }
-            }
+            schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
         }
 
         return schemaFormValue;
