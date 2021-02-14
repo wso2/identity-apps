@@ -24,8 +24,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
-import { AddExternalClaims, ClaimsList, ListType } from "../../";
+import { ClaimsList, ListType } from "../../";
 import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../../../core";
+import { addExternalClaim } from "../../../api";
+import { AddExternalClaim } from "../../../models";
+import { ExternalClaims } from "../../wizard";
 
 interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
     /**
@@ -189,6 +192,43 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         setFilteredClaims(claims);
     };
 
+    const handleAttributesSubmit = (claims: AddExternalClaim[]): void => {
+
+        const addAttributesRequests = claims.map((claim: AddExternalClaim) => {
+            return addExternalClaim(dialectID, {
+                claimURI: claim.claimURI,
+                mappedLocalClaimURI: claim.mappedLocalClaimURI
+            });
+        });
+
+        Promise.all(addAttributesRequests).then(() => {
+            dispatch(addAlert(
+                {
+                    description: t("console:manage.features.claims.external.notifications." +
+                        "addExternalAttribute.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:manage.features.claims.external.notifications." +
+                        "addExternalAttribute.success.message")
+                }
+            ));
+            update();
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description
+                        || t("console:manage.features.claims.external.notifications." +
+                            "addExternalAttribute.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("console:manage.features.claims.external.notifications." +
+                            "addExternalAttribute.genericError.message")
+                }
+            ));
+        }).finally(() => {
+            setShowAddExternalClaim(false);
+        });
+    };
+
     return (
         <ListLayout
             advancedSearch={ (
@@ -265,14 +305,15 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         <Modal.Header>
                             { t("console:manage.features.claims.external.pageLayout.edit.header") }
                         </Modal.Header>
-                        <Modal.Content>
-                            <AddExternalClaims
-                                dialectId={ dialectID }
-                                update={ update }
-                                externalClaims={ claims }
-                                triggerSubmit={ triggerAddExternalClaim }
-                                cancel={ () => { setShowAddExternalClaim(false); } }
+                        <Modal.Content >
+                            <ExternalClaims
                                 data-testid={ `${ testId }-add-external-claims` }
+                                onSubmit={ (claims: AddExternalClaim[]) => {
+                                    handleAttributesSubmit(claims);
+                                } }
+                                submitState={ triggerAddExternalClaim }
+                                values={ claims }
+                                shouldShowInitialValues={ false }
                             />
                         </Modal.Content>
                         <Modal.Actions>
