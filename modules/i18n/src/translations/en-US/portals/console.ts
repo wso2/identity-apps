@@ -2408,8 +2408,8 @@ export const console: ConsoleNS = {
                             " Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "Disable Identity Provider",
-                        header: "Disable identity provider",
+                        actionTitle: "{{ state }} Identity Provider",
+                        header: "{{ state }} identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
                             "you enable it again."
                     },
@@ -2709,11 +2709,11 @@ export const console: ConsoleNS = {
                             message: "Identity Provider Delete Error"
                         },
                         genericError: {
-                            description: "An error occurred while deleting the identity provider",
+                            description: "An error occurred while deleting the identity provider.",
                             message: "Identity Provider Delete Error"
                         },
                         success: {
-                            description: "Successfully deleted the identity provider",
+                            description: "Successfully deleted the identity provider.",
                             message: "Delete successful"
                         }
                     },
@@ -2821,7 +2821,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider details",
+                            description: "An error occurred while retrieving identity provider details.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2835,7 +2835,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity providers",
+                            description: "An error occurred while retrieving identity providers.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2863,7 +2863,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider template list",
+                            description: "An error occurred while retrieving identity provider template list.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -2919,7 +2919,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving roles",
+                            description: "An error occurred while retrieving roles.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3109,7 +3109,7 @@ export const console: ConsoleNS = {
                     emptyIDPList: {
                         subtitles: {
                             0: "Currently there are no identity providers available.",
-                            1: "You can add a new identity provider easily by following",
+                            1: "You can add a new identity provider by following",
                             2: "the steps in the identity provider creation wizard."
                         },
                         title: "Add a new Identity Provider"
@@ -3519,12 +3519,12 @@ export const console: ConsoleNS = {
                     },
                     changeCertType: {
                         jwks: {
-                            description: "Please note that the certificates will be overridden " +
+                            description: "Please note that the certificates will be overridden ." +
                                 "by the the JWKS endpoint.",
                             message: "Warning!"
                         },
                         pem: {
-                            description: "Please note that the JWKS endpoint will be overridden " +
+                            description: "Please note that the JWKS endpoint will be overridden ." +
                                 "by the certificates.",
                             message: "Warning!"
                         }
@@ -3565,11 +3565,11 @@ export const console: ConsoleNS = {
                             message: "Identity Provider Delete Error"
                         },
                         genericError: {
-                            description: "An error occurred while deleting the identity provider",
+                            description: "An error occurred while deleting the identity provider.",
                             message: "Identity Provider Delete Error"
                         },
                         success: {
-                            description: "Successfully deleted the identity provider",
+                            description: "Successfully deleted the identity provider.",
                             message: "Delete successful"
                         }
                     },
@@ -3677,7 +3677,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider details",
+                            description: "An error occurred while retrieving identity provider details.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3691,7 +3691,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity providers",
+                            description: "An error occurred while retrieving identity providers.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3719,7 +3719,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider template list",
+                            description: "An error occurred while retrieving identity provider template list.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3775,7 +3775,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving roles",
+                            description: "An error occurred while retrieving roles.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4078,10 +4078,10 @@ export const console: ConsoleNS = {
                 applications: "Applications",
                 categories: {
                     application: "Applications",
+                    authenticationProviders: "Identity Providers",
                     general: "General",
                     gettingStarted: "Getting Started",
-                    identityProviders: "Identity Providers",
-                    authenticationProviders: "Identity Providers"
+                    identityProviders: "Identity Providers"
                 },
                 customize: "Customize",
                 authenticationProviderEdit: "Identity Providers Edit",
@@ -4164,8 +4164,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Connect and manage identity providers to enable users to log in to your " +
-                    "application easily. ",
+                subTitle: "Manage identity providers to allow social login to applications.",
                 title: "Identity Providers"
             },
             authenticationProviderTemplate: {
@@ -4175,20 +4174,20 @@ export const console: ConsoleNS = {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider Type"
+                title: "Select Identity Provider"
             },
             idp: {
-                subTitle: "Create and manage identity providers based on templates and configure authentication.",
+                subTitle: "Manage identity providers to allow social login to applications.",
                 title: "Identity Providers"
             },
             idpTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Please choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity provider types.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider Type"
+                title: "Select Identity Provider"
             },
             overview: {
                 subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +
@@ -4250,7 +4249,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully retrieved the approval details",
+                            description: "Successfully retrieved the approval details.",
                             message: "Approval details retrieval successful"
                         }
                     },
@@ -4264,7 +4263,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully retrieved pending approvals",
+                            description: "Successfully retrieved pending approvals.",
                             message: "Pending approvals retrieval successful"
                         }
                     },
@@ -4278,7 +4277,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the approval",
+                            description: "Successfully updated the approval.",
                             message: "Update successful"
                         }
                     }
@@ -4376,7 +4375,7 @@ export const console: ConsoleNS = {
                         },
                         deleteCertificate: {
                             genericError: {
-                                description: "There was an error while deleting the certificate",
+                                description: "There was an error while deleting the certificate.",
                                 message: "Something went wrong!"
                             },
                             success: {
@@ -4398,14 +4397,14 @@ export const console: ConsoleNS = {
                         },
                         getCertificate: {
                             genericError: {
-                                description: "There was an error while fetching "
+                                description: "There was an error while fetching ."
                                     + "the certificate",
                                 message: "Something went wrong!"
                             }
                         },
                         getCertificates: {
                             genericError: {
-                                description: "An error occurred while fetching certificates",
+                                description: "An error occurred while fetching certificates.",
                                 message: "Something went wrong"
                             }
                         },
@@ -4417,7 +4416,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     pageLayout: {
-                        description: "Create and manage certificates in the keystore",
+                        description: "Create and manage certificates in the keystore.",
                         primaryAction: "Import Certificate",
                         title: "Certificates"
                     },
@@ -4447,7 +4446,7 @@ export const console: ConsoleNS = {
                     wizard: {
                         dropZone: {
                             action: "Upload Certificate",
-                            description: "Drag and drop a certificate file here"
+                            description: "Drag and drop a certificate file here."
                         },
                         header: "Import Certificate",
                         panes: {
@@ -4529,22 +4528,22 @@ export const console: ConsoleNS = {
                     notifications: {
                         addDialect: {
                             error: {
-                                description: "An error occurred while adding the external dialect",
+                                description: "An error occurred while adding the external dialect.",
                                 message: "Something went wrong"
                             },
                             genericError: {
-                                description: "The external dialect has been added but not all external "
+                                description: "The external dialect has been added but not all external ."
                                     + "attributes were added successfully",
                                 message: "External attributes couldn't be added"
                             },
                             success: {
-                                description: "The external dialect has been added successfully",
+                                description: "The external dialect has been added successfully.",
                                 message: "External Dialect added successfully"
                             }
                         },
                         deleteDialect: {
                             genericError: {
-                                description: "There was an error while deleting the dialect",
+                                description: "There was an error while deleting the dialect.",
                                 message: "Something went wrong"
                             },
                             success: {
@@ -4554,7 +4553,7 @@ export const console: ConsoleNS = {
                         },
                         fetchADialect: {
                             genericError: {
-                                description: "There was an error while fetching the external dialect",
+                                description: "There was an error while fetching the external dialect.",
                                 message: "Something went wrong"
                             }
                         },
@@ -4574,13 +4573,13 @@ export const console: ConsoleNS = {
                         },
                         fetchExternalClaims: {
                             genericError: {
-                                description: "There was an error while fetching the external attributes",
+                                description: "There was an error while fetching the external attributes.",
                                 message: "Something went wrong"
                             }
                         },
                         updateDialect: {
                             genericError: {
-                                description: "An error occurred while updating the dialect",
+                                description: "An error occurred while updating the dialect.",
                                 message: "Something went wrong"
                             },
                             success: {
@@ -4592,12 +4591,12 @@ export const console: ConsoleNS = {
                     pageLayout: {
                         edit: {
                             back: "Go back to attribute dialects",
-                            description: "Edit external dialect and its attributes",
+                            description: "Edit external dialect and its attributes.",
                             updateDialectURI: "Update Dialect URI",
                             updateExternalAttributes: "Update External Attributes"
                         },
                         list: {
-                            description: "Create and manage attribute dialects",
+                            description: "Create and manage attribute dialects.",
                             primaryAction: "New External Dialect",
                             title: "Attribute Dialects",
                             view: "View local claims"
@@ -4665,7 +4664,7 @@ export const console: ConsoleNS = {
                         },
                         deleteExternalClaim: {
                             genericError: {
-                                description: "There was an error while deleting the external attribute",
+                                description: "There was an error while deleting the external attribute.",
                                 message: "Something went wrong"
                             },
                             success: {
@@ -4689,7 +4688,7 @@ export const console: ConsoleNS = {
                         },
                         getExternalAttribute: {
                             genericError: {
-                                description: "There was an error while fetching the external attribute",
+                                description: "There was an error while fetching the external attribute.",
                                 message: "Something went wrong"
                             }
                         },
@@ -4865,7 +4864,7 @@ export const console: ConsoleNS = {
                     notifications: {
                         addLocalClaim: {
                             genericError: {
-                                description: "There was an error while adding the local attribute",
+                                description: "There was an error while adding the local attribute.",
                                 message: "Something went wrong"
                             },
                             success: {
@@ -4875,7 +4874,7 @@ export const console: ConsoleNS = {
                         },
                         deleteClaim: {
                             genericError: {
-                                description: "There was an error while deleting the local attribute",
+                                description: "There was an error while deleting the local attribute.",
                                 message: "Something went wrong"
                             },
                             success: {
@@ -4899,19 +4898,19 @@ export const console: ConsoleNS = {
                         },
                         getAClaim: {
                             genericError: {
-                                description: "There was an error while fetching the local attribute",
+                                description: "There was an error while fetching the local attribute.",
                                 message: "Something went wrong"
                             }
                         },
                         getClaims: {
                             genericError: {
-                                description: "There was an error while fetching the local attributes",
+                                description: "There was an error while fetching the local attributes.",
                                 message: "Something went wrong"
                             }
                         },
                         getLocalDialect: {
                             genericError: {
-                                description: "There was an error while fetching the local dialect",
+                                description: "There was an error while fetching the local dialect.",
                                 message: "Something went wrong"
                             }
                         },
@@ -4930,7 +4929,7 @@ export const console: ConsoleNS = {
                     pageLayout: {
                         edit: {
                             back: "Go back to Local Attributes",
-                            description: "Edit local attribute",
+                            description: "Edit local attribute.",
                             tabs: {
                                 additionalProperties: "Additional Properties",
                                 general: "General",
@@ -4940,7 +4939,7 @@ export const console: ConsoleNS = {
                         local: {
                             action: "New Local Attribute",
                             back: "Go back to attribute dialects",
-                            description: "Create and manage local attributes",
+                            description: "Create and manage local attributes.",
                             title: "Local Attributes"
                         }
                     },
@@ -5546,7 +5545,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully added the new OIDC attribute",
+                            description: "Successfully added the new OIDC attribute.",
                             message: "Creation successful"
                         }
                     },
@@ -5560,7 +5559,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully the new OIDC scope",
+                            description: "Successfully the new OIDC scope.",
                             message: "Creation successful"
                         }
                     },
@@ -6451,7 +6450,7 @@ export const console: ConsoleNS = {
                                 message: "Change password error"
                             },
                             submitSuccess: {
-                                description: "The password has been changed successfully",
+                                description: "The password has been changed successfully.",
                                 message: "Password reset successful"
                             }
                         }
@@ -6608,11 +6607,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while changing the user password."
                             },
                             genericError: {
-                                description: "Error occurred while changing the user password",
+                                description: "Error occurred while changing the user password.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The password of the user was changed successfully",
+                                description: "The password of the user was changed successfully.",
                                 message: "Successfully changed password"
                             }
                         },
@@ -6622,11 +6621,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while disabling the user account."
                             },
                             genericError: {
-                                description: "Error occurred while disabling the user account",
+                                description: "Error occurred while disabling the user account.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account disabled successfully",
+                                description: "The user account disabled successfully.",
                                 message: "{{name}}'s account is disabled"
                             }
                         },
@@ -6636,11 +6635,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while enabling the user account."
                             },
                             genericError: {
-                                description: "Error occurred while enabling the user account",
+                                description: "Error occurred while enabling the user account.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account enabled successfully",
+                                description: "The user account enabled successfully.",
                                 message: "{{name}}'s account is enabled"
                             }
                         },
@@ -6650,11 +6649,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while triggering the password reset flow."
                             },
                             genericError: {
-                                description: "Error occurred while triggering the password reset flow",
+                                description: "Error occurred while triggering the password reset flow.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The user account password reset triggered successfully",
+                                description: "The user account password reset triggered successfully.",
                                 message: "Successfully triggered password reset"
                             }
                         },
@@ -6664,11 +6663,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while retrieving the profile details"
                             },
                             genericError: {
-                                description: "Error occurred while retrieving the profile details",
+                                description: "Error occurred while retrieving the profile details.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The required user profile details are retrieved successfully",
+                                description: "The required user profile details are retrieved successfully.",
                                 message: "Successfully retrieved user profile"
                             }
                         },
@@ -6712,11 +6711,11 @@ export const console: ConsoleNS = {
                                 message: "Error occurred while updating the profile details"
                             },
                             genericError: {
-                                description: "Error occurred while updating the profile details",
+                                description: "Error occurred while updating the profile details.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The required user profile details were successfully updated",
+                                description: "The required user profile details were successfully updated.",
                                 message: "User profile updated successfully"
                             }
                         }
@@ -6763,11 +6762,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating user groups"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user groups",
+                                    description: "An error occurred while updating user groups.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Assigning new groups for the user successful",
+                                    description: "Assigning new groups for the user successful.",
                                     message: "Update user groups successful"
                                 }
                             },
@@ -6777,11 +6776,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while fetching the groups list"
                                 },
                                 genericError: {
-                                    description: "Error occurred while fetching the groups list",
+                                    description: "Error occurred while fetching the groups list.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "The groups list was successfully retrieved",
+                                    description: "The groups list was successfully retrieved.",
                                     message: "User groups list retrieved successfully"
                                 }
                             },
@@ -6791,11 +6790,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating the groups of the user"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user groups",
+                                    description: "An error occurred while updating user groups.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Removing assigned groups for the user successful",
+                                    description: "Removing assigned groups for the user successful.",
                                     message: "Update user groups successful"
                                 }
                             },
@@ -6805,11 +6804,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating user groups"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user groups",
+                                    description: "An error occurred while updating user groups.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Updating assigned groups for the user successful",
+                                    description: "Updating assigned groups for the user successful.",
                                     message: "Update user groups successful"
                                 }
                             }
@@ -6850,11 +6849,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating user roles"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user roles",
+                                    description: "An error occurred while updating user roles.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Assigning new roles for the user successful",
+                                    description: "Assigning new roles for the user successful.",
                                     message: "Update user roles successful"
                                 }
                             },
@@ -6864,11 +6863,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while fetching the roles list"
                                 },
                                 genericError: {
-                                    description: "Error occurred while fetching the roles list",
+                                    description: "Error occurred while fetching the roles list.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "The roles list was successfully retrieved",
+                                    description: "The roles list was successfully retrieved.",
                                     message: "User roles list retrieved successfully"
                                 }
                             },
@@ -6878,11 +6877,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating the roles of the user"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user roles",
+                                    description: "An error occurred while updating user roles.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Removing assigned roles for the user successful",
+                                    description: "Removing assigned roles for the user successful.",
                                     message: "Update user roles successful"
                                 }
                             },
@@ -6892,11 +6891,11 @@ export const console: ConsoleNS = {
                                     message: "Error occurred while updating the roles of the user"
                                 },
                                 genericError: {
-                                    description: "An error occurred while updating user roles",
+                                    description: "An error occurred while updating user roles.",
                                     message: "Something went wrong"
                                 },
                                 success: {
-                                    description: "Updating assigned roles for the user successful",
+                                    description: "Updating assigned roles for the user successful.",
                                     message: "Update user roles successful"
                                 }
                             }
@@ -7226,7 +7225,7 @@ export const console: ConsoleNS = {
                 notifications: {
                     addUserstore: {
                         genericError: {
-                            description: "There was an error while creating the userstore",
+                            description: "There was an error while creating the userstore.",
                             message: "Something went wrong!"
                         },
                         success: {
@@ -7241,7 +7240,7 @@ export const console: ConsoleNS = {
                     },
                     deleteUserstore: {
                         genericError: {
-                            description: "There was an error while deleting the userstore",
+                            description: "There was an error while deleting the userstore.",
                             message: "Something went wrong!"
                         },
                         success: {
@@ -7269,7 +7268,7 @@ export const console: ConsoleNS = {
                     },
                     fetchUserstores: {
                         genericError: {
-                            description: "An error occurred while fetching userstores",
+                            description: "An error occurred while fetching userstores.",
                             message: "Something went wrong"
                         }
                     },
@@ -7279,7 +7278,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The connection is healthy",
+                            description: "The connection is healthy.",
                             message: "Connection successful!"
                         }
                     },
@@ -7301,7 +7300,7 @@ export const console: ConsoleNS = {
                 pageLayout: {
                     edit: {
                         back: "Go back to userstores",
-                        description: "Edit userstore",
+                        description: "Edit userstore.",
                         tabs: {
                             connection: "Connection",
                             general: "General",
@@ -7310,7 +7309,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     list: {
-                        description: "Create and manage userstores",
+                        description: "Create and manage userstores.",
                         primaryAction: "New Userstore",
                         title: "Userstores"
                     },
@@ -7373,7 +7372,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully sent the invitation",
+                            description: "Successfully sent the invitation.",
                             message: "Sending the invitation successful"
                         }
                     },
@@ -7387,7 +7386,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully resent the invitation",
+                            description: "Successfully resent the invitation.",
                             message: "Resending the invitation successful"
                         }
                     },
@@ -7401,7 +7400,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the invitation",
+                            description: "Successfully deleted the invitation.",
                             message: "Invitation deletion successful"
                         }
                     },
@@ -7415,7 +7414,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the invite",
+                            description: "Successfully updated the invite.",
                             message: "Invitation update successful"
                         }
                     }
