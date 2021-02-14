@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
+import differenceWith from "lodash/differenceWith";
 import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,14 +53,18 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit
      * @param {AddExternalClaim[]} claims
      */
-    onExternalClaimsChanged: (claims: AddExternalClaim[]) => void;
+    onExternalClaimsChanged?: (claims: AddExternalClaim[]) => void;
+    /**
+     * Specifies if the initial values passed should be shown.
+     */
+    shouldShowInitialValues?: boolean;
 }
 
 /**
  * This component renders the Add External Claims step of the wizard.
- * 
+ *
  * @param {ExternalClaimsPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement}
  */
 export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
@@ -71,25 +76,34 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         submitState,
         values,
         onExternalClaimsChanged,
+        shouldShowInitialValues,
         [ "data-testid" ]: testId
     } = props;
 
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
+    const [ initialList, setInitialList ] = useState<AddExternalClaim[]>([]);
 
     const ref = useRef(true);
+    const firstTimeValueChanges = useRef(true);
 
     const { t } = useTranslation();
-    
+
     useEffect(() => {
         if (ref.current) {
             ref.current = false;
         } else {
-            onSubmit(claims);
+            onSubmit(getAttributesList());
         }
     }, [ submitState ]);
-    
+
     useEffect(() => {
-        setClaims(values);
+        if (values) {
+            setClaims(values);
+            if (firstTimeValueChanges.current) {
+                setInitialList(values);
+                firstTimeValueChanges.current = false;
+            }
+        }
     }, [ values ]);
 
     /**
@@ -108,7 +122,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         };
         const newState = [ ...claims, newClaim ];
         setClaims(newState);
-        onExternalClaimsChanged(newState);
+        onExternalClaimsChanged && onExternalClaimsChanged(newState);
     };
 
     /**
@@ -126,7 +140,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
         const filteredClaims = claims.filter((claim: AddExternalClaim) => !isEqual(editingClaim, claim));
         setClaims(filteredClaims);
-        onExternalClaimsChanged(filteredClaims);
+        onExternalClaimsChanged && onExternalClaimsChanged(filteredClaims);
     };
 
     /**
@@ -149,7 +163,18 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
             claim.mappedLocalClaimURI = values.get("localClaim").toString();
         }
         setClaims(existingClaims);
-        onExternalClaimsChanged(existingClaims);
+        onExternalClaimsChanged && onExternalClaimsChanged(existingClaims);
+    };
+
+    /**
+     * Returns either the whole list or the newly added attributes based on the `shouldShowInitialValues` flag.
+     */
+    const getAttributesList = (): AddExternalClaim[] => {
+        if (shouldShowInitialValues) {
+            return claims;
+        } else {
+            return differenceWith(claims, initialList, isEqual);
+        }
     };
 
     return (
@@ -164,11 +189,11 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                     />
                     <Divider hidden />
                     {
-                        claims?.length > 0
+                        getAttributesList().length>0
                             ? (
                                 <ClaimsList
                                     isLoading={ false }
-                                    list={ claims }
+                                    list={ getAttributesList() }
                                     localClaim={ ListType.ADD_EXTERNAL }
                                     onEdit={ onExternalClaimEdit }
                                     onDelete={ onExternalClaimDelete }
@@ -196,5 +221,6 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
  * Default props for the application creation wizard.
  */
 ExternalClaims.defaultProps = {
-    "data-testid": "external-claims"
+    "data-testid": "external-claims",
+    shouldShowInitialValues: true
 };
