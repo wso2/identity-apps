@@ -671,3 +671,44 @@
     background-position: right !important;
     background-origin: unset !important;
 }
+
+/*-------------------------------
+      Item List Selection
+--------------------------------*/
+
+.item-selection, .transfer-list.one-column-selection {
+
+    .transfer-segment {
+        overflow: hidden;
+
+        .ui.checkbox {
+            &.all-select {
+                margin: 20px 10px 0 0;
+                border: @defaultBorderWidth solid @defaultBorderColor;
+                background-color: @pageBackground;
+                padding: 10px;
+                border-radius: 3px;
+                font-weight: 500;
+            }
+        }
+
+        .transfer-list-segment {
+            max-height: 150px !important;
+            overflow: auto;
+
+            .transfer-list-sub-content {
+                color: #f99467;
+            }
+
+            thead tr:first-child {
+
+                th {
+                    position: sticky;
+                    position: -webkit-sticky;
+                    top: 0;
+                    z-index: 2;
+                }
+            }
+        }
+    }
+}
