@@ -36,10 +36,12 @@ export const getTechnologyLogos = () => {
         javascript: import(`../../../themes/${ theme }/assets/images/technologies/javascript-logo.svg`),
         macos: import(`../../../themes/${ theme }/assets/images/technologies/macos-logo.png`),
         nodejs: import(`../../../themes/${ theme }/assets/images/technologies/nodejs-logo.svg`),
+        oidc: import(`../../../themes/${ theme }/assets/images/protocols/openid-connect.png`),
         openidconnect: import(`../../../themes/${ theme }/assets/images/protocols/oidc.png`),
         python: import(`../../../themes/${ theme }/assets/images/technologies/python-logo.svg`),
         react: import(`../../../themes/${ theme }/assets/images/technologies/react-logo.svg`),
         saml: import(`../../../themes/${ theme }/assets/images/protocols/saml.png`),
+        scim: import(`../../../themes/${ theme }/assets/images/protocols/scim.png`),
         vue: import(`../../../themes/${ theme }/assets/images/technologies/vue-logo.svg`),
         windows: import(`../../../themes/${ theme }/assets/images/technologies/windows-logo.svg`)
     };
