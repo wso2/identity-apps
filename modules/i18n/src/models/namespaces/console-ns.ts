@@ -1631,6 +1631,11 @@ export interface ConsoleNS {
     };
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: FormAttributes;
+                };
+            };
             users: {
                 confirmations: {
                     terminateAllSessions: Confirmation;

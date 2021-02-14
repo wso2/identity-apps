@@ -3352,6 +3352,19 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
+            businessGroups: {
+                fields: {
+                    groupName: {
+                        label: "{{type}} නම",
+                        placeholder: "Enter {{type}} නම ඇතුළත් කරන්න",
+                        validations: {
+                            duplicate: "දී ඇති {{type}} with නම සමඟ {{type}} දැනටමත් පවතී.",
+                            empty: "ඉදිරියට යාමට {{type}} නම අවශ්‍ය වේ.",
+                            invalid: "{{type}} නමෙහි දිග 3-30 විය යුතු අතර හිස් තැන් අඩංගු විය නොහැක."
+                        }
+                    }
+                }
+            },
             approvals: {
                 list: {
                     columns: {
