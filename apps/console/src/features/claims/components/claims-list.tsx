@@ -548,6 +548,18 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     };
 
     /**
+     * Generates the initial for an attribute.
+     *
+     * @param {Claim} - An attribute.
+     *
+     * @return {string} - The last word.
+     */
+    const generateInitialLetter = (claim: Claim): string => {
+        const parts = claim.claimURI.split("/");
+        return parts[ parts.length - 1 ];
+    };
+
+    /**
      * Resolves data table columns.
      *
      * @return {TableColumnInterface[]}
@@ -599,7 +611,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     <AppAvatar
                                         image={ (
                                             <AnimatedAvatar
-                                                name={ claim.claimURI }
+                                                name={ generateInitialLetter(claim) }
                                                 size="mini"
                                                 data-testid={ `${ testId }-item-image-inner` }
                                             />
@@ -611,26 +623,15 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 </>
                                 <Header.Content>
                                     { claim.displayName }
+                                    <Header.Subheader>
+                                        <code>{ claim.claimURI }</code>
+                                    </Header.Subheader>
                                 </Header.Content>
                             </Header>
                         );
                     },
                     // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.name")
-                },
-                {
-                    allowToggleVisibility: false,
-                    dataIndex: "claimURI",
-                    id: "claimURI",
-                    key: "claimURI",
-                    render: (claim: Claim) => (
-                        <CopyInputField
-                            value={ claim ? claim.claimURI : "" }
-                            className="copy-field"
-                        />
-                    ),
-                    // TODO: Add i18n strings.
-                    title: t("console:manage.features.claims.list.columns.claimURI")
                 },
                 {
                     allowToggleVisibility: false,
@@ -719,6 +720,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 />
                                 <Header.Content>
                                     { claim.claimURI }
+                                    <Header.Subheader>
+                                        <code>{ claim.mappedLocalClaimURI }</code>
+                                    </Header.Subheader>
                                 </Header.Content>
                             </Header>
                         );
@@ -747,7 +751,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     data-testid={ `${ testId }-edit-external-claim` }
                                 />
                             )
-                            : claim.mappedLocalClaimURI
+                            : null
                     ),
                     // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.dialectURI")
