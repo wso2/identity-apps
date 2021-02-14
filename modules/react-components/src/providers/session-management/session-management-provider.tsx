@@ -42,6 +42,10 @@ export interface SessionManagementProviderPropsInterface extends TestableCompone
      */
     onSessionLogout: () => void;
     /**
+     * Login again callback.
+     */
+    onLoginAgain?: () => void;
+    /**
      * Modal options.
      */
     modalOptions?: SessionManagementModalOptionsInterface;
@@ -67,6 +71,18 @@ export interface SessionManagementModalOptionsInterface {
      * Secondary button text.
      */
     secondaryButtonText: string;
+    /**
+     * Login again button text.
+     */
+    loginAgainButtonText?: string;
+    /**
+     * Session timed out message i18n heading.
+     */
+    sessionTimedOutHeadingI18nKey?: string;
+    /**
+     * Session timed out description.
+     */
+    sessionTimedOutDescription?: string;
 }
 
 /**
@@ -102,6 +118,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     const {
         children,
         onSessionLogout,
+        onLoginAgain,
         onSessionTimeoutAbort,
         modalOptions
     } = props;
@@ -114,6 +131,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     ] = useState<SessionTimeoutEventStateInterface>(undefined);
     const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
     const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
+    const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
 
     useEffect(() => {
         window.addEventListener("popstate", e => {
@@ -176,6 +194,26 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     };
 
     /**
+     * Handles login again click.
+     */
+    const handleLoginAgain = (): void => {
+        performCleanupTasks();
+        setShowSessionTimeoutModal(false);
+        onLoginAgain();
+    };
+
+    /**
+     * Handles primary button click.
+     */
+    const handlePrimaryActionClick = (): void => {
+        if (sessionTimedOut) {
+            handleLoginAgain();
+        } else {
+            handleSessionTimeoutAbort();
+        }
+    };
+
+    /**
      * Performs housekeeping tasks.
      */
     const performCleanupTasks = () => {
@@ -205,7 +243,8 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 );
 
                 if (--timer < 0) {
-                    handleSessionLogout();
+                    setSessionTimedOut(true);
+                    performCleanupTasks();
                 }
             }, 1000);
         }
@@ -217,19 +256,20 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             <SessionTimeoutModal
                 open={ showSessionTimeoutModal }
                 onClose={ handleSessionTimeoutAbort }
-                onPrimaryActionClick={ handleSessionTimeoutAbort }
+                onPrimaryActionClick={ handlePrimaryActionClick }
                 onSecondaryActionClick={ handleSessionLogout }
                 heading={
                     <Trans
-                        i18nKey={ modalOptions?.headingI18nKey }
+                        i18nKey={ !sessionTimedOut?
+                            modalOptions?.headingI18nKey : modalOptions?.sessionTimedOutHeadingI18nKey }
                         tOptions={
                             { time: timerDisplay }
                         }
                     >
                     </Trans>
                 }
-                description={ modalOptions?.description }
-                primaryButtonText={ modalOptions?.primaryButtonText }
+                description={ sessionTimedOut ? modalOptions?.sessionTimedOutDescription : modalOptions?.description }
+                primaryButtonText={ sessionTimedOut ? modalOptions?.loginAgainButtonText : modalOptions?.primaryButtonText }
                 secondaryButtonText={ modalOptions?.secondaryButtonText }
             />
         </>

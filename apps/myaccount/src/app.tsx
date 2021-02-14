@@ -46,7 +46,7 @@ import {
 } from "./models";
 import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
-import { filterRoutes } from "./utils";
+import { endUserSession, filterRoutes } from "./utils";
 
 /**
  * Main App component.
@@ -178,6 +178,7 @@ export const App = (): ReactElement => {
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
+                                            onLoginAgain={ endUserSession }
                                             modalOptions={ {
                                                 description: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.description"),
@@ -185,7 +186,13 @@ export const App = (): ReactElement => {
                                                 primaryButtonText: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.primaryButton"),
                                                 secondaryButtonText: I18n.instance.t("myAccount:modals" +
-                                                    ".sessionTimeoutModal.secondaryButton")
+                                                    ".sessionTimeoutModal.secondaryButton"),
+                                                sessionTimedOutHeadingI18nKey: "myAccount:modals" +
+                                                    ".sessionTimeoutModal.sessionTimedOutHeading",
+                                                loginAgainButtonText: I18n.instance.t("myAccount:modals" +
+                                                    ".sessionTimeoutModal.loginAgainButton"),
+                                                sessionTimedOutDescription: I18n.instance.t("myAccount:modals" +
+                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
                                             } }
                                         >
                                             <>

@@ -117,7 +117,10 @@ export const console: ConsoleNS = {
                     "Veuillez choisir 'Rester connecté' si vous souhaitez poursuivre la session.",
                 heading: "Vous serez déconnecté(e) dans <1>{{ time }}</1>.",
                 primaryButton: "Rester connecté",
-                secondaryButton: "Déconnexion"
+                secondaryButton: "Déconnexion",
+                loginAgainButton: "Connectez-vous à nouveau",
+                sessionTimedOutHeading: "Votre session a expiré en raison d'une inactivité.",
+                sessionTimedOutDescription: "Veuillez vous reconnecter pour reprendre là où vous vous étiez arrêté."
             }
         },
         notifications: {

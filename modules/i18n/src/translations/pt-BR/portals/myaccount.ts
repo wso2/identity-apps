@@ -1253,7 +1253,10 @@ export const myAccount: MyAccountNS = {
                 "Selecione Permanecer conectado se desejar continuar a sessão.",
             heading: "Você será desconectado em <1>{{ time }}</1>.",
             primaryButton: "Permaneça logado",
-            secondaryButton: "Sair"
+            secondaryButton: "Sair",
+            loginAgainButton: "Entrar novamente",
+            sessionTimedOutHeading: "Sua sessão expirou devido à inatividade.",
+            sessionTimedOutDescription: "Faça login novamente para continuar de onde parou."
         }
     },
     pages: {
