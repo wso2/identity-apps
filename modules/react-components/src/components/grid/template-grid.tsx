@@ -160,6 +160,10 @@ interface WithPropertiesInterface {
      * Template Name.
      */
     name: TemplateCardPropsInterface["name"];
+    /**
+     * Template disabled or not.
+     */
+    disabled?: TemplateCardPropsInterface["disabled"];
 }
 
 
@@ -430,10 +434,11 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                 showTagIcon={ showTagIcon }
                                                 name={ template.name }
                                                 id={ template.id }
-                                                onClick={ onTemplateSelect }
+                                                onClick={ template.disabled ? null : onTemplateSelect }
                                                 imageSize={ templateIconSize }
                                                 tagSize={ tagSize }
                                                 data-testid={ template.id }
+                                                disabled={ template.disabled }
                                             />
                                         ))
                                     }
