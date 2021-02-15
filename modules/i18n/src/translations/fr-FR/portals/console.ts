@@ -1854,6 +1854,7 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        endSession: "Se déconnecter",
                                         introspection: "Introspection",
                                         keystore: "Key Set",
                                         jwks: "JWKS",

@@ -23,7 +23,7 @@ import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
 import {
@@ -238,6 +238,31 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             value={ oidcConfigurations?.wellKnownEndpoint  }
                             className="panel-url-input"
                             data-testid={ `${ testId }-introspection-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                        <GenericIcon
+                            icon={ <Icon className={ "mr-0" } name="power off" /> }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-logout-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.endSession") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.endSessionEndpoint  }
+                            className="panel-url-input"
+                            data-testid={ `${ testId }-logout-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>

@@ -1835,6 +1835,7 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "අවසරලත්",
+                                        endSession: "පිටතට",
                                         introspection: "ස්වයං විමර්ශනය",
                                         keystore: "යතුරු කට්ටලය",
                                         jwks: "JWKS",
