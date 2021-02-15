@@ -317,7 +317,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             { t("console:manage.features.claims.external.pageLayout.edit.header",
                                 { type: resolveType(attributeType, true) }) }
                         </Modal.Header>
-                        <Modal.Content >
+                        <Modal.Content scrolling className="edit-attribute-mapping">
                             <ExternalClaims
                                 data-testid={ `${ testId }-add-external-claims` }
                                 onSubmit={ (claims: AddExternalClaim[]) => {
@@ -326,7 +326,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 submitState={ triggerAddExternalClaim }
                                 values={ claims }
                                 shouldShowInitialValues={ false }
-                                attributeType= { attributeType }
+                                attributeType={ attributeType }
+                                wizard={ false }
                             />
                         </Modal.Content>
                         <Modal.Actions>
