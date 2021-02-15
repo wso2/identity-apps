@@ -36,7 +36,7 @@ import { OIDCScopesListInterface } from "../../models";
  * Interface for the wizard state.
  */
 interface WizardStateInterface {
-    [key: string]: any;
+    [ key: string ]: any;
 }
 
 /**
@@ -67,25 +67,25 @@ interface OIDCScopeCreateWizardPropsInterface extends TestableComponentInterface
 export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardPropsInterface> = (
     props: OIDCScopeCreateWizardPropsInterface
 ): ReactElement => {
-    const { closeWizard, currentStep, onUpdate, ["data-testid"]: testId } = props;
+    const { closeWizard, currentStep, onUpdate, [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const [finishSubmit, setFinishSubmit] = useTrigger();
-    const [submitGeneralDetails, setSubmitGeneralDetails] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
+    const [ submitGeneralDetails, setSubmitGeneralDetails ] = useTrigger();
 
-    const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
-    const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
-    const [OIDCAttributes, setOIDCAttributes] = useState<ExternalClaim[]>(undefined);
-    const [selectedAttributes, setSelectedAttributes] = useState<ExternalClaim[]>([]);
-    const [isClaimRequestLoading, setIsClaimRequestLoading] = useState<boolean>(false);
-    const [claims, setClaims] = useState<Claim[]>([]);
+    const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
+    const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
+    const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
+    const [ claims, setClaims ] = useState<Claim[]>([]);
 
-    const [alert, setAlert, alertComponent] = useWizardAlert();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         getAllLocalClaims(null)
@@ -119,7 +119,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         setCurrentWizardStep(currentWizardStep - 1);
 
         setPartiallyCompletedStep(undefined);
-    }, [partiallyCompletedStep]);
+    }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
         if (OIDCAttributes) {
@@ -132,7 +132,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
         const OIDCAttributeId = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
         getOIDCAttributes(OIDCAttributeId);
-    }, [OIDCAttributes, claims]);
+    }, [ OIDCAttributes, claims ]);
 
     const getOIDCAttributes = (claimId: string) => {
         getAllExternalClaims(claimId, null)
@@ -144,8 +144,8 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                         return localClaim.claimURI === mappedLocalClaimUri;
                     });
 
-                    if (matchedLocalClaim && matchedLocalClaim[0] && matchedLocalClaim[0].displayName) {
-                        externalClaim.localClaimDisplayName = matchedLocalClaim[0].displayName;
+                    if (matchedLocalClaim && matchedLocalClaim[ 0 ] && matchedLocalClaim[ 0 ].displayName) {
+                        externalClaim.localClaimDisplayName = matchedLocalClaim[ 0 ].displayName;
                     }
                 });
 
@@ -198,17 +198,17 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState({ ...wizardState, [formType]: values });
+        setWizardState({ ...wizardState, [ formType ]: values });
     };
 
     const handleWizardFormFinish = (attributes: string[]): void => {
         const data: OIDCScopesListInterface = {
             claims: attributes,
-            description: wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.description
-                ? wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.description
+            description: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
+                ? wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
                 : "This is the description of the scope",
-            displayName: wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.displayName,
-            name: wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.scopeName
+            displayName: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.displayName,
+            name: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.scopeName
         };
 
         setIsClaimRequestLoading(true);
@@ -247,7 +247,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     addAlert({
                         description: t(
                             "console:manage.features.oidcScopes.notifications.addOIDCScope" +
-                                ".genericError.description"
+                            ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
@@ -265,10 +265,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         {
             content: (
                 <AddOIDCScopeForm
-                    initialValues={ wizardState && wizardState[WizardStepsFormTypes.BASIC_DETAILS] }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     triggerSubmit={ submitGeneralDetails }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
-                    data-testid={ `${testId}-form` }
+                    data-testid={ `${ testId }-form` }
                 />
             ),
             icon: getOIDCScopeWizardStepIcons().general,
@@ -309,20 +309,20 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 <Heading as="h6">{ t("console:manage.features.oidcScopes.wizards.addScopeWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group current={ currentWizardStep } data-testid={ `${testId}-steps` }>
+                <Steps.Group current={ currentWizardStep } data-testid={ `${ testId }-steps` }>
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
-                            data-testid={ `${testId}-step-${index}` }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container attribute-list" scrolling>
                 { alert && alertComponent }
-                { STEPS[currentWizardStep].content }
+                { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -331,7 +331,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
-                                data-testid={ `${testId}-cancel-button` }
+                                data-testid={ `${ testId }-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -341,7 +341,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ navigateToNext }
-                                    data-testid={ `${testId}-next-button` }
+                                    data-testid={ `${ testId }-next-button` }
                                 >
                                     { t("common:next") }
                                     <Icon name="arrow right" />
@@ -351,7 +351,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ navigateToNext }
-                                    data-testid={ `${testId}-finish-button` }
+                                    data-testid={ `${ testId }-finish-button` }
                                 >
                                     { t("common:finish") }
                                 </PrimaryButton>
@@ -360,7 +360,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                 <LinkButton
                                     floated="right"
                                     onClick={ navigateToPrevious }
-                                    data-testid={ `${testId}-previous-button` }
+                                    data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left" />
                                     { t("common:previous") }
