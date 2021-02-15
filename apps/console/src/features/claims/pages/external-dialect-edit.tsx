@@ -27,12 +27,21 @@ import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
+import { ClaimManagementConstants } from "../constants";
+import { resolveType } from "../utils";
 
 /**
  * Props for the External Dialects edit page.
  */
 interface ExternalDialectEditPageInterface extends TestableComponentInterface {
+    /**
+     * Attribute MAPPING ID.
+     */
     id: string;
+    /**
+     * Attribute type
+     */
+    attributeType?: string;
 }
 
 /**
@@ -45,7 +54,7 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { ["data-testid"]: testId, id: dialectId } = props;
+    const { attributeType, ["data-testid"]: testId, id: dialectId } = props;
 
     const [dialect, setDialect] = useState<ClaimDialect>(null);
     const [claims, setClaims] = useState<ExternalClaim[]>([]);
@@ -150,7 +159,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                 error?.response?.data?.description ||
                                 t(
                                     "console:manage.features.claims.dialects.notifications." +
-                                        "fetchExternalClaims.genericError.description"
+                                    "fetchExternalClaims.genericError.description",
+                                    { type: resolveType(attributeType) }
                                 ),
                             level: AlertLevels.ERROR,
                             message:
@@ -183,7 +193,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     addAlert({
                         description: t(
                             "console:manage.features.claims.dialects.notifications." +
-                                "deleteDialect.success.description"
+                            "deleteDialect.success.description",
+                            { type: resolveType(attributeType, true) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -199,7 +210,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                    "deleteDialect.genericError.description"
+                                "deleteDialect.genericError.description",
+                                { type: resolveType(attributeType, true) }
                             ),
                         level: AlertLevels.ERROR,
                         message:
@@ -219,7 +231,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <Header as="h4">
-                            { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI") }
+                            { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI",
+                                { type: resolveType(attributeType, true) }) }
                         </Header>
                         <EmphasizedSegment>
                             { isLoading ? (
@@ -228,7 +241,11 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                     <Placeholder.Line length="medium" />
                                 </Placeholder>
                             ) : (
-                                <EditDialectDetails dialect={ dialect } data-testid={ `${testId}-edit-dialect-details` } />
+                                    <EditDialectDetails
+                                        dialect={ dialect }
+                                        data-testid={ `${ testId }-edit-dialect-details` }
+                                        attributeType= { attributeType }
+                                    />
                             ) }
                         </EmphasizedSegment>
                     </Grid.Column>
@@ -240,7 +257,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Header as="h4">
-                        { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes") }
+                        { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes",
+                            { type: resolveType(attributeType, true) }) }
                     </Header>
                 </Grid.Column>
             </Grid>
@@ -253,7 +271,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 isLoading={ isLoading }
                 claims={ claims }
                 update={ getExternalClaims }
-                data-testid={ `${testId}-edit-external-claims` }
+                data-testid={ `${ testId }-edit-external-claims` }
+                attributeType={ attributeType }
             />
 
             <Divider hidden />
@@ -266,9 +285,12 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             data-testid={ `${testId}-danger-zone-group` }
                         >
                             <DangerZone
-                                actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle") }
-                                header={ t("console:manage.features.claims.dialects.dangerZone.header") }
-                                subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader") }
+                                actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle",
+                                    { type: resolveType(attributeType, true) }) }
+                                header={ t("console:manage.features.claims.dialects.dangerZone.header",
+                                    { type: resolveType(attributeType, true) }) }
+                                subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader",
+                                    { type: resolveType(attributeType) }) }
                                 onActionClick={ () => setConfirmDelete(true) }
                                 data-testid={ `${testId}-dialect-delete-danger-zone` }
                             />
@@ -285,6 +307,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
  * Default props for the component.
  */
 ExternalDialectEditPage.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "external-dialect-edit"
 };
 

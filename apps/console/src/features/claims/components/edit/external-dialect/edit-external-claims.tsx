@@ -27,7 +27,9 @@ import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "sema
 import { ClaimsList, ListType } from "../../";
 import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../../../core";
 import { addExternalClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
+import { resolveType } from "../../../utils";
 import { ExternalClaims } from "../../wizard";
 
 interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
@@ -47,6 +49,10 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      * Sets to true if the list is being loaded.
      */
     isLoading: boolean;
+    /**
+     * Attribute type
+     */
+    attributeType?: string;
 }
 
 /**
@@ -61,6 +67,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
 ): ReactElement => {
 
     const {
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -72,7 +79,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const SORT_BY = [
         {
             key: 0,
-            text: t("console:manage.features.claims.external.attributes.attributeURI"),
+            text: t("console:manage.features.claims.external.attributes.attributeURI",
+                { type: resolveType(attributeType, true) }),
             value: "claimURI"
         },
         {
@@ -237,7 +245,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     filterAttributeOptions={ [
                         {
                             key: 0,
-                            text: t("console:manage.features.claims.external.attributes.attributeURI"),
+                            text: t("console:manage.features.claims.external.attributes.attributeURI",
+                                { type: resolveType(attributeType, true) }),
                             value: "claimURI"
                         },
                         {
@@ -248,17 +257,18 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     ] }
                     filterAttributePlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                            ".filterAttribute.placeholder")
+                            ".filterAttribute.placeholder", { type: resolveType(attributeType, true) })
                     }
                     filterConditionsPlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                            ".filterCondition.placeholder")
+                            ".filterCondition.placeholder", { type: resolveType(attributeType, true) })
                     }
                     filterValuePlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                             ".filterValue.placeholder")
                     }
-                    placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder") }
+                    placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder",
+                        { type: resolveType(attributeType, true) }) }
                     defaultSearchAttribute="claimURI"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
@@ -287,7 +297,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     data-testid={ `${ testId }-list-layout-add-button` }
                 >
                     <Icon name="add" />
-                    { t("console:manage.features.claims.external.pageLayout.edit.primaryAction") }
+                    { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                        { type: resolveType(attributeType, true) }) }
                 </PrimaryButton>
             }
             data-testid={ `${ testId }-list-layout` }
@@ -303,7 +314,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         closeOnDimmerClick={ false }
                     >
                         <Modal.Header>
-                            { t("console:manage.features.claims.external.pageLayout.edit.header") }
+                            { t("console:manage.features.claims.external.pageLayout.edit.header",
+                                { type: resolveType(attributeType, true) }) }
                         </Modal.Header>
                         <Modal.Content >
                             <ExternalClaims
@@ -314,6 +326,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 submitState={ triggerAddExternalClaim }
                                 values={ claims }
                                 shouldShowInitialValues={ false }
+                                attributeType= { attributeType }
                             />
                         </Modal.Content>
                         <Modal.Actions>
@@ -345,7 +358,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
-                                        text: t("console:manage.features.claims.external.attributes.attributeURI"),
+                                        text: t("console:manage.features.claims.external.attributes.attributeURI",
+                                            { type: resolveType(attributeType, true) }),
                                         value: "claimURI"
                                     },
                                     {
@@ -356,7 +370,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 ] }
                                 filterAttributePlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                                        ".filterAttribute.placeholder")
+                                        ".filterAttribute.placeholder", { type: resolveType(attributeType, true) })
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
@@ -366,7 +380,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterValue.placeholder")
                                 }
-                                placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder") }
+                                placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder",
+                                    { type: resolveType(attributeType, true) }) }
                                 defaultSearchAttribute="claimURI"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
@@ -393,6 +408,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
  * Default props for the component.
  */
 EditExternalClaims.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "edit-external-claims",
     isLoading: true
 };

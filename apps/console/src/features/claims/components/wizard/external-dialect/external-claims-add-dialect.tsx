@@ -28,6 +28,7 @@ import { ClaimEventClickItem, ClaimsList, ListType } from "../..";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
+import { resolveType } from "../../../utils";
 import { AddExternalClaims } from "../../add";
 
 /**
@@ -58,6 +59,10 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * Specifies if the initial values passed should be shown.
      */
     shouldShowInitialValues?: boolean;
+    /**
+     * Specifies the attribute type.
+     */
+    attributeType?: string;
 }
 
 /**
@@ -77,6 +82,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         values,
         onExternalClaimsChanged,
         shouldShowInitialValues,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -186,6 +192,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                         onSubmit={ onExternalClaimAdd }
                         externalClaims={ claims }
                         data-testid={ `${ testId }-add-external-claims` }
+                        attributeType={ attributeType }
                     />
                     <Divider hidden />
                     {
@@ -198,13 +205,15 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     onEdit={ onExternalClaimEdit }
                                     onDelete={ onExternalClaimDelete }
                                     data-testid={ `${ testId }-list` }
+                                    attributeType={ attributeType }
                                 />
                             )
                             : (
                                 <EmptyPlaceholder
-                                    title={ t("console:manage.features.claims.external.placeholders.empty.title") }
+                                    title={ t("console:manage.features.claims.external.placeholders.empty.title",
+                                        { type: resolveType(attributeType, true) }) }
                                     subtitle={ [ t("console:manage.features.claims.external." +
-                                        "placeholders.empty.subtitle") ] }
+                                        "placeholders.empty.subtitle", { type: resolveType(attributeType) }) ] }
                                     image={ getEmptyPlaceholderIllustrations().emptyList }
                                     imageSize="tiny"
                                     data-testid={ `${ testId }-empty-placeholder` }
@@ -221,6 +230,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
  * Default props for the application creation wizard.
  */
 ExternalClaims.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "external-claims",
     shouldShowInitialValues: true
 };
