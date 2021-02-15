@@ -4530,7 +4530,7 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         action: "Confirm",
-                        content: "If you delete this attribute mapping, all the associated external attributes will "
+                        content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                             + "also be deleted.Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
@@ -4538,14 +4538,14 @@ export const console: ConsoleNS = {
                             "mapping."
                     },
                     dangerZone: {
-                        actionTitle: "Delete Attribute Mapping",
-                        header: "Delete Attribute Mapping",
-                        subheader: "Once you delete an attribute mapping, there is no going back. " +
+                        actionTitle: "Delete {{type}} Attribute Mapping",
+                        header: "Delete {{type}} Attribute Mapping",
+                        subheader: "Once you delete this {{type}} attribute mapping, there is no going back. " +
                             "Please be certain."
                     },
                     forms: {
                         dialectURI: {
-                            label: "Attribute Mapping URI",
+                            label: "{{type}} Attribute Mapping URI",
                             placeholder: "Enter an attribute mapping URI",
                             requiredErrorMessage: "Enter an attribute mapping URI"
                         },
@@ -4559,9 +4559,9 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             genericError: {
-                                description: "The attribute mapping has been added but not all external "
+                                description: "The attribute mapping has been added but not all {{type}} "
                                     + "attributes were added successfully",
-                                message: "External attributes couldn't be added"
+                                message: "{{type}} attributes couldn't be added"
                             },
                             success: {
                                 description: "The attribute mapping has been added successfully",
@@ -4600,7 +4600,7 @@ export const console: ConsoleNS = {
                         },
                         fetchExternalClaims: {
                             genericError: {
-                                description: "There was an error while fetching the external attributes.",
+                                description: "There was an error while fetching the {{type}} attributes",
                                 message: "Something went wrong"
                             }
                         },
@@ -4619,8 +4619,8 @@ export const console: ConsoleNS = {
                         edit: {
                             back: "Go back to attribute mappings",
                             description: "Edit attribute mapping",
-                            updateDialectURI: "Update Attribute Mapping URI",
-                            updateExternalAttributes: "Update Attribute Mapping"
+                            updateDialectURI: "Update {{type}} Attribute Mapping URI",
+                            updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
                             description: "Create and manage attribute dialects",
@@ -4633,13 +4633,13 @@ export const console: ConsoleNS = {
                         header: "Add Attribute Mapping",
                         steps: {
                             dialectURI: "Attribute Mapping URI",
-                            externalAttribute: "External Attribute",
+                            externalAttribute: "{{type}} Attribute",
                             summary: "Summary"
                         },
                         summary: {
-                            externalAttribute: "External Attribute URI",
+                            externalAttribute: "{{type}} Attribute URI",
                             mappedAttribute: "Mapped Attribute URI",
-                            notFound: "No external attribute has been added."
+                            notFound: "No {{type}} attribute has been added."
                         }
                     }
                 },
@@ -4649,7 +4649,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. Attribute URI etc."
+                                    placeholder: "E.g. {{type}} Attribute URI etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4662,42 +4662,45 @@ export const console: ConsoleNS = {
                         placeholder: "Search by Attribute URI"
                     },
                     attributes: {
-                        attributeURI: "Attribute URI",
+                        attributeURI: "{{type}} Attribute URI",
                         mappedClaim: "Mapped Attribute URI"
                     },
                     forms: {
                         attributeURI: {
-                            label: "Attribute URI",
-                            placeholder: "Enter an attribute URI",
-                            requiredErrorMessage: "Attribute URI is required"
+                            label: "{{type}} Attribute URI",
+                            placeholder: "Enter {{type}} attribute URI",
+                            requiredErrorMessage: "{{type}} Attribute URI is required",
+                            validationErrorMessages: {
+                                duplicateName: "The {{type}} attribute URI already exists."
+                            }
                         },
                         localAttribute: {
                             label: "Attribute URI to map to",
                             placeholder: "Select an Attribute",
                             requiredErrorMessage: "Select an attribute to map to"
                         },
-                        submit: "Add External Attribute"
+                        submit: "Add Attribute Mapping"
                     },
                     notifications: {
                         addExternalAttribute: {
                             genericError: {
-                                description: "An error occurred while adding the external attribute.",
+                                description: "An error occurred while adding the {{type}} attribute.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been added to the attribute mapping" +
+                                description: "The {{type}} attribute has been added to the attribute mapping" +
                                     " successfully!",
-                                message: "External attribute added successfully"
+                                message: "{{type}} attribute added successfully"
                             }
                         },
                         deleteExternalClaim: {
                             genericError: {
-                                description: "There was an error while deleting the external attribute.",
+                                description: "There was an error while deleting the {{type}} attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been deleted successfully!",
-                                message: "External attribute deleted successfully"
+                                description: "The {{type}} attribute has been deleted successfully!",
+                                message: "{{type}} attribute deleted successfully"
                             }
                         },
                         fetchExternalClaims: {
@@ -4706,42 +4709,42 @@ export const console: ConsoleNS = {
                                 message: "Retrieval error"
                             },
                             genericError: {
-                                description: "Couldn't retrieve external claims.",
+                                description: "Couldn't retrieve {{type}} attributes.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "Successfully retrieved external claims.",
+                                description: "Successfully retrieved {{type}} attributes.",
                                 message: "Retrieval successful"
                             }
                         },
                         getExternalAttribute: {
                             genericError: {
-                                description: "There was an error while fetching the external attribute.",
+                                description: "There was an error while fetching the {{type}} attribute",
                                 message: "Something went wrong"
                             }
                         },
                         updateExternalAttribute: {
                             genericError: {
-                                description: "There was an error while updating the" + " external attribute",
+                                description: "There was an error while updating the" + " {{type}} attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been updated successfully!",
-                                message: "External attribute updated successfully"
+                                description: "The {{type}} attribute has been updated successfully!",
+                                message: "{{type}} attribute updated successfully"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            header: "Add External Attribute",
-                            primaryAction: "New External Attribute"
+                            header: "Add {{type}} Attribute",
+                            primaryAction: "New {{type}} Attribute"
                         }
                     },
                     placeholders: {
                         empty: {
-                            subtitle: "Currently, there are no external attributes available for "
+                            subtitle: "Currently, there are no {{type}} attributes available for "
                                 + "this attribute mapping.",
-                            title: "No External Attributes"
+                            title: "No {{type}} Attributes"
                         }
                     }
                 },
@@ -4757,12 +4760,12 @@ export const console: ConsoleNS = {
                         content: "{{message}} Please proceed with caution.",
                         dialect: {
                             message: "If you delete this attribute mapping, all the"
-                                + " associated external attributes will also be deleted.",
+                                + " associated {{type}} attributes will also be deleted.",
                             name: "attribute mapping"
                         },
                         external: {
-                            message: "This will permanently delete the external attribute.",
-                            name: "external attribute"
+                            message: "This will permanently delete the {{type}} attribute.",
+                            name: "{{type}} attribute"
                         },
                         header: "Are you sure?",
                         hint: "Please type <1>{{assertion}}</1> to confirm.",
@@ -4776,15 +4779,15 @@ export const console: ConsoleNS = {
                     placeholders: {
                         emptyList: {
                             action: {
-                                dialect: "New External Attribute",
-                                external: "New External Attribute",
+                                dialect: "New {{type}} Attribute",
+                                external: "New {{type}} Attribute",
                                 local: "New Attribute"
                             },
                             subtitle: "There are currently no results available."
                                 + "You can add a new item easily by following the" + "steps in the creation wizard.",
                             title: {
                                 dialect: "Add an Attribute Mapping",
-                                external: "Add an External Attribute",
+                                external: "Add an {{type}} Attribute",
                                 local: "Add an Attribute"
                             }
                         },
@@ -4966,7 +4969,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "New Attribute",
-                            back: "Go back to attributes and attribute mappings",
+                            back: "Go back to attributes and mappings",
                             description: "Create and manage attributes",
                             title: "Attributes"
                         }
