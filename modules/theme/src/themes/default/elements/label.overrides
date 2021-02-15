@@ -91,3 +91,15 @@
         }
     }
 }
+
+/*******************************
+        Header Label
+*******************************/
+
+.ui.header {
+    .ui.label {
+        &.no-margin-left {
+            margin-left: 0 !important;
+        }
+    }
+}

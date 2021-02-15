@@ -5537,10 +5537,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             scopeName: {
-                                label: "Scope name",
-                                placeholder: "Enter the scope name",
+                                label: "Scope",
+                                placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "Scope name is a required field"
+                                    empty: "Scope is a required field",
+                                    invalid: "The scope contains invalid characters."
                                 }
                             }
                         }
@@ -5559,7 +5560,7 @@ export const console: ConsoleNS = {
                         },
                         title: "No OIDC Scopes"
                     },
-                    searchPlaceholder: "Search by scope name"
+                    searchPlaceholder: "Search by scope"
                 },
                 notifications: {
                     addOIDCClaim: {
@@ -5701,7 +5702,7 @@ export const console: ConsoleNS = {
                             previous: "Previous"
                         },
                         claimList: {
-                            searchPlaceholder: "search attributes",
+                            searchPlaceholder: "Search attributes",
                             table: {
                                 emptyPlaceholders: {
                                     assigned: "All the available attributes are assigned for this OIDC scope.",

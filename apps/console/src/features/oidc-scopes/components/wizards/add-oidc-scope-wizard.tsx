@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getAllExternalClaims } from "@wso2is/core/api";
-import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
+import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
-import { OIDCScopeAttributesList } from "./oidc-scope-attribute-list";
+import { AttributeSelectList } from "../../../core";
 import { createOIDCScope } from "../../api";
 import { getOIDCScopeWizardStepIcons } from "../../configs";
 import { OIDCScopesManagementConstants } from "../../constants";
@@ -46,7 +46,7 @@ interface WizardStateInterface {
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
-    CLAIM_LIST= "ClaimList"
+    CLAIM_LIST = "ClaimList"
 }
 
 /**
@@ -65,14 +65,9 @@ interface OIDCScopeCreateWizardPropsInterface extends TestableComponentInterface
  * @return {ReactElement}
  */
 export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardPropsInterface> = (
-    props: OIDCScopeCreateWizardPropsInterface): ReactElement => {
-
-    const {
-        closeWizard,
-        currentStep,
-        onUpdate,
-        [ "data-testid" ]: testId
-    } = props;
+    props: OIDCScopeCreateWizardPropsInterface
+): ReactElement => {
+    const { closeWizard, currentStep, onUpdate, [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -87,10 +82,30 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
-    const [ filterSelectedClaims, setFilterSelectedClaims ] = useState<ExternalClaim[]>([]);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
+    const [ claims, setClaims ] = useState<Claim[]>([]);
 
-    const [alert, setAlert, alertComponent]=useWizardAlert();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    useEffect(() => {
+        getAllLocalClaims(null)
+            .then((response) => {
+                setClaims(response);
+            })
+            .catch((error) => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.response?.data?.description ||
+                            t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.response?.data?.message ||
+                            t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                    })
+                );
+            });
+    }, []);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -104,20 +119,36 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         setCurrentWizardStep(currentWizardStep - 1);
 
         setPartiallyCompletedStep(undefined);
-    }, [partiallyCompletedStep]);
+    }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
         if (OIDCAttributes) {
             return;
         }
+
+        if (!claims || claims.length === 0) {
+            return;
+        }
+
         const OIDCAttributeId = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
         getOIDCAttributes(OIDCAttributeId);
-    }, [ OIDCAttributes ] );
+    }, [ OIDCAttributes, claims ]);
 
     const getOIDCAttributes = (claimId: string) => {
         getAllExternalClaims(claimId, null)
             .then((response) => {
                 setIsClaimRequestLoading(true);
+                response?.forEach((externalClaim) => {
+                    const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
+                    const matchedLocalClaim = claims.filter((localClaim) => {
+                        return localClaim.claimURI === mappedLocalClaimUri;
+                    });
+
+                    if (matchedLocalClaim && matchedLocalClaim[ 0 ] && matchedLocalClaim[ 0 ].displayName) {
+                        externalClaim.localClaimDisplayName = matchedLocalClaim[ 0 ].displayName;
+                    }
+                });
+
                 setOIDCAttributes(response);
             })
             .catch((error) => {
@@ -125,18 +156,19 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.error" +
-                            ".message")
+                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.error" + ".message")
                     });
 
                     return;
                 }
                 setAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
-                        ".genericError.description"),
+                    description: t(
+                        "console:manage.features.oidcScopes.notifications.fetchOIDClaims" + ".genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.genericError" +
-                        ".message")
+                    message: t(
+                        "console:manage.features.oidcScopes.notifications.fetchOIDClaims.genericError" + ".message"
+                    )
                 });
             })
             .finally(() => {
@@ -166,11 +198,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState({ ...wizardState, [formType]: values });
+        setWizardState({ ...wizardState, [ formType ]: values });
     };
 
     const handleWizardFormFinish = (attributes: string[]): void => {
-
         const data: OIDCScopesListInterface = {
             claims: attributes,
             description: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
@@ -185,35 +216,45 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         createOIDCScope(data)
             .then(() => {
                 closeWizard();
-                dispatch(addAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
-                        ".success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
-                        ".success.message")
-                }));
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.oidcScopes.notifications.addOIDCScope" + ".success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.oidcScopes.notifications.addOIDCScope" + ".success.message")
+                    })
+                );
                 onUpdate();
             })
             .catch((error) => {
                 closeWizard();
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.oidcScopes.notifications.addOIDCScope.error." +
-                            "message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.oidcScopes.notifications.addOIDCScope.error." + "message"
+                            )
+                        })
+                    );
 
                     return;
                 }
 
-                dispatch(addAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.oidcScopes.notifications.addOIDCScope.genericError." +
-                        "message")
-                }));
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.oidcScopes.notifications.addOIDCScope" +
+                            ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.oidcScopes.notifications.addOIDCScope.genericError." + "message"
+                        )
+                    })
+                );
             })
             .finally(() => {
                 setIsClaimRequestLoading(false);
@@ -235,15 +276,16 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         },
         {
             content: (
-                <OIDCScopeAttributesList
+                <AttributeSelectList
+                    availableExternalClaims={ OIDCAttributes }
+                    setAvailableExternalClaims={ setSelectedAttributes }
+                    setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
+                        const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
+                        handleWizardFormFinish(claimURIs);
+                    } }
+                    onUpdate={ () => null }
+                    selectedExternalClaims={ selectedAttributes }
                     triggerSubmit={ finishSubmit }
-                    onSubmit={ (values) => handleWizardFormFinish(values) }
-                    selectedClaims={ selectedAttributes }
-                    setSelectedClaims={ setFilterSelectedClaims }
-                    setInitialSelectedClaims={ setSelectedAttributes }
-                    availableClaims={ OIDCAttributes }
-                    setAvailableClaims={ setOIDCAttributes }
-                    data-testid={ `${ testId }-wizard` }
                 />
             ),
             icon: getOIDCScopeWizardStepIcons().claimConfig,
@@ -264,15 +306,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         >
             <Modal.Header className="wizard-header">
                 { t("console:manage.features.oidcScopes.wizards.addScopeWizard.title") }
-                <Heading as="h6">
-                    { t("console:manage.features.oidcScopes.wizards.addScopeWizard.subTitle") }
-                </Heading>
+                <Heading as="h6">{ t("console:manage.features.oidcScopes.wizards.addScopeWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group
-                    current={ currentWizardStep }
-                    data-testid={ `${ testId }-steps` }
-                >
+                <Steps.Group current={ currentWizardStep } data-testid={ `${ testId }-steps` }>
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
@@ -283,7 +320,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     )) }
                 </Steps.Group>
             </Modal.Content>
-            <Modal.Content className="content-container" scrolling>
+            <Modal.Content className="content-container attribute-list" scrolling>
                 { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
@@ -307,7 +344,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                     data-testid={ `${ testId }-next-button` }
                                 >
                                     { t("common:next") }
-                                    <Icon name="arrow right"/>
+                                    <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
@@ -325,7 +362,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                                     onClick={ navigateToPrevious }
                                     data-testid={ `${ testId }-previous-button` }
                                 >
-                                    <Icon name="arrow left"/>
+                                    <Icon name="arrow left" />
                                     { t("common:previous") }
                                 </LinkButton>
                             ) }
@@ -336,7 +373,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         </Modal>
     );
 };
-
 
 /**
  * Default props for the add OIDC scope form component.

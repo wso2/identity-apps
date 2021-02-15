@@ -453,7 +453,7 @@ export const console: ConsoleNS = {
                         leftAction: "Autoriser"
                     },
                     positive: {
-                        content: "L'origine de l'URL de redirection {{urlLink}} est autorisée à envoyer des " + 
+                        content: "L'origine de l'URL de redirection {{urlLink}} est autorisée à envoyer des " +
                             "requêtes CORS aux API {{productName}}.",
                         detailedContent: {
                             0: "",
@@ -761,9 +761,9 @@ export const console: ConsoleNS = {
                                             "défaut pertinents seront rétablis aux valeurs mappées par défaut par " +
                                             "cette action. Veuillez l'utiliser avec précaution car vous ne pourrez " +
                                             "pas récupérer les valeurs d'attribut personnalisé mappées.",
-                                        confirmationHeading: "Confirmer le basculement du mappage des " + 
+                                        confirmationHeading: "Confirmer le basculement du mappage des " +
                                             "revendications sur la valeur par défaut",
-                                        confirmationMessage: "Cette action rétablira les valeurs mappées aux " + 
+                                        confirmationMessage: "Cette action rétablira les valeurs mappées aux " +
                                             "valeurs par défaut."
                                     },
                                     searchPlaceholder: "Attributs de recherche"
@@ -4680,7 +4680,8 @@ export const console: ConsoleNS = {
                                 label: "Nom du scope",
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
-                                    empty: "Le nom du scope est un champ obligatoire"
+                                    empty: "Le nom du scope est un champ obligatoire",
+                                    invalid: "La portée contient des caractères non valides."
                                 }
                             }
                         }
