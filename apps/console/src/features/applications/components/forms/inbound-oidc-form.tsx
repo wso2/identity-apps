@@ -20,15 +20,15 @@ import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInter
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import { 
-    ConfirmationModal, 
-    CopyInputField, 
-    Heading, 
-    Hint, 
-    LinkButton, 
-    Text, 
-    URLInput, 
-    Code 
+import {
+    Code,
+    ConfirmationModal,
+    CopyInputField,
+    Heading,
+    Hint,
+    LinkButton,
+    Text,
+    URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash/get";
@@ -56,6 +56,8 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -2250,6 +2252,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             </div>
                                         </Form.Field>
+                                        { ((initialValues?.state !== State.REVOKED) &&
+                                            SinglePageApplicationTemplate.id === template.id) ?
+                                            (<Message info={ true }>
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:develop.features.applications." +
+                                                        "forms.inboundOIDC.fields.clientSecret.message"
+                                                    }
+                                                    values={ { productName: config.ui.productName } }
+                                                >
+                                                    productName does not issue a&nbsp;
+                                                    <Code withBackground>client_secret</Code> to native
+                                                    applications or web browser-based applications for the purpose
+                                                    of client authentication.
+                                                </Trans>
+                                            </Message>) : null
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             )

@@ -1153,6 +1153,9 @@ export const console: ConsoleNS = {
                                     "veuillez régénérer à nouveau le secret.",
                                 hideSecret: "Cacher le secret",
                                 label: "Secret du client",
+                                message: "{{productName}} n'émet pas de <1>client_secret</1>" +
+                                    " aux applications natives ou aux applications basées sur un navigateur " +
+                                    "Web à des fins d'authentification client.",
                                 placeholder: "Saisir le secret du client",
                                 showSecret: "Montrez le secret",
                                 validations: {
