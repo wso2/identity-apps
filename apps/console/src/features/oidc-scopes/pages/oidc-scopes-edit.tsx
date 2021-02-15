@@ -262,18 +262,6 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
     return (
         <PageLayout
-            action={
-                <PrimaryButton
-                    data-testid="user-mgt-roles-list-update-button"
-                    size="medium"
-                    icon={ <Icon name="add" /> }
-                    floated="right"
-                    onClick={ () => setTriggerAttributeModal() }
-                >
-                    <Icon name="add" />
-                    { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
-                </PrimaryButton>
-            }
             isLoading={ isScopeRequestLoading }
             title={ scope.displayName }
             contentTopMargin={ true }
@@ -395,6 +383,18 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             </EmphasizedSegment>
             <Divider hidden />
             <ListLayout
+                rightActionPanel={
+                    <PrimaryButton
+                        data-testid="user-mgt-roles-list-update-button"
+                        size="medium"
+                        icon={ <Icon name="add" /> }
+                        floated="right"
+                        onClick={ () => setTriggerAttributeModal() }
+                    >
+                        <Icon name="add" />
+                        { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
+                    </PrimaryButton>
+                }
                 showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
                 listItemLimit={ listItemLimit }
                 showPagination={ false }
