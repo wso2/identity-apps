@@ -39,7 +39,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, SemanticICONS, Label } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
@@ -49,8 +49,8 @@ import {
     history
 } from "../../core";
 import { deleteOIDCScope } from "../api";
-import { OIDCScopesListInterface } from "../models";
 import { OIDCScopesManagementConstants } from "../constants";
+import { OIDCScopesListInterface } from "../models";
 
 /**
  *
@@ -232,7 +232,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <Header.Content>
                             { scope.displayName }
                             <Header.Subheader>
-                                <Label size="mini" className="no-margin-left"><code>{ scope.name }</code></Label>
+                                <Label size="small" className="no-margin-left"><code>{ scope.name }</code></Label>
                                 { " " + (scope.description ?? "") }
                             </Header.Subheader>
                         </Header.Content>
