@@ -51,7 +51,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
         }
-    }, [ selectedExternalClaims, availableExternalClaims]);
+    }, [ selectedExternalClaims, availableExternalClaims ]);
 
     useEffect(() => {
         if (init.current) {
