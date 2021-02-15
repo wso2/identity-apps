@@ -30,7 +30,7 @@
 
     String callback = (String) request.getAttribute("callback");
     if (StringUtils.isBlank(callback)) {
-        IdentityManagementEndpointUtil.getUserPortalUrl(
+        callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
     String confirm = (String) request.getAttribute("confirm");

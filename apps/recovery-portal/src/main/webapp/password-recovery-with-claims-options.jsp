@@ -45,7 +45,7 @@
 
     String recaptchaResponse = request.getParameter("g-recaptcha-response");
     if (StringUtils.isBlank(callback)) {
-        IdentityManagementEndpointUtil.getUserPortalUrl(
+        callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
