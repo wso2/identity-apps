@@ -279,8 +279,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Header>
                                                 <List.Description data-testid={ `${ testId }-local-dialect` }>
                                                     { t(
-                                                        "console:manage.features.claims.dialects.sections." +
-                                                        "manageAttributeMappings.oidc.description"
+                                                        "console:manage.features.claims.attributeMappings." +
+                                                        "oidc.description"
                                                     ) }
                                                 </List.Description>
                                             </Grid.Column>
@@ -335,8 +335,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Header>
                                                 <List.Description data-testid={ `${ testId }-local-dialect` }>
                                                     { t(
-                                                        "console:manage.features.claims.dialects.sections." +
-                                                        "manageAttributeMappings.scim.description"
+                                                        "console:manage.features.claims.attributeMappings" +
+                                                        ".scim.description"
                                                     ) }
                                                 </List.Description>
                                             </Grid.Column>
@@ -393,8 +393,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Header>
                                                 <List.Description data-testid={ `${ testId }-local-dialect` }>
                                                     { t(
-                                                        "console:manage.features.claims.dialects.sections." +
-                                                        "manageAttributeMappings.custom.description"
+                                                        "console:manage.features.claims.attributeMappings." +
+                                                        "custom.description"
                                                     ) }
                                                 </List.Description>
                                             </Grid.Column>
