@@ -314,7 +314,6 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                 options={
                     {
                         lineWrapping,
-                        ...options,
                         autoCloseBrackets: smart,
                         autoCloseTags: smart,
                         extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
@@ -329,7 +328,8 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                         mode: options?.mode ? options.mode : resolveMode(language),
                         readOnly,
                         tabSize,
-                        theme: resolveTheme()
+                        theme: resolveTheme(),
+                        ...options
                     }
                 }
                 data-testid={ testId }
