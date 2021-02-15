@@ -22,7 +22,7 @@ import {
 } from "@wso2/identity-oidc-js";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
-import { handleSignIn } from "../store/actions";
+import { handleSignOut } from "../store/actions";
 
 /**
  * Clears the session related information and sign out from the session.
@@ -31,7 +31,7 @@ export const endUserSession = (): void => {
     const auth = IdentityClient.getInstance();
     auth.endUserSession()
         .then(() => {
-            store.dispatch(handleSignIn());
+            store.dispatch(handleSignOut());
         })
         .catch(() => {
             // TODO: Add a notification message.

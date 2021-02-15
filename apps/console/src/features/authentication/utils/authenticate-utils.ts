@@ -24,7 +24,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { store } from "../../core";
-import { handleSignIn } from "../store/actions";
+import { handleSignOut } from "../store/actions";
 
 /**
  * Utility class for authenticate operations.
@@ -47,7 +47,7 @@ export class AuthenticateUtils {
 
         auth.endUserSession()
             .then(() => {
-                store.dispatch(handleSignIn());
+                store.dispatch(handleSignOut());
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
