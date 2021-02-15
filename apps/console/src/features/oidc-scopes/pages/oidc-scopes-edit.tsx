@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Divider, Header, Icon, Input, Label, Placeholder } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Input, Label, Placeholder } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
@@ -261,73 +261,84 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             >
                 <Header>Update Scope</Header>
                 <EmphasizedSegment>
-                    { !isScopeRequestLoading ? (
-                        <Forms
-                            onSubmit={ (values: Map<string, FormValue>) => {
-                                updateOIDCScopeDetails(scope.name, {
-                                    claims: scope.claims,
-                                    description: values.get("description").toString(),
-                                    displayName: values.get("displayName").toString()
-                                })
-                                    .then(() => {
-                                        dispatch(
-                                            addAlert({
-                                                description:
-                                                    t("console:manage.features.oidcScopes.notifications." +
-                                                        "updateOIDCScope.success.description"),
-                                                level: AlertLevels.SUCCESS,
-                                                message: t("console:manage.features.oidcScopes.notifications." +
-                                                    "updateOIDCScope.success.message")
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 6 }>
+                                { !isScopeRequestLoading ? (
+                                    <Forms
+                                        onSubmit={ (values: Map<string, FormValue>) => {
+                                            updateOIDCScopeDetails(scope.name, {
+                                                claims: scope.claims,
+                                                description: values.get("description").toString(),
+                                                displayName: values.get("displayName").toString()
                                             })
-                                        );
-                                        getScope(scopeName);
-                                    })
-                                    .catch((error: IdentityAppsApiException) => {
-                                        dispatch(
-                                            addAlert({
-                                                description: error?.response?.data?.description
-                                                    ?? t("console:manage.features.oidcScopes.notifications." +
-                                                        "updateOIDCScope.genericError.description"),
-                                                level: AlertLevels.ERROR,
-                                                message: error?.response?.data?.message
-                                                    ?? t("console:manage.features.oidcScopes.notifications." +
-                                                        "updateOIDCScope.genericError.message")
-                                            })
-                                        );
-                                    });
-                            } }
-                        >
-                            <Field
-                                type="text"
-                                name="displayName"
-                                label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
-                                    "inputs.displayName.label") }
-                                placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                    "displayName.placeholder") }
-                                value={ scope.displayName }
-                                required={ true }
-                                requiredErrorMessage={ t("console:manage.features.oidcScopes.forms." +
-                                    "addScopeForm.inputs.displayName.validations.empty") }
-                            />
-                            <Field
-                                type="text"
-                                name="description"
-                                label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
-                                    "inputs.description.label") }
-                                placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                    "description.placeholder") }
-                                value={ scope.description }
-                                required={ false }
-                                requiredErrorMessage=""
-                            />
-                            <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
-                        </Forms>
-                    ) : (
-                            <Placeholder>
-                                <Placeholder.Line length="medium" />
-                                <Placeholder.Line length="short" />
-                            </Placeholder>
-                        ) }
+                                                .then(() => {
+                                                    dispatch(
+                                                        addAlert({
+                                                            description:
+                                                                t("console:manage.features.oidcScopes.notifications." +
+                                                                    "updateOIDCScope.success.description"),
+                                                            level: AlertLevels.SUCCESS,
+                                                            message: t("console:manage.features.oidcScopes." +
+                                                                "notifications.updateOIDCScope.success.message")
+                                                        })
+                                                    );
+                                                    getScope(scopeName);
+                                                })
+                                                .catch((error: IdentityAppsApiException) => {
+                                                    dispatch(
+                                                        addAlert({
+                                                            description: error?.response?.data?.description
+                                                                ?? t("console:manage.features.oidcScopes." +
+                                                                    "notifications.updateOIDCScope.genericError." +
+                                                                    "description"),
+                                                            level: AlertLevels.ERROR,
+                                                            message: error?.response?.data?.message
+                                                                ?? t("console:manage.features.oidcScopes."+
+                                                                    "notifications.updateOIDCScope.genericError." +
+                                                                    "message")
+
+                                                        })
+                                                    );
+                                                });
+                                        } }
+                                    >
+                                        <Field
+                                            type="text"
+                                            name="displayName"
+                                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                                                "inputs.displayName.label") }
+                                            placeholder={ t("console:manage.features.oidcScopes.forms." +
+                                                "addScopeForm.inputs." +
+                                                "displayName.placeholder") }
+                                            value={ scope.displayName }
+                                            required={ true }
+                                            requiredErrorMessage={ t("console:manage.features.oidcScopes.forms." +
+                                                "addScopeForm.inputs.displayName.validations.empty") }
+                                        />
+                                        <Field
+                                            type="text"
+                                            name="description"
+                                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                                                "inputs.description.label") }
+                                            placeholder={ t("console:manage.features." +
+                                                "oidcScopes.forms.addScopeForm.inputs." +
+                                                "description.placeholder") }
+                                            value={ scope.description }
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                        />
+                                        <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
+                                    </Forms>
+                                ) : (
+                                        <Placeholder>
+                                            <Placeholder.Line length="medium" />
+                                            <Placeholder.Line length="short" />
+                                        </Placeholder>
+                                    ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                 </EmphasizedSegment>
                 <Divider hidden />
                 <ListLayout
