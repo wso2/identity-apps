@@ -725,9 +725,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 />
                                 <Header.Content>
                                     { claim.claimURI }
-                                    <Header.Subheader>
-                                        <code>{ claim.mappedLocalClaimURI }</code>
-                                    </Header.Subheader>
                                 </Header.Content>
                             </Header>
                         );
@@ -757,7 +754,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     attributeType={ attributeType }
                                 />
                             )
-                            : null
+                            : <code>{ claim.mappedLocalClaimURI }</code>
                     ),
                     // TODO: Add i18n strings.
                     title: t("console:manage.features.claims.list.columns.dialectURI")
