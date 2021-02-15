@@ -235,8 +235,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={
-                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard" +
-                            ".steps.select.transfer.searchPlaceholders.attribute")
+                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                            ".searchPlaceholder")
                     }
                     isLoading={ isLoading }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
