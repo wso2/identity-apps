@@ -4639,7 +4639,7 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
-                            description: "View and manage how user attributes in Asgardeo are mapped and " +
+                            description: "View and manage how user attributes in are mapped and " +
                                 "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
                             title: "Attributes and Mappings",
@@ -4652,7 +4652,7 @@ export const console: ConsoleNS = {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"
                             },
-                            description: "View and manage how attributes in Asgardeo are mapped and transformed "
+                            description: "View and manage how attributes in are mapped and transformed "
                                 + "when interacting with APIs or your applications.",
                             heading: "Manage Attribute Mappings",
                             oidc: {
