@@ -5540,7 +5540,8 @@ export const console: ConsoleNS = {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "Scope is a required field"
+                                    empty: "Scope is a required field",
+                                    invalid: "The scope contains invalid characters."
                                 }
                             }
                         }
@@ -5701,7 +5702,7 @@ export const console: ConsoleNS = {
                             previous: "Previous"
                         },
                         claimList: {
-                            searchPlaceholder: "search attributes",
+                            searchPlaceholder: "Search attributes",
                             table: {
                                 emptyPlaceholders: {
                                     assigned: "All the available attributes are assigned for this OIDC scope.",

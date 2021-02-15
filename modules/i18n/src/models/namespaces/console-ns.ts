@@ -2420,6 +2420,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 validations: {
                                     empty: string;
+                                    invalid: string;
                                 };
                             };
                             description: {
