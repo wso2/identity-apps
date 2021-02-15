@@ -39,7 +39,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS, Label } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
@@ -220,7 +220,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
-                                    name={ scope.name }
+                                    name={ scope.displayName }
                                     size="mini"
                                     data-testid={ `${ testId }-item-image-inner` }
                                 />
@@ -230,9 +230,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
-                            { scope.displayName || scope.name }
+                            { scope.displayName }
                             <Header.Subheader>
-                                { scope.description }
+                                <Label size="mini" className="no-margin-left"><code>{ scope.name }</code></Label>
+                                { " " + (scope.description ?? "") }
                             </Header.Subheader>
                         </Header.Content>
                     </Header>
