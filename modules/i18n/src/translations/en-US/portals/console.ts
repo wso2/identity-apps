@@ -2395,24 +2395,25 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                            "All the applications using this identity provider might stop working. " +
+                            "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the IDP."
+                        message: "This action is irreversible and will permanently delete the identity provider."
                     }
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, there is no going back." +
-                            " Please be certain."
+                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
                         actionTitle: "{{ state }} Identity Provider",
                         header: "{{ state }} identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again."
+                            "you enable it again.",
+                        subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -2516,8 +2517,7 @@ export const console: ConsoleNS = {
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity Provider name cannot contain more than" +
-                                    " {{ maxLength }} characters."
+                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters."
                             }
                         }
                     },
@@ -3245,10 +3245,11 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                            "All the applications using this identity provider might stop working. " +
+                            "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the IDP."
+                        message: "This action is irreversible and will permanently delete the identity provider."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
@@ -3262,14 +3263,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, it cannot be recovered and users " +
-                            "can no longer log in through this provider."
+                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again."
+                            "you enable it again.",
+                        subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -3372,8 +3373,7 @@ export const console: ConsoleNS = {
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity Provider name cannot contain more than" +
-                                    " {{ maxLength }} characters."
+                                maxLengthReached: "Identity Provider name cannot exceed {{ maxLength }} characters."
                             }
                         }
                     },
