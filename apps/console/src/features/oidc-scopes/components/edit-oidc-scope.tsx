@@ -19,7 +19,6 @@
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-
     DataTable,
     EmptyPlaceholder,
     PrimaryButton,
@@ -31,12 +30,12 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { OIDCScopeAttributes } from "./oidc-scope-attributes";
+import { AttributeSelectionWizardOtherDialect }
+    from "../../applications/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { updateOIDCScopeDetails } from "../api";
-import { OIDCScopesListInterface } from "../models";
 import { OIDCScopesManagementConstants } from "../constants";
-import { AttributeSelectionWizardOtherDialect } from "../../applications/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
+import { OIDCScopesListInterface } from "../models";
 
 /**
  * Proptypes for the OIDC scope edit component.
@@ -89,14 +88,14 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         unselectedAttributes,
         isRequestLoading,
         triggerAddAttributeModal,
-        [ "data-testid" ]: testId
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
+    const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
 
     const init = useRef(true);
 
@@ -106,7 +105,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         } else {
             handleOpenSelectionModal();
         }
-    }, [ triggerAddAttributeModal]);
+    }, [triggerAddAttributeModal]);
 
     const updateOIDCScope = (attributes: string[]): void => {
         const data: OIDCScopesListInterface = {
@@ -149,7 +148,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     addAlert({
                         description: t(
                             "console:manage.features.oidcScopes.notifications.updateOIDCScope" +
-                            ".genericError.description"
+                                ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
@@ -162,33 +161,19 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const showAttributeSelectionModal = () => {
         return (
-            <>
-            <OIDCScopeAttributes
-                onUpdateAttributes={ updateOIDCScope }
-                selectedClaims={ selectedAttributes }
-                unselectedClaims={ unselectedAttributes }
+            <AttributeSelectionWizardOtherDialect
+                availableExternalClaims={ unselectedAttributes }
+                selectedExternalClaims={ selectedAttributes }
                 showAddModal={ showSelectionModal }
+                data-testid={ `${testId}-add-attributes` }
                 setShowAddModal={ setShowSelectionModal }
-                data-testid={ `${ testId }-wizard` }
+                setAvailableExternalClaims={ ()=> null }
+                setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
+                    const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
+                    updateOIDCScope(claimURIs);
+                } }
+                setSelectedExternalClaims={ () => null }
             />
-                <AttributeSelectionWizardOtherDialect
-                    availableExternalClaims={ [...selectedAttributes, ...unselectedAttributes] }
-                    selectedExternalClaims={ selectedAttributes }
-                    showAddModal={ showSelectionModal }
-                    data-testid={ `${ testId }-add-attributes` }
-                    setShowAddModal={ setShowSelectionModal }
-                    setAvailableExternalClaims={ () => {
-                        //
-                    } }
-                    setInitialSelectedExternalClaims={ () => {
-                        //
-                     } }
-                    setSelectedExternalClaims={ () => {
-                        //
-                    } }
-
-                />
-            </>
         );
     };
 
@@ -216,7 +201,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (claim: ExternalClaim): ReactNode => (
-                    <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
+                    <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
                         <Header.Content>
                             { claim.claimURI }
                             <Header.Subheader>
