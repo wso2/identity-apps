@@ -509,6 +509,11 @@ export interface ConsoleNS {
                                             heading: string;
                                             hint: string;
                                             editor: {
+                                                resetConfirmation: {
+                                                    content: string;
+                                                    heading: string;
+                                                    message: string;
+                                                };
                                                 templates: {
                                                     heading: string;
                                                     darkMode: string;

@@ -34,6 +34,7 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
+import { AdaptiveScriptUtils } from "../../../utils";
 
 /**
  * Proptypes for the sign on methods component.
@@ -273,6 +274,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Handles the update button click event.
      */
     const handleUpdateClick = (): void => {
+        if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
+            setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
+            setIsDefaultScript(true);
+        }
         setUpdateTrigger(true);
     };
 
@@ -385,6 +390,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     data-testid={ `${ testId }-script-based-flow` }
                     authenticationSteps={ steps }
                     isDefaultScript={ isDefaultScript }
+                    onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
                 />
                 {
                     (config?.ui?.isRequestPathAuthenticationEnabled === false)

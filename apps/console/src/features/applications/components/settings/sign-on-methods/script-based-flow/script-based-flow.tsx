@@ -20,12 +20,12 @@ import { UIConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
-import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
+import { CodeEditor, ConfirmationModal, Heading, Hint } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Grid, Icon, Menu, Popup, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getAdaptiveAuthTemplates } from "../../../../api";
@@ -46,24 +46,6 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      */
     authenticationSequence: AuthenticationSequenceInterface;
     /**
-     * Is the application info request loading.
-     */
-    isLoading?: boolean;
-    /**
-     * Fired when a template is selected.
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
-     */
-    onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
-    /**
-     * Callback when the script changes.
-     * @param {string | string[]} script - Authentication script.
-     */
-    onScriptChange: (script: string | string[]) => void;
-    /**
-     * Make the form read only.
-     */
-    readOnly?: boolean;
-    /**
      * The number of authentication steps.
      */
     authenticationSteps: number;
@@ -71,6 +53,30 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Specifies if the script is default or not.
      */
     isDefaultScript: boolean;
+    /**
+     * Is the application info request loading.
+     */
+    isLoading?: boolean;
+    /**
+     * Delegates the event to the parent component. Once
+     * called the resetting event will be notified to it
+     * as well.
+     */
+    onAdaptiveScriptReset: () => void;
+    /**
+     * Callback when the script changes.
+     * @param {string | string[]} script - Authentication script.
+     */
+    onScriptChange: (script: string | string[]) => void;
+    /**
+     * Fired when a template is selected.
+     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication template.
+     */
+    onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -90,7 +96,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         authenticationSteps,
         isDefaultScript,
-        [ "data-testid" ]: testId
+        onAdaptiveScriptReset,
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -108,6 +115,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ internalStepCount, setInternalStepCount ] = useState<number>(undefined);
     const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
+    const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -224,13 +232,18 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         if (isDefaultScript) {
-            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
-            setIsScriptFromTemplate(false);
+            resetAdaptiveScriptTemplateToDefaultHandler();
             return;
         }
 
         setSourceCode(script);
         setIsScriptFromTemplate(false);
+    };
+
+    const resetAdaptiveScriptTemplateToDefaultHandler = () => {
+        setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+        setIsScriptFromTemplate(false);
+        onAdaptiveScriptReset();
     };
 
     /**
@@ -258,94 +271,143 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     return (
-        <div className="adaptive-scripts-section" data-testid={ testId }>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column computer={ 16 }>
-                        <Heading as="h5">
-                            { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                ".authenticationFlow.sections.scriptBased.heading") }
-                        </Heading>
-                        { !readOnly && (
-                            <Hint>
+        <>
+            <div className="adaptive-scripts-section" data-testid={ testId }>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column computer={ 16 }>
+                            <Heading as="h5">
                                 { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                    ".authenticationFlow.sections.scriptBased.hint") }
-                            </Hint>
-                        )}
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column computer={ 16 }>
-                        <Sidebar.Pushable className="script-editor-section">
+                                    ".authenticationFlow.sections.scriptBased.heading") }
+                            </Heading>
                             { !readOnly && (
-                                <ScriptTemplatesSidePanel
-                                    title={
-                                        t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                            ".authenticationFlow.sections.scriptBased.editor.templates.heading")
-                                    }
-                                    ref={ authTemplatesSidePanelRef }
-                                    onTemplateSelect={ handleTemplateSelection }
-                                    templates={
-                                        scriptTemplates?.templatesJSON && Object.values(scriptTemplates.templatesJSON)
-                                    }
-                                    visible={ showAuthTemplatesSidePanel }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-script-templates-side-panel` }
-                                />
-                            )}
-                            <Sidebar.Pusher>
-                                <div className="script-editor-container" ref={ scriptEditorSectionRef }>
-                                    <Menu attached="top" className="action-panel" secondary>
-                                        <Menu.Item>
-                                            <Checkbox
-                                                label={
-                                                    t("console:develop.features.applications.edit.sections" +
-                                                        ".signOnMethod.sections.authenticationFlow.sections" +
-                                                        ".scriptBased.editor.templates.darkMode")
-                                                }
-                                                checked={ isEditorDarkMode }
-                                                onChange={ handleEditorDarkModeToggle }
-                                                data-testid={ `${ testId }-code-editor-mode-toggle` }
-                                                slider
-                                            />
-                                        </Menu.Item>
-                                        { !readOnly && (
-                                            <Menu.Menu position="right">
-                                                <Menu.Item
-                                                    onClick={ handleScriptTemplateSidebarToggle }
-                                                    className="action"
-                                                    data-testid={ `${ testId }-script-template-sidebar-toggle` }
-                                                >
-                                                    <Icon name="bars" />
-                                                </Menu.Item>
-                                            </Menu.Menu>
-                                        )}
-                                    </Menu>
+                                <Hint>
+                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.sections.scriptBased.hint") }
+                                </Hint>
+                            ) }
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column computer={ 16 }>
+                            <Sidebar.Pushable className="script-editor-section">
+                                { !readOnly && (
+                                    <ScriptTemplatesSidePanel
+                                        title={
+                                            t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections" +
+                                                ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                        }
+                                        ref={ authTemplatesSidePanelRef }
+                                        onTemplateSelect={ handleTemplateSelection }
+                                        templates={
+                                            scriptTemplates?.templatesJSON &&
+                                            Object.values(scriptTemplates.templatesJSON)
+                                        }
+                                        visible={ showAuthTemplatesSidePanel }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-script-templates-side-panel` }
+                                    />
+                                ) }
+                                <Sidebar.Pusher>
+                                    <div className="script-editor-container" ref={ scriptEditorSectionRef }>
+                                        <Menu attached="top" className="action-panel" secondary>
+                                            <Menu.Item>
+                                                <Checkbox
+                                                    label={
+                                                        t("console:develop.features.applications.edit.sections" +
+                                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                                            ".scriptBased.editor.templates.darkMode")
+                                                    }
+                                                    checked={ isEditorDarkMode }
+                                                    onChange={ handleEditorDarkModeToggle }
+                                                    data-testid={ `${ testId }-code-editor-mode-toggle` }
+                                                    slider
+                                                />
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="reset-button ml-3"
+                                                            name="undo"
+                                                            onClick={ () => setShowScriptResetWarning(true) }
+                                                        />
+                                                    ) }
+                                                    position="top center"
+                                                    content={ "Reset to Default" }
+                                                    inverted
+                                                />
+                                            </Menu.Item>
+                                            { !readOnly && (
+                                                <Menu.Menu position="right">
+                                                    <Menu.Item
+                                                        onClick={ handleScriptTemplateSidebarToggle }
+                                                        className="action"
+                                                        data-testid={ `${ testId }-script-template-sidebar-toggle` }
+                                                    >
+                                                        <Icon name="bars"/>
+                                                    </Menu.Item>
+                                                </Menu.Menu>
+                                            ) }
+                                        </Menu>
 
-                                    <div className="code-editor-wrapper">
-                                        <CodeEditor
-                                            lint
-                                            language="javascript"
-                                            sourceCode={ sourceCode }
-                                            options={ {
-                                                lineWrapping: true
-                                            } }
-                                            onChange={ (editor, data, value) => {
-                                                setInternalScript(value);
-                                                onScriptChange(value);
-                                            } }
-                                            theme={ isEditorDarkMode ? "dark" : "light" }
-                                            readOnly={ readOnly }
-                                            data-testid={ `${ testId }-code-editor` }
-                                        />
+                                        <div className="code-editor-wrapper">
+                                            <CodeEditor
+                                                lint
+                                                language="javascript"
+                                                sourceCode={ sourceCode }
+                                                options={ {
+                                                    lineWrapping: true
+                                                } }
+                                                onChange={ (editor, data, value) => {
+                                                    setInternalScript(value);
+                                                    onScriptChange(value);
+                                                } }
+                                                theme={ isEditorDarkMode ? "dark" : "light" }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-code-editor` }
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </Sidebar.Pusher>
-                        </Sidebar.Pushable>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </div>
+                                </Sidebar.Pusher>
+                            </Sidebar.Pushable>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </div>
+            <ConfirmationModal
+                onClose={ (): void => setShowScriptResetWarning(false) }
+                type="warning"
+                open={ showScriptResetWarning }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setShowScriptResetWarning(false) }
+                onPrimaryActionClick={ (): void => {
+                    setShowScriptResetWarning(false);
+                    resetAdaptiveScriptTemplateToDefaultHandler();
+                } }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.heading") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-reset-confirmation-modal-message` }>
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
+                    { t("console:develop.features.applications.edit." +
+                        "sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.scriptBased.editor.resetConfirmation.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        </>
     );
 };
 

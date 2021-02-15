@@ -93,16 +93,45 @@ export class AdaptiveScriptUtils {
      */
     public static minifyScript(originalScript: string | string[]): string {
 
-        if (!originalScript) {
-            return "";
-        }
+        if (!originalScript) return "";
 
         const script = Array.isArray(originalScript)
             ? originalScript.join("")
-            : originalScript;
+            : String(originalScript);
+
+        /**
+         * What's this?
+         * This is introduced due to a edge case. `if a user erases
+         * all the functional code from the editor and left it with
+         * only comments` we can't just say "it's a minified script"
+         *
+         * Since this function is used as a `predicate` in some cases
+         * we need to check for that edge case as well.
+         *
+         * Caveat:
+         * Regex is not a lexer... but we also don't want a fat parser
+         * library just to remove js comments in strings. The only con of
+         * this is that we cannot guarantee that this expression will
+         * remove all the comments. But for 98% percent of the time it
+         * WILL match and remove.
+         *
+         * Sandbox Testing:
+         * See in test section: https://regex101.com/r/fenP8Z/1/
+         */
+        const comments = /\/\*[\s\S]*?\*\/|\/\/.*/gm;
 
         return script
+            .replace(comments, "")
             .replace(/(?:\r\n|\r|\n)/g, "")
-            .replace(/\s/g, "");
+            .replace(/\s/g, "")
+            .trim();
     }
+
+    public static isEmptyScript(script: string | string[]): boolean {
+        return !script ||
+            (Array.isArray(script) && (script.length === 0 || script.join("").trim().length == 0)) ||
+            (script instanceof String && script.trim().length === 0) ||
+            !AdaptiveScriptUtils.minifyScript(script);
+    }
+
 }

@@ -805,6 +805,12 @@ export const console: ConsoleNS = {
                                     sections: {
                                         scriptBased: {
                                             editor: {
+                                                resetConfirmation: {
+                                                    content: "This action will reset the adaptive authentication" +
+                                                        " script back to default. Click 'Confirm' to proceed.",
+                                                    heading: "Are you sure?",
+                                                    message: "This action is irreversible."
+                                                },
                                                 templates: {
                                                     darkMode: "Dark Mode",
                                                     heading: "Templates"

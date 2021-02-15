@@ -806,6 +806,13 @@ export const console: ConsoleNS = {
                                     sections: {
                                         scriptBased: {
                                             editor: {
+                                                resetConfirmation: {
+                                                    content: "Cette action réinitialisera le script d'authentification" +
+                                                        " adaptative par défaut. Cliquez sur «Confirmer» pour" +
+                                                        " continuer.",
+                                                    heading: "Êtes-vous sûr?",
+                                                    message: "Cette action est irréversible."
+                                                },
                                                 templates: {
                                                     darkMode: "Mode sombre",
                                                     heading: "Modèles"
