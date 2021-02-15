@@ -119,6 +119,25 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const initValue = useRef(false);
 
+    useEffect(() => {
+        const tempFilterSelectedExternalClaims = [...filterSelectedExternalClaims];
+        claimConfigurations?.claimMappings?.map((claim) => {
+            if (
+                !filterSelectedExternalClaims.find(
+                    (selectedExternalClaim) => selectedExternalClaim.mappedLocalClaimURI === claim.localClaim.uri
+                )
+            ) {
+                tempFilterSelectedExternalClaims.push(
+                    availableExternalClaims.find(
+                        (availableClaim) => availableClaim.mappedLocalClaimURI === claim.localClaim.uri
+                    )
+                );
+            }
+        });
+        setSelectedExternalClaims(tempFilterSelectedExternalClaims);
+        setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
+    }, [claimConfigurations]);
+
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
             const localClaims = [...selectedClaims];
