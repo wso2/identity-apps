@@ -23,6 +23,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Error" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
@@ -53,7 +54,7 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String sessionDataKey = request.getParameter("sessionDataKey");
-    String username = request.getParameter("username");
+    String username = null;
     boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("Recovery.AutoLogin.Enable",
             tenantDomain));
 
@@ -84,7 +85,9 @@
         resetPasswordRequest.setProperties(properties);
 
         try {
-            notificationApi.setPasswordPost(resetPasswordRequest);
+            User user = notificationApi.setUserPasswordPost(resetPasswordRequest);
+            username = user.getUsername();
+            String userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
                 String queryParams = callback.substring(callback.indexOf("?") + 1);
@@ -104,9 +107,8 @@
                     String value = param.substring(param.indexOf("=") + 1);
                     queryMap.put(key, value);
                 }
-                String userstoredomain = queryMap.get("userstoredomain");
-                if (userstoredomain != null) {
-                  username = userstoredomain + "/" + username;
+                if (userStoreDomain != null) {
+                  username = userStoreDomain + "/" + username;
                 }
                 String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
                 JSONObject cookieValueInJson = new JSONObject();
