@@ -72,9 +72,10 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                             name="scopeName"
                             label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
                             required={ true }
-                            requiredErrorMessage={ "Scope name is required" }
-                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                            requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "scopeName.validations.empty") }
+                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                                "scopeName.placeholder") }
                             type="text"
                             value={ initialValues?.scopeName }
                         />
@@ -85,7 +86,8 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                         <Field
                             data-testid={ `${ testId }-oidc-scope-form-name-input` }
                             name="displayName"
-                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.displayName.label") }
+                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                                "inputs.displayName.label") }
                             required={ true }
                             requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "displayName.validations.empty") }
