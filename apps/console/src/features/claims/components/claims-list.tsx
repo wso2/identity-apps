@@ -32,7 +32,6 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
-    CopyInputField,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
@@ -57,6 +56,7 @@ import {
 } from "../../core";
 import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
+import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
 
 /**
@@ -143,6 +143,10 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
      * Search query for the list.
      */
     searchQuery?: string;
+    /**
+     * Specifies the attribute type.
+     */
+    attributeType?: string;
 }
 
 /**
@@ -172,6 +176,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         onSearchQueryClear,
         selection,
         searchQuery,
+        attributeType,
         showListItemActions,
         [ "data-testid" ]: testId
     } = props;
@@ -749,6 +754,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     claimURI={ claim.claimURI }
                                     externalClaims={ list }
                                     data-testid={ `${ testId }-edit-external-claim` }
+                                    attributeType={ attributeType }
                                 />
                             )
                             : null
@@ -1003,6 +1009,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
  * Default props for the component.
  */
 ClaimsList.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "claims-list",
     selection: true,
     showListItemActions: true

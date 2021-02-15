@@ -19,14 +19,16 @@
 import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
+import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
+import { resolveType } from "../../utils";
 
 /**
  * Prop types for the `AddExternalClaims` component.
@@ -60,6 +62,10 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
      * Triggers the cancel method internally.
      */
     cancel?: () => void;
+    /**
+     * Specifies the type of the attribute.
+     */
+    attributeType?: string;
 }
 
 /**
@@ -80,6 +86,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         onSubmit,
         externalClaims,
         triggerSubmit,
+        attributeType,
         cancel,
         [ "data-testid" ]: testId
     } = props;
@@ -168,10 +175,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         dispatch(addAlert(
                             {
                                 description: t("console:manage.features.claims.external.notifications." +
-                                    "addExternalAttribute.success.description"),
+                                    "addExternalAttribute.success.description", { type: resolveType(attributeType) }),
                                 level: AlertLevels.SUCCESS,
                                 message: t("console:manage.features.claims.external.notifications." +
-                                    "addExternalAttribute.success.message")
+                                    "addExternalAttribute.success.message", { type: resolveType(attributeType, true) })
                             }
                         ));
                         setReset();
@@ -182,7 +189,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             {
                                 description: error?.description
                                     || t("console:manage.features.claims.external.notifications." +
-                                    "addExternalAttribute.genericError.description"),
+                                        "addExternalAttribute.genericError.description",
+                                        { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
                                     || t("console:manage.features.claims.external.notifications." +
@@ -200,22 +208,26 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     <Grid.Column width={ 8 }>
                         <Field
                             name="claimURI"
-                            label={ t("console:manage.features.claims.external.forms.attributeURI.label") }
+                            label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                { type: resolveType(attributeType, true) }) }
                             required={ true }
                             requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage") }
-                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
+                                "attributeURI.requiredErrorMessage", { type: resolveType(attributeType, true) }) }
+                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder",
+                                { type: resolveType(attributeType) }) }
                             type="text"
                             data-testid={ `${ testId }-form-claim-uri-input` }
                             validation={ (value: string, validation: Validation) => {
                                 for (const claim of externalClaims) {
                                     if (claim.claimURI === value) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push("Claim URI already exists.");
+                                        validation.errorMessages.push(t("console:manage.features.claims.external" +
+                                            ".forms.attributeURI.validationErrorMessages.duplicateName",
+                                            { type: resolveType(attributeType) }));
                                         break;
                                     }
                                 }
-                            }}
+                            } }
                         />
                     </Grid.Column>
                     <Grid.Column width={ 8 }>
@@ -262,5 +274,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
  * Default props for the component.
  */
 AddExternalClaims.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "add-external-claims"
 };

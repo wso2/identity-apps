@@ -220,7 +220,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             menuItem: tab.name,
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage id={ dialect.id } />
+                                    <ExternalDialectEditPage id={ dialect.id } attributeType={ type }/>
                                 </ResourceTab.Pane>
                             )
                         });
@@ -234,7 +234,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     menuItem: dialect.dialectURI,
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <ExternalDialectEditPage id={ dialect.id } />
+                            <ExternalDialectEditPage id={ dialect.id  }attributeType={ type } />
                         </ResourceTab.Pane>
                     )
                 };
@@ -258,7 +258,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 { dialects?.length > 1 ? (
                     <ResourceTab panes={ generatePanes() } data-testid={ `${ testId }-tabs` } />
                 ) : (
-                        <ExternalDialectEditPage id={ dialects && dialects[ 0 ]?.id } />
+                        <ExternalDialectEditPage id={ dialects && dialects[ 0 ]?.id } attributeType={ type } />
                     ) }
             </PageLayout>
         );
