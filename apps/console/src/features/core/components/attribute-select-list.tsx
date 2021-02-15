@@ -1,5 +1,5 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import { Code, TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import sortBy from "lodash/sortBy";
 import union from "lodash/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -98,7 +98,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
      * checkbox field of an unassigned item.
      */
     const handleUnassignedItemCheckboxChange = (claim) => {
-        const checkedRoles = [...tempSelectedClaims];
+        const checkedRoles = [ ...tempSelectedClaims ];
 
         if (checkedRoles?.includes(claim)) {
             checkedRoles.splice(checkedRoles.indexOf(claim), 1);
@@ -114,15 +114,16 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempAvailableClaims(
-                filterTempAvailableClaims.filter(
-                    (item) => item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
-                )
-            );
+            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
+            item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = tempAvailableClaims.filter((item) =>
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
+                "localClaimDisplayName"));
         } else {
             if (selectedExternalClaims.length > 0) {
-                setFilterTempAvailableClaims(
-                    sortBy(union(selectedExternalClaims, availableExternalClaims), "localClaimDisplayName")
+                setFilterTempAvailableClaims(sortBy(
+                    union(selectedExternalClaims, availableExternalClaims ), "localClaimDisplayName")
                 );
             } else {
                 setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "localClaimDisplayName"));
@@ -140,7 +141,10 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             handleHeaderCheckboxChange={ selectAllUnAssignedList }
             isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
             handleUnelectedListSearch={ searchTempAvailable }
-            data-testid={ `${testId}-transfer-component` }
+            data-testid={ `${ testId }-transfer-component` }
+            selectAllCheckboxLabel={
+                t("console:develop.features.applications.edit.sections.attributes.selection.selectAll")
+            }
         >
             <TransferList
                 selectionComponent
@@ -159,7 +163,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                             isItemChecked={ tempSelectedClaims.includes(claim) }
                             showSecondaryActions={ false }
                             showListSubItem={ true }
-                            listSubItem={ claim.claimURI }
+                            listSubItem={ <Code compact withBackground={ false }>{ claim.claimURI }</Code> }
                             data-testid={ `${testId}-unselected-transfer-list-item-${index}` }
                         />
                     );
