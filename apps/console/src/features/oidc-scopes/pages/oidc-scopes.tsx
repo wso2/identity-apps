@@ -88,7 +88,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         getOIDCScopesList<OIDCScopesListInterface[]>()
             .then((response: OIDCScopesListInterface[]) => {
                 const sorted = sortBy(response, "displayName");
-                console.log(sorted)
                 setScopeList(sorted);
                 setTempScopeList(sorted);
             })
