@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
@@ -78,6 +78,14 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                                 "scopeName.placeholder") }
                             type="text"
                             value={ initialValues?.scopeName }
+                            validation={ (value: FormValue, validation: Validation) => {
+                                if (!value.toString().match(/^[\w.-]+$/)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(t("console:manage.features.oidcScopes." +
+                                        "forms.addScopeForm.inputs." +
+                                        "scopeName.validations.invalid"));
+                                }
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
