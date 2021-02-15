@@ -4530,7 +4530,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. Attribute Mapping URI etc."
+                                    placeholder: "E.g. Attribute Mapping etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4540,10 +4540,10 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by Attribute Mapping URI"
+                        placeholder: "Search by attribute mapping "
                     },
                     attributes: {
-                        dialectURI: "Attribute Mapping URI"
+                        dialectURI: "Attribute Mapping"
                     },
                     confirmations: {
                         action: "Confirm",
@@ -4562,9 +4562,9 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         dialectURI: {
-                            label: "{{type}} Attribute Mapping URI",
-                            placeholder: "Enter an attribute mapping URI",
-                            requiredErrorMessage: "Enter an attribute mapping URI"
+                            label: "{{type}} Attribute Mapping",
+                            placeholder: "Enter an attribute mapping",
+                            requiredErrorMessage: "Enter an attribute mapping"
                         },
                         submit: "Update"
                     },
@@ -4635,7 +4635,7 @@ export const console: ConsoleNS = {
                         edit: {
                             back: "Go back to attribute mappings",
                             description: "Edit attribute mapping",
-                            updateDialectURI: "Update {{type}} Attribute Mapping URI",
+                            updateDialectURI: "Update {{type}} Attribute Mapping",
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
@@ -4678,13 +4678,13 @@ export const console: ConsoleNS = {
                     wizard: {
                         header: "Add Attribute Mapping",
                         steps: {
-                            dialectURI: "Attribute Mapping URI",
+                            dialectURI: "Attribute Mapping",
                             externalAttribute: "{{type}} Attribute",
                             summary: "Summary"
                         },
                         summary: {
-                            externalAttribute: "{{type}} Attribute URI",
-                            mappedAttribute: "Mapped Attribute URI",
+                            externalAttribute: "{{type}} Attribute",
+                            mappedAttribute: "Mapped Attribute",
                             notFound: "No {{type}} attribute has been added."
                         }
                     }
@@ -4695,7 +4695,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. {{type}} Attribute URI etc."
+                                    placeholder: "E.g. {{type}} Attribute etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4705,23 +4705,23 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by {{type}} Attribute URI"
+                        placeholder: "Search by {{type}} attribute"
                     },
                     attributes: {
-                        attributeURI: "{{type}} Attribute URI",
-                        mappedClaim: "Mapped Attribute URI"
+                        attributeURI: "{{type}} Attribute",
+                        mappedClaim: "Mapped Attribute"
                     },
                     forms: {
                         attributeURI: {
-                            label: "{{type}} Attribute URI",
-                            placeholder: "Enter {{type}} attribute URI",
-                            requiredErrorMessage: "{{type}} Attribute URI is required",
+                            label: "{{type}} Attribute",
+                            placeholder: "Enter {{type}} attribute",
+                            requiredErrorMessage: "{{type}} Attribute is required",
                             validationErrorMessages: {
-                                duplicateName: "The {{type}} attribute URI already exists."
+                                duplicateName: "The {{type}} attribute already exists."
                             }
                         },
                         localAttribute: {
-                            label: "Attribute URI to map to",
+                            label: "Attribute to map to",
                             placeholder: "Select an Attribute",
                             requiredErrorMessage: "Select an attribute to map to"
                         },
@@ -4797,8 +4797,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "Claim URI",
-                        dialectURI: "Attribute Mapping URI",
+                        claimURI: "Attribute",
+                        dialectURI: "Attribute Mapping",
                         name: "Name"
                     },
                     confirmation: {
@@ -4860,7 +4860,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. name, attribute URI etc."
+                                    placeholder: "E.g. name, attribute etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4873,7 +4873,7 @@ export const console: ConsoleNS = {
                         placeholder: "Search by name"
                     },
                     attributes: {
-                        attributeURI: "Attribute URI"
+                        attributeURI: "Attribute"
                     },
                     confirmation: {
                         content: "If you delete this attribute, the user data belonging to this attribute "
@@ -4896,7 +4896,7 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
-                            + " The ID will be appended to the attribute mapping URI to create a attribute URI",
+                            + " The ID will be appended to the attribute mapping to create a attribute",
                         attributeID: {
                             label: "Attribute ID",
                             placeholder: "Enter an attribute ID",
@@ -5029,7 +5029,7 @@ export const console: ConsoleNS = {
                         },
                         summary: {
                             attribute: "Attribute",
-                            attributeURI: "Attribute URI",
+                            attributeURI: "Attribute",
                             displayOrder: "Display Order",
                             readOnly: "This attribute is read-only",
                             regEx: "Regular Expression",
