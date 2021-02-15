@@ -6075,7 +6075,7 @@ export const console: ConsoleNS = {
                     },
                     users: {
                         assignUserModal: {
-                            heading: "Update {{type}} Users",
+                            heading: "Manage Users",
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
@@ -6125,7 +6125,7 @@ export const console: ConsoleNS = {
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
                             header: "Delete {{type}}",
-                            subheader: "Once you delete the {{type}}, there is no going back. Please be certain."
+                            subheader: "Once you delete the {{type}}, it cannot be recovered."
                         },
                         fields: {
                             roleName: {
