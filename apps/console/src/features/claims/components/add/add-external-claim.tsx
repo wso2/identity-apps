@@ -17,7 +17,7 @@
 */
 
 import { getAllLocalClaims } from "@wso2is/core/api";
-import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -105,7 +105,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      * Gets the list of local claims.
      */
     useEffect(() => {
-        getAllLocalClaims(null).then(response => {
+        const params: ClaimsGetParams = {
+            "exclude-identity-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            sort: null
+        };
+        getAllLocalClaims(params).then(response => {
             const sortedClaims = response.sort((a: Claim, b: Claim) => {
                 return a.displayName > b.displayName ? 1 : -1;
             });
