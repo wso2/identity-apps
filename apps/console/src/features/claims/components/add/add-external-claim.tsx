@@ -237,8 +237,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
                             required={ true }
                             requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage") }
-                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
+                                "localAttribute.requiredErrorMessage") }
+                            placeholder={ t("console:manage.features.claims.external.forms." +
+                                "localAttribute.placeholder") }
                             search
                             children={
                                 filteredLocalClaims?.map((claim: Claim, index) => {

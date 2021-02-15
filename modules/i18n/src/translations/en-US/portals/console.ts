@@ -4721,9 +4721,9 @@ export const console: ConsoleNS = {
                             }
                         },
                         localAttribute: {
-                            label: "Attribute to map to",
-                            placeholder: "Select an Attribute",
-                            requiredErrorMessage: "Select an attribute to map to"
+                            label: "User attribute to map to",
+                            placeholder: "Select a user attribute",
+                            requiredErrorMessage: "Select a user attribute to map to"
                         },
                         submit: "Add Attribute Mapping"
                     },
@@ -4892,7 +4892,7 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Enter an attribute to map to",
+                            placeholder: "Select a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
