@@ -58,7 +58,7 @@ export const AttributeSelectionWizardOtherDialect:
         showAddModal,
         setShowAddModal,
         availableExternalClaims,
-        ["data-testid"]: testId
+        [ "data-testid" ]: testId
     } = props;
 
     const [submit, triggerSubmit] = useTrigger();
