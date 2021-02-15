@@ -4507,6 +4507,23 @@ export const console: ConsoleNS = {
                 }
             },
             claims: {
+                attributeMappings: {
+                    custom: {
+                        description: "The custom protocol representation for user "
+                            + "attributes that will be used in custom API.",
+                        heading: "Custom Attributes"
+                    },
+                    oidc: {
+                        description: "The OpenID Connect protocol representation for user "
+                            + "attributes that will be used in the OpenID Connect API.",
+                        heading: "OpenID Connect"
+                    },
+                    scim: {
+                        description: "The SCIM2 protocol representation for user "
+                            + "attributes that will be used in the SCIM2 API.",
+                        heading: "System for Cross-Domain Identity Management"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "Filter query format incorrect",
@@ -4551,7 +4568,6 @@ export const console: ConsoleNS = {
                         },
                         submit: "Update"
                     },
-                    localDialect: "Attributes",
                     notifications: {
                         addDialect: {
                             error: {
@@ -4623,10 +4639,40 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
-                            description: "Create and manage attribute dialects",
+                            description: "View and manage how user attributes in Asgardeo are mapped and " +
+                                "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
                             title: "Attributes and Mappings",
                             view: "View attributes"
+                        }
+                    },
+                    sections: {
+                        manageAttributeMappings: {
+                            custom: {
+                                description: "Communicate information about the user via custom mappings.",
+                                heading: "Custom Attribute Mapping"
+                            },
+                            description: "View and manage how attributes in Asgardeo are mapped and transformed "
+                                + "when interacting with APIs or your applications.",
+                            heading: "Manage Attribute Mappings",
+                            oidc: {
+                                description: "Communicate information about the user for applications that uses "
+                                    + "OpenID Connect to authenticate.",
+                                heading: "OpenID Connect"
+                            },
+                            scim: {
+                                description: "Communicate information about the user via the API "
+                                    + "compliance with SCIM2 standards.",
+                                heading: "System for Cross-Domain Identity Management "
+                            }
+                        },
+                        manageAttributes: {
+                            attributes: {
+                                description: "Each attribute contains a piece of user data stored within Asgardeo.",
+                                heading: "Attributes"
+                            },
+                            description: "View and manage attributes native to Asgardeo.",
+                            heading: "Manage Attributes"
                         }
                     },
                     wizard: {
@@ -4659,7 +4705,7 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by Attribute URI"
+                        placeholder: "Search by {{type}} Attribute URI"
                     },
                     attributes: {
                         attributeURI: "{{type}} Attribute URI",

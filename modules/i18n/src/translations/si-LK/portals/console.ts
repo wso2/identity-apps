@@ -3633,6 +3633,21 @@ export const console: ConsoleNS = {
                 }
             },
             claims: {
+                attributeMappings: {
+                    custom: {
+                        description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
+                        heading: "අභිරුචි ගුණාංග"
+                    },
+                    oidc: {
+                        description: "OpenID Connect API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා " +
+                            "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
+                        heading: "OpenID Connect"
+                    },
+                    scim: {
+                        description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
+                        heading: "System for Cross-Domain Identity Management"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "පෙරහන් විමසුම් ආකෘතිය වැරදිය",
@@ -3676,7 +3691,6 @@ export const console: ConsoleNS = {
                         },
                         submit: "යාවත්කාලීන කරන්න"
                     },
-                    localDialect: "දේශීය උපභාෂාව",
                     notifications: {
                         addDialect: {
                             error: {
@@ -3752,6 +3766,34 @@ export const console: ConsoleNS = {
                             primaryAction: "නව බාහිර උපභාෂාව",
                             title: "උපභාෂා ආරෝපණය කරන්න",
                             view: "දේශීය හිමිකම් බලන්න"
+                        }
+                    },
+                    sections: {
+                        manageAttributeMappings: {
+                            custom: {
+                                description: "අභිරුචි සිතියම්කරණය හරහා පරිශීලකයා පිළිබඳ තොරතුරු සන්නිවේදනය කරන්න.",
+                                heading: "අභිරුචි ගුණාංග සිතියම්ගත කිරීම"
+                            },
+                            description: "ඒපීඅයි හෝ ඔබේ යෙදුම් සමඟ අන්තර්ක්‍රියා කරන විට අස්ගාර්ඩියෝ හි ගුණාංග සිතියම්" +
+                                "ගත කර පරිවර්තනය කරන්නේ කෙසේදැයි බලන්න සහ කළමනාකරණය කරන්න.",
+                            heading: "ගුණාංග සිතියම් කළමනාකරණය කරන්න",
+                            oidc: {
+                                description: "සත්‍යාපනය සඳහා OpenID Connect භාවිතා කරන යෙදුම් සඳහා පරිශීලකයා " +
+                                    "පිළිබඳ තොරතුරු සන්නිවේදනය කරන්න.",
+                                heading: "OpenID Connect"
+                            },
+                            scim: {
+                                description: "SCIM2 ප්‍රමිතීන්ට අනුකූලව API හරහා පරිශීලකයා පිළිබඳ තොරතුරු සන්නිවේදනය කරන්න.",
+                                heading: "System for Cross-Domain Identity Management"
+                            }
+                        },
+                        manageAttributes: {
+                            attributes: {
+                                description: "සෑම ගුණාංගයකම අස්ගාර්ඩියෝ තුළ ගබඩා කර ඇති පරිශීලක දත්ත කොටසක් අඩංගු වේ.",
+                                heading: "ගුණාංග"
+                            },
+                            description: "අස්ගාර්ඩියෝට ආවේණික වූ ගුණාංග බලන්න සහ කළමනාකරණය කරන්න.",
+                            heading: "ගුණාංග කළමනාකරණය කරන්න"
                         }
                     },
                     wizard: {

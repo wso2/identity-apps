@@ -3649,6 +3649,23 @@ export const console: ConsoleNS = {
                 }
             },
             claims: {
+                attributeMappings: {
+                    custom: {
+                        description: "Représentation de protocole personnalisé pour les " +
+                            "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
+                        heading: "Attributs personnalisés"
+                    },
+                    oidc: {
+                        description: "Représentation du protocole OpenID Connect pour les attributs " +
+                            "utilisateur qui seront utilisés dans l'API OpenID Connect.",
+                        heading: "OpenID Connect"
+                    },
+                    scim: {
+                        description: "Représentation du protocole SCIM2 pour les attributs " +
+                            "utilisateur qui seront utilisés dans l'API SCIM2.",
+                        heading: "System for Cross-Domain Identity Management"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "Le format de la requête est incorrect",
@@ -3692,7 +3709,6 @@ export const console: ConsoleNS = {
                         },
                         submit: "Mettre à jour"
                     },
-                    localDialect: "Dialecte local",
                     notifications: {
                         addDialect: {
                             error: {
@@ -3764,10 +3780,42 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Mettre à jour le mappage d'attributs {{type}}"
                         },
                         list: {
-                            description: "Créer et gérer les dialectes d'attributs",
+                            description: "Affichez et gérez la façon dont les attributs utilisateur d'Asgardeo " +
+                                "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
                             primaryAction: "Nouveau mappage d'attributse",
                             title: "Dialectes des attributs",
                             view: "Voir les claims locaux"
+                        }
+                    },
+                    sections: {
+                        manageAttributeMappings: {
+                            custom: {
+                                description: "Communiquez des informations sur l'utilisateur via " +
+                                    "des mappages personnalisés.",
+                                heading: "Mappage d'attributs personnalisés"
+                            },
+                            description: "Affichez et gérez la façon dont les attributs d'Asgardeo sont " +
+                                "mappés et transformés lors de l'interaction avec les API ou vos applications.",
+                            heading: "Gérer les mappages d'attributs",
+                            oidc: {
+                                description: "Communiquez des informations sur l'utilisateur pour les " +
+                                    "applications qui utilisent OpenID Connect pour s'authentifier.",
+                                heading: "OpenID Connect"
+                            },
+                            scim: {
+                                description: "Communiquez des informations sur l'utilisateur via la " +
+                                    "conformité API avec les normes SCIM2.",
+                                heading: "System for Cross-Domain Identity Management "
+                            }
+                        },
+                        manageAttributes: {
+                            attributes: {
+                                description: "Chaque attribut contient un élément de données " +
+                                    "utilisateur stocké dans Asgardeo.",
+                                heading: "Les attributs"
+                            },
+                            description: "Affichez et gérez les attributs natifs d'Asgardeo.",
+                            heading: "Gérer les attributs"
                         }
                     },
                     wizard: {
