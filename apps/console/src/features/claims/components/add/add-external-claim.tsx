@@ -24,7 +24,7 @@ import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, Header } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
@@ -230,7 +230,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             } }
                         />
                     </Grid.Column>
-                    <Grid.Column width={ 8 }>
+                    <Grid.Column width={ 8 } className="select-attribute">
                         <Field
                             type="dropdown"
                             name="localClaim"
@@ -245,7 +245,17 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 filteredLocalClaims?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
-                                        text: claim.displayName,
+                                        text: (
+                                            <Header as="h6">
+                                                <Header.Content>
+                                                    { claim?.displayName }
+                                                    <Header.Subheader>
+                                                        <code className="inline-code compact transparent">
+                                                            { claim.claimURI }
+                                                        </code>
+                                                    </Header.Subheader>
+                                                </Header.Content>
+                                            </Header>) ,
                                         value: claim.claimURI
                                     };
                                 })
