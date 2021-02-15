@@ -172,7 +172,6 @@ export interface ModalInterface {
     content?: object;
     primaryButton: string;
     secondaryButton: string;
-    [ key: string ]: any;
 }
 
 /**

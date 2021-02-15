@@ -34,7 +34,7 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
-import { AuthenticateUtils } from "./features/authentication/utils/authenticate-utils";
+import { AuthenticateUtils } from "./features/authentication/utils";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";

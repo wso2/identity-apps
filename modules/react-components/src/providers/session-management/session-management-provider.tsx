@@ -272,8 +272,10 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                     >
                     </Trans>
                 }
-                description={ sessionTimedOut ? modalOptions?.sessionTimedOutDescription : modalOptions?.description }
-                primaryButtonText={ sessionTimedOut ? modalOptions?.loginAgainButtonText : modalOptions?.primaryButtonText }
+                description={ sessionTimedOut ? modalOptions?.sessionTimedOutDescription
+                    : modalOptions?.description }
+                primaryButtonText={ sessionTimedOut ? modalOptions?.loginAgainButtonText
+                    : modalOptions?.primaryButtonText }
                 secondaryButtonText={ modalOptions?.secondaryButtonText }
             />
         </>
