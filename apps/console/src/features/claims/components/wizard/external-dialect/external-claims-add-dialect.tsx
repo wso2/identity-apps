@@ -63,6 +63,10 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * Specifies the attribute type.
      */
     attributeType?: string;
+    /**
+     * Specifies if this is to be rendered in a wizard.
+     */
+    wizard?: boolean;
 }
 
 /**
@@ -83,6 +87,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         onExternalClaimsChanged,
         shouldShowInitialValues,
         attributeType,
+        wizard,
         [ "data-testid" ]: testId
     } = props;
 
@@ -208,7 +213,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     attributeType={ attributeType }
                                 />
                             )
-                            : (
+                            : wizard && (
                                 <EmptyPlaceholder
                                     title={ t("console:manage.features.claims.external.placeholders.empty.title",
                                         { type: resolveType(attributeType, true) }) }
@@ -232,5 +237,6 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
 ExternalClaims.defaultProps = {
     attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "external-claims",
-    shouldShowInitialValues: true
+    shouldShowInitialValues: true,
+    wizard: true
 };
