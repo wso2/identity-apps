@@ -283,7 +283,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             data-testid={ `${testId}-page-layout` }
         >
             <Header>Update Scope</Header>
-            <EmphasizedSegment>
+            <EmphasizedSegment className="padded very">
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 6 }>
