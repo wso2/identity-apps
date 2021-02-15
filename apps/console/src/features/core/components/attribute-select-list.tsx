@@ -32,7 +32,6 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedExternalClaimInterface[]>([]);
     const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
 
-    const [ sample, setSample ] = useState([]);
     const { t } = useTranslation();
 
     const init = useRef(true);
@@ -47,7 +46,6 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
             setTempSelectedClaims(selectedExternalClaims);
-            setSample(selectedExternalClaims);
         } else {
             const sortedClaims = sortBy(availableExternalClaims, "localClaimDisplayName");
             setTempAvailableClaims(sortedClaims);
