@@ -50,6 +50,10 @@ interface AddDialectPropsInterface extends TestableComponentInterface {
      * Function to be called to initiate an update.
      */
     update: () => void;
+    /**
+     * Attribute type
+     */
+    attributeType?: string;
 }
 
 /**
@@ -67,6 +71,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
         open,
         onClose,
         update,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -122,13 +127,13 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
                             // Closes the modal.
                             onClose();
-    
+
                             history.push({
                                 pathname: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
                                     .replace(":id", createdDialect),
                                 search: ClaimManagementConstants.NEW_DIALECT_URL_SEARCH_PARAM
                             });
-    
+
                             return;
                         }
 
@@ -212,6 +217,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     values={ externalClaims }
                     onExternalClaimsChanged={ onExternalClaimsChanged }
                     data-testid={ `${ testId }-external-claims` }
+                    attributeType= { attributeType }
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
@@ -223,6 +229,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     dialectURI={ dialectDetailsData?.get("dialectURI").toString() }
                     claims={ externalClaims }
                     data-testid={ `${ testId }-summary` }
+                    attributeType={ attributeType }
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
@@ -342,5 +349,6 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
  * Default props for the component.
  */
 AddDialect.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "add-dialect-wizard"
 };
