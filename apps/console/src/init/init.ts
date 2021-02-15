@@ -58,18 +58,19 @@ function sendPromptNoneRequest() {
         "promptNoneIFrame"
     ) as HTMLIFrameElement;
     const config = window.parent["AppUtils"].getConfig();
-    promptNoneIFrame.src =
-        getItemFromSessionStorage("authorization_endpoint") +
-        "?response_type=code" +
-        "&client_id=" +
-        config.clientID +
-        "&scope=openid" +
-        "&redirect_uri=" +
-        config.loginCallbackURL +
-        "&state=Y2hlY2tTZXNzaW9u" +
-        "&prompt=none" +
-        "&code_challenge_method=S256&code_challenge=" +
-        getRandomPKCEChallenge();
+
+    const parsedAuthorizationEndpointURL: URL = new URL(getItemFromSessionStorage("authorization_endpoint"));
+
+    parsedAuthorizationEndpointURL.searchParams.append("response_type", "code");
+    parsedAuthorizationEndpointURL.searchParams.append("client_id", config.clientID);
+    parsedAuthorizationEndpointURL.searchParams.append("scope", "openid");
+    parsedAuthorizationEndpointURL.searchParams.append("redirect_uri", config.loginCallbackURL);
+    parsedAuthorizationEndpointURL.searchParams.append("state", "Y2hlY2tTZXNzaW9u");
+    parsedAuthorizationEndpointURL.searchParams.append("prompt", "none");
+    parsedAuthorizationEndpointURL.searchParams.append("code_challenge_method", "S256");
+    parsedAuthorizationEndpointURL.searchParams.append("code_challenge", getRandomPKCEChallenge());
+
+    promptNoneIFrame.src = parsedAuthorizationEndpointURL.toString();
 }
 
 const config = window["AppUtils"]?.getConfig();
