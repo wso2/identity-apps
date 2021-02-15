@@ -313,8 +313,8 @@
                 ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
                 urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
                                         request.getParameter("sp"));
-
-                urlWithoutEncoding = replaceURLPlaceholders(urlWithoutEncoding, request);
+                urlWithoutEncoding =  IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
+                                                                        urlWithoutEncoding, userTenantDomain);
             } catch (ApplicationDataRetrievalClientException e) {
                 //ignored and fallback to login page url
             }
@@ -498,28 +498,6 @@
 
             return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
-
-        private String replaceURLPlaceholders(String accessURL, HttpServletRequest request) {
-
-            if (StringUtils.isBlank(accessURL)) {
-                return accessURL;
-            }
-            if (!accessURL.contains("${UserTenantHint}")) {
-                return accessURL;
-            }
-            String userTenantHint = request.getParameter("ut");
-            if (StringUtils.isBlank(userTenantHint)) {
-                userTenantHint = request.getParameter("t");
-            }
-            if (StringUtils.isBlank(userTenantHint)) {
-                userTenantHint = "carbon.super";
-            }
-
-            return accessURL.replaceAll(Pattern.quote("${UserTenantHint}"), userTenantHint)
-                            .replaceAll(Pattern.quote("/t/carbon.super/"), "/");
-
-        }
-
     %>
 
     <script defer>

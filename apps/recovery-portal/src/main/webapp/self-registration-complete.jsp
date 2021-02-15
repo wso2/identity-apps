@@ -24,13 +24,14 @@
 <%@ page import="java.io.File" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 <%
     boolean isEmailNotificationEnabled = false;
 
     String callback = (String) request.getAttribute("callback");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");

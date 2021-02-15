@@ -101,7 +101,7 @@
             }
             if (StringUtils.isBlank(callback)) {
                 callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
             }
             if (StringUtils.isBlank(username)) {
                 request.setAttribute("error", true);

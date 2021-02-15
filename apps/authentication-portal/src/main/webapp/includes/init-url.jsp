@@ -36,8 +36,16 @@
     }
     
     String tenantDomain;
+    String userTenantDomain;
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+        userTenantDomain = request.getParameter("ut");
+        if (StringUtils.isBlank(userTenantDomain)) {
+            userTenantDomain = request.getParameter("t");
+        }
+        if (StringUtils.isBlank(userTenantDomain)) {
+            userTenantDomain = tenantDomain;
+        }
     } else {
         tenantDomain = request.getParameter("tenantDomain");
         String tenantDomainFromURL = request.getParameter("t");
@@ -45,5 +53,6 @@
         if (!StringUtils.isBlank(tenantDomainFromURL)) {
             tenantDomain = tenantDomainFromURL;
         }
+        userTenantDomain = tenantDomain;
     }
 %>

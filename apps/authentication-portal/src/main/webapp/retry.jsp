@@ -46,9 +46,10 @@
         ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
         applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
                 sp);
-        applicationAccessURLWithoutEncoding = replaceURLPlaceholders(applicationAccessURLWithoutEncoding, request, tenantDomain);
+        applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
+                                                                applicationAccessURLWithoutEncoding, userTenantDomain);
     } catch (ApplicationDataRetrievalClientException e) {
-        //ignored and fallback to login page url
+        // Ignored and fallback to login page url.
     }
 %>
 
@@ -112,30 +113,5 @@
     <% } else { %>
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
-    <%!
-        private String replaceURLPlaceholders (String accessURL, HttpServletRequest request, String tenantDomain) {
-
-            if (StringUtils.isBlank(accessURL)) {
-                return accessURL;
-            }
-            if (!accessURL.contains("${UserTenantHint}")) {
-                return accessURL;
-            }
-            String userTenantHint = request.getParameter("ut");
-            if (StringUtils.isBlank(userTenantHint)) {
-                userTenantHint = request.getParameter("t");
-            }
-            if (StringUtils.isBlank(userTenantHint)) {
-                if (StringUtils.isNotBlank(tenantDomain)) {
-                    userTenantHint = tenantDomain;
-                } else {
-                    userTenantHint = "carbon.super";
-                }
-            }
-
-            return accessURL.replaceAll(Pattern.quote("${UserTenantHint}"), userTenantHint)
-                    .replaceAll(Pattern.quote("/t/carbon.super/"), "/");
-        }
-    %>
 </body>
 </html>
