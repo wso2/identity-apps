@@ -25,9 +25,10 @@ import {
     EmptyPlaceholder,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    TableDataInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
@@ -35,6 +36,7 @@ import { OIDCScopeAttributes } from "./oidc-scope-attributes";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesListInterface } from "../models";
+import { OIDCScopesManagementConstants } from "../constants";
 
 /**
  * Proptypes for the OIDC scope edit component.
@@ -64,6 +66,10 @@ interface EditScopePropsInterface extends SBACInterface<FeatureConfigInterface>,
      * Specifies if a network request is still loading.
      */
     isRequestLoading: boolean;
+    /**
+     * Triggers the add attribute modal.
+     */
+    triggerAddAttributeModal: boolean;
 }
 
 /**
@@ -82,6 +88,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         selectedAttributes,
         unselectedAttributes,
         isRequestLoading,
+        triggerAddAttributeModal,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,10 +98,20 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
 
+    const init = useRef(true);
+
+    useEffect(() => {
+        if (init.current) {
+            init.current = false;
+        } else {
+            handleOpenSelectionModal();
+        }
+    }, [ triggerAddAttributeModal]);
+
     const updateOIDCScope = (attributes: string[]): void => {
         const data: OIDCScopesListInterface = {
             claims: attributes,
-            description: "",
+            description: scope.description,
             displayName: scope.displayName
         };
 
@@ -181,19 +198,12 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 key: "name",
                 render: (claim: ExternalClaim): ReactNode => (
                     <Header image as="h6" className="header-with-icon" data-testid={ `${ testId }-item-heading` }>
-                        <AppAvatar
-                            image={
-                                <AnimatedAvatar
-                                    name={ claim.claimURI }
-                                    size="mini"
-                                    data-testid={ `${ testId }-item-image-inner` }
-                                />
-                            }
-                            size="mini"
-                            spaced="right"
-                            data-testid={ `${ testId }-item-image` }
-                        />
-                        <Header.Content>{ claim.claimURI }</Header.Content>
+                        <Header.Content>
+                            { claim.claimURI }
+                            <Header.Subheader>
+                                <code>{ claim.mappedLocalClaimURI }</code>
+                            </Header.Subheader>
+                        </Header.Content>
                     </Header>
                 ),
                 title: t("console:manage.features.oidcScopes.list.columns.name")
@@ -217,6 +227,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     const resolveTableActions = (): TableActionsInterface[] => {
         const actions: TableActionsInterface[] = [
             {
+                hidden: (item: TableDataInterface<ExternalClaim>) => {
+                    return item.claimURI === "sub" && scope.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE;
+                },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, claim: ExternalClaim): void => {
                     handleRemoveAttribute(claim.claimURI);
