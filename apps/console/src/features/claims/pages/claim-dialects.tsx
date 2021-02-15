@@ -20,13 +20,7 @@ import { getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    AnimatedAvatar,
-    EmphasizedSegment,
-    GenericIcon,
-    PageLayout,
-    PrimaryButton
-} from "@wso2is/react-components";
+import { AnimatedAvatar, EmphasizedSegment, GenericIcon, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,17 +51,17 @@ type ClaimDialectsPageInterface = TestableComponentInterface;
 const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     props: ClaimDialectsPageInterface
 ): ReactElement => {
-    const { ["data-testid"]: testId } = props;
+    const { [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const [addEditClaim, setAddEditClaim] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [oidcAttributeMappings, setOidcAttributeMappings] = useState<ClaimDialect[]>([]);
-    const [scimAttributeMappings, setScimAttributeMappings] = useState<ClaimDialect[]>([]);
-    const [otherAttributeMappings, setOtherAttributeMappings] = useState<ClaimDialect[]>([]);
+    const [ addEditClaim, setAddEditClaim ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ oidcAttributeMappings, setOidcAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const dispatch = useDispatch();
@@ -133,14 +127,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             error?.response?.data?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                    ".genericError.description"
+                                ".genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.response?.data?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                    ".genericError.message"
+                                ".genericError.message"
                             )
                     })
                 );
@@ -163,7 +157,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         setAddEditClaim(false);
                     } }
                     update={ getDialect }
-                    data-testid={ `${testId}-add-dialect-wizard` }
+                    data-testid={ `${ testId }-add-dialect-wizard` }
                 />
             ) }
             <PageLayout
@@ -172,7 +166,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         onClick={ () => {
                             setAddEditClaim(true);
                         } }
-                        data-testid={ `${testId}-list-layout-add-button` }
+                        data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add" />
                         { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
@@ -180,71 +174,81 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
-                description={ "View and manage how user attributes in Asgardeo are mapped and transformed when interacting with APIs or your applications." }
-                data-testid={ `${testId}-page-layout` }
+                description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
+                data-testid={ `${ testId }-page-layout` }
             >
                 { hasRequiredScopes(
                     featureConfig?.attributeDialects,
                     featureConfig?.attributeDialects?.scopes?.read,
                     allowedScopes
                 ) && (
-                    <>
-                        <Header as="h4">
-                            Manage Attributes
-                            <div className="sub header ellipsis">View and manage attributes native to Asgardeo.</div>
-                        </Header>
-                        <EmphasizedSegment
-                            onClick={ () => {
-                                history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
-                            } }
-                            className="clickable"
-                            data-testid={ `${testId}-local-dialect-container` }
-                        >
-                            <List>
-                                <List.Item>
-                                    <Grid>
-                                        <Grid.Row columns={ 2 }>
-                                            <Grid.Column width={ 12 }>
-                                                <GenericIcon
-                                                    verticalAlign="middle"
-                                                    fill="primary"
-                                                    transparent
-                                                    rounded
-                                                    icon={ getSidePanelIcons().claims }
-                                                    spaced="right"
-                                                    size="mini"
-                                                    floated="left"
-                                                />
+                        <>
+                            <Header as="h4">
+                                { t("console:manage.features.claims.dialects.sections.manageAttributes.heading") }
+                                <div className="sub header ellipsis">
+                                    { t(
+                                        "console:manage.features.claims.dialects.sections."
+                                        + "manageAttributes.description"
+                                    ) }
+                                </div>
+                            </Header>
+                            <EmphasizedSegment
+                                onClick={ () => {
+                                    history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
+                                } }
+                                className="clickable"
+                                data-testid={ `${ testId }-local-dialect-container` }
+                            >
+                                <List>
+                                    <List.Item>
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 12 }>
+                                                    <GenericIcon
+                                                        verticalAlign="middle"
+                                                        fill="primary"
+                                                        transparent
+                                                        rounded
+                                                        icon={ getSidePanelIcons().claims }
+                                                        spaced="right"
+                                                        size="mini"
+                                                        floated="left"
+                                                    />
 
-                                                <List.Header>
-                                                    { t("console:manage.features.claims.dialects.localDialect") }
-                                                </List.Header>
-                                                <List.Description data-testid={ `${testId}-local-dialect` }>
-                                                    Each attribute contains a piece of user data stored within Asgardeo.
-                                                </List.Description>
-                                            </Grid.Column>
-                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Icon name="arrow right" />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </List.Item>
-                            </List>
-                        </EmphasizedSegment>
-                    </>
-                ) }
+                                                    <List.Header>
+                                                        { t(
+                                                            "console:manage.features.claims.dialects.sections." +
+                                                            "manageAttributes.attributes.heading"
+                                                        ) }
+                                                    </List.Header>
+                                                    <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                        { t(
+                                                            "console:manage.features.claims.dialects.sections." +
+                                                            "manageAttributes.attributes.description"
+                                                        ) }
+                                                    </List.Description>
+                                                </Grid.Column>
+                                                <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                    <Icon name="arrow right" />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </List.Item>
+                                </List>
+                            </EmphasizedSegment>
+                        </>
+                    ) }
                 <Divider hidden />
                 <Divider />
                 <Header as="h4">
-                    Manage Attribute Mappings
+                    { t("console:manage.features.claims.dialects.sections.manageAttributeMappings.heading") }
                     <div className="sub header ellipsis">
-                        View and manage how attributes in Asgardeo are mapped and transformed when interacting with APIs
-                        or your applications.
+                        { t("console:manage.features.claims.dialects.sections.manageAttributeMappings.description") }
                     </div>
                 </Header>
                 { !isLoading ? (
                     oidcAttributeMappings.length > 0 && (
-                        <EmphasizedSegment className="clickable" data-testid={ `${testId}-oidc-dialect-container` }>
+                        <EmphasizedSegment className="clickable" data-testid={ `${ testId }-oidc-dialect-container` }>
                             <List>
                                 <List.Item
                                     onClick={ () => {
@@ -267,10 +271,17 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     size="mini"
                                                     floated="left"
                                                 />
-                                                <List.Header>OpenID Connect</List.Header>
-                                                <List.Description data-testid={ `${testId}-local-dialect` }>
-                                                    Communicate information about the user for applications that uses
-                                                    OpenID Connect to authenticate.
+                                                <List.Header>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.oidc.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.oidc.description"
+                                                    ) }
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
@@ -283,13 +294,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         </EmphasizedSegment>
                     )
                 ) : (
-                    <Placeholder fluid>
-                        <Placeholder.Header image>
-                            <Placeholder.Line length="full" />
-                            <Placeholder.Line length="medium" />
-                        </Placeholder.Header>
-                    </Placeholder>
-                ) }
+                        <Placeholder fluid>
+                            <Placeholder.Header image>
+                                <Placeholder.Line length="full" />
+                                <Placeholder.Line length="medium" />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    ) }
                 { !isLoading ? (
                     scimAttributeMappings.length > 0 && (
                         <EmphasizedSegment
@@ -301,7 +312,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                 );
                             } }
                             className="clickable"
-                            data-testid={ `${testId}-scim-dialect-container` }
+                            data-testid={ `${ testId }-scim-dialect-container` }
                         >
                             <List>
                                 <List.Item>
@@ -316,10 +327,17 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     size="mini"
                                                     floated="left"
                                                 />
-                                                <List.Header>System for Cross-Domain Identity Management </List.Header>
-                                                <List.Description data-testid={ `${testId}-local-dialect` }>
-                                                    Communicate information about the user via the API compliance with
-                                                    SCIM2 standards.
+                                                <List.Header>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.scim.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.scim.description"
+                                                    ) }
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
@@ -332,24 +350,26 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         </EmphasizedSegment>
                     )
                 ) : (
-                    <Placeholder fluid>
-                        <Placeholder.Header image>
-                            <Placeholder.Line length="full" />
-                            <Placeholder.Line length="medium" />
-                        </Placeholder.Header>
-                    </Placeholder>
-                ) }
+                        <Placeholder fluid>
+                            <Placeholder.Header image>
+                                <Placeholder.Line length="full" />
+                                <Placeholder.Line length="medium" />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    ) }
                 { !isLoading ? (
                     otherAttributeMappings.length > 0 && (
-                        <EmphasizedSegment onClick={ () => {
-                            history.push(
-                                AppConstants.getPaths()
-                                    .get("ATTRIBUTE_MAPPINGS")
-                                    .replace(
-                                        ":type",
-                                        ClaimManagementConstants.OTHERS
-                                    )
-                            ); } } className="clickable" data-testid={ `${testId}-other-dialect-container` }>
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(
+                                    AppConstants.getPaths()
+                                        .get("ATTRIBUTE_MAPPINGS")
+                                        .replace(":type", ClaimManagementConstants.OTHERS)
+                                );
+                            } }
+                            className="clickable"
+                            data-testid={ `${ testId }-other-dialect-container` }
+                        >
                             <List>
                                 <List.Item>
                                     <Grid>
@@ -365,15 +385,21 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     <AnimatedAvatar />
                                                     <span className="claims-letter">C</span>
                                                 </Image>
-                                                <List.Header>Custom Attribute Mapping</List.Header>
-                                                <List.Description data-testid={ `${testId}-local-dialect` }>
-                                                    Communicate information about the user via custom mappings.
+                                                <List.Header>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.custom.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
+                                                    { t(
+                                                        "console:manage.features.claims.dialects.sections." +
+                                                        "manageAttributeMappings.custom.description"
+                                                    ) }
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-
-                                                            <Icon name="arrow right" />
-
+                                                <Icon name="arrow right" />
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -382,13 +408,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         </EmphasizedSegment>
                     )
                 ) : (
-                    <Placeholder fluid>
-                        <Placeholder.Header image>
-                            <Placeholder.Line length="full" />
-                            <Placeholder.Line length="medium" />
-                        </Placeholder.Header>
-                    </Placeholder>
-                ) }
+                        <Placeholder fluid>
+                            <Placeholder.Header image>
+                                <Placeholder.Line length="full" />
+                                <Placeholder.Line length="medium" />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    ) }
             </PageLayout>
         </>
     );

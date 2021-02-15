@@ -73,11 +73,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const resolvePageHeading = (): string => {
             switch (type) {
                 case ClaimManagementConstants.OIDC:
-                    return "OpenID Connect";
+                    return t(
+                        "console:manage.features.claims.attributeMappings.oidc.heading"
+                    );
                 case ClaimManagementConstants.SCIM:
-                    return "System for Cross-Domain Identity Management";
+                    return t(
+                        "console:manage.features.claims.attributeMappings.scim.heading"
+                    );
                 default:
-                    return "Custom Attributes";
+                    return t(
+                        "console:manage.features.claims.attributeMappings.custom.heading"
+                    );
             }
         };
 
@@ -89,14 +95,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const resolvePageDescription = (): string => {
             switch (type) {
                 case ClaimManagementConstants.OIDC:
-                    return (
-                        "The OpenID Connect protocol representation for user " +
-                        "attributes that will be used in the OpenID Connect API."
+                    return t(
+                        "console:manage.features.claims.attributeMappings.oidc.description"
                     );
                 case ClaimManagementConstants.SCIM:
-                    return "The SCIM2 protocol representation for user " + "attributes that will be used in the SCIM2 API.";
+                    return t(
+                        "console:manage.features.claims.attributeMappings.scim.description"
+                    );
                 default:
-                    return "The custom protocol representation for user " + "attributes that will be used in custom API.";
+                    return t(
+                        "console:manage.features.claims.attributeMappings.custom.description"
+                    );
             }
         };
 
