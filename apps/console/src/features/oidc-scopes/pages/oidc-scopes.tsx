@@ -28,6 +28,7 @@ import { AppState, FeatureConfigInterface, UIConstants } from "../../core";
 import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
+import { sortBy } from "lodash";
 
 /**
  * Props for the OIDC scopes page.
@@ -86,8 +87,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
         getOIDCScopesList<OIDCScopesListInterface[]>()
             .then((response: OIDCScopesListInterface[]) => {
-                setScopeList(response);
-                setTempScopeList(response);
+                const sorted = sortBy(response, "displayName");
+                console.log(sorted)
+                setScopeList(sorted);
+                setTempScopeList(sorted);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
