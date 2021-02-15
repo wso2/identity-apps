@@ -19,8 +19,7 @@
 import { AlertLevels, ExternalClaim, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
-    AppAvatar,
+
     DataTable,
     EmptyPlaceholder,
     PrimaryButton,
@@ -37,6 +36,7 @@ import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesListInterface } from "../models";
 import { OIDCScopesManagementConstants } from "../constants";
+import { AttributeSelectionWizardOtherDialect } from "../../applications/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
 
 /**
  * Proptypes for the OIDC scope edit component.
@@ -162,6 +162,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const showAttributeSelectionModal = () => {
         return (
+            <>
             <OIDCScopeAttributes
                 onUpdateAttributes={ updateOIDCScope }
                 selectedClaims={ selectedAttributes }
@@ -170,6 +171,24 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 setShowAddModal={ setShowSelectionModal }
                 data-testid={ `${ testId }-wizard` }
             />
+                <AttributeSelectionWizardOtherDialect
+                    availableExternalClaims={ [...selectedAttributes, ...unselectedAttributes] }
+                    selectedExternalClaims={ selectedAttributes }
+                    showAddModal={ showSelectionModal }
+                    data-testid={ `${ testId }-add-attributes` }
+                    setShowAddModal={ setShowSelectionModal }
+                    setAvailableExternalClaims={ () => {
+                        //
+                    } }
+                    setInitialSelectedExternalClaims={ () => {
+                        //
+                     } }
+                    setSelectedExternalClaims={ () => {
+                        //
+                    } }
+
+                />
+            </>
         );
     };
 
