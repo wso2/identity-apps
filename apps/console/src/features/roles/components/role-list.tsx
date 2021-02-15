@@ -29,6 +29,7 @@ import {
     AppAvatar,
     ConfirmationModal,
     DataTable,
+    DataTablePropsInterface,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
@@ -84,6 +85,10 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      */
     selection?: boolean;
     /**
+     * Show/Hide header cells.
+     */
+    showHeader?: DataTablePropsInterface["showHeader"];
+    /**
      * Show list item actions.
      */
     showListItemActions?: boolean;
@@ -91,6 +96,10 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      * Show/Hide meta content.
      */
     showMetaContent?: boolean;
+    /**
+     * Show/Hide role type label.
+     */
+    showRoleType?: boolean;
 }
 
 /**
@@ -113,6 +122,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         searchQuery,
         showListItemActions,
         showMetaContent,
+        showHeader,
+        showRoleType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -133,31 +144,45 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
      * @returns - React element if containing a prefix or the string
      */
     const generateHeaderContent = (displayName: string): ReactElement | string => {
+
         if (displayName.includes(APPLICATION_DOMAIN)) {
+
+            // Show only the role name.
+            if (!showRoleType) {
+                return displayName.split("/")[ 1 ];
+            }
+
+            // Show role name with type label.
             return (
                 <>
                     <Label
-                        data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
+                        data-testid={ `${ testId }-role-${ displayName.split("/")[ 1 ] }-label` }
                         content={ "Application" }
                         size="mini"
                         className={ "application-label" }
                     />
-                    { "/ " + displayName.split("/")[1] }
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <Label
-                        data-testid={ `${ testId }-role-${ displayName }-label` }
-                        content={ "Internal" }
-                        size="mini"
-                        className={ "internal-label" }
-                    />
-                    { "/ " + displayName }
+                    { "/ " + displayName.split("/")[ 1 ] }
                 </>
             );
         }
+
+        // Show only the role name.
+        if (!showRoleType) {
+            return displayName;
+        }
+
+        // Show role name with type label.
+        return (
+            <>
+                <Label
+                    data-testid={ `${ testId }-role-${ displayName }-label` }
+                    content={ "Internal" }
+                    size="mini"
+                    className={ "internal-label" }
+                />
+                { "/ " + displayName }
+            </>
+        );
     };
 
     /**
@@ -277,7 +302,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.roles.list.columns.actions")
+                title: null
             }
         ];
     };
@@ -337,7 +362,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ showHeader }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />
@@ -394,6 +419,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
  */
 RoleList.defaultProps = {
     selection: true,
+    showHeader: false,
     showListItemActions: true,
-    showMetaContent: true
+    showMetaContent: true,
+    showRoleType: false
 };
