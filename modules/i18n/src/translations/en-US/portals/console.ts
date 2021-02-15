@@ -1306,7 +1306,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     back: {
                                         hint: "{{productName}} will directly communicate the logout requests to this " +
-                                            "client URL(s), so that clients can invalidate the user session.",
+                                            "client URL, so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "https://myapp.io/logout",
                                         validations: {
@@ -1372,16 +1372,16 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object",
-                                description: "{{productName}} supports receiving OIDC authentication request " +
-                                    "parameters from clients in a `request object`. Enable signature " +
-                                    "validation to accept only signed request objects in the" +
-                                    " authorization request.",
+                                description: "{{productName}} supports receiving an OIDC authentication request as " +
+                                    "a request object that is passed in a single, self-contained <1>request</1> " +
+                                    "parameter. Enable signature validation to accept only signed request objects " +
+                                    "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
                                         label: "Enable signature validation",
                                     }
                                 },
+                                heading: "Request Object"
                             },
                             scopeValidators: {
                                 fields: {
@@ -6043,7 +6043,7 @@ export const console: ConsoleNS = {
                             roleName: {
                                 hint: "A name for the user group.",
                                 label: "{{type}} Name",
-                                placeholder: "Enter {{type}} Name",
+                                placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
                                     empty: "{{type}} Name is required to proceed.",
