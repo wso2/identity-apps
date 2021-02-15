@@ -259,7 +259,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
 
         // If only enter key is pressed perform the default filter strategy.
         if (!shiftKey && key === "Enter") {
-            query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
+            if (internalSearchQuery === "") {
+                query = null;
+            } else {
+                query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
+            }
             onSearchQuerySubmit(false, query);
             setShowSearchFieldHint(false);
         }
