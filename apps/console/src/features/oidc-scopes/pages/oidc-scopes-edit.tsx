@@ -22,6 +22,7 @@ import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import sortBy from "lodash/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -128,8 +129,9 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
         });
 
-        setSelectedAttributes(selected);
-        setTempSelectedAttributes(selected);
+        const sortedSelected = sortBy(selected, "claimURI");
+        setSelectedAttributes(sortedSelected);
+        setTempSelectedAttributes(sortedSelected);
         setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
     };
 
