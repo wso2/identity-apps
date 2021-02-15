@@ -117,7 +117,10 @@ export const console: ConsoleNS = {
                     "කරුණාකර ඔබ සැසිය දිගටම කරගෙන යාමට කැමති නම් ලොග් වී සිටින්න තෝරන්න.",
                 heading: "ඔබ <1>{{ time }}</1> න් ඉවත් වනු ඇත.",
                 primaryButton: "පුරනය වී සිටින්න",
-                secondaryButton: "ඉවත් වන්න"
+                secondaryButton: "ඉවත් වන්න",
+                loginAgainButton: "නැවත පුරනය වන්න",
+                sessionTimedOutHeading: "අක්‍රියතාවය හේතුවෙන් ඔබගේ සැසිය කල් ඉකුත්වී ඇත.",
+                sessionTimedOutDescription: "ඔබ නතර කළ ස්ථානයෙන් ඉදිරියට යාමට කරුණාකර නැවත ලොග් වන්න."
             }
         },
         notifications: {

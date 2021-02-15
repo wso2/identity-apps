@@ -1263,7 +1263,10 @@ export const myAccount: MyAccountNS = {
                 "නම් කරුණාකර රැඳී සිටින්න තෝරන්න.",
             heading: "තත්පර <1>{{ time }}</1> කින් ඔබ ඉවත් වනු ඇත.",
             primaryButton: "පුරනය වී සිටින්න",
-            secondaryButton: "වරන්න"
+            secondaryButton: "වරන්න",
+            loginAgainButton: "නැවත පුරනය වන්න",
+            sessionTimedOutHeading: "අක්‍රියතාවය හේතුවෙන් ඔබගේ සැසිය කල් ඉකුත්වී ඇත.",
+            sessionTimedOutDescription: "ඔබ නතර කළ ස්ථානයෙන් ඉදිරියට යාමට කරුණාකර නැවත ලොග් වන්න."
         }
     },
     pages: {

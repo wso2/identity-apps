@@ -1300,7 +1300,10 @@ export const myAccount: MyAccountNS = {
                 "நீங்கள் அமர்வைத் தொடர விரும்பினால் உள்நுழைந்திருப்பதைத் தேர்வுசெய்க.",
             heading: "நீங்கள் <1>{{ time }}</1> இல் வெளியேறுவீர்கள்.",
             primaryButton: "உள்நுழைந்திருங்கள்",
-            secondaryButton: "வெளியேறு"
+            secondaryButton: "வெளியேறு",
+            loginAgainButton: "மீண்டும் உள்நுழைக",
+            sessionTimedOutHeading: "செயலற்ற தன்மை காரணமாக உங்கள் அமர்வு காலாவதியானது.",
+            sessionTimedOutDescription: "நீங்கள் நிறுத்திய இடத்திலிருந்து தொடர தயவுசெய்து மீண்டும் உள்நுழைக."
         }
     },
     pages: {

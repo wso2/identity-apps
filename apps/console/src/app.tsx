@@ -34,6 +34,7 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
+import { AuthenticateUtils } from "./features/authentication/utils";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
@@ -181,6 +182,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
+                                            onLoginAgain={ AuthenticateUtils.endUserSession }
                                             modalOptions={ {
                                                 description: I18n.instance.t("console:common.modals" +
                                                     ".sessionTimeoutModal.description"),
@@ -188,7 +190,13 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                 primaryButtonText: I18n.instance.t("console:common.modals" +
                                                     ".sessionTimeoutModal.primaryButton"),
                                                 secondaryButtonText: I18n.instance.t("console:common.modals" +
-                                                    ".sessionTimeoutModal.secondaryButton")
+                                                    ".sessionTimeoutModal.secondaryButton"),
+                                                sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                    ".sessionTimeoutModal.sessionTimedOutHeading",
+                                                loginAgainButtonText: I18n.instance.t("console:common:modals" +
+                                                    ".sessionTimeoutModal.loginAgainButton"),
+                                                sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
+                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
                                             } }
                                         >
                                             <>

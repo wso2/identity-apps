@@ -1274,7 +1274,10 @@ export const myAccount: MyAccountNS = {
                 "Sélectionnez <1>Rester connecté<1> pour poursuivre la session.",
             heading: "Vous serez déconnecté(e) dans <1>{{ time }}</1>.",
             primaryButton: "Rester connecté",
-            secondaryButton: "Se déconnecter"
+            secondaryButton: "Se déconnecter",
+            loginAgainButton: "Connectez-vous à nouveau",
+            sessionTimedOutHeading: "Votre session a expiré en raison d'une inactivité.",
+            sessionTimedOutDescription: "Veuillez vous reconnecter pour reprendre là où vous vous étiez arrêté."
         }
     },
     pages: {

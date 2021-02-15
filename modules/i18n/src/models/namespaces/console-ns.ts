@@ -84,7 +84,16 @@ export interface ConsoleNS {
         };
         modals: {
             editAvatarModal: ModalInterface;
-            sessionTimeoutModal: ModalInterface;
+            sessionTimeoutModal: {
+                description: string;
+                heading: string;
+                content?: object;
+                primaryButton: string;
+                secondaryButton: string;
+                loginAgainButton: string;
+                sessionTimedOutHeading: string;
+                sessionTimedOutDescription: string;
+            };
         };
         notifications: {
             invalidPEMFile: Notification;
