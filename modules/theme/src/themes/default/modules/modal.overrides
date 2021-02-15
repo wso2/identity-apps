@@ -599,6 +599,12 @@
         }
 
     }
+
+    .content {
+        &.edit-attribute-mapping {
+            height: @attributeModalContentHeight;
+        }
+    }
 }
 
 
