@@ -54,12 +54,12 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { attributeType, ["data-testid"]: testId, id: dialectId } = props;
+    const { attributeType, [ "data-testid" ]: testId, id: dialectId } = props;
 
-    const [dialect, setDialect] = useState<ClaimDialect>(null);
-    const [claims, setClaims] = useState<ExternalClaim[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
+    const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ confirmDelete, setConfirmDelete ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -83,16 +83,16 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
-            data-testid={ `${testId}-delete-confirmation-modal` }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
-            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning data-testid={ `${testId}-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message attached warning data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
                 { t("console:manage.features.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -113,14 +113,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                    "fetchADialect.genericError.description"
+                                "fetchADialect.genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                    "fetchADialect.genericError.message"
+                                "fetchADialect.genericError.message"
                             )
                     })
                 );
@@ -129,7 +129,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     useEffect(() => {
         dialectId && getDialect();
-    }, [dialectId]);
+    }, [ dialectId ]);
 
     /**
      * Fetch external claims.
@@ -167,7 +167,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                 error?.response?.data?.message ||
                                 t(
                                     "console:manage.features.claims.dialects.notifications." +
-                                        "fetchExternalClaims.genericError.message"
+                                    "fetchExternalClaims.genericError.message"
                                 )
                         })
                     );
@@ -179,7 +179,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     useEffect(() => {
         getExternalClaims();
-    }, [dialectId]);
+    }, [ dialectId ]);
 
     /**
      * This deletes a dialect
@@ -218,7 +218,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                    "deleteDialect.genericError.message"
+                                "deleteDialect.genericError.message"
                             )
                     })
                 );
@@ -244,9 +244,9 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                     <EditDialectDetails
                                         dialect={ dialect }
                                         data-testid={ `${ testId }-edit-dialect-details` }
-                                        attributeType= { attributeType }
+                                        attributeType={ attributeType }
                                     />
-                            ) }
+                                ) }
                         </EmphasizedSegment>
                     </Grid.Column>
                 </Grid.Row>
@@ -282,7 +282,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
-                            data-testid={ `${testId}-danger-zone-group` }
+                            data-testid={ `${ testId }-danger-zone-group` }
                         >
                             <DangerZone
                                 actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle",
@@ -292,7 +292,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                 subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader",
                                     { type: resolveType(attributeType) }) }
                                 onActionClick={ () => setConfirmDelete(true) }
-                                data-testid={ `${testId}-dialect-delete-danger-zone` }
+                                data-testid={ `${ testId }-dialect-delete-danger-zone` }
                             />
                         </DangerZoneGroup>
                     </Grid.Column>
