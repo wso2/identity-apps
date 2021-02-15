@@ -111,7 +111,8 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                         <Field
                             data-testid={ `${ testId }-oidc-scope-form-name-input` }
                             name="description"
-                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.description.label") }
+                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                                "inputs.description.label") }
                             required={ false }
                             requiredErrorMessage={ "Description is optional" }
                             placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +

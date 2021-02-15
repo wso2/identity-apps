@@ -26,8 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
-import { OIDCScopeAttributesList } from "./oidc-scope-attribute-list";
-import { AttributeSelectList } from "../../../core/components/attribute-select-list";
+import { AttributeSelectList } from "../../../core";
 import { createOIDCScope } from "../../api";
 import { getOIDCScopeWizardStepIcons } from "../../configs";
 import { OIDCScopesManagementConstants } from "../../constants";
@@ -83,7 +82,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     const [OIDCAttributes, setOIDCAttributes] = useState<ExternalClaim[]>(undefined);
     const [selectedAttributes, setSelectedAttributes] = useState<ExternalClaim[]>([]);
-    const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExternalClaim[]>([]);
     const [isClaimRequestLoading, setIsClaimRequestLoading] = useState<boolean>(false);
     const [claims, setClaims] = useState<Claim[]>([]);
 

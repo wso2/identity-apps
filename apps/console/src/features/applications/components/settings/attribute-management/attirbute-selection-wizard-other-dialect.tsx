@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import {
-    Code,
     Heading,
     LinkButton,
     PrimaryButton
@@ -28,7 +27,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { ExtendedExternalClaimInterface } from "./attribute-settings";
-import { AttributeSelectList } from "../../../../core/components/attribute-select-list";
+import { AttributeSelectList } from "../../../../core";
 
 interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableComponentInterface {
     availableExternalClaims: ExtendedExternalClaimInterface[];
