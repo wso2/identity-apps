@@ -1023,8 +1023,8 @@ export const console: ConsoleNS = {
                                         placeholder: "PEM ආකෘතියෙන් සහතිකය.",
                                         description: "සහතිකයේ පෙළ අගය PEM ආකෘතියෙන්.",
                                         validations: {
-                                            empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                                        }
+                                            empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
+                                            invalid: "PEM ආකෘතියෙන් වලංගු සහතිකයක් ඇතුළත් කරන්න"                                        }
                                     },
                                     type: {
                                         children: {

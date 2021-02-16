@@ -1020,8 +1020,8 @@ export const console: ConsoleNS = {
                                         description: "The text value of the certificate in PEM format.",
                                         placeholder: "Certificate in PEM format.",
                                         validations: {
-                                            empty: "This is a required field."
-                                        }
+                                            empty: "This is a required field.",
+                                            invalid: "Enter a valid certificate in PEM format"                                        }
                                     },
                                     type: {
                                         children: {
