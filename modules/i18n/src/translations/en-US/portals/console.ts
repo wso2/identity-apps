@@ -5424,7 +5424,7 @@ export const console: ConsoleNS = {
                         fields: {
                             groupName: {
                                 name: "Group Name",
-                                placeholder: "Enter your group name",
+                                placeholder: "Enter group name",
                                 required: "Group name is required"
                             }
                         }
@@ -5441,8 +5441,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Group"
                     },
                     storeOptions: "Select User Store"
                 },
@@ -6041,7 +6041,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
-                                hint: "A name for the user group.",
+                                hint: "A name for the {{type}}.",
                                 label: "{{type}} Name",
                                 placeholder: "Enter {{type}} name",
                                 validations: {
@@ -6130,7 +6130,7 @@ export const console: ConsoleNS = {
                         fields: {
                             roleName: {
                                 name: "Role Name",
-                                placeholder: "Enter your role name",
+                                placeholder: "Enter role name",
                                 required: "Role name is required"
                             }
                         }
@@ -6160,7 +6160,7 @@ export const console: ConsoleNS = {
                         list: {
                             emptyPlaceholder: {
                                 action: "Assign User",
-                                subtitles: "There are no Users assigned to the {{type}} at the moment.",
+                                subtitles: "There are no users assigned to the {{type}} at the moment.",
                                 title: "No Users Assigned"
                             },
                             header: "Users"
@@ -6174,8 +6174,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Role"
                     },
                     confirmations: {
                         deleteItem: {
