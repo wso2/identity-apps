@@ -1925,6 +1925,20 @@ export interface ConsoleNS {
                 };
             };
             claims: {
+                attributeMappings: {
+                    oidc: {
+                        heading: string;
+                        description: string;
+                    };
+                    scim: {
+                        heading: string;
+                        description: string;
+                    };
+                    custom: {
+                        heading: string;
+                        description: string;
+                    };
+                };
                 dialects: {
                     advancedSearch: {
                         form: {
@@ -1954,7 +1968,6 @@ export interface ConsoleNS {
                         addDialect: Notification;
                         updateDialect: Notification;
                     };
-                    localDialect: string;
                     pageLayout: {
                         list: {
                             title: string;
@@ -1970,6 +1983,32 @@ export interface ConsoleNS {
                         };
                     };
                     dangerZone: DangerZone;
+                    sections: {
+                        manageAttributes: {
+                            heading: string;
+                            description: string;
+                            attributes: {
+                                heading: string;
+                                description: string;
+                            };
+                        };
+                        manageAttributeMappings: {
+                            heading: string;
+                            description: string;
+                            oidc: {
+                                heading: string;
+                                description: string;
+                            };
+                            scim: {
+                                heading: string;
+                                description: string;
+                            };
+                            custom: {
+                                heading: string;
+                                description: string;
+                            };
+                        };
+                    };
                     confirmations: {
                         header: string;
                         message: string;
@@ -2420,6 +2459,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 validations: {
                                     empty: string;
+                                    invalid: string;
                                 };
                             };
                             description: {

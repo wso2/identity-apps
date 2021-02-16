@@ -757,6 +757,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
 
             const oidcConfigs = {
                 authorizeEndpoint: response.data.authorization_endpoint,
+                endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
                 tokenEndpoint: response.data.token_endpoint,

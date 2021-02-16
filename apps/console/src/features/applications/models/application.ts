@@ -575,6 +575,7 @@ export interface SimpleUserStoreListItemInterface {
  */
 export interface OIDCApplicationConfigurationInterface {
     authorizeEndpoint: string;
+    endSessionEndpoint: string;
     introspectionEndpoint: string;
     tokenEndpoint: string;
     userEndpoint: string;
@@ -595,6 +596,7 @@ export interface SAMLApplicationConfigurationInterface {
 
 export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
+    endSessionEndpoint: "",
     introspectionEndpoint: "",
     jwksEndpoint: "",
     tokenEndpoint: "",

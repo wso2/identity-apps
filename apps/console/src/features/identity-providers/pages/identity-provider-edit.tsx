@@ -237,7 +237,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin
+                pin: getHelpPanelActionIcons().pin,
+                unpin: getHelpPanelActionIcons().unpin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }

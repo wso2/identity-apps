@@ -235,8 +235,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={
-                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard" +
-                            ".steps.select.transfer.searchPlaceholders.attribute")
+                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                            ".searchPlaceholder")
                     }
                     isLoading={ isLoading }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
@@ -244,6 +244,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
                         handleSearchFieldChange(e, value, originalUserList, setAddModalUserList);
                     } }
+                    showSelectAllCheckbox={ !isLoading && users?.length > 0 }
                     data-testid={ `${ testId }-user-list-transfer` }
                 >
                     <TransferList
@@ -258,30 +259,28 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     >
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {
-                                const resolvedUserName = (user.name && user.name.givenName !== undefined)
+                                const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
                                     ? user.name.givenName + " " + user.name.familyName
-                                    : user.userName.split("/")?.length > 1
-                                        ? user.userName.split("/")[ 1 ]
-                                        : user.userName.split("/")[ 0 ];
+                                    : undefined;
 
-                                const resolvedDescription = user.emails
-                                    ? user.emails[ 0 ]?.toString()
-                                    : user.userName;
+                                const resolvedUsername: string = user.userName.split("/")?.length > 1
+                                    ? user.userName.split("/")[ 1 ]
+                                    : user.userName.split("/")[ 0 ];
 
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleAssignedItemCheckboxChange(user) }
                                         key={ index }
-                                        listItem={ resolvedUserName }
-                                        listItemId={ resolvedDescription }
+                                        listItem={ resolvedGivenName ?? resolvedUsername }
+                                        listItemId={ user.id }
                                         listItemIndex={ index }
                                         isItemChecked={
                                             newlySelectedUsers && newlySelectedUsers.includes(user)
                                         }
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
-                                        listSubItem={ (
-                                            <Code compact withBackground={ false }>{ resolvedDescription }</Code>
+                                        listSubItem={ resolvedGivenName && (
+                                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
                                         ) }
                                         data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
@@ -322,15 +321,13 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const renderUserTableRow = (user: UserBasicInterface): ReactElement => {
 
-        const resolvedUserName = (user.name && user.name.givenName !== undefined)
+        const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
             ? user.name.givenName + " " + user.name.familyName
-            : user.userName.split("/")?.length > 1
-                ? user.userName.split("/")[ 1 ]
-                : user.userName.split("/")[ 0 ];
+            : undefined;
 
-        const resolvedDescription = user.emails
-            ? user.emails[ 0 ]?.toString()
-            : user.userName;
+        const resolvedUsername: string = user.userName.split("/")?.length > 1
+            ? user.userName.split("/")[ 1 ]
+            : user.userName.split("/")[ 0 ];
 
         return (
             <Table.Row key={ user.id }>
@@ -340,15 +337,19 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             `${ testId }-users-list-${
                                 user.userName }-avatar`
                         }
-                        name={ resolvedUserName }
+                        name={ resolvedUsername }
                         size="mini"
                         floated="left"
                         image={ user.profileUrl }
                     />
                 </Table.Cell>
                 <Table.Cell>
-                    <div>{ resolvedUserName }</div>
-                    <Code compact withBackground={ false }>{ resolvedDescription }</Code>
+                    <div>{ resolvedGivenName ?? resolvedUsername }</div>
+                    {
+                        resolvedGivenName && (
+                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
+                        )
+                    }
                 </Table.Cell>
             </Table.Row>
         );

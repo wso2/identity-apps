@@ -55,6 +55,10 @@ export interface TransferComponentPropsInterface extends TestableComponentInterf
     searchPlaceholder: string;
     selectionComponent?: boolean;
     /**
+     * Show/Hide select all checkbox.
+     */
+    showSelectAllCheckbox?: boolean;
+    /**
      * Select all checkbox label.
      */
     selectAllCheckboxLabel?: ReactNode;
@@ -87,6 +91,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         handleSelectedListSearch,
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
+        showSelectAllCheckbox,
         [ "data-testid" ]: testId
     } = props;
 
@@ -126,17 +131,19 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ testId + "-unselected-groups-search-input" }
                                                             handleListSearch={ handleUnelectedListSearch }
                                                             placeholder={ searchPlaceholder }
-                                                            isLoading={ isLoading }
                                                         />
                                                         {
-                                                            selectionComponent &&
-                                                            <Checkbox 
-                                                                className="all-select"
-                                                                label={ selectAllCheckboxLabel }
-                                                                checked={ isHeaderCheckboxChecked }
-                                                                onChange={ handleHeaderCheckboxChange }
-                                                                disabled={ isLoading }
-                                                            />
+                                                            (!isLoading
+                                                                && showSelectAllCheckbox
+                                                                && selectionComponent) && (
+                                                                <Checkbox
+                                                                    className="all-select"
+                                                                    label={ selectAllCheckboxLabel }
+                                                                    checked={ isHeaderCheckboxChecked }
+                                                                    onChange={ handleHeaderCheckboxChange }
+                                                                    disabled={ isLoading }
+                                                                />
+                                                            )
                                                         }
                                                         <Segment className="transfer-list-segment">
                                                             { list }
@@ -195,7 +202,6 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ `${ testId }-selected-groups-search-input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
-                                                            isLoading={ isLoading }
                                                         />
                                                         <Segment className="transfer-list-segment">
                                                             { list }
@@ -205,7 +211,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             )
                                         }
                                     </>
-                                )
+                                );
                             })
                         }
                     </Grid.Row>

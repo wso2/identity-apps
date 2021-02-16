@@ -33,12 +33,13 @@ import {
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    TableDataInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
@@ -48,6 +49,7 @@ import {
     history
 } from "../../core";
 import { deleteOIDCScope } from "../api";
+import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
 
 /**
@@ -218,7 +220,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
-                                    name={ scope.name }
+                                    name={ scope.displayName }
                                     size="mini"
                                     data-testid={ `${ testId }-item-image-inner` }
                                 />
@@ -228,9 +230,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
-                            { scope.displayName || scope.name }
+                            { scope.displayName }
                             <Header.Subheader>
-                                { scope.description }
+                                <Label size="small" className="no-margin-left"><code>{ scope.name }</code></Label>
+                                { " " + (scope.description ?? "") }
                             </Header.Subheader>
                         </Header.Content>
                     </Header>
@@ -272,9 +275,12 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         ];
 
         actions.push({
-            hidden: (): boolean => !hasRequiredScopes(
+            hidden: (item: TableDataInterface<OIDCScopesListInterface>): boolean => {
+                return !hasRequiredScopes(
                 featureConfig?.applications,
-                featureConfig?.applications?.scopes?.delete, allowedScopes),
+                    featureConfig?.applications?.scopes?.delete, allowedScopes)
+                    || item.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE;
+            },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
                 setShowDeleteConfirmationModal(true);

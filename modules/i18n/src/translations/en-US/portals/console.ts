@@ -1020,8 +1020,8 @@ export const console: ConsoleNS = {
                                         description: "The text value of the certificate in PEM format.",
                                         placeholder: "Certificate in PEM format.",
                                         validations: {
-                                            empty: "This is a required field."
-                                        }
+                                            empty: "This is a required field.",
+                                            invalid: "Enter a valid certificate in PEM format"                                        }
                                     },
                                     type: {
                                         children: {
@@ -1306,7 +1306,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     back: {
                                         hint: "{{productName}} will directly communicate the logout requests to this " +
-                                            "client URL(s), so that clients can invalidate the user session.",
+                                            "client URL, so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "https://myapp.io/logout",
                                         validations: {
@@ -1372,16 +1372,16 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object",
-                                description: "{{productName}} supports receiving OIDC authentication request " +
-                                    "parameters from clients in a `request object`. Enable signature " +
-                                    "validation to accept only signed request objects in the" +
-                                    " authorization request.",
+                                description: "{{productName}} supports receiving an OIDC authentication request as " +
+                                    "a request object that is passed in a single, self-contained <1>request</1> " +
+                                    "parameter. Enable signature validation to accept only signed request objects " +
+                                    "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
                                         label: "Enable signature validation",
                                     }
                                 },
+                                heading: "Request Object"
                             },
                             scopeValidators: {
                                 fields: {
@@ -1840,6 +1840,7 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        endSession: "Logout",
                                         introspection: "Introspection",
                                         keystore: "Key Set",
                                         jwks: "JWKS",
@@ -2408,24 +2409,25 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                            "All the applications using this identity provider might stop working. " +
+                            "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the IDP."
+                        message: "This action is irreversible and will permanently delete the identity provider."
                     }
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, there is no going back." +
-                            " Please be certain."
+                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
                         actionTitle: "{{ state }} Identity Provider",
                         header: "{{ state }} identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again."
+                            "you enable it again.",
+                        subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -2529,8 +2531,7 @@ export const console: ConsoleNS = {
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity Provider name cannot contain more than" +
-                                    " {{ maxLength }} characters."
+                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters."
                             }
                         }
                     },
@@ -2779,7 +2780,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving local claims.",
+                            description: "An error occurred while retrieving attributes.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -3258,10 +3259,11 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                            "All the applications using this identity provider might stop working. " +
+                            "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the IDP."
+                        message: "This action is irreversible and will permanently delete the identity provider."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
@@ -3275,14 +3277,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, it cannot be recovered and users " +
-                            "can no longer log in through this provider."
+                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
                         actionTitle: "Disable Identity Provider",
                         header: "Disable identity provider",
                         subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again."
+                            "you enable it again.",
+                        subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -3385,8 +3387,7 @@ export const console: ConsoleNS = {
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity Provider name cannot contain more than" +
-                                    " {{ maxLength }} characters."
+                                maxLengthReached: "Identity Provider name cannot exceed {{ maxLength }} characters."
                             }
                         }
                     },
@@ -3635,7 +3636,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving local claims.",
+                            description: "An error occurred while retrieving attributes.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4247,7 +4248,8 @@ export const console: ConsoleNS = {
                         validations: {
                             duplicate: "A {{type}} already exists with the given {{type}} name.",
                             empty: "{{type}} Name is required to proceed.",
-                            invalid: "{{type}} name must be of length 3-30 and cannot contain spaces."
+                            invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
+                                + "And must be of length between 3 to 30 characters."
                         }
                     }
                 }
@@ -4507,13 +4509,30 @@ export const console: ConsoleNS = {
                 }
             },
             claims: {
+                attributeMappings: {
+                    custom: {
+                        description: "The custom protocol representation for user "
+                            + "attributes that will be used in custom API.",
+                        heading: "Custom Attributes"
+                    },
+                    oidc: {
+                        description: "The OpenID Connect protocol representation for user "
+                            + "attributes that will be used in the OpenID Connect API.",
+                        heading: "OpenID Connect"
+                    },
+                    scim: {
+                        description: "The SCIM2 protocol representation for user "
+                            + "attributes that will be used in the SCIM2 API.",
+                        heading: "System for Cross-Domain Identity Management"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "Filter query format incorrect",
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. Dialect URI etc."
+                                    placeholder: "E.g. Attribute Mapping etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4523,64 +4542,63 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by Dialect URI"
+                        placeholder: "Search by attribute mapping "
                     },
                     attributes: {
-                        dialectURI: "Dialect URI"
+                        dialectURI: "Attribute Mapping"
                     },
                     confirmations: {
                         action: "Confirm",
-                        content: "If you delete this external dialect, all the associated external attributes will "
+                        content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                             + "also be deleted.Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected external " +
-                            "dialect."
+                        message: "This action is irreversible and will permanently delete the selected attribute " +
+                            "mapping."
                     },
                     dangerZone: {
-                        actionTitle: "Delete External Dialect",
-                        header: "Delete External Dialect",
-                        subheader: "Once you delete an external dialect, there is no going back. " +
+                        actionTitle: "Delete {{type}} Attribute Mapping",
+                        header: "Delete {{type}} Attribute Mapping",
+                        subheader: "Once you delete this {{type}} attribute mapping, there is no going back. " +
                             "Please be certain."
                     },
                     forms: {
                         dialectURI: {
-                            label: "Dialect URI",
-                            placeholder: "Enter a dialect URI",
-                            requiredErrorMessage: "Enter a dialect URI"
+                            label: "{{type}} Attribute Mapping",
+                            placeholder: "Enter an attribute mapping",
+                            requiredErrorMessage: "Enter an attribute mapping"
                         },
                         submit: "Update"
                     },
-                    localDialect: "Local Dialect",
                     notifications: {
                         addDialect: {
                             error: {
-                                description: "An error occurred while adding the external dialect.",
+                                description: "An error occurred while adding the attribute mapping",
                                 message: "Something went wrong"
                             },
                             genericError: {
-                                description: "The external dialect has been added but not all external ."
+                                description: "The attribute mapping has been added but not all {{type}} "
                                     + "attributes were added successfully",
-                                message: "External attributes couldn't be added"
+                                message: "{{type}} attributes couldn't be added"
                             },
                             success: {
-                                description: "The external dialect has been added successfully.",
-                                message: "External Dialect added successfully"
+                                description: "The attribute mapping has been added successfully",
+                                message: "Attribute Mapping added successfully"
                             }
                         },
                         deleteDialect: {
                             genericError: {
-                                description: "There was an error while deleting the dialect.",
+                                description: "There was an error while deleting the attribute mapping",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The dialect has been deleted successfully!",
-                                message: "Dialect deleted successfully"
+                                description: "The attribute mapping has been deleted successfully!",
+                                message: "Attribute Mapping deleted successfully"
                             }
                         },
                         fetchADialect: {
                             genericError: {
-                                description: "There was an error while fetching the external dialect.",
+                                description: "There was an error while fetching the attribute mapping",
                                 message: "Something went wrong"
                             }
                         },
@@ -4600,46 +4618,76 @@ export const console: ConsoleNS = {
                         },
                         fetchExternalClaims: {
                             genericError: {
-                                description: "There was an error while fetching the external attributes.",
+                                description: "There was an error while fetching the {{type}} attributes",
                                 message: "Something went wrong"
                             }
                         },
                         updateDialect: {
                             genericError: {
-                                description: "An error occurred while updating the dialect.",
+                                description: "An error occurred while updating the attribute mapping",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The dialect has been successfully updated.",
-                                message: "Dialect update successful"
+                                description: "The attribute mapping has been successfully updated.",
+                                message: "Attribute Mapping update successful"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to attribute dialects",
-                            description: "Edit external dialect and its attributes.",
-                            updateDialectURI: "Update Dialect URI",
-                            updateExternalAttributes: "Update External Attributes"
+                            back: "Go back to attribute mappings",
+                            description: "Edit attribute mapping",
+                            updateDialectURI: "Update {{type}} Attribute Mapping",
+                            updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
-                            description: "Create and manage attribute dialects.",
-                            primaryAction: "New External Dialect",
-                            title: "Attribute Dialects",
-                            view: "View local claims"
+                            description: "View and manage how user attributes in are mapped and " +
+                                "transformed when interacting with APIs or your applications.",
+                            primaryAction: "New Attribute Mapping",
+                            title: "Attributes and Mappings",
+                            view: "View attributes"
+                        }
+                    },
+                    sections: {
+                        manageAttributeMappings: {
+                            custom: {
+                                description: "Communicate information about the user via custom mappings.",
+                                heading: "Custom Attribute Mapping"
+                            },
+                            description: "View and manage how attributes in are mapped and transformed "
+                                + "when interacting with APIs or your applications.",
+                            heading: "Manage Attribute Mappings",
+                            oidc: {
+                                description: "Communicate information about the user for applications that uses "
+                                    + "OpenID Connect to authenticate.",
+                                heading: "OpenID Connect"
+                            },
+                            scim: {
+                                description: "Communicate information about the user via the API "
+                                    + "compliance with SCIM2 standards.",
+                                heading: "System for Cross-Domain Identity Management "
+                            }
+                        },
+                        manageAttributes: {
+                            attributes: {
+                                description: "Each attribute contains a piece of user data stored within {{productName}}.",
+                                heading: "Attributes"
+                            },
+                            description: "View and manage attributes native to {{productName}}.",
+                            heading: "Manage Attributes"
                         }
                     },
                     wizard: {
-                        header: "Add External Dialect",
+                        header: "Add Attribute Mapping",
                         steps: {
-                            dialectURI: "Dialect URI",
-                            externalAttribute: "External attributes",
+                            dialectURI: "Attribute Mapping",
+                            externalAttribute: "{{type}} Attribute",
                             summary: "Summary"
                         },
                         summary: {
-                            externalAttribute: "External Attribute URI",
-                            mappedAttribute: "Mapped Local Attribute URI",
-                            notFound: "No external attribute was added."
+                            externalAttribute: "{{type}} Attribute",
+                            mappedAttribute: "Mapped Attribute",
+                            notFound: "No {{type}} attribute has been added."
                         }
                     }
                 },
@@ -4649,7 +4697,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. Attribute URI etc."
+                                    placeholder: "E.g. {{type}} Attribute etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4659,44 +4707,48 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
-                        placeholder: "Search by Attribute URI"
+                        placeholder: "Search by {{type}} attribute"
                     },
                     attributes: {
-                        attributeURI: "Attribute URI",
-                        mappedClaim: "Mapped Local Attribute URI"
+                        attributeURI: "{{type}} Attribute",
+                        mappedClaim: "Mapped Attribute"
                     },
                     forms: {
                         attributeURI: {
-                            label: "Attribute URI",
-                            placeholder: "Enter an attribute URI",
-                            requiredErrorMessage: "Attribute URI is required"
+                            label: "{{type}} Attribute",
+                            placeholder: "Enter {{type}} attribute",
+                            requiredErrorMessage: "{{type}} Attribute is required",
+                            validationErrorMessages: {
+                                duplicateName: "The {{type}} attribute already exists."
+                            }
                         },
                         localAttribute: {
-                            label: "Local attribute URI to map to",
-                            placeholder: "Select a Local Attribute",
-                            requiredErrorMessage: "Select a local attribute to map to"
+                            label: "User attribute to map to",
+                            placeholder: "Select a user attribute",
+                            requiredErrorMessage: "Select a user attribute to map to"
                         },
-                        submit: "Add External Attribute"
+                        submit: "Add Attribute Mapping"
                     },
                     notifications: {
                         addExternalAttribute: {
                             genericError: {
-                                description: "An error occurred while adding the external attribute.",
+                                description: "An error occurred while adding the {{type}} attribute.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been added to the dialect successfully!",
-                                message: "External attribute added successfully"
+                                description: "The {{type}} attribute has been added to the attribute mapping" +
+                                    " successfully!",
+                                message: "{{type}} attribute added successfully"
                             }
                         },
                         deleteExternalClaim: {
                             genericError: {
-                                description: "There was an error while deleting the external attribute.",
+                                description: "There was an error while deleting the {{type}} attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been deleted successfully!",
-                                message: "External attribute deleted successfully"
+                                description: "The {{type}} attribute has been deleted successfully!",
+                                message: "{{type}} attribute deleted successfully"
                             }
                         },
                         fetchExternalClaims: {
@@ -4705,86 +4757,86 @@ export const console: ConsoleNS = {
                                 message: "Retrieval error"
                             },
                             genericError: {
-                                description: "Couldn't retrieve external claims.",
+                                description: "Couldn't retrieve {{type}} attributes.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "Successfully retrieved external claims.",
+                                description: "Successfully retrieved {{type}} attributes.",
                                 message: "Retrieval successful"
                             }
                         },
                         getExternalAttribute: {
                             genericError: {
-                                description: "There was an error while fetching the external attribute.",
+                                description: "There was an error while fetching the {{type}} attribute",
                                 message: "Something went wrong"
                             }
                         },
                         updateExternalAttribute: {
                             genericError: {
-                                description: "There was an error while updating the" + " external attribute",
+                                description: "There was an error while updating the" + " {{type}} attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The external attribute has been updated successfully!",
-                                message: "External attribute updated successfully"
+                                description: "The {{type}} attribute has been updated successfully!",
+                                message: "{{type}} attribute updated successfully"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            header: "Add External Attribute",
-                            primaryAction: "New External Attribute"
+                            header: "Add {{type}} Attribute",
+                            primaryAction: "New {{type}} Attribute"
                         }
                     },
                     placeholders: {
                         empty: {
-                            subtitle: "Currently, there are no external attributes available for "
-                                + "this dialect.",
-                            title: "No External Attributes"
+                            subtitle: "Currently, there are no {{type}} attributes available for "
+                                + "this attribute mapping.",
+                            title: "No {{type}} Attributes"
                         }
                     }
                 },
                 list: {
                     columns: {
                         actions: "Actions",
-                        claimURI: "Claim URI",
-                        dialectURI: "Dialect URI",
+                        claimURI: "Attribute",
+                        dialectURI: "Attribute Mapping",
                         name: "Name"
                     },
                     confirmation: {
                         action: "Confirm",
                         content: "{{message}} Please proceed with caution.",
                         dialect: {
-                            message: "If you delete this external dialect, all the"
-                                + " associated external attributes will also be deleted.",
-                            name: "external dialect"
+                            message: "If you delete this attribute mapping, all the"
+                                + " associated {{type}} attributes will also be deleted.",
+                            name: "attribute mapping"
                         },
                         external: {
-                            message: "This will permanently delete the external attribute.",
-                            name: "external attribute"
+                            message: "This will permanently delete the {{type}} attribute.",
+                            name: "{{type}} attribute"
                         },
                         header: "Are you sure?",
                         hint: "Please type <1>{{assertion}}</1> to confirm.",
                         local: {
-                            message: "If you delete this local attribute, the user data belonging "
+                            message: "If you delete this attribute, the user data belonging "
                                 + "to this attribute will also be deleted.",
-                            name: "local attribute"
+                            name: "attribute"
                         },
                         message: "This action is irreversible and will permanently delete the selected {{name}}."
                     },
                     placeholders: {
                         emptyList: {
                             action: {
-                                dialect: "New External Attribute",
-                                external: "New External Attribute",
-                                local: "New Local Attribute"
+                                dialect: "New {{type}} Attribute",
+                                external: "New {{type}} Attribute",
+                                local: "New Attribute"
                             },
                             subtitle: "There are currently no results available."
                                 + "You can add a new item easily by following the" + "steps in the creation wizard.",
                             title: {
-                                dialect: "Add an External Dialect",
-                                external: "Add an External Attribute",
-                                local: "Add a Local Attribute"
+                                dialect: "Add an Attribute Mapping",
+                                external: "Add an {{type}} Attribute",
+                                local: "Add an Attribute"
                             }
                         },
                         emptySearch: {
@@ -4810,7 +4862,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "E.g. name, attribute URI etc."
+                                    placeholder: "E.g. name, attribute etc."
                                 },
                                 filterCondition: {
                                     placeholder: "E.g. Starts with etc."
@@ -4823,30 +4875,30 @@ export const console: ConsoleNS = {
                         placeholder: "Search by name"
                     },
                     attributes: {
-                        attributeURI: "Attribute URI"
+                        attributeURI: "Attribute"
                     },
                     confirmation: {
-                        content: "If you delete this local attribute, the user data belonging to this attribute "
+                        content: "If you delete this attribute, the user data belonging to this attribute "
                             + "will also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{name}}</1> to confirm.",
-                        message: "This action is irreversible and will permanently delete the selected local " +
+                        message: "This action is irreversible and will permanently delete the selected " +
                             "attribute.",
                         primaryAction: "Confirm"
                     },
                     dangerZone: {
-                        actionTitle: "Delete Local Attribute",
-                        header: "Delete Local Attribute",
-                        subheader: "Once you delete a local attribute, there is no going back. "
+                        actionTitle: "Delete Attribute",
+                        header: "Delete Attribute",
+                        subheader: "Once you delete an attribute, there is no going back. "
                             + "Please be certain."
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Enter an attribute to map to",
+                            placeholder: "Select a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
-                            + " The ID will be appended to the dialect URI to create a attribute URI",
+                            + " The ID will be appended to the attribute mapping to create a attribute",
                         attributeID: {
                             label: "Attribute ID",
                             placeholder: "Enter an attribute ID",
@@ -4891,22 +4943,22 @@ export const console: ConsoleNS = {
                     notifications: {
                         addLocalClaim: {
                             genericError: {
-                                description: "There was an error while adding the local attribute.",
+                                description: "There was an error while adding the attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The local attribute has been added successfully!",
-                                message: "Local attribute added successfully"
+                                description: "The attribute has been added successfully!",
+                                message: "Attribute added successfully"
                             }
                         },
                         deleteClaim: {
                             genericError: {
-                                description: "There was an error while deleting the local attribute.",
+                                description: "There was an error while deleting the attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The local claim has been deleted successfully!",
-                                message: "Local attribute deleted successfully"
+                                description: "The attribute has been deleted successfully!",
+                                message: "Attribute deleted successfully"
                             }
                         },
                         fetchLocalClaims: {
@@ -4915,48 +4967,48 @@ export const console: ConsoleNS = {
                                 message: "Retrieval error"
                             },
                             genericError: {
-                                description: "Couldn't retrieve local claims.",
+                                description: "Couldn't retrieve attributes.",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "Successfully retrieved local claims.",
+                                description: "Successfully retrieved attributes.",
                                 message: "Retrieval successful"
                             }
                         },
                         getAClaim: {
                             genericError: {
-                                description: "There was an error while fetching the local attribute.",
+                                description: "There was an error while fetching the attribute",
                                 message: "Something went wrong"
                             }
                         },
                         getClaims: {
                             genericError: {
-                                description: "There was an error while fetching the local attributes.",
+                                description: "There was an error while fetching the attributes",
                                 message: "Something went wrong"
                             }
                         },
                         getLocalDialect: {
                             genericError: {
-                                description: "There was an error while fetching the local dialect.",
+                                description: "There was an error while fetching the attributes",
                                 message: "Something went wrong"
                             }
                         },
                         updateClaim: {
                             genericError: {
-                                description: "There was an error while updating the" + " local attribute",
+                                description: "There was an error while updating the" + " attribute",
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "This local attribute has been "
+                                description: "This attribute has been "
                                     + "updated successfully!",
-                                message: "Local attribute updated successfully"
+                                message: "Attribute updated successfully"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            back: "Go back to Local Attributes",
-                            description: "Edit local attribute.",
+                            back: "Go back to Attributes",
+                            description: "Edit attribute",
                             tabs: {
                                 additionalProperties: "Additional Properties",
                                 general: "General",
@@ -4964,14 +5016,14 @@ export const console: ConsoleNS = {
                             }
                         },
                         local: {
-                            action: "New Local Attribute",
-                            back: "Go back to attribute dialects",
-                            description: "Create and manage local attributes.",
-                            title: "Local Attributes"
+                            action: "New Attribute",
+                            back: "Go back to attributes and mappings",
+                            description: "Create and manage attributes",
+                            title: "Attributes"
                         }
                     },
                     wizard: {
-                        header: "Add Local Attribute",
+                        header: "Add Attribute",
                         steps: {
                             general: "General",
                             mapAttributes: "Map Attributes",
@@ -4979,7 +5031,7 @@ export const console: ConsoleNS = {
                         },
                         summary: {
                             attribute: "Attribute",
-                            attributeURI: "Attribute URI",
+                            attributeURI: "Attribute",
                             displayOrder: "Display Order",
                             readOnly: "This attribute is read-only",
                             regEx: "Regular Expression",
@@ -5373,7 +5425,7 @@ export const console: ConsoleNS = {
                         fields: {
                             groupName: {
                                 name: "Group Name",
-                                placeholder: "Enter your group name",
+                                placeholder: "Enter group name",
                                 required: "Group name is required"
                             }
                         }
@@ -5390,8 +5442,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Group"
                     },
                     storeOptions: "Select User Store"
                 },
@@ -5537,10 +5589,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             scopeName: {
-                                label: "Scope name",
-                                placeholder: "Enter the scope name",
+                                label: "Scope",
+                                placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "Scope name is a required field"
+                                    empty: "Scope is a required field",
+                                    invalid: "The scope contains invalid characters."
                                 }
                             }
                         }
@@ -5559,7 +5612,7 @@ export const console: ConsoleNS = {
                         },
                         title: "No OIDC Scopes"
                     },
-                    searchPlaceholder: "Search by scope name"
+                    searchPlaceholder: "Search by scope"
                 },
                 notifications: {
                     addOIDCClaim: {
@@ -5701,7 +5754,7 @@ export const console: ConsoleNS = {
                             previous: "Previous"
                         },
                         claimList: {
-                            searchPlaceholder: "search attributes",
+                            searchPlaceholder: "Search attributes",
                             table: {
                                 emptyPlaceholders: {
                                     assigned: "All the available attributes are assigned for this OIDC scope.",
@@ -5989,9 +6042,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
-                                hint: "A name for the user group.",
+                                hint: "A name for the {{type}}.",
                                 label: "{{type}} Name",
-                                placeholder: "Enter {{type}} Name",
+                                placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
                                     empty: "{{type}} Name is required to proceed.",
@@ -6023,7 +6076,7 @@ export const console: ConsoleNS = {
                     },
                     users: {
                         assignUserModal: {
-                            heading: "Update {{type}} Users",
+                            heading: "Manage Users",
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
@@ -6073,12 +6126,12 @@ export const console: ConsoleNS = {
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
                             header: "Delete {{type}}",
-                            subheader: "Once you delete the {{type}}, there is no going back. Please be certain."
+                            subheader: "Once you delete the {{type}}, it cannot be recovered."
                         },
                         fields: {
                             roleName: {
                                 name: "Role Name",
-                                placeholder: "Enter your role name",
+                                placeholder: "Enter role name",
                                 required: "Role name is required"
                             }
                         }
@@ -6108,7 +6161,7 @@ export const console: ConsoleNS = {
                         list: {
                             emptyPlaceholder: {
                                 action: "Assign User",
-                                subtitles: "There are no Users assigned to the {{type}} at the moment.",
+                                subtitles: "There are no users assigned to the {{type}} at the moment.",
                                 title: "No Users Assigned"
                             },
                             header: "Users"
@@ -6122,8 +6175,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Role"
                     },
                     confirmations: {
                         deleteItem: {
@@ -6300,7 +6353,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                attributeDialects: "Attribute Dialects",
+                attributeDialects: "Attributes & Mappings",
                 categories: {
                     attributes: "User Attributes",
                     certificates: "Certificates",
@@ -6312,9 +6365,9 @@ export const console: ConsoleNS = {
                 certificates: "Certificates",
                 configurations: "Configurations",
                 editEmailTemplate: "Email Templates",
-                editExternalDialect: "Edit External Dialect",
+                editExternalDialect: "Edit Attribute Mapping",
                 editGroups: "Edit Group",
-                editLocalClaims: "Edit Local Claims",
+                editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit Userstore",
@@ -6322,7 +6375,7 @@ export const console: ConsoleNS = {
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
                 groups: "Groups",
-                localDialect: "Local Dialect",
+                localDialect: "Attributes",
                 overview: "Overview",
                 roles: "Roles",
                 users: "Users",

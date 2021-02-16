@@ -17,15 +17,17 @@
 */
 
 import { getAllLocalClaims } from "@wso2is/core/api";
-import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, Header } from "semantic-ui-react";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
+import { resolveType } from "../../../utils";
 
 /**
  * Prop types of `EditExternalClaims` component
@@ -67,6 +69,10 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
      * The list of external claims belonging to the dialect.
      */
     externalClaims: ExternalClaim[] | AddExternalClaim[];
+    /**
+     * Specifies the the attribute type.
+     */
+    attributeType?: string;
 }
 
 /**
@@ -90,6 +96,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
         onSubmit,
         addedClaim,
         externalClaims,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -102,7 +109,14 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     const { t } = useTranslation();
 
     useEffect(() => {
-        getAllLocalClaims(null).then(response => {
+        const params: ClaimsGetParams = {
+            "exclude-identity-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            sort: null
+        };
+        getAllLocalClaims(params).then(response => {
             setLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
@@ -124,7 +138,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                     {
                         description: error?.description
                             || t("console:manage.features.claims.external.notifications." +
-                                "getExternalAttribute.genericError.description"),
+                                "getExternalAttribute.genericError.description", { type: resolveType(attributeType) }),
                         level: AlertLevels.ERROR,
                         message: error?.message
                             || t("console:manage.features.claims.external.notifications." +
@@ -189,10 +203,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         dispatch(addAlert(
                             {
                                 description: t("console:manage.features.claims.external.notifications." +
-                                    "updateExternalAttribute.success.description"),
+                                    "updateExternalAttribute.success.description",
+                                    { type: resolveType(attributeType) }),
                                 level: AlertLevels.SUCCESS,
                                 message: t("console:manage.features.claims.external.notifications." +
-                                    "updateExternalAttribute.success.message")
+                                    "updateExternalAttribute.success.message", { type: resolveType(attributeType) })
                             }
                         ));
                         update();
@@ -201,7 +216,8 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             {
                                 description: error?.description
                                     || t("console:manage.features.claims.external.notifications." +
-                                        "updateExternalAttribute.genericError.description"),
+                                        "updateExternalAttribute.genericError.description",
+                                        { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
                                     || t("console:manage.features.claims.external.notifications." +
@@ -224,21 +240,34 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             <Grid.Column width={ 8 }>
                                 <Field
                                     name="claimURI"
-                                    label={ t("console:manage.features.claims.external.forms.attributeURI.label") }
+                                    label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                        { type: resolveType(attributeType, true) }) }
                                     required={ true }
                                     requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
-                                        "attributeURI.label") }
-                                    placeholder={ 
-                                        t("console:manage.features.claims.external.forms.attributeURI.label") 
+                                        "attributeURI.label", { type: resolveType(attributeType, true) }) }
+                                    placeholder={
+                                        t("console:manage.features.claims.external.forms.attributeURI.label",
+                                            { type: resolveType(attributeType) })
                                     }
                                     type="text"
                                     value={ addedClaim.claimURI }
                                     data-testid={ `${ testId }-form-claim-uri-input` }
+                                    validation={ (value: string, validation: Validation) => {
+                                        for (const claim of externalClaims) {
+                                            if (claim.claimURI === value) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(t("console:manage.features.claims." +
+                                                    "external.forms.attributeURI.validationErrorMessages.duplicateName",
+                                                    { type: resolveType(attributeType) }));
+                                                break;
+                                            }
+                                        }
+                                    } }
                                 />
                             </Grid.Column>
                         )
                     }
-                    <Grid.Column width={ 8 }>
+                    <Grid.Column width={ 8 } className="select-attribute">
                         <Field
                             type="dropdown"
                             name="localClaim"
@@ -253,7 +282,17 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                 filteredLocalClaims?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
-                                        text: claim?.displayName,
+                                        text: (
+                                            <Header as="h6">
+                                                <Header.Content>
+                                                    { claim?.displayName }
+                                                    <Header.Subheader>
+                                                        <code className="inline-code compact transparent">
+                                                            { claim.claimURI }
+                                                        </code>
+                                                    </Header.Subheader>
+                                                </Header.Content>
+                                            </Header>),
                                         value: claim?.claimURI
                                     };
                                 })
@@ -272,5 +311,6 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
  * Default props for the component.
  */
 EditExternalClaim.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "edit-external-claim"
 };

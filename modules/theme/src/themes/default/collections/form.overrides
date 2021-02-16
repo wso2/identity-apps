@@ -26,7 +26,7 @@
         background-color: @readOnlyFormFieldBgColor !important;
         cursor: @readOnlyFieldCursor;
     }
-    
+
     .ui.checkbox input.hidden+label,
     .ui.checkbox input[type=checkbox],
     .ui.checkbox input[type=radio] {
@@ -90,6 +90,22 @@
                 }
             }
 
+        }
+    }
+}
+
+/*-------------------------------
+      Attributes Select
+--------------------------------*/
+.select-attribute {
+    .ui.search.selection.dropdown {
+        >.text {
+            height: 13.5px;
+            overflow: hidden;
+
+            .header {
+                font-size: 0.93rem;
+            }
         }
     }
 }

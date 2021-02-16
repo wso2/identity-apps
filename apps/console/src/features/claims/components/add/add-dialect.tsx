@@ -20,14 +20,10 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AppConstants } from "../../../core/constants";
-import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim } from "../../api";
 import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
@@ -50,6 +46,10 @@ interface AddDialectPropsInterface extends TestableComponentInterface {
      * Function to be called to initiate an update.
      */
     update: () => void;
+    /**
+     * Attribute type
+     */
+    attributeType?: string;
 }
 
 /**
@@ -67,6 +67,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
         open,
         onClose,
         update,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -87,7 +88,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     const handleSubmit = () => {
 
         addDialect(dialectDetailsData?.get("dialectURI").toString())
-            .then((response: AxiosResponse) => {
+            .then(() => {
 
                 const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
                 const externalClaimPromises = [];
@@ -114,25 +115,6 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                                 "addDialect.genericError.message")
                         }));
                     }).finally(() => {
-                        // The created resource's id is sent as a location header.
-                        // If that's available, navigate to the edit page.
-                        if (!isEmpty(response.headers.location)) {
-                            const location = response.headers.location;
-                            const createdDialect = location.substring(location.lastIndexOf("/") + 1);
-
-                            // Closes the modal.
-                            onClose();
-    
-                            history.push({
-                                pathname: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
-                                    .replace(":id", createdDialect),
-                                search: ClaimManagementConstants.NEW_DIALECT_URL_SEARCH_PARAM
-                            });
-    
-                            return;
-                        }
-
-                        // Fallback to listing, if the location header is not present.
                         // `onClose()` closes the modal and `update()` re-fetches the list.
                         // Check `ClaimDialectsPage` component for the respective callback actions.
                         onClose();
@@ -212,6 +194,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     values={ externalClaims }
                     onExternalClaimsChanged={ onExternalClaimsChanged }
                     data-testid={ `${ testId }-external-claims` }
+                    attributeType= { attributeType }
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
@@ -223,6 +206,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     dialectURI={ dialectDetailsData?.get("dialectURI").toString() }
                     claims={ externalClaims }
                     data-testid={ `${ testId }-summary` }
+                    attributeType={ attributeType }
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
@@ -342,5 +326,6 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
  * Default props for the component.
  */
 AddDialect.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "add-dialect-wizard"
 };

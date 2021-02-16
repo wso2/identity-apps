@@ -599,8 +599,50 @@
         }
 
     }
+
+    .content {
+        &.edit-attribute-mapping {
+            height: @attributeModalContentHeight;
+        }
+    }
 }
 
+.ui.modal {
+    .content.attribute-list {
+        .transfer-segment {
+                height: @transferComponentSegmentHeight;
+
+                .ui.checkbox {
+                    &.all-select {
+                        margin: 20px 10px 0px 0px;
+                        border: 1px solid #efefef;
+                        background-color: #fbfbfb;
+                        padding: 10px;
+                        border-radius: 3px;
+                        font-weight: 500;
+                    }
+                }
+
+                .transfer-list-segment {
+                    height: @transferComponentListSegmentHeight;
+
+                    .transfer-list-sub-content {
+                        color: #f99467;
+                    }
+
+                    thead tr:first-child {
+
+                        th {
+                            position: sticky !important;
+                            position: -webkit-sticky !important;
+                            top: 0;
+                            z-index: 2;
+                        }
+                    }
+                }
+            }
+    }
+}
 
 @media only screen and (max-width: 767px) {
     .ui.modal {

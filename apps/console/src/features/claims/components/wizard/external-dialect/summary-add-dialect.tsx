@@ -21,7 +21,9 @@ import { AnimatedAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Image, Message, Table } from "semantic-ui-react";
+import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
+import { resolveType } from "../../../utils";
 
 /**
  * Prop types of the `SummaryAddDialect` component.
@@ -35,11 +37,15 @@ interface SummaryAddDialectPropsInterface extends TestableComponentInterface {
      * The external claims added.
      */
     claims: AddExternalClaim[];
+    /**
+     * Specifies the attribute type.
+     */
+    attributeType?: string;
 }
 
 /**
  * This generates the first letter of a claim
- * @param {string} name 
+ * @param {string} name
  * @return {string} The first letter of a claim
  */
 const generateClaimLetter = (name: string): string => {
@@ -49,9 +55,9 @@ const generateClaimLetter = (name: string): string => {
 
 /**
  * Renders teh summary step of the add dialect wizard.
- * 
+ *
  * @param {SummaryAddDialectPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement}
  */
 export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterface> = (
@@ -61,6 +67,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
     const {
         dialectURI,
         claims,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -83,7 +90,8 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 <Table.HeaderCell>
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("console:manage.features.claims.dialects.wizard.summary.externalAttribute") }
+                                    { t("console:manage.features.claims.dialects.wizard.summary.externalAttribute",
+                                        { type: resolveType(attributeType, true) } ) }
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
                                     { t("console:manage.features.claims.dialects.wizard.summary.mappedAttribute") }
@@ -120,7 +128,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                             {
                                 claims.length === 0 && (
                                     <Table.Row>
-                                        <Table.Cell colSpan={ 3 } textAlign='center'>
+                                        <Table.Cell colSpan={ 3 } textAlign="center">
                                             <Message warning>
                                                 { t("console:manage.features.claims.dialects.wizard.summary.notFound") }
                                             </Message>
@@ -140,5 +148,6 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
  * Default props for the application creation wizard.
  */
 SummaryAddDialect.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "add-dialect-summary"
 };

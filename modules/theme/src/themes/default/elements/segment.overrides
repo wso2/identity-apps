@@ -324,7 +324,7 @@
                     top: 0;
                     z-index: 2;
                 }
-            } 
+            }
         }
         .ui.input {
             margin-bottom: @EditRoleSegmentHeaderMarginBottom;
@@ -365,7 +365,7 @@
     }
 }
 
-.attributes { 
+.attributes {
 
     .ui.input {
         margin: 0 !important;
@@ -591,6 +591,20 @@
 
         &.active {
             border-color: @primaryColor;
+        }
+    }
+}
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+.ui.segment {
+    &.clickable {
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.01);
         }
     }
 }

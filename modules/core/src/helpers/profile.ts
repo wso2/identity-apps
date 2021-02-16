@@ -130,3 +130,20 @@ export const getUserNameWithoutDomain = (userNameWithDomain: string): string => 
     }
     return userNameWithDomain;
 };
+
+/**
+ * Get the user's userstore as a string.
+ *
+ * @param {string} username - Username.
+ * @return {string} Userstore as a string.
+ */
+export const resolveUserstore = (username: string): string => {
+
+    const userNameSegments = username.split("/");
+
+    if (userNameSegments.length > 1) {
+        return userNameSegments[0];
+    } else {
+        return UserstoreConstants.PRIMARY_USER_STORE;
+    }
+};
