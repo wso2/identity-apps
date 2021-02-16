@@ -752,3 +752,185 @@
         }
     }
 }
+
+/*-----------------------------------------
+      User Type Selection Card Variation
+-------------------------------------------*/
+
+.ui.card {
+    &.user-selection-card {
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
+        height: 290px;
+        width: 205px;
+
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+        }
+        &.selected {
+            &.underlined-selection {
+                &:after {
+                    visibility: visible;
+                }
+            }
+            &.filled-selection {
+                background: lighten(@primaryColor, 40);
+                border: 1px solid @primaryColor;
+            }
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
+        }
+        .card-text-container {
+            text-align: center;
+            border-top: 0;
+
+            .header {
+                font-size: 1em !important;
+                line-height: @selectionCardHeaderLineHeight;
+            }
+            .description {
+                font-size: 0.8em;
+            }
+
+            &.consumer {
+                margin-top: -47px;
+            }
+        }
+        .card-image-container {
+            height: 145px;
+        }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
+        }
+    }
+}
+
+/*----------------------------------------------
+      User Account Type Switch Card Variation
+-----------------------------------------------*/
+
+.ui.card {
+    &.user-type-switch-card {
+        &.radio-selection-card {
+            border: none !important;
+            box-shadow: none !important;
+            border-left: @selectionCardWithRadioBorderLeft !important;
+            height: 60px;
+
+            .user-type-radio {
+                flex-grow: 0;
+                width: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .ui.radio.checkbox {
+                    margin-top: -5px !important;
+                }
+
+                .ui.radio.checkbox label::after {
+                    width: 22px !important;
+                    height: 22px !important;
+                    top: 0px !important;
+                    left: -1px !important;
+                    background-color: @primaryColor !important;
+                }
+
+                .ui.radio.checkbox label::before {
+                    width: 20px !important;
+                    height: 20px !important;
+                    border-color: #c8c8c8 !important;
+                    border-width: 2px !important;
+                }
+            }
+
+            &.disabled {
+                background: #fbfbfb;
+                cursor: not-allowed;
+                filter: grayscale(100%);
+                pointer-events: none !important;
+                color: #8c8c8c;
+            }
+
+             &.card-selected {
+                 box-shadow: none !important;
+                 background: @selectionCardWithRadioSelectedBackground;
+                 border-left: @selectionCardWithRadioSelectedBorderLeft !important;
+
+                 .user-type-radio {
+                     .ui.radio.checkbox label::before {
+                         border-color: @primaryColor !important;
+                     }
+                 }
+
+                 .selection-card-content {
+                    .meta {
+                        span {
+                            color: @selectionCardWithRadioSelectedSubheaderColor;
+                        }
+                    }
+                 }
+
+                 &:hover {
+                    background: @selectionCardWithRadioSelectedBackground;
+                 }
+             }
+
+             .selection-card-content {
+                 display: flex;
+                 flex-direction: row;
+                 padding: 10px 10px !important;
+                 cursor: pointer;
+
+                 .header {
+                     font-size: 1.1em !important;
+                     margin-left: 10px;
+
+                     span {
+                         color: @selectionCardWithRadioHighlightedHeaderColor;
+                         font-weight: @selectionCardWithRadioHighlightedHeaderFontWeight;
+                     }
+                 }
+
+                 .meta {
+                     margin-left: 10px;
+                     span {
+                         font-size: 12px;
+                     }
+                 }
+             }
+
+             &:hover {
+                background: @selectionCardWithRadioHoverBackground;
+             }
+        }
+    }
+}
+

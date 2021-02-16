@@ -78,7 +78,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                                 value: "name"
                             }
                         ] }
-                        value={ [userListMetaContent.get("name").toString()] }
+                        value={ [userListMetaContent?.get("name")?.toString()] }
                         defaultChecked
                         disabled
                     />
@@ -96,7 +96,7 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                                 value: "emails"
                             }
                         ] }
-                        value={ [userListMetaContent.get("emails").toString()] }
+                        value={ [userListMetaContent?.get("emails")?.toString()] }
                         defaultChecked
                         disabled
                     />
@@ -114,8 +114,8 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                                 value: "userName"
                             }
                         ] }
-                        value={ userListMetaContent.get("userName")?.toString() ?
-                            [userListMetaContent.get("userName").toString()] : null }
+                        value={ userListMetaContent?.get("userName")?.toString() ?
+                            [userListMetaContent?.get("userName")?.toString()] : null }
                     />
                 </List.Item>
                 <List.Item>
@@ -131,8 +131,8 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                                 value: "id"
                             }
                         ] }
-                        value={ userListMetaContent.get("id")?.toString() ?
-                            [userListMetaContent.get("id").toString()] : null }
+                        value={ userListMetaContent?.get("id")?.toString() ?
+                            [userListMetaContent?.get("id")?.toString()] : null }
                     />
                 </List.Item>
                 <List.Item>
@@ -148,8 +148,8 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                                 value: "meta.lastModified"
                             }
                         ] }
-                        value={ userListMetaContent.get("meta.lastModified")?.toString() ? [
-                            userListMetaContent.get("meta.lastModified").toString()] : null }
+                        value={ userListMetaContent?.get("meta.lastModified")?.toString() ? [
+                            userListMetaContent?.get("meta.lastModified")?.toString()] : null }
                     />
                 </List.Item>
                 {
