@@ -3794,7 +3794,7 @@ export const console: ConsoleNS = {
                                     "des mappages personnalisés.",
                                 heading: "Mappage d'attributs personnalisés"
                             },
-                            description: "Affichez et gérez la façon dont les attributs d'Asgardeo sont " +
+                            description: "Affichez et gérez la façon dont les attributs d'{{productName}} sont " +
                                 "mappés et transformés lors de l'interaction avec les API ou vos applications.",
                             heading: "Gérer les mappages d'attributs",
                             oidc: {
