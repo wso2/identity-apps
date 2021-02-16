@@ -3789,7 +3789,7 @@ export const console: ConsoleNS = {
                         },
                         manageAttributes: {
                             attributes: {
-                                description: "සෑම ගුණාංගයකම අස්ගාර්ඩියෝ තුළ ගබඩා කර ඇති පරිශීලක දත්ත කොටසක් අඩංගු වේ.",
+                                description: "සෑම ගුණාංගයකම {{productName}} තුළ ගබඩා කර ඇති පරිශීලක දත්ත කොටසක් අඩංගු වේ.",
                                 heading: "ගුණාංග"
                             },
                             description: "{{productName}} ට ආවේණික වූ ගුණාංග බලන්න සහ කළමනාකරණය කරන්න.",
