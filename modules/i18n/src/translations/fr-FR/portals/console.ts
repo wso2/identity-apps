@@ -1370,7 +1370,7 @@ export const console: ConsoleNS = {
                                         label: "Délai d'expiration du jeton de rafraîchissement",
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
-                                            empty: "Veuillez indiquer le délai d'expiration du jeton de " + 
+                                            empty: "Veuillez indiquer le délai d'expiration du jeton de " +
                                                 "rafraîchissement"
                                         }
                                     },
@@ -3650,6 +3650,23 @@ export const console: ConsoleNS = {
                 }
             },
             claims: {
+                attributeMappings: {
+                    custom: {
+                        description: "Représentation de protocole personnalisé pour les " +
+                            "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
+                        heading: "Attributs personnalisés"
+                    },
+                    oidc: {
+                        description: "Représentation du protocole OpenID Connect pour les attributs " +
+                            "utilisateur qui seront utilisés dans l'API OpenID Connect.",
+                        heading: "OpenID Connect"
+                    },
+                    scim: {
+                        description: "Représentation du protocole SCIM2 pour les attributs " +
+                            "utilisateur qui seront utilisés dans l'API SCIM2.",
+                        heading: "System for Cross-Domain Identity Management"
+                    }
+                },
                 dialects: {
                     advancedSearch: {
                         error: "Le format de la requête est incorrect",
@@ -3673,40 +3690,40 @@ export const console: ConsoleNS = {
                     },
                     confirmations: {
                         action: "Confirmer",
-                        content: "Si vous supprimez ce dialecte externe, tous les attributs externes associés seront "
+                        content: "Si vous supprimez ce mappage d'attributs, tous les attributs {{type}} associés seront "
                             + "également supprimés, veuillez procéder avec prudence.",
                         header: "Êtes-vous sûr ?",
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
-                        message: "Cette action est irréversible et supprimera définitivement le dialecte externe sélectionné."
+                        message: "Cette action est irréversible et supprimera définitivement le mappage d'attributs sélectionné."
                     },
                     dangerZone: {
-                        actionTitle: "Supprimer le dialecte externe",
-                        header: "Supprimer le dialecte externe",
-                        subheader: "Une fois le dialecte externe supprimé, il est impossible de revenir en arrière. Soyez certain de vous."
+                        actionTitle: "Supprimer le mappage d'attributs {{type}}",
+                        header: "Supprimer le mappage d'attributs {{type}}",
+                        subheader: "Une fois que vous supprimez ce mappage d'attribut {{type}}, il n'y a plus de retour en arrière." +
+                            "Soyez certain."
                     },
                     forms: {
                         dialectURI: {
-                            label: "URI de dialecte",
+                            label: "{{type}} URI de mappage d'attributs",
                             placeholder: "Saisir une URI de dialecte",
                             requiredErrorMessage: "L'URI de dialecte est obligatoire"
                         },
                         submit: "Mettre à jour"
                     },
-                    localDialect: "Dialecte local",
                     notifications: {
                         addDialect: {
                             error: {
-                                description: "Une erreur s'est produite lors de l'ajout du dialecte externe",
+                                description: "Une erreur s'est produite lors de l'ajout du mappage d'attributs",
                                 message: "Quelque chose s'est mal passé"
                             },
                             genericError: {
-                                description: "Le dialecte externe a été ajouté avec succès, mais ce n'est pas le cas pour "
-                                    + "tous les attributs externes",
+                                description: "Le mappage d'attributs a été ajouté avec succès, mais ce n'est pas le cas pour "
+                                    + "tous les attributs {{type}}",
                                 message: "Des attributs externes n'ont pas pu être ajoutés"
                             },
                             success: {
-                                description: "Le dialecte externe a été ajouté avec succès",
-                                message: "Dialecte externe ajouté avec succès"
+                                description: "Le mappage d'attributs a été ajouté avec succès",
+                                message: "mappage d'attributs ajouté avec succès"
                             }
                         },
                         deleteDialect: {
@@ -3721,7 +3738,7 @@ export const console: ConsoleNS = {
                         },
                         fetchADialect: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de la recherche du dialecte externe",
+                                description: "Une erreur s'est produite lors de la recherche du mappage d'attributs",
                                 message: "Quelque chose s'est mal passé"
                             }
                         },
@@ -3759,28 +3776,60 @@ export const console: ConsoleNS = {
                     pageLayout: {
                         edit: {
                             back: "Retournez aux attributs des dialectes",
-                            description: "Modifier le dialecte externe et ses attributs.",
-                            updateDialectURI: "Mettre à jour l'URI du dialecte",
-                            updateExternalAttributes: "Mettre à jour les attributs externes"
+                            description: "Modifier le mappage d'attributs et ses attributs",
+                            updateDialectURI: "Mettre à jour l'URI de mappage d'attributs {{type}}",
+                            updateExternalAttributes: "Mettre à jour le mappage d'attributs {{type}}"
                         },
                         list: {
-                            description: "Créer et gérer les dialectes d'attributs",
-                            primaryAction: "Nouveau dialecte externe",
+                            description: "Affichez et gérez la façon dont les attributs utilisateur d'{{productName}} " +
+                                "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
+                            primaryAction: "Nouveau mappage d'attributse",
                             title: "Dialectes des attributs",
                             view: "Voir les claims locaux"
                         }
                     },
+                    sections: {
+                        manageAttributeMappings: {
+                            custom: {
+                                description: "Communiquez des informations sur l'utilisateur via " +
+                                    "des mappages personnalisés.",
+                                heading: "Mappage d'attributs personnalisés"
+                            },
+                            description: "Affichez et gérez la façon dont les attributs d'{{productName}} sont " +
+                                "mappés et transformés lors de l'interaction avec les API ou vos applications.",
+                            heading: "Gérer les mappages d'attributs",
+                            oidc: {
+                                description: "Communiquez des informations sur l'utilisateur pour les " +
+                                    "applications qui utilisent OpenID Connect pour s'authentifier.",
+                                heading: "OpenID Connect"
+                            },
+                            scim: {
+                                description: "Communiquez des informations sur l'utilisateur via la " +
+                                    "conformité API avec les normes SCIM2.",
+                                heading: "System for Cross-Domain Identity Management "
+                            }
+                        },
+                        manageAttributes: {
+                            attributes: {
+                                description: "Chaque attribut contient un élément de données " +
+                                    "utilisateur stocké dans {{productName}}.",
+                                heading: "Les attributs"
+                            },
+                            description: "Affichez et gérez les attributs natifs d'{{productName}}.",
+                            heading: "Gérer les attributs"
+                        }
+                    },
                     wizard: {
-                        header: "Ajouter un dialecte externe",
+                        header: "Ajouter un mappage d'attributs",
                         steps: {
-                            dialectURI: "URI de dialecte",
-                            externalAttribute: "Attributs externes",
+                            dialectURI: "URI de  mappage d'attributs",
+                            externalAttribute: "Attributs {{type}}",
                             summary: "Résumé"
                         },
                         summary: {
-                            externalAttribute: "URI de l'attribut externe",
+                            externalAttribute: "URI de l'attribut {{type}}",
                             mappedAttribute: "URI de l'attribut local associée",
-                            notFound: "Aucun attribut externe n'a été ajouté."
+                            notFound: "Aucun attribut {{type}} n'a été ajouté."
                         }
                     }
                 },
@@ -3790,7 +3839,7 @@ export const console: ConsoleNS = {
                         form: {
                             inputs: {
                                 filterAttribute: {
-                                    placeholder: "Ex. URI d'attribut, etc."
+                                    placeholder: "Ex. URI d'attribut {{type}}, etc."
                                 },
                                 filterCondition: {
                                     placeholder: "Ex. Commence par, etc."
@@ -3803,41 +3852,44 @@ export const console: ConsoleNS = {
                         placeholder: "Recherche par URI d'attribut"
                     },
                     attributes: {
-                        attributeURI: "URI d'attribut",
-                        mappedClaim: "URI de l'attribut local associée"
+                        attributeURI: "{{type}} URI d'attribut",
+                        mappedClaim: "URI d'attribut mappé"
                     },
                     forms: {
                         attributeURI: {
-                            label: "URI d'attribut",
-                            placeholder: "Saisir  une URI d'attribut",
-                            requiredErrorMessage: "Une URI d'attribut est requis."
+                            label: "{{type}} Attribute URI",
+                            placeholder: "Saisissez l'URI de l'attribut {{type}}",
+                            requiredErrorMessage: "Une URI d'attribut {{type}} est requis.",
+                            validationErrorMessages: {
+                                duplicateName: "L'URI de l'attribut {{type}} existe déjà."
+                            }
                         },
                         localAttribute: {
-                            label: " URI de l'attribut local à associer à",
-                            placeholder: "Sélectionnez un attribut local",
-                            requiredErrorMessage: "Sélectionnez un attribut local  à associer à"
+                            label: "Attribut URI à mapper",
+                            placeholder: "Sélectionnez un attribut",
+                            requiredErrorMessage: "Sélectionnez un attribut auquel mapper"
                         },
-                        submit: "Ajouter un attribut externe"
+                        submit: "Ajouter un mappage d'attributs"
                     },
                     notifications: {
                         addExternalAttribute: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de l'ajout de l'attribut externe.",
+                                description: "Une erreur s'est produite lors de l'ajout de l'attribut {{type}}.",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "L'attribut externe a été ajouté au dialecte avec succès !",
-                                message: "L'attribut externe a été ajouté avec succès"
+                                description: "L'attribut {{type}} a été ajouté au dialecte avec succès !",
+                                message: "L'attribut {{type}} a été ajouté avec succès"
                             }
                         },
                         deleteExternalClaim: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de la suppression de l'attribut externe",
+                                description: "Une erreur s'est produite lors de la suppression de l'attribut {{type}}",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "L'attribut externe a été supprimé avec succès !",
-                                message: "L'attribut externe a été effacé avec succès"
+                                description: "L'attribut {{type}} a été supprimé avec succès !",
+                                message: "L'attribut {{type}} a été effacé avec succès"
                             }
                         },
                         fetchExternalClaims: {
@@ -3856,25 +3908,25 @@ export const console: ConsoleNS = {
                         },
                         getExternalAttribute: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération de l'attribut externe",
+                                description: "Une erreur s'est produite lors de la récupération de l'attribut {{type}}",
                                 message: "Quelque chose s'est mal passé"
                             }
                         },
                         updateExternalAttribute: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération de l'attribut externe",
+                                description: "Une erreur s'est produite lors de la récupération de l'attribut {{type}}",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "L'attribut externe a été mis à jour avec succès !",
-                                message: "L'attribut externe a été mis à jour avec succès"
+                                description: "L'attribut {{type}} a été mis à jour avec succès !",
+                                message: "L'attribut {{type}} a été mis à jour avec succès"
                             }
                         }
                     },
                     pageLayout: {
                         edit: {
-                            header: "Ajouter un attribut externe",
-                            primaryAction: "Nouvel attribut externe"
+                            header: "Ajouter un attribut {{type}}",
+                            primaryAction: "Nouvel attribut {{type}}"
                         }
                     },
                     placeholders: {
@@ -3896,13 +3948,13 @@ export const console: ConsoleNS = {
                         action: "Confirmer",
                         content: "{{message}} Veuillez procéder avec prudence.",
                         dialect: {
-                            message: "Si vous supprimez ce dialecte externe, tous les"
+                            message: "Si vous supprimez ce dialecte {{type}}, tous les"
                                 + " attributs externes associés seront également supprimés.",
-                            name: "dialecte externe"
+                            name: "dialecte {{type}}"
                         },
                         external: {
-                            message: "Ceci supprimera définitivement l'attribut externe.",
-                            name: "attribut externe"
+                            message: "Ceci supprimera définitivement l'attribut {{type}}.",
+                            name: "attribut {{type}}"
                         },
                         header: "Êtes-vous sûr ?",
                         hint: "Veuillez saisir <1>{{assertion}}</1> pour confirmer.",
@@ -3916,16 +3968,16 @@ export const console: ConsoleNS = {
                     placeholders: {
                         emptyList: {
                             action: {
-                                dialect: "Nouveau dialecte externe",
-                                external: "Nouvel attribut externe",
+                                dialect: "Nouveau dialecte {{type}}",
+                                external: "Nouvel attribut {{type}}",
                                 local: "Nouvel attribut local"
                             },
                             subtitle: "Il n'y a actuellement aucun résultat disponible."
                                 + "Vous pouvez ajouter un nouvel élément facilement en suivant les étapes de l'assistant de création.",
                             title: {
-                                dialect: "Ajouter un dialecte externe",
-                                external: "Ajouter un attribut externe",
-                                local: "Ajouter un attribut local"
+                                dialect: "Ajouter un dialecte {{type}}",
+                                external: "Ajouter un attribut {{type}}",
+                                local: "Ajouter un attribut"
                             }
                         },
                         emptySearch: {
@@ -4104,7 +4156,7 @@ export const console: ConsoleNS = {
                         },
                         local: {
                             action: "Nouvel attribut local",
-                            back: "Revenir aux dialectes d'attributs",
+                            back: "Revenir aux attributs et mappages",
                             description: "Créer et gérer les attributs locaux",
                             title: "Attributs locaux"
                         }
@@ -5462,7 +5514,7 @@ export const console: ConsoleNS = {
                 certificates: "Certificats",
                 configurations: "Configurations",
                 editEmailTemplate: "Modèles d'e-mail",
-                editExternalDialect: "Modifier le dialecte externe",
+                editExternalDialect: "Modifier le dialecte {{type}}",
                 editGroups: "Modifier le groupe",
                 editLocalClaims: "Modifier les attributs locaux",
                 editRoles: "Modifier le rôle",

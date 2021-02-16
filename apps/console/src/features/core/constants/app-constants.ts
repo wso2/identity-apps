@@ -230,7 +230,7 @@ export class AppConstants {
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
-            .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attribute-dialects`)
+            .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
             .set("CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize`)
             .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
             .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
@@ -240,14 +240,14 @@ export class AppConstants {
             .set("EMAIL_TEMPLATE_ADD", `${
                 AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
                 AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`)
-            .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-dialect/:id`)
+            .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id`)
             .set("GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups`)
             .set("GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id`)
             .set("IDP", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`)
             .set("IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`)
             .set("IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`)
-            .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/local-attributes`)
-            .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-local-attribute/:id`)
+            .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
+            .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
             .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
             .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes`)
@@ -265,7 +265,8 @@ export class AppConstants {
             .set("USERSTORES", `${ AppConstants.getAdminViewBasePath() }/user-stores`)
             .set("USERSTORES_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-user-store/:id`)
             .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
-            .set("STORING_DATA_DISABLED",`${ AppConstants.getMainViewBasePath() }/storing_data_disabled`);
+            .set("STORING_DATA_DISABLED", `${ AppConstants.getMainViewBasePath() }/storing_data_disabled`)
+            .set("ATTRIBUTE_MAPPINGS", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/:type`);
     }
 
     /**

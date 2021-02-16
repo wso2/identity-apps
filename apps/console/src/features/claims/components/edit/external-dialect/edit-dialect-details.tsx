@@ -27,12 +27,17 @@ import { Divider, Grid } from "semantic-ui-react";
 import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../../../core";
 import { updateADialect } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
+import { resolveType } from "../../../utils";
 
 /**
  * Prop types for the `EditDialectDetails` component
  */
 interface EditDialectDetailsPropsInterface extends TestableComponentInterface {
     dialect: ClaimDialect;
+    /**
+     * Attribute type.
+     */
+    attributeType?: string;
 }
 
 /**
@@ -48,6 +53,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
 
     const {
         dialect,
+        attributeType,
         [ "data-testid" ]: testId
     } = props;
 
@@ -93,7 +99,8 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                     >
                         <Field
                             type="text"
-                            placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder") }
+                            placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder",
+                                { type: resolveType(attributeType, true) }) }
                             value={ dialect?.dialectURI }
                             required={ true }
                             readOnly={
@@ -106,7 +113,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                             label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
                             data-testid={ `${ testId }-form-dialect-uri-input` }
-                        />                        
+                        />
                         {
                             config.ui?.isDefaultDialectEditingEnabled === false
                                 && ClaimManagementConstants.DEFAULT_DIALECTS.includes(dialect?.id)
@@ -132,5 +139,6 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
  * Default props for the component.
  */
 EditDialectDetails.defaultProps = {
+    attributeType: ClaimManagementConstants.OTHERS,
     "data-testid": "edit-dialect-details"
 };
