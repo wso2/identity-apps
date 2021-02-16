@@ -3814,7 +3814,7 @@ export const console: ConsoleNS = {
                                     "utilisateur stocké dans {{productName}}.",
                                 heading: "Les attributs"
                             },
-                            description: "Affichez et gérez les attributs natifs d'Asgardeo.",
+                            description: "Affichez et gérez les attributs natifs d'{{productName}}.",
                             heading: "Gérer les attributs"
                         }
                     },
