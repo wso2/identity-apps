@@ -97,6 +97,10 @@ export interface HelpPanelIconsInterface {
      */
     pin: GenericIconProps["icon"];
     /**
+     * Unpin icon.
+     */
+    unpin: GenericIconProps["icon"];
+    /**
      * Close icon.
      */
     close: GenericIconProps["icon"];
@@ -200,6 +204,20 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     };
 
     /**
+     * Handles the help panel pin toggle action.
+     */
+    const handleHelpPanelPinToggle = (): void => {
+
+        onHelpPanelPinToggle();
+
+        // If developer unpin the help panel, we are closing the help panel also.
+        if (isPinned)  {
+            setHelpSidebarVisibility(!helpSidebarVisibility);
+            onHelpPanelVisibilityChange(!helpSidebarVisibility);   
+        }
+    };
+
+    /**
      * Handles the help panel toggle action.
      */
     const handleHelpPanelToggle = () => {
@@ -218,8 +236,8 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
                         ref={ sidebarRef }
                         actions={ [
                             {
-                                icon: icons.pin,
-                                onClick: onHelpPanelPinToggle,
+                                icon: isPinned ?icons.pin : icons.unpin,
+                                onClick: handleHelpPanelPinToggle,
                                 tooltip: isPinned ? unpinButtonTooltip : pinButtonTooltip
                             },
                             {
