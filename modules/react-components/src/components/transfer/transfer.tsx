@@ -126,17 +126,17 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ testId + "-unselected-groups-search-input" }
                                                             handleListSearch={ handleUnelectedListSearch }
                                                             placeholder={ searchPlaceholder }
-                                                            isLoading={ isLoading }
                                                         />
                                                         {
-                                                            selectionComponent &&
-                                                            <Checkbox 
-                                                                className="all-select"
-                                                                label={ selectAllCheckboxLabel }
-                                                                checked={ isHeaderCheckboxChecked }
-                                                                onChange={ handleHeaderCheckboxChange }
-                                                                disabled={ isLoading }
-                                                            />
+                                                            (!isLoading && selectionComponent) && (
+                                                                <Checkbox
+                                                                    className="all-select"
+                                                                    label={ selectAllCheckboxLabel }
+                                                                    checked={ isHeaderCheckboxChecked }
+                                                                    onChange={ handleHeaderCheckboxChange }
+                                                                    disabled={ isLoading }
+                                                                />
+                                                            )
                                                         }
                                                         <Segment className="transfer-list-segment">
                                                             { list }
@@ -195,7 +195,6 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             data-testid={ `${ testId }-selected-groups-search-input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
-                                                            isLoading={ isLoading }
                                                         />
                                                         <Segment className="transfer-list-segment">
                                                             { list }
@@ -205,7 +204,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             )
                                         }
                                     </>
-                                )
+                                );
                             })
                         }
                     </Grid.Row>

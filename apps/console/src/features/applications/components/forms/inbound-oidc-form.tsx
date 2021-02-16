@@ -1712,10 +1712,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObjectSignature.description", {
-                            productName: config.ui.productName
-                        }) }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObjectSignature.description"
+                            }
+                            tOptions={ { productName: config.ui.productName } }
+                        >
+                            WSO2 Identity Server supports receiving an OIDC authentication request as
+                            a request object that is passed in a single, self-contained request
+                            parameter. Enable signature validation to accept only signed
+                            <Code>request</Code> objects in the authorization request.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>

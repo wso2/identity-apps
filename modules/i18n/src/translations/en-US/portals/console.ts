@@ -1306,7 +1306,7 @@ export const console: ConsoleNS = {
                                 fields: {
                                     back: {
                                         hint: "{{productName}} will directly communicate the logout requests to this " +
-                                            "client URL(s), so that clients can invalidate the user session.",
+                                            "client URL, so that clients can invalidate the user session.",
                                         label: "Back channel logout URL",
                                         placeholder: "https://myapp.io/logout",
                                         validations: {
@@ -1372,16 +1372,16 @@ export const console: ConsoleNS = {
                                 heading: "Refresh Token"
                             },
                             requestObjectSignature: {
-                                heading: "Request Object",
-                                description: "{{productName}} supports receiving OIDC authentication request " +
-                                    "parameters from clients in a `request object`. Enable signature " +
-                                    "validation to accept only signed request objects in the" +
-                                    " authorization request.",
+                                description: "{{productName}} supports receiving an OIDC authentication request as " +
+                                    "a request object that is passed in a single, self-contained <1>request</1> " +
+                                    "parameter. Enable signature validation to accept only signed request objects " +
+                                    "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
                                         label: "Enable signature validation",
                                     }
                                 },
+                                heading: "Request Object"
                             },
                             scopeValidators: {
                                 fields: {
@@ -5424,7 +5424,7 @@ export const console: ConsoleNS = {
                         fields: {
                             groupName: {
                                 name: "Group Name",
-                                placeholder: "Enter your group name",
+                                placeholder: "Enter group name",
                                 required: "Group name is required"
                             }
                         }
@@ -5441,8 +5441,8 @@ export const console: ConsoleNS = {
                 list: {
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Group"
                     },
                     storeOptions: "Select User Store"
                 },
@@ -6041,9 +6041,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             roleName: {
-                                hint: "A name for the user group.",
+                                hint: "A name for the {{type}}.",
                                 label: "{{type}} Name",
-                                placeholder: "Enter {{type}} Name",
+                                placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
                                     empty: "{{type}} Name is required to proceed.",
@@ -6075,7 +6075,7 @@ export const console: ConsoleNS = {
                     },
                     users: {
                         assignUserModal: {
-                            heading: "Update {{type}} Users",
+                            heading: "Manage Users",
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
@@ -6125,12 +6125,12 @@ export const console: ConsoleNS = {
                         dangerZone: {
                             actionTitle: "Delete {{type}}",
                             header: "Delete {{type}}",
-                            subheader: "Once you delete the {{type}}, there is no going back. Please be certain."
+                            subheader: "Once you delete the {{type}}, it cannot be recovered."
                         },
                         fields: {
                             roleName: {
                                 name: "Role Name",
-                                placeholder: "Enter your role name",
+                                placeholder: "Enter role name",
                                 required: "Role name is required"
                             }
                         }
@@ -6160,7 +6160,7 @@ export const console: ConsoleNS = {
                         list: {
                             emptyPlaceholder: {
                                 action: "Assign User",
-                                subtitles: "There are no Users assigned to the {{type}} at the moment.",
+                                subtitles: "There are no users assigned to the {{type}} at the moment.",
                                 title: "No Users Assigned"
                             },
                             header: "Users"
@@ -6174,8 +6174,8 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
-                        lastModified: "Last Modified",
-                        name: "Name"
+                        lastModified: "Modified Time",
+                        name: "Role"
                     },
                     confirmations: {
                         deleteItem: {
