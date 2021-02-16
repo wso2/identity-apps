@@ -206,7 +206,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     /**
      * Handles the help panel pin toggle action.
      */
-    const handleHelpPanelPinToggle = () => {
+    const handleHelpPanelPinToggle = (): void => {
 
         onHelpPanelPinToggle();
 
