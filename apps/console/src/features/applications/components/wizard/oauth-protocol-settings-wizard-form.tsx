@@ -134,7 +134,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     // Maintain the state if the user allowed the CORS for the
     // origin of the configured callback URL(s).
-    const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>([]);
+    const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>(allowedOrigins ? allowedOrigins: []);
 
     /**
      * Show the grant types only for the custom protocol template.
@@ -436,7 +436,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
                                         handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
                                         tenantDomain={ tenantDomain }
-                                        allowedOrigins={ allowedOrigins }
+                                        allowedOrigins={ allowCORSUrls }
                                         urlState={ callBackUrls }
                                         setURLState={ setCallBackUrls }
                                         labelName={
@@ -512,6 +512,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                                 className={ "m-1 p-1 with-no-border orange" }
                                                                 onClick={ (e) => {
                                                                     e.preventDefault();
+                                                                    const host = new URL(callBackURLFromTemplate);
+                                                                    handleAddAllowOrigin(host.origin);
                                                                     setCallBackUrls(callBackURLFromTemplate);
                                                                 } }>
                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
