@@ -4671,7 +4671,7 @@ export const console: ConsoleNS = {
                                 description: "Each attribute contains a piece of user data stored within {{productName}}.",
                                 heading: "Attributes"
                             },
-                            description: "View and manage attributes native to Asgardeo.",
+                            description: "View and manage attributes native to {{productName}}.",
                             heading: "Manage Attributes"
                         }
                     },
