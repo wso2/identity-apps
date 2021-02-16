@@ -201,6 +201,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the client origin. ex: `https://localhost:9443`.
+     *
+     * @return {string}
+     */
+    public static getClientOrigin(): string {
+        return window["AppUtils"].getConfig().clientOrigin;
+    }
+
+    /**
      * Get the client origin with tenant. ex: `https://localhost:9443/t/wso2.comn`.
      *
      * @return {string}
