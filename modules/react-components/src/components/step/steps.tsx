@@ -86,7 +86,7 @@ export const Steps: FunctionComponent<PropsWithChildren<StepsPropsInterface>> & 
 
     useEffect(() => {
         setFilteredChildren(React.Children.toArray(children).filter((child) => !!child));
-    }, []);
+    }, [ children ]);
 
     return (
         <div className={ classes } style={ style } data-testid={ testId }>
