@@ -156,7 +156,8 @@ export const getHelpPanelActionIcons = () => {
         caretLeft: import(`../../../themes/${ theme }/assets/images/icons/caret-left-icon.svg`),
         caretRight: import(`../../../themes/${ theme }/assets/images/icons/caret-right-icon.svg`),
         close: import(`../../../themes/${ theme }/assets/images/icons/cross-icon.svg`),
-        pin: import(`../../../themes/${ theme }/assets/images/icons/pin-icon.svg`)
+        pin: import(`../../../themes/${ theme }/assets/images/icons/pin-icon.svg`),
+        unpin: import(`../../../themes/${ theme }/assets/images/icons/unpin-icon.svg`)
     };
 };
 
