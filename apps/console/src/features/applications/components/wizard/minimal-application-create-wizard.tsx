@@ -305,7 +305,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.applications.notifications.fetchTemplate.error" + ".message"
+                                "console:develop.features.applications.notifications.fetchTemplate.error.message"
                             )
                         })
                     );
