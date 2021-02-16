@@ -95,15 +95,15 @@ export interface HelpPanelIconsInterface {
     /**
      * Pin icon.
      */
-    pin: GenericIconProps["icon"];
+    pin?: GenericIconProps["icon"];
     /**
      * Unpin icon.
      */
-    unpin: GenericIconProps["icon"];
+    unpin?: GenericIconProps["icon"];
     /**
      * Close icon.
      */
-    close: GenericIconProps["icon"];
+    close?: GenericIconProps["icon"];
 }
 
 /**
