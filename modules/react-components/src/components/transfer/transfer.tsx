@@ -55,6 +55,10 @@ export interface TransferComponentPropsInterface extends TestableComponentInterf
     searchPlaceholder: string;
     selectionComponent?: boolean;
     /**
+     * Show/Hide select all checkbox.
+     */
+    showSelectAllCheckbox?: boolean;
+    /**
      * Select all checkbox label.
      */
     selectAllCheckboxLabel?: ReactNode;
@@ -87,6 +91,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         handleSelectedListSearch,
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
+        showSelectAllCheckbox,
         [ "data-testid" ]: testId
     } = props;
 
@@ -128,7 +133,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             placeholder={ searchPlaceholder }
                                                         />
                                                         {
-                                                            (!isLoading && selectionComponent) && (
+                                                            (!isLoading
+                                                                && showSelectAllCheckbox
+                                                                && selectionComponent) && (
                                                                 <Checkbox
                                                                     className="all-select"
                                                                     label={ selectAllCheckboxLabel }
