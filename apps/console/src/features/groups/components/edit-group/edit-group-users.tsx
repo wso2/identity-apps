@@ -322,7 +322,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
             ? user.name.givenName + " " + user.name.familyName
-            : "";
+            : undefined;
 
         const resolvedUsername: string = user.userName.split("/")?.length > 1
             ? user.userName.split("/")[ 1 ]
