@@ -4248,7 +4248,8 @@ export const console: ConsoleNS = {
                         validations: {
                             duplicate: "A {{type}} already exists with the given {{type}} name.",
                             empty: "{{type}} Name is required to proceed.",
-                            invalid: "{{type}} name must be of length 3-30 and cannot contain spaces."
+                            invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
+                                + "And must be of length between 3 to 30 characters."
                         }
                     }
                 }
