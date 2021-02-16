@@ -94,13 +94,11 @@ export class RouteUtils {
     private static isRouteAvailable(view: string, pathname: string, routes: RouteInterface[]): boolean {
 
         /**
-         * If one of the passed arguments are not truthy, then function
+         * If one of the passed arguments are not truthy, then the function
          * cannot do the operation and check the available routes. In this
          * case we return false saying there's no matching routes.
          */
-        if (!view || !pathname || !routes || !routes.length) {
-            return false;
-        }
+        if (!view || !pathname || !routes?.length) return false;
 
         const EMPTY_STRING: string = "";
         const descendants: Set<string> = new Set<string>();
@@ -110,7 +108,7 @@ export class RouteUtils {
          * out the top level views and map out all the nested children's path.
          *
          * Explanation
-         * -----------
+         * --
          * A top level view can be `/console/develop` or `console/manage`
          * and in those views we have nested routes such as:-
          *          [
@@ -124,22 +122,22 @@ export class RouteUtils {
          * descendants.
          *
          * Note on default values
-         * ----------------------
+         * --
          * Since we use lodash here we need to make sure default values
          * are initialized during the chain when the values are null.
          *
          * How it works?
-         * -------------
-         * #1 - Filter out the paths that partially matches {@code view}
-         *      This will ensure we won't step into any unrelated child
-         *      paths.
-         * #2 - Keep a reference to the descendants of this {@code view}.
-         *      This makes sure that descendants will also get a chance
-         *      to be evaluated against the {@code pathname}
-         * #3 - Map out all the children paths in each of the descendants.
-         * #4 - Flattens the depth of the array.
-         * #5 - Map out the {@code string} path of each child route.
-         * #6 - Unwraps the lodash chain result.
+         * --
+         * -1 Filter out the paths that partially matches {@code view}
+         *    This will ensure we won't step into any unrelated child
+         *    paths.
+         * -2 Keep a reference to the descendants of this {@code view}.
+         *    This makes sure that descendants will also get a chance
+         *    to be evaluated against the {@code pathname}
+         * -3 Map out all the children paths in each of the descendants.
+         * -4 Flattens the depth of the array.
+         * -5 Map out the {@code string} path of each child route.
+         * -6 Unwraps the lodash chain result.
          */
         const allChildPaths: string[] = chain(routes ?? [])
             .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
@@ -154,22 +152,21 @@ export class RouteUtils {
          * the available routes then return {@code false} and navigate to
          * the ordered route.
          */
-        if ((!allChildPaths || !allChildPaths.length) || !descendants.size) {
-            return false;
-        }
+        if (!allChildPaths?.length || !descendants.size) return false;
 
         /**
          * In this function what we do is escape all the special characters
          * of the URI and replace the path_parameters to match a dynamic string.
          *
          * Regex explanation
-         * -----------------
+         * --
          * {@code [\w~\-\\.!*'(),]+} is a set expression that allows the following
          * characters { a-z A-Z 0-9 _ ~ - \ . ! * () , <space> } one or more times.
          * The expression assumes the path_parameter has at-lease one character and
          * contains only the characters specified above.
          *
-         * Refer RFC-3986 {@link https://tools.ietf.org/html/rfc3986#section-2.3}
+         * Refer RFC-3986
+         * {@link https://tools.ietf.org/html/rfc3986#section-2.3}
          *
          * @param {string} path - A valid URL
          * @return {RegExp} expression like `some/path/[\w~\-\\.!*'(),]+/another`
