@@ -3780,7 +3780,7 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Mettre à jour le mappage d'attributs {{type}}"
                         },
                         list: {
-                            description: "Affichez et gérez la façon dont les attributs utilisateur d'Asgardeo " +
+                            description: "Affichez et gérez la façon dont les attributs utilisateur d'{{productName}} " +
                                 "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
                             primaryAction: "Nouveau mappage d'attributse",
                             title: "Dialectes des attributs",
