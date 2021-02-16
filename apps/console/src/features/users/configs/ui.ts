@@ -26,7 +26,8 @@ export const getUserWizardStepIcons = () => {
         general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`),
         groups: import(`../../../themes/${ theme }/assets/images/icons/gears-icon.svg`),
         roles: import(`../../../themes/${ theme }/assets/images/icons/spin-wheel-icon.svg`),
-        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`)
+        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`),
+        user: import(`../../../themes/${ theme }/assets/images/icons/user-icon.svg`)
     };
 };
 
