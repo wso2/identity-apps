@@ -244,6 +244,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
                         handleSearchFieldChange(e, value, originalUserList, setAddModalUserList);
                     } }
+                    showSelectAllCheckbox={ !isLoading && users?.length > 0 }
                     data-testid={ `${ testId }-user-list-transfer` }
                 >
                     <TransferList
