@@ -3811,7 +3811,7 @@ export const console: ConsoleNS = {
                         manageAttributes: {
                             attributes: {
                                 description: "Chaque attribut contient un élément de données " +
-                                    "utilisateur stocké dans Asgardeo.",
+                                    "utilisateur stocké dans {{productName}}.",
                                 heading: "Les attributs"
                             },
                             description: "Affichez et gérez les attributs natifs d'Asgardeo.",
