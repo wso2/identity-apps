@@ -1081,7 +1081,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
-                                    empty: "This is a required field."
+                                    empty: "Application name is required."
                                 }
                             }
                         }
