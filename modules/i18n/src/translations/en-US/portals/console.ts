@@ -1771,6 +1771,16 @@ export const console: ConsoleNS = {
                                 label: "Provisioning userstore domain"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "Authorized URLs",
+                                validations: {
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {
@@ -4523,7 +4533,7 @@ export const console: ConsoleNS = {
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
-                        heading: "System for Cross-Domain Identity Management"
+                        heading: "SCIM 2.0"
                     }
                 },
                 dialects: {
@@ -4641,7 +4651,7 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
-                            description: "View and manage how user attributes in are mapped and " +
+                            description: "View and manage how user attributes are mapped and " +
                                 "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
                             title: "Attributes and Mappings",
@@ -4654,7 +4664,7 @@ export const console: ConsoleNS = {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"
                             },
-                            description: "View and manage how attributes in are mapped and transformed "
+                            description: "View and manage how attributes are mapped and transformed "
                                 + "when interacting with APIs or your applications.",
                             heading: "Manage Attribute Mappings",
                             oidc: {
@@ -4665,15 +4675,15 @@ export const console: ConsoleNS = {
                             scim: {
                                 description: "Communicate information about the user via the API "
                                     + "compliance with SCIM2 standards.",
-                                heading: "System for Cross-Domain Identity Management "
+                                heading: "SCIM 2.0"
                             }
                         },
                         manageAttributes: {
                             attributes: {
-                                description: "Each attribute contains a piece of user data stored within {{productName}}.",
+                                description: "Each attribute contains a piece of user data stored.",
                                 heading: "Attributes"
                             },
-                            description: "View and manage attributes native to {{productName}}.",
+                            description: "View and manage attributes.",
                             heading: "Manage Attributes"
                         }
                     },
@@ -5538,6 +5548,9 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "Select which user attributes you want to associate with the scope {{name}}.",
+                },
                 buttons: {
                     addScope: "New OIDC Scope"
                 },
@@ -5551,7 +5564,7 @@ export const console: ConsoleNS = {
                     },
                     deleteScope: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this scope, you will not be able to get it back." +
+                        content: "If you delete this scope, you will not be able to get it back. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the OIDC scope."
@@ -7482,7 +7495,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the invitation.",
+                            description: "Successfully deleted the user's association to your organization.",
                             message: "Invitation deletion successful"
                         }
                     },

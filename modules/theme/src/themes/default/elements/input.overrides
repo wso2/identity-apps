@@ -83,5 +83,11 @@
         .copy-input-eye-icon {
             margin-right: @copyInputFieldMarginRight;
         }
+        &.copy-input-dark {
+            input {
+                background: #29363c;
+                color: white;
+            }
+        }
     }
 }

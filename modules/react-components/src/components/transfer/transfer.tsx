@@ -55,6 +55,10 @@ export interface TransferComponentPropsInterface extends TestableComponentInterf
     searchPlaceholder: string;
     selectionComponent?: boolean;
     /**
+     * Show/Hide list search.
+     */
+    showListSearch?: boolean;
+    /**
      * Show/Hide select all checkbox.
      */
     showSelectAllCheckbox?: boolean;
@@ -92,6 +96,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
         showSelectAllCheckbox,
+        showListSearch,
         [ "data-testid" ]: testId
     } = props;
 
@@ -127,11 +132,17 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         }
                                                         className="transfer-segment"
                                                     >
-                                                        <TransferListSearch
-                                                            data-testid={ testId + "-unselected-groups-search-input" }
-                                                            handleListSearch={ handleUnelectedListSearch }
-                                                            placeholder={ searchPlaceholder }
-                                                        />
+                                                        {
+                                                            showListSearch && (
+                                                                <TransferListSearch
+                                                                    data-testid={
+                                                                        testId + "-unselected-groups-search-input"
+                                                                    }
+                                                                    handleListSearch={ handleUnelectedListSearch }
+                                                                    placeholder={ searchPlaceholder }
+                                                                />
+                                                            )
+                                                        }
                                                         {
                                                             (!isLoading
                                                                 && showSelectAllCheckbox
@@ -229,5 +240,6 @@ TransferComponent.defaultProps = {
     bordered: true,
     "data-testid": "transfer-component",
     isLoading: false,
-    selectAllCheckboxLabel: "Select all"
+    selectAllCheckboxLabel: "Select all",
+    showListSearch: true
 };

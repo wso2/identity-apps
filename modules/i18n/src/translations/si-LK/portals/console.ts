@@ -1766,6 +1766,16 @@ export const console: ConsoleNS = {
                                 label: "පරිශීලක වෙළඳසැල් වසම සැපයීම"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "බලයලත් URL",
+                                validations: {
+                                    invalid: "ඇතුළත් කළ URL එක HTTP හෝ HTTPS නොවේ. කරුණාකර වලංගු URI එකක් එක් කරන්න."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {
@@ -4658,6 +4668,9 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න.",
+                },
                 buttons: {
                     addScope: "නව OIDC විෂය පථය"
                 },

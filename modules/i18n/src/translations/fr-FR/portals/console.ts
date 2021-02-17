@@ -1785,6 +1785,16 @@ export const console: ConsoleNS = {
                                 label: "Approvisionnement du domaine utilisateur"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "URL autorisées",
+                                validations: {
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter un URI valide."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {
@@ -4680,6 +4690,10 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "Sélectionnez les attributs utilisateur que vous souhaitez " +
+                        "associer à l'étendue {{name}}."
+                },
                 buttons: {
                     addScope: "Nouveau scope OIDC"
                 },
