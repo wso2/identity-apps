@@ -7485,7 +7485,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the invitation.",
+                            description: "Successfully deleted the user's association to your organization.",
                             message: "Invitation deletion successful"
                         }
                     },

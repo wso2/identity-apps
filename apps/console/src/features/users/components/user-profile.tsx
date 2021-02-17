@@ -35,6 +35,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Hint,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -42,7 +43,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input, Message } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
@@ -77,6 +78,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Is read only user stores loading.
      */
     isReadOnlyUserStoresLoading?: boolean;
+    /**
+     * Tenant admin
+     */
+    tenantAdmin?: string;
 }
 
 /**
@@ -97,6 +102,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
+        tenantAdmin,
         [ "data-testid" ]: testId
     } = props;
 
@@ -599,7 +605,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             <>
                 {
                     (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                        allowedScopes) && !isReadOnly && user.userName !== "admin" &&
+                        allowedScopes) && !isReadOnly &&
+                        (user.userName !== tenantAdmin || user.userName !== "admin") &&
                         user.userName !== authenticatedUser) && (
                         <DangerZoneGroup
                             sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
@@ -730,7 +737,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         return (!_.isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)));
-    }
+    };
 
     /**
      * This function generates the user profile details form based on the input Profile Schema
@@ -806,6 +813,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             {
                 !_.isEmpty(profileInfo) && (
                     <EmphasizedSegment padded="very">
+                        {
+                            (isReadOnly && !_.isEmpty(tenantAdmin)) && (
+                                <Grid>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                            <Message color="teal">
+                                                <Hint>
+                                                    Please note that this is an Asgardeo account and therefore the
+                                                    profile attributes can only be updated through the Asgardeo
+                                                    MyAccount.
+                                                </Hint>
+                                            </Message>
+                                            <Divider hidden/>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            )
+                        }
                         <Forms
                             data-testid={ `${ testId }-form` }
                             onSubmit={ (values) => handleSubmit(values) }
