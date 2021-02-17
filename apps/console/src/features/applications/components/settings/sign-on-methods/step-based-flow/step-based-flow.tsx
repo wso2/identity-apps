@@ -600,7 +600,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 <div className="main-content" ref={ mainContentRef }>
                     <Grid>
                         <Grid.Row>
-                            <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 14 }>
+                            <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 13 }>
                                 <Heading as="h4">
                                     { t(
                                         "console:develop.features.applications.edit.sections.signOnMethod.sections" +
@@ -623,7 +623,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 ) }
                             </Grid.Column>
                             { !showAuthenticatorsSidePanel && (
-                                <Grid.Column computer={ 2 }>
+                                <Grid.Column computer={ 3 }>
                                     <Card>
                                         <Card.Content>
                                             <Heading as="h6" floated="left" compact>
