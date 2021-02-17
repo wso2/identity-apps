@@ -18,8 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, {FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect} from "react";
-import { Card, CardProps, Divider, Icon, Label, Popup } from "semantic-ui-react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
@@ -164,6 +165,8 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         className
     );
 
+    const { t } = useTranslation();
+
     /**
      * Renders the tag based on render type.
      *
@@ -227,54 +230,65 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     };
 
     return (
-        <Card
-            id={ id }
-            className={ classes }
-            onClick={ onClick }
-            link={ false }
-            as="div"
-            data-testid={ testId }
-        >
-            {
-                image && (
-                    <Card.Content className="card-image-container">
-                        <GenericIcon
-                            square
-                            transparent
-                            className="card-image"
-                            size={ imageSize }
-                            icon={ image }
-                            data-testid={ `${ testId }-image` }
-                            { ...imageOptions }
-                        />
-                    </Card.Content>
-                )
-            }
-            <Card.Content className="card-text-container" style={ { textAlign } }>
-                <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
-                <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
-                {
-                    (showTags && tags && tags instanceof Array && tags.length > 0)
-                        ? (
-                            <div className="tags-container" data-testid={ `${ testId }-tags-container` }>
-                                { tagsSectionTitle && (
-                                    <div className="title" data-testid={ `${ testId }-tags-title` }>
-                                        { tagsSectionTitle }
-                                    </div>
-                                ) }
-                                <div className="tags" data-testid={ `${ testId }-tags` }>
-                                    { showTagIcon && <Icon name="tag" className="tag-icon" size="tiny" color="grey" /> }
-                                    {
-                                        (tags as Array<TemplateCardTagInterface|string>)
-                                            .map((tag, index) => renderTag(tag, tagsAs, index))
-                                    }
-                                </div>
-                            </div>
+        <Popup
+            trigger={
+                <Card
+                    id={ id }
+                    className={ classes }
+                    onClick={ onClick }
+                    link={ false }
+                    as="div"
+                    data-testid={ testId }
+                >
+                    {
+                        image && (
+                            <Card.Content className="card-image-container">
+                                <GenericIcon
+                                    square
+                                    transparent
+                                    className="card-image"
+                                    size={ imageSize }
+                                    icon={ image }
+                                    data-testid={ `${ testId }-image` }
+                                    { ...imageOptions }
+                                />
+                            </Card.Content>
                         )
-                        : null
-                }
-            </Card.Content>
-        </Card>
+                    }
+                    <Card.Content className="card-text-container" style={ { textAlign } }>
+                        <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
+                        <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
+                        {
+                            (showTags && tags && tags instanceof Array && tags.length > 0)
+                                ? (
+                                    <div className="tags-container" data-testid={ `${ testId }-tags-container` }>
+                                        { tagsSectionTitle && (
+                                            <div className="title" data-testid={ `${ testId }-tags-title` }>
+                                                { tagsSectionTitle }
+                                            </div>
+                                        ) }
+                                        <div className="tags" data-testid={ `${ testId }-tags` }>
+                                            { showTagIcon && <Icon name="tag" className="tag-icon" size="tiny" color="grey" /> }
+                                            {
+                                                (tags as Array<TemplateCardTagInterface|string>)
+                                                    .map((tag, index) => renderTag(tag, tagsAs, index))
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                                : null
+                        }
+                    </Card.Content>
+                </Card>
+            }
+            content={
+                t("common:comingSoon" )
+            }
+            inverted
+            position="top center"
+            size="mini"
+            disabled={ !disabled }
+        />
     );
 };
 
