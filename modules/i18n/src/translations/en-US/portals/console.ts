@@ -723,8 +723,9 @@ export const console: ConsoleNS = {
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
                                 heading: "User Attribute Selection",
-                                attributeComponentHint: "Manage the user attributes you want to share with this" +
-                                    " application.",
+                                attributeComponentHint: "Manage the user attributes you want to share with " +
+                                    "this application. You can configure additional <1>OIDC attribute mappings</1> " +
+                                    "and request them via <3>OIDC Scopes.</3>",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
