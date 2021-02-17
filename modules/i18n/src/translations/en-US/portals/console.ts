@@ -4523,7 +4523,7 @@ export const console: ConsoleNS = {
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
-                        heading: "System for Cross-Domain Identity Management"
+                        heading: "SCIM 2.0"
                     }
                 },
                 dialects: {
@@ -4654,7 +4654,7 @@ export const console: ConsoleNS = {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"
                             },
-                            description: "View and manage how attributes in are mapped and transformed "
+                            description: "View and manage how attributes are mapped and transformed "
                                 + "when interacting with APIs or your applications.",
                             heading: "Manage Attribute Mappings",
                             oidc: {
@@ -4665,7 +4665,7 @@ export const console: ConsoleNS = {
                             scim: {
                                 description: "Communicate information about the user via the API "
                                     + "compliance with SCIM2 standards.",
-                                heading: "System for Cross-Domain Identity Management "
+                                heading: "SCIM 2.0"
                             }
                         },
                         manageAttributes: {
