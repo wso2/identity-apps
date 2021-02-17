@@ -730,12 +730,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 "selection.attributeComponentHint" }
                             >
                                 Manage the user attributes you want to share with
-                                this application. You can configure additional <a href="javascript:void()" onClick={ () => {
-                                    history.push(
-                                        AppConstants.getPaths()
-                                            .get("ATTRIBUTE_MAPPINGS")
-                                            .replace(":type", ClaimManagementConstants.OIDC)
-                                    );
+                                this application. You can configure additional
+                                <a
+                                    href="javascript:void()"
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths()
+                                                .get("ATTRIBUTE_MAPPINGS")
+                                                .replace(":type", ClaimManagementConstants.OIDC)
+                                        );
                                 } }>OIDC attribute mappings</a>
                                 and request them via <a href="javascript:void()" onClick={ () => {
                                     history.push(
