@@ -807,6 +807,11 @@ export interface ConsoleNS {
                             userstoreDomain: FormAttributes;
                         };
                     };
+                    spaProtocolSettingsWizard: {
+                        fields: {
+                            callBackUrls: FormAttributes;
+                        };
+                    };
                 };
                 helpPanel: HelpPanelInterface;
                 list: {
