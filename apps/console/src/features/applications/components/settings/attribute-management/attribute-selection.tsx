@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 import { AttributeListItem } from "./attribute-list-item";
@@ -30,13 +30,13 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { getEmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations, history, AppConstants } from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
-
+import { ClaimManagementConstants } from "../../../../claims/constants";
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
     setClaims: any;
@@ -725,10 +725,24 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             )
                         }
                         <Hint>
-                            {
-                                t("console:develop.features.applications.edit.sections.attributes." +
-                                    "selection.attributeComponentHint")
-                            }
+                            <Trans
+                                i18nKey={ "console:develop.features.applications.edit.sections.attributes." +
+                                "selection.attributeComponentHint" }
+                            >
+                                Manage the user attributes you want to share with
+                                this application. You can configure additional <a href="javascript:void()" onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths()
+                                            .get("ATTRIBUTE_MAPPINGS")
+                                            .replace(":type", ClaimManagementConstants.OIDC)
+                                    );
+                                } }>OIDC attribute mappings</a>
+                                and request them via <a href="javascript:void()" onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("OIDC_SCOPES")
+                                    );
+                                } }>OIDC Scopes.</a>
+                            </Trans>
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
