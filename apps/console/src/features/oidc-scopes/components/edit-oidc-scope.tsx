@@ -173,6 +173,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     updateOIDCScope(claimURIs);
                 } }
                 setSelectedExternalClaims={ () => null }
+                isScopeSection={ true }
+                scopeName={ scope.displayName }
             />
         );
     };
