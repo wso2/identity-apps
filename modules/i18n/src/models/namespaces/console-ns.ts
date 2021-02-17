@@ -2434,6 +2434,9 @@ export interface ConsoleNS {
                     deleteScope: Confirmation;
                     deleteClaim: Confirmation;
                 };
+                addAttributes: {
+                    description: string;
+                };
                 editScope: {
                     claimList: {
                         emptyPlaceholder: Placeholder;
