@@ -661,7 +661,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                     <Form>
                                         <Form.Field inline>
                                             <Form.Select
-                                                inline
                                                 label={ t(
                                                     "console:develop.features.applications.edit.sections" +
                                                     ".signOnMethod.sections.authenticationFlow.sections" +
@@ -699,7 +698,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                     <Form>
                                         <Form.Field inline>
                                             <Form.Select
-                                                inline
                                                 label={ t(
                                                     "console:develop.features.applications.edit.sections" +
                                                     ".signOnMethod.sections.authenticationFlow.sections" +
