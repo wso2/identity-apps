@@ -37,6 +37,14 @@ interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableCom
     setInitialSelectedExternalClaims: any;
     showAddModal: boolean;
     setShowAddModal: (showModal: boolean) => void;
+    /**
+     * Specifies if this is shown in the scope section.
+     */
+    isScopeSection?: boolean;
+    /**
+     * The name of the scope.
+     */
+    scopeName?: string;
 }
 
 /**
@@ -57,6 +65,8 @@ export const AttributeSelectionWizardOtherDialect:
         showAddModal,
         setShowAddModal,
         availableExternalClaims,
+        isScopeSection,
+        scopeName,
         [ "data-testid" ]: testId
     } = props;
 
@@ -73,10 +83,15 @@ export const AttributeSelectionWizardOtherDialect:
             <Modal.Header>
                 { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
-                    { t(
+                    { !isScopeSection
+                        ? t(
                         "console:develop.features.applications.edit.sections.attributes.selection.addWizard." +
                             "subHeading"
-                    ) }
+                        )
+                        : t(
+                            "console:manage.features.oidcScopes.addAttributes.description", { name: scopeName }
+                        )
+                    }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>

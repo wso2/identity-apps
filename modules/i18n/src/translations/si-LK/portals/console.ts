@@ -4658,6 +4658,9 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න.",
+                },
                 buttons: {
                     addScope: "නව OIDC විෂය පථය"
                 },

@@ -4680,6 +4680,10 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "Sélectionnez les attributs utilisateur que vous souhaitez " +
+                        "associer à l'étendue {{name}}."
+                },
                 buttons: {
                     addScope: "Nouveau scope OIDC"
                 },
