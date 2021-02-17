@@ -1785,6 +1785,16 @@ export const console: ConsoleNS = {
                                 label: "Approvisionnement du domaine utilisateur"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "URL autorisées",
+                                validations: {
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter un URI valide."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {

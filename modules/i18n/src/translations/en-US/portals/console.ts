@@ -1771,6 +1771,16 @@ export const console: ConsoleNS = {
                                 label: "Provisioning userstore domain"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "Authorized URLs",
+                                validations: {
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {
