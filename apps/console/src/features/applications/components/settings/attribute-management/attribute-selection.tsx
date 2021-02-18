@@ -610,13 +610,23 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         isDefaultMappingChanged={
                                                                             setIsDefaultMappingChanged
                                                                         }
-                                                                        initialMandatory={ claim.mandatory }
+                                                                        initialMandatory={
+                                                                            (claimConfigurations?.subject?.claim?.uri
+                                                                                === claim.claimURI)
+                                                                                ? true
+                                                                                : claim.mandatory
+                                                                        }
                                                                         initialRequested={ claim.requested }
                                                                         selectMandatory={ updateMandatory }
                                                                         selectRequested={ updateRequested }
                                                                         claimMappingOn={ claimMappingOn }
                                                                         claimMappingError={ claimMappingError }
-                                                                        readOnly={ readOnly }
+                                                                        readOnly={
+                                                                            (claimConfigurations?.subject?.claim?.uri
+                                                                                === claim.claimURI)
+                                                                                ? true
+                                                                                : readOnly
+                                                                        }
                                                                         data-testid={ claim.claimURI }
                                                                     />
                                                                 );
@@ -678,11 +688,21 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                         displayName={ claim.claimURI }
                                                                         mappedURI={ claim.mappedLocalClaimURI }
                                                                         localDialect={ false }
-                                                                        initialMandatory={ claim.mandatory }
+                                                                        initialMandatory={
+                                                                            (claimConfigurations?.subject?.claim?.uri
+                                                                                === claim.mappedLocalClaimURI)
+                                                                                ? true
+                                                                                : claim.mandatory
+                                                                        }
                                                                         selectMandatory={ updateMandatory }
                                                                         initialRequested={ claim.requested }
                                                                         data-testid={ claim.claimURI }
-                                                                        readOnly={ readOnly }
+                                                                        readOnly={
+                                                                            (claimConfigurations?.subject?.claim?.uri
+                                                                                === claim.mappedLocalClaimURI)
+                                                                                ? true
+                                                                                : readOnly
+                                                                        }
                                                                         localClaimDisplayName={
                                                                             claim.localClaimDisplayName
                                                                         }
