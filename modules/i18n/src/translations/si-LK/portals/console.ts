@@ -5179,9 +5179,10 @@ export const console: ConsoleNS = {
                                 label: "{{type}} නම",
                                 placeholder: "Enter {{type}} නම ඇතුළත් කරන්න",
                                 validations: {
-                                    duplicate: "දී ඇති {{type}} with නම සමඟ {{type}} දැනටමත් පවතී.",
+                                    duplicate: "දී ඇති {{type}} නම සමඟ {{type}} දැනටමත් පවතී.",
                                     empty: "ඉදිරියට යාමට {{type}} නම අවශ්‍ය වේ.",
-                                    invalid: "කරුණාකර වලංගු {{type}} නමක් ඇතුළත් කරන්න."
+                                    invalid: "{{type}} නමක අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා, -, සහ _ පමණි. "
+                                        +"අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
                                 }
                             }
                         }
