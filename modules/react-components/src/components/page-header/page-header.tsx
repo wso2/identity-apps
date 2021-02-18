@@ -220,7 +220,16 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             data-testid={ `${ testId }-text-wrapper` }
                         >
                             <span data-testid={ `${ testId }-title` }>
-                                { title && title }
+                                { title ? title : (
+                                    <div style={ { width: "400px" } }>
+                                        <Placeholder fluid>
+                                            <Placeholder.Header>
+                                                <Placeholder.Line/>
+                                            </Placeholder.Header>
+                                        </Placeholder>
+                                    </div>
+                                )
+                                }
                             </span>
                             { description && (
                                 <Header.Subheader

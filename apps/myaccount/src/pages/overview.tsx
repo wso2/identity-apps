@@ -20,7 +20,7 @@ import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
-import { resolveUserDisplayName } from "../helpers";
+import { resolveUserProfileName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
@@ -34,12 +34,15 @@ const OverviewPage = (): ReactElement => {
     const { t } = useTranslation();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
+    const userProfileName: string = resolveUserProfileName(profileDetails);
     return (
         <InnerPageLayout
-            pageTitle={ t(
-                "myAccount:pages:overview.title",
-                { firstName: resolveUserDisplayName(profileDetails) }
-                ) }
+            pageTitle={ userProfileName ? (
+                t(
+                    "myAccount:pages:overview.title",
+                    { firstName: userProfileName }
+                )
+            ) : null }
             pageDescription={ t("myAccount:pages:overview.subTitle") }
             pageTitleTextAlign="left"
         >

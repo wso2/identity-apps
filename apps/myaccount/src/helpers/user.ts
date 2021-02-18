@@ -47,6 +47,22 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
 };
 
 /**
+ * Resolves the user's profile name.
+ *
+ * @param {AuthStateInterface} state - auth state.
+ * @return {string} - Resolved profile name.
+ */
+export const resolveUserProfileName = (state: AuthStateInterface): string => {
+
+    if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
+        const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
+        const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
+        return givenName + familyName;
+    }
+    return null;
+}
+
+/**
  * Same username can exist in two different user stores. This function
  * will resolve the username so that the `PRIMARY` user store users will
  * have just the username and the other user store users will have their
