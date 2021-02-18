@@ -260,7 +260,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {
                                 const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
-                                    ? user.name.givenName + " " + user.name.familyName
+                                    ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
                                     : undefined;
 
                                 const resolvedUsername: string = user.userName.split("/")?.length > 1
@@ -322,7 +322,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const renderUserTableRow = (user: UserBasicInterface): ReactElement => {
 
         const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
-            ? user.name.givenName + " " + user.name.familyName
+            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
             : undefined;
 
         const resolvedUsername: string = user.userName.split("/")?.length > 1
