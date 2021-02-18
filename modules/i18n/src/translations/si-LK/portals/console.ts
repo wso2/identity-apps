@@ -3333,12 +3333,12 @@ export const console: ConsoleNS = {
             },
             idpTemplate: {
                 backButton: "හැඳුනුම්පත් සපයන්නන් වෙත ආපසු යන්න",
-                subTitle: "කරුණාකර පහත අනන්‍යතා සැපයුම්කරු වර්ග වලින් එකක් තෝරන්න.",
+                subTitle: "පහත අනන්‍යතා සපයන්නන්ගෙන් එකක් තෝරන්න.",
                 supportServices: {
                     authenticationDisplayName: "සත්‍යාපනය",
                     provisioningDisplayName: "ප්‍රතිපාදන"
                 },
-                title: "අනන්‍යතා සැපයුම්කරු වර්ගය තෝරන්න"
+                title: "අනන්‍යතා සැපයුම්කරු තෝරන්න"
             },
             overview: {
                 subTitle: "යෙදුම්, අනන්‍යතා සපයන්නන්, පරිශීලකයින් සහ භූමිකාවන් වින්‍යාස කිරීම සහ කළමනාකරණය " +

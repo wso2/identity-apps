@@ -4195,7 +4195,7 @@ export const console: ConsoleNS = {
             },
             authenticationProviderTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity providers.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
@@ -4208,7 +4208,7 @@ export const console: ConsoleNS = {
             },
             idpTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity providers.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"

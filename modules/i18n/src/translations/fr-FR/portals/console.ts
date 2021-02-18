@@ -3351,12 +3351,12 @@ export const console: ConsoleNS = {
             },
             idpTemplate: {
                 backButton: "Retourner aux fournisseurs d'identité",
-                subTitle: "Veuillez choisir l'un des types de fournisseurs d'identité suivants.",
+                subTitle: "Choisissez l'un des fournisseurs d'identité suivants.",
                 supportServices: {
                     authenticationDisplayName: "Authentification",
                     provisioningDisplayName: "Approvisionnement"
                 },
-                title: "Sélectionner le type de fournisseur d'identité"
+                title: "Sélectionnez le fournisseur d'identité"
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs et les rôles, les dialectes d'attributs, " +
