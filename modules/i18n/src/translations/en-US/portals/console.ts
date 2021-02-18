@@ -4181,7 +4181,7 @@ export const console: ConsoleNS = {
                 title: "Select Application Type"
             },
             applications: {
-                subTitle: "Create and manage applications based on templates and configure authentication.",
+                subTitle: "Manage applications using templates, and configure authentication.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -4190,7 +4190,7 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Manage identity providers to allow social login to applications.",
+                subTitle: "Manage identity providers to allow users to log in to your application through them.",
                 title: "Identity Providers"
             },
             authenticationProviderTemplate: {
@@ -4203,7 +4203,7 @@ export const console: ConsoleNS = {
                 title: "Select Identity Provider"
             },
             idp: {
-                subTitle: "Manage identity providers to allow social login to applications.",
+                subTitle: "Manage identity providers to allow users to log in to your application through them.",
                 title: "Identity Providers"
             },
             idpTemplate: {

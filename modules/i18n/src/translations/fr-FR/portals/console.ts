@@ -3337,7 +3337,7 @@ export const console: ConsoleNS = {
                 title: "Choisissez le type d'application"
             },
             applications: {
-                subTitle: "Créer et gérer des applications basées sur des modèles et configurer l'authentification.",
+                subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -3346,7 +3346,8 @@ export const console: ConsoleNS = {
                 title: null
             },
             idp: {
-                subTitle: "Créer et gérer des fournisseurs d'identités sur la base de modèles et configurer l'authentification",
+                subTitle: "Gérez les fournisseurs d'identité pour permettre aux utilisateurs de se connecter à " +
+                    "votre application via eux.",
                 title: "Fournisseurs d'identités"
             },
             idpTemplate: {
