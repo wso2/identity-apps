@@ -213,6 +213,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? user.emails[ 0 ]?.toString()
                         : user.userName;
 
+                    const isNameAvailable = user.name?.familyName !== undefined && user.name?.givenName !== undefined;
+
                     return (
                         <Header
                             image
@@ -227,10 +229,15 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                { resolvedUserName }
-                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
-                                    { resolvedDescription }
-                                </Header.Subheader>
+                                <div className={ !isNameAvailable ? "mt-2" : "" }>{ resolvedUserName }</div>
+                                {
+                                    (isNameAvailable) &&
+                                    <Header.Subheader
+                                        data-testid={ `${ testId }-item-sub-heading` }
+                                    >
+                                        { resolvedDescription }
+                                    </Header.Subheader>
+                                }
                             </Header.Content>
                         </Header>
                     );

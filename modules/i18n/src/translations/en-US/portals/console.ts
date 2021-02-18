@@ -1062,8 +1062,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their My Account " +
-                                    "application catalog.",
+                                hint: "Enable to make the application visible to end-users on their " +
+                                    "<1>{{ myAccount }}</1> application catalog.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
@@ -2293,7 +2293,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Application",
                         subtitles: {
-                            0: "Currently there are no applications available.",
+                            0: "There are no applications available at the moment.",
                             1: "You can add a new application easily by following the",
                             2: "steps in the application creation wizard."
                         },
@@ -3139,7 +3139,7 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "Currently there are no identity providers available.",
+                            0: "There are no identity providers at the moment.",
                             1: "You can add a new identity provider by following",
                             2: "the steps in the identity provider creation wizard."
                         },
@@ -5208,7 +5208,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Template Type",
                         subtitles: {
-                            0: "Currently there are no templates types available.",
+                            0: "There are no templates types available at the moment.",
                             1: "You can add a new template type by ",
                             2: "clicking on the button below."
                         },
@@ -5345,8 +5345,8 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Template",
                         subtitles: {
-                            0: "Currently there are no templates available for the selected",
-                            1: "email template type. You can add a new template by ",
+                            0: "There are no templates available for the selected",
+                            1: "email template type at the moment. You can add a new template by ",
                             2: "clicking on the button below."
                         },
                         title: "Add Template"
@@ -5749,7 +5749,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New OIDC Scope",
                         subtitles: {
-                            0: "Currently there are no OIDC scopes.",
+                            0: "There are no OIDC scopes at the moment.",
                             1: "You can add a new OIDC scope easily by following the",
                             2: "steps in the creation wizard."
                         },

@@ -819,11 +819,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                             <Message color="teal">
-                                                <Hint>
-                                                    Please note that this is an Asgardeo account and therefore the
-                                                    profile attributes can only be updated through the Asgardeo
-                                                    MyAccount.
-                                                </Hint>
+                                                <Trans>
+                                                    This account is managed by Asgardeo. Therefore, this user
+                                                    can only update their profile via
+                                                    <strong> My Account</strong>.
+                                                </Trans>
                                             </Message>
                                             <Divider hidden/>
                                         </Grid.Column>
