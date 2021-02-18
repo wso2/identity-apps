@@ -32,6 +32,10 @@ interface UserRolePermissionsInterface extends TestableComponentInterface {
     openRolePermissionModal: boolean;
     handleCloseRolePermissionModal: () => void;
     roleId: string;
+    /**
+     * Permissions to hide.
+     */
+    permissionsToHide?: string[];
 }
 
 /**
@@ -48,6 +52,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
         openRolePermissionModal,
         handleCloseRolePermissionModal,
         roleId,
+        permissionsToHide,
         [ "data-testid" ]: testId
     } = props;
 
@@ -113,6 +118,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                             isReadOnly={ true }
                             emphasize={ false }
                             isEdit={ false }
+                            permissionsToHide={ permissionsToHide }
                             isRole
                             roleObject={ role }
                         />

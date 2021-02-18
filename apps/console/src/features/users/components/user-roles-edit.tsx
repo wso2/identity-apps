@@ -76,6 +76,10 @@ interface UserRolesPropsInterface {
      * Show/ Hide domain
      */
     showDomain?: boolean;
+    /**
+     * Permissions to hide.
+     */
+    permissionsToHide?: string[];
 }
 
 export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
@@ -88,7 +92,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         handleUserUpdate,
         isReadOnly,
         isGroupAndRoleSeparationEnabled,
-        showDomain
+        showDomain,
+        permissionsToHide
     } = props;
 
     const { t } = useTranslation();
@@ -750,6 +755,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 openRolePermissionModal={ showRolePermissionModal }
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }
+                permissionsToHide={ permissionsToHide }
             />
         );
     };
