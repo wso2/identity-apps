@@ -1067,7 +1067,7 @@ export const console: ConsoleNS = {
                             },
                             discoverable: {
                                 hint: "Activez pour rendre l'application visible aux utilisateurs finaux sur " +
-                                    "leur catalogue d'applications My Account.",
+                                    "leur catalogue d'applications <1>{{ myAccount }}</1>.",
                                 label: "Application découvrable"
                             },
                             imageUrl: {

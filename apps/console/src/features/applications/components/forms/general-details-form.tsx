@@ -250,10 +250,18 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
                         <Hint compact>
-                            {
-                                t("console:develop.features.applications.forms.generalDetails.fields." +
-                                "discoverable.hint")
-                            }
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.generalDetails.fields." +
+                                    "discoverable.hint"
+                                }
+                                tOptions={ { myAccount: "My Account" } }
+                            >
+                                Please type
+                                <strong data-testid="application-name-assertion">
+                                    My Account
+                                </strong>
+                            </Trans>
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

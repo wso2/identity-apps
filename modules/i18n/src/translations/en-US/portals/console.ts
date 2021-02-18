@@ -1062,8 +1062,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their My Account " +
-                                    "application catalog.",
+                                hint: "Enable to make the application visible to end-users on their " +
+                                    "<1>{{ myAccount }}</1> application catalog.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
