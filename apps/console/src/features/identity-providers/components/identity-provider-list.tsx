@@ -470,8 +470,6 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                         })
                                 }
                             </List>
-                            <Divider hidden />
-                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.contentLine2") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
