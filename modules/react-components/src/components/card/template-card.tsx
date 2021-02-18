@@ -244,7 +244,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             onMouseLeave={ () => setDimmerState(false) }
         >
             {
-                //TODO this should be get from where it is used, pass it as a prop.
+                // TODO: This should pass as prop, where this component is used,
                 disabled && (
                 <Dimmer active={ dimmerState }>
                     { t("common:featureAvailable" ) }
