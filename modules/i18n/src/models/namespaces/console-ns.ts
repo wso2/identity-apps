@@ -915,6 +915,7 @@ export interface ConsoleNS {
                 };
                 confirmations: {
                     deleteIDP: Confirmation;
+                    deleteIDPWithConnectedApps: Confirmation;
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
                 };

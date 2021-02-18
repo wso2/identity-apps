@@ -2421,10 +2421,15 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                         content: "If you delete this identity provider, you will not be able to recover it. " +
-                            "All the applications using this identity provider might stop working. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the identity provider."
+                    },
+                    deleteIDPWithConnectedApps: {
+                        assertionHint: "",
+                        content: "Remove the associations from these applications before deleting:",
+                        header: "Unable to Delete",
+                        message: "There are applications using this identity provider."
                     }
                 },
                 dangerZoneGroup: {
@@ -3271,17 +3276,15 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                         content: "If you delete this identity provider, you will not be able to recover it. " +
-                            "All the applications using this identity provider might stop working. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the identity provider."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
-                        content: "This identity provider has been used in the following applications.",
-                        contentLine2: "Please make sure to remove these associations before deleting.",
-                        header: "Unable to Delete the Identity Provider",
-                        message: "Cannot delete an identity provider that contains connected applications."
+                        content: "Remove the associations from these applications before deleting:",
+                        header: "Unable to Delete",
+                        message: "There are applications using this identity provider. "
                     }
                 },
                 dangerZoneGroup: {

@@ -64,7 +64,6 @@ export interface NotificationItem {
 export interface Confirmation {
     header: string;
     message: string;
-    contentLine2?: string;
     content: string;
     assertionHint: string;
 }

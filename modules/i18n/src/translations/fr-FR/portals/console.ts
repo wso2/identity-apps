@@ -2434,17 +2434,16 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous supprimez ce fournisseur d'identité, vous ne pourrez pas le récupérer. Toutes les applications " +
-                            "qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
+                        content: "Si vous supprimez ce fournisseur d'identité, vous ne pourrez pas le récupérer. " +
+                            "Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'IDP."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
-                        content: "Ce fournisseur d'identité a été utilisé dans les applications suivantes.",
-                        contentLine2: "Veuillez vous assurer de supprimer ces associations avant de les supprimer.",
-                        header: "Impossible de supprimer le fournisseur d'identité",
-                        message: "Impossible de supprimer un fournisseur d'identité contenant des applications connectées."
+                        content: "Supprimez les associations de ces applications avant de supprimer:",
+                        header: "Impossible de supprimer",
+                        message: "Il existe des applications utilisant ce fournisseur d'identité."
                     }
                 },
                 dangerZoneGroup: {
