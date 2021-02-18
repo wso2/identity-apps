@@ -44,7 +44,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
+import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface } from "../../../users";
 import { updateGroupDetails } from "../../api";
@@ -347,7 +347,13 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     <div>{ resolvedGivenName ?? resolvedUsername }</div>
                     {
                         resolvedGivenName && (
-                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
+                            <Header as="h6">
+                                <Header.Content>
+                                    <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                        { resolvedUsername }
+                                    </Header.Subheader>
+                                </Header.Content>
+                            </Header>
                         )
                     }
                 </Table.Cell>
