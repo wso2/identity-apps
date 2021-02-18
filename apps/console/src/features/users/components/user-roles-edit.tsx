@@ -72,6 +72,10 @@ interface UserRolesPropsInterface {
      * Enable roles and groups separation.
      */
     isGroupAndRoleSeparationEnabled?: boolean;
+    /**
+     * Show/ Hide domain
+     */
+    showDomain?: boolean;
 }
 
 export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
@@ -83,7 +87,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         user,
         handleUserUpdate,
         isReadOnly,
-        isGroupAndRoleSeparationEnabled
+        isGroupAndRoleSeparationEnabled,
+        showDomain
     } = props;
 
     const { t } = useTranslation();
@@ -760,10 +765,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             <Divider hidden/>
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 }>
+                    <Grid.Column computer={ 10 } tablet={ 16 } mobile={ 16 }>
                         {
                             primaryRolesList?.size > 0 ? (
                                 <EmphasizedSegment
+                                    clearing
                                     data-testid="user-mgt-roles-list"
                                     className="user-role-edit-header-segment"
                                 >
@@ -795,14 +801,18 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         <Table singleLine compact>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell>
-                                                        <strong>
-                                                            {
-                                                                t("console:manage.features.user.updateUser.roles." +
-                                                                "editRoles.roleList.headers.0")
-                                                            }
-                                                        </strong>
-                                                    </Table.HeaderCell>
+                                                    {
+                                                        showDomain && (
+                                                            <Table.HeaderCell>
+                                                                <strong>
+                                                                    {
+                                                                        t("console:manage.features.user.updateUser" +
+                                                                            ".roles.editRoles.roleList.headers.0")
+                                                                    }
+                                                                </strong>
+                                                            </Table.HeaderCell>
+                                                        )
+                                                    }
                                                     <Table.HeaderCell>
                                                         <strong>
                                                             {
@@ -821,7 +831,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         if (userRole?.length >= 1 && group?.value) {
                                                             return (
                                                                 <Table.Row>
-                                                                    {
+                                                                    { showDomain && (
                                                                         userRole[ 0 ] == APPLICATION_DOMAIN ? (
                                                                             <Table.Cell>
                                                                                 <Label className="application-label">
@@ -835,14 +845,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                                     </Label>
                                                                                 </Table.Cell>
                                                                             )
-                                                                    }
+                                                                    ) }
                                                                     <Table.Cell width={ 8 }>
                                                                         {
                                                                             userRole?.length == 1
                                                                                 ? userRole[ 0 ] : userRole[ 1 ]
                                                                         }
                                                                     </Table.Cell>
-                                                                    <Table.Cell textAlign="center">
+                                                                    <Table.Cell textAlign="right">
                                                                         <Popup
                                                                             content="View permissions"
                                                                             trigger={
@@ -852,6 +862,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                                         ${ userRole[ 1 ] }-
                                                                                         permissions-button` }
                                                                                     color="grey"
+                                                                                    className="mr-2"
                                                                                     name="key"
                                                                                     onClick={
                                                                                         () => handleSetSelectedId(
@@ -909,4 +920,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             </Grid>
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UserRolesList.defaultProps = {
+    showDomain: true
 };
