@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
@@ -164,6 +165,8 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         className
     );
 
+    const { t } = useTranslation();
+
     const [ dimmerState, setDimmerState ] = useState<boolean>(false);
 
     /**
@@ -241,10 +244,11 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             onMouseLeave={ () => setDimmerState(false) }
         >
             {
-                disabled &&
+                //TODO this should be get from where it is used, pass it as a prop.
+                disabled && (
                 <Dimmer active={ dimmerState }>
-                    This feature will be available soon!
-                </Dimmer>
+                    { t("common:featureAvailable" ) }
+                </Dimmer> )
             }
             {
                 image && (

@@ -63,6 +63,7 @@ export interface CommonNS {
     equals: string;
     explore: string;
     export: string;
+    featureAvailable: string;
     filter: string;
     finish: string;
     goBackHome: string;
