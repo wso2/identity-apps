@@ -15,10 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Button, Form, Icon, Label, Popup } from "semantic-ui-react";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import _ from "lodash";
 
+import _ from "lodash";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
 interface QueryParametersPropsInterface {
     name: string;
@@ -40,9 +40,11 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
     } = props;
 
     const QUERY_PARAMETER_SEPARATOR = ",";
+    const SPECIAL_CHARACTERS = [",", "&", "=", "?"];
 
     const [queryParamName, setQueryParamName] = useState<string>("");
     const [queryParamValue, setQueryParamValue] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [queryParams, setQueryParams] = useState<QueryParameter[]>([]);
 
     /**
@@ -54,7 +56,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         return {
             name: queryParameter?.split("=")[0],
             value: queryParameter?.split("=")[1]
-        }
+        };
     };
 
     /**
@@ -115,24 +117,60 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         fireOnChangeEvent(queryParams, onChange);
     }, [queryParams]);
 
+    /**
+     * Enter button option.
+     * @param e keypress event.
+     */
+    const keyPressed = (e) => {
+        console.log("Key pressed")
+        const key = e.which || e.charCode || e.keyCode;
+        if (key === 13) {
+            handleQueryParameterAdd(e);
+        }
+    };
+
     const handleQueryParameterAdd = (event) => {
         event.preventDefault();
         if (_.isEmpty(queryParamName) || _.isEmpty(queryParamValue)) {
             return;
         }
 
-        const inputQueryParameter = {
+        setErrorMessage("");
+        let isError = false;
+        SPECIAL_CHARACTERS.map((c) => {
+            if (queryParamValue.includes(c) || queryParamName.includes(c)) {
+                setErrorMessage("Cannot include \"" + c + "\" as a query parameter.");
+                isError = true;
+            }
+        });
+
+        if (isError) {
+            return;
+        }
+
+        const output: QueryParameter[] = [{
             name: queryParamName,
             value: queryParamValue
-        };
-        const constructedQueryParameters = _.unionWith(queryParams, [ inputQueryParameter ], _.isEqual);
+        }];
 
-        setQueryParams(constructedQueryParameters);
+        queryParams.forEach(function(queryParam) {
+            const existing = output.filter((item) => {
+                return item.name == queryParam.name;
+            });
+            if (existing.length) {
+                const existingIndex = output.indexOf(existing[0]);
+                output[existingIndex].value = queryParam.value + " " + output[existingIndex].value;
+            } else {
+                output.push(queryParam);
+            }
+        });
+
+        setQueryParams(output);
 
         updateQueryParameterInputFields({
             name: "",
             value: ""
-        })
+        });
     };
 
     const handleLabelRemove = (queryParameter: string) => {
@@ -156,6 +194,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     onChange={ (event, data) => {
                         setQueryParamName(data.value);
                     } }
+                    onKeyDown={ keyPressed }
                 />
 
                 <Form.Input
@@ -166,6 +205,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     onChange={ (event, data) => {
                         setQueryParamValue(data.value);
                     } }
+                    onKeyDown={ keyPressed }
                 />
 
                 <Popup
@@ -184,6 +224,8 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     inverted
                 />
             </Form.Group>
+
+            <Message visible={ errorMessage !== "" } error content={ errorMessage } />
 
             {
                 queryParams && queryParams?.map((eachQueryParam, index) => {
