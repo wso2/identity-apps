@@ -604,7 +604,15 @@
         cursor: pointer;
 
         &:hover {
-            transform: scale(1.01);
+            background-color: @paleGray
+        }
+
+        .header {
+            margin-bottom: 5px;
+        }
+
+        .theme-icon.spaced-right {
+            margin-right: 15px;
         }
     }
 }
