@@ -5211,7 +5211,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "Un {{type}} avec ce nom existe déjà.",
                                     empty: "Le nom de {{type}} est obligatoire",
-                                    invalid: "Veuillez saisir un nom de {{type}} valide."
+                                    invalid: "Un nom {{type}} ne peut contenir que des caractères alphanumériques, - et _. "+
+                                        "Et doit avoir une longueur comprise entre 3 et 30 caractères."
                                 }
                             }
                         }
