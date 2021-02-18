@@ -819,11 +819,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                             <Message color="teal">
-                                                <Trans>
-                                                    This account is managed by Asgardeo. Therefore, this user
-                                                    can only update their profile via
-                                                    <strong> My Account</strong>.
-                                                </Trans>
+                                                <Hint>
+                                                    <Trans>
+                                                        This account is managed by Asgardeo. Therefore, this user
+                                                        can only update their profile via
+                                                        <strong> My Account</strong>.
+                                                    </Trans>
+                                                </Hint>
                                             </Message>
                                             <Divider hidden/>
                                         </Grid.Column>
