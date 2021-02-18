@@ -223,14 +223,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         ) }
                                                     </List.Description>
                                                 </Grid.Column>
-                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Popup
-                                                    content={ t("common:edit") }
-                                                    trigger={
-                                                        <Icon color="grey" name="pencil" />
-                                                    }
-                                                    inverted
-                                                />
+                                                <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                    <Popup
+                                                        content={ t("common:edit") }
+                                                        trigger={
+                                                            <Icon color="grey" name="pencil" />
+                                                        }
+                                                        inverted
+                                                    />
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>
