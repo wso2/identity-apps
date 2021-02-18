@@ -331,31 +331,31 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         return (
             <Table.Row key={ user.id }>
-                <Table.Cell collapsing>
-                    <UserAvatar
-                        data-testid={
-                            `${ testId }-users-list-${
-                                user.userName }-avatar`
-                        }
-                        name={ resolvedUsername }
-                        size="mini"
-                        floated="left"
-                        image={ user.profileUrl }
-                    />
-                </Table.Cell>
                 <Table.Cell>
-                    <div>{ resolvedGivenName ?? resolvedUsername }</div>
-                    {
-                        resolvedGivenName && (
-                            <Header as="h6">
-                                <Header.Content>
-                                    <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
-                                        { resolvedUsername }
-                                    </Header.Subheader>
-                                </Header.Content>
-                            </Header>
-                        )
-                    }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <UserAvatar
+                            data-testid={
+                                `${ testId }-users-list-${
+                                    user.userName }-avatar`
+                            }
+                            name={ resolvedUsername }
+                            spaced="right"
+                            size="mini"
+                            floated="left"
+                            image={ user.profileUrl }
+                        />
+                        <Header.Content>
+                            { resolvedGivenName ?? resolvedUsername }
+                            <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                { resolvedGivenName && resolvedUsername }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
                 </Table.Cell>
             </Table.Row>
         );
