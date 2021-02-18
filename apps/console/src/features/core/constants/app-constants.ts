@@ -192,6 +192,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the tenant. ex: `abc.com`.
+     *
+     * @return {string}
+     */
+    public static getTenant(): string {
+        return window["AppUtils"].getConfig().tenant;
+    }
+
+    /**
      * Get the super tenant. ex: `carbon.super`.
      *
      * @return {string}
