@@ -180,12 +180,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             checkedGroups.push(group);
             setSelectedGroupList(checkedGroups);
         }
-
-        if (checkedGroups.length !== groupList.length) {
-            setIsSelectAllGroupsChecked(false);
-        } else {
-            setIsSelectAllGroupsChecked(true);
-        }
+        setIsSelectAllGroupsChecked(checkedGroups.length === groupList.length)
     };
 
     const setInitialLists = () => {
@@ -199,6 +194,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setSelectedGroupList(addedGroups);
         setGroupList(groupListCopy);
         setInitialGroupList(groupListCopy);
+        setIsSelectAllGroupsChecked(groupListCopy.length === addedGroups.length);
     };
 
     const handleOpenAddNewGroupModal = () => {

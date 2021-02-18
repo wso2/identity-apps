@@ -102,7 +102,6 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         } else {
             setCheckedUnassignedListItems([]);
         }
-
         setIsSelectUnassignedAllGroupsChecked(!isSelectUnassignedGroupsAllRolesChecked);
     };
 
@@ -120,12 +119,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
         handleTempListChange(checkedGroups);
         handleInitialTempListChange(checkedGroups);
-
-        if (initialValues?.groupList?.length === checkedGroups.length) {
-            setIsSelectUnassignedAllGroupsChecked(true);
-        } else {
-            setIsSelectUnassignedAllGroupsChecked(false);
-        }
+        setIsSelectUnassignedAllGroupsChecked(initialValues?.groupList?.length === checkedGroups.length)
     };
 
     /**
