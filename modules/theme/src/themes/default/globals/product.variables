@@ -155,6 +155,9 @@
 ------------------------------*/
 
 @emptyPlaceholderActionMargin: 15px 0 0 0;
+@emptyPlaceholderMarginRight: 150px;
+@emptyPlaceholderSubtitleMarginTop: 25px;
+@emptyPlaceholderActionMarginTop: 25px;
 
 /*-----------------------------
         Pagination Bar
