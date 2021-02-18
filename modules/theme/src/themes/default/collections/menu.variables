@@ -55,17 +55,18 @@
 @appHeaderSecondaryPanelPortalSwitchesLeftSpacing: 14px;
 
 @appHeaderSecondaryPanelPortalSwitchBackground: inherit;
-@appHeaderSecondaryPanelPortalSwitchColor: @lightTextColor;
+@appHeaderSecondaryPanelPortalSwitchColor: @mutedTextColor;
 @appHeaderSecondaryPanelPortalSwitchBorderBottom: 3px solid transparent;
 
 @appHeaderSecondaryPanelPortalSwitchActiveBackground: inherit;
 @appHeaderSecondaryPanelPortalSwitchActiveColor: @textColor;
 @appHeaderSecondaryPanelPortalSwitchActiveBorderBottom: 3px solid @primaryColor;
+@appHeaderSecondaryPanelPortalSwitchInactiveBorderBottom: 3px solid @whiteSmoke;
 
 @appHeaderSecondaryPanelContainerHeight: 100%;
 
 @appHeaderPortalSwitchExtensionBackgroundColor: transparent !important;
-@appHeaderPortalSwitchExtensionColor: @lightTextColor !important;
+@appHeaderPortalSwitchExtensionColor: @mutedTextColor !important;
 @appHeaderPortalSwitchExtensionActiveColor: @textColor !important;
 @appHeaderPortalSwitchExtensionActiveBorderBottom: 3px solid @primaryColor;
 
