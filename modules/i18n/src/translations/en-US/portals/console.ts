@@ -3978,7 +3978,7 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "Currently there are no identity providers available.",
+                            0: "There are no identity providers available at the moment.",
                             1: "You can add a new identity provider easily by following the",
                             2: "steps in the identity provider creation wizard."
                         },
