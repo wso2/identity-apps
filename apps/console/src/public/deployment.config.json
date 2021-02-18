@@ -317,6 +317,7 @@
         "isClientSecretHashEnabled": false,
         "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": true,
+        "isLeftNavigationCategorized": true,
         "isRequestPathAuthenticationEnabled": true,
         "listAllAttributeDialects": false,
         "privacyPolicyConfigs": {

@@ -165,6 +165,10 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     i18nConfigs: I18nConfigsInterface;
     /**
+     * Should the left navigation be categorized.
+     */
+    isLeftNavigationCategorized?: boolean;
+    /**
      * Privacy Policy configs.
      */
     privacyPolicyConfigs: PrivacyPolicyConfigsInterface;
