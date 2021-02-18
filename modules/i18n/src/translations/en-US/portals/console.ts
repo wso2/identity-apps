@@ -4684,7 +4684,7 @@ export const console: ConsoleNS = {
                         },
                         manageAttributes: {
                             attributes: {
-                                description: "Each attribute contains a piece of user data stored.",
+                                description: "Each attribute contains a piece of stored user data.",
                                 heading: "Attributes"
                             },
                             description: "View and manage attributes.",

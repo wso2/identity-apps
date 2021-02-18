@@ -278,7 +278,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             content: (
                 <AttributeSelectList
                     availableExternalClaims={ OIDCAttributes }
-                    setAvailableExternalClaims={ setSelectedAttributes }
+                    setAvailableExternalClaims={ () => null }
                     setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
                         const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
                         handleWizardFormFinish(claimURIs);
