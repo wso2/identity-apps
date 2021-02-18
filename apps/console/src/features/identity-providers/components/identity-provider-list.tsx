@@ -258,11 +258,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:develop.features.idp.placeHolders.emptyIDPList.title") }
                     subtitle={ [
-                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.0"),
-                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.1"),
-                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.2")
+                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />

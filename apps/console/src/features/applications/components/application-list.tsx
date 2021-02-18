@@ -408,11 +408,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:develop.features.applications.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("console:develop.features.applications.placeholders.emptyList.subtitles.0"),
-                        t("console:develop.features.applications.placeholders.emptyList.subtitles.1"),
-                        t("console:develop.features.applications.placeholders.emptyList.subtitles.2")
+                        t("console:develop.features.applications.placeholders.emptyList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
