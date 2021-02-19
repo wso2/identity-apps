@@ -60,6 +60,13 @@
                     background: transparent !important;
                 }
             }
+
+            &.no-selectable {
+                cursor: unset !important;
+                &:hover {
+                    background: transparent !important;
+                }
+            }
         }
 
         .data-table-cell {
