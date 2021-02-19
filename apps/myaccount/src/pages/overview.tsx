@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Overview } from "../components";
@@ -34,13 +34,17 @@ const OverviewPage = (): ReactElement => {
     const { t } = useTranslation();
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const [ userProfileName, setUserProfileName ] = useState<string>(null);
 
-    let userProfileName: string;
-    if (isProfileInfoLoading === undefined) {
-        userProfileName = null;
-    } else {
-        userProfileName = resolveUserProfileName(profileDetails, isProfileInfoLoading);
-    }
+    useEffect(() => {
+
+        if (isProfileInfoLoading === undefined) {
+            return;
+        }
+
+        setUserProfileName(resolveUserProfileName(profileDetails, isProfileInfoLoading));
+    }, [ isProfileInfoLoading ]);
+
     return (
         <InnerPageLayout
             pageTitle={ userProfileName ? (
