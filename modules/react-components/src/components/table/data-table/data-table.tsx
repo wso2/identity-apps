@@ -876,10 +876,10 @@ export const DataTable = <T extends object = {}>(
                                                     key={ itemKey ?? index }
                                                     onClick={
                                                         (e: SyntheticEvent) => selectable
-                                                            && isRowSelectable ? isRowSelectable(item) : true
+                                                            && isRowSelectable(item)
                                                             && onRowClick(e, item)
                                                     }
-                                                    selectable={ isRowSelectable ? isRowSelectable(item) : true }
+                                                    selectable={ isRowSelectable(item) }
                                                     { ...rowUIProps }
                                                     { ...rowUIPropOverrides }
                                                 >
@@ -966,6 +966,7 @@ export const DataTable = <T extends object = {}>(
 
 DataTable.defaultProps = {
     "data-testid": "data-table",
+    isRowSelectable: () => true,
     selectable: true,
     showHeader: true,
     stackable: true

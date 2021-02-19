@@ -286,7 +286,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         >
                             <DangerZone
                                 actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle",
-                                    { type: resolveType(attributeType, true) }) }
+                                    { type: resolveType(attributeType, true, true) }) }
                                 header={ t("console:manage.features.claims.dialects.dangerZone.header",
                                     { type: resolveType(attributeType, true) }) }
                                 subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader",
