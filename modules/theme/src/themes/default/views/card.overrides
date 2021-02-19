@@ -466,10 +466,9 @@
             }
             &.disabled {
                 cursor: not-allowed;
-
-                &.grayscale {
-                    filter: grayscale(100%);
-                }
+            }
+            &.grayscale {
+                filter: grayscale(100%);
             }
             .card-image-container {
             }
