@@ -122,7 +122,6 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      * @param e keypress event.
      */
     const keyPressed = (e) => {
-        console.log("Key pressed")
         const key = e.which || e.charCode || e.keyCode;
         if (key === 13) {
             handleQueryParameterAdd(e);

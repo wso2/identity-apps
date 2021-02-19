@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { FormField } from "../models";
 import React from "react";
+import { FormField } from "../models";
 
 /**
  * This component renders Form elements based on the provided `type` prop

@@ -358,7 +358,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
             return (
                 <Form.Group grouped={ true }>
                     <label>
-                        {inputField.label}
+                        { inputField.label }
                         {
                             inputField.label && inputField.required
                                 ? <span className="ui text color red">*</span>
@@ -422,7 +422,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     type={ inputField.type }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
-                    {inputField.icon && <Icon name={ inputField.icon }/>}
+                    { inputField.icon && <Icon name={ inputField.icon }/> }
                     { inputField.value }
                 </Button>
             );
@@ -482,5 +482,5 @@ export const FieldHint: React.FC<{ hint: string }> = ({ hint }: { hint: string }
             <Icon color="grey" floated="left" name="info circle"/>
             { hint }
         </div>
-    )
+    );
 };
