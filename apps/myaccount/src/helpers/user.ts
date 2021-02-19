@@ -50,14 +50,17 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
  * Resolves the user's profile name.
  *
  * @param {AuthStateInterface} state - auth state.
+ * @param isProfileInfoLoading - SCIM user profile loader status.
  * @return {string} - Resolved profile name.
  */
-export const resolveUserProfileName = (state: AuthStateInterface): string => {
+export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoLoading: boolean): string => {
 
     if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
         const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
         return givenName + familyName;
+    } else if (!isProfileInfoLoading) {
+        return resolveUserDisplayName(state);
     }
     return null;
 }

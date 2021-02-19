@@ -32,9 +32,15 @@ import { AppState } from "../store";
  */
 const OverviewPage = (): ReactElement => {
     const { t } = useTranslation();
+    const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
-    const userProfileName: string = resolveUserProfileName(profileDetails);
+    let userProfileName: string;
+    if (isProfileInfoLoading === undefined) {
+        userProfileName = null;
+    } else {
+        userProfileName = resolveUserProfileName(profileDetails, isProfileInfoLoading);
+    }
     return (
         <InnerPageLayout
             pageTitle={ userProfileName ? (
