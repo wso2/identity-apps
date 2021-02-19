@@ -40,10 +40,16 @@ export const DataTableCell: FunctionComponent<PropsWithChildren<DataTableCellPro
     const {
         children,
         className,
+        action,
         ...rest
     } = props;
 
-    const classes = classNames("data-table-cell", className);
+    const classes = classNames(
+        "data-table-cell",
+        className,
+        action && "actions-cell",
+        action && `items-${ React.Children.count(children) }`
+    );
 
     return (
         <Table.Cell className={ classes } { ...rest }>
