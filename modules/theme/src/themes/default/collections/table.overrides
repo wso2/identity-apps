@@ -95,15 +95,15 @@
 
             &.actions-cell {
                 &.items-1 {
-                    min-width: 47px;
+                    min-width: @actionsCellItemOneWidth;
                 }
 
                 &.items-2 {
-                    min-width: 75px;
+                    min-width: @actionsCellItemsTwoWidth;
                 }
 
                 &.items-3 {
-                    min-width: 100px;
+                    min-width: @actionsCellItemsThreeWidth;
                 }
             }
         }
