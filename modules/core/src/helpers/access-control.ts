@@ -102,3 +102,58 @@ export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: s
 
     return isAllowed;
 };
+
+/**
+ * This is a temporary util method added to conditionally render the manage tab depending on the
+ * scopes of the user.
+ *
+ * @param featureConfig
+ * @param allowedScopes
+ */
+export const hasRequiredScopesForAdminView = (featureConfig: any, allowedScopes: string): boolean => {
+
+    let feature = null;
+    let isAllowed = null;
+
+    for (const [ key, value ] of Object.entries(featureConfig)) {
+        feature = value;
+
+        if (value) {
+
+            if (key === "attributeDialects" || key === "userStores" || key === "roles") {
+
+                const hasReadAccess = hasRequiredManageScopes(feature, feature.scopes?.read, allowedScopes);
+                const hasUpdateAccess = hasRequiredManageScopes(feature, feature.scopes?.update, allowedScopes);
+
+                if (!(hasReadAccess && hasUpdateAccess)) {
+                    isAllowed = false;
+                }
+            }
+
+            isAllowed = hasRequiredManageScopes(feature, feature.scopes?.read, allowedScopes);
+        }
+    }
+
+    return isAllowed;
+};
+
+/**
+ * This is a temporary util method added to specially handle the scopes of
+ * "Application Developer" role.
+ *
+ * @param feature
+ * @param scopes
+ * @param allowedScopes
+ */
+export const hasRequiredManageScopes = (
+    feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
+): boolean => {
+
+    let hasScope = true;
+
+    if (scopes instanceof Array) {
+        hasScope = scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
+    }
+
+    return hasScope;
+};
