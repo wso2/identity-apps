@@ -70,9 +70,6 @@ import {
     GovernanceConnectorUtils,
     ServerConfigurationsConstants
 } from "../features/server-configurations";
-import {FeatureAccessConfigInterface} from "@wso2is/core/dist/src/models";
-import _ from "lodash";
-import {AuthenticateUtils} from "@wso2is/core/dist/src/utils";
 
 /**
  * Admin View Prop types.
