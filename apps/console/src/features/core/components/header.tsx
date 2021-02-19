@@ -53,6 +53,10 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
      * Active view.
      */
     activeView?: "ADMIN" | "DEVELOPER";
+    /**
+     * Flag to show/hide manage view.
+     */
+    isManageViewAllowed?: boolean;
 }
 
 /**
@@ -66,6 +70,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
+        isManageViewAllowed,
         activeView,
         fluid,
         onSidePanelToggleClick,
@@ -226,30 +231,34 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             data-testid={ testId }
             { ...rest }
         >
-            <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
-                <Container fluid={ fluid }>
-                    <Menu className="inner-menu">
-                        <Menu.Item
-                            name={ config.deployment.developerApp.displayName }
-                            active={ activeView === "DEVELOPER" }
-                            className="portal-switch"
-                            onClick={ () => {
-                                history.push(config.deployment.developerApp.path);
-                            } }
-                            data-testid={ `${ testId }-developer-portal-switch` }
-                        />
-                        <Menu.Item
-                            name={ config.deployment.adminApp.displayName }
-                            active={ activeView === "ADMIN" }
-                            className="portal-switch"
-                            onClick={ () => {
-                                history.push(config.deployment.adminApp.path);
-                            } }
-                            data-testid={ `${ testId }-admin-portal-switch` }
-                        />
-                    </Menu>
-                </Container>
-            </div>
+            {
+                isManageViewAllowed && (
+                    <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
+                        <Container fluid={ fluid }>
+                            <Menu className="inner-menu">
+                                <Menu.Item
+                                    name={ config.deployment.developerApp.displayName }
+                                    active={ activeView === "DEVELOPER" }
+                                    className="portal-switch"
+                                    onClick={ () => {
+                                        history.push(config.deployment.developerApp.path);
+                                    } }
+                                    data-testid={ `${ testId }-developer-portal-switch` }
+                                />
+                                <Menu.Item
+                                    name={ config.deployment.adminApp.displayName }
+                                    active={ activeView === "ADMIN" }
+                                    className="portal-switch"
+                                    onClick={ () => {
+                                        history.push(config.deployment.adminApp.path);
+                                    } }
+                                    data-testid={ `${ testId }-admin-portal-switch` }
+                                />
+                            </Menu>
+                        </Container>
+                    </div>
+                )
+            }
         </ReusableHeader>
     );
 };

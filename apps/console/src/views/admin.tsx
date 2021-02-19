@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
@@ -121,6 +121,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
+    const [ isAdminViewAllowed, setIsAdminViewAllowed ] = useState<boolean>(false);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -232,6 +233,22 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             setGovernanceConnectorsEvaluated(true);
         }
     }, [ allowedScopes, governanceConnectorCategories, featureConfig ]);
+
+    useEffect(() => {
+
+        if (!featureConfig) {
+            return;
+        }
+
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
+        // Check if the users has the relevant scopes to access the manage section.
+        setIsAdminViewAllowed(hasRequiredScopesForAdminView(featureConfig, allowedScopes));
+
+    }, [ allowedScopes, featureConfig ]);
 
     /**
      * Handles side panel toggle click.
@@ -369,6 +386,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
+                    isManageViewAllowed={ isAdminViewAllowed }
                     activeView="ADMIN"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
