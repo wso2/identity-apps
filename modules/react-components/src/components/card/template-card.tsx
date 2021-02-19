@@ -82,6 +82,10 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      */
     onClick: (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
     /**
+     * Opacity for the overlay.
+     */
+    overlayOpacity?: number;
+    /**
      * Selected mode flag.
      */
     selected?: boolean;
@@ -143,6 +147,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         imageOptions,
         imageSize,
         onClick,
+        overlayOpacity,
         selected,
         showTags,
         showTagIcon,
@@ -231,8 +236,27 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         </span>;
     };
 
-    return (
+    /**
+     * Inline styles for image container.
+     */
+    const imageContainerStyles = (): object => {
 
+        return {
+            opacity: disabled ? overlayOpacity : 1
+        };
+    };
+
+    /**
+     * Inline styles for text container.
+     */
+    const textContainerStyles = (): object => {
+
+        return {
+            textAlign
+        };
+    };
+
+    return (
         <Card
             id={ id }
             className={ classes }
@@ -253,7 +277,10 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             }
             {
                 image && (
-                    <Card.Content className="card-image-container">
+                    <Card.Content
+                        style={ imageContainerStyles() }
+                        className="card-image-container"
+                    >
                         <GenericIcon
                             square
                             transparent
@@ -266,7 +293,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                     </Card.Content>
                 )
             }
-            <Card.Content className="card-text-container" style={ { textAlign } }>
+            <Card.Content className="card-text-container" style={ textContainerStyles() }>
                 <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
                 <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
                 {

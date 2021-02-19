@@ -56,6 +56,10 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      */
     onSecondaryTemplateSelect?: (e: SyntheticEvent, { id }: { id: string }) => void;
     /**
+     * Opacity for the overlay.
+     */
+    overlayOpacity?: TemplateCardPropsInterface["overlayOpacity"];
+    /**
      * Enable/ Disable pagination.
      */
     paginate?: boolean;
@@ -189,6 +193,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         emptyPlaceholder,
         heading,
         onTemplateSelect,
+        overlayOpacity,
         paginate,
         paginationLimit,
         paginationOptions,
@@ -435,6 +440,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                 name={ template.name }
                                                 id={ template.id }
                                                 onClick={ template.disabled ? null : onTemplateSelect }
+                                                overlayOpacity={ overlayOpacity }
                                                 imageSize={ templateIconSize }
                                                 tagSize={ tagSize }
                                                 data-testid={ template.id }
