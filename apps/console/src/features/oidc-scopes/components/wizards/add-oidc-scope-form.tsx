@@ -86,6 +86,7 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                                         "scopeName.validations.invalid"));
                                 }
                             } }
+                            maxLength={ 40 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -103,6 +104,7 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                                 "displayName.placeholder") }
                             type="text"
                             value={ initialValues?.displayName }
+                            maxLength = { 40 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -119,6 +121,7 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                                 "description.placeholder") }
                             type="text"
                             value={ initialValues?.description }
+                            maxLength={ 300 }
                         />
                     </Grid.Column>
                 </Grid.Row>
