@@ -37,13 +37,13 @@
             background: @dataTableTransparentBackground;
             border: @dataTableTransparentBorder;
         }
-        
+
         &.selectable {
             .data-table-body .data-table-row {
                 cursor: @dataTableSelectableRowCursor;
             }
         }
-        
+
         .data-table-header {
             th {
                 font-weight: @dataTableHeaderFontWeight;
@@ -53,10 +53,17 @@
         .data-table-column-selector {
             // Check popup.overrides for column selector popup styles.
         }
-        
+
         .data-table-row {
             &:hover {
                 &.no-hover {
+                    background: transparent !important;
+                }
+            }
+
+            &.no-selectable {
+                cursor: unset !important;
+                &:hover {
                     background: transparent !important;
                 }
             }
@@ -83,6 +90,20 @@
                     .icon {
                         margin-right: 0;
                     }
+                }
+            }
+
+            &.actions-cell {
+                &.items-1 {
+                    min-width: @actionsCellItemOneWidth;
+                }
+
+                &.items-2 {
+                    min-width: @actionsCellItemsTwoWidth;
+                }
+
+                &.items-3 {
+                    min-width: @actionsCellItemsThreeWidth;
                 }
             }
         }

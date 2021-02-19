@@ -354,6 +354,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             "console:manage.features.oidcScopes.forms." +
                                                 "addScopeForm.inputs.displayName.validations.empty"
                                         ) }
+                                        maxLength = { 40 }
                                     />
                                     <Field
                                         type="text"
@@ -370,6 +371,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                         value={ scope.description }
                                         required={ false }
                                         requiredErrorMessage=""
+                                        maxLength={ 300 }
                                     />
                                     <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
                                 </Forms>

@@ -3872,7 +3872,9 @@ export const console: ConsoleNS = {
                             placeholder: "Saisissez l'URI de l'attribut {{type}}",
                             requiredErrorMessage: "Une URI d'attribut {{type}} est requis.",
                             validationErrorMessages: {
-                                duplicateName: "L'URI de l'attribut {{type}} existe déjà."
+                                duplicateName: "L'URI de l'attribut {{type}} existe déjà.",
+                                invalidName: "Le nom que vous avez entré contient des caractères non autorisés. " +
+                                    "Seuls les alphabets, les nombres, «#», «_» sont autorisés."
                             }
                         },
                         localAttribute: {
@@ -4797,6 +4799,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Réussir le nouveau scope OIDC",
                             message: "Création réussie"
+                        }
+                    },
+                    claimsMandatory: {
+                        error: {
+                            description: "Pour ajouter une étendue, vous devez vous assurer que " +
+                                "la portée a au moins un attribut.",
+                            message: "Vous devez sélectionner au moins un attribut."
                         }
                     },
                     deleteOIDCScope: {

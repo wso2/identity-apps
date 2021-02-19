@@ -21,3 +21,7 @@
 
 // Mobile Variables
 @mobileDataTableSearchMarginBottom: 10px;
+
+@actionsCellItemOneWidth: 47px;
+@actionsCellItemsTwoWidth: 75px;
+@actionsCellItemsThreeWidth: 100px;

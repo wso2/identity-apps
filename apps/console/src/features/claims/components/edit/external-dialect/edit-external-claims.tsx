@@ -80,7 +80,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         {
             key: 0,
             text: t("console:manage.features.claims.external.attributes.attributeURI",
-                { type: resolveType(attributeType, true) }),
+                { type: resolveType(attributeType, true, true) }),
             value: "claimURI"
         },
         {
@@ -246,7 +246,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         {
                             key: 0,
                             text: t("console:manage.features.claims.external.attributes.attributeURI",
-                                { type: resolveType(attributeType, true) }),
+                                { type: resolveType(attributeType, true, true) }),
                             value: "claimURI"
                         },
                         {
@@ -257,18 +257,18 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                     ] }
                     filterAttributePlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                            ".filterAttribute.placeholder", { type: resolveType(attributeType, true) })
+                            ".filterAttribute.placeholder", { type: resolveType(attributeType, true, true) })
                     }
                     filterConditionsPlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                            ".filterCondition.placeholder", { type: resolveType(attributeType, true) })
+                            ".filterCondition.placeholder", { type: resolveType(attributeType, true, true) })
                     }
                     filterValuePlaceholder={
                         t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                             ".filterValue.placeholder")
                     }
                     placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder",
-                        { type: resolveType(attributeType, true) }) }
+                        { type: resolveType(attributeType, true, true) }) }
                     defaultSearchAttribute="claimURI"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
@@ -360,7 +360,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                     {
                                         key: 0,
                                         text: t("console:manage.features.claims.external.attributes.attributeURI",
-                                            { type: resolveType(attributeType, true) }),
+                                            { type: resolveType(attributeType, true, true) }),
                                         value: "claimURI"
                                     },
                                     {
@@ -371,7 +371,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 ] }
                                 filterAttributePlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
-                                        ".filterAttribute.placeholder", { type: resolveType(attributeType, true) })
+                                        ".filterAttribute.placeholder", {
+                                            type: resolveType(attributeType, true, true)
+                                    })
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
@@ -382,7 +384,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                         ".filterValue.placeholder")
                                 }
                                 placeholder={ t("console:manage.features.claims.external.advancedSearch.placeholder",
-                                    { type: resolveType(attributeType, true) }) }
+                                    { type: resolveType(attributeType, true, true) }) }
                                 defaultSearchAttribute="claimURI"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
@@ -398,6 +400,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
+                        attributeType = { attributeType }
                     />
                 </Grid.Column>
             </Grid>

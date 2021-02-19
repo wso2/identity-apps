@@ -40,10 +40,11 @@ export const DataTableRow: FunctionComponent<PropsWithChildren<DataTableRowProps
     const {
         children,
         className,
+        selectable,
         ...rest
     } = props;
 
-    const classes = classNames("data-table-row", className);
+    const classes = classNames("data-table-row", className, !selectable && "no-selectable");
 
     return (
         <Table.Row className={ classes } { ...rest }>

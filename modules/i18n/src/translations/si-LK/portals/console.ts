@@ -3846,7 +3846,12 @@ export const console: ConsoleNS = {
                         attributeURI: {
                             label: "ආරෝපණය URI",
                             placeholder: "URI ගුණාංගයක් ඇතුළත් කරන්න",
-                            requiredErrorMessage: "URI ගුණාංගය අවශ්‍ය වේ"
+                            requiredErrorMessage: "URI ගුණාංගය අවශ්‍ය වේ",
+                            validationErrorMessages: {
+                                duplicateName: "{{Type}} ගුණාංගය දැනටමත් පවතී.",
+                                invalidName: "ඔබ ඇතුළත් කළ නමේ නීති විරෝධී අක්ෂර අඩංගු වේ. " +
+                                    "අවසර දී ඇත්තේ අක්ෂර, අංක, `#`, `_` පමණි."
+                            }
                         },
                         localAttribute: {
                             label: "සිතියම් ගත කිරීම සඳහා දේශීය ගුණාංග URI",
@@ -4772,6 +4777,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "නව OIDC විෂය පථය සාර්ථකව",
                             message: "නිර්මාණය සාර්ථකයි"
+                        }
+                    },
+                    claimsMandatory: {
+                        error: {
+                            description: "විෂය පථයක් එක් කිරීමට, විෂය පථයට අවම වශයෙන් එක්" +
+                                " ලක්ෂණයක්වත් ඇති බවට ඔබ සහතික විය යුතුය.",
+                            message: "ඔබට අවම වශයෙන් එක් ලක්ෂණයක්වත් තෝරා ගත යුතුය."
                         }
                     },
                     deleteOIDCScope: {

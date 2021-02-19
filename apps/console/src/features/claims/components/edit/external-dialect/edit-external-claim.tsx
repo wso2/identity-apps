@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
+import { sortList } from "../../../../core";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -117,7 +118,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
             sort: null
         };
         getAllLocalClaims(params).then(response => {
-            setLocalClaims(response);
+            setLocalClaims(sortList(response, "displayName", true));
         }).catch(error => {
             dispatch(addAlert(
                 {

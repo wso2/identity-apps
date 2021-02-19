@@ -4526,12 +4526,12 @@ export const console: ConsoleNS = {
                 attributeMappings: {
                     custom: {
                         description: "The custom protocol representation for user "
-                            + "attributes that will be used in custom API.",
+                            + "attributes.",
                         heading: "Custom Attributes"
                     },
                     oidc: {
-                        description: "The OpenID Connect protocol representation for user "
-                            + "attributes that will be used in the OpenID Connect API.",
+                        description: "The OpenID Connect (OIDC) protocol representation for user "
+                            + "attributes.",
                         heading: "OpenID Connect"
                     },
                     scim: {
@@ -4733,7 +4733,9 @@ export const console: ConsoleNS = {
                             placeholder: "Enter {{type}} attribute",
                             requiredErrorMessage: "{{type}} Attribute is required",
                             validationErrorMessages: {
-                                duplicateName: "The {{type}} attribute already exists."
+                                duplicateName: "The {{type}} attribute already exists.",
+                                invalidName: "The name you entered contains illegal characters. " +
+                                    "Only alphabets, numbers, `#`, and `_` are allowed."
                             }
                         },
                         localAttribute: {
@@ -4799,7 +4801,7 @@ export const console: ConsoleNS = {
                     pageLayout: {
                         edit: {
                             header: "Add {{type}} Attribute",
-                            primaryAction: "New {{type}} Attribute"
+                            primaryAction: "New Attribute"
                         }
                     },
                     placeholders: {
@@ -5658,6 +5660,13 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully the new OIDC scope.",
                             message: "Creation successful"
+                        }
+                    },
+                    claimsMandatory: {
+                        error: {
+                            description: "To add a scope, you need to make sure that the scope " +
+                                "has at least one attribute.",
+                            message: "You need to select at least one attribute."
                         }
                     },
                     deleteOIDCScope: {

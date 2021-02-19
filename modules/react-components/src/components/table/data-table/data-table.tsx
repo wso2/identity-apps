@@ -85,7 +85,7 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
     /**
      * Custom icon for the column selector trigger.
      */
-    columnSelectorTriggerIcon?: GenericIconProps["icon"];
+    columnSelectorTriggerIcon?: GenericIconProps[ "icon" ];
     /**
      * Table data source.
      */
@@ -159,6 +159,10 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      * Should the table appear on a transparent background.
      */
     transparent?: boolean;
+    /**
+     * Specifies if a row should be selectable.
+     */
+    isRowSelectable?: (item: TableDataInterface<T>) => boolean;
 }
 
 /**
@@ -302,6 +306,10 @@ export interface TableActionsInterface<T = {}> extends TestableComponentInterfac
      * Type of action.
      */
     renderer?: "semantic-icon" | "dropdown";
+    /**
+     * Specifies if the action should be a link or not.
+     */
+    link?: (item: TableDataInterface<T>) => boolean;
 }
 
 
@@ -369,6 +377,7 @@ export const DataTable = <T extends object = {}>(
         showSearch,
         showToggleDisallowedColumns,
         testId,
+        isRowSelectable,
         transparent,
         ...rest
     } = props;
@@ -428,7 +437,7 @@ export const DataTable = <T extends object = {}>(
                 ...dynamicTableProps,
                 celled: true,
                 sortable: true
-            })
+            });
         }
     };
 
@@ -447,7 +456,7 @@ export const DataTable = <T extends object = {}>(
     const isExtensionsValid = (extensions: TableExtensionInterface[], checkIfRenderable: boolean = false): boolean => {
         return (extensions && Array.isArray(extensions) && extensions.length > 0)
             && (checkIfRenderable
-                ? extensions.some((extension: TableExtensionInterface)=> extension.component)
+                ? extensions.some((extension: TableExtensionInterface) => extension.component)
                 : true);
     };
 
@@ -465,6 +474,7 @@ export const DataTable = <T extends object = {}>(
             onClick: actionOnClick,
             popupText: actionPopupText,
             renderer: actionRenderer,
+            link: actionLink,
             subActions,
             ...rest
         } = action;
@@ -488,7 +498,7 @@ export const DataTable = <T extends object = {}>(
                             disabled={ actionDisabled }
                             trigger={ (
                                 <Icon
-                                    link
+                                    link={ actionLink && actionLink(item) }
                                     className="list-icon"
                                     disabled={ actionDisabled }
                                     size="small"
@@ -508,7 +518,7 @@ export const DataTable = <T extends object = {}>(
                     ) }
                     options={ subActions }
                 />
-            )
+            );
         }
 
         if (actionRenderer === "semantic-icon") {
@@ -518,7 +528,7 @@ export const DataTable = <T extends object = {}>(
                     disabled={ actionDisabled }
                     trigger={ (
                         <Icon
-                            link
+                            link={ actionLink && actionLink(item) }
                             className="list-icon"
                             disabled={ actionDisabled }
                             size="small"
@@ -535,7 +545,7 @@ export const DataTable = <T extends object = {}>(
                     content={ resolvedPopupText }
                     inverted
                 />
-            )
+            );
         }
 
         if (actionComponent) {
@@ -548,7 +558,7 @@ export const DataTable = <T extends object = {}>(
                     content={ resolvedPopupText }
                     inverted
                 />
-            )
+            );
         }
 
         return null;
@@ -561,7 +571,7 @@ export const DataTable = <T extends object = {}>(
                     return;
                 }
 
-                return renderActions(item, action, index)
+                return renderActions(item, action, index);
             });
         }
 
@@ -605,8 +615,8 @@ export const DataTable = <T extends object = {}>(
                 }
 
                 const newOrder: DataTableSortOrder = evalColumn.sortOrder === "ascending"
-                        ? "descending"
-                        : "ascending";
+                    ? "descending"
+                    : "ascending";
 
                 getColumnSortOrder && getColumnSortOrder(newOrder, column);
 
@@ -674,7 +684,7 @@ export const DataTable = <T extends object = {}>(
                                     <Avatar
                                         image={ (
                                             <Placeholder style={ { height: 35, width: 35 } }>
-                                                <Placeholder.Image/>
+                                                <Placeholder.Image />
                                             </Placeholder>
                                         ) }
                                         isLoading={ true }
@@ -687,8 +697,8 @@ export const DataTable = <T extends object = {}>(
                             <Header.Content>
                                 <Placeholder style={ { width: "300px" } }>
                                     <Placeholder.Header>
-                                        <Placeholder.Line/>
-                                        <Placeholder.Line/>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
                                     </Placeholder.Header>
                                 </Placeholder>
                             </Header.Content>
@@ -730,22 +740,23 @@ export const DataTable = <T extends object = {}>(
                                         return (
                                             position === "top"
                                                 ? isExternalRendererProvided
-                                                ? (
-                                                    <Fragment key={ index }>
-                                                        { component }
-                                                    </Fragment>
-                                                )
-                                                : (
-                                                    <DataTable.Header fullWidth>
-                                                        <DataTable.Row>
-                                                            <DataTable.HeaderCell
-                                                                colSpan={ isColumnsValid(columns) && columns.length }
-                                                            >
-                                                                { component }
-                                                            </DataTable.HeaderCell>
-                                                        </DataTable.Row>
-                                                    </DataTable.Header>
-                                                )
+                                                    ? (
+                                                        <Fragment key={ index }>
+                                                            { component }
+                                                        </Fragment>
+                                                    )
+                                                    : (
+                                                        <DataTable.Header fullWidth>
+                                                            <DataTable.Row>
+                                                                <DataTable.HeaderCell
+                                                                    colSpan={ isColumnsValid(columns)
+                                                                        && columns.length }
+                                                                >
+                                                                    { component }
+                                                                </DataTable.HeaderCell>
+                                                            </DataTable.Row>
+                                                        </DataTable.Header>
+                                                    )
                                                 : null
                                         );
                                     })
@@ -864,8 +875,11 @@ export const DataTable = <T extends object = {}>(
                                                 <DataTable.Row
                                                     key={ itemKey ?? index }
                                                     onClick={
-                                                        (e: SyntheticEvent) => selectable && onRowClick(e, item)
+                                                        (e: SyntheticEvent) => selectable
+                                                            && isRowSelectable ? isRowSelectable(item) : true
+                                                            && onRowClick(e, item)
                                                     }
+                                                    selectable={ isRowSelectable ? isRowSelectable(item) : true }
                                                     { ...rowUIProps }
                                                     { ...rowUIPropOverrides }
                                                 >
@@ -886,6 +900,7 @@ export const DataTable = <T extends object = {}>(
                                                             return (
                                                                 <DataTable.Cell
                                                                     key={ index }
+                                                                    action={ column.dataIndex === "action" }
                                                                     textAlign={ itemTextAlign || columnTextAlign }
                                                                     width={ itemWidth ?? columnWidth }
                                                                     { ...cellUIProps }
@@ -897,11 +912,11 @@ export const DataTable = <T extends object = {}>(
                                                                             : renderCell(item, column)
                                                                     }
                                                                 </DataTable.Cell>
-                                                            )
+                                                            );
                                                         })
                                                     }
                                                 </DataTable.Row>
-                                            )
+                                            );
                                         })
                                         : null
                                 }
@@ -919,22 +934,23 @@ export const DataTable = <T extends object = {}>(
                                         return (
                                             position === "bottom"
                                                 ? isExternalRendererProvided
-                                                ? (
-                                                    <Fragment key={ index }>
-                                                        { component }
-                                                    </Fragment>
-                                                )
-                                                : (
-                                                    <DataTable.Footer fullWidth>
-                                                        <DataTable.Row>
-                                                            <DataTable.HeaderCell
-                                                                colSpan={ isColumnsValid(columns) && columns.length }
-                                                            >
-                                                                { component }
-                                                            </DataTable.HeaderCell>
-                                                        </DataTable.Row>
-                                                    </DataTable.Footer>
-                                                )
+                                                    ? (
+                                                        <Fragment key={ index }>
+                                                            { component }
+                                                        </Fragment>
+                                                    )
+                                                    : (
+                                                        <DataTable.Footer fullWidth>
+                                                            <DataTable.Row>
+                                                                <DataTable.HeaderCell
+                                                                    colSpan={ isColumnsValid(columns)
+                                                                        && columns.length }
+                                                                >
+                                                                    { component }
+                                                                </DataTable.HeaderCell>
+                                                            </DataTable.Row>
+                                                        </DataTable.Footer>
+                                                    )
                                                 : null
                                         );
                                     })

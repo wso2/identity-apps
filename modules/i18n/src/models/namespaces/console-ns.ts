@@ -2519,6 +2519,7 @@ export interface ConsoleNS {
                     deleteOIDCScope: Notification;
                     deleteOIDClaim: Notification;
                     updateOIDCScope: Notification;
+                    claimsMandatory: Notification;
                 };
                 placeholders: {
                     emptyList: {
