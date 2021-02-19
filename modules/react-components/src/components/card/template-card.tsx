@@ -82,6 +82,10 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      */
     onClick: (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
     /**
+     * Display disabled items as grayscale.
+     */
+    renderDisabledItemsAsGrayscale?: boolean;
+    /**
      * Opacity for the overlay.
      */
     overlayOpacity?: number;
@@ -148,6 +152,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         imageSize,
         onClick,
         overlayOpacity,
+        renderDisabledItemsAsGrayscale,
         selected,
         showTags,
         showTagIcon,
@@ -163,6 +168,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         "template-card",
         {
             disabled,
+            grayscale : disabled && renderDisabledItemsAsGrayscale,
             inline,
             selected,
             [ "with-image" ]: image
@@ -328,6 +334,7 @@ TemplateCard.defaultProps = {
     "data-testid": "template-card",
     imageSize: "tiny",
     inline: true,
+    renderDisabledItemsAsGrayscale: true,
     tagSize: "x22",
     tagsAs: "label",
     textAlign: "center"
