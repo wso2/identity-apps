@@ -37,13 +37,13 @@
             background: @dataTableTransparentBackground;
             border: @dataTableTransparentBorder;
         }
-        
+
         &.selectable {
             .data-table-body .data-table-row {
                 cursor: @dataTableSelectableRowCursor;
             }
         }
-        
+
         .data-table-header {
             th {
                 font-weight: @dataTableHeaderFontWeight;
@@ -53,7 +53,7 @@
         .data-table-column-selector {
             // Check popup.overrides for column selector popup styles.
         }
-        
+
         .data-table-row {
             &:hover {
                 &.no-hover {
@@ -83,6 +83,20 @@
                     .icon {
                         margin-right: 0;
                     }
+                }
+            }
+
+            &.actions-cell {
+                &.items-1 {
+                    min-width: 47px;
+                }
+
+                &.items-2 {
+                    min-width: 75px;
+                }
+
+                &.items-3 {
+                    min-width: 100px;
                 }
             }
         }
