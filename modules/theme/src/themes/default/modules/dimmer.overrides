@@ -38,4 +38,13 @@
          }
      }
  }
- 
+
+/*-----------------------------
+       Lighter Dimmer
+------------------------------*/
+
+.ui.dimmer {
+    &.lighter {
+        background-color: @lighterDimmerBackgroundColor !important;
+    }
+}
