@@ -213,7 +213,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? user.emails[ 0 ]?.toString()
                         : user.userName;
 
-                    const isNameAvailable = user.name?.familyName !== undefined && user.name?.givenName !== undefined;
+                    const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
 
                     return (
                         <Header
@@ -229,9 +229,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                <div className={ !isNameAvailable ? "mt-2" : "" }>{ resolvedUserName }</div>
+                                <div className={ isNameAvailable ? "mt-2" : "" }>{ resolvedUserName }</div>
                                 {
-                                    (isNameAvailable) &&
+                                    (!isNameAvailable) &&
                                     <Header.Subheader
                                         data-testid={ `${ testId }-item-sub-heading` }
                                     >
