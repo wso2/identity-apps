@@ -4732,7 +4732,7 @@ export const console: ConsoleNS = {
                             validationErrorMessages: {
                                 duplicateName: "The {{type}} attribute already exists.",
                                 invalidName: "The name you entered contains illegal characters. " +
-                                    "Only alphabets, numbers, `#`, `_` are allowed."
+                                    "Only alphabets, numbers, `#`, and `_` are allowed."
                             }
                         },
                         localAttribute: {
