@@ -202,7 +202,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     inverted
                     disabled={
                         readOnly
-                            ? false
+                            ? true
                             : mappingOn
                                 ? !requested
                                 : false
