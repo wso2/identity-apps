@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
@@ -110,6 +111,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
+    const [ isAdminViewAllowed, setIsAdminViewAllowed ] = useState<boolean>(false);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -147,6 +149,22 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
         dispatch(getProfileInformation());
     }, [ featureConfig, getDeveloperViewRoutes, allowedScopes ]);
+
+    useEffect(() => {
+
+        if (!featureConfig) {
+            return;
+        }
+
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
+        // Check if the users has the relevant scopes to access the manage section.
+        setIsAdminViewAllowed(hasRequiredScopesForAdminView(featureConfig, allowedScopes));
+
+    }, [ allowedScopes, featureConfig ]);
 
     /**
      * Handles side panel toggle click.
@@ -289,6 +307,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
+                    isManageViewAllowed={ isAdminViewAllowed }
                     activeView="DEVELOPER"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
