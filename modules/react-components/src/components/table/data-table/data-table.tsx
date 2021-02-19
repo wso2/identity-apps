@@ -561,7 +561,7 @@ export const DataTable = <T extends object = {}>(
                     return;
                 }
 
-                return renderActions(item, action, index)
+                return renderActions(item, action, index);
             });
         }
 
@@ -886,6 +886,7 @@ export const DataTable = <T extends object = {}>(
                                                             return (
                                                                 <DataTable.Cell
                                                                     key={ index }
+                                                                    action={ column.dataIndex === "action" }
                                                                     textAlign={ itemTextAlign || columnTextAlign }
                                                                     width={ itemWidth ?? columnWidth }
                                                                     { ...cellUIProps }
