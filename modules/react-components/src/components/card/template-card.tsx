@@ -276,7 +276,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             {
                 // TODO: This should pass as prop, where this component is used,
                 disabled && (
-                    <Dimmer active={ dimmerState }>
+                    <Dimmer className="lighter" active={ dimmerState }>
                         { t("common:featureAvailable" ) }
                     </Dimmer>
                 )
