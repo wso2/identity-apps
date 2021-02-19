@@ -283,14 +283,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.header") }
+                                    { t("console:develop.features.idp.confirmations." +
+                                        "deleteIDPWithConnectedApps.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
                                                            data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }
+                                    { t("console:develop.features.idp.confirmations." +
+                                        "deleteIDPWithConnectedApps.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.content") }
+                                    { t("console:develop.features.idp.confirmations." +
+                                        "deleteIDPWithConnectedApps.content") }
                                     <Divider hidden />
                                     <List ordered className="ml-6">
                                         {
@@ -304,8 +307,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                                 })
                                         }
                                     </List>
-                                    <Divider hidden />
-                                    { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.contentLine2") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

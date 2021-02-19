@@ -50,6 +50,7 @@ import {
     AppConstants,
     AppState,
     AppUtils,
+    ConfigReducerStateInterface,
     FeatureConfigInterface,
     Footer,
     Header,
@@ -94,6 +95,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     const dispatch = useDispatch();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
@@ -295,7 +297,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             sidePanel={ (
                 <SidePanel
                     ordered
-                    categorized
+                    categorized={ config?.ui?.isLeftNavigationCategorized ?? true }
                     caretIcon={ getSidePanelMiscIcons().caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }

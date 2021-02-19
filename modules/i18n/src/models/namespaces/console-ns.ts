@@ -807,6 +807,11 @@ export interface ConsoleNS {
                             userstoreDomain: FormAttributes;
                         };
                     };
+                    spaProtocolSettingsWizard: {
+                        fields: {
+                            callBackUrls: FormAttributes;
+                        };
+                    };
                 };
                 helpPanel: HelpPanelInterface;
                 list: {
@@ -910,6 +915,7 @@ export interface ConsoleNS {
                 };
                 confirmations: {
                     deleteIDP: Confirmation;
+                    deleteIDPWithConnectedApps: Confirmation;
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
                 };
@@ -2433,6 +2439,9 @@ export interface ConsoleNS {
                 confirmationModals: {
                     deleteScope: Confirmation;
                     deleteClaim: Confirmation;
+                };
+                addAttributes: {
+                    description: string;
                 };
                 editScope: {
                     claimList: {

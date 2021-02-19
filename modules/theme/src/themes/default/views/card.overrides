@@ -934,3 +934,53 @@
     }
 }
 
+/*-----------------------------------------
+      Disabled User Card
+-------------------------------------------*/
+
+.ui.card {
+    &.disabled-card {
+        transition: @selectionCardTransition;
+        border: none;
+        box-shadow: none;
+        height: 290px;
+        width: 205px;
+
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
+        &.inline {
+            display: inline-block;
+        }
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
+        }
+        .card-text-container {
+            text-align: center;
+            border-top: 0;
+
+            .header {
+                color: #616161;
+                font-size: 1em !important;
+                line-height: @selectionCardHeaderLineHeight;
+            }
+            .description {
+                color: #9e9b9b;
+                font-size: 0.8em;
+            }
+        }
+        .card-image-container {
+            height: 145px;
+            opacity: 0.6;
+        }
+    }
+}
+

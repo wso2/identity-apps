@@ -723,8 +723,9 @@ export const console: ConsoleNS = {
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
                                 heading: "User Attribute Selection",
-                                attributeComponentHint: "Manage the user attributes you want to share with this" +
-                                    " application.",
+                                attributeComponentHint: "Manage the user attributes you want to share with " +
+                                    "this application. You can configure additional <1>OIDC attribute mappings</1> " +
+                                    "and request them via <3>OIDC Scopes.</3>",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
@@ -1061,8 +1062,8 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter a description for the application"
                             },
                             discoverable: {
-                                hint: "Enable to make the application visible to end-users on their My Account " +
-                                    "application catalog.",
+                                hint: "Enable to make the application visible to end-users on their " +
+                                    "<1>{{ myAccount }}</1> application catalog.",
                                 label: "Discoverable application"
                             },
                             imageUrl: {
@@ -1080,7 +1081,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
-                                    empty: "This is a required field."
+                                    empty: "Application name is required."
                                 }
                             }
                         }
@@ -1771,6 +1772,16 @@ export const console: ConsoleNS = {
                                 label: "Provisioning userstore domain"
                             }
                         }
+                    },
+                    spaProtocolSettingsWizard:{
+                        fields: {
+                            callBackUrls: {
+                                label: "Authorized URLs",
+                                validations: {
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                                }
+                            }
+                        }
                     }
                 },
                 helpPanel: {
@@ -2282,7 +2293,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Application",
                         subtitles: {
-                            0: "Currently there are no applications available.",
+                            0: "There are no applications available at the moment.",
                             1: "You can add a new application easily by following the",
                             2: "steps in the application creation wizard."
                         },
@@ -2410,10 +2421,15 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                         content: "If you delete this identity provider, you will not be able to recover it. " +
-                            "All the applications using this identity provider might stop working. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the identity provider."
+                    },
+                    deleteIDPWithConnectedApps: {
+                        assertionHint: "",
+                        content: "Remove the associations from these applications before deleting:",
+                        header: "Unable to Delete",
+                        message: "There are applications using this identity provider."
                     }
                 },
                 dangerZoneGroup: {
@@ -3123,7 +3139,7 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "Currently there are no identity providers available.",
+                            0: "There are no identity providers at the moment.",
                             1: "You can add a new identity provider by following",
                             2: "the steps in the identity provider creation wizard."
                         },
@@ -3260,17 +3276,15 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                         content: "If you delete this identity provider, you will not be able to recover it. " +
-                            "All the applications using this identity provider might stop working. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the identity provider."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
-                        content: "This identity provider has been used in the following applications.",
-                        contentLine2: "Please make sure to remove these associations before deleting.",
-                        header: "Unable to Delete the Identity Provider",
-                        message: "Cannot delete an identity provider that contains connected applications."
+                        content: "Remove the associations from these applications before deleting:",
+                        header: "Unable to Delete",
+                        message: "There are applications using this identity provider. "
                     }
                 },
                 dangerZoneGroup: {
@@ -3964,7 +3978,7 @@ export const console: ConsoleNS = {
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "Currently there are no identity providers available.",
+                            0: "There are no identity providers available at the moment.",
                             1: "You can add a new identity provider easily by following the",
                             2: "steps in the identity provider creation wizard."
                         },
@@ -4170,7 +4184,7 @@ export const console: ConsoleNS = {
                 title: "Select Application Type"
             },
             applications: {
-                subTitle: "Create and manage applications based on templates and configure authentication.",
+                subTitle: "Manage applications using templates, and configure authentication.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -4179,12 +4193,12 @@ export const console: ConsoleNS = {
                 title: null
             },
             authenticationProvider: {
-                subTitle: "Manage identity providers to allow social login to applications.",
+                subTitle: "Manage identity providers to allow users to log in to your application through them.",
                 title: "Identity Providers"
             },
             authenticationProviderTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity providers.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
@@ -4192,12 +4206,12 @@ export const console: ConsoleNS = {
                 title: "Select Identity Provider"
             },
             idp: {
-                subTitle: "Manage identity providers to allow social login to applications.",
+                subTitle: "Manage identity providers to allow users to log in to your application through them.",
                 title: "Identity Providers"
             },
             idpTemplate: {
                 backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity provider types.",
+                subTitle: "Choose one of the following identity providers.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
@@ -4523,7 +4537,7 @@ export const console: ConsoleNS = {
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
-                        heading: "System for Cross-Domain Identity Management"
+                        heading: "SCIM 2.0"
                     }
                 },
                 dialects: {
@@ -4641,7 +4655,7 @@ export const console: ConsoleNS = {
                             updateExternalAttributes: "Update {{type}} Attribute Mapping"
                         },
                         list: {
-                            description: "View and manage how user attributes in are mapped and " +
+                            description: "View and manage how user attributes are mapped and " +
                                 "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
                             title: "Attributes and Mappings",
@@ -4654,7 +4668,7 @@ export const console: ConsoleNS = {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"
                             },
-                            description: "View and manage how attributes in are mapped and transformed "
+                            description: "View and manage how attributes are mapped and transformed "
                                 + "when interacting with APIs or your applications.",
                             heading: "Manage Attribute Mappings",
                             oidc: {
@@ -4665,15 +4679,15 @@ export const console: ConsoleNS = {
                             scim: {
                                 description: "Communicate information about the user via the API "
                                     + "compliance with SCIM2 standards.",
-                                heading: "System for Cross-Domain Identity Management "
+                                heading: "SCIM 2.0"
                             }
                         },
                         manageAttributes: {
                             attributes: {
-                                description: "Each attribute contains a piece of user data stored within {{productName}}.",
+                                description: "Each attribute contains a piece of stored user data.",
                                 heading: "Attributes"
                             },
-                            description: "View and manage attributes native to {{productName}}.",
+                            description: "View and manage attributes.",
                             heading: "Manage Attributes"
                         }
                     },
@@ -5194,7 +5208,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Template Type",
                         subtitles: {
-                            0: "Currently there are no templates types available.",
+                            0: "There are no templates types available at the moment.",
                             1: "You can add a new template type by ",
                             2: "clicking on the button below."
                         },
@@ -5331,8 +5345,8 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New Template",
                         subtitles: {
-                            0: "Currently there are no templates available for the selected",
-                            1: "email template type. You can add a new template by ",
+                            0: "There are no templates available for the selected",
+                            1: "email template type at the moment. You can add a new template by ",
                             2: "clicking on the button below."
                         },
                         title: "Add Template"
@@ -5538,6 +5552,9 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                addAttributes: {
+                    description: "Select which user attributes you want to associate with the scope {{name}}.",
+                },
                 buttons: {
                     addScope: "New OIDC Scope"
                 },
@@ -5551,7 +5568,7 @@ export const console: ConsoleNS = {
                     },
                     deleteScope: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this scope, you will not be able to get it back." +
+                        content: "If you delete this scope, you will not be able to get it back. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the OIDC scope."
@@ -5732,7 +5749,7 @@ export const console: ConsoleNS = {
                     emptyList: {
                         action: "New OIDC Scope",
                         subtitles: {
-                            0: "Currently there are no OIDC scopes.",
+                            0: "There are no OIDC scopes at the moment.",
                             1: "You can add a new OIDC scope easily by following the",
                             2: "steps in the creation wizard."
                         },
@@ -6048,7 +6065,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
                                     empty: "{{type}} Name is required to proceed.",
-                                    invalid: "Please enter a valid {{type}} name."
+                                    invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
+                                        + "And must be of length between 3 to 30 characters."
                                 }
                             }
                         }
@@ -7482,7 +7500,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the invitation.",
+                            description: "Successfully deleted the user's association to your organization.",
                             message: "Invitation deletion successful"
                         }
                     },

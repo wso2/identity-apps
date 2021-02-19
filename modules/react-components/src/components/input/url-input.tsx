@@ -512,8 +512,12 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @return {boolean} origin allowed or not
      */
     const isOriginIsKnownAndAllowed = (url: string): boolean => {
+        const urlComponents = URLUtils.urlComponents(url);
+        if (!urlComponents) {
+            return false;
+        }
         // `origin` contains <scheme>://<host>:<port> (port if exists)
-        const { origin: checkingOrigin } = URLUtils.urlComponents(url);
+        const { origin: checkingOrigin } = urlComponents;
         // This is just a "make sure" operation that cleans out any attached
         // paths from the url. Also, if theres any trailing slashes it will
         // even out with the checkingOrigin vice versa. + We need it because

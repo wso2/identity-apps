@@ -509,6 +509,9 @@
         {% if console.ui.isRequestPathAuthenticationEnabled is defined %}
         "isRequestPathAuthenticationEnabled": {{ console.ui.isRequestPathAuthenticationEnabled }},
         {% endif %}
+        {% if console.ui.is_left_navigation_categorized is defined %}
+        "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},
+        {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "privacyPolicyConfigs": {

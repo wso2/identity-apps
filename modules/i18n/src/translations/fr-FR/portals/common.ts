@@ -67,6 +67,7 @@ export const common: CommonNS = {
     equals: "Est égal à",
     explore: "Explorer",
     export: "Exporter",
+    featureAvailable: "Cette fonctionnalité sera bientôt disponible!",
     filter: "Filtrer",
     finish: "Terminer",
     generatePassword: "Générer un mot de passe",

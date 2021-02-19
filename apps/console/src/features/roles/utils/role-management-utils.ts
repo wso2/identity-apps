@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import isEmpty from "lodash/isEmpty";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
-import { SearchRoleInterface, TreeNode } from "../models";
+import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";
 
 /**
  * Utility class for roles operations.
@@ -70,14 +71,22 @@ export class RoleManagementUtils {
 
     /**
      * Retrieve all permissions from backend.
+     *
+     * @param {string[]} permissionsToSkip - Array of permissions to filter out.
+     * @return {Promise<TreeNode[]>}
      */
-    public static getAllPermissions = (): Promise<TreeNode[]> => {
+    public static getAllPermissions = (permissionsToSkip?: string[]): Promise<TreeNode[]> => {
         return getPermissionList().then((response) => {
             if (response.status === 200 && response.data && response.data instanceof Array) {
-                const permissionStringArray = response.data;
+
+                const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
+                    ? response.data.filter((permission) => !permissionsToSkip.includes(permission.resourcePath))
+                    : response.data;
+
                 let permissionTree: TreeNode[] = [];
                 let isStartingWithTwoNodes: boolean = false;
                 permissionTree = permissionStringArray.reduce((arr, path, index) => {
+
                     let nodes: TreeNode[] = [];
                     if(index === 0 && path.resourcePath.replace(/^\/|\/$/g, "").split("/").length == 2) {
                         isStartingWithTwoNodes = true;

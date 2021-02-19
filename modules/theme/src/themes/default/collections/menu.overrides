@@ -236,6 +236,10 @@
                         color: @appHeaderSecondaryPanelPortalSwitchActiveColor;
                         border-bottom: @appHeaderSecondaryPanelPortalSwitchActiveBorderBottom;
                     }
+
+                    &:not(.active) {
+                        border-bottom: @appHeaderSecondaryPanelPortalSwitchInactiveBorderBottom;
+                    }
                     
                     &:first-child {
                         margin-left: @appHeaderSecondaryPanelPortalSwitchesLeftSpacing;

@@ -44,7 +44,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
+import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface } from "../../../users";
 import { updateGroupDetails } from "../../api";
@@ -260,7 +260,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {
                                 const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
-                                    ? user.name.givenName + " " + user.name.familyName
+                                    ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
                                     : undefined;
 
                                 const resolvedUsername: string = user.userName.split("/")?.length > 1
@@ -322,7 +322,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const renderUserTableRow = (user: UserBasicInterface): ReactElement => {
 
         const resolvedGivenName: string = (user.name && user.name.givenName !== undefined)
-            ? user.name.givenName + " " + user.name.familyName
+            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
             : undefined;
 
         const resolvedUsername: string = user.userName.split("/")?.length > 1
@@ -331,25 +331,31 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         return (
             <Table.Row key={ user.id }>
-                <Table.Cell collapsing>
-                    <UserAvatar
-                        data-testid={
-                            `${ testId }-users-list-${
-                                user.userName }-avatar`
-                        }
-                        name={ resolvedUsername }
-                        size="mini"
-                        floated="left"
-                        image={ user.profileUrl }
-                    />
-                </Table.Cell>
                 <Table.Cell>
-                    <div>{ resolvedGivenName ?? resolvedUsername }</div>
-                    {
-                        resolvedGivenName && (
-                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
-                        )
-                    }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <UserAvatar
+                            data-testid={
+                                `${ testId }-users-list-${
+                                    user.userName }-avatar`
+                            }
+                            name={ resolvedUsername }
+                            spaced="right"
+                            size="mini"
+                            floated="left"
+                            image={ user.profileUrl }
+                        />
+                        <Header.Content>
+                            { resolvedGivenName ?? resolvedUsername }
+                            <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                { resolvedGivenName && resolvedUsername }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
                 </Table.Cell>
             </Table.Row>
         );

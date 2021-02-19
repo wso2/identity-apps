@@ -44,6 +44,10 @@ interface PermissionListProp extends  TestableComponentInterface {
     initialValues?: TreeNode[];
     isRole?: boolean;
     isReadOnly?: boolean;
+    /**
+     * Permissions to hide.
+     */
+    permissionsToHide?: string[];
 }
 
 /**
@@ -62,6 +66,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         isEdit,
         initialValues,
         isRole,
+        permissionsToHide,
         [ "data-testid" ]: testId
     } = props;
 
@@ -77,12 +82,13 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
-        RoleManagementUtils.getAllPermissions().then((permissionTree: TreeNode[]) => {
-            disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
-            setPermissions(permissionTree);
-            setDefaultExpandKeys( [permissionTree[0].key.toString()] );
-            setIsPermissionsLoading(false);
-        });
+        RoleManagementUtils.getAllPermissions(permissionsToHide)
+            .then((permissionTree: TreeNode[]) => {
+                disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
+                setPermissions(permissionTree);
+                setDefaultExpandKeys([ permissionTree[ 0 ].key.toString() ]);
+                setIsPermissionsLoading(false);
+            });
         checkIsSuperAdmin();
 
         if ( initialValues && initialValues.length > 0 ) {

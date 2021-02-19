@@ -204,7 +204,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
                     const resolvedUserName = (user.name && user.name.givenName !== undefined)
-                        ? user.name.givenName + " " + user.name.familyName
+                        ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
                         : user.userName.split("/")?.length > 1
                             ? user.userName.split("/")[ 1 ]
                             : user.userName.split("/")[ 0 ];
@@ -212,6 +212,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     const resolvedDescription = user.emails
                         ? user.emails[ 0 ]?.toString()
                         : user.userName;
+
+                    const isNameAvailable = user.name?.familyName !== undefined && user.name?.givenName !== undefined;
 
                     return (
                         <Header
@@ -227,10 +229,15 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                { resolvedUserName }
-                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
-                                    { resolvedDescription }
-                                </Header.Subheader>
+                                <div className={ !isNameAvailable ? "mt-2" : "" }>{ resolvedUserName }</div>
+                                {
+                                    (isNameAvailable) &&
+                                    <Header.Subheader
+                                        data-testid={ `${ testId }-item-sub-heading` }
+                                    >
+                                        { resolvedDescription }
+                                    </Header.Subheader>
+                                }
                             </Header.Content>
                         </Header>
                     );

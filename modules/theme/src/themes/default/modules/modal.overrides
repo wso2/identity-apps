@@ -626,10 +626,6 @@
                 .transfer-list-segment {
                     height: @transferComponentListSegmentHeight;
 
-                    .transfer-list-sub-content {
-                        color: #f99467;
-                    }
-
                     thead tr:first-child {
 
                         th {

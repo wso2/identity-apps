@@ -24,7 +24,7 @@ import { AnimatedAvatar, EmphasizedSegment, GenericIcon, PageLayout, PrimaryButt
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Image, List, Placeholder } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -185,13 +185,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         <>
                             <Header as="h4">
                                 { t("console:manage.features.claims.dialects.sections.manageAttributes.heading") }
-                                <div className="sub header ellipsis">
-                                    { t(
-                                        "console:manage.features.claims.dialects.sections."
-                                        + "manageAttributes.description"
-                                    ) }
-                                </div>
                             </Header>
+                            <Divider hidden />
                             <EmphasizedSegment
                                 onClick={ () => {
                                     history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
@@ -229,7 +224,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     </List.Description>
                                                 </Grid.Column>
                                                 <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                    <Icon name="arrow right" />
+                                                    <Popup
+                                                        content={ t("common:edit") }
+                                                        trigger={
+                                                            <Icon color="grey" name="pencil" />
+                                                        }
+                                                        inverted
+                                                    />
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>
@@ -239,13 +240,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         </>
                     ) }
                 <Divider hidden />
+                <Divider hidden />
                 <Divider />
+                <Divider hidden />
                 <Header as="h4">
                     { t("console:manage.features.claims.dialects.sections.manageAttributeMappings.heading") }
-                    <div className="sub header ellipsis">
-                        { t("console:manage.features.claims.dialects.sections.manageAttributeMappings.description") }
-                    </div>
                 </Header>
+                <Divider hidden />
                 { !isLoading ? (
                     oidcAttributeMappings.length > 0 && (
                         <EmphasizedSegment className="clickable" data-testid={ `${ testId }-oidc-dialect-container` }>
@@ -285,7 +286,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Icon name="arrow right" />
+                                                <Popup
+                                                    content={ t("common:edit") }
+                                                    trigger={
+                                                        <Icon color="grey" name="pencil" />
+                                                    }
+                                                    inverted
+                                                />
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -341,7 +348,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Icon name="arrow right" />
+                                                <Popup
+                                                    content={ t("common:edit") }
+                                                    trigger={
+                                                        <Icon color="grey" name="pencil" />
+                                                    }
+                                                    inverted
+                                                />
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -399,7 +412,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                                <Icon name="arrow right" />
+                                                <Popup
+                                                    content={ t("common:edit") }
+                                                    trigger={
+                                                        <Icon color="grey" name="pencil" />
+                                                    }
+                                                    inverted
+                                                />
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>

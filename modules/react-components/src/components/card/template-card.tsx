@@ -18,8 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, {FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect} from "react";
-import { Card, CardProps, Divider, Icon, Label, Popup } from "semantic-ui-react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Card, CardProps, Dimmer, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
@@ -164,6 +165,10 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         className
     );
 
+    const { t } = useTranslation();
+
+    const [ dimmerState, setDimmerState ] = useState<boolean>(false);
+
     /**
      * Renders the tag based on render type.
      *
@@ -227,6 +232,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     };
 
     return (
+
         <Card
             id={ id }
             className={ classes }
@@ -234,7 +240,17 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            onMouseEnter={ () => setDimmerState(true) }
+            onMouseLeave={ () => setDimmerState(false) }
         >
+            {
+                // TODO: This should pass as prop, where this component is used,
+                disabled && (
+                    <Dimmer active={ dimmerState }>
+                        { t("common:featureAvailable" ) }
+                    </Dimmer>
+                )
+            }
             {
                 image && (
                     <Card.Content className="card-image-container">
