@@ -107,6 +107,8 @@ export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: s
  * This is a temporary util method added to conditionally render the manage tab depending on the
  * scopes of the user.
  *
+ * Git issue to track - https://github.com/wso2/product-is/issues/11319
+ *
  * @param featureConfig
  * @param allowedScopes
  */
@@ -140,6 +142,8 @@ export const hasRequiredScopesForAdminView = (featureConfig: any, allowedScopes:
 /**
  * This is a temporary util method added to specially handle the scopes of
  * "Application Developer" role.
+ *
+ * Git issue to track - https://github.com/wso2/product-is/issues/11319
  *
  * @param feature
  * @param scopes
