@@ -20,7 +20,7 @@ import { LoadersInterface } from "../../models";
 import { LoaderAction, SET_PROFILE_INFO_LOADER, SET_PROFILE_SCHEMA_LOADER } from "../actions/types";
 
 const initialState: LoadersInterface = {
-    isProfileInfoLoading: false,
+    isProfileInfoLoading: undefined,
     isProfileSchemaLoading: false
 };
 
