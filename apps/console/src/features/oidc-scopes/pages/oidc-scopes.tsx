@@ -60,7 +60,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
     const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ tempScopeList, setTempScopeList ] = useState<OIDCScopesListInterface[]>([]);
-    const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(false);
+    const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
 
