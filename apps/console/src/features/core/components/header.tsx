@@ -226,6 +226,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             showUserDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             tenantAssociations={ tenantAssociations }
+            tenantSwitchHeader={ t("console:common.header.tenantSwitchHeader") }
             tenantIcon={ getMiscellaneousIcons().tenantIcon }
             onTenantSwitch={ handleTenantSwitch }
             data-testid={ testId }

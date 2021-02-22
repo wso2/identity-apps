@@ -62,6 +62,9 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
         },
+        header: {
+            tenantSwitchHeader: "Tenant මාරු කරන්න"
+        },
         modals: {
             editAvatarModal: {
                 content: {
@@ -3251,8 +3254,8 @@ export const console: ConsoleNS = {
                 identityProviderEdit: "හැඳුනුම්පත් සපයන්නන් සංස්කරණය කරන්න",
                 identityProviderTemplates: "හැඳුනුම්පත් සපයන්නාගේ ආකෘති",
                 identityProviders: "හැඳුනුම්පත් සපයන්නන්",
-                oidcScopes: "OIDC විෂය පථ",
-                oidcScopesEdit: "OIDC විෂය පථ සංස්කරණය",
+                oidcScopes: "විෂය පථ",
+                oidcScopesEdit: "විෂය පථ සංස්කරණය",
                 overview: "දළ විශ්ලේෂණය",
                 remoteRepo: "දුරස්ථ රෙපෝ වින්‍යාසය",
                 remoteRepoEdit: "දුරස්ථ රෙපෝ වින්‍යාස සංස්කරණය"
