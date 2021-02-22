@@ -450,23 +450,23 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "You need to enable CORS for this origin in order to make API requests" +
-                            " to {{productName}} from a Browser.",
+                        content: "You need to enable CORS for the origin of this URL to make requests" +
+                            " to {{productName}} from a browser.",
                         detailedContent: {
                             0: "",
                             1: ""
                         },
-                        header: "Allow CORS",
+                        header: "CORS is not Allowed for",
                         leftAction: "Allow"
                     },
                     positive: {
-                        content: "The origin of the redirect URL {{urlLink}} is allowed to make CORS requests to " +
-                            "{{productName}} APIs.",
+                        content: "The origin of this URL is allowed to make requests to " +
+                            "{{productName}} APIs from a browser.",
                         detailedContent: {
                             0: "",
                             1: ""
                         },
-                        header: "CORS is Allowed"
+                        header: "CORS is Allowed for"
                     }
                 }
             },
