@@ -48,7 +48,7 @@
 @sidePanelModalHeaderFontWeight: @headerFontWeight;
 @sidePanelModalHeaderFontSize: @headerFontSize;
 @sidePanelModalHeaderPadding: @headerPadding;
-@sidePanelModalHeaderHeight: 90px;
+@sidePanelModalHeaderHeight: 75px;
 @sidePanelModalHeaderBorderBottom: @defaultBorderWidth solid @borderColor;
 
 @sidePanelModalContentPadding: 30px;
