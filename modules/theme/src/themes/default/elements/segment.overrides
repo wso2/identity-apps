@@ -596,7 +596,7 @@
 }
 
 /*-----------------------------
-      Emphasized Segment
+      Clickable Segment
 ------------------------------*/
 
 .ui.segment {
@@ -604,7 +604,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: @paleGray
+            background-color: @clickableSegmentHover;
         }
 
         .header {

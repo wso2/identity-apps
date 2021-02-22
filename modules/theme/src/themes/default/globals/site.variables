@@ -91,6 +91,12 @@
 @lightPageBackground : @white;
 
 /*-------------------
+       Accents
+--------------------*/
+
+@defaultHoverBackgroundColor: @transparentBlack;
+
+/*-------------------
      Image Sizes
 --------------------*/
 
