@@ -72,6 +72,10 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      */
     cancelButtonText?: string;
     /**
+     * Show/Hide option title. ex: Retro, Initials etc.
+     */
+    showOptionTitle?: boolean;
+    /**
      * Submit button text.
      */
     submitButtonText?: string;
@@ -181,6 +185,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         onCancel,
         onSubmit,
         showHostedURLOption,
+        showOptionTitle,
         submitButtonText,
         [ "data-testid" ]: testId,
         translations,
@@ -325,6 +330,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                 <SelectionCard
                     id={ value }
                     size="x100"
+                    showText={ showOptionTitle }
                     header={ key }
                     image={
                         <UserAvatar
@@ -573,6 +579,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                 <SelectionCard
                                                     id={ SystemGeneratedAvatars.get("Initials") }
                                                     size="x100"
+                                                    showText={ showOptionTitle }
                                                     header={ translations.systemGenAvatars.types.initials }
                                                     image={
                                                         <UserAvatar
@@ -729,6 +736,7 @@ EditAvatarModal.defaultProps = {
     dimmer: "blurring",
     heading: "Update profile picture",
     showHostedURLOption: false,
+    showOptionTitle: false,
     submitButtonText: "Save",
     translations: {
         gravatar: {
