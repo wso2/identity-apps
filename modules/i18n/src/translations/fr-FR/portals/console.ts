@@ -446,23 +446,23 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "Vous devez activer CORS pour cette origine afin de faire des requêtes API " +
-                            "à {{productName}} à partir d'un navigateur.",
+                        content: "Vous devez activer CORS pour l'origine de cette URL pour envoyer des requêtes à "+
+                            "{{productName}} à partir d'un navigateur.",
                         detailedContent: {
                             0: "",
                             1: ""
                         },
-                        header: "Autoriser CORS",
+                        header: "CORS n'est pas autorisé pour",
                         leftAction: "Autoriser"
                     },
                     positive: {
-                        content: "L'origine de l'URL de redirection {{urlLink}} est autorisée à envoyer des " +
-                            "requêtes CORS aux API {{productName}}.",
+                        content: "L'origine de cette URL est autorisée à envoyer des requêtes aux API " +
+                        "{{productName}} à partir d'un navigateur.",
                         detailedContent: {
                             0: "",
                             1: ""
                         },
-                        header: "CORS est autorisé"
+                        header: "CORS est autorisé pour"
                     }
                 }
             },

@@ -455,17 +455,18 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "බ්‍රව්සරයකින් API ඉල්ලීම් {{productName}} සෑදීම සඳහා ඔබ මෙම සම්භවය සඳහා CORS සක්‍රීය කළ යුතුය.",
+                        content: "බ්‍රව්සරයකින් {{productName} to වෙත ඉල්ලීම් කිරීමට මෙම URL හි ආරම්භය " +
+                        "සඳහා ඔබ CORS සක්‍රීය කළ යුතුය.",
                         detailedContent: {
                             0: "",
                             1: ""
                         },
-                        header: "CORS වලට ඉඩ දෙන්න",
+                        header: "CORS සඳහා අවසර නැත",
                         leftAction: "ඉඩ දෙන්න"
                     },
                     positive: {
-                        content: "යළි හරවා යැවීමේ URL {{urlLink} හි මූලාරම්භය CORS ඉල්ලීම් {{productName}} API වෙත" +
-                            " කිරීමට අවසර ඇත.",
+                        content: "මෙම URL හි මූලාරම්භය බ්‍රව්සරයකින් {{productName}} API සඳහා "+
+                        "ඉල්ලීම් කිරීමට අවසර ඇත.",
                         detailedContent: {
                             0: "",
                             1: ""

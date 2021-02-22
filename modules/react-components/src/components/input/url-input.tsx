@@ -405,8 +405,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 }
                 popupSubHeader={
                     <React.Fragment>
-                        <Icon name="building outline"/>
-                        { tenantDomain }
+                        <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
+                        { origin }
                     </React.Fragment>
                 }
                 popupContent={
@@ -458,13 +458,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
                     </React.Fragment>
                 }
-                popupFooterLeftContent={
-                    <React.Fragment>
-                        <Icon name={ positive ? "check" : "times" } color={ positive ? "green" : "red" }/>
-                        { onlyOrigin ? origin : href }
-                    </React.Fragment>
-                }
-                popupOptions={ { basic: true, on: "click" } }
+                popupOptions={ { basic: true, on: "hover" } }
                 labelColor={ positive ? "green" : "red" }
             />
         );
@@ -607,7 +601,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         {/*Below is the static label text that get rendered*/ }
                         {/*when the url is not allowed in cors list.*/ }
                         { shouldShowAllowOriginAction(origin) &&
-                        <span className={ "grey" }>&nbsp;<em>CORS not allowed for this domain</em></span>
+                        <span className={ "grey" }>&nbsp;<em>CORS not allowed for origin of this URL.</em></span>
                         }
 
                         {/*Below is the `Allow` button that gets rendered when*/ }
