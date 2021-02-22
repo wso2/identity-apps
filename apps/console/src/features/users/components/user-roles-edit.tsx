@@ -565,10 +565,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     <TransferList
                                         isListEmpty={ !(roleList?.length > 0) }
                                         listType="unselected"
-                                        listHeaders={ [
+                                        listHeaders={ showDomain ? [
                                             t("console:manage.features.transferList.list.headers.0"),
                                             t("console:manage.features.transferList.list.headers.1"), ""
-                                        ] }
+                                        ] : [
+                                            t("console:manage.features.transferList.list.headers.1"), ""
+                                        ]}
                                         handleHeaderCheckboxChange={ selectAllRoles }
                                         isHeaderCheckboxChecked={ isSelectAllRolesChecked }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
