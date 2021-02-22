@@ -35,7 +35,7 @@ import set from "lodash/set";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Popup } from "semantic-ui-react";
+import {Grid, Icon, Popup} from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
@@ -532,6 +532,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header muted">
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    <Icon name={'hand point down'} size={'small'}></Icon>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader /> }>
