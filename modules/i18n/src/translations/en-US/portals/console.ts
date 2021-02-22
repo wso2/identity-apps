@@ -549,9 +549,9 @@ export const console: ConsoleNS = {
                 },
                 confirmations: {
                     addSocialLogin: {
-                        content : "To add a new social login we will need to route you to a different page and " +
+                        content : "To add a new social login, we will need to route you to a different page and " +
                             "any unsaved changes in this page will be lost. Please confirm.",
-                        header: "Confirm Your Action",
+                        header: "Are you sure?",
                         subHeader: "This action is irreversible."
                     },
                     clientSecretHashDisclaimer: {

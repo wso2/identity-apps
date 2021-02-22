@@ -548,7 +548,7 @@ export const console: ConsoleNS = {
                         content : "Pour ajouter une nouvelle connexion sociale, nous devrons vous diriger " +
                             "vers une autre page et toutes les modifications non enregistrées de cette page " +
                             "seront perdues. Veuillez confirmer.",
-                        header: "Confirmez votre action",
+                        header: "Êtes-vous sûr?",
                         subHeader: "Cette action est irréversible."
                     },
                     clientSecretHashDisclaimer: {
