@@ -3312,7 +3312,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "යෙදුම් වෙත ආපසු යන්න",
-                subTitle: "කරුණාකර පහත යෙදුම් වර්ග වලින් එකක් තෝරන්න.",
+                subTitle: "යෙදුමක් තුළට පිවිසීමට පූර්ව නිශ්චිත යෙදුම් වර්ග වලින් එකක් තෝරන්න.",
                 title: "යෙදුම් වර්ගය තෝරන්න"
             },
             applications: {

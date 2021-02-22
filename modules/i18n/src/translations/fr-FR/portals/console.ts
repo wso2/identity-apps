@@ -3332,7 +3332,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Choisissez l'un des types d'application prédéfinis pour vous connecter rapidement.",
+                subTitle: "Choisissez l'un des types prédéfinis pour intégrer une application.",
                 title: "Choisissez le type d'application"
             },
             applications: {
