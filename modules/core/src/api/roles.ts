@@ -47,7 +47,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).roles
+        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).groups
     };
 
     return httpClient(requestConfig)
