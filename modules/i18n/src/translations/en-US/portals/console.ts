@@ -1141,7 +1141,7 @@ export const console: ConsoleNS = {
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 },
-                                info: "Don’t have an app? Try out the sample app using {{callBackURLFromTemplate}} " +
+                                info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
                                 "as the Authorized URL."
                             },
                             clientID: {

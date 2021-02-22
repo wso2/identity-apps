@@ -59,9 +59,9 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
             <React.Fragment>
                 <Heading as="h5">Authorized URIs</Heading>
                 <p>
-                    The authorized URIs determine where the authorization code is sent to
-                    once the user is authenticated, and where the user is redirected to
-                    once the logout is complete.
+                    The authorized redirect URIs determine where the authorization code
+                    is sent to once the user is authenticated, and where the user is
+                    redirected to once the logout is complete.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>

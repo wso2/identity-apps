@@ -495,7 +495,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                     inboundOIDC.fieldscallBackUrls.info"
                                                     tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
                                                     >
-                                                        Don’t have an app? Try out the sample app
+                                                        Don’t have an app? Try out a sample app
                                                         using <strong>{ callBackURLFromTemplate }</strong> as the Authorized URL.
                                                     </Trans>
                                                 }

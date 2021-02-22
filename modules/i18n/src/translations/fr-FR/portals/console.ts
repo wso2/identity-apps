@@ -1144,7 +1144,7 @@ export const console: ConsoleNS = {
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
                                 },
-                                info: "Vous n’avez pas d’application? Essayez l'exemple d'application " +
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
                                 "en utilisant {{callBackURLFromTemplate}} comme URL autorisée."
                             },
                             clientID: {
