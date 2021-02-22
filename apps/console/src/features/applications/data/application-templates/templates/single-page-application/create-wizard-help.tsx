@@ -57,7 +57,7 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
             <React.Fragment>
                 <Heading as="h5">Authorized redirect URLs</Heading>
                 <p>
-                    The Authorized URL determines where the authorization code is sent to
+                    The Authorized URLs determine where the authorization code is sent to
                     once the user is authenticated, and where the user is redirected to
                     once the logout is complete.
                 </p>
