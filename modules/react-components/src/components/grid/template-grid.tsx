@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
+import classNames from "classnames";
 import get from "lodash/get";
 import take from "lodash/take";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -31,6 +32,10 @@ import { Heading } from "../typography";
  * Proptypes for the template grid component.
  */
 export interface TemplateGridPropsInterface<T> extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * Empty placeholder
      */
@@ -194,6 +199,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
 ): ReactElement => {
 
     const {
+        className,
         emptyPlaceholder,
         heading,
         onTemplateSelect,
@@ -220,6 +226,11 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         useNameInitialAsImage,
         [ "data-testid" ]: testId
     } = props;
+
+    const classes = classNames(
+        "template-grid",
+        className
+    );
 
     const [templateList, setTemplateList] = useState<T[]>([]);
     const [secondaryTemplateList, setSecondaryTemplateList] = useState<T[]>([]);
@@ -350,7 +361,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     });
 
     return (
-        <Grid data-testid={ testId }>
+        <Grid className={ classes } data-testid={ testId }>
             {
                 (heading || subHeading)
                     ? (

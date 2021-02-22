@@ -62,3 +62,9 @@
 @signOnMethodsAuthStepOverflow: auto;
 @signOnMethodsAuthStepFlexDirection: row;
 @signOnMethodsAuthStepMinHeight: 220px;
+
+/*-------------------------------
+      IDP Template Grid
+--------------------------------*/
+
+@idpTemplateGridPaddingTop: 1.5em;
