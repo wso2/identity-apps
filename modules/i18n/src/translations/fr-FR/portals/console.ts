@@ -1147,9 +1147,8 @@ export const console: ConsoleNS = {
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
                                 },
-                                info: "Ce champ est obligatoire pour une application fonctionnelle. Cependant, si " +
-                                "vous prévoyez d'essayer l'exemple d'application, vous pouvez utiliser " +
-                                "{{callBackURLFromTemplate}}."
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
+                                "en utilisant {{callBackURLFromTemplate}} comme URL autorisée."
                             },
                             clientID: {
                                 label: "Identifiant du client"
@@ -3335,7 +3334,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Choisissez l'un des types d'application prédéfinis pour vous connecter rapidement.",
+                subTitle: "Choisissez l'un des types prédéfinis pour intégrer une application.",
                 title: "Choisissez le type d'application"
             },
             applications: {

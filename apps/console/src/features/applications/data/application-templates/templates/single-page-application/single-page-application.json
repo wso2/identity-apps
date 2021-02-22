@@ -1,7 +1,7 @@
 {
     "id": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
     "name": "Single-Page Application",
-    "description": "Web applications that perform user interface logic in a web browser",
+    "description": "Web applications that perform user interface logic in a web browser.",
     "image": "spa",
     "authenticationProtocol": "oidc",
     "types": [

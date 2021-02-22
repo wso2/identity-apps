@@ -42,8 +42,8 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name to identify your application</Heading>
-            <p>A unique name for the application.</p>
+            <Heading as="h5">Name</Heading>
+            <p>A unique name to identify your application.</p>
             <p>E.g., My App</p>
 
             <Divider />
@@ -51,8 +51,8 @@ const AndroidApplicationCreateWizardHelp: FunctionComponent<AndroidApplicationCr
             <React.Fragment>
                 <Heading as="h5">Authorized redirect URIs</Heading>
                 <p>
-                    The redirect URL determines where the authorization code is sent to
-                    once the user is authenticated, and where the user is redirected to
+                    The authorized redirect URLs determine where the authorization code
+                    is sent to once the user is authenticated, and where the user is redirected to
                     once the logout is complete.
                 </p>
                 <p>E.g., https://myapp.io/login</p>

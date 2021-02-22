@@ -41,8 +41,8 @@ const CustomApplicationCreateWizardHelp: FunctionComponent<CustomApplicationCrea
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name to identify your application</Heading>
-            <p>A unique name for the application.</p>
+            <Heading as="h5">Name</Heading>
+            <p>A unique name to identify your application.</p>
             <p>E.g., My App</p>
         </div>
     );

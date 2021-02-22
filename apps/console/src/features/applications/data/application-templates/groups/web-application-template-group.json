@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Web applications that perform application logic on the server",
+    "description": "A web application that runs application logic on the server.",
     "enabled": true,
     "displayOrder": 1,
     "id": "web-application",

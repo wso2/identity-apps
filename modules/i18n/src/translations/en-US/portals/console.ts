@@ -1144,8 +1144,8 @@ export const console: ConsoleNS = {
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 },
-                                info: "This field is required for a functional app. However, if you are"  +
-                                "planning to try out the sample app, you can use {{callBackURLFromTemplate}}."
+                                info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
+                                "as the Authorized URL."
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1779,7 +1779,7 @@ export const console: ConsoleNS = {
                     spaProtocolSettingsWizard:{
                         fields: {
                             callBackUrls: {
-                                label: "Authorized URLs",
+                                label: "Authorized redirect URLs",
                                 validations: {
                                     invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
                                 }
@@ -4183,7 +4183,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to applications",
-                subTitle: "Choose one of the predefined application types to connect quickly.",
+                subTitle: "Choose one of the predefined types to onboard an application.",
                 title: "Select Application Type"
             },
             applications: {
