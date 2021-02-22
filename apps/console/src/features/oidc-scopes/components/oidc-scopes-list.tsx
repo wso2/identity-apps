@@ -321,7 +321,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
             );
         }
 
-        if (list?.length === 0) {
+        if (!isLoading && list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
@@ -428,6 +428,9 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
  */
 OIDCScopeList.defaultProps = {
     "data-testid": "scope-list",
+    defaultListItemLimit: 10,
+    isLoading: true,
+    onListItemClick: () => null,
     selection: true,
     showListItemActions: true
 };
