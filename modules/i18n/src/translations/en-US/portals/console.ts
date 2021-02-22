@@ -4122,8 +4122,8 @@ export const console: ConsoleNS = {
                 identityProviderEdit: "Identity Providers Edit",
                 identityProviderTemplates: "Identity Provider Templates",
                 identityProviders: "Identity Providers",
-                oidcScopes: "OIDC Scopes",
-                oidcScopesEdit: "OIDC Scopes Edit",
+                oidcScopes: "Scopes",
+                oidcScopesEdit: "Scopes Edit",
                 overview: "Overview",
                 remoteRepo: "Remote Repo Config",
                 remoteRepoEdit: "Remote Repo Config Edit"
@@ -5556,7 +5556,7 @@ export const console: ConsoleNS = {
             },
             oidcScopes: {
                 addAttributes: {
-                    description: "Select which user attributes you want to associate with the scope {{name}}.",
+                    description: "Select which user attributes you want to associate with the scope {{name}}."
                 },
                 buttons: {
                     addScope: "New OIDC Scope"
@@ -5787,8 +5787,8 @@ export const console: ConsoleNS = {
                             basicDetails: "Basic Details",
                             claims: "Add Attributes"
                         },
-                        subTitle: "Create a new OIDC scope with required attributes",
-                        title: "Create OIDC Scope"
+                        subTitle: "Create a new OpenID Connect (OIDC) scope with required attributes",
+                        title: "Create OpenID Connect Scope"
                     }
                 }
             },
@@ -7707,8 +7707,8 @@ export const console: ConsoleNS = {
                 title: "Groups"
             },
             oidcScopes: {
-                subTitle: "Create and manage OIDC scopes and the attributes bound to the scopes.",
-                title: "OIDC Scopes"
+                subTitle: "Create and manage OpenID Connect (OIDC) scopes and the attributes bound to the scopes.",
+                title: "OpenID Connect Scopes"
             },
             oidcScopesEdit: {
                 backButton: "Go back to scopes",

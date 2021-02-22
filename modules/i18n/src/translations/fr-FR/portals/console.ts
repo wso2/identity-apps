@@ -3274,8 +3274,8 @@ export const console: ConsoleNS = {
                 identityProviderEdit: "Edition des fournisseurs d'identité",
                 identityProviderTemplates: "Modèles de fournisseurs d'identités",
                 identityProviders: "Fournisseurs d'identité",
-                oidcScopes: "Scopes OIDC",
-                oidcScopesEdit: "Édition des scopes OIDC",
+                oidcScopes: "Scopes",
+                oidcScopesEdit: "Édition des scopes",
                 overview: "Vue d'ensemble",
                 remoteRepo: "Configuration de dépôts distants",
                 remoteRepoEdit: "Édition des configurations des dépôts distants"

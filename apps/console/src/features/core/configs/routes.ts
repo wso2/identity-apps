@@ -335,7 +335,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                                     icon: getSidePanelIcons().childIcon
                                 },
                                 id: "oidcScopesEdit",
-                                name: "OIDC Scopes Edit",
+                                name: "console:develop.features.sidePanel.oidcScopes",
                                 path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -347,7 +347,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                             icon: getSidePanelIcons().scopes
                         },
                         id: "oidcScopes",
-                        name: "OIDC Scopes",
+                        name: "console:develop.features.sidePanel.oidcScopes",
                         order: 7,
                         path: AppConstants.getPaths().get("OIDC_SCOPES"),
                         protected: true,
