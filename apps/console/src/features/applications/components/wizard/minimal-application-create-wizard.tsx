@@ -532,7 +532,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header muted">
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
-                    <Icon name={'hand point down'} size={'small'}></Icon>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader /> }>
