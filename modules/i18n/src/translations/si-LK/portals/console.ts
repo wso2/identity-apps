@@ -62,6 +62,9 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
         },
+        header: {
+            tenantSwitchHeader: "Tenant මාරු කරන්න"
+        },
         modals: {
             editAvatarModal: {
                 content: {

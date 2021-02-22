@@ -62,6 +62,9 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
+        header: {
+            tenantSwitchHeader: "Switch Tenant"
+        },
         modals: {
             editAvatarModal: {
                 content: {
