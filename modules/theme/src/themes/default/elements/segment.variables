@@ -101,3 +101,9 @@
 @emphasizedSegmentBackgroundColor: @lightPageBackground;
 @emphasizedSegmentBorder: @defaultBorderWidth solid @lightBorderColor;
 @emphasizedSegmentBorderRadius: @defaultBorderRadius;
+
+/*-----------------------------
+      Clickable Segment
+------------------------------*/
+
+@clickableSegmentHover: @defaultHoverBackgroundColor;
