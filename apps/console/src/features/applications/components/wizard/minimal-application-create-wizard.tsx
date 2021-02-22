@@ -532,6 +532,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header muted">
                     { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    <Heading as="h6">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help" +
+                            ".subHeading") }
+                    </Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader /> }>
