@@ -332,7 +332,9 @@ module.exports = (env) => {
                     tenantPrefix: !isDeployedOnExternalServer
                         ? "<%=TENANT_AWARE_URL_PREFIX%>"
                         : "",
-                    title: titleText
+                    title: titleText,
+                    vwoScriptVariable: "<%= vwo_ac_id %>",
+                    vwoSystemVariable: "<% String vwo_ac_id = System.getenv(\"vwo_account_id\"); %>"
                 })
                 : new HtmlWebpackPlugin({
                     excludeChunks: [ "rpIFrame" ],
