@@ -209,3 +209,10 @@
 @inlineCodeBlockColor: #5c666f;
 @inlineCodeBlockBgColor: #eef0f1;
 @inlineCodeBlockBorder: 1px solid #c7ced1;
+
+/*-------------------------------
+        Preloader
+--------------------------------*/
+
+@preLoaderWrapperBackgroundColor: @white;
+@preLoaderWrapperBackgroundImage: none;

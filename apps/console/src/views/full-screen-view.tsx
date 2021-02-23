@@ -41,6 +41,7 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
+    PreLoader,
     ProtectedRoute,
     RouteUtils,
     getEmptyPlaceholderIllustrations,
@@ -180,7 +181,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Suspense fallback={ <PreLoader /> }>
                     <Switch>
                         { resolveRoutes() }
                     </Switch>

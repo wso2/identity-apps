@@ -18,9 +18,10 @@
 
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { PreLoader } from "../../core";
 import { AppConstants } from "../../core/constants";
 import { history } from "../../core/helpers";
 import { AppState } from "../../core/store";
@@ -75,7 +76,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
         loginSuccessRedirect();
     }, [ isAuthenticated, isInitialized ]);
 
-    return null;
+    return <PreLoader />;
 };
 
 /**

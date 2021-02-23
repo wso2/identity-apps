@@ -17,9 +17,10 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { AuthLayout as AuthLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
+import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAuthLayoutRoutes } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -59,7 +60,7 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
 
     return (
         <AuthLayoutSkeleton fluid={ fluid }>
-            <Suspense fallback={ <ContentLoader dimmer/> }>
+            <Suspense fallback={ <PreLoader /> }>
                 <Switch>
                     {
                         authLayoutRoutes.map((route, index) => (
