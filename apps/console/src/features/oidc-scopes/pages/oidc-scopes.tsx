@@ -55,7 +55,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const { t } = useTranslation();
 
     /**
-     * Sets the attributes by which the list can be sorted
+     * Sets the scopes by which the list can be sorted
      */
     const SORT_BY = [
         {
