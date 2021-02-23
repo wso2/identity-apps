@@ -295,7 +295,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 6 }>
-                                { !isScopeRequestLoading ? (
+                                { !isScopeRequestLoading && !isAttributeRequestLoading ? (
                                     <Forms
                                         onSubmit={ (values: Map<string, FormValue>) => {
                                             updateOIDCScopeDetails(scope.name, {
