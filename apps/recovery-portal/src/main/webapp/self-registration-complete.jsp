@@ -22,12 +22,27 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.net.MalformedURLException" %>
 <%@ page import="java.io.File" %>
-
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="javax.servlet.http.Cookie" %>
 <%
     boolean isEmailNotificationEnabled = false;
-
+    String username = request.getParameter("username");
+    String tenantDomain = request.getParameter("tenantDomain");
+    String sessionDataKey = request.getParameter("sessionDataKey");
+    String userStoreDomain = request.getParameter("userstoredomain");
+    Boolean hasAutoLoginCookie = false;
+    String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    if (tenantDomain == null) {
+    	tenantDomain = request.getParameter("tenantdomain");
+    }
+    Boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("SelfRegistration.AutoLogin.Enable",
+            tenantDomain));
     String callback = (String) request.getAttribute("callback");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -38,6 +53,24 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+    if (isAutoLoginEnable) {
+    	if (userStoreDomain != null) {
+    		username = userStoreDomain + "/" + username + "@" + tenantDomain;
+    	}
+        String queryParams = callback.substring(callback.indexOf("?") + 1);
+        String[] parameterList = queryParams.split("&");
+        Map<String, String> queryMap = new HashMap<>();
+        for (String param : parameterList) {
+            String key = param.substring(0, param.indexOf("="));
+            String value = param.substring(param.indexOf("=") + 1);
+            queryMap.put(key, value);
+        }
+        sessionDataKey = queryMap.get("sessionDataKey");
+        if (request.getAttribute(AUTO_LOGIN_COOKIE_NAME) != null){
+            hasAutoLoginCookie = request.getAttribute(AUTO_LOGIN_COOKIE_NAME).equals("true");
+        }
+    }
+    session.invalidate();
 %>
 
 <!doctype html>
@@ -86,6 +119,24 @@
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
         </button>
     </div>
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+        <%
+            if (username != null) {
+        %>
+        <div>
+            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+        </div>
+        <%
+            }
+            if (sessionDataKey != null) {
+        %>
+        <div>
+            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+        <%
+            }
+        %>
+    </form>
 </div>
 <% }%>
 
@@ -101,14 +152,18 @@
 
 <script type="application/javascript">
     $(document).ready(function () {
-
         $('.notify').modal({
             onHide: function () {
                 <%
                     try {
+                       if (isAutoLoginEnable && hasAutoLoginCookie) {
                 %>
-                location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                	        document.callbackForm.submit();
                 <%
+                        } else {
+                %>
+                            location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                <%	    }
                 } catch (MalformedURLException e) {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
@@ -122,7 +177,6 @@
             closable: false,
             centered: true,
         }).modal("show");
-
     });
 </script>
 </body>
