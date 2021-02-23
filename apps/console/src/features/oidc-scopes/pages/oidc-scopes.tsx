@@ -20,15 +20,16 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import { sortBy } from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { sortBy as _sortBy } from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Input } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants } from "../../core";
+import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
 import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
+
 
 /**
  * Props for the OIDC scopes page.
@@ -53,6 +54,22 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
     const { t } = useTranslation();
 
+    /**
+     * Sets the attributes by which the list can be sorted
+     */
+    const SORT_BY = [
+        {
+            key: 0,
+            text: t("common:name"),
+            value: "displayName"
+        },
+        {
+            key: 1,
+            text: t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label"),
+            value: "name"
+        }
+    ];
+
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -63,6 +80,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+
+    const initialRender = useRef(true);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -87,7 +108,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
         getOIDCScopesList<OIDCScopesListInterface[]>()
             .then((response: OIDCScopesListInterface[]) => {
-                const sorted = sortBy(response, "displayName");
+                const sorted = _sortBy(response, "displayName");
                 setScopeList(sorted);
                 setTempScopeList(sorted);
             })
@@ -133,6 +154,33 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         }
     };
 
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false;
+        } else {
+            setTempScopeList(sortList(tempScopeList, sortBy.value as string, sortOrder));
+        }
+    }, [ sortBy, sortOrder ]);
+
+    /**
+    * Handles sort order change.
+    *
+    * @param {boolean} isAscending.
+    */
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
+    };
+
+    /**
+    * Handle sort strategy change.
+    *
+    * @param {React.SyntheticEvent<HTMLElement>} event.
+    * @param {DropdownProps} data.
+    */
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+    };
+
     return (
         <PageLayout
             action={
@@ -174,6 +222,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                         />
                     </div>
                 }
+                sortOptions={ SORT_BY }
+                sortStrategy={ sortBy }
+                onSortOrderChange={ handleSortOrderChange }
+                onSortStrategyChange={ handleSortStrategyChange }
             >
                 <OIDCScopeList
                     featureConfig={ featureConfig }
