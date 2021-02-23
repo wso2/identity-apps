@@ -22,13 +22,23 @@ import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import sortBy from "lodash/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import _sortBy from "lodash/sortBy";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Divider, Grid, Header, Icon, Input, Label, Placeholder } from "semantic-ui-react";
-import { AppConstants, UIConstants, history } from "../../core";
+import {
+    Divider,
+    DropdownItemProps,
+    DropdownProps,
+    Grid,
+    Header,
+    Icon,
+    Input,
+    Label,
+    Placeholder
+} from "semantic-ui-react";
+import { AppConstants, UIConstants, history, sortList } from "../../core";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -66,6 +76,22 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         const { t } = useTranslation();
 
+        /**
+         * Sets the attributes by which the list can be sorted
+         */
+        const SORT_BY = [
+            {
+                key: 0,
+                text: t("console:manage.features.claims.external.attributes.attributeURI", { type: "OIDC" }),
+                value: "claimURI"
+            },
+            {
+                key: 1,
+                text: t("console:manage.features.claims.local.attributes.attributeURI"),
+                value: "mappedLocalClaimURI"
+            }
+        ];
+
         const dispatch = useDispatch();
 
         const [ scope, setScope ] = useState<OIDCScopesListInterface>({});
@@ -78,6 +104,18 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ tempSelectedAttributes, setTempSelectedAttributes ] = useState<ExternalClaim[]>([]);
         const [ unselectedAttributes, setUnselectedAttributes ] = useState<ExternalClaim[]>([]);
         const [ triggerAddAttributeModal, setTriggerAttributeModal ] = useTrigger();
+        const [ sortOrder, setSortOrder ] = useState(true);
+        const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+
+        const initialRender = useRef(true);
+
+        useEffect(() => {
+            if (initialRender.current) {
+                initialRender.current = false;
+            } else {
+                setTempSelectedAttributes(sortList(tempSelectedAttributes, sortBy.value as string, sortOrder));
+            }
+        }, [ sortBy, sortOrder ]);
 
         useEffect(() => {
             getAllLocalClaims(null)
@@ -131,7 +169,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
             });
 
-            const sortedSelected = sortBy(selected, "claimURI");
+            const sortedSelected = _sortBy(selected, "claimURI");
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
             setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
@@ -266,6 +304,26 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
          */
         const handleBackButtonClick = (): void => {
             history.push(AppConstants.getPaths().get("OIDC_SCOPES"));
+        };
+
+
+        /**
+        * Handles sort order change.
+        *
+        * @param {boolean} isAscending.
+        */
+        const handleSortOrderChange = (isAscending: boolean) => {
+            setSortOrder(isAscending);
+        };
+
+        /**
+        * Handle sort strategy change.
+        *
+        * @param {React.SyntheticEvent<HTMLElement>} event.
+        * @param {DropdownProps} data.
+        */
+        const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+            setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
         };
 
         return (
@@ -426,6 +484,10 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                             />
                         </div>
                     }
+                    onSortOrderChange={ handleSortOrderChange }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    onSortStrategyChange={ handleSortStrategyChange }
                 >
                     <EditOIDCScope
                         scope={ scope }
