@@ -20,7 +20,6 @@ import { RouteInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     AppLayout as AppLayoutSkeleton,
-    ContentLoader,
     EmptyPlaceholder,
     ErrorBoundary,
     LinkButton
@@ -28,6 +27,7 @@ import {
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -71,7 +71,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Suspense fallback={ <PreLoader /> }>
                     <Switch>
                         {
                             appRoutes.map((route, index) => (
