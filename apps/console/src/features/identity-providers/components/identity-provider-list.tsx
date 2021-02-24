@@ -248,6 +248,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
+                    className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton
                             onClick={ onEmptyListPlaceholderActionClick }

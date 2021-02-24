@@ -400,6 +400,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
+                    className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
