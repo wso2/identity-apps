@@ -6517,23 +6517,23 @@ export const console: ConsoleNS = {
                             },
                             firstName: {
                                 label: "First Name",
-                                placeholder: "Enter your first name",
+                                placeholder: "Enter the first name",
                                 validations: {
                                     empty: "First name is a required field"
                                 }
                             },
                             lastName: {
                                 label: "Last Name",
-                                placeholder: "Enter your last name",
+                                placeholder: "Enter the last name",
                                 validations: {
                                     empty: "Last name is a required field"
                                 }
                             },
                             newPassword: {
-                                label: "New Password",
-                                placeholder: "Enter the new password",
+                                label: "Password",
+                                placeholder: "Enter the password",
                                 validations: {
-                                    empty: "New password is a required field",
+                                    empty: "Password is a required field",
                                     regExViolation: "Please enter a valid password"
                                 }
                             },

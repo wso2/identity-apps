@@ -5640,23 +5640,23 @@ export const console: ConsoleNS = {
                             },
                             firstName: {
                                 label: "මුල් නම",
-                                placeholder: "ඔබේ මුල් නම ඇතුළත් කරන්න",
+                                placeholder: "මුල් නම ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "පළමු නම අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
                                 }
                             },
                             lastName: {
                                 label: "අවසන් නම",
-                                placeholder: "ඔබගේ අවසාන නම ඇතුළත් කරන්න",
+                                placeholder: "අවසාන නම ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "අවසාන නම අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
                                 }
                             },
                             newPassword: {
-                                label: "නව මුරපදය",
-                                placeholder: "නව මුරපදය ඇතුළත් කරන්න",
+                                label: "මුරපදය",
+                                placeholder: "මුරපදය ඇතුළත් කරන්න",
                                 validations: {
-                                    empty: "නව මුරපදය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
+                                    empty: "මුරපදය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
                                     regExViolation: "කරුණාකර වලංගු මුරපදයක් ඇතුළත් කරන්න"
                                 }
                             },
