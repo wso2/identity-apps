@@ -1320,6 +1320,10 @@ export const myAccount: MyAccountNS = {
                 "நிர்வகிக்கவும்",
             title: "பயனர் விபரம்"
         },
+        personalInfoWithoutLinkedAccounts: {
+            subTitle: "உங்கள் தனிப்பட்ட சுயவிவரத்தைத் திருத்தவும் அல்லது ஏற்றுமதி செய்யவும்",
+            title: "பயனர் விபரம்"
+        },
         privacy: {
             subTitle: "",
             title: "WSO2 Identity Server தனியுரிமைக் கொள்கை"

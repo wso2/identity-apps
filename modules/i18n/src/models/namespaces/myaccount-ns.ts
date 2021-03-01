@@ -726,6 +726,7 @@ export interface MyAccountNS {
         applications: Page;
         overview: Page;
         personalInfo: Page;
+        personalInfoWithoutLinkedAccounts: Page;
         privacy: Page;
         security: Page;
     };

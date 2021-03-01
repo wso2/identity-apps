@@ -1283,6 +1283,10 @@ export const myAccount: MyAccountNS = {
                 "ඔබගේ පුද්ගලික පැතිකඩ සංස්කරණය කරන්න හෝ අපනයනය කරන්න සහ සම්බන්ධිත ගිණුම් කළමනාකරණය කරන්න",
             title: "පෞද්ගලික තොරතුරු"
         },
+        personalInfoWithoutLinkedAccounts: {
+            subTitle: "ඔබගේ පුද්ගලික පැතිකඩ සංස්කරණය කරන්න හෝ අපනයනය කරන්න",
+            title: "පෞද්ගලික තොරතුරු"
+        },
         privacy: {
             subTitle: "",
             title: "WSO2 හැඳුනුම් සේවාදායක රහස්‍යතා ප්‍රතිපත්තිය"
