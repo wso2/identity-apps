@@ -270,6 +270,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         ".validations.empty")
                                 }
                                 type="dropdown"
+                                value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
                             <Form.Group widths='equal'>
@@ -305,6 +306,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
                                         ".filterCondition.validations.empty") }
                                     type="dropdown"
+                                    value={ defaultSearchOperator }
                                     data-testid={ `${ testId }-filter-condition-dropdown` }
                                 />
                                 <Field
@@ -359,5 +361,5 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    showResetButton: true
+    showResetButton: false
 };
