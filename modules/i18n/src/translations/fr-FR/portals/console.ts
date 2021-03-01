@@ -5665,21 +5665,21 @@ export const console: ConsoleNS = {
                             },
                             firstName: {
                                 label: "Prénom",
-                                placeholder: "Veuillez saisir un prénom",
+                                placeholder: "Entrez le prénom",
                                 validations: {
                                     empty: "Le prénom est obligatoire"
                                 }
                             },
                             lastName: {
                                 label: "Nom de famille",
-                                placeholder: "Veuillez saisir un nom de famille",
+                                placeholder: "Entrez le nom de famille",
                                 validations: {
                                     empty: "Le nom de famille est obligatoire"
                                 }
                             },
                             newPassword: {
-                                label: "Nouveau mot de passe",
-                                placeholder: "Veuillez saisir un mot de passe",
+                                label: "Mot de passe",
+                                placeholder: "Entrer le mot de passe",
                                 validations: {
                                     empty: "Le mot de passe est obligatoire",
                                     regExViolation: "Le mot de passe saisi est invalide"
