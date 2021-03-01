@@ -322,7 +322,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                     {
-                        step !== 3
+                        step !== 1
                             ? (
                                 < Button onClick={ () => { setOpenWizard(false); } } className="link-button">
                                     { t("common:cancel") }
