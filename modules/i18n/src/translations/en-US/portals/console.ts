@@ -629,6 +629,13 @@ export const console: ConsoleNS = {
                         header: "Are you sure?",
                         message: "This action is irreversible and permanently change the client secret."
                     },
+                    removeApplicationUserAttribute: {
+                        content : "If you confirm this action, the subject attribute will be set to the default " +
+                            "attribute: <1>{{ default }}</1>",
+                        header: "Are you sure?",
+                        subHeader: "The attribute you are trying to remove is currently selected as the subject " +
+                            "attribute."
+                    },
                     revokeApplication: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "If you Revoke this application, All the applications depending on this also might" +
@@ -726,9 +733,9 @@ export const console: ConsoleNS = {
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
                                 heading: "User Attribute Selection",
-                                attributeComponentHint: "Manage the user attributes you want to share with " +
-                                    "this application. You can configure additional <1>OIDC attribute mappings</1> " +
-                                    "and request them via <3>OIDC Scopes.</3>",
+                                attributeComponentHint: "Manage the user attributes you want to share with this " +
+                                    "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
+                                    "by navigating to <3>Attribute Mappings.</3>",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
