@@ -336,7 +336,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
                                     value={ claim?.displayName }
                                     ref={ nameField }
-                                    validation={ (value: String, validation: Validation) => {
+                                    validation={ (value: string, validation: Validation) => {
                                         if (!value.toString().match(/^[A-za-z0-9#_\-\s]+$/)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:manage.features.claims.local" +
