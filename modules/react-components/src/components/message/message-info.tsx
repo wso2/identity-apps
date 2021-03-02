@@ -85,5 +85,5 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
 MessageInfo.defaultProps = {
     header: null,
     content: null,
-    "data-testid": "empty-placeholder",
+    "data-testid": "message-info",
 };
