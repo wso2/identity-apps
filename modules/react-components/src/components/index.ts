@@ -38,6 +38,7 @@ export * from "./label";
 export * from "./language-switcher";
 export * from "./list";
 export * from "./loader";
+export * from "./message";
 export * from "./modal";
 export * from "./page-header";
 export * from "./pagination";
