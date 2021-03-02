@@ -287,6 +287,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                             subheader={ t("myAccount:components.userSessions.dangerZones.terminate." +
                                                 "subheader") }
                                             onActionClick={ () => onTerminateUserSessionClick(userSession) }
+                                            data-testid={ `${testId}-editing-section-danger-zone-terminate` }
                                         />
                                     </DangerZoneGroup>
                                 </Grid.Column>

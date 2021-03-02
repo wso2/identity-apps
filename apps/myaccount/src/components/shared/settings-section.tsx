@@ -227,6 +227,11 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
+                                    data-testid={ primaryAction
+                                        ? `${testId}-card-primary` 
+                                        : secondaryAction
+                                        ? `${testId}-card-secondary`
+                                        : `${testId}-card-placeholder`}
                                     onKeyPress={ (e: KeyboardEvent) => {
                                         if (e.key !== "Enter") {
                                             return;
