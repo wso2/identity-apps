@@ -4052,7 +4052,11 @@ export const console: ConsoleNS = {
                         name: {
                             label: "නම",
                             placeholder: "ගුණාංගය සඳහා නමක් ඇතුළත් කරන්න",
-                            requiredErrorMessage: "නම අවශ්‍යයි"
+                            requiredErrorMessage: "නම අවශ්‍යයි",
+                            validationErrorMessages: {
+                                invalidName: "ඔබ ඇතුළත් කළ නමේ නීති විරෝධී අක්ෂර අඩංගු වේ. අවසර දී ඇත්තේ අක්ෂර, අංක," +
+                                    " අවකාශ, `#`, `-` සහ` _` පමණි."
+                            }
                         },
                         nameHint: "පරිශීලක පැතිකඩ සහ පරිශීලක ලියාපදිංචි පිටුවෙහි පෙන්වන ගුණාංගයේ නම"
                             + "and user registration page",

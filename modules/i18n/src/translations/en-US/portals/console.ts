@@ -4937,7 +4937,11 @@ export const console: ConsoleNS = {
                         name: {
                             label: "Name",
                             placeholder: "Enter a name for the attribute",
-                            requiredErrorMessage: "Name is required"
+                            requiredErrorMessage: "Name is required",
+                            validationErrorMessages: {
+                                invalidName: "The name you entered contains illegal characters. Only alphabet" +
+                                    " characters, numbers, spaces, `#`, `-` and `_` are allowed."
+                            }
                         },
                         nameHint: "Name of the attribute that will be shown on the user profile "
                             + "and user registration page",

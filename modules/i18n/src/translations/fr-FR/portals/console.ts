@@ -4073,7 +4073,12 @@ export const console: ConsoleNS = {
                         name: {
                             label: "Nom",
                             placeholder: "Saisir un nom pour l'attribut",
-                            requiredErrorMessage: "Un nom est requis"
+                            requiredErrorMessage: "Un nom est requis",
+                            validationErrorMessages: {
+                                invalidName: "Le nom que vous avez entré contient des caractères non autorisés." +
+                                    " Seuls les caractères alphabétiques, les nombres, les espaces, `#`, `-` et `_`" +
+                                    " sont autorisés."
+                            }
                         },
                         nameHint: "Nom de l'attribut qui figurera sur le profil de l'utilisateur "
                             + "et la page d'enregistrement de l'utilisateur",
