@@ -1793,7 +1793,14 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 label: "URL autorisées",
                                 validations: {
+                                    empty: "Ceci est un champ obligatoire",
                                     invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter un URI valide."
+                                }
+                            },
+                            name: {
+                                label: "Name",
+                                validations: {
+                                    invalid: "The application name should contain letters, numbers."
                                 }
                             }
                         }

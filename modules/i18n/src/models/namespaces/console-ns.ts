@@ -813,6 +813,7 @@ export interface ConsoleNS {
                     spaProtocolSettingsWizard: {
                         fields: {
                             callBackUrls: FormAttributes;
+                            name: FormAttributes;
                         };
                     };
                 };

@@ -28,6 +28,7 @@ import { Hint } from "../typography";
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
     duplicateURLErrorMessage: string;
+    emptyErrorMessage?: string;
     urlState: string;
     setURLState: any;
     placeholder?: string;
@@ -123,6 +124,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         restrictSecondaryContent,
         customLabel,
         duplicateURLErrorMessage,
+        emptyErrorMessage,
         isAllowEnabled,
         allowedOrigins,
         handleAddAllowedOrigin,
@@ -470,6 +472,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @return {React.ReactElement | React.ReactNode}
      */
     const resolveValidationLabel = (): ReactElement | ReactNode => {
+        if(!validURL && !changeUrl && emptyErrorMessage) {
+            return (
+                <Label basic color="red" pointing>
+                    { emptyErrorMessage }
+                </Label>
+            );
+        }
+
         if (!validURL) {
             return (
                 <Label basic color="red" pointing>

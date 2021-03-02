@@ -338,6 +338,7 @@ export class ApplicationManagementConstants {
      * @type {{APP_NAME_MAX_LENGTH: number}}
      */
     public static readonly FORM_FIELD_CONSTRAINTS = {
-        APP_NAME_MAX_LENGTH: 50
+        APP_NAME_MAX_LENGTH: 50,
+        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     }
 }

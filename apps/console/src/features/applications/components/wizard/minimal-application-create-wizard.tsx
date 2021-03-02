@@ -366,6 +366,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
     };
 
+    const isNameValid = (name: string) => {
+        return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+    };
+
     /**
      * Resolves to the applicable content of an application template.
      *
@@ -409,6 +413,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
                                 validation={ async (value: FormValue, validation: Validation) => {
+                                    if(!isNameValid(value.toString())) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.applications.forms." +
+                                                "spaProtocolSettingsWizard.fields.name.validations.invalid",
+                                                { appName: value.toString(),
+                                                    characterLimit: ApplicationManagementConstants
+                                                        .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                            )
+                                        );
+
+                                        return;
+                                    }
                                     let response: ApplicationListInterface = null;
                                     try {
                                         response = await getApplicationList(null, null, "name eq " + value.toString());
