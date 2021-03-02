@@ -55,7 +55,9 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
 
             return (
                 <>
-                    <Divider hidden/>
+                    <Divider
+                        hidden
+                        className={ 'message-info-text' }/>
                     <div>
                         { (content) }
                     </div>
