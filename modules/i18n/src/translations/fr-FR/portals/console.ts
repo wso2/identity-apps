@@ -6251,7 +6251,8 @@ export const console: ConsoleNS = {
 
                 forms: {
                     validation: {
-                        formatError: "Le format du {{field}} saisi est incorrect."
+                        formatError: "Le format du {{field}} saisi est incorrect.",
+                        dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD."
                     }
                 },
                 list: {

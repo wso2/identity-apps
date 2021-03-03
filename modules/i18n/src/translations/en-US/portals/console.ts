@@ -7080,7 +7080,8 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     validation: {
-                        formatError: "The format of the {{field}} entered is incorrect."
+                        formatError: "The format of the {{field}} entered is incorrect.",
+                        dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is YYYY-MM-DD."
                     }
                 },
                 list: {

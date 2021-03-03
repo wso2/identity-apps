@@ -6209,7 +6209,8 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     validation: {
-                        formatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය."
+                        formatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය.",
+                        dateFormatError: "ඇතුළත් කළ {{field}} ආකෘතිය වැරදිය. වලංගු ආකෘතිය YYYY-MM-DD වේ."
                     }
                 },
                 list: {
