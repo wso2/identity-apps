@@ -4936,7 +4936,12 @@ export const console: ConsoleNS = {
                         name: {
                             label: "Name",
                             placeholder: "Enter a name for the attribute",
-                            requiredErrorMessage: "Name is required"
+                            requiredErrorMessage: "Name is required",
+                            validationErrorMessages: {
+                                invalidName: "The name you entered contains disallowed characters. It can only" +
+                                    " contain up to 30 characters, including alphanumerics, periods (.), dashes (-)," +
+                                    " underscores (_), plus signs (+), and spaces."
+                            }
                         },
                         nameHint: "Name of the attribute that will be shown on the user profile "
                             + "and user registration page",

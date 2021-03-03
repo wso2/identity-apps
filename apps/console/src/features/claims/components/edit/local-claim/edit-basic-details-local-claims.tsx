@@ -26,7 +26,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -83,6 +83,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
+    const descriptionField = useRef<HTMLElement>(null);
 
     const nameTimer = useRef(null);
     const regExTimer = useRef(null);
@@ -221,6 +222,27 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             });
     };
 
+    /**
+     * Scrolls to the first field that throws an error.
+     *
+     * @param {string} field The name of the field.
+     */
+    const scrollToInValidField = (field: string): void => {
+        const options: ScrollIntoViewOptions = {
+            behavior: "smooth",
+            block: "center"
+        };
+
+        switch (field) {
+            case "name":
+                nameField.current.scrollIntoView(options);
+                break;
+            case "description":
+                descriptionField.current.scrollIntoView(options);
+                break;
+        }
+    };
+
     return (
         <>
             { confirmDelete && deleteConfirmation() }
@@ -281,6 +303,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             ));
                         });
                     } }
+                    onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
+                        const iterator = requiredFields.entries();
+                        let result = iterator.next();
+
+                        while (!result.done) {
+                            if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
+                                scrollToInValidField(result.value[ 0 ]);
+                                break;
+                            } else {
+                                result = iterator.next();
+                            }
+                        }
+                    } }
                 >
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -301,6 +336,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
                                     value={ claim?.displayName }
                                     ref={ nameField }
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!value.toString().match(/^[A-za-z0-9#+._\-\s]{1,30}$/)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("console:manage.features.claims.local" +
+                                                ".forms.name.validationErrorMessages.invalidName"));
+                                        }
+                                    }}
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
                                 <Popup
@@ -325,6 +367,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     placeholder={
                                         t("console:manage.features.claims.local.forms.description.placeholder")
                                     }
+                                    ref={ descriptionField }
                                     value={ claim?.description }
                                     data-testid={ `${ testId }-form-description-input` }
                                 />

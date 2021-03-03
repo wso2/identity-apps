@@ -4051,7 +4051,12 @@ export const console: ConsoleNS = {
                         name: {
                             label: "නම",
                             placeholder: "ගුණාංගය සඳහා නමක් ඇතුළත් කරන්න",
-                            requiredErrorMessage: "නම අවශ්‍යයි"
+                            requiredErrorMessage: "නම අවශ්‍යයි",
+                            validationErrorMessages: {
+                                invalidName: "ඔබ ඇතුළත් කළ නමට අවසර නැති අක්ෂර අඩංගු වේ. එහි අඩංගු විය හැක්කේ අක්ෂර" +
+                                    " 30 ක් පමණි, අක්ෂර සංඛ්‍යා, කාල (.), ඉර (-), අවධාරනය (_), සං signs ා (+), සහ" +
+                                    " අවකාශ."
+                            }
                         },
                         nameHint: "පරිශීලක පැතිකඩ සහ පරිශීලක ලියාපදිංචි පිටුවෙහි පෙන්වන ගුණාංගයේ නම"
                             + "and user registration page",
