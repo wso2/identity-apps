@@ -68,27 +68,31 @@
             <% } %>
 
             <div class="ui segment">
-                <h3 class="ui header">
+                <h3 class="ui header" data-testid="request-claims-page-mandatory-header-text">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
                 </h3>
 
                 <% if (request.getParameter("errorMessage") != null) { %>
-                    <div class="ui visible negative message" id="error-msg" data-testid="page-error-message">
+                    <div class="ui visible negative message" id="error-msg"
+                         data-testid="request-claims-page-error-message">
                         <%= AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("errorMessage")) %>
                     </div>
                 <% }%>
 
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="claimForm">
                     <div class="ui divider hidden"></div>
-                    <p>
-                        <strong><%=Encode.forHtmlContent(appName)%></strong>
+                    <p data-testid="request-claims-page-recommendation">
+                        <strong data-testid="request-claims-page-application-name">
+                            <%=Encode.forHtmlContent(appName)%>
+                        </strong>
                          <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.claims.recommendation")%>
                     </p>
 
                     <div class="segment-form">
                         <div>
-                            <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
-
+                            <h3 data-testid="request-claims-page-requested-attributes-header-text">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :
+                            </h3>
                             <% for (String claim : missingClaimList) {
                                 String claimDisplayName = claim;
                                 claimDisplayName = claimDisplayName.replaceAll(".*/", "");
@@ -97,7 +101,8 @@
                                     claimDisplayName = "Date of Birth (YYYY-MM-DD)";
                                 }
                             %>
-                                <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>">
+                                <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                       data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
                                     <%=Encode.forHtmlContent(claim)%>
                                 </label>
                                 <% if (claim.contains("claims/dob")) { %>
@@ -107,6 +112,7 @@
                                                 <i class="calendar icon"></i>
                                                 <input type="text"
                                                        autocomplete="off"
+                                                       data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
                                                        id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                                        name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                                        placeholder="Enter <%=Encode.forHtmlContent(claimDisplayName)%>"
@@ -118,6 +124,7 @@
                                     <div class="field">
                                         <input type="text"
                                                autocomplete="off"
+                                               data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
                                                name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                                id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                                placeholder="Enter <%=Encode.forHtmlContent(claimDisplayName)%>"
@@ -127,12 +134,13 @@
                             <% } %>
                             <input type="hidden"
                                    name="sessionDataKey"
+                                   data-testid="request-claims-page-session-data-key"
                                    value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                         </div>
-
                         <div class="align-right buttons">
                             <button class="ui primary large button"
-                                    type="submit">
+                                    type="submit"
+                                    data-testid="request-claims-page-continue-button">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
                             </button>
                         </div>
