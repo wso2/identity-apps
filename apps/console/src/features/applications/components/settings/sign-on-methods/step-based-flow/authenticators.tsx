@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, LabeledCard, Text, Code } from "@wso2is/react-components";
+import { Code, Heading, LabeledCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
