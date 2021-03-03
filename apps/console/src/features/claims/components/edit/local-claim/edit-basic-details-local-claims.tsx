@@ -337,7 +337,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     value={ claim?.displayName }
                                     ref={ nameField }
                                     validation={ (value: string, validation: Validation) => {
-                                        if (!value.toString().match(/^[A-za-z0-9#_\-\s]+$/)) {
+                                        if (!value.toString().match(/^[A-za-z0-9#+._\-\s]{1,30}$/)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:manage.features.claims.local" +
                                                 ".forms.name.validationErrorMessages.invalidName"));
