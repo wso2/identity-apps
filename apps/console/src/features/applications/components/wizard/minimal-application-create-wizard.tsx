@@ -456,43 +456,32 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 subTemplates.map((
                                                     subTemplate: ApplicationTemplateInterface, index: number
                                                 ) => (
-                                                    <Popup
+                                                    <SelectionCard
+                                                        inline
                                                         key={ index }
-                                                        trigger={
-                                                            <SelectionCard
-                                                                inline
-                                                                key={ index }
-                                                                image={
-                                                                    {
-                                                                        ...getInboundProtocolLogos(),
-                                                                        ...getTechnologyLogos()
-                                                                    }[ subTemplate.image ]
-                                                                }
-                                                                size="x120"
-                                                                className="sub-template-selection-card"
-                                                                header={ subTemplate.name }
-                                                                selected={ selectedTemplate.id === subTemplate.id }
-                                                                onClick={ () => {
-                                                                    if (!subTemplate.previewOnly) {
-                                                                        setSelectedTemplate(subTemplate);
-                                                                        loadTemplateDetails(subTemplate.id,
-                                                                            subTemplate);
-                                                                    }
-                                                                } }
-                                                                imageSize="mini"
-                                                                contentTopBorder={ false }
-                                                                showTooltips={ !subTemplate.previewOnly }
-                                                                disabled={ subTemplate.previewOnly }
-                                                                data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                                                            />
+                                                        image={
+                                                            {
+                                                                ...getInboundProtocolLogos(),
+                                                                ...getTechnologyLogos()
+                                                            }[ subTemplate.image ]
                                                         }
-                                                        content={
-                                                            t("common:comingSoon" )
-                                                        }
-                                                        inverted
-                                                        position="top center"
-                                                        size="mini"
-                                                        disabled={ !subTemplate.previewOnly }
+                                                        size="x120"
+                                                        className="sub-template-selection-card"
+                                                        header={ subTemplate.name }
+                                                        selected={ selectedTemplate.id === subTemplate.id }
+                                                        onClick={ () => {
+                                                            if (!subTemplate.previewOnly) {
+                                                                setSelectedTemplate(subTemplate);
+                                                                loadTemplateDetails(subTemplate.id,
+                                                                    subTemplate);
+                                                            }
+                                                        } }
+                                                        imageSize="mini"
+                                                        contentTopBorder={ false }
+                                                        showTooltips={ !subTemplate.previewOnly }
+                                                        renderDisabledItemsAsGrayscale={ subTemplate.previewOnly }
+                                                        disabled={ subTemplate.previewOnly }
+                                                        data-testid={ `${ testId }-${ subTemplate.id }-card` }
                                                     />
                                                 ))
                                             }

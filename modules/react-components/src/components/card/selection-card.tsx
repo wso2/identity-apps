@@ -18,8 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Card, CardProps } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
@@ -55,6 +56,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      * Should the description have two lines.
      */
     multilineDescription?: boolean;
+    /**
+     * Display disabled items as grayscale.
+     */
+    renderDisabledItemsAsGrayscale?: boolean;
     /**
      * If the card is selected.
      */
@@ -113,6 +118,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         imageSize,
         multilineDescription,
         onClick,
+        renderDisabledItemsAsGrayscale,
         selected,
         selectionType,
         showText,
@@ -124,10 +130,13 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         ...rest
     } = props;
 
+    const { t } = useTranslation();
+
     const classes = classNames(
         "selection-card",
         {
             disabled,
+            grayscale : renderDisabledItemsAsGrayscale,
             "filled-selection": selectionType === "filled",
             inline,
             "no-content-top-border": !contentTopBorder,
@@ -140,6 +149,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         className
     );
 
+    const [ dimmerState, setDimmerState ] = useState<boolean>(false);
+
     return (
         <Card
             id={ id }
@@ -148,8 +159,18 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            onMouseEnter={ () => setDimmerState(true) }
+            onMouseLeave={ () => setDimmerState(false) }
             { ...rest }
         >
+            {
+                // TODO: This should pass as prop, where this component is used,
+                renderDisabledItemsAsGrayscale && (
+                    <Dimmer className="lighter" active={ dimmerState }>
+                        { t("common:featureAvailable" ) }
+                    </Dimmer>
+                )
+            }
             {
                 image && (
                     <Card.Content className="card-image-container">

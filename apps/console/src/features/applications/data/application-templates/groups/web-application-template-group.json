@@ -6,7 +6,7 @@
     "id": "web-application",
     "image": "oidcWebApp",
     "name": "Traditional Web Application",
-    "subTemplatesSectionTitle": "Protocols",
+    "subTemplatesSectionTitle": "Protocol",
     "types": [
         "java"
     ]
