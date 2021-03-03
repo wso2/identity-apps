@@ -508,7 +508,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                                     const host = new URL(callBackURLFromTemplate);
                                                                     handleAddAllowOrigin(host.origin);
                                                                     setCallBackUrls(callBackURLFromTemplate);
-                                                                } }>
+                                                                } }
+                                                                data-testid={ `${ testId }-add-now-button` }
+                                                            >
                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
                                                             </LinkButton>
                                                         )
