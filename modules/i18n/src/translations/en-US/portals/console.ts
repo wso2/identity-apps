@@ -6615,6 +6615,12 @@ export const console: ConsoleNS = {
                         header: "Reset User Password",
                         message: "NOTE: Please note that after changing the password the user will no longer be " +
                             "able to log into any application using the current password.",
+                        hint: {
+                            forceReset: "NOTE: Please note that after inviting the user to change the password " +
+                                "the user will no longer be able to log into any application using the current password.",
+                            setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
+                                "able to log into any application using the current password."
+                        },
                         passwordOptions: {
                             forceReset: "Invite user to reset the password",
                             setPassword: "Set a new password for the user"

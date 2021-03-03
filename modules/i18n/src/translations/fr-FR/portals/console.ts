@@ -5763,6 +5763,13 @@ export const console: ConsoleNS = {
                         header: "Réinitialiser le mot de passe de l'utilisateur",
                         message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                             "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
+                        hint: {
+                            forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
+                                "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
+                                "utilisant le mot de passe actuel.",
+                            setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                                "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
+                        },
                         passwordOptions: {
                             forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
                             setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
