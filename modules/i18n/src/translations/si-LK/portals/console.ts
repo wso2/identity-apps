@@ -1775,7 +1775,14 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 label: "බලයලත් URL",
                                 validations: {
+                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
                                     invalid: "ඇතුළත් කළ URL එක HTTP හෝ HTTPS නොවේ. කරුණාකර වලංගු URI එකක් එක් කරන්න."
+                                }
+                            },
+                            name: {
+                                label: "Name",
+                                validations: {
+                                    invalid: "The application name should contain letters, numbers."
                                 }
                             }
                         }

@@ -452,6 +452,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
                                         }
+                                        emptyErrorMessage={
+                                            t("console:develop.features.applications.forms." +
+                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
+                                        }
                                         validation={ (value: string) => {
                                             if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
                                                 URLUtils.isHttpsUrl(value)))) {
@@ -491,8 +495,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 <Icon name="info" size="mini" />
                                                 <Message.Content> {
                                                     <Trans
-                                                    i18nKey="console:develop.features.applications.forms.
-                                                    inboundOIDC.fieldscallBackUrls.info"
+                                                    i18nKey={ "console:develop.features.applications.forms." +
+                                                        "inboundOIDC.fields.callBackUrls.info" }
                                                     tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
                                                     >
                                                         Don’t have an app? Try out a sample app

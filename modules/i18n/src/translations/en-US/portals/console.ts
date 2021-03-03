@@ -1130,21 +1130,21 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URI determines where the authorization code is sent to upon " +
-                                    "user authentication, and where the user is redirected to upon user logout." +
-                                    "The client app should specify the redirect URI in the authorization or logout " +
-                                    "request and {{productName}} will validate it against the redirect URIs " +
-                                    "entered here.",
-                                label: "Authorized URIs",
+                                hint: "The authorized redirect URL determines where the authorization code is sent " +
+                                    "to upon user authentication, and where the user is redirected to upon user " +
+                                    "logout. The client app should specify the authorized redirect URL in the " +
+                                    "authorization or logout request and {{productName}} will validate it against the " +
+                                    "authorized redirect URLs entered here.",
+                                label: "Authorized redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URI.",
+                                    empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 },
                                 info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
-                                "as the Authorized URL."
+                                "as the authorized redirect URL."
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1780,7 +1780,16 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 label: "Authorized redirect URLs",
                                 validations: {
+                                    empty: "This is a required field.",
                                     invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                                }
+                            },
+                            name: {
+                                label: "Name",
+                                validations: {
+                                    invalid: "{{appName}} is not a valid name. It can contain up to " +
+                                        "{{characterLimit}} characters, including alphanumerics, periods (.), " +
+                                        "dashes (-), underscores (_), and spaces ( )."
                                 }
                             }
                         }
