@@ -348,6 +348,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             size="small"
                             type="submit"
                             value={ t("common:submit").toString() }
+                            data-testid={ `${testId}-form-actions-group-submit-button`}
                         />
                         <Field
                             className="link-button"
@@ -357,6 +358,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             size="small"
                             type="button"
                             value={ t("common:cancel").toString() }
+                            data-testid={ `${testId}-form-actions-group-cancel-button`}
                         />
                     </Form.Group>
 
