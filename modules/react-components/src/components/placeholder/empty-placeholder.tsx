@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Header } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
+import classNames from "classnames";
 
 /**
  * Proptypes for the placeholder component.
@@ -29,6 +30,10 @@ export interface PlaceholderProps extends TestableComponentInterface {
      * Action of the placeholder.
      */
     action?: React.ReactNode;
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * Image for the placeholder.
      */
@@ -58,6 +63,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
 
     const {
         action,
+        className,
         image,
         imageSize,
         subtitle,
@@ -65,8 +71,13 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
         [ "data-testid" ]: testId
     } = props;
 
+    const classes = classNames(
+        "empty-placeholder",
+        className
+    );
+
     return (
-        <div className="empty-placeholder" data-testid={ testId }>
+        <div className={ classes } data-testid={ testId }>
             {
                 image
                     ? (

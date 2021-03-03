@@ -1143,6 +1143,10 @@ body {
     text-align: center;
     padding: 2em;
 
+    &.list-placeholder {
+        margin-right: @listPlaceholderMarginRight;
+    }
+
     .image-container {
         margin-bottom: @emptyPlaceholderImageMarginBottom;
     }
@@ -1904,6 +1908,20 @@ code {
             padding: @codeEditorOneLinerPadding;
         }
     }
+}
+
+/*-------------------------------
+          Pre-Loader
+--------------------------------*/
+.pre-loader-wrapper {
+    background-color: @preLoaderWrapperBackgroundColor;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-image: @preLoaderWrapperBackgroundImage;
 }
 
 .loadUIOverrides();

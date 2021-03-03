@@ -1736,6 +1736,7 @@ export interface ConsoleNS {
                 forms: {
                     validation: {
                         formatError: string;
+                        dateFormatError: string;
                     };
                 };
                 list: {
@@ -3021,6 +3022,10 @@ export interface ConsoleNS {
                     changePasswordModal: {
                         header: string;
                         message: string;
+                        hint: {
+                            setPassword: string;
+                            forceReset: string;
+                        };
                         passwordOptions: {
                             setPassword: string;
                             forceReset: string;

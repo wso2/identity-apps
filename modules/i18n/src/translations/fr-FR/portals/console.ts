@@ -851,11 +851,9 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les authentificateurs " +
                                                 "locaux/fédérés vers les étapes correspondantes.",
-                                            secondFactorDisabled: "Les authentificateurs du second facteur " +
-                                                "ne peuvent être utilisés que dans une étape autre que la " +
-                                                "première, et si un authentificateur de base ou un " +
-                                                "identificateur-premier authentificateur a été ajouté à " +
-                                                "la première étape."
+                                            secondFactorDisabled: "Les authentificateurs de second facteur ne peuvent " +
+                                                "être utilisés que si l'authentificateur de base a été ajouté à une" +
+                                                " étape précédente."
                                         }
                                     }
                                 },
@@ -4073,7 +4071,13 @@ export const console: ConsoleNS = {
                         name: {
                             label: "Nom",
                             placeholder: "Saisir un nom pour l'attribut",
-                            requiredErrorMessage: "Un nom est requis"
+                            requiredErrorMessage: "Un nom est requis",
+                            validationErrorMessages: {
+                                invalidName: "Le nom que vous avez entré contient des caractères non autorisés. Il" +
+                                    " ne peut contenir que 30 caractères, y compris les caractères alphanumériques," +
+                                    " les points (.), les tirets (-), les traits de soulignement (_), signes plus" +
+                                    " (+) et espaces."
+                            }
                         },
                         nameHint: "Nom de l'attribut qui figurera sur le profil de l'utilisateur "
                             + "et la page d'enregistrement de l'utilisateur",
@@ -5665,21 +5669,21 @@ export const console: ConsoleNS = {
                             },
                             firstName: {
                                 label: "Prénom",
-                                placeholder: "Veuillez saisir un prénom",
+                                placeholder: "Entrez le prénom",
                                 validations: {
                                     empty: "Le prénom est obligatoire"
                                 }
                             },
                             lastName: {
                                 label: "Nom de famille",
-                                placeholder: "Veuillez saisir un nom de famille",
+                                placeholder: "Entrez le nom de famille",
                                 validations: {
                                     empty: "Le nom de famille est obligatoire"
                                 }
                             },
                             newPassword: {
-                                label: "Nouveau mot de passe",
-                                placeholder: "Veuillez saisir un mot de passe",
+                                label: "Mot de passe",
+                                placeholder: "Entrer le mot de passe",
                                 validations: {
                                     empty: "Le mot de passe est obligatoire",
                                     regExViolation: "Le mot de passe saisi est invalide"
@@ -5765,6 +5769,13 @@ export const console: ConsoleNS = {
                         header: "Réinitialiser le mot de passe de l'utilisateur",
                         message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
                             "pourra plus se connecter à aucune application en utilisant le mot de passe actuel.",
+                        hint: {
+                            forceReset: "REMARQUE: Veuillez noter qu'après avoir invité l'utilisateur à réinitialiser " +
+                                "le mot de passe, l'utilisateur ne pourra plus se connecter à aucune application en " +
+                                "utilisant le mot de passe actuel.",
+                            setPassword: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                                "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
+                        },
                         passwordOptions: {
                             forceReset: "Inviter l'utilisateur à réinitialiser le mot de passe",
                             setPassword: "Définir un nouveau mot de passe pour l'utilisateur"
@@ -6251,7 +6262,8 @@ export const console: ConsoleNS = {
 
                 forms: {
                     validation: {
-                        formatError: "Le format du {{field}} saisi est incorrect."
+                        formatError: "Le format du {{field}} saisi est incorrect.",
+                        dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD."
                     }
                 },
                 list: {

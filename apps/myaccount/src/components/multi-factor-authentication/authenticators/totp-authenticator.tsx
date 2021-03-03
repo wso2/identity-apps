@@ -140,9 +140,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     <div className="step-text">
                         <h5 >{ t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
-                            <QRCode value={ qrCode } />
+                            <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode`}/>
                             <Divider hidden />
-                            <p className="link" onClick={ refreshCode }>
+                            <p className="link" onClick={ refreshCode } 
+                            data-testid={ `${ testId }-modals-scan-generate`}>
                                 { t(translateKey + "modals.scan.generate") }
                             </p>
                         </Segment>
@@ -322,15 +323,17 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                     {
-                        step !== 3
+                        step !== 1
                             ? (
-                                < Button onClick={ () => { setOpenWizard(false); } } className="link-button">
+                                < Button onClick={ () => { setOpenWizard(false); } } className="link-button"
+                                  data-testid={ `${ testId }-modal-actions-cancel-button`}>
                                     { t("common:cancel") }
                                 </Button>
                             )
                             : null
                     }
-                    <Button onClick={ () => { handleModalButtonClick(step); } } primary>
+                    <Button onClick={ () => { handleModalButtonClick(step); } } primary
+                        data-testid={ `${ testId }-modal-actions-primary-button`}>
                         { stepButtonText(step) }
                     </Button>
                 </Modal.Actions>
@@ -377,6 +380,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             size="small"
                                             color="grey"
                                             name="eye"
+                                            data-testid={`${testId}-view-button`}
                                         />
                                     )
                                 }

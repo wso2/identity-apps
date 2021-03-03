@@ -849,9 +849,8 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "The second-factor authenticators can be used " +
-                                                "only if a basic authenticator or identifier-first authenticator " +
-                                                "has been added in a previous step."
+                                            secondFactorDisabled: "The second-factor authenticators can only be used " +
+                                                "if the <1>basic</1> authenticator has been added in a previous step."
                                         }
                                     }
                                 },
@@ -4937,7 +4936,12 @@ export const console: ConsoleNS = {
                         name: {
                             label: "Name",
                             placeholder: "Enter a name for the attribute",
-                            requiredErrorMessage: "Name is required"
+                            requiredErrorMessage: "Name is required",
+                            validationErrorMessages: {
+                                invalidName: "The name you entered contains disallowed characters. It can only" +
+                                    " contain up to 30 characters, including alphanumerics, periods (.), dashes (-)," +
+                                    " underscores (_), plus signs (+), and spaces."
+                            }
                         },
                         nameHint: "Name of the attribute that will be shown on the user profile "
                             + "and user registration page",
@@ -6517,23 +6521,23 @@ export const console: ConsoleNS = {
                             },
                             firstName: {
                                 label: "First Name",
-                                placeholder: "Enter your first name",
+                                placeholder: "Enter the first name",
                                 validations: {
                                     empty: "First name is a required field"
                                 }
                             },
                             lastName: {
                                 label: "Last Name",
-                                placeholder: "Enter your last name",
+                                placeholder: "Enter the last name",
                                 validations: {
                                     empty: "Last name is a required field"
                                 }
                             },
                             newPassword: {
-                                label: "New Password",
-                                placeholder: "Enter the new password",
+                                label: "Password",
+                                placeholder: "Enter the password",
                                 validations: {
-                                    empty: "New password is a required field",
+                                    empty: "Password is a required field",
                                     regExViolation: "Please enter a valid password"
                                 }
                             },
@@ -6616,6 +6620,12 @@ export const console: ConsoleNS = {
                         header: "Reset User Password",
                         message: "NOTE: Please note that after changing the password the user will no longer be " +
                             "able to log into any application using the current password.",
+                        hint: {
+                            forceReset: "NOTE: Please note that after inviting the user to change the password " +
+                                "the user will no longer be able to log into any application using the current password.",
+                            setPassword: "NOTE: Please note that after changing the password the user will no longer be " +
+                                "able to log into any application using the current password."
+                        },
                         passwordOptions: {
                             forceReset: "Invite user to reset the password",
                             setPassword: "Set a new password for the user"
@@ -7080,7 +7090,8 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     validation: {
-                        formatError: "The format of the {{field}} entered is incorrect."
+                        formatError: "The format of the {{field}} entered is incorrect.",
+                        dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is YYYY-MM-DD."
                     }
                 },
                 list: {

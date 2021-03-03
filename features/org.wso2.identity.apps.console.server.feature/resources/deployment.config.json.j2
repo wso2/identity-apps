@@ -499,15 +499,15 @@
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
-        {% if console.ui.isDefaultDialectEditingEnabled is defined %}
-        "isDefaultDialectEditingEnabled": {{ console.ui.isDefaultDialectEditingEnabled }},
+        {% if console.ui.is_default_dialect_editing_enabled is defined %}
+        "isDefaultDialectEditingEnabled": {{ console.ui.is_default_dialect_editing_enabled }},
         {% endif %}
-        {% if console.ui.isDialectAddingEnabled is defined %}
-        "isDialectAddingEnabled": {{ console.ui.isDialectAddingEnabled }},
+        {% if console.ui.is_dialect_adding_enabled is defined %}
+        "isDialectAddingEnabled": {{ console.ui.is_dialect_adding_enabled }},
         {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
-        {% if console.ui.isRequestPathAuthenticationEnabled is defined %}
-        "isRequestPathAuthenticationEnabled": {{ console.ui.isRequestPathAuthenticationEnabled }},
+        {% if console.ui.is_request_path_authentication_enabled is defined %}
+        "isRequestPathAuthenticationEnabled": {{ console.ui.is_request_path_authentication_enabled }},
         {% endif %}
         {% if console.ui.is_left_navigation_categorized is defined %}
         "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},

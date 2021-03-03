@@ -49,7 +49,10 @@ const PersonalInfoPage = (): ReactElement => {
     return (
         <InnerPageLayout
             pageTitle={ t("myAccount:pages.personalInfo.title") }
-            pageDescription={ t("myAccount:pages.personalInfo.subTitle") }
+            pageDescription={ isFeatureEnabled(accessConfig?.personalInfo,
+                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")) ?
+                t("myAccount:pages.personalInfo.subTitle"):
+                t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle") }
         >
             <Divider hidden/>
             <Grid>

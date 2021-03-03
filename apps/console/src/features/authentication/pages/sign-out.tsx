@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../core";
+import { AppState, PreLoader } from "../../core";
 import { handleSignOut } from "../store/actions";
 
 /**
@@ -38,7 +38,7 @@ const SignOut: FunctionComponent<{}> = (): ReactElement => {
         }
     }, [ logoutInit, isInitialized ]);
 
-    return null;
+    return <PreLoader />;
 };
 
 /**
