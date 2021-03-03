@@ -611,7 +611,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 className={ "m-1 p-1 with-no-border orange" }
                                 onClick={ (e) => {
                                     onAllowOriginClick(e, origin);
-                                } }>
+                                } }
+                                data-testid={ `${ testId }-${ url }-allow-button`}
+                            >
                                 <span style={ { fontWeight: "bold" } }>Allow</span>
                             </LinkButton>
                         ) }
