@@ -382,6 +382,8 @@ export interface ConsoleNS {
                     handlerAuthenticatorAddition: Confirmation;
                     lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
+                    reactivateSPA: Confirmation;
+                    reactivateOIDC: Confirmation;
                     removeApplicationUserAttribute: Popup;
                     revokeApplication: Confirmation;
                     clientSecretHashDisclaimer: {

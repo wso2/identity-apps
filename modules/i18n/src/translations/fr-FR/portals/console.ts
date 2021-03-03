@@ -622,11 +622,30 @@ export const console: ConsoleNS = {
                         message: "Veuillez vérifier vos valeurs."
                     },
                     regenerateSecret: {
-                        assertionHint: "Veuillez taper <1>{{ id }}</1> pour confirmer.",
-                        content: "Si vous régénérez le secret, toutes les applications qui en dépendent pourraient également " +
-                            "cesser de fonctionner. Veuillez procéder avec prudence.",
-                        header: "Etes-vous sûr ?",
-                        message: "Cette action est irréversible et modifie de façon permanente le secret du client."
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour régénérer le secret client.",
+                        content: "Si vous régénérez le secret client, les flux d'authentification " +
+                                 "utilisant l'ancien secret client pour cette application cesseront " +
+                                 "de fonctionner. Veuillez mettre à jour le secret du client " +
+                                 "d'application sur votre application cliente.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et modifie définitivement " +
+                                 "le secret client. Veuillez procéder avec prudence."
+                    },
+                    reactivateSPA: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, les flux d'authentification pour " +
+                                 "cette application commenceront à fonctionner. Veuillez procéder " +
+                                 "avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action peut être annulée en révoquant l'ID client ultérieurement."
+                    },
+                    reactivateOIDC: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, un nouveau secret client sera " +
+                                 "généré. Veuillez mettre à jour le secret du client d'application " +
+                                 "sur votre application cliente.",
+                        header: "Êtes-vous sûr?",
+                        message: ""
                     },
                     removeApplicationUserAttribute: {
                         content : "Si vous supprimez cela, l'attribut d'objet sera défini sur " +
@@ -635,11 +654,12 @@ export const console: ConsoleNS = {
                         subHeader: "Vous essayez de supprimer l'attribut d'objet"
                     },
                     revokeApplication: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous révoquez cette application, toutes les applications qui en dépendent pourraient également " +
-                            "cesser de fonctionner. Veuillez procéder avec prudence.",
-                        header: "Etes-vous sûr ?",
-                        message: "Cette action peut être inversée en régénérant le secret du client."
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour confirmer.",
+                        content: "Cette action peut être annulée en activant l'application ultérieurement.",
+                        header: "Êtes-vous sûr?",
+                        message: "Si vous révoquez cette application, les flux d'authentification " +
+                                 "pour cette application cesseront de fonctionner. Veuillez " +
+                                 "procéder avec prudence."
                     }
                 },
                 dangerZoneGroup: {

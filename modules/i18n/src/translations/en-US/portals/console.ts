@@ -623,11 +623,27 @@ export const console: ConsoleNS = {
                         message: "Please double check your values."
                     },
                     regenerateSecret: {
-                        assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                        content: "If you regenerate this application, All the applications depending on this also " +
-                            "might stop working. Please proceed with caution.",
+                        assertionHint: "Please type <1>{{ id }}</1> to regenerate the client secret.",
+                        content: "If you regenerate the client secret, authentication flows using old client secret " +
+                            "for this application will stop working. Please update the application client secret on " +
+                            "your client application.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and permanently change the client secret."
+                        message: "This action is irreversible and permanently changes the client secret. " +
+                            "Please proceed with caution."
+                    },
+                    reactivateSPA: {
+                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
+                        content: "If you reactivate the application, authentication flows for this " +
+                            "application will start working. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action can be reversed by revoking the client id later."
+                    },
+                    reactivateOIDC: {
+                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
+                        content: "If you reactivate the application, a new client secret will be generated. " +
+                            "Please update the application client secret on your client application.",
+                        header: "Are you sure?",
+                        message: ""
                     },
                     removeApplicationUserAttribute: {
                         content : "If you confirm this action, the subject attribute will be set to the default " +
@@ -638,10 +654,10 @@ export const console: ConsoleNS = {
                     },
                     revokeApplication: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                        content: "If you Revoke this application, All the applications depending on this also might" +
-                            " stop working. Please proceed with caution.",
+                        content: "This action can be reversed by activating the application later.",
                         header: "Are you sure?",
-                        message: "This action is can be reversed by regenerating client secret."
+                        message: "If you revoke this application, authentication flows for this application will " +
+                            "stop working. Please proceed with caution."
                     }
                 },
                 dangerZoneGroup: {
@@ -1200,9 +1216,9 @@ export const console: ConsoleNS = {
                         },
                         messages: {
                             revokeDisclaimer: {
-                                content: "The application has been revoked. Please regenrate the secret if you wish " +
-                                    "to reactivate the application.",
-                                heading: "Application is Revoked"
+                                content: "The application has been revoked. Reactivate the application to allow " +
+                                    "users to log in.",
+                                heading: "Application is inactive"
                             }
                         },
                         sections: {
