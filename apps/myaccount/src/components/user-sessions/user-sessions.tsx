@@ -306,11 +306,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }
-                 data-testid={ `${testId}-termination-modal-actions-cancel` }>
+                 data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
                     { t("common:cancel") }
                 </Button>
                 <Button primary={ true } onClick={ handleTerminateUserSession }
-                 data-testid={ `${testId}-termination-modal-actions-terminate` }>
+                 data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -335,7 +335,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                             basic={ true }
                             color="red"
                             onClick={ handleTerminateAllUserSessionsClick }
-                            data-testid={ `${testId}-settings-section-user-sessions-terminate-all` }
+                            data-testid={ `${testId}-settings-section-user-sessions-terminate-all-button` }
                         >
                             { t("common:terminateAll") }
                         </Button>

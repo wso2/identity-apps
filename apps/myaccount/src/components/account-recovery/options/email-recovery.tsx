@@ -382,7 +382,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     size="small"
                                                     type="submit"
                                                     value={ t("common:update").toString() }
-                                                    data-testid={`${testId}--edit-section-form-sumbit`}
+                                                    data-testid={`${testId}--edit-section-form-sumbit-button`}
                                                 />
                                                 <Field
                                                     className="link-button"
@@ -390,7 +390,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     size="small"
                                                     type="button"
                                                     value={ t("common:cancel").toString() }
-                                                    data-testid={`${testId}--edit-section-form-cancel`}
+                                                    data-testid={`${testId}--edit-section-form-cancel-button`}
                                                 />
                                             </Form.Group>
                                         </Forms>

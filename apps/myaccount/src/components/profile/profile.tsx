@@ -579,7 +579,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 size="small"
                                                 type="submit"
                                                 value={ t("common:save").toString() }
-                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-save` }
+                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-save-button` }
                                             />
                                             <Field
                                                 className="link-button"
@@ -589,7 +589,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 size="small"
                                                 type="button"
                                                 value={ t("common:cancel").toString() }
-                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-cancel` }
+                                                data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-cancel-button` }
                                             />
                                         </Form.Group>
                                     </ Forms>
@@ -728,7 +728,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
                                                             : null }
-                                                            data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-pencil-alternate` }
+                                                            data-testid={ `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-edit-button` }
                                                     />
                                                 )
                                             }

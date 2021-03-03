@@ -326,14 +326,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         step !== 1
                             ? (
                                 < Button onClick={ () => { setOpenWizard(false); } } className="link-button"
-                                  data-testid={ `${ testId }-modal-actions-cancel`}>
+                                  data-testid={ `${ testId }-modal-actions-cancel-button`}>
                                     { t("common:cancel") }
                                 </Button>
                             )
                             : null
                     }
                     <Button onClick={ () => { handleModalButtonClick(step); } } primary
-                        data-testid={ `${ testId }-modal-actions-primary`}>
+                        data-testid={ `${ testId }-modal-actions-primary-button`}>
                         { stepButtonText(step) }
                     </Button>
                 </Modal.Actions>
@@ -380,7 +380,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             size="small"
                                             color="grey"
                                             name="eye"
-                                            data-testid={`${testId}-eye`}
+                                            data-testid={`${testId}-view-button`}
                                         />
                                     )
                                 }
