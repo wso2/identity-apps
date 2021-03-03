@@ -3022,6 +3022,10 @@ export interface ConsoleNS {
                     changePasswordModal: {
                         header: string;
                         message: string;
+                        hint: {
+                            setPassword: string;
+                            forceReset: string;
+                        };
                         passwordOptions: {
                             setPassword: string;
                             forceReset: string;
