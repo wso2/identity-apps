@@ -1736,6 +1736,7 @@ export interface ConsoleNS {
                 forms: {
                     validation: {
                         formatError: string;
+                        dateFormatError: string;
                     };
                 };
                 list: {
