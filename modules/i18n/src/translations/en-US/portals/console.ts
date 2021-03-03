@@ -1133,7 +1133,7 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 hint: "The authorized redirect URL determines where the authorization code is sent " +
                                     "to upon user authentication, and where the user is redirected to upon user " +
-                                    "logout. The client app should specify the authorization redirect URL in the " +
+                                    "logout. The client app should specify the authorized redirect URL in the " +
                                     "authorization or logout request and {{productName}} will validate it against the " +
                                     "authorized redirect URLs entered here.",
                                 label: "Authorized redirect URLs",
