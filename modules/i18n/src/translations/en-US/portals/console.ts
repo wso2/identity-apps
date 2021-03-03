@@ -849,9 +849,8 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "The second-factor authenticators can be used " +
-                                                "only if a basic authenticator or identifier-first authenticator " +
-                                                "has been added in a previous step."
+                                            secondFactorDisabled: "The second-factor authenticators can only be used " +
+                                                "if the <1>basic</1> authenticator has been added in a previous step."
                                         }
                                     }
                                 },

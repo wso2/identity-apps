@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, LabeledCard, Text } from "@wso2is/react-components";
+import { Heading, LabeledCard, Text, Code } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
@@ -36,7 +36,7 @@ import {
     DroppableProvided
 } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
@@ -148,12 +148,15 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         if (droppableId === ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID) {
             return (
                 <Text>
-                    {
-                        t("console:develop.features.applications.edit." +
-                            "sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased." +
-                            "secondFactorDisabled")
-                    }
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.secondFactorDisabled"
+                        }
+                    >
+                        The second-factor authenticators can only be used if the <Code withBackground>basic</Code>
+                        authenticator has been added in a previous step.
+                    </Trans>
                 </Text>
             );
         } else if (droppableId === ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID) {
