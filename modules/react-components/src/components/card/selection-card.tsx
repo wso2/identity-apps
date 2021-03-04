@@ -57,6 +57,14 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      */
     multilineDescription?: boolean;
     /**
+     * Overlay for the card.
+     */
+    overlay?: any;
+    /**
+     * Opacity for the overlay.
+     */
+    overlayOpacity?: number;
+    /**
      * Display disabled items as grayscale.
      */
     renderDisabledItemsAsGrayscale?: boolean;
@@ -118,6 +126,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         imageSize,
         multilineDescription,
         onClick,
+        overlay,
+        overlayOpacity,
         renderDisabledItemsAsGrayscale,
         selected,
         selectionType,
@@ -151,6 +161,16 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
 
     const [ dimmerState, setDimmerState ] = useState<boolean>(false);
 
+    /**
+     * Inline styles for image container.
+     */
+    const imageContainerStyles = (): object => {
+
+        return {
+            opacity: disabled ? overlayOpacity : 1
+        };
+    };
+
     return (
         <Card
             id={ id }
@@ -164,16 +184,14 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             { ...rest }
         >
             {
-                // TODO: This should pass as prop, where this component is used,
-                renderDisabledItemsAsGrayscale && (
-                    <Dimmer className="lighter" active={ dimmerState }>
-                        { t("common:featureAvailable" ) }
-                    </Dimmer>
-                )
+                renderDisabledItemsAsGrayscale && dimmerState && overlay
             }
             {
                 image && (
-                    <Card.Content className="card-image-container">
+                    <Card.Content
+                        className="card-image-container"
+                        style={ imageContainerStyles() }
+                    >
                         <GenericIcon
                             className="card-image"
                             size={ imageSize }
