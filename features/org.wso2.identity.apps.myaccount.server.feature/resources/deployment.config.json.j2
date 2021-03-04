@@ -28,6 +28,9 @@
         {% endfor %}
         {% endif %}
     },
+    {% if myaccount.super_tenant_proxy_name is defined %}
+        "superTenantProxy" : "{{ myaccount.super_tenant_proxy_name }}",
+    {% endif %}
     {% if myaccount.idp_configs is defined %}
     "idpConfigs": {
         {% if myaccount.idp_configs.items() is defined %}
