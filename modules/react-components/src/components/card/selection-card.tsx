@@ -146,7 +146,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         "selection-card",
         {
             disabled,
-            grayscale : renderDisabledItemsAsGrayscale,
+            grayscale: disabled && renderDisabledItemsAsGrayscale,
             "filled-selection": selectionType === "filled",
             inline,
             "no-content-top-border": !contentTopBorder,
@@ -252,5 +252,6 @@ SelectionCard.defaultProps = {
     showText: true,
     showTooltips: false,
     size: "default",
-    textAlign: "center"
+    textAlign: "center",
+    renderDisabledItemsAsGrayscale: true
 };

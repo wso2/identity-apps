@@ -505,7 +505,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         imageSize="mini"
                                                         contentTopBorder={ false }
                                                         showTooltips={ !subTemplate.previewOnly }
-                                                        renderDisabledItemsAsGrayscale={ subTemplate.previewOnly }
+                                                        renderDisabledItemsAsGrayscale={ false }
                                                         disabled={ subTemplate.previewOnly }
                                                         overlay={ renderDimmerOverlay() }
                                                         overlayOpacity={ 0.6 }
