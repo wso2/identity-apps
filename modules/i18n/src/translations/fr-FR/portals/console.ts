@@ -2638,6 +2638,16 @@ export const console: ConsoleNS = {
                             content: "Ajouter un rôle"
                         }
                     },
+                    outboundProvisioningGroups: {
+                        heading: "Groupes d'approvisionnement OutBound",
+                        hint: "Sélectionnez et ajoutez en tant que fournisseur d'identité des groupes " +
+                            "d'approvisionnement sortants",
+                        label: "Grouper",
+                        placeHolder: "Sélectionnez un groupe",
+                        popup: {
+                            content: "Ajouter un groupe"
+                        }
+                    },
                     roleMapping: {
                         heading: "Association de rôles",
                         hint: "Associez les rôles locaux aux rôles des fournisseurs d'identité",

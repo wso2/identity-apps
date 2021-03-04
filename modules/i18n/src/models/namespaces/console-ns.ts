@@ -1057,6 +1057,15 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
+                    outboundProvisioningGroups: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        popup: {
+                            content: string;
+                        };
+                    };
                 };
                 helpPanel: HelpPanelInterface;
                 templates: {
@@ -1385,6 +1394,15 @@ export interface ConsoleNS {
                         };
                     };
                     outboundProvisioningRoles: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        popup: {
+                            content: string;
+                        };
+                    };
+                    outboundProvisioningGroups: {
                         heading: string;
                         hint: string;
                         placeHolder: string;

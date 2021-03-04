@@ -23,11 +23,14 @@ import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
+import {AppState} from "../../../../core/store";
+import {getGroupList} from "../../../../groups/api";
+import {GroupListInterface, GroupsInterface} from "../../../../groups/models";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
@@ -46,6 +49,12 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const [selectedRole, setSelectedRole] = useState<string>(undefined);
     const [selectedRoles, setSelectedRoles] = useState<string[]>(undefined);
     const [roleList, setRoleList] = useState<RolesInterface[]>(undefined);
+    const [groupList, setGroupList] = useState<GroupsInterface[]>(undefined);
+
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled)
+    const groupsOrRolesIdentifier = isGroupAndRoleSeparationEnabled ? "outboundProvisioningGroups" :
+        "outboundProvisioningRoles"
 
     const dispatch = useDispatch();
 
@@ -70,19 +79,29 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     };
 
     useEffect(() => {
-        getRolesList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole?.Resources?.filter((role) => {
-                        return !(role.displayName
-                            .includes("Application/") || role.displayName.includes("Internal/"));
-                    }));
-                }
-            })
-            .catch((error) => {
-                handleGetRoleListError(error);
-            });
+        if (isGroupAndRoleSeparationEnabled) {
+            getGroupList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allGroup: GroupListInterface = response.data;
+                        setGroupList(allGroup?.Resources);
+                    }
+                })
+        } else {
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+                        setRoleList(allRole?.Resources?.filter((role) => {
+                            return !(role.displayName
+                                .includes("Application/") || role.displayName.includes("Internal/"));
+                        }));
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                });
+        }
         setSelectedRoles(idpRoles.outboundProvisioningRoles === undefined ? [] :
             idpRoles.outboundProvisioningRoles);
     }, []);
@@ -111,7 +130,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h5">
-                        { t("console:develop.features.idp.forms.outboundProvisioningRoles" + ".heading") }
+                        { t("console:develop.features.idp.forms." + groupsOrRolesIdentifier + ".heading") }
                     </Heading>
                 </Grid.Column>
             </Grid.Row>
@@ -120,16 +139,26 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
-                            options={ roleList?.map((role) => {
-                                return {
-                                    key: role.id,
-                                    text: role.displayName,
-                                    value: role.displayName
-                                } as DropdownItemProps;
-                            }) }
+                            options={
+                                isGroupAndRoleSeparationEnabled ?
+                                    groupList?.map((group) => {
+                                        return {
+                                            key: group.id,
+                                            text: group.displayName,
+                                            value: group.displayName
+                                        } as DropdownItemProps;
+                                    }) :
+                                    roleList?.map((role) => {
+                                        return {
+                                            key: role.id,
+                                            text: role.displayName,
+                                            value: role.displayName
+                                        } as DropdownItemProps;
+                                    })
+                            }
                             value={ selectedRole }
-                            placeholder={ t("console:develop.features.idp.forms.outboundProvisioningRoles" + 
-                                ".placeHolder") }
+                            placeholder={ t("console:develop.features.idp.forms." + groupsOrRolesIdentifier
+                                + ".placeHolder") }
                             onChange={
                                 (event, data) => {
                                     if (_.isEmpty(data?.value?.toString())) {
@@ -139,7 +168,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 }
                             }
                             search
-                            label={ t("console:develop.features.idp.forms.outboundProvisioningRoles.label") }
+                            label={ t("console:develop.features.idp.forms." + groupsOrRolesIdentifier + ".label") }
                             data-testid={ `${ testId }-role-select-dropdown` }
                         />
                         <Popup
@@ -155,13 +184,14 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 )
                             }
                             position="top center"
-                            content={ t("console:develop.features.idp.forms.outboundProvisioningRoles.popup.content") }
+                            content={ t("console:develop.features.idp.forms." + groupsOrRolesIdentifier
+                                + ".popup.content") }
                             inverted
                             data-testid={ `${ testId }-add-button` }
                         />
                     </Form>
                     <Hint>
-                        { t("console:develop.features.idp.forms.outboundProvisioningRoles.hint") }
+                        { t("console:develop.features.idp.forms." + groupsOrRolesIdentifier + ".hint") }
                     </Hint>
 
                     {

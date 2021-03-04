@@ -2625,6 +2625,15 @@ export const console: ConsoleNS = {
                             content: "Add Role"
                         }
                     },
+                    outboundProvisioningGroups: {
+                        heading: "OutBound Provisioning Groups",
+                        hint: "Select and add as identity provider outbound provisioning groups",
+                        label: "Group",
+                        placeHolder: "Select Group",
+                        popup: {
+                            content: "Add Group"
+                        }
+                    },
                     roleMapping: {
                         heading: "Role Mapping",
                         hint: "Map local roles with the Identity Provider roles",
@@ -3477,6 +3486,15 @@ export const console: ConsoleNS = {
                         placeHolder: "Select Role",
                         popup: {
                             content: "Add Role"
+                        }
+                    },
+                    outboundProvisioningGroups: {
+                        heading: "OutBound Provisioning Groups",
+                        hint: "Select and add as identity provider outbound provisioning groups",
+                        label: "Group",
+                        placeHolder: "Select Group",
+                        popup: {
+                            content: "Add Group"
                         }
                     },
                     roleMapping: {
