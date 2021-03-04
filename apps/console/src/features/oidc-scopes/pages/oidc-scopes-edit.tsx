@@ -22,7 +22,7 @@ import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import _sortBy from "lodash/sortBy";
+import sortBy from "lodash/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -105,7 +105,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ unselectedAttributes, setUnselectedAttributes ] = useState<ExternalClaim[]>([]);
         const [ triggerAddAttributeModal, setTriggerAttributeModal ] = useTrigger();
         const [ sortOrder, setSortOrder ] = useState(true);
-        const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+        const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
 
         const initialRender = useRef(true);
 
@@ -113,7 +113,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             if (initialRender.current) {
                 initialRender.current = false;
             } else {
-                setTempSelectedAttributes(sortList(tempSelectedAttributes, sortBy.value as string, sortOrder));
+                setTempSelectedAttributes(sortList(tempSelectedAttributes, sortByStrategy.value as string, sortOrder));
             }
         }, [ sortBy, sortOrder ]);
 
@@ -169,7 +169,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
             });
 
-            const sortedSelected = _sortBy(selected, "claimURI");
+            const sortedSelected = sortBy(selected, "claimURI");
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
             setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
@@ -323,7 +323,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         * @param {DropdownProps} data.
         */
         const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-            setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+            setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
         };
 
         return (

@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import { sortBy as _sortBy } from "lodash";
+import sortBy from "lodash/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,7 +81,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+    const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
 
     const initialRender = useRef(true);
 
@@ -108,7 +108,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
         getOIDCScopesList<OIDCScopesListInterface[]>()
             .then((response: OIDCScopesListInterface[]) => {
-                const sorted = _sortBy(response, "displayName");
+                const sorted = sortBy(response, "displayName");
                 setScopeList(sorted);
                 setTempScopeList(sorted);
             })
@@ -158,7 +158,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         if (initialRender.current) {
             initialRender.current = false;
         } else {
-            setTempScopeList(sortList(tempScopeList, sortBy.value as string, sortOrder));
+            setTempScopeList(sortList(tempScopeList, sortByStrategy.value as string, sortOrder));
         }
     }, [ sortBy, sortOrder ]);
 
@@ -178,7 +178,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     * @param {DropdownProps} data.
     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     return (
