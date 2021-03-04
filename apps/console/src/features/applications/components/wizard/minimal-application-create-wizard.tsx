@@ -32,10 +32,10 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
 import set from "lodash/set";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Popup } from "semantic-ui-react";
+import { Dimmer, Grid, Popup } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
@@ -362,6 +362,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
     };
 
+    const renderDimmerOverlay = ( ): ReactNode => {
+
+        return (
+            <Dimmer className="lighter" active={ true }>
+                { t("common:featureAvailable" ) }
+            </Dimmer>
+        );
+    }
+
     const scrollToNotification = () => {
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
     };
@@ -473,43 +482,34 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 subTemplates.map((
                                                     subTemplate: ApplicationTemplateInterface, index: number
                                                 ) => (
-                                                    <Popup
+                                                    <SelectionCard
+                                                        inline
                                                         key={ index }
-                                                        trigger={
-                                                            <SelectionCard
-                                                                inline
-                                                                key={ index }
-                                                                image={
-                                                                    {
-                                                                        ...getInboundProtocolLogos(),
-                                                                        ...getTechnologyLogos()
-                                                                    }[ subTemplate.image ]
-                                                                }
-                                                                size="x120"
-                                                                className="sub-template-selection-card"
-                                                                header={ subTemplate.name }
-                                                                selected={ selectedTemplate.id === subTemplate.id }
-                                                                onClick={ () => {
-                                                                    if (!subTemplate.previewOnly) {
-                                                                        setSelectedTemplate(subTemplate);
-                                                                        loadTemplateDetails(subTemplate.id,
-                                                                            subTemplate);
-                                                                    }
-                                                                } }
-                                                                imageSize="mini"
-                                                                contentTopBorder={ false }
-                                                                showTooltips={ !subTemplate.previewOnly }
-                                                                disabled={ subTemplate.previewOnly }
-                                                                data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                                                            />
+                                                        image={
+                                                            {
+                                                                ...getInboundProtocolLogos(),
+                                                                ...getTechnologyLogos()
+                                                            }[ subTemplate.image ]
                                                         }
-                                                        content={
-                                                            t("common:comingSoon" )
-                                                        }
-                                                        inverted
-                                                        position="top center"
-                                                        size="mini"
-                                                        disabled={ !subTemplate.previewOnly }
+                                                        size="x120"
+                                                        className="sub-template-selection-card"
+                                                        header={ subTemplate.name }
+                                                        selected={ selectedTemplate.id === subTemplate.id }
+                                                        onClick={ () => {
+                                                            if (!subTemplate.previewOnly) {
+                                                                setSelectedTemplate(subTemplate);
+                                                                loadTemplateDetails(subTemplate.id,
+                                                                    subTemplate);
+                                                            }
+                                                        } }
+                                                        imageSize="mini"
+                                                        contentTopBorder={ false }
+                                                        showTooltips={ !subTemplate.previewOnly }
+                                                        renderDisabledItemsAsGrayscale={ subTemplate.previewOnly }
+                                                        disabled={ subTemplate.previewOnly }
+                                                        overlay={ renderDimmerOverlay() }
+                                                        overlayOpacity={ 0.6 }
+                                                        data-testid={ `${ testId }-${ subTemplate.id }-card` }
                                                     />
                                                 ))
                                             }
