@@ -223,6 +223,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             data-testid={ `${ testId }-item-heading` }
                         >
                             <UserAvatar
+                                data-testid="users-list-item-image"
                                 name={ user.userName }
                                 size="mini"
                                 image={ user.profileUrl }
@@ -316,6 +317,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? "eye"
                         : "pencil alternate";
                 },
+                "data-testid": "users-list-item-edit-button",
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     handleUserEdit(user?.id),
                 popupText: (user: UserBasicInterface): string => {
@@ -347,6 +349,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || user.userName === realmConfigs?.adminUser;
             },
             icon: (): SemanticICONS => "trash alternate",
+            "data-testid": "users-list-item-delete-button",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
