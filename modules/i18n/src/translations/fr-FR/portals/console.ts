@@ -628,6 +628,12 @@ export const console: ConsoleNS = {
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et modifie de façon permanente le secret du client."
                     },
+                    removeApplicationUserAttribute: {
+                        content : "Si vous supprimez cela, l'attribut d'objet sera défini sur " +
+                            "<1>{{ default }}</1>",
+                        header: "Etes-vous sûr ?",
+                        subHeader: "Vous essayez de supprimer l'attribut d'objet"
+                    },
                     revokeApplication: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
                         content: "Si vous révoquez cette application, toutes les applications qui en dépendent pourraient également " +

@@ -634,6 +634,12 @@ export const console: ConsoleNS = {
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සේවාදායකයාගේ රහස ස්ථිරවම වෙනස් කරයි."
                     },
+                    removeApplicationUserAttribute: {
+                        content : "ඔබ මෙය ඉවත් කළහොත්, විෂය ගුණාංගය " +
+                            "<1>{{ default }}</1>",
+                        header: "ඔබට විශ්වාසද?",
+                        subHeader: "ඔබ විෂය ගුණාංගය ඉවත් කිරීමට උත්සාහ කරයි"
+                    },
                     revokeApplication: {
                         assertionHint: "තහවුරු කිරීමට කරුණාකර <1> {{id}} </1> ටයිප් කරන්න.",
                         content: "ඔබ මෙම යෙදුම අවලංගු කරන්නේ නම්, මෙය මත පදනම් වූ සියලුම යෙදුම් ද ක්‍රියා " +
