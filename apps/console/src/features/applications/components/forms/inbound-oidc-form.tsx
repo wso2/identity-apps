@@ -133,6 +133,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
+    const [ showReactiveConfirmationModal, setShowReactiveConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
     const [ showLowExpiryTimesConfirmationModal, setShowLowExpiryTimesConfirmationModal ] = useState<boolean>(false);
     const [ lowExpiryTimesConfirmationModal, setLowExpiryTimesConfirmationModal ] = useState<ReactElement>(null);
@@ -548,6 +549,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Show Reactivate confirmation.
+     *
+     * @param event Button click event.
+     */
+    const handleReactivateButton = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setShowReactiveConfirmationModal(true);
+        console.log("handle reactive btn");
+    };
+
+    /**
      * Show Revoke confirmation.
      *
      * @param event Button click event.
@@ -936,6 +948,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     showPredictions={ false }
                                     customLabel={ callbackURLsErrorLabel }
+                                    productName={ config.ui.productName }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -2056,11 +2069,108 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
             >
-                { t("console:develop.features.applications.confirmations" +
-                    ".revokeApplication.content") }
+                {
+                    SinglePageApplicationTemplate.id === template.id
+                        ? (
+                            t("console:develop.features.applications.confirmations" +
+                            ".revokeApplication.content"))
+                        : null
+                }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
+
+    /**
+     * Renders the application reactivate confirmation modal.
+     * @return {ReactElement}
+     */
+    const renderReactivateConfirmationModal = (): ReactElement => {
+        return (<ConfirmationModal
+                onClose={(): void => setShowReactiveConfirmationModal(false)}
+                type="warning"
+                open={showReactiveConfirmationModal}
+                assertion={initialValues?.clientId}
+                assertionHint={SinglePageApplicationTemplate.id === template.id ? (
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.confirmations" +
+                                ".reactivateSPA.assertionHint"
+                            }
+                            tOptions={{id: initialValues?.clientId}}
+                        >
+                            Please type <strong>{initialValues?.clientId}</strong> to confirm.
+                        </Trans>
+                    </p>
+                ) : (
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.confirmations" +
+                                ".reactivateOIDC.assertionHint"
+                            }
+                            tOptions={{id: initialValues?.clientId}}
+                        >
+                            Please type <strong>{initialValues?.clientId}</strong> to confirm.
+                        </Trans>
+                    </p>
+                )
+                }
+                assertionType="input"
+                primaryAction={t("common:confirm")}
+                secondaryAction={t("common:cancel")}
+                onSecondaryActionClick={(): void =>
+                    setShowReactiveConfirmationModal(false)
+                }
+                onPrimaryActionClick={(): void => {
+                    onApplicationRegenerate();
+                    setShowReactiveConfirmationModal(false);
+                }}
+                data-testid={`${testId}-oidc-reactivate-confirmation-modal`}
+                closeOnDimmerClick={false}
+            >
+                <ConfirmationModal.Header
+                    data-testid={`${testId}-oidc-reactivate-confirmation-modal-header`}
+                >
+                    {
+                        SinglePageApplicationTemplate.id === template.id
+                            ? (
+                                t("console:develop.features.applications.confirmations" +
+                                  ".reactivateSPA.header") )
+                            : (
+                                t("console:develop.features.applications.confirmations" +
+                                  ".reactivateOIDC.header") )
+                    }
+                </ConfirmationModal.Header>
+                    {
+                        SinglePageApplicationTemplate.id === template.id
+                            ? (                 
+                            <ConfirmationModal.Message
+                                attached
+                                warning
+                                data-testid={`${testId}-oidc-reactivate-confirmation-modal-message`}
+                            >
+                                {t("console:develop.features.applications.confirmations" +
+                                   ".reactivateSPA.message")}
+                                </ConfirmationModal.Message> 
+                                ) : null
+                    }
+                <ConfirmationModal.Content
+                    data-testid={`${testId}-oidc-reactivate-confirmation-modal-content`}
+                >
+                    {
+                        SinglePageApplicationTemplate.id === template.id
+                            ? (
+                                t("console:develop.features.applications.confirmations" +
+                                  ".reactivateSPA.content"))
+                            : (
+                                t("console:develop.features.applications.confirmations" +
+                                  ".reactivateOIDC.content"))
+                    }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        )
+    };
 
     /**
      * Validates if a confirmation modal to warn users regarding low expiration times.
@@ -2348,7 +2458,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <Button
                                             color="green"
                                             className="oidc-action-button ml-0"
-                                            onClick={ handleRegenerateButton }
+                                            onClick={ handleReactivateButton }
                                             data-testid={ `${ testId }-oidc-regenerate-button` }
                                         >
                                             { t("common:activate") }
@@ -2369,6 +2479,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid>
                     { showRegenerateConfirmationModal && renderRegenerateConfirmationModal() }
                     { showRevokeConfirmationModal && renderRevokeConfirmationModal() }
+                    { showReactiveConfirmationModal && renderReactivateConfirmationModal() }
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
             )
