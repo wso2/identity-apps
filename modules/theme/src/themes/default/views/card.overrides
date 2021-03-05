@@ -299,6 +299,8 @@
         }
         &.disabled {
             cursor: not-allowed;
+        }
+        &.grayscale {
             filter: grayscale(100%);
         }
         &.spaced {
