@@ -24,6 +24,9 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { getGroupList } from "../../../../groups/api";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
+import { GroupListInterface, GroupsInterface } from "../../../../groups/models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../../core/store";
 import { handleGetRoleListError } from "../../utils";
 
 /**
@@ -57,7 +60,11 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
+    const [groupList, setGroupList] = useState<GroupsInterface[]>();
     const [roleList, setRoleList] = useState<RolesInterface[]>();
+
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const {
         onSubmit,
@@ -68,10 +75,16 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
 
     const { t } = useTranslation();
 
-    /**
-     * Filter out Application related and Internal roles
-     */
-    const getFilteredRoles = () => {
+    const getGroups = () => {
+        return groupList.map(group => {
+            return {
+                id: group.displayName,
+                value: group.displayName
+            };
+        });
+    };
+
+    const getRoles = () => {
         const filterRole: RolesInterface[] = roleList.filter(
             (role) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
@@ -86,16 +99,25 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        getGroupList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch((error) => {
-                handleGetRoleListError(error);
-            });
+        isGroupAndRoleSeparationEnabled ?
+            getGroupList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allGroup: GroupListInterface = response.data;
+                        setGroupList(allGroup.Resources);
+                    }
+                })
+            :
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                });
     }, [initialRoleMappings]);
 
     return (
@@ -115,7 +137,11 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                 }) : []
                         }
                         keyType="dropdown"
-                        keyData={ roleList ? getFilteredRoles() : [] }
+                        keyData={ isGroupAndRoleSeparationEnabled ?
+                            ( groupList ? getGroups() : [] )
+                            :
+                            ( roleList ? getRoles() : [] )
+                        }
                         keyName={ t("console:develop.features.idp.forms.roleMapping.keyName") }
                         valueName={ t("console:develop.features.idp.forms.roleMapping.valueName") }
                         keyRequiredMessage={ t("console:develop.features.idp.forms.roleMapping." +

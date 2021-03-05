@@ -22,9 +22,12 @@ import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { RoleMappingInterface } from "../../../models";
+import { AppState } from "../../../../core/store";
+import { getGroupList } from "../../../../groups/api";
+import {GroupListInterface, GroupsInterface} from "../../../../groups/models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
@@ -71,6 +74,11 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
 
+    const [groupList, setGroupList] = useState<GroupsInterface[]>();
+
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
     /**
      * Filter out Application related and Internal roles
      */
@@ -88,21 +96,42 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
         });
     };
 
+    /**
+     * Get Groups objects
+     */
+    const getGroups = () => {
+        return groupList.map(group => {
+            return {
+                id: group.displayName,
+                value: group.displayName
+            };
+        });
+    };
+
     useEffect(() => {
-        getRolesList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
-                }));
-            });
+        isGroupAndRoleSeparationEnabled ?
+            getGroupList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allGroup: GroupListInterface = response.data;
+                        setGroupList(allGroup.Resources);
+                    }
+                })
+            :
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                    }));
+                });
     }, [initialMappings]);
 
     return (
@@ -123,7 +152,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 }) : []
                         }
                         keyType="dropdown"
-                        keyData={ roleList ? getFilteredRoles() : [] }
+                        keyData={ isGroupAndRoleSeparationEnabled ?
+                            (groupList ? getGroups() : []) : (roleList ? getFilteredRoles() : [])
+                        }
                         keyName={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".localRole.label")
@@ -150,7 +181,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 const finalData: RoleMappingInterface[] = data.map(mapping => {
                                     return {
                                         applicationRole: mapping.value,
-                                        localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
+                                        localRole: isGroupAndRoleSeparationEnabled || mapping.key.includes("/") ?
+                                            mapping.key : "Internal/" + mapping.key
                                     };
                                 });
                                 onSubmit(finalData);
