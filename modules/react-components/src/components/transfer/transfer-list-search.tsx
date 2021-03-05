@@ -30,6 +30,10 @@ export interface TransferListSearchPropsInterface extends TestableComponentInter
      * Is the search content loading.
      */
     isLoading?: boolean;
+    /**
+     * position of the search icon
+     */
+    iconPosition?: "left";
 }
 
 /**
@@ -47,6 +51,7 @@ export const TransferListSearch: FunctionComponent<TransferListSearchPropsInterf
         handleListSearch,
         placeholder,
         isLoading,
+        iconPosition,
         [ "data-testid" ]: testId
     } = props;
 
@@ -56,6 +61,7 @@ export const TransferListSearch: FunctionComponent<TransferListSearchPropsInterf
                 loading={ isLoading }
                 data-testid={ testId }
                 icon={ <Icon name="search"/> }
+                iconPosition={ iconPosition }
                 fluid
                 onChange={ handleListSearch }
                 placeholder={ placeholder }

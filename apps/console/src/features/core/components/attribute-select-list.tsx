@@ -55,17 +55,24 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     const init = useRef(true);
     const initCheck = useRef(true);
 
+    const requestedComparator = (selectedList: ExtendedExternalClaimInterface[]) => {
+        return (claim: ExtendedExternalClaimInterface): number => {
+            return (selectedList?.findIndex(item => item.id === claim.id) >= 0) ? -1 : 1;
+        };
+    };
+
     useEffect(() => {
         if (selectedExternalClaims.length > 0) {
             const sortedClaims = sortBy(
                 union([...selectedExternalClaims], [...availableExternalClaims]),
-                "localClaimDisplayName"
+                requestedComparator(selectedExternalClaims), "localClaimDisplayName"
             );
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
             setTempSelectedClaims(selectedExternalClaims);
         } else {
-            const sortedClaims = sortBy(availableExternalClaims, "localClaimDisplayName");
+            const sortedClaims = sortBy(availableExternalClaims, requestedComparator([]),
+                "localClaimDisplayName");
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
         }
@@ -137,14 +144,16 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             const uriFilterClaims = tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
-                "localClaimDisplayName"));
+                requestedComparator(tempSelectedClaims), "localClaimDisplayName"));
         } else {
             if (selectedExternalClaims.length > 0) {
                 setFilterTempAvailableClaims(sortBy(
-                    union(selectedExternalClaims, availableExternalClaims ), "localClaimDisplayName")
+                    union(selectedExternalClaims, availableExternalClaims), requestedComparator(tempSelectedClaims),
+                    "localClaimDisplayName")
                 );
             } else {
-                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "localClaimDisplayName"));
+                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, requestedComparator(tempSelectedClaims),
+                    "localClaimDisplayName"));
             }
         }
     };
@@ -157,6 +166,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                     ".steps.select.transfer.searchPlaceholders.attribute"
             ) }
             handleHeaderCheckboxChange={ selectAllUnAssignedList }
+            iconPosition="left"
             isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
             handleUnelectedListSearch={ searchTempAvailable }
             data-testid={ `${ testId }-transfer-component` }

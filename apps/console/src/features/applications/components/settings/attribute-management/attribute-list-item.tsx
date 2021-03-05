@@ -217,7 +217,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         trigger={ (
                             <Icon
                                 link={ true }
-                                className="list-icon"
+                                className="list-icon pr-4"
                                 size="large"
                                 color="grey"
                                 name="trash alternate"
