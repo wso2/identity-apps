@@ -1167,7 +1167,7 @@ export const console: ConsoleNS = {
                                         "this field can be ignored."
                                 },
                                 info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
-                                "as the authorized redirect URL."
+                                "as the authorized redirect URL. (You can download and run a sample at a later step.)"
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1812,7 +1812,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "{{appName}} is not a valid name. It can contain up to " +
                                         "{{characterLimit}} characters, including alphanumerics, periods (.), " +
-                                        "dashes (-), underscores (_), and spaces ( )."
+                                        "dashes (-), underscores (_) and spaces."
                                 }
                             }
                         }
