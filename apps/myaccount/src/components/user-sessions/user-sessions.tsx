@@ -17,7 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import reverse from "lodash/reverse";
+import sortBy from "lodash/sortBy";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Modal } from "semantic-ui-react";
@@ -68,7 +69,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     let sessions = [...response.sessions];
 
                     // Sort the array by last access time
-                    sessions = _.reverse(_.sortBy(sessions, (session) => session.lastAccessTime));
+                    sessions = reverse(sortBy(sessions, (session) => session.lastAccessTime));
 
                     setUserSessions({
                         ...response,

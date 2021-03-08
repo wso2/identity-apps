@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppAvatar, Heading } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import {
@@ -89,7 +89,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 
         return sortedProperties?.map((eachProp) => {
             const propertyMetadata = getPropertyMetadata(eachProp?.key, metaProperties);
-            if (eachProp.value !== undefined && !_.isEmpty(eachProp?.value.toString()) &&
+            if (eachProp.value !== undefined && !isEmpty(eachProp?.value.toString()) &&
                 !propertyMetadata?.isConfidential) {
                 return (
                     <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }

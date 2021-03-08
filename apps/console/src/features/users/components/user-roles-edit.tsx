@@ -34,7 +34,9 @@ import {
     TransferComponent,
     TransferList, TransferListItem
 } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
+import forEachRight from "lodash/forEachRight";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -234,7 +236,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (roleListCopy && primaryRolesList) {
             const primaryRolesValues = Array.from(primaryRolesList?.values());
 
-            _.forEachRight(roleListCopy, (role) => {
+            forEachRight(roleListCopy, (role) => {
                 if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
                 }
@@ -258,7 +260,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             const groupsMap = new Map<string, string> ();
 
             if (user.groups && user.groups instanceof Array) {
-                _.forEachRight (user.groups, (group) => {
+                forEachRight (user.groups, (group) => {
                     const groupName = group?.display?.split("/");
 
                     if (groupName?.length >= 1) {
@@ -275,7 +277,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
 
         if (user.roles && user.roles instanceof Array) {
-            _.forEachRight (user.roles, (roles) => {
+            forEachRight (user.roles, (roles) => {
                 const role = roles?.display?.split("/");
 
                 if (role?.length >= 1 && roles?.value) {
@@ -434,8 +436,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         let isMatch = false;
         const filteredRoleList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             roleList && roleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -640,8 +642,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         let isMatch = false;
         const filteredRoleList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             assignedRoles && assignedRoles?.map((role) => {
                 const groupName = role?.display?.split("/");

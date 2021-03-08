@@ -17,7 +17,7 @@
  */
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
@@ -78,7 +78,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         values?.forEach((value, key) => {
             const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
 
-            if (key !== undefined && !_.isEmpty(value) && key !== "customProperties") {
+            if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
                 properties.push({
                     key: key,
                     value: interpretValueByType(value, key, propertyMetadata?.type)
@@ -163,7 +163,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             // Note: This will remove the element from all API requests as well. If an element that is required
             // by the API is removed, that will break the app. In that case, metadata API needs to updated to
             // send a displayName for such required elements.
-            if (!_.isEmpty(metaProperty?.displayName)) {
+            if (!isEmpty(metaProperty?.displayName)) {
                 const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(
                     property => property.key === metaProperty.key);
 

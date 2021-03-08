@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -54,7 +54,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     const { t } = useTranslation();
 
     const getValidatedInitialValue = (initialValue: string) => {
-        return _.find(dropDownOptions, option => option?.value === initialValue) !== undefined ? initialValue : "";
+        return find(dropDownOptions, option => option?.value === initialValue) !== undefined ? initialValue : "";
     };
 
     return (

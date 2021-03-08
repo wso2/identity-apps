@@ -27,7 +27,7 @@ import {
     HeaderPropsInterface as ReusableHeaderPropsInterface,
     ThemeContext
 } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -96,7 +96,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
 
     useEffect(() => {
-        if (_.isEmpty(config)) {
+        if (isEmpty(config)) {
             return;
         }
 

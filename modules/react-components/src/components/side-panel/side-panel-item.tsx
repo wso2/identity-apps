@@ -19,7 +19,7 @@
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import _ from "lodash";
+import kebabCase from "lodash/kebabCase";
 import React, { ReactElement } from "react";
 import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
@@ -158,7 +158,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             className={ classes }
                             active={ selected && (selected.path === route.path) }
                             onClick={ (): void => onSidePanelItemClick(route) }
-                            data-testid={ `${ testId }-${ _.kebabCase(route.id) }` }
+                            data-testid={ `${ testId }-${ kebabCase(route.id) }` }
                         >
                             <GenericIcon
                                 transparent

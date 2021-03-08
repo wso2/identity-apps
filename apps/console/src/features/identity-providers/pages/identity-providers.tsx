@@ -22,7 +22,9 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -102,11 +104,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      * Set the default doc content URL for the tab.
      */
     useEffect(() => {
-        if (_.isEmpty(helpPanelDocStructure)) {
+        if (isEmpty(helpPanelDocStructure)) {
             return;
         }
 
-        const overviewDocs = _.get(helpPanelDocStructure, IdentityProviderManagementConstants.IDP_OVERVIEW_DOCS_KEY);
+        const overviewDocs = get(helpPanelDocStructure, IdentityProviderManagementConstants.IDP_OVERVIEW_DOCS_KEY);
 
         if (!overviewDocs) {
             return;
@@ -152,7 +154,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
         data: DropdownProps): void => {
-        setListSortingStrategy(_.find(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(IDENTITY_PROVIDER_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
     };

@@ -25,7 +25,8 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -200,8 +201,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     useEffect(() => {
         if (showAddModal) {
-            const attributesListWithoutSelectedElements = attributesList.filter(element => _.isEmpty(
-                _.find(selectedAttributes, value => (value.claim.uri === element.uri)))
+            const attributesListWithoutSelectedElements = attributesList.filter(element => isEmpty(
+                find(selectedAttributes, value => (value.claim.uri === element.uri)))
             );
             setTempAvailableClaims(attributesListWithoutSelectedElements);
             setFilterTempAvailableClaims(attributesListWithoutSelectedElements);
@@ -229,7 +230,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
 
         setSelectedAttributes(tempSelectedAttributes.map(element => {
             const existingMapping = selectedAttributes.find(mapping => mapping.claim.uri === element.uri);
-            return _.isEmpty(existingMapping) ? {
+            return isEmpty(existingMapping) ? {
                 claim: element,
                 mappedValue: ""
             } as IdentityProviderCommonClaimMappingInterface : existingMapping;

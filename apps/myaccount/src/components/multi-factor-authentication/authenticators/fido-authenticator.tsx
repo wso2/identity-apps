@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,7 +111,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      * This calls `getFidoMetaData` every time a new device is registered
      */
     useEffect(() => {
-        if (!_.isEmpty(recentlyAddedDevice)) {
+        if (!isEmpty(recentlyAddedDevice)) {
             getFidoMetaData();
         }
     }, [recentlyAddedDevice]);
@@ -246,7 +246,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      * This function posts the name of the FIDO device
      */
     const submitName = (name: string, id: string): void => {
-        if (!_.isEmpty(recentFIDOName) || _.isEmpty(recentlyAddedDevice)) {
+        if (!isEmpty(recentFIDOName) || isEmpty(recentlyAddedDevice)) {
             setRecentlyAddedDevice("");
             setRecentFIDOName("");
             setRecentFIDONameError(false);

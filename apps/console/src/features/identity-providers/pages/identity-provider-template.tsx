@@ -31,7 +31,7 @@ import {
     SelectionCard,
     TemplateGrid
 } from "@wso2is/react-components";
-import _ from "lodash";
+import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -153,7 +153,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Filter documents based on the template type.
      */
     useEffect(() => {
-        const templateDocs = _.get(helpPanelDocStructure,
+        const templateDocs = get(helpPanelDocStructure,
             IdentityProviderManagementConstants.IDP_TEMPLATES_CREATE_DOCS_KEY);
 
         if (!templateDocs) {

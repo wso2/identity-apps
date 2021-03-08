@@ -30,7 +30,6 @@ import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
 
-
 /**
  * Props for the OIDC scopes page.
  */

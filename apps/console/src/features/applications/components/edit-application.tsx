@@ -21,7 +21,6 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
-import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -225,7 +224,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Called on `availableInboundProtocols` prop update.
      */
     useEffect(() => {
-        if (!_.isEmpty(availableInboundProtocols)) {
+        if (!isEmpty(availableInboundProtocols)) {
             return;
         }
 

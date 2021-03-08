@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import kebabCase from "lodash/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
 import { StatCountCard, StatCountCardPropsInterface } from "../card";
@@ -105,7 +105,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                     ...iconOptions
                 } }
                 { ...statRest }
-                data-testid={ `${ testId }-${ _.kebabCase(label) }-card` }
+                data-testid={ `${ testId }-${ kebabCase(label) }-card` }
             />
         );
     };

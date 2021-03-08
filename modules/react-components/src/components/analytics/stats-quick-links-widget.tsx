@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import kebabCase from "lodash/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, Divider, HeaderProps } from "semantic-ui-react";
 import { SelectionCard, SelectionCardPropsInterface } from "../card";
@@ -119,7 +119,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                                             imageSize="mini"
                                             contentTopBorder={ false }
                                             description={ description }
-                                            data-testid={ `${ testId }-${ _.kebabCase(header) }-card` }
+                                            data-testid={ `${ testId }-${ kebabCase(header) }-card` }
                                             multilineDescription
                                             showTooltips
                                             { ...linksRest }

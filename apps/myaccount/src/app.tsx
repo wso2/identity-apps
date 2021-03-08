@@ -27,7 +27,7 @@ import {
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
@@ -169,7 +169,7 @@ export const App = (): ReactElement => {
     return (
         <>
             {
-                (!_.isEmpty(config?.deployment) && !_.isEmpty(config?.endpoints))
+                (!isEmpty(config?.deployment) && !isEmpty(config?.endpoints))
                     ? (
                         <Router history={ history }>
                             <div className="container-fluid">

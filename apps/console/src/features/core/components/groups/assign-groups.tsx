@@ -19,7 +19,8 @@
 import { RolesInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -89,8 +90,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             initialValues.groupList && initialValues.groupList.map((group) => {
                 isMatch = re.test(group.displayName);
@@ -108,8 +109,8 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
                 isMatch = re.test(group.displayName);

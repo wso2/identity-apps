@@ -20,7 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import _, { isEmpty } from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -158,13 +158,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     useEffect(() => {
         // Provisioning claims, subject URI and role UR depend on the IdP claim mapping unless there are no claim
         // mappings configured. In this case, they need to fall back to local claims.
-        if (_.isEmpty(selectedClaimsWithMapping)) {
+        if (isEmpty(selectedClaimsWithMapping)) {
             // Set provisioning claims.
             setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
                 availableLocalClaims.find(claim => claim.uri === element.claim.uri)));
 
             // Set subject URI.
-            if (_.isEmpty(availableLocalClaims?.find(element => element.uri === subjectClaimUri))) {
+            if (isEmpty(availableLocalClaims?.find(element => element.uri === subjectClaimUri))) {
                 setSubjectClaimUri("");
             }
         } else {
@@ -172,12 +172,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 claimWithDefaultValue => isClaimExistsInIdPClaims(claimWithDefaultValue, selectedClaimsWithMapping)));
 
             // Set role URI.
-            if (_.isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === roleClaimUri))) {
+            if (isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === roleClaimUri))) {
                 setRoleClaimUri("");
             }
 
             // Set subject URI.
-            if (_.isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === subjectClaimUri))) {
+            if (isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === subjectClaimUri))) {
                 setSubjectClaimUri("");
             }
         }
@@ -191,7 +191,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const claimConfigurations: IdentityProviderClaimsInterface = { ...initialClaims };
 
         // Prepare claim mapping for submission.
-        if (!_.isEmpty(selectedClaimsWithMapping?.filter(element => _.isEmpty(element.mappedValue)))) {
+        if (!isEmpty(selectedClaimsWithMapping?.filter(element => isEmpty(element.mappedValue)))) {
             canSubmit = false;
         }
         claimConfigurations["mappings"] = selectedClaimsWithMapping.map(element => {
@@ -202,7 +202,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         });
 
         // Prepare provisioning claims for submission.
-        if (!_.isEmpty(selectedProvisioningClaimsWithDefaultValue?.filter(element => _.isEmpty(element.mappedValue)))) {
+        if (!isEmpty(selectedProvisioningClaimsWithDefaultValue?.filter(element => isEmpty(element.mappedValue)))) {
             canSubmit = false;
         }
         claimConfigurations["provisioningClaims"] = selectedProvisioningClaimsWithDefaultValue.map(element => {
@@ -213,7 +213,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         });
 
         // Prepare subject for submission.
-        if (_.isEmpty(subjectClaimUri)) {
+        if (isEmpty(subjectClaimUri)) {
             // Trigger form field validation on the empty subject uri.
             setSubjectError(true);
             canSubmit = false;
@@ -226,8 +226,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             IdentityProviderClaimInterface;
 
         // Prepare role for submission.
-        if (!_.isEmpty(selectedClaimsWithMapping)) {
-            if (_.isEmpty(roleClaimUri)) {
+        if (!isEmpty(selectedClaimsWithMapping)) {
+            if (isEmpty(roleClaimUri)) {
                 // Trigger form field validation on the empty subject uri.
                 setRoleError(true);
                 canSubmit = false;
@@ -291,7 +291,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         <UriAttributesSettings
                             dropDownOptions={
                                 createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !_.isEmpty(element)) }
+                                    .filter(element => !isEmpty(element)) }
                             initialRoleUri={ roleClaimUri }
                             initialSubjectUri={ subjectClaimUri }
                             claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
@@ -307,11 +307,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         <AttributeSelection
                             attributeList={
                                 buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !_.isEmpty(element?.uri)) }
+                                    .filter(element => !isEmpty(element?.uri)) }
                             selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
                             setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                             uiProps={ {
-                                attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ?
+                                attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
                                     t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +
                                         "attributeColumnHeader.0") :
                                     t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +

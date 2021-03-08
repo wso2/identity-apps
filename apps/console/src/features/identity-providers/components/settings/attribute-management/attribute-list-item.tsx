@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Input, Label, Table } from "semantic-ui-react";
@@ -64,15 +64,15 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             </Table.Cell>
             {
                 <>
-                    <Table.Cell error={ _.isEmpty(mapping) }>
+                    <Table.Cell error={ isEmpty(mapping) }>
                         <Input
                             placeholder={ placeholder }
-                            value={ _.isEmpty(mapping) ? "" : mapping }
+                            value={ isEmpty(mapping) ? "" : mapping }
                             onChange={ handleClaimMapping }
                             required
                             data-testid={ `${ testId }-input` }
                         />
-                        { _.isEmpty(mapping) &&
+                        { isEmpty(mapping) &&
                         (
                             <Label
                                 basic color='red'

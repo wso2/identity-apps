@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -154,7 +154,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         <Table.Body>
                             {
                                 selectedAttributesWithMapping?.filter((mapping) =>
-                                    _.isEmpty(searchFilter)
+                                    isEmpty(searchFilter)
                                         ? true
                                         : mapping?.claim?.displayName?.startsWith(searchFilter)
                                 )?.sort((a, b) => a.claim.displayName.localeCompare(b.claim.displayName)

@@ -29,7 +29,8 @@ import {
     Markdown,
     PageLayout
 } from "@wso2is/react-components";
-import _ from "lodash";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,11 +91,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Set the default doc content URL for the tab.
      */
     useEffect(() => {
-        if (_.isEmpty(helpPanelDocStructure)) {
+        if (isEmpty(helpPanelDocStructure)) {
             return;
         }
 
-        const overviewDocs = _.get(helpPanelDocStructure,
+        const overviewDocs = get(helpPanelDocStructure,
             IdentityProviderManagementConstants.IDP_EDIT_OVERVIEW_DOCS_KEY);
 
         if (!overviewDocs) {

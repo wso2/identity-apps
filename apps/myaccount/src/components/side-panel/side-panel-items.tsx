@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
 import { GenericIcon } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +103,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         if (isApplicationsPageVisible === undefined) {
             fetchApplications(null, null, null)
                 .then((response) => {
-                    if (_.isEmpty(response.applications)) {
+                    if (isEmpty(response.applications)) {
                         dispatch(toggleApplicationsPageVisibility(false));
                         return;
                     }

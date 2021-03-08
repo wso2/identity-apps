@@ -18,7 +18,7 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { chain } from "lodash";
+import chain from "lodash/chain";
 import sortBy from "lodash/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";

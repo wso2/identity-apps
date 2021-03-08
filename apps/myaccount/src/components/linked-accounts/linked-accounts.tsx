@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (_.isEmpty(linkedAccounts)) {
+        if (isEmpty(linkedAccounts)) {
             dispatch(getProfileLinkedAccounts());
         }
     }, []);

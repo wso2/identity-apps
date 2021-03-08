@@ -29,7 +29,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -108,7 +108,7 @@ export const getLocalDialectURI = (): string => {
         .then((response) => {
             // setClaims(response.slice(0, 10));
             const retrieved = response.slice(0, 1)[0].dialectURI;
-            if (!_.isEmpty(retrieved)) {
+            if (!isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
         });
@@ -347,7 +347,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Set local claim URI and maintain it in a state
     const findLocalClaimDialectURI = () => {
         getLocalDialectURI();
-        if (_.isEmpty(localDialectURI)) {
+        if (isEmpty(localDialectURI)) {
             setLocalDialectURI(getLocalDialectURI());
         }
     };
@@ -360,7 +360,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 const claimMappingOption: DropdownOptionsInterface[] = [];
                 claimMapping.map((element: ExtendedClaimMappingInterface) => {
                     let option: DropdownOptionsInterface;
-                    if (!_.isEmpty(element.applicationClaim)) {
+                    if (!isEmpty(element.applicationClaim)) {
                         option = {
                             key: element.localClaim.id,
                             text: element.applicationClaim,
@@ -421,7 +421,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const createdClaimMappings: ExtendedClaimMappingInterface[] = [...claimMapping];
         createdClaimMappings.map((claimMapping) => {
             if (claimMapping.addMapping) {
-                if (_.isEmpty(claimMapping.applicationClaim)) {
+                if (isEmpty(claimMapping.applicationClaim)) {
                     setClaimMappingError(true);
                     returnList = false;
                 } else {
@@ -514,10 +514,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             }
         };
 
-        if (_.isEmpty(submitValue.claimConfiguration.claimMappings)) {
+        if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
         }
-        if (_.isEmpty(submitValue.claimConfiguration.role.mappings)) {
+        if (isEmpty(submitValue.claimConfiguration.role.mappings)) {
             delete submitValue.claimConfiguration.role.mappings;
         }
 
@@ -550,7 +550,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Set the dialects for inbound protocols
     useEffect(() => {
-        if (_.isEmpty(dialect)) {
+        if (isEmpty(dialect)) {
             return;
         }
         //TODO  move this logic to backend
@@ -602,7 +602,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [claimConfigurations]);
 
     return (
-        !isClaimRequestLoading && selectedDialect && !(isClaimLoading && _.isEmpty(externalClaims))
+        !isClaimRequestLoading && selectedDialect && !(isClaimLoading && isEmpty(externalClaims))
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="claim-mapping">

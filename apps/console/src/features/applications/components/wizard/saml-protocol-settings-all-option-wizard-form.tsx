@@ -21,7 +21,7 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, FileUpload, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
@@ -76,14 +76,14 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ assertionURLsErrorLabel, setAssertionURLsErrorLabel ] = useState<ReactElement>(null);
 
     useEffect(() => {
-        if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
+        if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
             setConfigureMode(SAMLConfigModes.MANUAL);
         } else {
-            if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration)) {
+            if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration)) {
                 setConfigureMode(SAMLConfigModes.MANUAL);
-            } else if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataURL)) {
+            } else if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataURL)) {
                 setConfigureMode(SAMLConfigModes.META_URL);
-            } else if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile)) {
+            } else if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile)) {
                 setConfigureMode(SAMLConfigModes.META_FILE);
                 setFile(initialValues?.inboundProtocolConfiguration?.saml?.file);
                 setFileName(initialValues?.inboundProtocolConfiguration?.saml?.fileName);
@@ -162,9 +162,9 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     // check whether assertionConsumer url is empty or not
-                    if (configureMode === SAMLConfigModes.MANUAL && _.isEmpty(assertionConsumerUrls)) {
+                    if (configureMode === SAMLConfigModes.MANUAL && isEmpty(assertionConsumerUrls)) {
                         setAssertionConsumerUrlError(true);
-                    } else if (configureMode === SAMLConfigModes.META_FILE && _.isEmpty(fileContent)) {
+                    } else if (configureMode === SAMLConfigModes.META_FILE && isEmpty(fileContent)) {
                         setEmptyFileError(true);
                     } else {
                         onSubmit(getFormValues(values));

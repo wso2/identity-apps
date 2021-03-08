@@ -18,8 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
-import _ from "lodash";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import isEmpty from "lodash/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Icon, Input, Label, Popup, Table } from "semantic-ui-react";
@@ -105,7 +105,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
-        if (claimMappingError && !_.isEmpty(mappingValue)) {
+        if (claimMappingError && !isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
         }
         isDefaultMappingChanged(true);
@@ -120,7 +120,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [initialRequested]);
 
     useEffect(() => {
-        if (_.isEmpty(mapping?.applicationClaim)) {
+        if (isEmpty(mapping?.applicationClaim)) {
             setErrorInClaimMapping(claimMappingError);
         }
     }, [claimMappingError]);

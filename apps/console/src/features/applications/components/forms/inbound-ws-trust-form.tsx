@@ -22,7 +22,6 @@ import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -184,11 +183,11 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     }
                                     type="text"
                                     value={ initialValues?.audience }
-                                    readOnly={ readOnly || !(_.isEmpty(initialValues?.audience)) }
+                                    readOnly={ readOnly || !(isEmpty(initialValues?.audience)) }
                                     data-testid={ `${ testId }-audience-input` }
                                 />
 
-                                <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
+                                <Hint disabled={ !(isEmpty(initialValues?.audience)) }>
                                     { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".audience.hint") }
                                 </Hint>

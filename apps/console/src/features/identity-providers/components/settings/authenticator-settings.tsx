@@ -25,7 +25,7 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
@@ -251,7 +251,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }
 
     useEffect(() => {
-        if (_.isEmpty(identityProvider.federatedAuthenticators)) {
+        if (isEmpty(identityProvider.federatedAuthenticators)) {
             return;
         }
         setIsPageLoading(true);

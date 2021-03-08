@@ -20,7 +20,7 @@ import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { UserStoreProperty } from "../../userstores/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
@@ -52,7 +52,7 @@ export class SharedUserStoreUtils {
         return getUserStoreList()
             .then((response) => {
                 const store = response.data.find(item => item.name === userstore);
-                if (!_.isEmpty(store)) {
+                if (!isEmpty(store)) {
                     return getAUserStore(store.id)
                         .then((resp) => {
                             usernameRegEx = resp.properties.find(property => property.name === regExName);

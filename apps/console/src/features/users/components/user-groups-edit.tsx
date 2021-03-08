@@ -34,7 +34,9 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
+import forEachRight from "lodash/forEachRight";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -141,7 +143,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         const groupsMap = new Map<string, string> ();
 
         if (user.groups && user.groups instanceof Array) {
-            _.forEachRight (user.groups, (group) => {
+            forEachRight (user.groups, (group) => {
                 const groupName = group?.display?.split("/");
 
                 if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
@@ -186,7 +188,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const setInitialLists = () => {
         const groupListCopy = primaryGroups ? [ ...primaryGroups ] : [];
         const addedGroups = [];
-        _.forEachRight(groupListCopy, (group) => {
+        forEachRight(groupListCopy, (group) => {
             if (primaryGroupsList?.has(group.displayName)) {
                 addedGroups.push(group);
             }
@@ -211,8 +213,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             groupList && groupList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -481,8 +483,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
                 const groupName = group?.display?.split("/");

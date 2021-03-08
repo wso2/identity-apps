@@ -34,7 +34,10 @@ import {
     TransferListItem,
     useWizardAlert
 } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
+import forEach from "lodash/forEach";
+import forEachRight from "lodash/forEachRight";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -182,7 +185,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (roleListCopy && primaryRolesList) {
             const primaryRolesValues = Array.from(primaryRolesList?.values());
 
-            _.forEach(roleListCopy, (role) => {
+            forEach(roleListCopy, (role) => {
                 if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
                 }
@@ -203,7 +206,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         const rolesMap = new Map<string, string>();
 
         if (group.roles && group.roles instanceof Array) {
-            _.forEachRight(group.roles, (roles) => {
+            forEachRight(group.roles, (roles) => {
                 const role = roles.display.split("/");
 
                 if (role.length >= 1) {
@@ -350,8 +353,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         let isMatch = false;
         const filteredRoleList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             roleList && roleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -369,8 +372,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         let isMatch = false;
         const filteredRoleList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             tempRoleList && tempRoleList?.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -656,8 +659,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         let isMatch = false;
         const filteredRoleList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             assignedRoles && assignedRoles?.map((role) => {
                 const groupName = role.display.split("/");
