@@ -2310,7 +2310,7 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyAttributesList: {
                         action: "Add User Attribute",
-                        subtitles: "There are no user attributes selected to the application at the moment.",
+                        subtitles: "There are no user attributes selected for the application at the moment.",
                         title: "No user attributes added"
                     },
                     emptyAuthenticatorStep: {
