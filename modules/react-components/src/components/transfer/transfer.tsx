@@ -46,6 +46,10 @@ export interface TransferComponentPropsInterface extends TestableComponentInterf
     handleSelectedListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
     handleHeaderCheckboxChange?: () => void;
     /**
+     * position of the search icon
+     */
+    iconPosition?: "left";
+    /**
      * Show loading placeholders.
      */
     isLoading?: boolean;
@@ -85,6 +89,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         bordered,
         compact,
         className,
+        iconPosition,
         isLoading,
         removeItems,
         children,
@@ -139,6 +144,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                                         testId + "-unselected-groups-search-input"
                                                                     }
                                                                     handleListSearch={ handleUnelectedListSearch }
+                                                                    iconPosition={ iconPosition }
                                                                     placeholder={ searchPlaceholder }
                                                                 />
                                                             )
@@ -212,6 +218,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         <TransferListSearch
                                                             data-testid={ `${ testId }-selected-groups-search-input` }
                                                             handleListSearch={ handleSelectedListSearch }
+                                                            iconPosition={ iconPosition }
                                                             placeholder={ searchPlaceholder }
                                                         />
                                                         <Segment className="transfer-list-segment">
