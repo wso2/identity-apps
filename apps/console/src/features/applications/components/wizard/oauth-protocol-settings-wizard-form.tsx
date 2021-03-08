@@ -430,7 +430,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         }
                         { ((!fields || fields.includes("callbackURLs")) && showCallbackURLField ) && (
                             <Grid.Row column={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
