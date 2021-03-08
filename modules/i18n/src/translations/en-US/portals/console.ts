@@ -590,8 +590,8 @@ export const console: ConsoleNS = {
                     },
                     deleteApplication: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this application, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "All the applications depending on this also might stop working. " +
+                            "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the application."
                     },

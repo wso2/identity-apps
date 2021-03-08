@@ -588,8 +588,8 @@ export const console: ConsoleNS = {
                     },
                     deleteApplication: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous supprimez cette application, vous ne pourrez pas la récupérer. Toutes les " +
-                            "applications qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
+                        content: "Toutes les applications qui en dépendent risquent également " +
+                            "de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'application."
                     },
