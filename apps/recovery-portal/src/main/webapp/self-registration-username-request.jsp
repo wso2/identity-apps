@@ -26,6 +26,7 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.Enumeration" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -52,7 +53,11 @@
     } else if (SelfRegistrationStatusCodes.ERROR_CODE_SELF_REGISTRATION_DISABLED.equalsIgnoreCase(errorCode)) {
         errorMsg = "Self registration is disabled for tenant - " + user.getTenantDomain();
     } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
-        errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+        if (request.getAttribute("errorMessage") != null) {
+            errorMsg = (String) request.getAttribute("errorMessage");
+        } else {
+            errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+        }
     } else if (StringUtils.equalsIgnoreCase(SelfRegistrationStatusCodes.ERROR_CODE_INVALID_EMAIL_USERNAME,
             errorCode)) {
         errorMsg = "Username is invalid. Username should be in email format.";
