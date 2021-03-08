@@ -206,7 +206,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 content={ (
                                     <>
                                         <Label attached="top">
-                                            <Icon name="warning sign" /> Warning
+                                            <Icon name="info circle" /> Info
                                         </Label>
                                         { resolvePopupContent() }
                                     </>

@@ -200,8 +200,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     useEffect(() => {
 
-        const shouldEnable = hasSpecificFactorsInSteps(
+        let shouldEnable = hasSpecificFactorsInSteps(
             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ]);
+
+        if (authenticationSteps.length === 1) {
+            shouldEnable = false;
+        }
 
         setSecondFactorAuthenticators(
             secondFactorAuthenticators.map((authenticator) => {
