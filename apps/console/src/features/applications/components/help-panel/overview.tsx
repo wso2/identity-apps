@@ -93,16 +93,20 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
             });
     }, [ oidcConfigurations ]);
 
-    useEffect(() => {
-        if (samlConfigurations !== undefined) {
-            return;
-        }
-
-        ApplicationManagementUtils.getSAMLApplicationMeta()
-            .finally(() => {
-                setSAMLConfigsLoading(false);
-            });
-    }, [ samlConfigurations ]);
+    /**
+     * TODO : Revisit the saml metadata request error tracked with
+     * {@link https://github.com/wso2-enterprise/asgardeo-product/issues/2406}.
+     */
+    // useEffect(() => {
+    //     if (samlConfigurations !== undefined) {
+    //         return;
+    //     }
+    //
+    //     ApplicationManagementUtils.getSAMLApplicationMeta()
+    //         .finally(() => {
+    //             setSAMLConfigsLoading(false);
+    //         });
+    // }, [ samlConfigurations ]);
 
     return (
         <>
