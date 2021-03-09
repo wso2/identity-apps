@@ -1259,7 +1259,9 @@ export const console: ConsoleNS = {
                                         label: "Délai d'expiration du jeton d'accès utilisateur",
                                         placeholder: "Saisissez l'heure d'expiration des jetons d'accès utilisateur",
                                         validations: {
-                                            empty: "Veuillez indiquer le délai d'expiration des jetons d'accès"
+                                            empty: "Veuillez indiquer le délai d'expiration des jetons d'accès",
+                                            invalid: "L'heure d'expiration du jeton d'accès doit être exprimée "
+                                                +"en secondes."
                                         }
                                     },
                                     revokeToken: {
@@ -1304,8 +1306,9 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
                                             empty: "Veuillez remplir le public",
-                                            duplicate: "L'audience contient des valeurs en double"
+                                            invalid: "Veuillez ajouter une audience valide."
                                         }
                                     },
                                     encryption: {
@@ -1325,7 +1328,9 @@ export const console: ConsoleNS = {
                                         label: "Délai d'expiration du jeton d'identification",
                                         placeholder: "Entrez l'heure d'expiration du jeton d'identification",
                                         validations: {
-                                            empty: "Veuillez indiquer l'heure d'expiration du jeton d'identification"
+                                            empty: "Veuillez indiquer l'heure d'expiration du jeton d'identification",
+                                            invalid: "Le délai d'expiration du jeton d'identification doit être " +
+                                                "exprimé en secondes."
                                         }
                                     },
                                     method: {
@@ -1397,7 +1402,9 @@ export const console: ConsoleNS = {
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
                                             empty: "Veuillez indiquer le délai d'expiration du jeton de " +
-                                                "rafraîchissement"
+                                                "rafraîchissement",
+                                            invalid: "L'heure d'expiration du jeton d'actualisation doit " +
+                                                "être exprimée en secondes."
                                         }
                                     },
                                     renew: {

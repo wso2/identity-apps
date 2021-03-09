@@ -617,10 +617,11 @@ export const console: ConsoleNS = {
                         message: "This is a handler."
                     },
                     lowOIDCExpiryTimes: {
-                        assertionHint: "Proceed with the existing values.",
-                        content: "You have entered a value less than 60 seconds for the following configuration(s).",
+                        assertionHint: "Click Confirm to continue with your values.",
+                        content: "This means that your tokens may expire too soon. Please recheck your values " +
+                            "for the following configuration(s).",
                         header: "Are you sure?",
-                        message: "Please double check your values."
+                        message: "You have entered a value less than 60 seconds for token expiry."
                     },
                     regenerateSecret: {
                         assertionHint: "Please type <1>{{ id }}</1> to regenerate the client secret.",
@@ -1252,7 +1253,9 @@ export const console: ConsoleNS = {
                                         labelForSPA: "Access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {
-                                            empty: "Please fill the user access token expiry time"
+                                            empty: "Please fill the user access token expiry time",
+                                            invalid: "Access token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     revokeToken: {
@@ -1295,8 +1298,9 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
+                                            duplicate: "Audience contains duplicate values",
                                             empty: "Please fill the audience",
-                                            duplicate: "Audience contains duplicate values"
+                                            invalid: "Please avoid special characters like commas (,)"
                                         }
                                     },
                                     encryption: {
@@ -1314,7 +1318,9 @@ export const console: ConsoleNS = {
                                         label: "ID Token expiry time",
                                         placeholder: "Enter the id token expiry time",
                                         validations: {
-                                            empty: "Please fill the id token expiry time"
+                                            empty: "Please fill the id token expiry time",
+                                            invalid: "ID token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     method: {
@@ -1382,7 +1388,9 @@ export const console: ConsoleNS = {
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {
-                                            empty: "Please fill the refresh token expiry time"
+                                            empty: "Please fill the refresh token expiry time",
+                                            invalid: "Refresh token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     renew: {

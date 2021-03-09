@@ -105,6 +105,11 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Skips URL validation.
      */
     skipValidation?: boolean;
+    /**
+     * Skips internal validations only.
+     * Checks validity using provided validator
+     */
+    skipInternalValidation?: boolean;
 }
 
 /**
@@ -151,6 +156,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         tenantDomain,
         onlyOrigin,
         skipValidation,
+        skipInternalValidation,
         [ "data-testid" ]: testId
     } = props;
 
@@ -177,7 +183,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
-        if (!skipValidation && !URLUtils.isURLValid(url, true)) {
+        if (!(skipValidation || skipInternalValidation) && !URLUtils.isURLValid(url, true)) {
             setValidURL(false);
             return;
         }
@@ -713,7 +719,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
-                    if (skipValidation) {
+                    if (skipValidation || skipInternalValidation) {
                         return (
                             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
