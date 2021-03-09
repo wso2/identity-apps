@@ -184,7 +184,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             { ...rest }
         >
             {
-                renderDisabledItemsAsGrayscale && dimmerState && overlay
+                disabled && dimmerState && overlay
             }
             {
                 image && (
