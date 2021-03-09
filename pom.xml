@@ -549,7 +549,8 @@
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
-                                <argument>install</argument>
+                                <argument>run</argument>
+                                <argument>bootstrap</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
