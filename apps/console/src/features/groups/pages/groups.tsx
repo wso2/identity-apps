@@ -25,7 +25,7 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -226,7 +226,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(_.find(GROUPS_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
     };

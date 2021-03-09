@@ -18,7 +18,7 @@
 
 import { useSVGPromise } from "@wso2is/core/hooks";
 import { FormValidation } from "@wso2is/validation";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -94,7 +94,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                 .catch(() => {
                     setUserImage(null);
                 });
-        } else if (!_.isEmpty(image)) {
+        } else if (!isEmpty(image)) {
             setUserImage(image);
         }
     }, [image]);
@@ -207,7 +207,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const handleSubmit = async () => {
 
-        if (_.isEmpty(url)) {
+        if (isEmpty(url)) {
             setUrlError(Error.REQUIRED);
         } else if (! await FormValidation.imageUrl(url)) {
             setUrlError(Error.VALIDATION);
@@ -304,7 +304,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
 
     return (
         <>
-            { !_.isEmpty(urlSchema) && showEditModal ? editModal() : null }
+            { !isEmpty(urlSchema) && showEditModal ? editModal() : null }
             <Popup
                 content={ gravatarInfoPopoverText }
                 position="bottom center"

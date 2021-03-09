@@ -31,7 +31,7 @@ import {
     UserAvatar,
     useWizardAlert
 } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
 import isEmpty from "lodash/isEmpty";
 import React, {
     Dispatch,
@@ -113,8 +113,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         let isMatch: boolean = false;
         const filteredRoleList: UserBasicInterface[] = [];
 
-        if (!_.isEmpty(query)) {
-            const regExp = new RegExp(_.escapeRegExp(query), "i");
+        if (!isEmpty(query)) {
+            const regExp = new RegExp(escapeRegExp(query), "i");
 
             list && list.map((user: UserBasicInterface) => {
                 isMatch = regExp.test(user.userName);

@@ -22,7 +22,6 @@ import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -157,10 +156,10 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             }
                             type="text"
                             value={ initialValues?.realm }
-                            readOnly={ readOnly || !(_.isEmpty(initialValues?.realm)) }
+                            readOnly={ readOnly || !(isEmpty(initialValues?.realm)) }
                             data-testid={ `${ testId }-realm-input` }
                         />
-                        <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
+                        <Hint disabled={ !(isEmpty(initialValues?.realm)) }>
                             { t("console:develop.features.applications.forms.inboundSTS.fields.realm.hint") }
                         </Hint>
                     </Grid.Column>

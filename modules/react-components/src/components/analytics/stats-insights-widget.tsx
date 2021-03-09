@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import kebabCase from "lodash/kebabCase";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Card, Divider, HeaderProps } from "semantic-ui-react";
 import { LinkButton } from "../button";
@@ -108,7 +108,7 @@ export const StatsInsightsWidget: FunctionComponent<PropsWithChildren<StatsInsig
             <Card
                 fluid
                 className="stats-insights-widget-card basic-card"
-                data-testid={ `${ testId }-${ _.kebabCase(heading) }-card` }
+                data-testid={ `${ testId }-${ kebabCase(heading) }-card` }
             >
                 <Card.Content className={ `main-content compact ${ !showExtraContent ? "hide-extra" : "" } ` }>
                     { children }
@@ -117,10 +117,10 @@ export const StatsInsightsWidget: FunctionComponent<PropsWithChildren<StatsInsig
                     <Card.Content
                         extra
                         className="selection"
-                        data-testid={ `${ testId }-${ _.kebabCase(heading) }-card-action` }
+                        data-testid={ `${ testId }-${ kebabCase(heading) }-card-action` }
                         onClick={ onPrimaryActionClick }
                     >
-                        <LinkButton compact data-testid={ `${ testId }-${ _.kebabCase(heading) }-card-action-button` }>
+                        <LinkButton compact data-testid={ `${ testId }-${ kebabCase(heading) }-card-action-button` }>
                             { primaryAction }
                         </LinkButton>
                     </Card.Content>

@@ -20,8 +20,9 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import _ from "lodash";
 import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
+import merge from "lodash/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -160,7 +161,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
-                if (!_.isEmpty(response.headers.location)) {
+                if (!isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
@@ -244,7 +245,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 [ WizardConstants.IDENTITY_PROVIDER ]: values
             });
         } else {
-            setWizardState(_.merge(wizardState, { [formType]: values }));
+            setWizardState(merge(wizardState, { [formType]: values }));
         }
     };
 
@@ -379,7 +380,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     useEffect(() => {
         let isWaiting = false;
-        if (isAuthenticatorSettingsStepAvailable() && _.isEmpty(availableAuthenticators)) {
+        if (isAuthenticatorSettingsStepAvailable() && isEmpty(availableAuthenticators)) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const status = IdentityProviderManagementUtils.getAuthenticators();
             isWaiting = true;
@@ -477,7 +478,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         ...authenticator,
                         properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata,
                             authenticator.properties, "key")
-                        // properties: _.merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
+                        // properties: merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
                     } : authenticator;
             }),
             defaultAuthenticatorId: template.federatedAuthenticators.defaultAuthenticatorId
@@ -593,7 +594,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             };
         }
 
-        setWizardState(_.merge(wizardState, {
+        setWizardState(merge(wizardState, {
             [WizardConstants.IDENTITY_PROVIDER]: {
                 ...template,
                 ...validatedIdpAttributes

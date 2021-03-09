@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 
@@ -244,11 +244,11 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
         const fileContent = encode ? encodedContent : content;
         const newPasteContent = encode ? btoa(pasteContent) : pasteContent;
 
-        if (_.isEmpty(fileContent) && !_.isEmpty(newPasteContent)) {
+        if (isEmpty(fileContent) && !isEmpty(newPasteContent)) {
             updateContent(newPasteContent);
-        } else if (!_.isEmpty(fileContent) && _.isEmpty(newPasteContent)) {
+        } else if (!isEmpty(fileContent) && isEmpty(newPasteContent)) {
             updateContent(fileContent);
-        } else if (_.isEmpty(fileContent) && _.isEmpty(newPasteContent)) {
+        } else if (isEmpty(fileContent) && isEmpty(newPasteContent)) {
             updateContent("");
         }
     }, [content, encodedContent, pasteContent]);

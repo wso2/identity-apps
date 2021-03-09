@@ -20,7 +20,7 @@ import { getRolesList, getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -195,7 +195,7 @@ const RolesPage = (): ReactElement => {
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(_.find(ROLES_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(ROLES_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
     };

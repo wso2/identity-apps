@@ -21,7 +21,6 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
-import { Dictionary } from "lodash";
 import groupBy from "lodash/groupBy";
 import startCase  from "lodash/startCase";
 import { getTechnologyLogos, store } from "../../core";
@@ -305,7 +304,7 @@ export class ApplicationTemplateManagementUtils {
 
         let categorizedTemplates: ApplicationTemplateCategoryInterface[] = [];
 
-        const groupedByCategory: Dictionary<ApplicationTemplateInterface[]> = groupBy(templates, "category");
+        const groupedByCategory: Record<string, ApplicationTemplateInterface[]> = groupBy(templates, "category");
 
         return this.loadLocalFileBasedTemplateCategories()
             .then((categories: ApplicationTemplateCategoryInterface[]) => {

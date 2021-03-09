@@ -20,7 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import _ from "lodash";
+import merge from "lodash/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -349,7 +349,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             return;
         }
 
-        setWizardState(_.merge(wizardState, {
+        setWizardState(merge(wizardState, {
             [WizardConstants.AUTHENTICATOR]: {}
         }));
         setWizardSteps([

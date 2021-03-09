@@ -84,7 +84,18 @@ module.exports = {
         "object-curly-spacing": ["warn", "always"],
         "no-console": "warn",
         "no-duplicate-imports": "warn",
-        "no-restricted-imports": ["warn", { "patterns": ["@wso2is/**/dist/**"] }],
+        "no-restricted-imports": [
+            "error",
+            {
+                paths: [
+                    {
+                        message: "Please use import foo from 'lodash/foo' instead.",
+                        name: "lodash"
+                    }
+                ],
+                patterns: [ "@wso2is/**/dist/**" ]
+            }
+        ],
         "semi": 1,
         "jsx-quotes": [ "warn", "prefer-double" ]
     },

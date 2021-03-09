@@ -18,7 +18,6 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { Dictionary } from "lodash";
 import groupBy from "lodash/groupBy";
 import { store } from "../../core";
 import {
@@ -182,7 +181,7 @@ export class IdentityProviderTemplateManagementUtils {
 
         let categorizedTemplates: IdentityProviderTemplateCategoryInterface[] = [];
 
-        const groupedByCategory: Dictionary<IdentityProviderTemplateInterface[]> = groupBy(templates, "category");
+        const groupedByCategory: Record<string, IdentityProviderTemplateInterface[]> = groupBy(templates, "category");
 
         return this.loadLocalFileBasedTemplateCategories()
             .then((categories: IdentityProviderTemplateCategoryInterface[]) => {

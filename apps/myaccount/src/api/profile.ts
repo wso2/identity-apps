@@ -20,7 +20,7 @@ import { IdentityClient } from "@wso2/identity-oidc-js";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { Config } from "../configs";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -98,7 +98,7 @@ export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
  * @param email
  */
 export const getGravatarImage = (email: string): Promise<string> => {
-    if (_.isEmpty(email)) {
+    if (isEmpty(email)) {
         return Promise.reject("Email is null");
     } else {
         const url: string = CommonUtils.getGravatar(email);

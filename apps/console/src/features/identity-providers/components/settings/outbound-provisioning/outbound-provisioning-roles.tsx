@@ -20,7 +20,9 @@ import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components";
-import _ from "lodash";
+import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -53,20 +55,20 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     
     const handleRoleAdd = (event) => {
         event.preventDefault();
-        if (_.isEmpty(selectedRole)) {
+        if (isEmpty(selectedRole)) {
             return;
         }
-        if (_.isEmpty(selectedRoles.find(role => role === selectedRole))) {
+        if (isEmpty(selectedRoles.find(role => role === selectedRole))) {
             setSelectedRoles([...selectedRoles, selectedRole]);
         }
         setSelectedRole("");
     };
 
     const handleRoleRemove = (removingRole: string) => {
-        if (_.isEmpty(removingRole)) {
+        if (isEmpty(removingRole)) {
             return;
         }
-        setSelectedRoles(_.filter(selectedRoles, role => !_.isEqual(removingRole, role)));
+        setSelectedRoles(filter(selectedRoles, role => !isEqual(removingRole, role)));
     };
 
     useEffect(() => {
@@ -132,7 +134,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 ".placeHolder") }
                             onChange={
                                 (event, data) => {
-                                    if (_.isEmpty(data?.value?.toString())) {
+                                    if (isEmpty(data?.value?.toString())) {
                                         return;
                                     }
                                     setSelectedRole(data.value.toString());

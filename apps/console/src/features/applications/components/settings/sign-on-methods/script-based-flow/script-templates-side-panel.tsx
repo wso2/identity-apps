@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -164,7 +164,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                     vertical
                                 >
                                     {
-                                        _.sortBy(templates, "order").map((category, index) => (
+                                        sortBy(templates, "order").map((category, index) => (
                                             category?.templates && category.templates instanceof Array && (
                                                 <Menu.Item key={ index }>
                                                     <Accordion.Title

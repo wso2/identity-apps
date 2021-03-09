@@ -18,7 +18,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import {
     BasicProfileInterface,
     MultiValue,
@@ -170,7 +170,7 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
  * @returns {boolean} Boolean
  */
 const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface): boolean => {
-    return !(_.isEmpty(profileInfo.profileUrl) && _.isEmpty(profileInfo.userImage));
+    return !(isEmpty(profileInfo.profileUrl) && isEmpty(profileInfo.userImage));
 };
 
 /**

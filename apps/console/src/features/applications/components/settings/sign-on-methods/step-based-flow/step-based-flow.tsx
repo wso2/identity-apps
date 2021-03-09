@@ -19,7 +19,6 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Heading, Hint } from "@wso2is/react-components";
-import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
@@ -503,7 +502,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const validateSteps = (): boolean => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
-        const found = steps.find((step) => _.isEmpty(step.options));
+        const found = steps.find((step) => isEmpty(step.options));
 
         if (found) {
             dispatch(

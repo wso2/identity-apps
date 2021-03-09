@@ -21,7 +21,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import _ from "lodash";
+import find from "lodash/find";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -163,7 +163,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
                                                data: DropdownProps): void => {
-        setListSortingStrategy(_.find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
     };

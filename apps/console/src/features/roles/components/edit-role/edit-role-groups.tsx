@@ -35,7 +35,10 @@ import {
     TransferListItem,
     useWizardAlert
 } from "@wso2is/react-components";
-import _ from "lodash";
+import escapeRegExp from "lodash/escapeRegExp";
+import forEach from "lodash/forEach";
+import forEachRight from "lodash/forEachRight";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -143,7 +146,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const groupsMap = new Map<string, string> ();
 
         if (role.groups && role.groups instanceof Array) {
-            _.forEachRight (role.groups, (group) => {
+            forEachRight (role.groups, (group) => {
                 const groupName = group.display.split("/");
 
                 if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
@@ -166,7 +169,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             if (groupListCopy && primaryGroupsList) {
                 const primaryGroupValues = Array.from(primaryGroupsList?.values());
 
-                _.forEach(groupListCopy, (group) => {
+                forEach(groupListCopy, (group) => {
                     if (primaryGroupValues.includes(group?.id)) {
                         addedGroups.push(group);
                     }
@@ -275,8 +278,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             groupList && groupList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -294,8 +297,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             tempGroupList && tempGroupList?.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -581,8 +584,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         let isMatch = false;
         const filteredGroupList = [];
 
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), "i");
+        if (!isEmpty(value)) {
+            const re = new RegExp(escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
                 const groupName = group.display.split("/");

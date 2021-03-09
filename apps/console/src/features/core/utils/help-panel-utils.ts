@@ -20,7 +20,8 @@
 import { AlertLevels, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import { AppUtils } from "./app-utils";
 import { store } from "../store";
 
@@ -47,11 +48,11 @@ export class HelpPanelUtils {
 
         const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
 
-        if (_.isEmpty(userPreferences)) {
+        if (isEmpty(userPreferences)) {
             return false;
         }
 
-        if (_.isEmpty(userPreferences)
+        if (isEmpty(userPreferences)
             || !userPreferences.identityAppsSettings?.devPortal?.helpPanel
             || userPreferences.identityAppsSettings.devPortal.helpPanel.isPinned === undefined) {
 
@@ -68,7 +69,7 @@ export class HelpPanelUtils {
 
         const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
 
-        if (_.isEmpty(userPreferences)) {
+        if (isEmpty(userPreferences)) {
             return;
         }
 
@@ -78,7 +79,7 @@ export class HelpPanelUtils {
             return;
         }
 
-        const newPref: StorageIdentityAppsSettingsInterface = _.cloneDeep(userPreferences);
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
         newPref.identityAppsSettings.devPortal.helpPanel.isPinned = !isPinned;
 
         AppUtils.setUserPreferences(newPref);

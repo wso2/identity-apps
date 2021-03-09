@@ -22,7 +22,8 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
-import _ from "lodash";
+import camelCase from "lodash/camelCase";
+import isEmpty from "lodash/isEmpty";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
@@ -152,7 +153,7 @@ export class IdentityProviderManagementUtils {
 
                     federated.identityProviders.forEach((authenticator: StrictIdentityProviderInterface) => {
 
-                        if (_.isEmpty(authenticator?.federatedAuthenticators?.authenticators)
+                        if (isEmpty(authenticator?.federatedAuthenticators?.authenticators)
                             || !authenticator?.federatedAuthenticators?.defaultAuthenticatorId) {
 
                             return;
@@ -240,8 +241,8 @@ export class IdentityProviderManagementUtils {
             templates.push({
                 displayName: key,
                 docs: value.toString(),
-                image: _.camelCase(key).toLowerCase(),
-                name: _.camelCase(key).toLowerCase()
+                image: camelCase(key).toLowerCase(),
+                name: camelCase(key).toLowerCase()
             });
         }
 

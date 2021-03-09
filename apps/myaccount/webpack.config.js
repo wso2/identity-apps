@@ -29,7 +29,7 @@ const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 // Flag to enable source maps in production.
-const isSourceMapsEnabledInProduction = true;
+const isSourceMapsEnabledInProduction = false;
 
 // Enable/Disable profiling in Production.
 const isProfilingEnabledInProduction = false;
@@ -53,8 +53,9 @@ module.exports = (env) => {
     // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
     const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
 
-    // Checks if analyzing mode enabled.
+    // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
+    const analyzerPort = env.ANALYZER_PORT;
 
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9000;
@@ -251,7 +252,10 @@ module.exports = (env) => {
                 : `${ publicPath }/`
         },
         plugins: [
-            isAnalyzeMode && new BundleAnalyzerPlugin(),
+            isAnalyzeMode && new BundleAnalyzerPlugin({
+                analyzerHost: "localhost",
+                analyzerPort: analyzerPort
+            }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
                 checkSyntacticErrors: true,

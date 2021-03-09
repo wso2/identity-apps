@@ -20,7 +20,8 @@ import { getAllLocalClaims } from "@wso2is/core/api";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import _ from "lodash";
+import find from "lodash/find";
+import isEmpty from "lodash/isEmpty";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
 import { store } from "../../../core";
 import { updateClaimsConfigs, updateIDPRoleMappings } from "../../api";
@@ -48,7 +49,7 @@ export const getLocalDialectURI = (): string => {
     getAllLocalClaims(null)
         .then((response) => {
             const retrieved = response.slice(0, 1)[0].dialectURI;
-            if (!_.isEmpty(retrieved)) {
+            if (!isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
         })
@@ -61,7 +62,7 @@ export const getLocalDialectURI = (): string => {
 export const createDropdownOption = (selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[],
                                      availableLocalClaims: IdentityProviderClaimInterface[]):
     DropdownOptionsInterface[] => {
-    return _.isEmpty(selectedClaimsWithMapping) ?
+    return isEmpty(selectedClaimsWithMapping) ?
         availableLocalClaims.map((element: IdentityProviderClaimInterface): DropdownOptionsInterface => {
             if (element?.uri) {
                 return {
@@ -87,7 +88,7 @@ export const createDropdownOption = (selectedClaimsWithMapping: IdentityProvider
 export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
                                            availableLocalClaims: IdentityProviderClaimInterface[]):
     IdentityProviderClaimInterface[] => {
-    return _.isEmpty(claimMappings) ? availableLocalClaims : claimMappings?.map(
+    return isEmpty(claimMappings) ? availableLocalClaims : claimMappings?.map(
         (claimMapping: IdentityProviderCommonClaimMappingInterface): IdentityProviderClaimInterface => {
             return {
                 displayName: claimMapping.mappedValue,
@@ -100,7 +101,7 @@ export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommon
 export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMappingInterface,
                                          selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]) => {
     // Mapped value of the selectedClaim is non-other than IdP's claim uri.
-    return _.find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
+    return find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
 };
 
 export const updateAvailableLocalClaims = (setAvailableLocalClaims) => {

@@ -24,7 +24,7 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitlePropsInterface
 } from "@wso2is/react-components";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import React, {
     Fragment,
     FunctionComponent,
@@ -123,7 +123,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                 data-testid={ testId }
             >
                 {
-                    _.sortBy(authenticators, orderBy).map((authenticator, index) => (
+                    sortBy(authenticators, orderBy).map((authenticator, index) => (
                         !authenticator.hidden
                             ? (
                                 <Fragment key={ accordionIndex }>

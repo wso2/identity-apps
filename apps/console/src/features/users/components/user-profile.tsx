@@ -39,7 +39,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -204,7 +204,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param userInfo BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
-        if (!_.isEmpty(profileSchema) && !_.isEmpty(userInfo)) {
+        if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
             proSchema.forEach((schema: ProfileSchemaInterface) => {
@@ -735,7 +735,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @return {boolean} whether the field for the input schema should be displayed.
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
-        return (!_.isEmpty(profileInfo.get(schema.name)) ||
+        return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)));
     };
 
@@ -811,10 +811,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 </Grid>
             }
             {
-                !_.isEmpty(profileInfo) && (
+                !isEmpty(profileInfo) && (
                     <EmphasizedSegment padded="very">
                         {
-                            (isReadOnly && !_.isEmpty(tenantAdmin)) && (
+                            (isReadOnly && !isEmpty(tenantAdmin)) && (
                                 <Grid>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
