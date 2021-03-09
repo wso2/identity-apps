@@ -190,7 +190,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "Ex. Zoom, Salesforce, etc."
+                            placeholder: "Entrez la valeur à rechercher"
                         }
                     }
                 },
