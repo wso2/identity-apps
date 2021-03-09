@@ -25,7 +25,8 @@
         "test:integration:smoke": "npx lerna run test:smoke --scope @wso2is/integration-tests",
         "test:integration:interactive": "npx lerna run test:interactive --scope @wso2is/integration-tests",
         "update-version": "node scripts/update-version.js",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+        "lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx .",
+        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
