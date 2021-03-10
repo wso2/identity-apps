@@ -391,7 +391,7 @@ module.exports = (env) => {
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/),
             isProduction && new CompressionPlugin({
                 algorithm: "gzip",
-                filename: "[path].gz[query]",
+                filename: "[path][base].gz",
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
