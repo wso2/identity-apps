@@ -424,7 +424,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 }
                                                                 tOptions={ {
                                                                     app: application.appName,
-                                                                    user: application.subject.split("@")[ 0 ]
+                                                                    user: application.subject.split("@").length > 1 
+                                                                        ? application.subject.split("@")[ 0 ]
+                                                                        .concat("@")
+                                                                        .concat(application.subject.split("@")[ 1 ])
+                                                                        : application.subject.split("@")[ 0 ]
                                                                 } }
                                                             >
                                                                 { "Logged in on " }
