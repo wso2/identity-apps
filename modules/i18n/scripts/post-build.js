@@ -26,6 +26,7 @@ const log = console.log;
 const OUTPUT_DIR_NAME = "bundle";
 const META_FILE_NAME = "meta.json";
 const TRANSLATIONS_FOLDER_NAME = "translations";
+const EXTENSIONS_FILENAME = "extensions.json";
 
 // Path for the distribution directory.
 const dist = path.join(__dirname, "..", "dist");
@@ -107,6 +108,12 @@ for (const value of Object.values(translations)) {
                 [ nsObjKey ]: path.join(value.meta.code, objKey, fileName),
             };
         }
+
+        // Add extensions.json file to the path
+        resourcePaths = {
+            ...resourcePaths,
+            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME)
+        };
     }
 
     metaFileContent = {
