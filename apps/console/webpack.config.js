@@ -105,6 +105,10 @@ module.exports = (env) => {
                     use: ["style-loader", "css-loader"]
                 },
                 {
+                    test: /\.md$/,
+                    use: ["raw-loader"],
+                },
+                {
                     exclude: /node_modules/,
                     test: /\.css$/,
                     use: [ "postcss-loader" ]
