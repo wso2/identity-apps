@@ -17,7 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import chain from "lodash/chain";
+// `chain` doesn't play nice with cherry pick imports.
+// TODO: Fix this issue. @see {@link https://github.com/lodash/lodash/issues/3298 }
+import { chain } from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

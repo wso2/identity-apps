@@ -18,7 +18,9 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import chain from "lodash/chain";
+// `chain` doesn't play nice with cherry pick imports.
+// TODO: Fix this issue. @see {@link https://github.com/lodash/lodash/issues/3298 }
+import { chain } from "lodash";
 import sortBy from "lodash/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -41,7 +43,7 @@ export class RouteUtils {
      * receiving unauthorized pages.
      *
      * @param {RouteInterface[]} routes - Set of app routes.
-     * @param {string} view - Current view ex: Admin or Develop. 
+     * @param {string} view - Current view ex: Admin or Develop.
      * @param {string} pathname - Current path from location.
      * @param {boolean} navigateToUnAuthorized - Should navigate to un-authorized page.
      */
@@ -70,7 +72,7 @@ export class RouteUtils {
                     pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                     search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                 });
-                
+
                 return;
             }
         }
