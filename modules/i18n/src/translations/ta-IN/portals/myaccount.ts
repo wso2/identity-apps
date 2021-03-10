@@ -190,7 +190,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "எ.கா.: தொடங்குவது"
                         },
                         filterValue: {
-                            placeholder: "எ.கா.: Zoom, Salesforce போன்றவை"
+                            placeholder: "தேட மதிப்பை உள்ளிடவும்"
                         }
                     }
                 },

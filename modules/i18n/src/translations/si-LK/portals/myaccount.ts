@@ -190,7 +190,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "උදා: සමඟ ආරම්භ වේ."
                         },
                         filterValue: {
-                            placeholder: "උදා: admin, wso2 ආදිය."
+                            placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
                         }
                     }
                 },

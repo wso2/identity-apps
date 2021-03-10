@@ -156,7 +156,7 @@ export const myAccount: MyAccountNS = {
                     },
                     filterValue: {
                         label: "Valor do filtro",
-                        placeholder: "ex: admin, wso2 etc.",
+                        placeholder: "Insira o valor para pesquisar",
                         validations: {
                             empty: "O valor do filtro é um campo obrigatório"
                         }
