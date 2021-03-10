@@ -8,12 +8,12 @@
     "scripts": {
         "build": "npm run build:prod && npm run test",
         "build:analyze": "run-script-os",
-        "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true --env.ANALYZER_PORT=8888",
-        "build:analyze:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true --env.ANALYZER_PORT=8888",
+        "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8889",
+        "build:analyze:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production --env ENABLE_ANALYZER=true --env ANALYZER_PORT=8889",
         "build:external": "npm run build:prod -- --env.IS_DEPLOYED_ON_EXTERNAL_SERVER=true",
         "build:prod": "run-script-os",
-        "build:prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
-        "build:prod:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production",
+        "build:prod:win32": "..\\..\\node_modules\\.bin\\webpack --mode production --env NODE_ENV=production",
+        "build:prod:default": "../../node_modules/.bin/webpack --mode production --env NODE_ENV=production",
         "clean": "rimraf build && npm run clean:themes",
         "clean:themes": "rimraf src/themes",
         "copy:themes": "node scripts/copy-themes.js",
@@ -21,8 +21,8 @@
         "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
         "start": "npx run-script-os",
-        "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
+        "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
+        "start:default": "../../node_modules/.bin/webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "test": "npx jest --passWithNoTests"
     },
     "dependencies": {
@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@testing-library/dom": "^7.24.3",
-        "@testing-library/user-event": "^12.1.6",
+        "@testing-library/user-event": "^12.7.3",
         "@types/jest": "^26.0.14",
         "crypto-browserify": "^3.12.0",
         "eslint-plugin-node": "^11.0.0",
