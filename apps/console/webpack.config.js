@@ -256,6 +256,11 @@ module.exports = (env) => {
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
             }),
+            // In webpack 5 automatic node.js polyfills are removed.
+            // https://github.com/vfile/vfile/issues/38#issuecomment-640479137
+            new webpack.ProvidePlugin({
+                process: "process/browser"
+            }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
                 eslint: {
@@ -403,7 +408,15 @@ module.exports = (env) => {
             })
         ].filter(Boolean),
         resolve: {
-            extensions: [".tsx", ".ts", ".js", ".json"]
+            extensions: [".tsx", ".ts", ".js", ".json"],
+            // In webpack 5 automatic node.js polyfills are removed.
+            // We have to polyfill the required once manually.
+            // https://stackoverflow.com/a/65542520
+            fallback: {
+                crypto: require.resolve("crypto-browserify"),
+                fs: false,
+                stream: require.resolve("stream-browserify")
+            }
         },
         watchOptions: {
             // eslint-disable-next-line no-useless-escape
