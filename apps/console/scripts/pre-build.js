@@ -45,7 +45,6 @@ execSync("npm run clean");
 execSync("npm run copy:themes");
 
 // Path of the build directory.
-const buildExtensionsPath = path.join(__dirname, "..", "build", "console", "resources", "i18n");
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
 const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
 log("Compiling i18N extensions...");
