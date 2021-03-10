@@ -93,9 +93,13 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
             autoDismiss: dismissInterval,
             level: alert.level,
             message: (
-                <div className="alert-message">
-                    <div className="header bold-text">{ alert.message }</div>
-                    <div className="description">{ alert.description }</div>
+                <div className="alert-message" data-testid={ `${ testId }-${ alert.level }-body` }>
+                    <div className="header bold-text" data-testid={ `${ testId }-${ alert.level }-message` }>
+                        { alert.message }
+                    </div>
+                    <div className="description" data-testid={ `${ testId }-${ alert.level }-description` }>
+                        { alert.description }
+                    </div>
                 </div>
             ),
             position: alertsPosition,
@@ -108,6 +112,7 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
                     size="mini"
                     inline
                     spaced="right"
+                    data-testid={ `${ testId }-${ alert.level }-icon` }
                     relaxed
                 />
             )
