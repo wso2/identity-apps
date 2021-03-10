@@ -17,6 +17,21 @@
  */
 
 const { execSync } = require("child_process");
+const path = require("path");
+const fs = require("fs-extra");
+
+function createFile(filePath, data, options, checkIfExists) {
+
+    if (!checkIfExists) {
+        fs.writeFileSync(filePath, data, options);
+
+        return;
+    }
+
+    if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, data, options);
+    }
+}
 
 // eslint-disable-next-line no-console
 const log = console.log;
@@ -28,5 +43,32 @@ execSync("npm run clean");
 
 // Run theme folder copying script.
 execSync("npm run copy:themes");
+
+// Path of the build directory.
+const buildExtensionsPath = path.join(__dirname, "..", "build", "console", "resources", "i18n");
+const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
+const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
+log("Compiling i18N extensions...");
+try {
+    execSync("npm run compileI18n");
+} catch (e) {
+    log(e);
+}
+log("Completed compiling i18n extensions.");
+
+const i18NTempExtensionsPath = path.join(distDirectory, "resources");
+const i18nExtensions = require(i18NTempExtensionsPath);
+
+log("Moving extensions.json files to the build directory");
+for (const value of Object.values(i18nExtensions)) {
+    if (!value || !value.name || !value.extensions) {
+        continue;
+    }
+
+    const fileContent = JSON.stringify(value.extensions, undefined, 4);
+    const fileName = "extensions.json";
+    const filePath = path.join(i18nNodeModulesDir, value.name, "portals", fileName);
+    createFile(filePath, fileContent, null, true);
+}
 
 log("\nFinishing up the pre build script.....");
