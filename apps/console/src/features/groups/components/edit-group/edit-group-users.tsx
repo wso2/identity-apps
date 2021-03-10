@@ -44,7 +44,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {Grid, Header, Icon, Input, Modal, Popup, Table} from "semantic-ui-react";
+import { Grid, Header, Icon, Input, Modal, Popup, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface } from "../../../users";
 import { updateGroupDetails } from "../../api";
