@@ -107,6 +107,6 @@ export class I18n {
             throw new UnsupportedI18nFrameworkException(framework);
         }
 
-        return this.instance.init(generateI18nOptions(options, override, useBackend, this.debug))
+        return this.instance.init(generateI18nOptions(options, override, useBackend, this.debug));
     }
 }
