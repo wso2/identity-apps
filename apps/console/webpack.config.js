@@ -25,7 +25,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 // Flag to enable source maps in production.
@@ -85,7 +84,8 @@ module.exports = (env) => {
             https: true,
             inline: true,
             openPage: basename,
-            port: devServerPort
+            port: devServerPort,
+            writeToDisk: true
         },
         devtool: isProduction
             ? isSourceMapsEnabledInProduction
@@ -115,7 +115,7 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
-                    use: ["url-loader"]
+                    type: "asset/resource"
                 },
                 {
                     test: /\.svg$/,
@@ -135,6 +135,10 @@ module.exports = (env) => {
                 },
                 {
                     exclude: {
+                        and: [
+                            /\.(spec|test).(ts|js)x?$/,
+                            /node_modules(\\|\/)(core-js)/
+                        ],
                         not: [
                             /joi/,
                             /react-notification-system/,
@@ -142,10 +146,7 @@ module.exports = (env) => {
                             /@wso2is(\\|\/)forms/,
                             /@wso2is(\\|\/)react-components/,
                             /@wso2is(\\|\/)theme/,
-                            /@wso2is(\\|\/)validation/ ],
-                        test: [
-                            /\.(spec|test).(ts|js)x?$/,
-                            /node_modules(\\|\/)(core-js)/
+                            /@wso2is(\\|\/)validation/
                         ]
                     },
                     test: /\.(ts|js)x?$/,
@@ -195,16 +196,11 @@ module.exports = (env) => {
             // Makes missing exports an error instead of warning.
             strictExportPresence: true
         },
-        node: {
-            fs: "empty"
-        },
         optimization: {
             minimize: isProduction,
             minimizer: [
                 new TerserPlugin({
-                    cache: path.resolve(__dirname, "cache"),
                     extractComments: true,
-                    sourceMap: isSourceMapsEnabledInProduction,
                     terserOptions: {
                         compress: {
                             // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -261,52 +257,68 @@ module.exports = (env) => {
             }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
-                checkSyntacticErrors: true,
-                eslint: true,
-                measureCompilationTime: true,
-                reportFiles: [
-                    "**",
-                    "!**/__tests__/**",
-                    "!**/?(*.)(spec|test).*"
-                ],
-                silent: true,
-                tsconfig: path.resolve(__dirname, "./tsconfig.json"),
-                useTypescriptIncrementalApi: true,
-                workers: 1
-            }),
-            new WriteFilePlugin({
-                // Exclude hot-update files
-                test: /^(?!.*(hot-update)).*/
-            }),
-            new CopyWebpackPlugin([
-                {
-                    context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
-                    from: "lib",
-                    to: "libs"
+                eslint: {
+                    files: "./src/**/*.{ts,tsx,js,jsx}"
                 },
-                {
-                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
-                    from: "src",
-                    to: "themes-less"
+                issue: {
+                    exclude: [
+                        {
+                            file: "**/?(*.)(spec|test).*",
+                            origin: "eslint"
+                        },
+                        {
+                            file: "**/__tests__/**",
+                            origin: "eslint"
+                        },
+                        {
+                            file: "**/src/setupTests.*",
+                            origin: "eslint"
+                        }
+                    ],
+                    include: [
+                        {
+                            file: "**"
+                        }
+                    ]
                 },
-                {
-                    context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
-                    from: path.join("dist", "bundle"),
-                    to: path.join("resources", "i18n")
-                },
-                {
-                    context: path.join(__dirname, "src"),
-                    force: true,
-                    from: "public",
-                    to: "."
-                },
-                {
-                    context: path.join(__dirname, "src"),
-                    force: true,
-                    from: "auth.jsp",
-                    to: "."
+                typescript: {
+                    diagnosticOptions: {
+                        semantic: true,
+                        syntactic: true
+                    }
                 }
-            ]),
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
+                        from: "lib",
+                        to: "libs"
+                    },
+                    {
+                        context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
+                        from: "src",
+                        to: "themes-less"
+                    },
+                    {
+                        context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
+                        from: path.join("dist", "bundle"),
+                        to: path.join("resources", "i18n")
+                    },
+                    {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "public",
+                        to: "."
+                    },
+                    {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "auth.jsp",
+                        to: "."
+                    }
+                ]
+            }),
             isProduction
                 ? new HtmlWebpackPlugin({
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
@@ -393,7 +405,8 @@ module.exports = (env) => {
             extensions: [".tsx", ".ts", ".js", ".json"]
         },
         watchOptions: {
-            ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
+            // eslint-disable-next-line no-useless-escape
+            ignored: [ "/node_modules([\\]+|\/)+(?!@wso2is)/", "/build/" ]
         }
     };
 };
