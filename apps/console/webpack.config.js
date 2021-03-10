@@ -82,6 +82,7 @@ module.exports = (env) => {
             contentBase: distFolder,
             historyApiFallback: true,
             host: "localhost",
+            hot: true,
             https: true,
             inline: true,
             openPage: basename,
@@ -256,6 +257,7 @@ module.exports = (env) => {
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
             }),
+            isDevelopment && new webpack.HotModuleReplacementPlugin(),
             // In webpack 5 automatic node.js polyfills are removed.
             // https://github.com/vfile/vfile/issues/38#issuecomment-640479137
             new webpack.ProvidePlugin({
@@ -418,6 +420,11 @@ module.exports = (env) => {
                 stream: require.resolve("stream-browserify")
             }
         },
+        // HMR is breaking in Webpack 5 when there is a `browserlist` present in package.json.
+        // See https://github.com/webpack/webpack-dev-server/issues/2758#issuecomment-710086019
+        target: isDevelopment
+            ? "web"
+            : "browserslist",
         watchOptions: {
             // eslint-disable-next-line no-useless-escape
             ignored: [ "/node_modules([\\]+|\/)+(?!@wso2is)/", "/build/" ]

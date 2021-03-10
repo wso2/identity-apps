@@ -160,6 +160,7 @@
         "prettier": "^1.19.1",
         "process": "^0.11.10",
         "prop-types": "^15.7.2",
+        "react-hot-loader": "^4.13.0",
         "raw-loader": "^4.0.2",
         "react-i18next": "^10.11.5",
         "redux-devtools-extension": "^2.13.8",
