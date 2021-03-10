@@ -20,10 +20,17 @@
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
+        "postbuild": "node scripts/post-build.js",
         "start": "npx run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "start:default": "../../node_modules/.bin/webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
-        "test": "npx jest --passWithNoTests"
+        "test": "npx jest --passWithNoTests",
+        "compileI18n": "npx run-script-os",
+        "compileI18n:default": "../../node_modules/.bin/tsc -p src/extensions/i18n",
+        "compileI18n:win32": "..\\..\\node_modules\\.bin\\tsc -p src\\extensions\\i18n",
+        "remove-i18n-dist": "npx run-script-os",
+        "remove-i18n-dist:default": "rimraf src/extensions/i18n/dist",
+        "remove-i18n-dist:win32": "rimraf src\\extensions\\i18n\\dist"
     },
     "dependencies": {
         "@wso2is/core": "^1.2.102",
