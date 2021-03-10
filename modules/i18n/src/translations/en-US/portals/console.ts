@@ -111,7 +111,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 description: null,
-                heading: "Update profile picture",
+                heading: "Update Profile Picture",
                 primaryButton: "Save",
                 secondaryButton: "Cancel"
             },
