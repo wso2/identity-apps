@@ -72,6 +72,7 @@ module.exports = (env) => {
     };
 
     return {
+        context: path.resolve(__dirname),
         devServer: {
             before: function (app) {
                 app.get("/", function (req, res) {
