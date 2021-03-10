@@ -63,6 +63,14 @@ export class I18nModuleConstants {
     public static readonly CONSOLE_PORTAL_NAMESPACE: string = "console";
 
     /**
+     * Extensions namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EXTENSIONS_NAMESPACE: string = "extensions";
+
+    /**
      * Default fallback language.
      * @constant
      * @type {string}
