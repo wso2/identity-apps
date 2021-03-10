@@ -192,6 +192,12 @@
 @readOnlyFieldCursor: default;
 
 /*-------------------
+    Site Colors
+--------------------*/
+
+@warningColor: #EBA91C;
+
+/*-------------------
        Layouts
 --------------------*/
 

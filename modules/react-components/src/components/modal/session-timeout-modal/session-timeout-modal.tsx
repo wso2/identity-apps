@@ -26,6 +26,11 @@ import { ConfirmationModal } from "../confirmation-modal";
  * Session Management Modal props interface.
  */
 export interface SessionTimeoutModalPropsInterface extends ModalProps, TestableComponentInterface {
+
+    /**
+     * Check whether session timeout modal or session timer modal.
+     */
+    sessionTimeOut?: boolean;
     /**
      * Modal description.
      */
@@ -65,6 +70,7 @@ export const SessionTimeoutModal: FunctionComponent<SessionTimeoutModalPropsInte
     const {
         description,
         heading,
+        sessionTimeOut,
         onSecondaryActionClick,
         onPrimaryActionClick,
         primaryButtonText,
@@ -79,8 +85,8 @@ export const SessionTimeoutModal: FunctionComponent<SessionTimeoutModalPropsInte
             type="warning"
             textAlign="center"
             primaryAction={ primaryButtonText }
-            secondaryAction={ secondaryButtonText }
-            onSecondaryActionClick={ onSecondaryActionClick }
+            secondaryAction={ sessionTimeOut? null: secondaryButtonText }
+            onSecondaryActionClick={ sessionTimeOut ? null: onSecondaryActionClick }
             onPrimaryActionClick={ onPrimaryActionClick }
             data-testid={ testId }
             { ...rest }

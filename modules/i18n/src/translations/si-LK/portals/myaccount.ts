@@ -1265,7 +1265,7 @@ export const myAccount: MyAccountNS = {
             primaryButton: "පුරනය වී සිටින්න",
             secondaryButton: "වරන්න",
             loginAgainButton: "නැවත පුරනය වන්න",
-            sessionTimedOutHeading: "අක්‍රියතාවය හේතුවෙන් ඔබගේ සැසිය කල් ඉකුත්වී ඇත.",
+            sessionTimedOutHeading: "අක්‍රියතාවය හේතුවෙන් පරිශීලක සැසිය කල් ඉකුත්වී ඇත.",
             sessionTimedOutDescription: "ඔබ නතර කළ ස්ථානයෙන් ඉදිරියට යාමට කරුණාකර නැවත ලොග් වන්න."
         }
     },

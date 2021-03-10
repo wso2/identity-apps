@@ -262,6 +262,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 onClose={ handleSessionTimeoutAbort }
                 onPrimaryActionClick={ handlePrimaryActionClick }
                 onSecondaryActionClick={ handleSessionLogout }
+                sessionTimeOut = { sessionTimedOut }
                 heading={
                     <Trans
                         i18nKey={ !sessionTimedOut?

@@ -1255,7 +1255,7 @@ export const myAccount: MyAccountNS = {
             primaryButton: "Permaneça logado",
             secondaryButton: "Sair",
             loginAgainButton: "Entrar novamente",
-            sessionTimedOutHeading: "Sua sessão expirou devido à inatividade.",
+            sessionTimedOutHeading: "A sessão do usuário expirou devido à inatividade.",
             sessionTimedOutDescription: "Faça login novamente para continuar de onde parou."
         }
     },
