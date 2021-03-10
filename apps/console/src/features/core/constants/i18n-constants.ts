@@ -57,6 +57,14 @@ export class I18nConstants {
     public static readonly MYACCOUNT_PORTAL_NAMESPACE: string = I18nModuleConstants.MY_ACCOUNT_NAMESPACE;
 
     /**
+     * Extensions namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -65,7 +73,8 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.MYACCOUNT_PORTAL_NAMESPACE, "portals" ]
+        [ I18nConstants.MYACCOUNT_PORTAL_NAMESPACE, "portals" ],
+        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
     ]);
 
     /**
@@ -100,7 +109,8 @@ export class I18nConstants {
         ns: [
             I18nConstants.COMMON_NAMESPACE,
             I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-            I18nConstants.MYACCOUNT_PORTAL_NAMESPACE
+            I18nConstants.MYACCOUNT_PORTAL_NAMESPACE,
+            I18nConstants.EXTENSIONS_NAMESPACE
         ]
     };
 
