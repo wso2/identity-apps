@@ -400,7 +400,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
-                        attributeType = { attributeType }
+                        attributeType={ attributeType }
                     />
                 </Grid.Column>
             </Grid>
