@@ -25,6 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
+import { claimsConfig } from "../../../extensions/configs";
 import {
     AppConstants,
     AppState,
@@ -150,7 +151,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     return (
         <>
-            { addEditClaim && (
+            { claimsConfig.addAttributeMapping && addEditClaim && (
                 <AddDialect
                     open={ addEditClaim }
                     onClose={ () => {
@@ -162,7 +163,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 action={
-                    <PrimaryButton
+                    claimsConfig.addAttributeMapping && <PrimaryButton
                         onClick={ () => {
                             setAddEditClaim(true);
                         } }
@@ -349,9 +350,15 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                 <Popup
-                                                    content={ t("common:edit") }
+                                                    content={ claimsConfig.isSCIMEditable
+                                                        ? t("common:edit")
+                                                        : t("common:view") }
                                                     trigger={
-                                                        <Icon color="grey" name="pencil" />
+                                                        <Icon color="grey" name={
+                                                            claimsConfig.isSCIMEditable
+                                                                ? "pencil"
+                                                                : "eye"
+                                                        } />
                                                     }
                                                     inverted
                                                 />
