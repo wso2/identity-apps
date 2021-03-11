@@ -24,7 +24,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { claimsConfig } from "../../../extensions/configs";
+import { AppConstants, history, sortList } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";
@@ -54,12 +55,12 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
 const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface
 ): ReactElement => {
-    const { attributeType, [ "data-testid" ]: testId, id: dialectId } = props;
+    const { attributeType, ["data-testid"]: testId, id: dialectId } = props;
 
-    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ confirmDelete, setConfirmDelete ] = useState(false);
+    const [dialect, setDialect] = useState<ClaimDialect>(null);
+    const [claims, setClaims] = useState<ExternalClaim[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -83,16 +84,16 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
-            data-testid={ `${ testId }-delete-confirmation-modal` }
+            data-testid={ `${testId}-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
-            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
                 { t("console:manage.features.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message attached warning data-testid={ `${testId}-delete-confirmation-modal-message` }>
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                 { t("console:manage.features.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -113,14 +114,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                "fetchADialect.genericError.description"
+                                    "fetchADialect.genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                "fetchADialect.genericError.message"
+                                    "fetchADialect.genericError.message"
                             )
                     })
                 );
@@ -129,7 +130,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     useEffect(() => {
         dialectId && getDialect();
-    }, [ dialectId ]);
+    }, [dialectId]);
 
     /**
      * Fetch external claims.
@@ -150,7 +151,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 sort
             })
                 .then((response) => {
-                    setClaims(response);
+                    // Hide identity claims in SCIM
+                    const claims: ExternalClaim[] = claimsConfig.attributeMappings.getExternalAttributes(
+                        attributeType,
+                        response
+                    );
+
+                    setClaims(sortList(claims, "claimURI", true));
                 })
                 .catch((error) => {
                     dispatch(
@@ -159,7 +166,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                 error?.response?.data?.description ||
                                 t(
                                     "console:manage.features.claims.dialects.notifications." +
-                                    "fetchExternalClaims.genericError.description",
+                                        "fetchExternalClaims.genericError.description",
                                     { type: resolveType(attributeType) }
                                 ),
                             level: AlertLevels.ERROR,
@@ -167,7 +174,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                 error?.response?.data?.message ||
                                 t(
                                     "console:manage.features.claims.dialects.notifications." +
-                                    "fetchExternalClaims.genericError.message"
+                                        "fetchExternalClaims.genericError.message"
                                 )
                         })
                     );
@@ -179,7 +186,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     useEffect(() => {
         getExternalClaims();
-    }, [ dialectId ]);
+    }, [dialectId]);
 
     /**
      * This deletes a dialect
@@ -193,7 +200,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     addAlert({
                         description: t(
                             "console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.success.description",
+                                "deleteDialect.success.description",
                             { type: resolveType(attributeType, true) }
                         ),
                         level: AlertLevels.SUCCESS,
@@ -210,7 +217,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.description ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                "deleteDialect.genericError.description",
+                                    "deleteDialect.genericError.description",
                                 { type: resolveType(attributeType, true) }
                             ),
                         level: AlertLevels.ERROR,
@@ -218,7 +225,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             error?.message ||
                             t(
                                 "console:manage.features.claims.dialects.notifications." +
-                                "deleteDialect.genericError.message"
+                                    "deleteDialect.genericError.message"
                             )
                     })
                 );
@@ -227,78 +234,91 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     return (
         <>
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <Header as="h4">
-                            { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI",
-                                { type: resolveType(attributeType, true) }) }
-                        </Header>
-                        <EmphasizedSegment>
-                            { isLoading ? (
-                                <Placeholder>
-                                    <Placeholder.Line length="short" />
-                                    <Placeholder.Line length="medium" />
-                                </Placeholder>
-                            ) : (
-                                    <EditDialectDetails
-                                        dialect={ dialect }
-                                        data-testid={ `${ testId }-edit-dialect-details` }
-                                        attributeType={ attributeType }
-                                    />
+            { claimsConfig.attributeMappings.editAttributeMappingDetails && (
+                <>
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <Header as="h4">
+                                    { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI", {
+                                        type: resolveType(attributeType, true)
+                                    }) }
+                                </Header>
+                                <EmphasizedSegment>
+                                    { isLoading ? (
+                                        <Placeholder>
+                                            <Placeholder.Line length="short" />
+                                            <Placeholder.Line length="medium" />
+                                        </Placeholder>
+                                    ) : (
+                                        <EditDialectDetails
+                                            dialect={ dialect }
+                                            data-testid={ `${testId}-edit-dialect-details` }
+                                            attributeType={ attributeType }
+                                        />
+                                    ) }
+                                </EmphasizedSegment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+
+                    <Divider hidden />
+
+                    <Grid columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <Header as="h4">
+                                { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes",
+                                    {
+                                        type: resolveType(attributeType, true)
+                                    }
                                 ) }
-                        </EmphasizedSegment>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                            </Header>
+                        </Grid.Column>
+                    </Grid>
 
-            <Divider hidden />
+                    <Divider hidden />
 
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <Header as="h4">
-                        { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes",
-                            { type: resolveType(attributeType, true) }) }
-                    </Header>
-                </Grid.Column>
-            </Grid>
-
-            <Divider hidden />
-
-            <Divider hidden />
+                    <Divider hidden />
+                </>
+            ) }
             <EditExternalClaims
                 dialectID={ dialectId }
                 isLoading={ isLoading }
                 claims={ claims }
                 update={ getExternalClaims }
-                data-testid={ `${ testId }-edit-external-claims` }
+                data-testid={ `${testId}-edit-external-claims` }
                 attributeType={ attributeType }
             />
 
             <Divider hidden />
 
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <DangerZoneGroup
-                            sectionHeader={ t("common:dangerZone") }
-                            data-testid={ `${ testId }-danger-zone-group` }
-                        >
-                            <DangerZone
-                                actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle",
-                                    { type: resolveType(attributeType, true, true) }) }
-                                header={ t("console:manage.features.claims.dialects.dangerZone.header",
-                                    { type: resolveType(attributeType, true) }) }
-                                subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader",
-                                    { type: resolveType(attributeType) }) }
-                                onActionClick={ () => setConfirmDelete(true) }
-                                data-testid={ `${ testId }-dialect-delete-danger-zone` }
-                            />
-                        </DangerZoneGroup>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            { confirmDelete && deleteConfirmation() }
+            { claimsConfig.attributeMappings.showDangerZone && (
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup
+                                sectionHeader={ t("common:dangerZone") }
+                                data-testid={ `${testId}-danger-zone-group` }
+                            >
+                                <DangerZone
+                                    actionTitle={ t("console:manage.features.claims.dialects.dangerZone.actionTitle", {
+                                        type: resolveType(attributeType, true, true)
+                                    }) }
+                                    header={ t("console:manage.features.claims.dialects.dangerZone.header", {
+                                        type: resolveType(attributeType, true)
+                                    }) }
+                                    subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader", {
+                                        type: resolveType(attributeType)
+                                    }) }
+                                    onActionClick={ () => setConfirmDelete(true) }
+                                    data-testid={ `${testId}-dialect-delete-danger-zone` }
+                                />
+                            </DangerZoneGroup>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            ) }
+            { claimsConfig.attributeMappings.showDangerZone && confirmDelete && deleteConfirmation() }
         </>
     );
 };
