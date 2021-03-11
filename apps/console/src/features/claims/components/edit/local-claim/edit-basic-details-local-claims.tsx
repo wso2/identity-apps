@@ -32,7 +32,8 @@ import {
     CopyInputField,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment
+    EmphasizedSegment,
+    PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -486,7 +487,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 6 }>
-                                <Field
+                                <PrimaryButton
                                     type="submit"
                                     value={ t("common:update") }
                                     data-testid={ `${ testId }-form-submit-button` }

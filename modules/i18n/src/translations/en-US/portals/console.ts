@@ -2494,7 +2494,8 @@ export const console: ConsoleNS = {
                         alias: {
                             hint: "If the resident identity provider is known by an alias at the federated " +
                                 "identity provider, specify it here.",
-                            label: "Alias"
+                            label: "Alias",
+                            placeholder: "Enter value for Alias."
                         },
                         certificateType: {
                             certificateJWKS: {
@@ -2522,7 +2523,8 @@ export const console: ConsoleNS = {
                         },
                         homeRealmIdentifier: {
                             hint: "Enter the home realm identifier for this identity provider",
-                            label: "Home Realm Identifier"
+                            label: "Home Realm Identifier",
+                            placeholder: "Enter value for Home Realm Identifier."
                         }
                     },
                     attributeSettings: {

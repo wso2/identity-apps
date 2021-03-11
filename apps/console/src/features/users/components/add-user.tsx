@@ -19,6 +19,7 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
@@ -320,7 +321,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             </Suspense>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
+                            <PrimaryButton
                                 className="generate-password-button"
                                 onClick={ generateRandomPassword }
                                 type="button"
