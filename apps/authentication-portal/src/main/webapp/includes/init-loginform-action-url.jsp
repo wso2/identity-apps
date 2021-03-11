@@ -29,7 +29,7 @@
         if ("samlsso".equals(type)) {
             loginFormActionURL = samlssoURL;
         } else if ("oauth2".equals(type)){
-            loginFormActionURL = oauth2AuthorizeURL;
+            loginFormActionURL = commonauthURL;
         } else {
             loginFormActionURL = commonauthURL;
         }
