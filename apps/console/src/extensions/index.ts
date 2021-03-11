@@ -21,3 +21,4 @@ export * from "./extensions-manager";
 export * from "./extension-menu";
 export * from "./component-extension";
 export * from "./models";
+export * from "./config";
