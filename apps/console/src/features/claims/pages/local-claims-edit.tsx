@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
+import { claimsConfig } from "../../../extensions/configs";
 import { AppConstants, history } from "../../core";
 import { getAClaim } from "../api";
 import {
@@ -142,7 +143,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     /**
      * This generates the first letter of a claim
-     * @param {string} name 
+     * @param {string} name
      * @return {string} The first letter of a claim
      */
     const generateClaimLetter = (name: string): string => {
@@ -179,7 +180,16 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
+            { claimsConfig.attributes.showEditTabs
+                ? <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
+                : (
+                    <EditBasicDetailsLocalClaims
+                    claim={ claim }
+                    update={ getClaim }
+                    data-testid="local-claims-basic-details-edit"
+                    />
+                )
+            }
         </PageLayout>
     );
 };
