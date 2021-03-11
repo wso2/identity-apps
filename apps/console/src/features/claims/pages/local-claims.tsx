@@ -26,6 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { claimsConfig } from "../../../extensions/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -42,7 +43,7 @@ import { AddLocalClaims, ClaimsList, ListType } from "../components";
 /**
  * Props for the Local Claims page.
  */
-type LocalClaimsPageInterface = TestableComponentInterface
+type LocalClaimsPageInterface = TestableComponentInterface;
 
 /**
  * This returns the list of local claims.
@@ -107,9 +108,11 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     * @param {string} sort.
     * @param {string} filter.
     */
-    const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
+    const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
+        excludeIdentity?: boolean) => {
         setIsLoading(true);
         const params: ClaimsGetParams = {
+            "exclude-identity-claims": excludeIdentity,
             filter: filter || null,
             limit: limit || null,
             offset: offset || null,
@@ -117,7 +120,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         };
         getAllLocalClaims(params).then(response => {
             setClaims(response);
-            setFilteredClaims(response);
+            setFilteredClaims(sortList(response, sortBy.value as string, sortOrder));
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -142,7 +145,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null);
+        getLocalClaims(null, null, null, null, claimsConfig.attributes.excludeIdentityClaims);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
@@ -251,7 +254,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     (isLoading || !(!searchQuery && filteredClaims?.length <= 0))
                     && hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.create, allowedScopes)
-                    && (
+                    && claimsConfig.attributes.addAttribute && (
                         <PrimaryButton
                             onClick={ () => {
                                 setOpenModal(true);
@@ -265,7 +268,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                description={ t("console:manage.features.claims.local.pageLayout.local.description") }
+                description={ claimsConfig.attributes.description }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")
