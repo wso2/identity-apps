@@ -4111,6 +4111,7 @@ export const console: ConsoleNS = {
                             placeholder: "Saisir une description",
                             requiredErrorMessage: "Description est requis"
                         },
+                        descriptionHint: "Une description significative de l'attribut.",
                         displayOrder: {
                             label: "Ordre d'affichage",
                             placeholder: "Saisir l'ordre d'affichage"

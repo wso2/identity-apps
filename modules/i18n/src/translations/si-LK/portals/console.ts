@@ -4083,6 +4083,7 @@ export const console: ConsoleNS = {
                             placeholder: "විස්තරයක් ඇතුළත් කරන්න",
                             requiredErrorMessage: "විස්තරය අවශ්ය වේ"
                         },
+                        descriptionHint: "ගුණාංගය සඳහා අර්ථවත් විස්තරයක්.",
                         displayOrder: {
                             label: "ඇණවුම පෙන්වන්න",
                             placeholder: "දර්ශන අනුපිළිවෙල ඇතුළත් කරන්න"

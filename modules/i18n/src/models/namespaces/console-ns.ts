@@ -2181,6 +2181,7 @@ export interface ConsoleNS {
                         name: FormField;
                         nameHint: string;
                         description: FormField;
+                        descriptionHint: string;
                         regEx: FormField;
                         regExHint: string;
                         supportedByDefault: FormField;
