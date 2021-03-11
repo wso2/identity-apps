@@ -509,6 +509,8 @@
         "isDialectAddingEnabled": {{ console.ui.is_dialect_adding_enabled }},
         {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
+        "isGroupAndRoleSeparationImprovementsEnabled": {{ authorization_manager.properties
+        .GroupAndRoleSeparationImprovementsEnabled }},
         {% if console.ui.is_request_path_authentication_enabled is defined %}
         "isRequestPathAuthenticationEnabled": {{ console.ui.is_request_path_authentication_enabled }},
         {% endif %}

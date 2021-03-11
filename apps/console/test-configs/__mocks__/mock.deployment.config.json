@@ -178,6 +178,7 @@
             "fallback": "404"
         },
         "isGroupAndRoleSeparationEnabled": false,
+        "isGroupAndRoleSeparationImprovementsEnabled": false,
         "productName": "Identity Server",
         "productVersionConfig": {},
         "theme": {
