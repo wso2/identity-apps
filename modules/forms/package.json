@@ -25,16 +25,24 @@
         "jest:default": "./node_modules/.bin/jest"
     },
     "dependencies": {
-        "@types/jest": "^26.0.14",
-        "jest": "^26.4.2",
-        "ts-jest": "^26.4.0"
+        "classnames": "^2.2.6",
+        "lodash": "^4.17.15",
+        "semantic-ui-react": "^0.87.3"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.0.4",
+        "@types/jest": "^26.0.14",
+        "@types/lodash": "^4.14.146",
+        "babel-polyfill": "^6.26.0",
+        "jest": "^26.4.2",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7"
+        "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
-        "classnames": "*"
+        "@types/react": "*",
+        "react": "*"
     },
     "author": "WSO2",
     "license": "Apache-2.0"

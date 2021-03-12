@@ -23,15 +23,13 @@
     },
     "author": "WSO2",
     "license": "Apache-2.0",
-    "peerDependencies": {
-        "axios": "^0.19.2",
-        "joi": "*"
-    },
     "devDependencies": {
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7"
     },
     "dependencies": {
-        "fastestsmallesttextencoderdecoder": "^1.0.22"
+        "axios": "^0.19.2",
+        "fastestsmallesttextencoderdecoder": "^1.0.22",
+        "joi": "^17.2.0"
     }
 }

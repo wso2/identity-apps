@@ -33,24 +33,21 @@
         "@types/jest": "^26.0.14",
         "@wso2is/core": "^1.2.85",
         "babel-jest": "^26.3.0",
+        "i18next": "^17.0.11",
+        "i18next-browser-languagedetector": "^3.0.3",
+        "i18next-xhr-backend": "^3.2.2",
         "jest": "^26.4.2",
+        "lodash": "^4.17.15",
+        "react-i18next": "^10.11.5",
         "ts-jest": "^26.4.0"
     },
     "devDependencies": {
+        "@types/i18next": "8.4.3",
+        "@types/i18next-xhr-backend": "^1.4.2",
+        "@types/lodash": "^4.14.146",
+        "@types/node": "^13.9.2",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7"
-    },
-    "peerDependencies": {
-        "@types/i18next": "*",
-        "@types/i18next-xhr-backend": "*",
-        "@types/lodash": "*",
-        "@types/node": "*",
-        "i18next": "*",
-        "i18next-browser-languagedetector": "*",
-        "i18next-xhr-backend": "*",
-        "lodash": "*",
-        "react-i18next": "*",
-        "rimraf": "*",
-        "typescript": "*"
+        "run-script-os": "^1.0.7",
+        "typescript": "^4.2.2"
     }
 }
