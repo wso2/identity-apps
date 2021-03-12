@@ -774,7 +774,9 @@ export const console: ConsoleNS = {
                                             makeMandatory: "අනිවාර්ය කරන්න",
                                             makeRequested: "ඉල්ලීමක් කරන්න",
                                             removeMandatory: "අනිවාර්ය ඉවත් කරන්න",
-                                            removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න"
+                                            removeRequested: "ඉල්ලූ දේ ඉවත් කරන්න",
+                                            subjectDisabledSelection: "මෙම ගුණාංගය අනිවාර්ය වන්නේ " +
+                                                "එය විෂය ගුණාංගය වන බැවිනි."
                                         },
                                         fields: {
                                             claim: {

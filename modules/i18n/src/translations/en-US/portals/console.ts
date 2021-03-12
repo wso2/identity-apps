@@ -771,7 +771,9 @@ export const console: ConsoleNS = {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
                                             removeMandatory: "Remove mandatory",
-                                            removeRequested: "Remove requested"
+                                            removeRequested: "Remove requested",
+                                            subjectDisabledSelection: "This attribute is mandatory because it " +
+                                                "is the subject attribute."
                                         },
                                         fields: {
                                             claim: {

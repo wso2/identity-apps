@@ -472,6 +472,7 @@ export interface ConsoleNS {
                                             makeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            subjectDisabledSelection: string;
                                         };
                                         fields: {
                                             claim: FormAttributes;
