@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { claimsConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions/configs";
 import { AppConstants, history, sortList } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
@@ -152,7 +152,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             })
                 .then((response) => {
                     // Hide identity claims in SCIM
-                    const claims: ExternalClaim[] = claimsConfig.attributeMappings.getExternalAttributes(
+                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
                         attributeType,
                         response
                     );
@@ -234,7 +234,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     return (
         <>
-            { claimsConfig.attributeMappings.editAttributeMappingDetails && (
+            { attributeConfig.attributeMappings.editAttributeMappingDetails && (
                 <>
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -292,7 +292,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             <Divider hidden />
 
-            { claimsConfig.attributeMappings.showDangerZone && (
+            { attributeConfig.attributeMappings.showDangerZone && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
@@ -318,7 +318,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     </Grid.Row>
                 </Grid>
             ) }
-            { claimsConfig.attributeMappings.showDangerZone && confirmDelete && deleteConfirmation() }
+            { attributeConfig.attributeMappings.showDangerZone && confirmDelete && deleteConfirmation() }
         </>
     );
 };

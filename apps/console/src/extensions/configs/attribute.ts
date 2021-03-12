@@ -22,7 +22,7 @@ const isIdentityClaims = (claim: ExternalClaim): boolean => {
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
 
-export const claimsConfig = {
+export const attributeConfig = {
            addAttributeMapping: false,
            attributeMappings: {
                deleteAction: false,

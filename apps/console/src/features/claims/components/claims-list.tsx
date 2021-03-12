@@ -46,7 +46,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
-import { claimsConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions/configs";
 import {
     AppConstants,
     AppState,
@@ -519,7 +519,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ claimsConfig.attributesPlaceholderAddButton(attributeType)
+                    action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
                         && (
                             <PrimaryButton
                                 onClick={ onEmptyListPlaceholderActionClick }
@@ -587,7 +587,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         return (
                             <Header as="h6" image>
                                 <>
-                                    { claimsConfig.attributes.showUserstoreMappingWarningIcon && showWarning && (
+                                    { attributeConfig.attributes.showUserstoreMappingWarningIcon && showWarning && (
                                         <Popup
                                             trigger={
                                                 <Icon
@@ -867,7 +867,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:edit"),
                     renderer: "semantic-icon"
                 },
-                claimsConfig.attributes.deleteAction && {
+                attributeConfig.attributes.deleteAction && {
                     hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
@@ -889,7 +889,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string =>  t("common:edit"),
                     renderer: "semantic-icon"
                 },
-                claimsConfig.attributeMappings.deleteAction && {
+                attributeConfig.attributeMappings.deleteAction && {
                     hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
@@ -909,23 +909,23 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:update"),
                     renderer: "semantic-icon"
                 },
-                claimsConfig.externalAttributes.showActions && {
-                    icon: (claim: ExternalClaim): SemanticICONS => claimsConfig.externalAttributes
+                attributeConfig.externalAttributes.showActions && {
+                    icon: (claim: ExternalClaim): SemanticICONS => attributeConfig.externalAttributes
                         .getEditIcon(claim, editClaim),
 
                     link: (claim: ExternalClaim) => {
-                        return claimsConfig.externalAttributes.isEditActionClickable(claim);
+                        return attributeConfig.externalAttributes.isEditActionClickable(claim);
                     },
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
-                        claimsConfig.externalAttributes.editClaim(claim, editClaim, setEditClaim),
-                    popupText: (claim: ExternalClaim): string => claimsConfig.externalAttributes
+                        attributeConfig.externalAttributes.editClaim(claim, editClaim, setEditClaim),
+                    popupText: (claim: ExternalClaim): string => attributeConfig.externalAttributes
                         .getEditPopupText(claim, editClaim),
                     renderer: "semantic-icon"
                 },
-                claimsConfig.externalAttributes.showDeleteIcon(dialectID) && {
+                attributeConfig.externalAttributes.showDeleteIcon(dialectID) && {
                     hidden: (claim: ExternalClaim): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
-                        || claimsConfig.externalAttributes.hideDeleteIcon(claim),
+                        || attributeConfig.externalAttributes.hideDeleteIcon(claim),
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
                         initDelete(ListType.EXTERNAL, claim),
@@ -974,7 +974,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", item.id));
         } else if (isDialect(list)) {
             history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", item.id));
-        } else if (isExternalClaim(list) && claimsConfig.externalAttributes.isRowClickable(dialectID, ItemHeader)) {
+        } else if (isExternalClaim(list) && attributeConfig.externalAttributes.isRowClickable(dialectID, ItemHeader)) {
             setEditClaim(editClaim ? "" : item.id);
         } else {
             setEditExternalClaim(item);
@@ -1003,7 +1003,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 showHeader={ false }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
-                isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) => claimsConfig.isRowSelectable(claim) }
+                isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) => attributeConfig.isRowSelectable(claim) }
             />
         </>
     );

@@ -39,6 +39,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
+import { attributeConfig } from "../../../../../extensions/configs";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
 
@@ -236,7 +237,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claimURI: claim.claimURI,
                             description: values.get("description").toString(),
                             displayName: values.get("name").toString(),
-                            displayOrder: claimsConfig.editAttributes.getDisplayOrder(
+                            displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                                 claim.displayOrder, values.get("displayOrder")?.toString()),
                             properties: claim.properties,
                             readOnly: values.get("readOnly").length > 0,
@@ -354,7 +355,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     data-testid={ `${ testId }-form-supported-by-default-input` }
                                 />
                                 {
-                                    claimsConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
+                                    attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
                                     && (
                                         <>
                                             <Field
@@ -378,7 +379,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     )
                                 }
                                 {
-                                    claimsConfig.editAttributes.showRequiredCheckBox &&
+                                    attributeConfig.editAttributes.showRequiredCheckBox &&
                                     <>
                                         <Divider hidden />
                                         <Field
@@ -424,7 +425,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             </EmphasizedSegment>
             <Divider hidden />
             {
-                claimsConfig.editAttributes.showDangerZone &&
+                attributeConfig.editAttributes.showDangerZone &&
                 <DangerZoneGroup
                     sectionHeader={ t("common:dangerZone") }
                     data-testid={ `${ testId }-danger-zone-group` }

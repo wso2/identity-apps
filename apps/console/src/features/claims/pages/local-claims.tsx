@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { claimsConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -145,7 +145,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, claimsConfig.attributes.excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, attributeConfig.attributes.excludeIdentityClaims);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
@@ -254,7 +254,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     (isLoading || !(!searchQuery && filteredClaims?.length <= 0))
                     && hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.create, allowedScopes)
-                    && claimsConfig.attributes.addAttribute && (
+                    && attributeConfig.attributes.addAttribute && (
                         <PrimaryButton
                             onClick={ () => {
                                 setOpenModal(true);
@@ -268,7 +268,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                description={ claimsConfig.attributes.description }
+                description={ attributeConfig.attributes.description }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")

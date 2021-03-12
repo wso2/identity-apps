@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
-import { claimsConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions/configs";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
@@ -176,7 +176,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL") &&
                                 claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET") &&
                                 claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
-                                (claimsConfig.attributeMappings.showSCIMCore1
+                                (attributeConfig.attributeMappings.showSCIMCore1
                                 || claim.dialectURI !== "urn:scim:schemas:core:1.0")
                             );
                         }

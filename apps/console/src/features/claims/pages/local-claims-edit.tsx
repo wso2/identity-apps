@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { claimsConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions/configs";
 import { AppConstants, history } from "../../core";
 import { getAClaim } from "../api";
 import {
@@ -180,7 +180,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            { claimsConfig.attributes.showEditTabs
+            { attributeConfig.attributes.showEditTabs
                 ? <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
                 : (
                     <EditBasicDetailsLocalClaims
