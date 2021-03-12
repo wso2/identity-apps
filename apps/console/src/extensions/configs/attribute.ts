@@ -26,9 +26,10 @@ export const attributeConfig = {
     addAttributeMapping: false,
     attributeMappings: {
         deleteAction: false,
-        showSCIMCore1: false,
+        editAttributeMappingDetails: false,
         getExternalAttributes: (attributeType: string, response: ExternalClaim[]): ExternalClaim[] => {
             const claims: ExternalClaim[] = [];
+
             if (attributeType == ClaimManagementConstants.SCIM) {
                 response.forEach((claim: ExternalClaim) => {
                     if (!claim.mappedLocalClaimURI.match(/\/identity\//)) {
@@ -41,17 +42,17 @@ export const attributeConfig = {
 
             return claims;
         },
-        editAttributeMappingDetails: false,
-        showDangerZone: false
+        showDangerZone: false,
+        showSCIMCore1: false
     },
     attributes: {
-        deleteAction: false,
-        showUserstoreMappingWarningIcon: false,
-        excludeIdentityClaims: true,
         addAttribute: false,
+        deleteAction: false,
         description: I18n.instance.t("extensions:manage.attributes.attributes.description"),
+        excludeIdentityClaims: true,
         //I18n.instance.t("console:manage.features.claims.local.pageLayout.local.description"),
-        showEditTabs: false
+        showEditTabs: false,
+        showUserstoreMappingWarningIcon: false
     },
     attributesPlaceholderAddButton: (attributeType: string): boolean => {
         return attributeType !== ClaimManagementConstants.SCIM;
