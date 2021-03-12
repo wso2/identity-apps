@@ -19,8 +19,9 @@
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { SemanticICONS } from "semantic-ui-react/dist/commonjs/generic";
+import { AttributeConfig } from "./models";
 
-export const attributeConfig = {
+export const attributeConfig: AttributeConfig = {
     addAttributeMapping: true,
     attributeMappings: {
         deleteAction: true,
