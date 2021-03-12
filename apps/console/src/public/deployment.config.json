@@ -313,6 +313,7 @@
             "showLanguageSwitcher": false
         },
         "isGroupAndRoleSeparationEnabled": true,
+        "isGroupAndRoleSeparationImprovementsEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
         "isDefaultDialectEditingEnabled": false,

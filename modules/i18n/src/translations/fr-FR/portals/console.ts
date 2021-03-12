@@ -725,12 +725,28 @@ export const console: ConsoleNS = {
                                             validations: {
                                                 empty: "Veuillez entrer le rôle local"
                                             }
+                                        },
+                                        applicationGroup: {
+                                            label: "Groupe d'applications",
+                                            validations: {
+                                                duplicate: "Ce groupe est déjà mappé. Veuillez sélectionner un autre groupe",
+                                                empty: "Veuillez saisir un attribut auquel mapper"
+                                            }
+                                        },
+                                        localGroup: {
+                                            label: "Groupe local",
+                                            validations: {
+                                                empty: "Veuillez entrer le groupe local"
+                                            }
                                         }
                                     }
                                 }
                             },
                             roleMapping: {
                                 heading: "Association des rôles"
+                            },
+                            groupMapping: {
+                                heading: "Mappage de groupe"
                             },
                             selection: {
                                 addWizard: {
@@ -2648,6 +2664,17 @@ export const console: ConsoleNS = {
                             valueRequiredErrorMessage: "Veuillez renseigner un rôle de l'IDP à associer à"
                         },
                         valueName: "Rôle du fournisseur d'identité"
+                    },
+                    groupMapping: {
+                        heading: "Mappage de groupe",
+                        hint: "Mapper les groupes locaux avec les groupes de fournisseur d'identité",
+                        keyName: "Groupe local",
+                        validation: {
+                            duplicateKeyErrorMsg: "Ce groupe est déjà mappé. Veuillez sélectionner un autre groupe",
+                            keyRequiredMessage: "Veuillez entrer le groupe local",
+                            valueRequiredErrorMessage: "Veuillez saisir un groupe IDP auquel mapper"
+                        },
+                        valueName: "Groupe de fournisseurs d'identité"
                     },
                     uriAttributeSettings: {
                         role: {

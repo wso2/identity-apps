@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
-import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DynamicField, Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
-import { getGroupList } from "../../../../groups/api";
-import { IdentityProviderRoleMappingInterface } from "../../../models";
-import { GroupListInterface, GroupsInterface } from "../../../../groups/models";
-import { useSelector } from "react-redux";
-import { AppState } from "../../../../core/store";
-import { handleGetRoleListError } from "../../utils";
+import {getRolesList} from "@wso2is/core/api";
+import {RoleListInterface, RolesInterface, TestableComponentInterface} from "@wso2is/core/models";
+import {DynamicField, Heading, Hint} from "@wso2is/react-components";
+import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {Grid} from "semantic-ui-react";
+import {getGroupList} from "../../../../groups/api";
+import {IdentityProviderRoleMappingInterface} from "../../../models";
+import {GroupListInterface, GroupsInterface} from "../../../../groups/models";
+import {useSelector} from "react-redux";
+import {AppState} from "../../../../core/store";
+import {handleGetRoleListError} from "../../utils";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -66,6 +66,19 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
+    const isGroupAndRoleSeparationImprovementsEnabledFlag = useSelector((state: AppState) =>
+        state?.config?.ui?.isGroupAndRoleSeparationImprovementsEnabled);
+
+    const getGroupAndRoleSeparationImprovementsEnabled = (
+        groupRoleSeparationEnabledFlag: boolean, groupRoleSeparationImprovementsEnabledFlag: boolean): boolean => {
+        return groupRoleSeparationEnabledFlag ? groupRoleSeparationImprovementsEnabledFlag : false;
+    }
+
+    const isGroupAndRoleSeparationImprovementsEnabled = getGroupAndRoleSeparationImprovementsEnabled(
+        isGroupAndRoleSeparationEnabled, isGroupAndRoleSeparationImprovementsEnabledFlag);
+
+    const roleOrGroupMapping = isGroupAndRoleSeparationImprovementsEnabled ? "groupMapping" : "roleMapping";
+
     const {
         onSubmit,
         triggerSubmit,
@@ -99,7 +112,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        isGroupAndRoleSeparationEnabled ?
+        isGroupAndRoleSeparationImprovementsEnabled ?
             getGroupList(null)
                 .then((response) => {
                     if (response.status === 200) {
@@ -124,7 +137,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         <>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Heading as="h4">{ t("console:develop.features.idp.forms.roleMapping.heading") }</Heading>
+                    <Heading as="h4">{ t("console:develop.features.idp.forms." + roleOrGroupMapping + ".heading") }</Heading>
                     <DynamicField
                         bottomMargin={ false }
                         data={
@@ -137,18 +150,18 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                 }) : []
                         }
                         keyType="dropdown"
-                        keyData={ isGroupAndRoleSeparationEnabled ?
+                        keyData={ isGroupAndRoleSeparationImprovementsEnabled ?
                             ( groupList ? getGroups() : [] )
                             :
                             ( roleList ? getRoles() : [] )
                         }
-                        keyName={ t("console:develop.features.idp.forms.roleMapping.keyName") }
-                        valueName={ t("console:develop.features.idp.forms.roleMapping.valueName") }
-                        keyRequiredMessage={ t("console:develop.features.idp.forms.roleMapping." +
+                        keyName={ t("console:develop.features.idp.forms." + roleOrGroupMapping + ".keyName") }
+                        valueName={ t("console:develop.features.idp.forms." + roleOrGroupMapping + ".valueName") }
+                        keyRequiredMessage={ t("console:develop.features.idp.forms." + roleOrGroupMapping + "." +
                             "validation.keyRequiredMessage") }
-                        valueRequiredErrorMessage={ t("console:develop.features.idp.forms.roleMapping." +
+                        valueRequiredErrorMessage={ t("console:develop.features.idp.forms." + roleOrGroupMapping + "." +
                             "validation.valueRequiredErrorMessage") }
-                        duplicateKeyErrorMsg={ t("console:develop.features.idp.forms.roleMapping." +
+                        duplicateKeyErrorMsg={ t("console:develop.features.idp.forms." + roleOrGroupMapping + "." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
                         update={ (data) => {
@@ -166,7 +179,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         } }
                         data-testid={ testId }
                     />
-                    <Hint>{ t("console:develop.features.idp.forms.roleMapping.hint") }</Hint>
+                    <Hint>{ t("console:develop.features.idp.forms." + roleOrGroupMapping + ".hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>

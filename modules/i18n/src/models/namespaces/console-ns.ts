@@ -432,6 +432,8 @@ export interface ConsoleNS {
                                     dynamic: {
                                         localRole: FormAttributes;
                                         applicationRole: FormAttributes;
+                                        localGroup: FormAttributes;
+                                        applicationGroup: FormAttributes;
                                     };
                                 };
                             };
@@ -483,6 +485,9 @@ export interface ConsoleNS {
                             };
                             attributeMappingChange: Notification;
                             roleMapping: {
+                                heading: string;
+                            };
+                            groupMapping: {
                                 heading: string;
                             };
                             tabName: string;
@@ -1028,6 +1033,17 @@ export interface ConsoleNS {
                         };
                         hint: string;
                     };
+                    groupMapping: {
+                        heading: string;
+                        keyName: string;
+                        valueName: string;
+                        validation: {
+                            keyRequiredMessage: string;
+                            valueRequiredErrorMessage: string;
+                            duplicateKeyErrorMsg: string;
+                        };
+                        hint: string;
+                    };
                     uriAttributeSettings: {
                         subject: {
                             heading: string;
@@ -1354,6 +1370,17 @@ export interface ConsoleNS {
                         };
                     };
                     roleMapping: {
+                        heading: string;
+                        keyName: string;
+                        valueName: string;
+                        validation: {
+                            keyRequiredMessage: string;
+                            valueRequiredErrorMessage: string;
+                            duplicateKeyErrorMsg: string;
+                        };
+                        hint: string;
+                    };
+                    groupMapping: {
                         heading: string;
                         keyName: string;
                         valueName: string;

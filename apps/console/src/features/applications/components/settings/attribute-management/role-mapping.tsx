@@ -79,6 +79,23 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
+    const isGroupAndRoleSeparationImprovementsEnabledFlag = useSelector((state: AppState) =>
+        state?.config?.ui?.isGroupAndRoleSeparationImprovementsEnabled);
+
+    const getGroupAndRoleSeparationImprovementsEnabled = (
+        groupRoleSeparationEnabledFlag: boolean, groupRoleSeparationImprovementsEnabledFlag: boolean): boolean => {
+        return groupRoleSeparationEnabledFlag ? groupRoleSeparationImprovementsEnabledFlag : false;
+    }
+
+    const isGroupAndRoleSeparationImprovementsEnabled = getGroupAndRoleSeparationImprovementsEnabled(
+        isGroupAndRoleSeparationEnabled, isGroupAndRoleSeparationImprovementsEnabledFlag);
+
+    const roleOrGroupMapping = isGroupAndRoleSeparationImprovementsEnabled ? "groupMapping" : "roleMapping";
+
+    const applicationRoleOrGroup = isGroupAndRoleSeparationImprovementsEnabled ? "applicationGroup" : "applicationRole";
+
+    const localRoleOrGroup = isGroupAndRoleSeparationImprovementsEnabled ? "localGroup" : "localRole";
+
     /**
      * Filter out Application related and Internal roles
      */
@@ -109,7 +126,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     };
 
     useEffect(() => {
-        isGroupAndRoleSeparationEnabled ?
+        isGroupAndRoleSeparationImprovementsEnabled ?
             getGroupList(null)
                 .then((response) => {
                     if (response.status === 200) {
@@ -139,7 +156,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Heading as="h4">
-                        { t("console:develop.features.applications.edit.sections.attributes.roleMapping.heading") }
+                        { t("console:develop.features.applications.edit.sections.attributes." + roleOrGroupMapping
+                            + ".heading") }
                     </Heading>
                     <DynamicField
                         data={
@@ -152,28 +170,28 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 }) : []
                         }
                         keyType="dropdown"
-                        keyData={ isGroupAndRoleSeparationEnabled ?
+                        keyData={ isGroupAndRoleSeparationImprovementsEnabled ?
                             (groupList ? getGroups() : []) : (roleList ? getFilteredRoles() : [])
                         }
                         keyName={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".localRole.label")
+                                "." + localRoleOrGroup + ".label")
                         }
                         valueName={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.label")
+                                "." + applicationRoleOrGroup + ".label")
                         }
                         keyRequiredMessage={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".localRole.validations.empty")
+                                "." + localRoleOrGroup + ".validations.empty")
                         }
                         valueRequiredErrorMessage={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.validations.empty")
+                                "." + applicationRoleOrGroup + ".validations.empty")
                         }
                         duplicateKeyErrorMsg={
                             t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.validations.duplicate")
+                                "." + applicationRoleOrGroup + ".validations.duplicate")
                         }
                         submit={ submitState }
                         update={ (data) => {
@@ -181,7 +199,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 const finalData: RoleMappingInterface[] = data.map(mapping => {
                                     return {
                                         applicationRole: mapping.value,
-                                        localRole: isGroupAndRoleSeparationEnabled || mapping.key.includes("/") ?
+                                        localRole: isGroupAndRoleSeparationImprovementsEnabled || mapping.key.includes("/") ?
                                             mapping.key : "Internal/" + mapping.key
                                     };
                                 });

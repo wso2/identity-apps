@@ -723,12 +723,28 @@ export const console: ConsoleNS = {
                                             validations: {
                                                 empty: "Please enter the local role"
                                             }
+                                        },
+                                        applicationGroup: {
+                                            label: "Application Group",
+                                            validations: {
+                                                duplicate: "This group is already mapped. Please select another group",
+                                                empty: "Please enter an attribute to map to"
+                                            }
+                                        },
+                                        localGroup: {
+                                            label: "Local Group",
+                                            validations: {
+                                                empty: "Please enter the local group"
+                                            }
                                         }
                                     }
                                 }
                             },
                             roleMapping: {
                                 heading: "Role Mapping"
+                            },
+                            groupMapping: {
+                                heading: "Group Mapping"
                             },
                             selection: {
                                 addWizard: {
@@ -2636,6 +2652,17 @@ export const console: ConsoleNS = {
                         },
                         valueName: "Identity Provider Role"
                     },
+                    groupMapping: {
+                        heading: "Group Mapping",
+                        hint: "Map local groups with the Identity Provider groups",
+                        keyName: "Local Group",
+                        validation: {
+                            duplicateKeyErrorMsg: "This group is already mapped. Please select another group",
+                            keyRequiredMessage: "Please enter the local group",
+                            valueRequiredErrorMessage: "Please enter an IDP group to map to"
+                        },
+                        valueName: "Identity Provider Group"
+                    },
                     uriAttributeSettings: {
                         role: {
                             heading: "Role",
@@ -3489,6 +3516,17 @@ export const console: ConsoleNS = {
                             valueRequiredErrorMessage: "Please enter an IDP role to map to"
                         },
                         valueName: "Identity Provider Role"
+                    },
+                    groupMapping: {
+                        heading: "Group Mapping",
+                        hint: "Map local groups with the Identity Provider groups",
+                        keyName: "Local Group",
+                        validation: {
+                            duplicateKeyErrorMsg: "This group is already mapped. Please select another group",
+                            keyRequiredMessage: "Please enter the local group",
+                            valueRequiredErrorMessage: "Please enter an IDP group to map to"
+                        },
+                        valueName: "Identity Provider Group"
                     },
                     uriAttributeSettings: {
                         role: {

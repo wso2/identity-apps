@@ -728,12 +728,28 @@ export const console: ConsoleNS = {
                                             validations: {
                                                 empty: "කරුණාකර දේශීය භූමිකාව ඇතුළත් කරන්න"
                                             }
+                                        },
+                                        applicationGroup: {
+                                            label: "යෙදුම් කණ්ඩායම",
+                                            validations: {
+                                                duplicate: "මෙම කණ්ඩායම දැනටමත් සිතියම් ගත කර ඇත. කරුණාකර වෙනත් කණ්ඩායමක් තෝරන්න",
+                                                empty: "කරුණාකර සිතියම සඳහා ලක්ෂණයක් ඇතුළත් කරන්න"
+                                            }
+                                        },
+                                        localGroup: {
+                                            label: "දේශීය කණ්ඩායම",
+                                            validations: {
+                                                empty: "කරුණාකර ප්‍රාදේශීය කණ්ඩායමට ඇතුළු වන්න"
+                                            }
                                         }
                                     }
                                 }
                             },
                             roleMapping: {
                                 heading: "භූමිකාව සිතියම්ගත කිරීම"
+                            },
+                            groupMapping: {
+                                heading: "කණ්ඩායම් සිතියම්කරණය"
                             },
                             selection: {
                                 addWizard: {
@@ -2626,6 +2642,17 @@ export const console: ConsoleNS = {
                                 + " භූමිකාවක් ඇතුළත් කරන්න"
                         },
                         valueName: "හැඳුනුම්පත් සපයන්නාගේ කාර්යභාරය"
+                    },
+                    groupMapping: {
+                        heading: "කණ්ඩායම් සිතියම්කරණය",
+                        hint: "අනන්‍යතා සැපයුම් කණ්ඩායම් සමඟ දේශීය කණ්ඩායම් සිතියම් ගත කරන්න",
+                        keyName: "දේශීය කණ්ඩායම",
+                        validation: {
+                            duplicateKeyErrorMsg: "මෙම කණ්ඩායම දැනටමත් සිතියම් ගත කර ඇත. කරුණාකර වෙනත් කණ්ඩායමක් තෝරන්න",
+                            keyRequiredMessage: "කරුණාකර ප්‍රාදේශීය කණ්ඩායමට ඇතුළු වන්න",
+                            valueRequiredErrorMessage: "සිතියම් ගත කිරීමට කරුණාකර අවතැන්වූවන් කණ්ඩායමක් ඇතුළත් කරන්න"
+                        },
+                        valueName: "අනන්‍යතා සැපයුම් කණ්ඩායම"
                     },
                     uriAttributeSettings: {
                         role: {
