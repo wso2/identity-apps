@@ -772,7 +772,9 @@ export const console: ConsoleNS = {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
                                             removeMandatory: "Retirer l'obligation",
-                                            removeRequested: "Retirer la demandabilité"
+                                            removeRequested: "Retirer la demandabilité",
+                                            subjectDisabledSelection: "Cet attribut est obligatoire car il " +
+                                                "s'agit de l'attribut sujet."
                                         },
                                         fields: {
                                             claim: {

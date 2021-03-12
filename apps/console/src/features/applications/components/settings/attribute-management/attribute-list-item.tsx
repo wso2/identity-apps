@@ -43,6 +43,10 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     claimMappingError?: boolean;
     deleteAttribute?: () => void;
     /**
+     * Specify whether this is the selected subject attribute
+     */
+    subject?: boolean;
+    /**
      * Make the form read only.
      */
     readOnly?: boolean;
@@ -76,6 +80,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         claimMappingError,
         readOnly,
         deleteAttribute,
+        subject,
         [ "data-testid" ]: testId
     } = props;
 
@@ -195,15 +200,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     }
                     position="top right"
                     content={
-                        mandatory
-                            ? t("console:develop.features.applications.edit.sections.attributes.selection" +
-                            ".mappingTable.listItem.actions.removeMandatory")
-                            : t("console:develop.features.applications.edit.sections.attributes.selection" +
-                            ".mappingTable.listItem.actions.makeMandatory")
+                        subject ? t("console:develop.features.applications.edit.sections.attributes.selection" +
+                            ".mappingTable.listItem.actions.subjectDisabledSelection") :
+                            mandatory
+                                ? t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                ".mappingTable.listItem.actions.removeMandatory")
+                                : t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                ".mappingTable.listItem.actions.makeMandatory")
                     }
                     inverted
                     disabled={
-                        readOnly
+                        subject ? false : readOnly
                             ? true
                             : mappingOn
                                 ? !requested
