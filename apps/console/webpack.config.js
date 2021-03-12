@@ -424,6 +424,12 @@ module.exports = (env) => {
             })
         ].filter(Boolean),
         resolve: {
+            alias: {
+                // Workaround to fix the invariant hook call exception, due to a
+                // 3rd library lib using `react` as a dependency.
+                // https://github.com/facebook/react/issues/13991#issuecomment-435587809
+                react: path.resolve("../../node_modules/react")
+            },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
             // We have to polyfill the required once manually.
