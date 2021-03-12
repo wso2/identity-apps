@@ -41,8 +41,9 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     String username = null;
-    String tenantDomain = request.getParameter("tenantdomain");
+
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
@@ -62,7 +63,7 @@
     }
 
 
-    if (StringUtils.isBlank(username) || StringUtils.isBlank(confirmationKey)) {
+    if (StringUtils.isBlank(confirmationKey)) {
         if (request.getAttribute("confirmationKey") != null) {
         confirmationKey = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("confirmationKey"));
         }
@@ -87,9 +88,16 @@
         tenantDomain = user.getTenantDomain();
         if (isAutoLoginEnable) {
             username = userStoreDomain + "/" + username + "@" + tenantDomain;
-            String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
+
+            JSONObject contentValueInJson = new JSONObject();
+            contentValueInJson.put("username", username);
+            contentValueInJson.put("createdTime", System.currentTimeMillis());
+            contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+            String content = contentValueInJson.toString();
+
             JSONObject cookieValueInJson = new JSONObject();
-            cookieValueInJson.put("username", username);
+            cookieValueInJson.put("content", content);
+            String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
             cookieValueInJson.put("signature", signature);
             Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
                     Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
@@ -97,7 +105,6 @@
             cookie.setSecure(true);
             cookie.setMaxAge(300);
             response.addCookie(cookie);
-            request.setAttribute(AUTO_LOGIN_COOKIE_NAME, "true");
         }
 
         request.setAttribute("callback", callback);
