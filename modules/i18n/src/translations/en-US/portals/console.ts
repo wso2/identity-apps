@@ -1193,6 +1193,10 @@ export const console: ConsoleNS = {
                                     implicit: {
                                         hint: "Using the implicit grant with public applications is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
+                                    },
+                                    password: {
+                                        hint: "Using the password grant with public applications is not recommended.",
+                                        label: "{{grantType}} (Not recommended)"
                                     }
                                 },
                                 hint: "This will determine how the application communicates with the token service.",

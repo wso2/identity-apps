@@ -1197,6 +1197,11 @@ export const console: ConsoleNS = {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
                                             "n'est pas recommandée.",
                                         label: "{{grantType}} (non recommandé)"
+                                    },
+                                    password: {
+                                        hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
+                                            "publiques n'est pas recommandée.",
+                                        label: "{{grantType}} (non recommandé)"
                                     }
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
