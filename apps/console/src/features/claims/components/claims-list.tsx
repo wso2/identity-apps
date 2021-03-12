@@ -917,7 +917,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         return attributeConfig.externalAttributes.isEditActionClickable(claim);
                     },
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
-                        attributeConfig.externalAttributes.editClaim(claim, editClaim, setEditClaim),
+                        attributeConfig.externalAttributes.editAttribute(claim, editClaim, setEditClaim),
                     popupText: (claim: ExternalClaim): string => attributeConfig.externalAttributes
                         .getEditPopupText(claim, editClaim),
                     renderer: "semantic-icon"
@@ -1003,7 +1003,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 showHeader={ false }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
-                isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) => attributeConfig.isRowSelectable(claim) }
+                isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
+                    attributeConfig.isRowSelectable(claim) }
             />
         </>
     );
