@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import {getRolesList} from "@wso2is/core/api";
-import {RoleListInterface, RolesInterface, TestableComponentInterface} from "@wso2is/core/models";
-import {DynamicField, Heading, Hint} from "@wso2is/react-components";
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {Grid} from "semantic-ui-react";
-import {getGroupList} from "../../../../groups/api";
-import {IdentityProviderRoleMappingInterface} from "../../../models";
-import {GroupListInterface, GroupsInterface} from "../../../../groups/models";
-import {useSelector} from "react-redux";
-import {AppState} from "../../../../core/store";
-import {handleGetRoleListError} from "../../utils";
+import { getRolesList } from "@wso2is/core/api";
+import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { DynamicField, Heading, Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Grid } from "semantic-ui-react";
+import { getGroupList } from "../../../../groups/api";
+import { IdentityProviderRoleMappingInterface } from "../../../models";
+import { GroupListInterface, GroupsInterface } from "../../../../groups/models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../../core/store";
+import { handleGetRoleListError } from "../../utils";
 
 /**
  * Proptypes for the identity providers settings component.

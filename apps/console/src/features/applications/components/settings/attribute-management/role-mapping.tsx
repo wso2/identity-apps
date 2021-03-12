@@ -27,7 +27,7 @@ import { Grid } from "semantic-ui-react";
 import { RoleMappingInterface } from "../../../models";
 import { AppState } from "../../../../core/store";
 import { getGroupList } from "../../../../groups/api";
-import {GroupListInterface, GroupsInterface} from "../../../../groups/models";
+import { GroupListInterface, GroupsInterface } from "../../../../groups/models";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
