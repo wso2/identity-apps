@@ -52,8 +52,20 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const [groupList, setGroupList] = useState<GroupsInterface[]>(undefined);
 
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled)
-    const groupsOrRolesIdentifier = isGroupAndRoleSeparationEnabled ? "outboundProvisioningGroups" :
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
+    const isGroupAndRoleSeparationImprovementsEnabledFlag = useSelector((state: AppState) =>
+        state?.config?.ui?.isGroupAndRoleSeparationImprovementsEnabled);
+
+    const getGroupAndRoleSeparationImprovementsEnabled = (
+        groupRoleSeparationEnabledFlag: boolean, groupRoleSeparationImprovementsEnabledFlag: boolean): boolean => {
+        return groupRoleSeparationEnabledFlag ? groupRoleSeparationImprovementsEnabledFlag : false;
+    }
+
+    const isGroupAndRoleSeparationImprovementsEnabled = getGroupAndRoleSeparationImprovementsEnabled(
+        isGroupAndRoleSeparationEnabled, isGroupAndRoleSeparationImprovementsEnabledFlag);
+
+    const groupsOrRolesIdentifier = isGroupAndRoleSeparationImprovementsEnabled ? "outboundProvisioningGroups" :
         "outboundProvisioningRoles"
 
     const dispatch = useDispatch();
@@ -79,7 +91,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     };
 
     useEffect(() => {
-        if (isGroupAndRoleSeparationEnabled) {
+        if (isGroupAndRoleSeparationImprovementsEnabled) {
             getGroupList(null)
                 .then((response) => {
                     if (response.status === 200) {
@@ -140,7 +152,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
                             options={
-                                isGroupAndRoleSeparationEnabled ?
+                                isGroupAndRoleSeparationImprovementsEnabled ?
                                     groupList?.map((group) => {
                                         return {
                                             key: group.id,
