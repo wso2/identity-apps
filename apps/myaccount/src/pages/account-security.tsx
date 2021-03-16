@@ -163,9 +163,10 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
 
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <div ref={ consentControl }>
+                                <div>
                                     <Consents onAlertFired={ handleAlerts } />
                                 </div>
+                                <div ref={ consentControl }/>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
