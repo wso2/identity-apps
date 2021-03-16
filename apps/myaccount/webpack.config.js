@@ -17,6 +17,7 @@
  */
 
 const path = require("path");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -165,7 +166,12 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "babel-loader"
+                            loader: "babel-loader",
+                            options: {
+                                plugins: [
+                                    isDevelopment && require.resolve("react-refresh/babel")
+                                ].filter(Boolean)
+                            }
                         }
                     ]
                 },
@@ -260,6 +266,7 @@ module.exports = (env) => {
                 analyzerPort: analyzerPort
             }),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
+            isDevelopment && new ReactRefreshWebpackPlugin(),
             // In webpack 5 automatic node.js polyfills are removed.
             // https://github.com/vfile/vfile/issues/38#issuecomment-640479137
             new webpack.ProvidePlugin({
