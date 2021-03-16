@@ -17,26 +17,32 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Heading, Hint, Code } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { RoleConfigInterface, SubjectConfigInterface } from "../../../models";
+import { RoleConfigInterface, SubjectConfigInterface, InboundProtocolListItemInterface } from "../../../models";
+import { applicationConfig } from "../../../../../extensions/configs";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;
     setSubmissionValues: any;
+    setSelectedValue: any;
+    defaultSubjectAttribute: string;
     triggerSubmission: boolean;
     initialSubject: SubjectConfigInterface;
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
+    technology: InboundProtocolListItemInterface[];
     /**
      * Make the form read only.
      */
     readOnly?: boolean;
 }
+
+export const SubjectAttributeFieldName = "subjectAttribute";
 
 /**
  * Advanced attribute settings component.
@@ -52,15 +58,37 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const {
         dropDownOptions,
         setSubmissionValues,
+        setSelectedValue,
+        defaultSubjectAttribute,
         triggerSubmission,
         initialSubject,
         initialRole,
         claimMappingOn,
         readOnly,
+        technology,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
+
+    useEffect(() => {
+        if(selectedSubjectValue) {
+            if(dropDownOptions && dropDownOptions.length > 0 &&
+                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
+                setSelectedSubjectValue(defaultSubjectAttribute);
+            }
+        } else {
+            setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
+        }
+    }, [ dropDownOptions ]);
+
+    useEffect(() => {
+        if(selectedSubjectValue) {
+            setSelectedValue(selectedSubjectValue);
+        }
+    }, [ selectedSubjectValue ]);
 
     /**
      * Check whether initial value is exist in dropdown list.
@@ -93,6 +121,64 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setSubmissionValues(settingValues);
     };
 
+    const subjectAttributeChangeListener = (tempForm: Map<string, FormValue>): void => {
+        if (tempForm?.has(SubjectAttributeFieldName)) {
+            setSelectedSubjectValue(tempForm.get(SubjectAttributeFieldName)?.toString());
+        } else {
+            setSelectedSubjectValue(null);
+        }
+    };
+
+    const resolveSubjectAttributeHint = (): ReactElement => {
+        if (technology.length === 1) {
+            switch (technology[ 0 ].type) {
+                case ("oauth2"):
+                    return (
+                        <Hint>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                    ".subject.fields.subjectAttribute.hintOIDC"
+                                }
+                            >
+                                Select which of the shared attributes you want to use as the subject identifier of the
+                                user. This represents the <Code withBackground>sub</Code> claim of the
+                                <Code withBackground>id_token</Code>.
+                            </Trans>
+                        </Hint>
+                    );
+                case ("samlsso"):
+                    return (
+                        <Hint>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                    ".subject.fields.subjectAttribute.hintSAML"
+                                }
+                            >
+                                Select which of the shared attributes you want to use as the subject identifier of the
+                                user. This represents the <Code withBackground>subject</Code> element of the SAML
+                                assertion.
+                            </Trans>
+                        </Hint>
+                    );
+                default:
+                    return (
+                        <Hint>
+                            { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                ".subject.fields.subjectAttribute.hint") }
+                        </Hint>
+                    );
+            }
+        }
+        return (
+            <Hint>
+                { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                    ".subject.fields.subjectAttribute.hint") }
+            </Hint>
+        );
+    };
+
     return (
         (initialRole && initialSubject)
             ? (
@@ -102,12 +188,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     submitState={ triggerSubmission }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid className="form-container subject-attribute-selection">
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h4">
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                        ".subject.heading") }
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                        "sections.subject.heading") }
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
@@ -118,22 +204,23 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     }
                                     required={ claimMappingOn }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                            ".subject.fields.subjectAttribute.validations.empty")
+                                        t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                            "sections.subject.fields.subjectAttribute.validations.empty")
                                     }
                                     type="dropdown"
-                                    value={ initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value }
+                                    value={ selectedSubjectValue }
                                     children={ dropDownOptions }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-subject-attribute-dropdown` }
+                                    listen={ subjectAttributeChangeListener }
+                                    enableReinitialize={ true }
                                 />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
-                                        ".subject.fields.subjectAttribute.hint") }
-                                </Hint>
+                                { resolveSubjectAttributeHint() }
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
+                        { applicationConfig.attributeSettings
+                            .advancedAttributeSettings.showIncludeUserstoreDomainSubject
+                            && < Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectIncludeUserDomain"
@@ -163,8 +250,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         ".subject.fields.subjectIncludeUserDomain.hint") }
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
+                        </Grid.Row>}
+                        { applicationConfig.attributeSettings.advancedAttributeSettings.showIncludeTenantDomain &&
+                            <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectIncludeTenantDomain"
@@ -194,8 +282,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         ".sections.subject.fields.subjectIncludeTenantDomain.hint") }
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
+                        </Grid.Row>}
+                        { applicationConfig.attributeSettings.advancedAttributeSettings.showUseMappedLocalSubject &&
+                            <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="subjectUseMappedLocalSubject"
@@ -225,8 +314,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         ".subject.fields.subjectUseMappedLocalSubject.hint") }
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 2 }>
+                        </Grid.Row>}
+                        { applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
+                            <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
@@ -255,8 +345,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         ".role.fields.roleAttribute.hint") }
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
+                        </Grid.Row>}
+                        { applicationConfig.attributeSettings
+                            .advancedAttributeSettings.showIncludeUserstoreDomainRole &&
+                            <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     name="role"
@@ -285,7 +377,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         ".role.fields.role.hint") }
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
+                        </Grid.Row>}
                     </Grid>
                 </Forms>
             )
