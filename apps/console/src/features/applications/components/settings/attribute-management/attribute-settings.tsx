@@ -620,6 +620,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (isEmpty(submitValue.claimConfiguration.role.mappings)) {
             delete submitValue.claimConfiguration.role.mappings;
         }
+        if (!applicationConfig.attributeSettings.roleMapping) {
+            delete submitValue.claimConfiguration.role;
+        }
 
         updateClaimConfiguration(appId, submitValue)
             .then(() => {
