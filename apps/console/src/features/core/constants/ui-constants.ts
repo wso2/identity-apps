@@ -55,7 +55,7 @@ export class UIConstants {
      * @constant
      * @type {number}
      */
-    public static readonly ALERT_DISMISS_INTERVAL: number = 15; //Increased dismiss interval to 15s
+    public static readonly ALERT_DISMISS_INTERVAL: number = 15;
 
     /**
      * AJAX top loading bar height.
