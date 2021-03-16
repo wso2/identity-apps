@@ -1169,8 +1169,11 @@ export const console: ConsoleNS = {
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 },
-                                info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
-                                "as the authorized redirect URL. (You can download and run a sample at a later step.)"
+                                info: "Try out a sample app using {{callBackURLFromTemplate}} as the authorized" +
+                                    " redirect URL. You can download and run a sample at a later step.",
+                                infoTraditional: "You can download and run a sample at a later step." +
+                                    " You may change the tomcat hostname and port of the authorized redirect URL to" +
+                                    " match your environment."
                             },
                             clientID: {
                                 label: "Client ID"
@@ -2398,6 +2401,11 @@ export const console: ConsoleNS = {
                         help: {
                             heading: "Help",
                             subHeading: "Use the guide below"
+                        },
+                        applicationMode: {
+                            label: "Select one of the following paths.",
+                            integrate: "Integrate with your app",
+                            sample: "Explore a sample"
                         }
                     }
                 }

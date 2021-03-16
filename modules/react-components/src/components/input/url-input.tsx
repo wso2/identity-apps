@@ -28,6 +28,7 @@ import { Hint } from "../typography";
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
     duplicateURLErrorMessage: string;
+    enableReinitialize?: boolean;
     emptyErrorMessage?: string;
     urlState: string;
     setURLState: any;
@@ -85,6 +86,10 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      */
     labelEnabled?: boolean;
     /**
+     * Initial value of the Url input.
+     */
+    initialUrlValue?: string;
+    /**
      * Show or hide Allow button
      */
     isAllowEnabled?: boolean;
@@ -129,7 +134,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         restrictSecondaryContent,
         customLabel,
         duplicateURLErrorMessage,
+        enableReinitialize,
         emptyErrorMessage,
+        initialUrlValue,
         isAllowEnabled,
         allowedOrigins,
         handleAddAllowedOrigin,
@@ -371,6 +378,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
     }, [ hideComponent ]);
 
+    useEffect( () => {
+        setChangeUrl(initialUrlValue);
+    }, [initialUrlValue]);
+
     /**
      * Once clicked this function will immediately delegates the
      * action to the parent above this component. Calls -
@@ -536,7 +547,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             (url) => URLUtils.urlComponents(url)?.origin
         );
         return new Set<string>(normalizedOrigins ?? []).has(checkingOrigin);
-    }
+    };
 
     const shouldShowAllowOriginAction = (origin: string): boolean => {
         return labelEnabled && (isAllowEnabled && !isOriginIsKnownAndAllowed(origin));
@@ -603,32 +614,32 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                     <p>
-                        {/*Section that contains | https://origin X |*/ }
-                        {/*Chip widget with protocol highlights*/ }
+                        { /*Section that contains | https://origin X |*/ }
+                        { /*Chip widget with protocol highlights*/ }
                         <Label data-testid={ `${ testId }-${ url }` }>
                             { urlTextWidget(url) }
                             { !readOnly && urlRemoveButtonWidget(url) }
                         </Label>
 
-                        {/*Below is the exclamation mark that shows a popup*/ }
-                        {/*when clicked on top of it.*/ }
+                        { /*Below is the exclamation mark that shows a popup*/ }
+                        { /*when clicked on top of it.*/ }
                         &nbsp;{ labelEnabled && resolveCORSStatusLabel(url) }
 
-                        {/*Below is the static label text that get rendered*/ }
-                        {/*when the url is not allowed in cors list.*/ }
+                        { /*Below is the static label text that get rendered*/ }
+                        { /*when the url is not allowed in cors list.*/ }
                         { shouldShowAllowOriginAction(origin) &&
                         <span className={ "grey" }>&nbsp;<em>CORS not allowed for origin of this URL.</em></span>
                         }
 
-                        {/*Below is the `Allow` button that gets rendered when*/ }
-                        {/*this url is not allowed is cors list.*/ }
+                        { /*Below is the `Allow` button that gets rendered when*/ }
+                        { /*this url is not allowed is cors list.*/ }
                         { shouldShowAllowOriginAction(origin) && (
                             <LinkButton
                                 className={ "m-1 p-1 with-no-border orange" }
                                 onClick={ (e) => {
                                     onAllowOriginClick(e, origin);
                                 } }
-                                data-testid={ `${ testId }-${ url }-allow-button`}
+                                data-testid={ `${ testId }-${ url }-allow-button` }
                             >
                                 <span style={ { fontWeight: "bold" } }>Allow</span>
                             </LinkButton>
@@ -637,7 +648,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 </Grid.Column>
             </Grid.Row>
         );
-    }
+    };
 
     return (!hideEntireComponent &&
         <>
@@ -663,6 +674,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         error={ !(validURL && !duplicateURL) }
                         focus={ keepFocus }
                         value={ changeUrl }
+                        enableReinitialize={ enableReinitialize }
                         onKeyDown={ keyPressed }
                         onChange={ handleChange }
                         onBlur={ handleOnBlur }
@@ -760,9 +772,11 @@ URLInput.defaultProps = {
     allowEmptyValues: false,
     "data-testid": "url-input",
     duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
+    initialUrlValue: "",
+    enableReinitialize: false,
     isAllowEnabled: true,
     labelEnabled: false,
     showPredictions: true,
     onlyOrigin: false,
-    restrictSecondaryContent: true,
+    restrictSecondaryContent: true
 };

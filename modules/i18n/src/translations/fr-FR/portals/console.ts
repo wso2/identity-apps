@@ -1173,8 +1173,12 @@ export const console: ConsoleNS = {
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
                                 },
-                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
-                                "en utilisant {{callBackURLFromTemplate}} comme URL autorisée."
+                                info: "Essayez un exemple d'application en utilisant {{callBackURLFromTemplate}}" +
+                                    " comme URL de redirection autorisée. Vous pouvez télécharger et exécuter un" +
+                                    " exemple ultérieurement.",
+                                infoTraditional: "Vous pouvez télécharger et exécuter un exemple ultérieurement." +
+                                    " Vous pouvez modifier le nom d'hôte et le port Tomcat de l'URL de redirection" +
+                                    " autorisée pour qu'ils correspondent à votre environnement."
                             },
                             clientID: {
                                 label: "Identifiant du client"
@@ -2411,6 +2415,11 @@ export const console: ConsoleNS = {
                         help: {
                             heading: "Aide",
                             subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
+                        },
+                        applicationMode: {
+                            label: "Sélectionnez l'un des chemins suivants.",
+                            integrate: "Intégrez à votre application",
+                            sample: "Explorer un échantillon"
                         }
                     }
                 }
