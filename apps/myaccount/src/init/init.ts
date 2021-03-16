@@ -20,7 +20,6 @@ import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import { endUserSession } from "../utils";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
@@ -93,8 +92,14 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         }
     } else {
 
-        // End the user session.
-        endUserSession();
+        let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+        // SaaS app paths already contains the tenant and basename.
+        if (config.isSaas) {
+            logoutPath = config.clientOrigin + config.routes.logout;
+        }
+
+        window.top.location.href = logoutPath;
     }
 } else {
     // Tracking user interactions
