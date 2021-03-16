@@ -54,6 +54,9 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
+    {% if console.help_center_path is defined %}
+    "helpCenterUrl": "{{ console.help_center_path }}",
+    {% endif %}
     {% if console.idp_configs is defined %}
     "idpConfigs": {
         {% if console.idp_configs.items() is defined %}
