@@ -590,10 +590,10 @@ export const console: ConsoleNS = {
                     },
                     deleteApplication: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "All the applications depending on this also might stop working. " +
-                            "Please proceed with caution.",
+                        content: "This action is irreversible and will permanently delete the application.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the application."
+                        message: "If you delete this application, authentication flows for this application will " +
+                            "stop working. Please proceed with caution."
                     },
                     deleteOutboundProvisioningIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
