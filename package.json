@@ -76,7 +76,6 @@
         "react-router-dom": "^4.3.1",
         "react-top-loading-bar": "^1.2.0",
         "redux": "^4.0.4",
-        "redux-form": "^8.3.6",
         "redux-thunk": "^2.3.0",
         "semantic-ui-react": "^0.87.3",
         "ua-parser-js": "^0.7.20"
