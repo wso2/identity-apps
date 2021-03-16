@@ -6,7 +6,8 @@
         "rootDir": "src",
         "outDir": "dist/src",
         "declaration": true,
-        "declarationDir": "dist/types"
+        "declarationDir": "dist/types",
+        "types": [ "node", "jest" ]
     },
     "extends": "../../configs/common.tsconfig.json"
 }
