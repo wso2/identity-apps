@@ -80,6 +80,9 @@
         "appTitle": "{{ myaccount.ui.app_title }}",
         "appName": "{{ myaccount.ui.app_name }}",
         "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
+        {% if myaccount.disableMFAforSuperTenantUser is defined %}
+        "disableMFAforSuperTenantUser": "{{ myaccount.disableMFAforSuperTenantUser }}",
+        {% endif %}
         "authenticatorApp": {
                 {% if myaccount.authenticator_app_configs is defined %}
                 {% for key, value in myaccount.authenticator_app_configs.items() %}

@@ -150,9 +150,9 @@ export class AppConstants {
      *
      * @return {string}
      */
-         public static getTenant(): string {
-            return window["AppUtils"].getConfig().tenant;
-        }
+    public static getTenant(): string {
+        return window["AppUtils"].getConfig().tenant;
+    }
 
     /**
      * Set of keys used to enable/disable features.

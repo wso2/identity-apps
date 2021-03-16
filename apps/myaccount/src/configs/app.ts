@@ -132,7 +132,8 @@ export class Config {
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             theme: window["AppUtils"].getConfig().ui.theme,
-            titleText: window["AppUtils"].getConfig().appTitle
+            titleText: window["AppUtils"].getConfig().appTitle,
+            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser
         };
     }
 
