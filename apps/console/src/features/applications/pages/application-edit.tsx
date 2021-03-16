@@ -430,6 +430,19 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
     }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY), isExtensionsAvailable ]);
 
+    useEffect(() => {
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(4);
+            }
+
+            return;
+        }
+    }, [
+        urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY),
+        isExtensionsAvailable
+    ]);
+
     /**
      * Retrieves application details from the API.
      *
@@ -770,7 +783,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         if (inboundProtocolList.length === 0) {
-            
+
             return (
                 <LabelWithPopup
                     popupHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.header") }
@@ -828,8 +841,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
