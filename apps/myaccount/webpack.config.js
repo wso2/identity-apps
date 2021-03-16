@@ -37,8 +37,9 @@ const isProfilingEnabledInProduction = false;
 const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
-// Build artifacts output path.
-const OUTPUT_PATH = "build/myaccount";
+// Paths
+const OUTPUT_PATH = "build/myaccount"; // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";       // Output directory for the cache files. Only applicable in dev mode.
 
 module.exports = (env) => {
 
@@ -67,12 +68,18 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
             ? path.resolve(__dirname, PRODUCTION_ESLINT_CONFIG)
             : path.resolve(__dirname, DEVELOPMENT_ESLINT_CONFIG)
     };
 
     return {
+        cache: {
+            cacheDirectory: PATHS.cache,
+            // Possible strategies are 'memory' | 'filesystem'.
+            type: "filesystem"
+        },
         context: path.resolve(__dirname),
         devServer: {
             before: function (app) {
