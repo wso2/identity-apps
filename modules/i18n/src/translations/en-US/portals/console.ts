@@ -1172,7 +1172,7 @@ export const console: ConsoleNS = {
                                 info: "Try out a sample app using {{callBackURLFromTemplate}} as the authorized" +
                                     " redirect URL. You can download and run a sample at a later step.",
                                 infoTraditional: "You can download and run a sample at a later step." +
-                                    " You may change the tomcat hostname and port of the authorized redirect URL to" +
+                                    " You may change the Tomcat hostname and port of the authorized redirect URL to" +
                                     " match your environment."
                             },
                             clientID: {
