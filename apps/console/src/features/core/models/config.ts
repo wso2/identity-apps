@@ -117,6 +117,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the developer app.
      */
     developerApp: ExternalAppConfigInterface;
+    /**
+     * URL of the help center.
+     */
+    helpCenterURL?: string;
 }
 
 /**

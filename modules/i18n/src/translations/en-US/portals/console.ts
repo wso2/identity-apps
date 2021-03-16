@@ -7570,7 +7570,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the user's association to your organization.",
+                            description: "Successfully deleted the user's invitation.",
                             message: "Invitation deletion successful"
                         }
                     },
