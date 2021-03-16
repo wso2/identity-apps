@@ -153,7 +153,6 @@ module.exports = (env) => {
                     },
                     test: /\.(ts|js)x?$/,
                     use: [
-                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
@@ -176,7 +175,6 @@ module.exports = (env) => {
                     exclude: /(node_modules|dist|build|target|plugins)/,
                     test: /\.(ts|tsx|js|jsx)$/,
                     use: [
-                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
