@@ -435,9 +435,10 @@ module.exports = (env) => {
             // We have to polyfill the required once manually.
             // https://stackoverflow.com/a/65542520
             fallback: {
-                buffer: require.resolve("buffer"),
+                buffer: require.resolve("buffer/"),
                 crypto: require.resolve("crypto-browserify"),
                 fs: false,
+                path: require.resolve("path-browserify"),
                 stream: require.resolve("stream-browserify")
             }
         },
