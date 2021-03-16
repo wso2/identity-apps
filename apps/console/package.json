@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/console",
-    "version": "1.2.76",
+    "version": "1.2.77",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -26,12 +26,12 @@
         "test": "npx jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/core": "^1.2.76",
-        "@wso2is/forms": "^1.2.76",
-        "@wso2is/i18n": "^1.2.76",
-        "@wso2is/react-components": "^1.2.76",
-        "@wso2is/theme": "^1.2.76",
-        "@wso2is/validation": "^1.2.76",
+        "@wso2is/core": "^1.2.77",
+        "@wso2is/forms": "^1.2.77",
+        "@wso2is/i18n": "^1.2.77",
+        "@wso2is/react-components": "^1.2.77",
+        "@wso2is/theme": "^1.2.77",
+        "@wso2is/validation": "^1.2.77",
         "country-language": "^0.1.7",
         "reactour": "^1.18.0",
         "redux-mock-store": "^1.5.4",
