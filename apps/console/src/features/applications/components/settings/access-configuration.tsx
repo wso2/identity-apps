@@ -210,7 +210,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".success.message")
                 }));
 
-                onUpdate(appId);
                 onAllowedOriginsUpdate();
             })
             .catch((error) => {
