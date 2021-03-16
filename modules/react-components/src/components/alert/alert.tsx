@@ -100,7 +100,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const [ intermediateDissmissInterval, setIntermediateDissmissInterval ] = useState(dismissInterval);
+    const [ intermediateDissmissInterval, setIntermediateDissmissInterval ] = useState<number>(dismissInterval);
 
     const classes = classNames({
         absolute
