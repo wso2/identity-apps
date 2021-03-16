@@ -194,7 +194,7 @@ Alert.defaultProps = {
     absolute: false,
     alertsPosition: "br",
     "data-testid": "alert",
-    dismissInterval: 5,
+    dismissInterval: 15,
     dismissible: true,
     withIcon: true
 };
