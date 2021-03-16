@@ -561,6 +561,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Show Revoke confirmation.
+     * TODO - Currently revoke functionality is disabled until proper backend support is provided for disabling
+     * @link https://github.com/wso2/product-is/issues/11453
      *
      * @param event Button click event.
      */
@@ -2354,6 +2356,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     value={ initialValues?.clientId }
                                                     data-testid={ `${ testId }-client-id-readonly-input` }
                                                 />
+                                                {/*TODO - Application revoke is disabled until proper
+                                                backend support for application disabling is provided
+                                                @link https://github.com/wso2/product-is/issues/11453
                                                 {
                                                     (!readOnly
                                                         && initialValues?.clientSecret
@@ -2367,7 +2372,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             { t("common:revoke") }
                                                         </Button>
                                                     )
-                                                }
+                                                }*/}
                                             </div>
                                         </Form.Field>
                                         { ((initialValues?.state !== State.REVOKED) &&
