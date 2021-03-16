@@ -258,6 +258,8 @@ module.exports = (env) => {
             filename: isProduction
                 ? "static/js/[name].[contenthash:8].js"
                 : "static/js/[name].js",
+            hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
+            hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
             path: distFolder,
             publicPath: isRootContext
                 ? publicPath
