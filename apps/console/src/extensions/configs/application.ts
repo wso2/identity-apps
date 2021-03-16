@@ -16,8 +16,61 @@
  * under the License.
  */
 
-export const applicationConfig = {
-    attributeSettings: {
-        roleMapping: false
+import {
+    ExtendedClaimInterface,
+    ExtendedExternalClaimInterface,
+    SelectedDialectInterface
+} from "../../features/applications/components/settings";
+import { ClaimManagementConstants } from "../../features/claims";
+
+function isClaimInterface(
+    claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
+): claim is ExtendedClaimInterface {
+    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
+        return true;
     }
+    return false;
+}
+
+/**
+ * Check whether claims is  identity claims or not.
+ *
+ * @param claim claim
+ */
+const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
+    const identityRegex = new RegExp("wso2.org/claims/identity");
+    if (isClaimInterface(claim)) {
+        return identityRegex.test(claim.claimURI);
+    }
+    return identityRegex.test(claim.mappedLocalClaimURI);
 };
+
+export const applicationConfig = {
+           attributeSettings: {
+               roleMapping: false,
+               advancedAttributeSettings: {
+                   showIncludeUserstoreDomainSubject: false,
+                   showIncludeTenantDomain: false,
+                   showUseMappedLocalSubject: false,
+                   showRoleAttribute: false,
+                   showIncludeUserstoreDomainRole: false,
+                   showRoleMapping: false
+               },
+               attributeSelection: {
+                   getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
+                       return claims.filter((claim) => isIdentityClaim(claim) == false);
+                   },
+                   getExternalClaims: (claims: ExtendedExternalClaimInterface[]): ExtendedExternalClaimInterface[] => {
+                       return claims.filter((claim) => isIdentityClaim(claim) == false);
+                   },
+                   showAttributePlaceholderTitle: false,
+                   showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
+                       return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
+                   }
+               }
+           },
+           advancedConfigurations: {
+               showSaaS: false,
+               showEnableAuthorization: false
+           }
+       };
