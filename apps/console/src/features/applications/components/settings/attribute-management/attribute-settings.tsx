@@ -22,6 +22,7 @@ import {
     AlertLevels,
     Claim,
     ClaimDialect,
+    ClaimsGetParams,
     ExternalClaim,
     SBACInterface,
     TestableComponentInterface
@@ -30,6 +31,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
+import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,11 +39,13 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
+import { applicationConfig } from "../../../../../extensions/configs";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { updateClaimConfiguration } from "../../../api/";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
+    InboundProtocolListItemInterface,
     RoleConfigInterface,
     RoleMappingInterface,
     SubjectConfigInterface
@@ -55,7 +59,7 @@ export interface SelectedDialectInterface {
 
 export interface DropdownOptionsInterface {
     key: string;
-    text: string;
+    text: any;
     value: string;
 }
 
@@ -83,6 +87,10 @@ interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigIn
      * Id of the application.
      */
     appId: string;
+    /**
+     * Application inbound protocol/s.
+     */
+    technology: InboundProtocolListItemInterface[];
     /**
      * Claim configurations.
      */
@@ -115,7 +123,24 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
+export const DefaultSubjectAttribute = "http://wso2.org/claims/username";
 export const LocalDialectURI = "http://wso2.org/claims";
+
+export function isIdentityClaim(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface) {
+    const identityRegex = new RegExp("wso2.org/claims/identity");
+    if (isClaimInterface(claim)) {
+        return identityRegex.test(claim.claimURI);
+    }
+    return identityRegex.test(claim.mappedLocalClaimURI);
+}
+
+function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface):
+    claim is ExtendedClaimInterface {
+    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
+        return true;
+    }
+    return false;
+}
 
 /**
  * Attribute settings component.
@@ -130,6 +155,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const {
         appId,
+        technology,
         featureConfig,
         claimConfigurations,
         onlyOIDCConfigured,
@@ -158,18 +184,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Selected claims in local and external dialects.
     const [selectedClaims, setSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [selectedExternalClaims, setSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [ selectedExternalClaims, setSelectedExternalClaims ] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [ showClaimMappingConfirmation, setShowClaimMappingConfirmation ] = useState<boolean>(false);
 
     // Mapping operation.
     const [claimMapping, setClaimMapping] = useState<ExtendedClaimMappingInterface[]>([]);
     const [claimMappingOn, setClaimMappingOn] = useState(false);
-    const [showClaimMappingConfirmation, setShowClaimMappingConfirmation] = useState<boolean>(false);
     // Form submitted with EmptyClaim Mapping
     const [claimMappingError, setClaimMappingError] = useState(false);
 
     //Advance Settings.
     const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
-    const [triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission] = useTrigger();
+    const [ triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission ] = useTrigger();
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
 
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
@@ -180,7 +207,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const getClaims = () => {
         setIsClaimLoading(true);
-        getAllLocalClaims(null)
+        const params: ClaimsGetParams = {
+            "exclude-identity-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            sort: null
+        };
+        getAllLocalClaims(params)
             .then((response) => {
                 setClaims(response);
             })
@@ -189,8 +223,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     description: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
-                        ".message")
+                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims." +
+                        "genericError.message")
                 }));
             }).finally(() => {
                 setIsClaimLoading(false);
@@ -207,8 +241,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     description: t("console:manage.features.claims.dialects.notifications.fetchDialects" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects.genericError" +
-                        ".message")
+                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects." +
+                        "genericError.message")
                 }));
             });
     };
@@ -260,10 +294,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return id;
     };
 
-    const createMapping = (claims: Claim[]) => {
+    const createMapping = (claim: Claim) => {
             if (selectedDialect.localDialect) {
                 const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
-                claims.map((claim) => {
                     const newClaimMapping: ExtendedClaimMappingInterface = {
                         addMapping: false,
                         applicationClaim: "",
@@ -277,7 +310,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         claimMappingList.push(newClaimMapping);
                     }
                     setClaimMapping(claimMappingList);
-                });
             }
 
     };
@@ -362,8 +394,15 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     let option: DropdownOptionsInterface;
                     if (!isEmpty(element.applicationClaim)) {
                         option = {
-                            key: element.localClaim.id,
-                            text: element.applicationClaim,
+                            key: element.localClaim?.id,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ element.localClaim?.id }
+                                    displayName={ element.localClaim?.displayName }
+                                    claimURI={ element.localClaim?.uri }
+                                    value={ element.applicationClaim }
+                                />
+                            ),
                             value: element.applicationClaim
                         };
                         claimMappingOption.push(option);
@@ -371,28 +410,89 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 });
                 return claimMappingOption;
             } else {
-                claims.map((element: ExtendedClaimInterface) => {
+                let usernameAdded: boolean = false;
+                selectedClaims.map((element: ExtendedClaimInterface) => {
                     const option: DropdownOptionsInterface = {
                         key: element.id,
-                        text: element.claimURI,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ element.id }
+                                displayName={ element.displayName }
+                                claimURI={ element.claimURI }
+                                value={ element.claimURI }
+                            />
+                        ),
                         value: element.claimURI
                     };
                     options.push(option);
+                    if (element.claimURI === DefaultSubjectAttribute) {
+                        usernameAdded = true;
+                    }
                 });
+                if (!usernameAdded) {
+                    const userclaim: ExtendedClaimInterface = claims.filter(
+                        (element: ExtendedClaimInterface) => element.claimURI === DefaultSubjectAttribute)[ 0 ];
+                    if (userclaim !== null && typeof userclaim !== "undefined") {
+                        const option: DropdownOptionsInterface = {
+                            key: userclaim.id,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ userclaim.id }
+                                    displayName={ userclaim.displayName }
+                                    claimURI={ userclaim.claimURI }
+                                    value={ userclaim.claimURI }
+                                />
+                            ),
+                            value: userclaim.claimURI
+                        };
+                        options.push(option);
+                    }
+                }
             }
         } else {
-            const allExternalClaims = [ ...externalClaims, ...selectedExternalClaims ];
-            allExternalClaims.map((element: ExtendedExternalClaimInterface) => {
+            let usernameAdded: boolean = false;
+            selectedExternalClaims.map((element: ExtendedExternalClaimInterface) => {
                 const option: DropdownOptionsInterface = {
                     key: element.id,
-                    text: element.claimURI,
+                    text: (
+                        <SubjectAttributeListItem
+                            key={ element.id }
+                            displayName={ element.localClaimDisplayName }
+                            claimURI={ element.claimURI }
+                            value={ element.mappedLocalClaimURI }
+                        />
+                    ),
                     value: element.mappedLocalClaimURI
                 };
                 options.push(option);
+                if (element.mappedLocalClaimURI === DefaultSubjectAttribute) {
+                    usernameAdded = true;
+                }
             });
+            if (!usernameAdded) {
+                const allExternalClaims = [ ...externalClaims, ...selectedExternalClaims ];
+                const userclaim: ExtendedExternalClaimInterface = allExternalClaims.filter(
+                    (element: ExtendedExternalClaimInterface) =>
+                        element.mappedLocalClaimURI === DefaultSubjectAttribute)[ 0 ];
+                if (userclaim !== null && typeof userclaim !== "undefined") {
+                    const option: DropdownOptionsInterface = {
+                        key: userclaim.id,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ userclaim.id }
+                                displayName={ userclaim.localClaimDisplayName }
+                                claimURI={ userclaim.claimURI }
+                                value={ userclaim.mappedLocalClaimURI }
+                            />
+                        ),
+                        value: userclaim.mappedLocalClaimURI
+                    };
+                    options.push(option);
+                }
+            }
         }
 
-        return options;
+        return sortBy(options, "value");
     };
 
     const updateValues = () => {
@@ -618,6 +718,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     setSelectedClaims={ setSelectedClaims }
                                     setSelectedExternalClaims={ setSelectedExternalClaims }
                                     selectedDialect={ selectedDialect }
+                                    selectedSubjectValue={ selectedSubjectValue }
                                     claimMapping={ claimMapping }
                                     setClaimMapping={ setClaimMapping }
                                     createMapping={ createMapping }
@@ -627,6 +728,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     addToClaimMapping={ addToClaimMapping }
                                     claimConfigurations={ claimConfigurations }
                                     claimMappingOn={ claimMappingOn }
+                                    defaultSubjectAttribute={ DefaultSubjectAttribute }
                                     showClaimMappingRevertConfirmation={ setShowClaimMappingConfirmation }
                                     setClaimMappingOn={ setClaimMappingOn }
                                     claimMappingError={ claimMappingError }
@@ -649,6 +751,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     dropDownOptions={ createDropdownOption() }
                                     triggerSubmission={ triggerAdvanceSettingFormSubmission }
                                     setSubmissionValues={ setAdvanceSettingValues }
+                                    setSelectedValue={ setSelectedSubjectValue }
+                                    defaultSubjectAttribute={ DefaultSubjectAttribute }
                                     initialRole={ claimConfigurations?.role }
                                     initialSubject={ claimConfigurations?.subject }
                                     claimMappingOn={ claimMappingOn }
@@ -658,6 +762,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             featureConfig?.applications?.scopes?.update,
                                             allowedScopes)
                                     }
+                                    technology={ technology }
                                     data-testid={ `${ testId }-advanced-attribute-settings-form` }
                                 />
                             </Grid.Column>
@@ -696,18 +801,20 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
-                        <RoleMapping
-                            submitState={ triggerAdvanceSettingFormSubmission }
-                            onSubmit={ setRoleMapping }
-                            initialMappings={ claimConfigurations?.role?.mappings }
-                            readOnly={
-                                readOnly
-                                || !hasRequiredScopes(featureConfig?.applications,
-                                    featureConfig?.applications?.scopes?.update,
-                                    allowedScopes)
-                            }
-                            data-testid={ `${ testId }-role-mapping` }
-                        />
+                        { applicationConfig.attributeSettings.roleMapping &&
+                            <RoleMapping
+                                submitState={ triggerAdvanceSettingFormSubmission }
+                                onSubmit={ setRoleMapping }
+                                initialMappings={ claimConfigurations?.role?.mappings }
+                                readOnly={
+                                    readOnly
+                                    || !hasRequiredScopes(featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update,
+                                        allowedScopes)
+                                }
+                                data-testid={ `${ testId }-role-mapping` }
+                            />
+                        }
                         {
                             !readOnly
                             && hasRequiredScopes(featureConfig?.applications,
@@ -741,3 +848,5 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 AttributeSettings.defaultProps = {
     "data-testid": "application-attribute-settings"
 };
+
+export default AttributeSettings;
