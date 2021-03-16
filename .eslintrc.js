@@ -132,6 +132,7 @@ module.exports = {
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "no-use-before-define": "off",
+                "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
                 "@typescript-eslint/no-use-before-define": [
                     "warn",
