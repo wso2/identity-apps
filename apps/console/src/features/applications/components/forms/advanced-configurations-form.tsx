@@ -22,6 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
+import { applicationConfig } from "../../../../extensions/configs";
 import { AdvancedConfigurationsInterface } from "../../models";
 
 /**
@@ -46,7 +47,6 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
 export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
     props: AdvancedConfigurationsFormPropsInterface
 ): ReactElement => {
-
     const {
         config,
         onSubmit,
@@ -63,176 +63,203 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
-        return {
+        const data = {
             advancedConfigurations: {
                 enableAuthorization: !!values.get("enableAuthorization")?.includes("enableAuthorization"),
-                returnAuthenticatedIdpList:
-                    !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),
+                returnAuthenticatedIdpList: !!values
+                    .get("returnAuthenticatedIdpList")
+                    ?.includes("returnAuthenticatedIdpList"),
                 saas: !!values.get("saas")?.includes("saas"),
                 skipLoginConsent: !!values.get("skipConsentLogin")?.includes("skipLoginConsent"),
                 skipLogoutConsent: !!values.get("skipConsentLogout")?.includes("skipLogoutConsent")
             }
         };
+        applicationConfig.advancedConfigurations.showSaaS && delete data.advancedConfigurations.saas;
+        applicationConfig.advancedConfigurations.showEnableAuthorization &&
+            delete data.advancedConfigurations.enableAuthorization;
+
+        return data;
     };
 
     return (
         <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
-            <Grid className="form-container with-max-width">
+            <Grid>
+                { applicationConfig.advancedConfigurations.showSaaS && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="saas"
+                                label=""
+                                required={ false }
+                                requiredErrorMessage={ t(
+                                    "console:develop.features.applications.forms.advancedConfig.fields.saas" +
+                                        ".validations.empty"
+                                ) }
+                                value={ config?.saas ? ["saas"] : [] }
+                                type="checkbox"
+                                children={ [
+                                    {
+                                        label: t(
+                                            "console:develop.features.applications.forms.advancedConfig.fields" +
+                                                ".saas.label"
+                                        ),
+                                        value: "saas"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                data-testid={ `${testId}-sass-checkbox` }
+                            />
+                            <Hint>
+                                { t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            name="saas"
-                            label=""
-                            required={ false }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.advancedConfig.fields.saas" +
-                                    ".validations.empty")
-                            }
-                            value={ config?.saas ? [ "saas" ] : [] }
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                        ".saas.label"),
-                                    value: "saas"
-                                }
-                            ] }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-sass-checkbox` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="skipConsentLogin"
                             label=""
                             required={ false }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                    ".skipConsentLogin.validations.empty")
-                            }
-                            value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
+                            requiredErrorMessage={ t(
+                                "console:develop.features.applications.forms.advancedConfig.fields" +
+                                    ".skipConsentLogin.validations.empty"
+                            ) }
+                            value={ config?.skipLoginConsent ? ["skipLoginConsent"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                        ".skipConsentLogin.label"),
+                                    label: t(
+                                        "console:develop.features.applications.forms.advancedConfig.fields" +
+                                            ".skipConsentLogin.label"
+                                    ),
                                     value: "skipLoginConsent"
                                 }
                             ] }
                             readOnly={ readOnly }
-                            data-testid={ `${ testId }-skip-login-consent-checkbox` }
+                            data-testid={ `${testId}-skip-login-consent-checkbox` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
-                                ".hint") }
+                            { t(
+                                "console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
+                                    ".hint"
+                            ) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="skipConsentLogout"
                             label=""
                             required={ false }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                    ".skipConsentLogout.validations.empty")
-                            }
-                            value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
+                            requiredErrorMessage={ t(
+                                "console:develop.features.applications.forms.advancedConfig.fields" +
+                                    ".skipConsentLogout.validations.empty"
+                            ) }
+                            value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                        ".skipConsentLogout.label"),
+                                    label: t(
+                                        "console:develop.features.applications.forms.advancedConfig.fields" +
+                                            ".skipConsentLogout.label"
+                                    ),
                                     value: "skipLogoutConsent"
                                 }
                             ] }
                             readOnly={ readOnly }
-                            data-testid={ `${ testId }-skip-logout-consent-checkbox` }
+                            data-testid={ `${testId}-skip-logout-consent-checkbox` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
-                                ".hint") }
+                            { t(
+                                "console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                                    ".hint"
+                            ) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="returnAuthenticatedIdpList"
                             label=""
                             required={ false }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                    ".returnAuthenticatedIdpList.validations.empty")
-                            }
-                            value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
+                            requiredErrorMessage={ t(
+                                "console:develop.features.applications.forms.advancedConfig.fields" +
+                                    ".returnAuthenticatedIdpList.validations.empty"
+                            ) }
+                            value={ config?.returnAuthenticatedIdpList ? ["returnAuthenticatedIdpList"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                        ".returnAuthenticatedIdpList.label"),
+                                    label: t(
+                                        "console:develop.features.applications.forms.advancedConfig.fields" +
+                                            ".returnAuthenticatedIdpList.label"
+                                    ),
                                     value: "returnAuthenticatedIdpList"
                                 }
                             ] }
                             readOnly={ readOnly }
-                            data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
+                            data-testid={ `${testId}-return-authenticated-idp-list-checkbox` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                ".returnAuthenticatedIdpList.hint") }
+                            { t(
+                                "console:develop.features.applications.forms.advancedConfig.fields" +
+                                    ".returnAuthenticatedIdpList.hint"
+                            ) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            name="enableAuthorization"
-                            label=""
-                            required={ false }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                    ".enableAuthorization.validations.empty")
-                            }
-                            value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                        ".enableAuthorization.label"),
-                                    value: "enableAuthorization"
-                                }
-                            ] }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-enable-authorization-checkbox` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.advancedConfig.fields" +
-                                ".enableAuthorization.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                {
-                    !readOnly && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Button
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={ `${ testId }-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+                { applicationConfig.advancedConfigurations.showEnableAuthorization && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                name="enableAuthorization"
+                                label=""
+                                required={ false }
+                                requiredErrorMessage={ t(
+                                    "console:develop.features.applications.forms.advancedConfig.fields" +
+                                        ".enableAuthorization.validations.empty"
+                                ) }
+                                value={ config?.enableAuthorization ? ["enableAuthorization"] : [] }
+                                type="checkbox"
+                                children={ [
+                                    {
+                                        label: t(
+                                            "console:develop.features.applications.forms.advancedConfig.fields" +
+                                                ".enableAuthorization.label"
+                                        ),
+                                        value: "enableAuthorization"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                data-testid={ `${testId}-enable-authorization-checkbox` }
+                            />
+                            <Hint>
+                                { t(
+                                    "console:develop.features.applications.forms.advancedConfig.fields" +
+                                        ".enableAuthorization.hint"
+                                ) }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+                { !readOnly && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Button
+                                primary
+                                type="submit"
+                                size="small"
+                                className="form-button"
+                                data-testid={ `${ testId }-submit-button` }
+                            >
+                                { t("common:update") }
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
                 }
             </Grid>
         </Forms>
