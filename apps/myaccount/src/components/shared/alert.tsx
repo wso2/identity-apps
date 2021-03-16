@@ -139,5 +139,5 @@ export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Ele
 Alert.defaultProps =  {
     alertsPosition: "br",
     "data-testid": "alert",
-    dismissInterval: 5
+    dismissInterval: 15
 };
