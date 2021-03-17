@@ -67,7 +67,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
 
     /**
      * Handles inbound protocol selection.
-     * 
+     *
      * @param connector
      */
     const handleConnectorSelection = (connector: OutboundProvisioningConnectorListItemInterface): void => {
@@ -87,10 +87,12 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h4">
-                            { t("console:develop.features.idp.wizards.addProvisioningConnector.steps." +
+                            { t("console:develop.features.authenticationProvider.wizards." +
+                                "addProvisioningConnector.steps." +
                                 "connectorSelection.defaultSetup.title") }
                             <Heading subHeading as="h6">
-                                { t("console:develop.features.idp.wizards.addProvisioningConnector.steps." +
+                                { t("console:develop.features.authenticationProvider." +
+                                    "wizards.addProvisioningConnector.steps." +
                                     "connectorSelection.defaultSetup.subTitle") }
                             </Heading>
                         </Heading>
