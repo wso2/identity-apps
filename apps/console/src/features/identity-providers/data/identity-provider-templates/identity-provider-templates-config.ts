@@ -21,7 +21,10 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
-import EnterpriseIdentityProviderTemplate from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
+import EnterpriseIdentityProviderTemplate
+    from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
+import FacebookIDPTemplate from "./templates/facebook/facebook.json";
+import GihubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import { ExtensionsManager } from "../../../../extensions";
 import {
@@ -56,36 +59,60 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
     return {
         categories: values(
             merge(
-                keyBy([
-                    {
-                        enabled: true,
-                        id: GeneralIdentityProviderTemplateCategory.id,
-                        resource: GeneralIdentityProviderTemplateCategory
-                    }
-                ], "id"),
+                keyBy(
+                    [
+                        {
+                            enabled: true,
+                            id: GeneralIdentityProviderTemplateCategory.id,
+                            resource: GeneralIdentityProviderTemplateCategory
+                        }
+                    ],
+                    "id"
+                ),
                 keyBy(extensionsManager.getIdentityProviderTemplatesConfig().categories, "id")
             )
         ),
         templates: values(
             merge(
-                keyBy([
-                    {
-                        content: {
-                            wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
+                keyBy(
+                    [
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
+                            },
+                            enabled: true,
+                            id: GoogleIDPTemplate.id,
+                            resource: GoogleIDPTemplate
                         },
-                        enabled: true,
-                        id: GoogleIDPTemplate.id,
-                        resource: GoogleIDPTemplate
-                    },
-                    {
-                        content: {
-                            wizardHelp: lazy(() => import("./templates/enterprise-identity-provider/create-wizard-help"))
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/facebook/create-wizard-help"))
+                            },
+                            enabled: true,
+                            id: FacebookIDPTemplate.id,
+                            resource: FacebookIDPTemplate
                         },
-                        enabled: true,
-                        id: EnterpriseIdentityProviderTemplate.id,
-                        resource: EnterpriseIdentityProviderTemplate
-                    }
-                ], "id"),
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/github/create-wizard-help"))
+                            },
+                            enabled: true,
+                            id: GihubIDPTemplate.id,
+                            resource: GihubIDPTemplate
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() =>
+                                    import("./templates/enterprise-identity-provider/create-wizard-help")
+                                )
+                            },
+                            enabled: true,
+                            id: EnterpriseIdentityProviderTemplate.id,
+                            resource: EnterpriseIdentityProviderTemplate
+                        }
+                    ],
+                    "id"
+                ),
                 keyBy(extensionsManager.getIdentityProviderTemplatesConfig().templates, "id")
             )
         )
