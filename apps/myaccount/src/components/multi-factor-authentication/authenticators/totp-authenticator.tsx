@@ -161,14 +161,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     const handleTOTPVerificationCodeSubmit = (event: React.FormEvent<HTMLFormElement> ):
         void =>{
-
         let verificationCode =  event.target[0].value;
         for (let pinCodeIndex = 1;pinCodeIndex<6;pinCodeIndex++){
             verificationCode = verificationCode + event.target[pinCodeIndex].value;
         }
         verifyCode(verificationCode);
     };
-
 
     /**
      * Focus to next pin code after enter a value.
@@ -289,12 +287,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type = "text" 
                                                         maxLength = { 1 } 
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-1");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-1");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-1");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-1");
+                                                            } 
                                                     } }
                                                     />
                                                 </Form.Field>
@@ -309,12 +307,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type = "text" 
                                                         maxLength = { 1 } 
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-2");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-2");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-2");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-2");
+                                                            } 
                                                     } }/>
                                                 </Form.Field>
                                             </Grid.Column>
@@ -328,12 +326,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type ="text" 
                                                         maxLength = { 1 } 
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-3");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-3");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-3");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-3");
+                                                            } 
                                                     } }/>
                                                 </Form.Field>
                                             </Grid.Column>
@@ -347,12 +345,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type = "text" 
                                                         maxLength = { 1 } 
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-4");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-4");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-4");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-4");
+                                                            } 
                                                     } }/>
                                                 </Form.Field>
                                             </Grid.Column>
@@ -366,12 +364,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type = "text" 
                                                         maxLength = { 1 }                        
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-5");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-5");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-5");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-5");
+                                                            } 
                                                     } }/>
                                                 </Form.Field>
                                             </Grid.Column>
@@ -385,12 +383,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                         type = "text" 
                                                         maxLength = { 1 } 
                                                         onKeyUp = { (event) => {
-                                                        if (event.currentTarget.value.length !== 0) {
-                                                            focusInToNextPinCode("pincode-6");
-                                                        }
-                                                        if ((event.key === "Backspace") || (event.key === "Delete")) {
-                                                            focusInToPreviousPinCode("pincode-6");
-                                                        } 
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-6");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-6");
+                                                            } 
                                                     } }/>
                                                 </Form.Field>
                                             </Grid.Column>
