@@ -299,8 +299,8 @@ export class IdentityProviderTemplateManagementUtils {
      * @param {IdentityProviderTemplateInterface[]} templates - Input templates.
      * @return {IdentityProviderTemplateInterface[]}
      */
-    private static resolveHelpContent(templates: IdentityProviderTemplateListItemInterface[])
-        : IdentityProviderTemplateListItemInterface[] {
+    private static resolveHelpContent(templates: IdentityProviderTemplateListItemInterface[]):
+        IdentityProviderTemplateListItemInterface[] {
 
         templates.map((template: IdentityProviderTemplateListItemInterface) => {
             const config = getIdentityProviderTemplatesConfig().templates

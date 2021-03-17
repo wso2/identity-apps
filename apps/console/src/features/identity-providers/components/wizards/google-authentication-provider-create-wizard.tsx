@@ -309,7 +309,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                                         CLIENT_ID_MAX_LENGTH + " characters.");
                                     }
                                 } }
-                                autocomplete="off"
+                                autoComplete="off"
                                 displayErrorOn="blur"
                                 onKeyDown={ keyPressed }
                                 data-testid={ `${ testId }-idp-client-id` }
@@ -334,7 +334,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                                 } }
                                 hidePassword={ t("common:hide") }
                                 showPassword={ t("common:show") }
-                                autocomplete="off"
+                                autoComplete="off"
                                 displayErrorOn="blur"
                                 onKeyDown={ keyPressed }
                                 data-testid={ `${ testId }-idp-client-secret` }

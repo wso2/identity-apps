@@ -145,7 +145,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
-                            label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." =
+                            label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
                                 "certificateType.label") }
                             name="type"
                             default={ "JWKS" }
