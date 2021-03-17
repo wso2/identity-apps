@@ -28,7 +28,7 @@ import { CommonPluggableComponentForm } from "../components";
  * @constructor
  */
 export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
-    props
+    props: CommonPluggableComponentFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -41,9 +41,9 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
     } = props;
 
     return (
-        <CommonPluggableComponentForm 
-            onSubmit={ onSubmit } 
-            initialValues={ initialValues } 
+        <CommonPluggableComponentForm
+            onSubmit={ onSubmit }
+            initialValues={ initialValues }
             enableSubmitButton={ enableSubmitButton }
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
