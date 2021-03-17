@@ -41,6 +41,7 @@ export interface StrictIdentityProviderInterface {
     image?: string;
     self?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
+    templateId?: string;
 }
 
 export interface IdentityProviderInterface extends StrictIdentityProviderInterface {
@@ -185,6 +186,7 @@ export interface IdentityProviderTemplateItemInterface {
     category: string;
     displayOrder: number;
     idp: IdentityProviderInterface;
+    disabled?: boolean;
 }
 
 /**
@@ -418,6 +420,9 @@ export interface CommonPluggableComponentMetaPropertyInterface {
     isConfidential?: boolean;
     options?: string[];
     defaultValue?: string;
+    maxLength?: number;
+    isDisabled?: boolean;
+    readOnly?: boolean;
     subProperties?: CommonPluggableComponentMetaPropertyInterface[];
 }
 
