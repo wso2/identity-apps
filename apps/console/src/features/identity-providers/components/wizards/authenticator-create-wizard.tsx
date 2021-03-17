@@ -214,29 +214,35 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
+                    description: t("console:develop.features.authenticationProvider" +
+                        ".notifications.addFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.addFederatedAuthenticator.success.message")
+                    message: t("console:develop.features.authenticationProvider" +
+                        ".notifications.addFederatedAuthenticator.success.message")
                 }));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
+                        description: t("console:develop.features.authenticationProvider." +
+                            "notifications.addFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.addFederatedAuthenticator.error.message")
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "addFederatedAuthenticator.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.addFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.addFederatedAuthenticator." +
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.addFederatedAuthenticator." +
                         "genericError.message")
                 });
             })
@@ -357,19 +363,22 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
-                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.authenticatorSelection.title")
+                title: t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
+                    "steps.authenticatorSelection.title")
             },
             {
                 icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
                 submitCallback: setSubmitAuthenticator,
-                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.authenticatorConfiguration.title")
+                title: t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
+                    "steps.authenticatorConfiguration.title")
             },
             {
                 icon: getIdentityProviderWizardStepIcons().summary,
                 name: WizardSteps.SUMMARY,
                 submitCallback: setFinishSubmit,
-                title: t("console:develop.features.idp.wizards.addAuthenticator.steps.summary.title")
+                title: t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
+                    "steps.summary.title")
             }
         ]);
 
@@ -406,7 +415,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     }
                 </Modal.Header>
                 <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
-                    <Steps.Group header={ t("console:develop.features.idp.wizards.addAuthenticator.header") }
+                    <Steps.Group header={ t("console:develop.features.authenticationProvider." +
+                        "wizards.addAuthenticator.header") }
                                  current={ currentWizardStep }>
                         { wizardSteps.map((step, index) => (
                             <Steps.Step
@@ -431,26 +441,27 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                {currentWizardStep < wizardSteps.length - 1 && (
+                                { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-next-button` }>
-                                        { t("console:develop.features.idp.wizards.buttons.next") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
-                                )}
-                                {currentWizardStep === wizardSteps.length - 1 && (
+                                ) }
+                                { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-finish-button` }>
-                                        { t("console:develop.features.idp.wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
-                                )}
-                                {currentWizardStep > 0 && (
+                                ) }
+                                { currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }
                                                 data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("console:develop.features.idp.wizards.buttons.previous") }
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".wizards.buttons.previous") }
                                     </LinkButton>
-                                )}
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
