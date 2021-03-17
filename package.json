@@ -11,9 +11,9 @@
     ],
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "prebuild": "npm install && npx lerna bootstrap",
-        "build:dev": "npm run build",
+        "bootstrap": "npm install && npx lerna bootstrap",
         "build": "npx lerna run build --stream",
+        "build:dev": "npm run bootstrap && npm run build",
         "build:external": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "clean": "npx lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
@@ -25,7 +25,8 @@
         "test:integration:smoke": "npx lerna run test:smoke --scope @wso2is/integration-tests",
         "test:integration:interactive": "npx lerna run test:interactive --scope @wso2is/integration-tests",
         "update-version": "node scripts/update-version.js",
-        "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+        "lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx .",
+        "lint:ci": "eslint -c .eslintrc.js $(git diff --diff-filter=d --name-only | grep -E \"(.js$|.ts$|.jsx$|.tsx$)\")"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -132,6 +133,7 @@
         "css-loader": "^1.0.0",
         "eslint": "^6.8.0",
         "eslint-loader": "^3.0.3",
+        "eslint-plugin-cypress": "^2.11.2",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",

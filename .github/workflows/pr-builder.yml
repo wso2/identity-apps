@@ -48,4 +48,4 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Build
       id: build-with-maven
-      run: mvn clean install -U
+      run: mvn clean install -U -Dlint.exec.skip=false

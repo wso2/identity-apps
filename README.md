@@ -81,7 +81,19 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
     regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
     ```
 
-8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+8. Open cloned or downloaded Identity Apps repo and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+
+    ```bash
+    # `npm run bootstrap` will install npm dependencies and bootstrap lerna modules.
+    npm run bootstrap && npm run build
+    ```
+
+    or
+    
+    ```bash
+    # This will run `npm run bootstrap && npm run build` in the background.
+    npm run build:dev
+    ```
 
    > **_Note:-_** 
    >  
