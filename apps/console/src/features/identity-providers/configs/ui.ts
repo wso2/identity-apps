@@ -83,7 +83,7 @@ export const getIdPIcons = () => {
     return {
         default: import(`../../../themes/${ theme }/assets/images/identity-provider-capabilities/authentication.svg`),
         emailOTP: import(`../../../themes/${ theme }/assets/images/authenticators/email-otp.svg`),
-        expert: import(`../../../themes/${ theme }/assets/images/identity-providers/expert-idp-illustration.svg`),
+        enterprise: import(`../../../themes/${ theme }/assets/images/identity-providers/enterprise-idp-illustration.svg`),
         facebook: import(`../../../themes/${ theme }/assets/images/identity-providers/facebook-idp-illustration.svg`),
         github: import(`../../../themes/${ theme }/assets/images/identity-providers/github-idp-illustration.svg`),
         google: import(`../../../themes/${ theme }/assets/images/identity-providers/google-idp-illustration.svg`),
@@ -107,7 +107,8 @@ export const getIdPTemplateDocsIcons = () => {
         facebook: import(`../../../themes/${ theme }/assets/images/identity-providers/facebook-idp-illustration.svg`),
         google: import(`../../../themes/${ theme }/assets/images/identity-providers/google-idp-illustration.svg`),
         manualsetup: import(`../../../themes/${ theme }/assets/images/identity-providers/expert-idp-illustration.svg`),
-        openidconnect: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`)
+        openidconnect: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`),
+        github: import(`../../../themes/${ theme }/assets/images/identity-providers/github-idp-illustration.svg`)
     };
 };
 
