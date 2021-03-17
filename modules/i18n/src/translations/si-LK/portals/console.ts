@@ -2493,7 +2493,8 @@ export const console: ConsoleNS = {
                         alias: {
                             hint: "ෆෙඩරල් අනන්‍යතා සැපයුම්කරුගේ අන්වර්ථ නාමයක් මගින් නේවාසික අනන්‍යතා " +
                                 "සැපයුම්කරු හඳුනන්නේ නම්, එය මෙහි සඳහන් කරන්න.",
-                            label: "අන්වර්ථය"
+                            label: "අන්වර්ථය",
+                            placeholder: "අන්වර්ථය සඳහා අගය ඇතුළත් කරන්න."
                         },
                         certificateType: {
                             certificateJWKS: {
@@ -2521,7 +2522,8 @@ export const console: ConsoleNS = {
                         },
                         homeRealmIdentifier: {
                             hint: "මෙම අනන්‍යතා සැපයුම්කරු සඳහා ගෘහස්ථ හඳුනාගැනීමේ යන්ත්‍රය ඇතුළත් කරන්න",
-                            label: "මුල් පිටුව හඳුනාගැනීමේ යන්ත්‍රය"
+                            label: "මුල් පිටුව හඳුනාගැනීමේ යන්ත්‍රය",
+                            placeholder: "Home Realm Identifier සඳහා අගය ඇතුළත් කරන්න."
                         }
                     },
                     attributeSettings: {

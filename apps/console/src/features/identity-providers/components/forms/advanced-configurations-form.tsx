@@ -106,7 +106,10 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                 "homeRealmIdentifier.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ name }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".advancedConfigs.homeRealmIdentifier.placeholder")
+                            }
                             type="text"
                             value={ config.homeRealmIdentifier }
                             data-testid={ `${ testId }-home-realm-identifier` }
@@ -123,7 +126,10 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label={ t("console:develop.features.idp.forms.advancedConfigs.alias.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ name }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".advancedConfigs.alias.placeholder")
+                            }
                             type="text"
                             value={ config.alias }
                             data-testid={ `${ testId }-alias` }

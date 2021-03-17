@@ -17,6 +17,7 @@
  */
 
 const path = require("path");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -25,7 +26,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 // Flag to enable source maps in production.
@@ -38,8 +38,9 @@ const isProfilingEnabledInProduction = false;
 const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
-// Build artifacts output path.
-const OUTPUT_PATH = "build/myaccount";
+// Paths
+const OUTPUT_PATH = "build/myaccount"; // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";       // Output directory for the cache files. Only applicable in dev mode.
 
 module.exports = (env) => {
 
@@ -68,12 +69,19 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
             ? path.resolve(__dirname, PRODUCTION_ESLINT_CONFIG)
             : path.resolve(__dirname, DEVELOPMENT_ESLINT_CONFIG)
     };
 
     return {
+        cache: {
+            cacheDirectory: PATHS.cache,
+            // Possible strategies are 'memory' | 'filesystem'.
+            type: "filesystem"
+        },
+        context: path.resolve(__dirname),
         devServer: {
             before: function (app) {
                 app.get("/", function (req, res) {
@@ -83,10 +91,12 @@ module.exports = (env) => {
             contentBase: distFolder,
             historyApiFallback: true,
             host: "localhost",
+            hot: true,
             https: true,
             inline: true,
             openPage: basename,
-            port: devServerPort
+            port: devServerPort,
+            writeToDisk: true
         },
         devtool: isProduction
             ? isSourceMapsEnabledInProduction
@@ -94,7 +104,7 @@ module.exports = (env) => {
                 : false
             : isDevelopment && "cheap-module-source-map",
         entry: {
-            init: [ "@babel/polyfill","./src/init/init.ts"],
+            init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx",
             rpIFrame: "./src/init/rpIFrame-script.ts"
         },
@@ -112,7 +122,7 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
-                    use: ["url-loader"]
+                    type: "asset/resource"
                 },
                 {
                     test: /\.svg$/,
@@ -132,6 +142,10 @@ module.exports = (env) => {
                 },
                 {
                     exclude: {
+                        and: [
+                            /\.(spec|test).(ts|js)x?$/,
+                            /node_modules(\\|\/)(core-js)/
+                        ],
                         not: [
                             /joi/,
                             /react-notification-system/,
@@ -139,15 +153,11 @@ module.exports = (env) => {
                             /@wso2is(\\|\/)forms/,
                             /@wso2is(\\|\/)react-components/,
                             /@wso2is(\\|\/)theme/,
-                            /@wso2is(\\|\/)validation/ ],
-                        test: [
-                            /\.(spec|test).(ts|js)x?$/,
-                            /node_modules(\\|\/)(core-js)/
+                            /@wso2is(\\|\/)validation/
                         ]
                     },
-					test: /\.(ts|js)x?$/,
+                    test: /\.(ts|js)x?$/,
                     use: [
-                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
@@ -156,7 +166,12 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "babel-loader"
+                            loader: "babel-loader",
+                            options: {
+                                plugins: [
+                                    isDevelopment && require.resolve("react-refresh/babel")
+                                ].filter(Boolean)
+                            }
                         }
                     ]
                 },
@@ -170,7 +185,6 @@ module.exports = (env) => {
                     exclude: /(node_modules|dist|build|target|plugins)/,
                     test: /\.(ts|tsx|js|jsx)$/,
                     use: [
-                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
@@ -192,16 +206,11 @@ module.exports = (env) => {
             // Makes missing exports an error instead of warning.
             strictExportPresence: true
         },
-        node: {
-            fs: "empty"
-        },
         optimization: {
             minimize: isProduction,
             minimizer: [
                 new TerserPlugin({
-                    cache: path.resolve(__dirname, "cache"),
                     extractComments: true,
-                    sourceMap: isSourceMapsEnabledInProduction,
                     terserOptions: {
                         compress: {
                             // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -233,7 +242,7 @@ module.exports = (env) => {
             // Keep the runtime chunk separated to enable long term caching
             // https://twitter.com/wSokra/status/969679223278505985
             runtimeChunk: {
-                name: entryPoint => `runtime-${entryPoint.name}`
+                name: "single"
             },
             splitChunks: {
                 chunks: "all"
@@ -246,6 +255,8 @@ module.exports = (env) => {
             filename: isProduction
                 ? "static/js/[name].[contenthash:8].js"
                 : "static/js/[name].js",
+            hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
+            hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
             path: distFolder,
             publicPath: isRootContext
                 ? publicPath
@@ -256,49 +267,72 @@ module.exports = (env) => {
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
             }),
+            isDevelopment && new webpack.HotModuleReplacementPlugin(),
+            isDevelopment && new ReactRefreshWebpackPlugin(),
+            // In webpack 5 automatic node.js polyfills are removed.
+            // https://github.com/vfile/vfile/issues/38#issuecomment-640479137
+            new webpack.ProvidePlugin({
+                process: "process/browser"
+            }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
-                checkSyntacticErrors: true,
-                eslint: true,
-                measureCompilationTime: true,
-                reportFiles: [
-                    "**",
-                    "!**/__tests__/**",
-                    "!**/?(*.)(spec|test).*"
-                ],
-                silent: true,
-                tsconfig: path.resolve(__dirname, "./tsconfig.json"),
-                useTypescriptIncrementalApi: true,
-                workers: 1
-            }),
-            new WriteFilePlugin({
-                // Exclude hot-update files
-                test: /^(?!.*(hot-update)).*/
-            }),
-            new CopyWebpackPlugin([
-                {
-                    context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
-                    from: "lib",
-                    to: "libs"
+                eslint: {
+                    files: "./src/**/*.{ts,tsx,js,jsx}"
                 },
-                {
-                    context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
-                    from: path.join("dist", "bundle"),
-                    to: path.join("resources", "i18n")
+                issue: {
+                    exclude: [
+                        {
+                            file: "**/?(*.)(spec|test).*",
+                            origin: "eslint"
+                        },
+                        {
+                            file: "**/__tests__/**",
+                            origin: "eslint"
+                        },
+                        {
+                            file: "**/src/setupTests.*",
+                            origin: "eslint"
+                        }
+                    ],
+                    include: [
+                        {
+                            file: "**"
+                        }
+                    ]
                 },
-                {
-                    context: path.join(__dirname, "src"),
-                    force: true,
-                    from: "public",
-                    to: "."
-                },
-                {
-                    context: path.join(__dirname, "src"),
-                    force: true,
-                    from: "auth.jsp",
-                    to: "."
+                typescript: {
+                    diagnosticOptions: {
+                        semantic: true,
+                        syntactic: true
+                    }
                 }
-            ]),
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
+                        from: "lib",
+                        to: "libs"
+                    },
+                    {
+                        context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
+                        from: path.join("dist", "bundle"),
+                        to: path.join("resources", "i18n")
+                    },
+                    {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "public",
+                        to: "."
+                    },
+                    {
+                        context: path.join(__dirname, "src"),
+                        force: true,
+                        from: "auth.jsp",
+                        to: "."
+                    }
+                ]
+            }),
             isProduction
                 ? new HtmlWebpackPlugin({
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
@@ -371,7 +405,7 @@ module.exports = (env) => {
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/),
             isProduction && new CompressionPlugin({
                 algorithm: "gzip",
-                filename: "[path].gz[query]",
+                filename: "[path][base].gz",
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
@@ -384,10 +418,23 @@ module.exports = (env) => {
             })
         ].filter(Boolean),
         resolve: {
-            extensions: [".tsx", ".ts", ".js", ".json"]
+            extensions: [".tsx", ".ts", ".js", ".json"],
+            // In webpack 5 automatic node.js polyfills are removed.
+            // We have to polyfill the required once manually.
+            // https://stackoverflow.com/a/65542520
+            fallback: {
+                buffer: require.resolve("buffer/"),
+                fs: false
+            }
         },
+        // HMR is breaking in Webpack 5 when there is a `browserlist` present in package.json.
+        // See https://github.com/webpack/webpack-dev-server/issues/2758#issuecomment-710086019
+        target: isDevelopment
+            ? "web"
+            : "browserslist",
         watchOptions: {
-            ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
+            // eslint-disable-next-line no-useless-escape
+            ignored: [ "/node_modules([\\]+|\/)+(?!@wso2is)/", "/build/" ]
         }
     };
 };
