@@ -23,6 +23,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
 import { getIdentityProviderList } from "../../api";
 import { IdentityProviderInterface } from "../../models";
 import { IdpCertificates } from "../settings";
@@ -70,7 +71,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     enableWizardMode?: boolean;
 }
 
-const IDP_NAME_MAX_LENGTH = 100;
+const IDP_NAME_MAX_LENGTH: number = 50;
 
 /**
  * Form to edit general details of the identity provider.
@@ -92,8 +93,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         [ "data-testid" ]: testId
     } = props;
 
-    const [isNameValid, setIsNameValid] = useState<boolean>(true);
-    const [modifiedName, setModifiedName] = useState<string>(name);
+    const [ isNameValid, setIsNameValid ] = useState<boolean>(true);
+    const [ modifiedName, setModifiedName ] = useState<string>(name);
 
     const { t } = useTranslation();
 
@@ -106,7 +107,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         }
         setIsNameValid(false);
         validateIdpName(modifiedName);
-    }, [modifiedName]);
+    }, [ modifiedName ]);
 
     /**
      * Retrieves the list of identity providers.
@@ -138,7 +139,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     return (
         <>
-            <EmphasizedSegment padded="very">
+            <EmphasizedSegment>
                 <Forms
                     onSubmit={ (values): void => {
                         onSubmit(updateConfigurations(values));
@@ -156,29 +157,32 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="name"
-                                    label={ t("console:develop.features.idp.forms.generalDetails.name.label") }
+                                    label={ t("console:develop.features.authenticationProvider.forms." +
+                                        "generalDetails.name.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:develop.features.idp.forms.generalDetails." +
-                                        "name.validations.empty") }
+                                    requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                        "forms.generalDetails.name.validations.empty") }
                                     placeholder={ name }
                                     type="text"
                                     validation={ (value: string, validation: Validation) => {
                                         if (value.length > IDP_NAME_MAX_LENGTH) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:develop.features." +
-                                                "idp.forms.generalDetails.name.validations." +
+                                                "authenticationProvider.forms.generalDetails.name.validations." +
                                                 "maxLengthReached", { maxLength: IDP_NAME_MAX_LENGTH }));
                                         } else if (isNameValid === false) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:develop.features." +
-                                                "idp.forms.generalDetails.name.validations.duplicate"));
+                                                "authenticationProvider.forms.generalDetails.name.validations." +
+                                                "duplicate"));
                                         }
                                     } }
                                     value={ name }
                                     data-testid={ `${ testId }-idp-name` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.idp.forms.generalDetails.name.hint") }
+                                    { t("console:develop.features.authenticationProvider.forms." +
+                                        "generalDetails.name.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -186,17 +190,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="description"
-                                    label={ t("console:develop.features.idp.forms.generalDetails.description.label") }
+                                    label={ t("console:develop.features.authenticationProvider.forms." +
+                                        "generalDetails.description.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:develop.features.idp.forms." +
+                                    placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                         "generalDetails.description.placeholder") }
                                     type="textarea"
                                     value={ description }
                                     data-testid={ `${ testId }-idp-description` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.idp.forms.generalDetails.description.hint") }
+                                    { t("console:develop.features.authenticationProvider.forms." +
+                                        "generalDetails.description.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -204,24 +210,30 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="image"
-                                    label={ t("console:develop.features.idp.forms.generalDetails.image.label") }
+                                    label={ t("console:develop.features.authenticationProvider." +
+                                        "forms.generalDetails.image.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:develop.features.idp.forms.generalDetails.image." +
+                                    placeholder={ t("console:develop.features.authenticationProvider." +
+                                        "forms.generalDetails.image." +
                                         "placeholder") }
                                     type="text"
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:develop.features.idp.forms." +
-                                                "common.invalidURLErrorMessage"));
+                                            validation.errorMessages.push(t("console:develop.features." +
+                                                "authenticationProvider.forms.common.invalidURLErrorMessage"));
                                         }
                                     } }
                                     value={ imageUrl }
+                                    hidden={ editingIDP?.federatedAuthenticators?.defaultAuthenticatorId
+                                        === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I" }
                                     data-testid={ `${ testId }-idp-image` }
                                 />
-                                <Hint>
-                                    { t("console:develop.features.idp.forms.generalDetails.image.hint") }
+                                <Hint hidden={ editingIDP?.federatedAuthenticators?.defaultAuthenticatorId
+                                    === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I" }>
+                                    { t("console:develop.features.authenticationProvider.forms." +
+                                        "generalDetails.image.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -230,7 +242,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Button primary type="submit" size="small" className="form-button"
-                                                data-testid={ `${ testId }-update-button` }>
+                                            data-testid={ `${ testId }-update-button` }>
                                             { t("common:update") }
                                         </Button>
                                     </Grid.Column>
@@ -240,26 +252,30 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     </Grid>
                 </Forms>
             </EmphasizedSegment>
-            <Divider hidden />
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Heading as="h4">Certificates</Heading>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            <EmphasizedSegment>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <IdpCertificates
-                                editingIDP={ editingIDP }
-                                onUpdate={ onUpdate }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EmphasizedSegment>
+            { identityProviderConfig.generalDetailsForm.showCertificate
+                && <>
+                    < Divider hidden />
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">Certificates</Heading>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <EmphasizedSegment>
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <IdpCertificates
+                                        editingIDP={ editingIDP }
+                                        onUpdate={ onUpdate }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </EmphasizedSegment>
+                </>
+            }
         </>
     );
 };
