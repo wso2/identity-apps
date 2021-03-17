@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { useDispatch, useSelector } from "react-redux";
 import { IdentityClient } from "@wso2/identity-oidc-js";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs";
