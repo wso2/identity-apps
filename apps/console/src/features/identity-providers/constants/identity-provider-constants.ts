@@ -56,3 +56,5 @@ export class IdentityProviderConstants {
         META: "configs/identity-provider-mgt.meta.json"
     };
 }
+
+export const GOOGLE_IDP_NAME = "Google";

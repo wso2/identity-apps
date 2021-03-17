@@ -67,7 +67,7 @@ export class IdentityProviderManagementConstants {
      * @constant
      * @type {string}
      */
-    public static readonly NEW_IDP__URL_SEARCH_PARAM = `?${
+    public static readonly NEW_IDP_URL_SEARCH_PARAM = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
