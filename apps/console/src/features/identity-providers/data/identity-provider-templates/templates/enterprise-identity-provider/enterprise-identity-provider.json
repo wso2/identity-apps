@@ -1,8 +1,8 @@
 {
     "category": "DEFAULT",
-    "description": "Create a new Identity Provider with minimum configurations",
+    "description": "Enterprise login via standard protocols",
     "displayOrder": 1,
-    "id": "expert-mode",
+    "id": "enterprise-idp",
     "idp": {
         "certificate": {},
         "claims": {
@@ -23,16 +23,15 @@
         "image": "",
         "isFederationHub": false,
         "isPrimary": false,
-        "name": "",
+        "name": "Enterprise Authentication Provider",
         "provisioning": {},
         "roles": {
             "mappings": [],
             "outboundProvisioningRoles": []
         }
     },
-    "image": "expert",
-    "name": "Enterprise Identity Provider",
-    "services": [
-        "authentication"
-    ]
+    "image": "enterprise",
+    "name": "Enterprise",
+    "services": [],
+    "disabled": false
 }
