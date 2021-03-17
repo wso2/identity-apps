@@ -18,21 +18,27 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { SelectionCard } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import { getIdPIcons, getIdPTemplateDocsIcons } from "../../../..";
+import { store } from "../../../../../core";
 import { getIdentityProviderList } from "../../../../api";
-import { IdentityProviderInterface } from "../../../../models";
-import { handleGetIDPListCallError } from "../../../utils";
-
-/**
+import {
+    FederatedAuthenticatorInterface,
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
+} from "../../../../models";
+import { handleGetIDPListCallError } from "../../../utils";/**
  * Proptypes for the general settings wizard form component.
  */
 interface GeneralSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: IdentityProviderInterface;
     triggerSubmit: boolean;
     onSubmit: (values: IdentityProviderInterface) => void;
+    template: IdentityProviderTemplateInterface;
 }
 
 /**
@@ -49,35 +55,214 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
         initialValues,
         triggerSubmit,
         onSubmit,
+        template,
         [ "data-testid" ]: testId
     } = props;
 
+    const [ selectedProtocol, setSelectedProtocol ] = useState<string>("oidc");
+
     const { t } = useTranslation();
+
+    const resolveSelectedTemplateFields = (): ReactElement => {
+
+        if (selectedProtocol === undefined) {
+            return null;
+        } else if (selectedProtocol === "oidc") {
+            return (
+                <>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="ClientId"
+                                label={ "Client ID" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="ClientSecret"
+                                label={ "Client secret" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features." +
+                                    "authenticationProvider.forms.common." +
+                                    "requiredErrorMessage") }
+                                type="password"
+                                hidePassword={ t("common:hide") }
+                                showPassword={ t("common:show") }
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="OAuth2AuthzEPUrl"
+                                label={ "Authorization Endpoint URL" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                validation={ (value, validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.authenticationProvider.forms.common." +
+                                                "invalidURLErrorMessage"));
+                                    }
+                                } }
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="OAuth2TokenEPUrl"
+                                label={ "Token Endpoint URL" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common.requiredErrorMessage") }
+                                type="text"
+                                validation={ (value, validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.authenticationProvider.forms.common." +
+                                                "invalidURLErrorMessage"));
+                                    }
+                                } }
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="SPEntityId"
+                                label={ "Service provider entity ID" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="NameIDType"
+                                label={ "NameID format" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="IdPEntityId"
+                                label={ "Authentication entity ID" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                name="SSOUrl"
+                                label={ "SSO URL" }
+                                required={ true }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                    "forms.common." +
+                                    "requiredErrorMessage") }
+                                type="text"
+                                validation={ (value, validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.authenticationProvider.forms.common." +
+                                                "invalidURLErrorMessage"));
+                                    }
+                                } }
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        }
+    };
+
+    const getFederatedAuthenticator = (values: Map<string, any>): FederatedAuthenticatorInterface => {
+
+        const authenticator: FederatedAuthenticatorInterface = {};
+        authenticator.authenticatorId = selectedProtocol === "oidc" ?
+            "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I" : "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+        authenticator.properties = [];
+        values.forEach((value, key) => {
+            if (key !== "name") {
+                authenticator.properties.push({
+                    "key": key,
+                    "value": value
+                });
+            }
+        });
+        return authenticator;
+    };
 
     return (
         <Forms
-            onSubmit={ (values): void => {
-                const data: IdentityProviderInterface = {
-                    description: values.get("description").toString(),
-                    image: values.get("image").toString(),
-                    name: values.get("name").toString()
-                };
-
-                onSubmit(data);
+            onSubmit={ (values: Map<string, any>): void => {
+                const idp: IdentityProviderInterface = template.idp;
+                idp.name = values.get("name").toString();
+                idp.federatedAuthenticators.authenticators = [];
+                idp.federatedAuthenticators.authenticators.push(getFederatedAuthenticator(values));
+                idp.federatedAuthenticators.defaultAuthenticatorId = idp.federatedAuthenticators
+                    .authenticators[ 0 ].authenticatorId;
+                // TODO Need to make this dynamic
+                idp.image = store.getState().config.deployment.clientOrigin +
+                    "/console/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                onSubmit(idp);
             } }
             submitState={ triggerSubmit }
             data-testid={ testId }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                         <Field
                             name="name"
-                            label={ t("console:develop.features.idp.forms.generalDetails.name.label") }
+                            label={ t("console:develop.features.authenticationProvider.forms." +
+                                "generalDetails.name.label") }
                             required={ true }
-                            requiredErrorMessage={ t("console:develop.features.idp.forms.generalDetails." +
+                            requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
+                                "forms.generalDetails." +
                                 "name.validations.empty") }
-                            placeholder={ t("console:develop.features.idp.forms." +
+                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.placeholder") }
                             type="text"
                             validation={ async (value: string, validation: Validation) => {
@@ -89,7 +274,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                         validation.isValid = true;
                                     } else {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("console:develop.features.idp.forms." +
+                                        validation.errorMessages.push(t("console:develop.features." +
+                                            "authenticationProvider.forms." +
                                             "generalDetails.name.validations.duplicate"));
                                     }
                                 } catch (error) {
@@ -101,42 +287,45 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="description"
-                            label={ t("console:develop.features.idp.forms.generalDetails.description.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("console:develop.features.idp.forms." +
-                                "generalDetails.description.placeholder") }
-                            type="textarea"
-                            value={ initialValues?.description }
-                            data-testid={ `${ testId }-idp-description` }
-                        />
+                <Grid.Row className="pt-0">
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                        <div className="sub-template-selection">
+                            <div>Protocols</div>
+                            <SelectionCard
+                                inline
+                                image={ getIdPTemplateDocsIcons().openidconnect }
+                                size="x120"
+                                className="sub-template-selection-card"
+                                header={ "OIDC" }
+                                selected={ selectedProtocol === "oidc" }
+                                onClick={ () => {
+                                    setSelectedProtocol("oidc");
+                                } }
+                                imageSize="mini"
+                                contentTopBorder={ false }
+                                showTooltips={ true }
+                                data-testid={ `${ testId }-oidc-card` }
+                            />
+                            <SelectionCard
+                                inline
+                                image={ getIdPIcons().saml }
+                                size="x120"
+                                className="sub-template-selection-card"
+                                header={ "SAML" }
+                                selected={ selectedProtocol === "saml" }
+                                onClick={ () => {
+                                    setSelectedProtocol("saml");
+                                } }
+                                imageSize="mini"
+                                contentTopBorder={ false }
+                                showTooltips={ true }
+                                data-testid={ `${ testId }-saml-card` }
+                            />
+
+                        </div>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="image"
-                            label={ t("console:develop.features.idp.forms.generalDetails.image.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("console:develop.features.idp.forms.generalDetails.image.placeholder") }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("console:develop.features.idp.forms." +
-                                        "common.invalidURLErrorMessage"));
-                                }
-                            } }
-                            value={ initialValues?.image }
-                            data-testid={ `${ testId }-idp-image` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { resolveSelectedTemplateFields() }
             </Grid>
         </Forms>
     );
