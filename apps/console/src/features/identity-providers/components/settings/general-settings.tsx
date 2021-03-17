@@ -23,13 +23,13 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
-import { IdentityProviderManagementConstants } from "../../constants";
-import { IdentityProviderInterface, ConnectedAppsInterface, ConnectedAppInterface } from "../../models";
-import { GeneralDetailsForm } from "../forms";
-import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
+import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
+import { ConnectedAppInterface, ConnectedAppsInterface, IdentityProviderInterface } from "../../models";
+import { GeneralDetailsForm } from "../forms";
+import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -127,13 +127,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     const appNames: string[] = [];
                     results.forEach((app) => {
                         appNames.push(app.name);
-                    })
+                    });
                     setConnectedApps(appNames);
                 }
             })
             .catch((error) => {
                 dispatch(addAlert({
-                    description: error?.description || "Error occurred while trying to retrieve connected applications.",
+                    description: error?.description || "Error occurred while trying to retrieve connected " +
+                    "applications.",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Error Occurred."
                 }));
@@ -150,9 +151,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications.deleteIDP." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.deleteIDP.success.message")
+                    message: t("console:develop.features.authenticationProvider.notifications.deleteIDP." +
+                        "success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -172,9 +175,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateIDP.success.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateIDP.success.message")
+                    message: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
+                        "success.message")
                 }));
                 onUpdate(editingIDP.id);
             })
@@ -184,11 +189,35 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     };
 
     const handleIdentityProviderDisable = (event: any, data: CheckboxProps) => {
-        handleFormSubmit(
-            {
-                isEnabled: data.checked
-            }
-        );
+        setIsAppsLoading(true);
+        getIDPConnectedApps(editingIDP.id)
+            .then(async (response: ConnectedAppsInterface) => {
+                if (response.count === 0) {
+                    handleFormSubmit(
+                        {
+                            isEnabled: data.checked
+                        }
+                    );
+                } else {
+                    dispatch(addAlert({
+                        description: "There are applications using this identity provider.",
+                        level: AlertLevels.WARNING,
+                        message: "Cannot Disable."
+                    }));
+                }
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: error?.description || "Error occurred while trying to retrieve connected " +
+                        "applications.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Error Occurred."
+                }));
+            })
+            .finally(() => {
+                setIsAppsLoading(false);
+            });
+
     };
 
     return (
@@ -207,11 +236,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     />
                     <Divider hidden />
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (
-                        <DangerZoneGroup sectionHeader={ t("console:develop.features.idp.dangerZoneGroup.header") }>
+                        <DangerZoneGroup sectionHeader={ t("console:develop.features.authenticationProvider." +
+                            "dangerZoneGroup.header") }>
                             <DangerZone
-                                actionTitle={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.actionTitle") }
-                                header={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.header") }
-                                subheader={ t("console:develop.features.idp.dangerZoneGroup.disableIDP.subheader") }
+                                actionTitle={ t("console:develop.features.authenticationProvider." +
+                                    "dangerZoneGroup.disableIDP.actionTitle",
+                                    { state: isEnabled ? t("common:disable") : t("common:enable") }) }
+                                header={ t("console:develop.features.authenticationProvider.dangerZoneGroup." +
+                                    "disableIDP.header",
+                                    { state: isEnabled ? t("common:disable") : t("common:enable") } ) }
+                                subheader={ isEnabled ? t("console:develop.features.authenticationProvider." +
+                                    "dangerZoneGroup.disableIDP.subheader") : t("console:develop.features." +
+                                        "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
                                 onActionClick={ undefined }
                                 toggle={ {
                                     checked: isEnabled,
@@ -220,9 +256,12 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 data-testid={ `${ testId }-disable-idp-danger-zone` }
                             />
                             <DangerZone
-                                actionTitle={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.actionTitle") }
-                                header={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.header") }
-                                subheader={ t("console:develop.features.idp.dangerZoneGroup.deleteIDP.subheader") }
+                                actionTitle={ t("console:develop.features.authenticationProvider." +
+                                    "dangerZoneGroup.deleteIDP.actionTitle") }
+                                header={ t("console:develop.features.authenticationProvider." +
+                                    "dangerZoneGroup.deleteIDP.header") }
+                                subheader={ t("console:develop.features.authenticationProvider." +
+                                    "dangerZoneGroup.deleteIDP.subheader") }
                                 onActionClick={ handleIdentityProviderDeleteAction }
                                 data-testid={ `${ testId }-delete-idp-danger-zone` }
                             />
@@ -238,11 +277,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 assertionHint={ (
                                     <p>
                                         <Trans
-                                            i18nKey="console:develop.features.idp.confirmations.deleteIDP.assertionHint"
+                                            i18nKey="console:develop.features.authenticationProvider.
+                                            confirmations.deleteIDP.assertionHint"
                                             tOptions={ { name: name } }
                                         >
-                                            Please type
-                                            <strong data-testid="idp-name-assertion">
+                                            Please type <strong data-testid="idp-name-assertion">
                                                 { name }
                                             </strong> to confirm.
                                         </Trans>
@@ -259,14 +298,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDP.header") }
+                                    { t("console:develop.features.authenticationProvider." +
+                                        "confirmations.deleteIDP.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
-                                                           data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDP.message") }
+                                    data-testid={ `${ testId }-delete-idp-confirmation` }>
+                                    { t("console:develop.features.authenticationProvider." +
+                                        "confirmations.deleteIDP.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteIDP.content") }
+                                    { t("console:develop.features.authenticationProvider." +
+                                        "confirmations.deleteIDP.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
@@ -283,16 +325,16 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations." +
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
                                                            data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations." +
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations." +
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.content") }
                                     <Divider hidden />
                                     <List ordered className="ml-6">
