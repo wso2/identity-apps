@@ -75,9 +75,11 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateIDP.success.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateIDP.success.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);
             })
@@ -87,7 +89,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     };
 
     return (
-        <EmphasizedSegment className="advanced-configuration-section" padded="very">
+        <EmphasizedSegment className="advanced-configuration-section">
             <AdvanceConfigurationsForm
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
