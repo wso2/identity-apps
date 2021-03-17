@@ -17,19 +17,18 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-// `chain` doesn't play nice with cherry pick imports.
-// TODO: Fix this issue. @see {@link https://github.com/lodash/lodash/issues/3298 }
-import { chain } from "lodash";
 import cloneDeep from "lodash/cloneDeep";
+import flatten from "lodash/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
+import { fetchHomeRealmIdentifiers } from "../../api";
 import {
     fetchAllPurposes,
-    fetchConsentedApps,
     fetchConsentReceipt,
+    fetchConsentedApps,
     fetchPurposesByIDs,
     revokeConsentedApp,
     updateConsentedClaims
@@ -52,7 +51,6 @@ import {
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
-import { fetchHomeRealmIdentifiers } from "../../api";
 
 /**
  * Proptypes for the user sessions component.
