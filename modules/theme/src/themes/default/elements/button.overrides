@@ -303,3 +303,14 @@
       width: 188px;
    }
 }
+.ui.button {
+    &.totp-verify-action-button {
+        width: @TOTPVerifyActionButtonWidth;
+        font-size: large;
+    }
+}
+.ui.button {
+    &.totp-verify-done-button {
+        margin: 0.5rem;
+    }
+}

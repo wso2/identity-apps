@@ -66,3 +66,9 @@
 @OIDCActionButtonMinWidth: 100px;
 @OIDCActionButtonPadding: 10px 15px;
 @OIDCActionButtonFontSize: 0.9em;
+
+/*----------------------------
+      TOTP Modal Action button
+------------------------------*/
+
+@TOTPVerifyActionButtonWidth: 100%;

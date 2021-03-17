@@ -31,6 +31,27 @@
 }
 
 /*------------------------
+    TOTP
+-------------------------*/
+
+.ui.message {
+    &.totp-tooltip {
+        box-shadow: 0 0 0 1px @tooltipBachGroundoxColor inset;
+        background-color: @tooltipBachGroundoxColor;
+        color: @tooltipColor;
+        text-align: left;
+    }
+    &.totp-error-message {
+        box-shadow: 0 0 0 1px #e0b4b4 inset;
+        background-color: @tooltipErrorBachGroundoxColor;
+        color: @tooltipErrorColor;
+        text-align: center;
+        margin-right: 2rem;
+        margin-left: 2rem;
+    }
+}
+
+/*------------------------
     Message With Icon
 -------------------------*/
 

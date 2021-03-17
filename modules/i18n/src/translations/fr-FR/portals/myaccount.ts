@@ -536,6 +536,7 @@ export const myAccount: MyAccountNS = {
                 heading: "Application d'authentification",
                 hint: "Afficher le code QR",
                 modals: {
+                    heading: "Set Up An Authenticator App",
                     done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une authentification en deux étapes",
                     scan: {
                         authenticatorApps: "Applications d'authentification",
@@ -552,7 +553,9 @@ export const myAccount: MyAccountNS = {
                         reScan: "Re-scanner",
                         reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
                         requiredError: "Veuillez entrer votre code de vérification"
-                    }
+                    },
+                    toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " + 
+                    "telle que Google Authenticator depuis <3> App Store </3> ou <3> Google Play </3>"
                 },
                 notifications: {
                     initError: {

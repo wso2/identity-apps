@@ -322,6 +322,7 @@
 
 .ui.modal {
     &.totp{
+        width: 535px;
         .totp-header {
             height: 150px;
             background-color: @primaryColor;
@@ -338,9 +339,12 @@
                 overflow: hidden;
             }
         }
-
+        .actions {
+            padding: 0;
+        }
         .content {
-            min-height: 430px;
+            min-height: inherit;
+            padding: 0;
 
             .step-text {
                 .segment {
@@ -359,6 +363,9 @@
             color: @primaryColor;
             cursor: pointer;
             text-weight: bold;
+            max-width: max-content;
+            position: absolute;
+            right: 38%;
         }
     }
 }
