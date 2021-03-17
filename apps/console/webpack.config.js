@@ -39,8 +39,9 @@ const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
 // Build artifacts output path.
-const OUTPUT_PATH = "build/console";   // Build artifacts output path.
-const CACHE_DIRECTORY = "cache";       // Output directory for the cache files. Only applicable in dev mode.
+const OUTPUT_PATH = "build/console";               // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
+const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
 
 module.exports = (env) => {
 
@@ -68,6 +69,7 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        assets: STATIC_ASSETS_DIRECTORY,
         cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
             ? path.resolve(__dirname, PRODUCTION_ESLINT_CONFIG)
@@ -124,6 +126,9 @@ module.exports = (env) => {
                     use: [ "postcss-loader" ]
                 },
                 {
+                    generator: {
+                        filename: `${ PATHS.assets }/[hash][ext][query]`
+                    },
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     type: "asset/resource"
                 },
