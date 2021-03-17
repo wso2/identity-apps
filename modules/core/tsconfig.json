@@ -3,7 +3,8 @@
         "experimentalDecorators": true,
         "rootDir": "src",
         "outDir": "dist/src",
-        "declaration": true
+        "declaration": true,
+        "types": [ "node", "jest" ]
     },
     "extends": "../../configs/common.tsconfig.json"
 }

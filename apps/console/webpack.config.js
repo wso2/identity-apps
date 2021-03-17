@@ -39,8 +39,9 @@ const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
 // Build artifacts output path.
-const OUTPUT_PATH = "build/console";   // Build artifacts output path.
-const CACHE_DIRECTORY = "cache";       // Output directory for the cache files. Only applicable in dev mode.
+const OUTPUT_PATH = "build/console";               // Build artifacts output path.
+const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
+const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
 
 module.exports = (env) => {
 
@@ -68,6 +69,7 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        assets: STATIC_ASSETS_DIRECTORY,
         cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
             ? path.resolve(__dirname, PRODUCTION_ESLINT_CONFIG)
@@ -124,6 +126,9 @@ module.exports = (env) => {
                     use: [ "postcss-loader" ]
                 },
                 {
+                    generator: {
+                        filename: `${ PATHS.assets }/[hash][ext][query]`
+                    },
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     type: "asset/resource"
                 },
@@ -424,14 +429,21 @@ module.exports = (env) => {
             })
         ].filter(Boolean),
         resolve: {
+            alias: {
+                // Workaround to fix the invariant hook call exception, due to a
+                // 3rd library lib using `react` as a dependency.
+                // https://github.com/facebook/react/issues/13991#issuecomment-435587809
+                react: path.resolve("../../node_modules/react")
+            },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
             // We have to polyfill the required once manually.
             // https://stackoverflow.com/a/65542520
             fallback: {
-                buffer: require.resolve("buffer"),
+                buffer: require.resolve("buffer/"),
                 crypto: require.resolve("crypto-browserify"),
                 fs: false,
+                path: require.resolve("path-browserify"),
                 stream: require.resolve("stream-browserify")
             }
         },

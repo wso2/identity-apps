@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { saveAs } from "file-saver";
 import * as forge from "node-forge";
 import { CertificateManagementConstants } from "../constants";
 import { Certificate, DisplayCertificate } from "../models";

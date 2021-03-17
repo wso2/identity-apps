@@ -15,8 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-/* eslint-disable @typescript-eslint/camelcase */
  
 import { AuthenticatedUserInterface } from "./authenticated-user";
 import { TokenInterface } from "./tokens";

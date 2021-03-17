@@ -20,21 +20,19 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "devDependencies": {
-        "@babel/core": "^7.8.7",
+        "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
+        "fs-extra": "^9.0.1",
+        "less": "^3.10.3",
+        "less-to-json": "^1.2.0",
         "less-plugin-rewrite-variable": "0.1.0",
-        "replace": "^1.1.5"
-    },
-    "peerDependencies": {
-        "fs-extra": "*",
-        "less": "*",
-        "less-to-json": "*",
-        "merge-files": "*",
-        "rc-tree": "*",
-        "rimraf": "*",
-        "semantic-ui-css": "*",
-        "semantic-ui-less": "*"
+        "merge-files": "^0.1.2",
+        "replace": "^1.1.5",
+        "rc-tree": "^4.0.0-beta.2",
+        "rimraf": "^3.0.2",
+        "semantic-ui-css": "^2.4.1",
+        "semantic-ui-less": "^2.4.1"
     }
 }

@@ -308,7 +308,6 @@ export const initializeAuthentication = () => (dispatch) => {
                         associatedTenants: idToken?.associated_tenants,
                         defaultTenant: idToken?.default_tenant,
                         displayName: response.displayName,
-                        // eslint-disable-next-line @typescript-eslint/camelcase
                         display_name: response.displayName,
                         email: response.email,
                         scope: response.allowedScopes,

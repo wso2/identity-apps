@@ -400,7 +400,6 @@ export const initializeAuthentication = () =>(dispatch)=> {
         dispatch(
             setSignIn({
                 displayName: response.displayName,
-                // eslint-disable-next-line @typescript-eslint/camelcase
                 display_name: response.displayName,
                 email: response.email,
                 scope: response.allowedScopes,
@@ -513,7 +512,6 @@ export const handleAccountSwitching = (account: LinkedAccountInterface) => (disp
         .then((response) => {
             dispatch(
                 setSignIn({
-                    // eslint-disable-next-line @typescript-eslint/camelcase
                     display_name: response.displayName,
                     email: response.email,
                     scope: response.allowedScopes,

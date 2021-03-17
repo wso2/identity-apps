@@ -23,7 +23,6 @@ import { AuthReducerStateInterface } from "../../../core/models";
  */
 export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = {
     displayName: "",
-    // eslint-disable-next-line @typescript-eslint/camelcase
     display_name: "",
     email: "",
     initialized: false,

@@ -26,7 +26,7 @@ import { ReactComponent as ColumnIcon } from "../../../assets/images/column-icon
 import { GenericIcon, GenericIconProps } from "../../icon";
 import { Heading } from "../../typography";
 
-export interface DataTableColumnSelector extends TestableComponentInterface {
+export interface DataTableColumnSelectorInterface extends TestableComponentInterface {
     /**
      * Heading for the column selector dropdown.
      */
@@ -61,11 +61,11 @@ export interface DataTableColumnSelector extends TestableComponentInterface {
 /**
  * Data table column selector.
  *
- * @param {DataTableColumnSelector} props - Props injected to the component.
+ * @param {DataTableColumnSelectorInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelector> = (
-    props: DataTableColumnSelector
+export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorInterface> = (
+    props: DataTableColumnSelectorInterface
 ): ReactElement => {
 
     const {
