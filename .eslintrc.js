@@ -127,7 +127,9 @@ module.exports = {
             },
             rules: {
                 "eol-last": "error",
-                "no-undef": 1,
+                // `no-undef` is discouraged in Typescript projects.
+                // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
+                "no-undef": 0,
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
