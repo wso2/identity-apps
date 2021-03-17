@@ -67,10 +67,20 @@ export const applicationConfig = {
                    showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
                        return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
                    }
-               }
+        },
+               makeSubjectMandatory: false
            },
            advancedConfigurations: {
                showSaaS: false,
                showEnableAuthorization: false
-           }
+    },
+    editApplication: {
+               showProvisioningSettings: false
+    },
+    inboundOIDCForm: {
+        showClientSecretMessage: false,
+        shouldValidateCertificate: false,
+        showScopeValidators: false,
+        showFrontChannelLogout: false
+    }
        };
