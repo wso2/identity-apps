@@ -21,7 +21,9 @@ import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
     ContentLoader,
+    EmphasizedSegment,
     EmptyPlaceholder,
+    Heading,
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
@@ -31,16 +33,14 @@ import React, {
     FunctionComponent,
     MouseEvent,
     ReactElement,
-    SyntheticEvent,
     useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { IdpCertificates } from "./idp-certificates";
 import {
-    AuthenticatorAccordion,
-    AuthenticatorAccordionItemInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../core";
 import {
@@ -52,6 +52,8 @@ import {
     updateFederatedAuthenticators
 } from "../../api";
 import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorWithMetaInterface,
@@ -85,15 +87,9 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * Initial activeIndexes value.
-     */
-    defaultActiveIndexes?: number[];
-    /**
-     * Expand the accordion if only single item is present.
-     */
-    defaultExpandSingleItemAccordion?: boolean;
 }
+
+const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
 
 /**
  *  Identity Provider and advance settings component.
@@ -109,8 +105,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         identityProvider,
         isLoading,
         onUpdate,
-        defaultActiveIndexes,
-        defaultExpandSingleItemAccordion,
         [ "data-testid" ]: testId
     } = props;
 
@@ -132,23 +126,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
-    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
-
-    /**
-     * If the authenticator count is 1, always open the authenticator panel.
-     */
-    useEffect(() => {
-        if (!defaultExpandSingleItemAccordion) {
-            return;
-        }
-
-        if (!(availableAuthenticators && Array.isArray(availableAuthenticators)
-            && availableAuthenticators.length === 1)) {
-            return;
-        }
-
-        setAccordionActiveIndexes([ 0 ]);
-    }, [ availableAuthenticators ]);
 
     /**
      * Handles the authenticator config form submit action.
@@ -157,13 +134,34 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAuthenticatorConfigFormSubmit = (values: any): void => {
         setIsPageLoading(true);
+
+        // Special checks on Google IDP
+        if (values.authenticatorId === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
+            // Enable/disable the Google authenticator based on client id and secret
+            const props: CommonPluggableComponentPropertyInterface[] = values.properties;
+            let isEnabled = true;
+            props.forEach((prop: CommonPluggableComponentPropertyInterface) => {
+                if (prop.key === "ClientId" || prop.key === "ClientSecret") {
+                    if (isEmpty(prop.value)) {
+                        isEnabled = false;
+                    }
+                }
+            });
+            values.isEnabled = isEnabled;
+
+            // Remove scopes
+            removeElementFromProps(props, "scopes");
+        }
+
         updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                    description: t("console:develop.features.authenticationProvider" +
+                        ".notifications.updateFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticator." +
                         "success.message")
                 }));
                 onUpdate(identityProvider.id);
@@ -171,10 +169,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                        description: t("console:develop.features.authenticationProvider" +
+                            ".notifications.updateFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                        message: t("console:develop.features.authenticationProvider" +
+                            ".notifications.updateFederatedAuthenticator." +
                             "error.message")
                     }));
 
@@ -182,10 +182,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticator." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticator." +
                         "genericError.message")
                 }));
             });
@@ -194,20 +196,23 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleGetFederatedAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: t("console:develop.features.idp.notifications.getFederatedAuthenticator.error.description",
+                description: t("console:develop.features.authenticationProvider.notifications." +
+                    "getFederatedAuthenticator.error.description",
                     { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.idp.notifications.getFederatedAuthenticator.error.message")
+                message: t("console:develop.features.authenticationProvider." +
+                    "notifications.getFederatedAuthenticator.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.idp.notifications.getFederatedAuthenticator." +
+            description: t("console:develop.features.authenticationProvider.notifications.getFederatedAuthenticator." +
                 "genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.idp.notifications.getFederatedAuthenticator.genericError.message")
+            message: t("console:develop.features.authenticationProvider.notifications." +
+                "getFederatedAuthenticator.genericError.message")
         }));
     };
 
@@ -261,14 +266,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
-                    const authenticator = res[0].data;
+                    const authenticator = res[ 0 ].data;
                     authenticator.isDefault = true;
                     handleAuthenticatorConfigFormSubmit(authenticator);
                 }
                 setAvailableAuthenticators(res);
                 setIsPageLoading(false);
             });
-    }, [identityProvider?.federatedAuthenticators]);
+    }, [ identityProvider?.federatedAuthenticators ]);
 
     /**
      * Handles default authenticator change event.
@@ -296,9 +301,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // Validation
         if (authenticator.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: t("console:develop.features.idp.notifications.disableAuthenticator.error.description"),
+                description: t("console:develop.features.authenticationProvider.notifications." +
+                    "disableAuthenticator.error.description"),
                 level: AlertLevels.WARNING,
-                message: t("console:develop.features.idp.notifications.disableAuthenticator.error.message")
+                message: t("console:develop.features.authenticationProvider.notifications." +
+                    "disableAuthenticator.error.message")
             }));
             onUpdate(identityProvider.id);
         } else {
@@ -330,10 +337,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         updateFederatedAuthenticators(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticators" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticators" +
                         ".success.message")
                 }));
 
@@ -344,7 +353,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "updateFederatedAuthenticators" +
                             ".error.message")
                     }));
 
@@ -352,10 +362,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticators" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.updateFederatedAuthenticators" +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateFederatedAuthenticators" +
                         ".genericError.message")
                 }));
             });
@@ -377,10 +389,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         if (id == identityProvider.federatedAuthenticators.defaultAuthenticatorId) {
             dispatch(addAlert({
-                description: t("console:develop.features.idp.notifications.deleteDefaultAuthenticator" +
+                description: t("console:develop.features.authenticationProvider" +
+                    ".notifications.deleteDefaultAuthenticator" +
                     ".error.description"),
                 level: AlertLevels.WARNING,
-                message: t("console:develop.features.idp.notifications.deleteDefaultAuthenticator" +
+                message: t("console:develop.features.authenticationProvider.notifications." +
+                    "deleteDefaultAuthenticator" +
                     ".error.message")
             }));
             return;
@@ -394,29 +408,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         setDeletingAuthenticator(deletingAuthenticator.data);
         setShowDeleteConfirmationModal(true);
-    };
-
-    /**
-     * Handles accordion title click.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
-     */
-    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
-                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
-        if (!SegmentedAuthenticatedAccordion) {
-            return;
-        }
-        const newIndexes = [ ...accordionActiveIndexes ];
-
-        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
-            newIndexes.splice(removingIndex, 1);
-        } else {
-            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
-        }
-
-        setAccordionActiveIndexes(newIndexes);
     };
 
     /**
@@ -442,8 +433,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         });
                         const filteredTemplates = templates.filter((template) =>
                             (template.idp.federatedAuthenticators.defaultAuthenticatorId &&
-                            !availableAuthenticatorIDs.includes(
-                                template.idp.federatedAuthenticators.defaultAuthenticatorId))
+                                !availableAuthenticatorIDs.includes(
+                                    template.idp.federatedAuthenticators.defaultAuthenticatorId))
                         );
 
                         // Set filtered manual mode options.
@@ -495,28 +486,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         });
     };
 
-    const showEmptyPlaceholder = (): ReactElement => {
-        return (
-            <EmptyPlaceholder
-                action={ (
-                    <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
-                                   data-testid={ `${ testId }-add-authenticator-button` }>
-                        <Icon name="add"/>{ t("console:develop.features.idp.buttons.addAuthenticator") }
-                    </PrimaryButton>
-                ) }
-                image={ getEmptyPlaceholderIllustrations().newList }
-                imageSize="tiny"
-                title={ t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.title") }
-                subtitle={ [
-                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.0"),
-                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.1"),
-                    t("console:develop.features.idp.placeHolders.emptyAuthenticatorList.subtitles.2")
-                ] }
-                data-testid={ `${ testId }-empty-placeholder` }
-            />
-        );
-    };
-
     /**
      * A predicate that checks whether a give federated authenticator
      * is a default authenticator.
@@ -549,8 +518,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
-                    "console:develop.features.idp.forms.authenticatorAccordion.default.0" :
-                    "console:develop.features.idp.forms.authenticatorAccordion.default.1"
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.default.0" :
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.default.1"
                 ),
                 onChange: handleDefaultAuthenticatorChange,
                 type: "checkbox"
@@ -559,89 +528,168 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             {
                 defaultChecked: authenticator.data?.isEnabled,
                 label: t(authenticator.data?.isEnabled ?
-                    "console:develop.features.idp.forms.authenticatorAccordion.enable.0" :
-                    "console:develop.features.idp.forms.authenticatorAccordion.enable.1"
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.0" :
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.1"
                 ),
-                disabled: isDefaultAuthenticator,
                 onChange: handleAuthenticatorEnableToggle,
                 type: "toggle"
             }
         ];
     };
 
-    const showAuthenticatorList = (): ReactElement => {
+    const showCertificateDetails = (): ReactElement => {
         return (
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={ 16 } textAlign="right">
-                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
-                                       data-testid={ `${ testId }-add-authenticator-button` }>
-                            <Icon name="add"/>
-                            { t("console:develop.features.idp.buttons.addAuthenticator") }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        {
-                            availableAuthenticators.map((authenticator, index) => {
-                                return (
-                                    <AuthenticatorAccordion
-                                        key={ index }
-                                        globalActions={ [
-                                            {
-                                                disabled: isDefaultAuthenticatorPredicate(authenticator),
-                                                icon: "trash alternate",
-                                                onClick: handleAuthenticatorDeleteOnClick,
-                                                popoverText: "Remove Authenticator",
-                                                type: "icon"
-                                            }
-                                        ] }
-                                        authenticators={
-                                            [
-                                                {
-                                                    actions: createAccordionActions(authenticator),
-                                                    content: authenticator && (
-                                                        <AuthenticatorFormFactory
-                                                            metadata={ authenticator.meta }
-                                                            initialValues={ authenticator.data }
-                                                            onSubmit={ handleAuthenticatorConfigFormSubmit }
-                                                            type={ authenticator.meta?.name }
-                                                            data-testid={ `${ testId }-${ authenticator.meta?.name }
-                                                            -content` }
-                                                        />
-                                                    ),
-                                                    icon: {
-                                                        icon: authenticator.id && (getFederatedAuthenticators().find(
-                                                            (fedAuth) =>
-                                                            (fedAuth.authenticatorId === authenticator.id)))?.icon
-                                                    },
-                                                    id: authenticator?.id,
-                                                    title: authenticator.id && (getFederatedAuthenticators().find(
-                                                        (fedAuth) =>
-                                                        (fedAuth.authenticatorId === authenticator.id)))?.displayName
-                                                }
-                                            ]
-                                        }
-                                        accordionActiveIndexes = { accordionActiveIndexes }
-                                        accordionIndex = { index }
-                                        handleAccordionOnClick = { handleAccordionOnClick }
-                                        data-testid={ `${ testId }-accordion` }
-                                    />
-                                );
-                            })
-                        }
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Heading as="h4">Certificates</Heading>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <EmphasizedSegment>
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <IdpCertificates
+                                            editingIDP={ identityProvider }
+                                            onUpdate={ onUpdate }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </EmphasizedSegment>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         );
     };
 
+    /**
+     * Removes the element identified by the given key, from the properties array.
+     */
+    const removeElementFromProps = (properties: CommonPluggableComponentPropertyInterface[], key: string) => {
+        const elementToRemove = properties.find(p => {
+            return p.key === key;
+        });
+        const dataIndex = properties.indexOf(elementToRemove);
+        properties.splice(dataIndex, 1);
+    };
+
+    const showAuthenticator = (): ReactElement => {
+        if (availableAuthenticators.length > 0) {
+            const authenticator: FederatedAuthenticatorWithMetaInterface =
+                availableAuthenticators.find(authenticator => (
+                    identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
+                ));
+
+            // TODO: Need to update below values in the Google authenticator metadata API
+            // Set additional meta data if the authenticator is Google
+            if (authenticator.id === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
+                authenticator.meta.properties.map(prop => {
+                    if (prop.key === "ClientId") {
+                        prop.displayName = "Client ID";
+                        prop.description = "The client identifier value of the Google identity provider.";
+                        prop.maxLength = GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH;
+                    } else if (prop.key === "ClientSecret") {
+                        prop.displayName = "Client secret";
+                        prop.description = "The client secret value of the Google identity provider.";
+                        prop.maxLength = GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH;
+                    } else if (prop.key === "callbackUrl") {
+                        prop.readOnly = true;
+                        prop.description = "The authorized redirect URL used to obtain Google credentials.";
+                        prop.displayName = "Authorized Redirect URL";
+                    }
+                });
+
+                // Remove additional query params
+                removeElementFromProps(authenticator.data.properties, "AdditionalQueryParameters");
+                removeElementFromProps(authenticator.meta.properties, "AdditionalQueryParameters");
+
+                // Inject scopes
+                const scopesData = {
+                    key: "scopes",
+                    value: "openid email profile"
+                };
+                authenticator.data.properties.push(scopesData);
+                const scopesMeta: CommonPluggableComponentMetaPropertyInterface = {
+                    defaultValue: "",
+                    description: "The scopes sent to Google to retrieve email address and basic profile " +
+                        "information of the user.",
+                    displayName: "Scopes",
+                    displayOrder: 4,
+                    isConfidential: false,
+                    isMandatory: false,
+                    key: "scopes",
+                    options: [],
+                    readOnly: true,
+                    regex: ".*",
+                    subProperties: [],
+                    type: "STRING"
+                };
+                authenticator.meta.properties.push(scopesMeta);
+            }
+
+            return (
+                <AuthenticatorFormFactory
+                    metadata={ authenticator.meta }
+                    initialValues={ authenticator.data }
+                    onSubmit={ handleAuthenticatorConfigFormSubmit }
+                    type={ authenticator.meta?.name }
+                    data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
+                />
+            );
+        } else {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
+                            data-testid={ `${ testId }-add-authenticator-button` }>
+                            <Icon name="add" />
+                            { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
+                        </PrimaryButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().newList }
+                    imageSize="tiny"
+                    title={ t("console:develop.features.authenticationProvider.placeHolders." +
+                        "emptyAuthenticatorList.title") }
+                    subtitle={ [
+                        t("console:develop.features.authenticationProvider.placeHolders." +
+                            "emptyAuthenticatorList.subtitles.0"),
+                        t("console:develop.features.authenticationProvider.placeHolders." +
+                            "emptyAuthenticatorList.subtitles.1"),
+                        t("console:develop.features.authenticationProvider.placeHolders." +
+                            "emptyAuthenticatorList.subtitles.2")
+                    ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
+                />
+            );
+        }
+    };
+
     return (
         (!isLoading && !isPageLoading)
             ? (
                 <div className="authentication-section">
-                    { availableAuthenticators.length > 0 ? showAuthenticatorList() : showEmptyPlaceholder() }
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Heading as="h4">Authentication Settings</Heading>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <EmphasizedSegment>
+                                    { showAuthenticator() }
+                                </EmphasizedSegment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+
+                    { /*<Divider hidden />*/ }
+                    { /*{ showCertificateDetails() }*/ }
 
                     {
                         deletingAuthenticator && (
@@ -653,8 +701,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 assertionHint={ (
                                     <p>
                                         <Trans
-                                            i18nKey="console:develop.features.idp.confirmations.deleteAuthenticator.
-                                            assertionHint"
+                                            i18nKey={ "console:develop.features.authenticationProvider." +
+                                                "confirmations.deleteAuthenticator.assertionHint" }
                                             tOptions={ { name: deletingAuthenticator?.name } }
                                         >
                                             Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.
@@ -673,41 +721,46 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             >
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.header") }
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                        "deleteAuthenticator.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached warning
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.message") }
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                        "deleteAuthenticator.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                                    { t("console:develop.features.idp.confirmations.deleteAuthenticator.content") }
+                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                        "deleteAuthenticator.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
                     }
                     {
-                         showAddAuthenticatorWizard && (
-                             <AuthenticatorCreateWizard
-                                 title={ t("console:develop.features.idp.modals.addAuthenticator.title") }
-                                 subTitle={ t("console:develop.features.idp.modals.addAuthenticator.subTitle",
-                                     { idpName: identityProvider.name }) }
-                                 closeWizard={ () => {
-                                     setShowAddAuthenticatorWizard(false);
-                                     setAvailableAuthenticators([]);
-                                     onUpdate(identityProvider.id);
-                                 } }
-                                 manualModeOptions={ availableManualModeOptions }
-                                 availableTemplates={ availableTemplates }
-                                 idpId={ identityProvider.id }
-                                 data-testid={ `${ testId }-authenticator-create-wizard` }
-                             />
-                         )
+                        showAddAuthenticatorWizard && (
+                            <AuthenticatorCreateWizard
+                                title={ t("console:develop.features.authenticationProvider.modals." +
+                                    "addAuthenticator.title") }
+                                subTitle={ t("console:develop.features.authenticationProvider.modals." +
+                                    "addAuthenticator.subTitle",
+                                    { idpName: identityProvider.name }) }
+                                closeWizard={ () => {
+                                    setShowAddAuthenticatorWizard(false);
+                                    setAvailableAuthenticators([]);
+                                    onUpdate(identityProvider.id);
+                                } }
+                                manualModeOptions={ availableManualModeOptions }
+                                availableTemplates={ availableTemplates }
+                                idpId={ identityProvider.id }
+                                data-testid={ `${ testId }-authenticator-create-wizard` }
+                            />
+                        )
                     }
                 </div>
             )
-            : <ContentLoader/>
+            : <ContentLoader />
     );
 };
 
@@ -715,7 +768,5 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
  * Default proptypes for the IDP authenticator settings component.
  */
 AuthenticatorSettings.defaultProps = {
-    "data-testid": "idp-edit-authenticator-settings",
-    defaultActiveIndexes: [ -1 ],
-    defaultExpandSingleItemAccordion: true
+    "data-testid": "idp-edit-authenticator-settings"
 };
