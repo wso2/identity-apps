@@ -166,7 +166,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
      * Remove the certificate from the certificated list.
      * The path attribute of the patch request requires the certificate index.
      * At the moment, the index of the certificate to be deleted is obtained from the indexes of
-     * @see certificates. This may cause unexpected behaviours if the certificates array is manipulated
+     * @see certificates array. This may cause unexpected behaviours if the certificates array is manipulated
      * for some reason.
      *
      * @param certificateIndex
@@ -184,10 +184,12 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
         updateIDPCertificate(editingIDP.id, data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.deleteCertificate.success" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "deleteCertificate.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.deleteCertificate.success.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "deleteCertificate.success.message")
                 }));
                 onUpdate(editingIDP.id);
             })
@@ -196,15 +198,18 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.deleteCertificate.error.message")
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "deleteCertificate.error.message")
                     }));
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.deleteCertificate.genericError" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "deleteCertificate.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.deleteCertificate.genericError.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "deleteCertificate.genericError.message")
                 }));
             });
     };
@@ -283,7 +288,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                     data-testid={ `${testId}-add-certificate-button` }
                                 >
                                     <Icon name="add"/>
-                                    { t("console:develop.features.idp.buttons.addCertificate") }
+                                    { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -352,13 +357,13 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                 <Divider hidden/>
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("console:develop.features.idp.placeHolders." +
+                                            title={ t("console:develop.features.authenticationProvider.placeHolders." +
                                             "emptyCertificateList.title") }
                                         image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
-                                            t("console:develop.features.idp.placeHolders." +
+                                            t("console:develop.features.authenticationProvider.placeHolders." +
                                                 "emptyCertificateList.subtitles.0"),
-                                            t("console:develop.features.idp.placeHolders." +
+                                            t("console:develop.features.authenticationProvider.placeHolders." +
                                                 "emptyCertificateList.subtitles.1")
                                         ] }
                                         imageSize="tiny"
@@ -369,7 +374,8 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 type="button"
                                             >
                                                 <Icon name="add"/>
-                                                { t("console:develop.features.idp.buttons.addCertificate") }
+                                                { t("console:develop.features.authenticationProvider" +
+                                                    ".buttons.addCertificate") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${testId}-empty-placeholder` }
