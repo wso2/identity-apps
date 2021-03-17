@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/react-components",
-    "version": "1.2.85",
+    "version": "1.2.86",
     "description": "A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework",
     "keywords": [
         "WSO2",
@@ -37,9 +37,9 @@
         "@storybook/addons": "^5.3.3",
         "@storybook/react": "^5.3.3",
         "@storybook/theming": "^5.3.3",
-        "@wso2is/core": "^1.2.85",
-        "@wso2is/forms": "^1.2.85",
-        "@wso2is/theme": "^1.2.85",
+        "@wso2is/core": "^1.2.86",
+        "@wso2is/forms": "^1.2.86",
+        "@wso2is/theme": "^1.2.86",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
         "i18next": "^17.0.11",
@@ -64,6 +64,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
+        "@svgr/webpack": "^4.3.2",
         "@types/i18next": "8.4.3",
         "@types/jest": "^26.0.14",
         "@types/js-beautify": "^1.8.2",
@@ -78,7 +79,6 @@
         "react-docgen-typescript-loader": "^3.6.0",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
-        "@svgr/webpack": "^4.3.2",
         "ts-jest": "^26.4.0",
         "ts-node": "^8.5.4",
         "tsconfig-paths-webpack-plugin": "^3.2.0",
