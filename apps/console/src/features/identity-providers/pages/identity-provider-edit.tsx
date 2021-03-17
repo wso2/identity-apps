@@ -26,6 +26,7 @@ import {
     ContentLoader,
     HelpPanelLayout,
     HelpPanelTabInterface,
+    LabelWithPopup,
     Markdown,
     PageLayout
 } from "@wso2is/react-components";
@@ -34,23 +35,27 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Label } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    getHelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    getHelpPanelActionIcons,
     history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import { IdentityProviderManagementConstants } from "../constants";
+import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
+    IdentityProviderTemplateItemInterface,
+    IdentityProviderTemplateLoadingStrategies,
     emptyIdentityProvider
 } from "../models";
+import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -73,12 +78,16 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
-
+    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state?.identityProvider?.templates);
+    const [ identityProviderTemplate, setIdentityProviderTemplate ]
+        = useState<IdentityProviderTemplateItemInterface>(undefined);
     const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
@@ -86,6 +95,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
     ] = useState<boolean>(false);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
+    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
 
     /**
      * Set the default doc content URL for the tab.
@@ -104,6 +115,61 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         dispatch(setHelpPanelDocsContentURL(overviewDocs));
     }, [ helpPanelDocStructure, dispatch ]);
+
+    /**
+     * Triggered when the IDP state search param in the URL changes.
+     */
+    useEffect(() => {
+        if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(1);
+            }
+            return;
+        }
+
+    }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY),
+        isExtensionsAvailable ]);
+
+    /**
+     *  Get IDP templates.
+     */
+    useEffect(() => {
+        if (identityProviderTemplates !== undefined) {
+            return;
+        }
+
+        setIdentityProviderRequestLoading(true);
+
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
+            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
+            IdentityProviderManagementConstants.
+                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
+            .finally(() => {
+                setIdentityProviderRequestLoading(false);
+            });
+    }, [ identityProviderTemplates ]);
+
+    /**
+     * Load the template that the IDP is built on.
+     */
+    useEffect(() => {
+
+        if (!identityProvider
+            || !(identityProviderTemplates
+                && identityProviderTemplates instanceof Array
+                && identityProviderTemplates.length > 0)) {
+
+            return;
+        }
+
+        // TODO: Hard coding template ID to Google. Should be removed once templateId is supported.
+        identityProvider.templateId = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
+
+        const template = identityProviderTemplates.find((template) => template.id === identityProvider.templateId);
+
+        setIdentityProviderTemplate(template);
+    }, [ identityProviderTemplates, identityProvider ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -148,19 +214,23 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.idp.notifications.getIDP.error.description",
+                        description: t("console:develop.features.authenticationProvider." +
+                            "notifications.getIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.getIDP.error.message")
+                        message: t("console:develop.features.authenticationProvider." +
+                            "notifications.getIDP.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.getIDP.genericError.description"),
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.getIDP.genericError.message")
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.getIDP.genericError.message")
                 }));
             })
             .finally(() => {
@@ -227,6 +297,40 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
     ];
 
+    /**
+     * Resolves the authentication provider status label.
+     *
+     * @return {ReactElement}
+     */
+    const resolveStatusLabel = (): ReactElement => {
+
+        if (!identityProvider) {
+            return null;
+        }
+
+        if (identityProvider?.federatedAuthenticators?.authenticators[ 0 ]
+            && identityProvider?.federatedAuthenticators?.authenticators[ 0 ].isEnabled) {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus.enabled.header") }
+                    popupSubHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
+                        "enabled.content") }
+                    labelColor="green"
+                />
+            );
+        } else {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
+                        "disabled.header") }
+                    popupSubHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
+                        "disabled.content") }
+                    labelColor="grey"
+                />
+            );
+        }
+    };
+
     return (
         <HelpPanelLayout
             enabled={ false }
@@ -238,8 +342,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
@@ -247,9 +350,22 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }
-                title={ identityProvider.name }
+                title={ (
+                    <>
+                        { identityProvider.name }
+                        { resolveStatusLabel() }
+                    </>
+                ) }
                 contentTopMargin={ true }
-                description={ identityProvider.description }
+                description={ (
+                    <div className="with-label ellipsis">
+                        {
+                            identityProviderTemplate?.name &&
+                            <Label size="small">{ identityProviderTemplate.name }</Label>
+                        }
+                        { identityProvider.description }
+                    </div>
+                ) }
                 image={
                     identityProvider.image
                         ? (
@@ -270,20 +386,22 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 backButton={ {
                     "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.idpTemplate.backButton")
+                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
-                pageHeaderMaxWidth={ true }
-                truncateContent={ true }
             >
                 <EditIdentityProvider
                     identityProvider={ identityProvider }
                     isLoading={ isIdentityProviderRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
+                    isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
                     data-testid={ testId }
+                    template={ identityProviderTemplate }
+                    defaultActiveIndex={ defaultActiveIndex }
+                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                 />
             </PageLayout>
         </HelpPanelLayout>
