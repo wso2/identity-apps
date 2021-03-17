@@ -83,19 +83,22 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         updateJITProvisioningConfigs(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateJITProvisioning." + 
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateJITProvisioning." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateJITProvisioning.success.message")
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateJITProvisioning.success.message")
                 }));
                 onUpdate(idpId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateJITProvisioning." +
-                        "genericError.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateJITProvisioning.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.updateJITProvisioning.genericError.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateJITProvisioning.genericError.message")
                 }));
             });
     };
@@ -117,7 +120,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
     return (
         !isLoading
             ? (
-                <EmphasizedSegment padded="very">
+                <EmphasizedSegment>
                     <JITProvisioningConfigurationsForm
                         initialValues={ jitProvisioningConfigurations }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
