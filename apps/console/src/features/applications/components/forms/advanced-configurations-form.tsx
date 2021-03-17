@@ -47,6 +47,7 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
 export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
     props: AdvancedConfigurationsFormPropsInterface
 ): ReactElement => {
+
     const {
         config,
         onSubmit,
