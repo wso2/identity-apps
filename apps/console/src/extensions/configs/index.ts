@@ -9,3 +9,4 @@
 
 export * from "./attribute";
 export * from "./application";
+export * from "./identity-provider";
