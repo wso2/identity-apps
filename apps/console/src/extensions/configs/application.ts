@@ -46,41 +46,41 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 };
 
 export const applicationConfig = {
-           attributeSettings: {
-               roleMapping: false,
-               advancedAttributeSettings: {
-                   showIncludeUserstoreDomainSubject: false,
-                   showIncludeTenantDomain: false,
-                   showUseMappedLocalSubject: false,
-                   showRoleAttribute: false,
-                   showIncludeUserstoreDomainRole: false,
-                   showRoleMapping: false
-               },
-               attributeSelection: {
-                   getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
-                       return claims.filter((claim) => isIdentityClaim(claim) == false);
-                   },
-                   getExternalClaims: (claims: ExtendedExternalClaimInterface[]): ExtendedExternalClaimInterface[] => {
-                       return claims.filter((claim) => isIdentityClaim(claim) == false);
-                   },
-                   showAttributePlaceholderTitle: false,
-                   showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
-                       return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
-                   }
+    advancedConfigurations: {
+        showEnableAuthorization: false,
+        showSaaS: false
+    },
+    attributeSettings: {
+        advancedAttributeSettings: {
+            showIncludeTenantDomain: false,
+            showIncludeUserstoreDomainRole: false,
+            showIncludeUserstoreDomainSubject: false,
+            showRoleAttribute: false,
+            showRoleMapping: false,
+            showUseMappedLocalSubject: false
         },
-               makeSubjectMandatory: false
-           },
-           advancedConfigurations: {
-               showSaaS: false,
-               showEnableAuthorization: false
+        attributeSelection: {
+            getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
+                return claims.filter(claim => isIdentityClaim(claim) == false);
+            },
+            getExternalClaims: (claims: ExtendedExternalClaimInterface[]): ExtendedExternalClaimInterface[] => {
+                return claims.filter(claim => isIdentityClaim(claim) == false);
+            },
+            showAttributePlaceholderTitle: false,
+            showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
+                return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
+            }
+        },
+        makeSubjectMandatory: false,
+        roleMapping: false
     },
     editApplication: {
-               showProvisioningSettings: false
+        showProvisioningSettings: false
     },
     inboundOIDCForm: {
-        showClientSecretMessage: false,
         shouldValidateCertificate: false,
-        showScopeValidators: false,
-        showFrontChannelLogout: false
+        showClientSecretMessage: false,
+        showFrontChannelLogout: false,
+        showScopeValidators: false
     }
-       };
+};
