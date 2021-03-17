@@ -1176,9 +1176,8 @@ export const console: ConsoleNS = {
                                 info: "Essayez un exemple d'application en utilisant {{callBackURLFromTemplate}}" +
                                     " comme URL de redirection autorisée. Vous pouvez télécharger et exécuter un" +
                                     " exemple ultérieurement.",
-                                infoTraditional: "Vous pouvez télécharger et exécuter un exemple ultérieurement." +
-                                    " Vous pouvez modifier le nom d'hôte et le port Tomcat de l'URL de redirection" +
-                                    " autorisée pour qu'ils correspondent à votre environnement."
+                                infoTraditional: "Vous serez invité à télécharger l'exemple plus tard. Vous aurez" +
+                                    " besoin d'Apache Tomcat 8.x ou d'une version ultérieure pour essayer l'exemple."
                             },
                             clientID: {
                                 label: "Identifiant du client"
@@ -2417,8 +2416,8 @@ export const console: ConsoleNS = {
                             subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
                         },
                         applicationMode: {
-                            label: "Sélectionnez l'un des chemins suivants.",
-                            integrate: "Intégrez à votre application",
+                            label: "Souhaitez-vous:",
+                            integrate: "Intégrer une application existante",
                             sample: "Explorer un échantillon"
                         }
                     }

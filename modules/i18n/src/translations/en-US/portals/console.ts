@@ -1171,9 +1171,8 @@ export const console: ConsoleNS = {
                                 },
                                 info: "Try out a sample app using {{callBackURLFromTemplate}} as the authorized" +
                                     " redirect URL. You can download and run a sample at a later step.",
-                                infoTraditional: "You can download and run a sample at a later step." +
-                                    " You may change the Tomcat hostname and port of the authorized redirect URL to" +
-                                    " match your environment."
+                                infoTraditional: "You will be prompted to download the sample later. You will need" +
+                                    " Apache Tomcat 8.x or a later version to try out the sample."
                             },
                             clientID: {
                                 label: "Client ID"
@@ -2403,8 +2402,8 @@ export const console: ConsoleNS = {
                             subHeading: "Use the guide below"
                         },
                         applicationMode: {
-                            label: "Select one of the following paths.",
-                            integrate: "Integrate with your app",
+                            label: "Would you like to:",
+                            integrate: "Integrate an existing app",
                             sample: "Explore a sample"
                         }
                     }

@@ -442,8 +442,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                 i18nKey={ "console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
                 ".infoTraditional" }
             >
-                You can download and run a sample at a later step. You may change the Tomcat hostname and port of
-                the authorized redirect URL to match your environment.
+                You will be prompted to download the sample later. You will need Apache Tomcat 8.x or a later version
+                to try out the sample.
             </Trans>
         );
     };

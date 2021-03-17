@@ -58,9 +58,8 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
             <React.Fragment>
                 <Heading as="h5">Authorized redirect URLs</Heading>
                 <p>
-                    The authorized redirect URLs determine where the authorization code
-                    is sent to once the user is authenticated, and where the user is
-                    redirected to once the logout is complete.
+                    The URL to which the authorization code is sent to upon authentication and where the user
+                    is redirected to upon logout.
                 </p>
                 <p>E.g., https://myapp.io/login</p>
             </React.Fragment>
