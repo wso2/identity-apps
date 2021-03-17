@@ -27,6 +27,7 @@ module.exports = {
         "plugin:react-hooks/recommended"
     ],
     globals: {
+        JSX: false,
         // no-undef complains about globalThis @see {@link https://github.com/eslint/eslint/issues/11553}
         globalThis: false
     },
