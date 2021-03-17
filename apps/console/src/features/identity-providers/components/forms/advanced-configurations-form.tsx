@@ -79,13 +79,13 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             name="federationHub"
                             label=""
                             required={ false }
-                            requiredErrorMessage={ t("console:develop.features.idp.forms.common." +
+                            requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms.common." +
                                 "requiredErrorMessage") }
                             value={ config?.isFederationHub ? ["federationHub"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("console:develop.features.idp.forms.advancedConfigs." +
+                                    label: t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
                                         "federationHub.label"),
                                     value: "federationHub"
                                 }
@@ -94,7 +94,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             data-testid={ `${ testId }-federation-hub` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.advancedConfigs.federationHub.hint") }
+                            { t("console:develop.features.authenticationProvider.forms." +
+                                "advancedConfigs.federationHub.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -102,7 +103,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="homeRealmIdentifier"
-                            label={ t("console:develop.features.idp.forms.advancedConfigs." +
+                            label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
                                 "homeRealmIdentifier.label") }
                             required={ false }
                             requiredErrorMessage=""
@@ -115,7 +116,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             data-testid={ `${ testId }-home-realm-identifier` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.advancedConfigs.homeRealmIdentifier.hint") }
+                            { t("console:develop.features.authenticationProvider" +
+                                ".forms.advancedConfigs.homeRealmIdentifier.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -123,7 +125,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="alias"
-                            label={ t("console:develop.features.idp.forms.advancedConfigs.alias.label") }
+                            label={ t("console:develop.features.authenticationProvider" +
+                                ".forms.advancedConfigs.alias.label") }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
@@ -135,7 +138,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             data-testid={ `${ testId }-alias` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.advancedConfigs.alias.hint") }
+                            { t("console:develop.features.authenticationProvider.forms.advancedConfigs.alias.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
