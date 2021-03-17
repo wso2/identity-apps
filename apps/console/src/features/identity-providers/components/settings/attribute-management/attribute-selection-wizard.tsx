@@ -25,12 +25,14 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import find from "lodash-es/find";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
+import find from "lodash-es/find";
+import isEmpty from "lodash-es/isEmpty";
 
 interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
     attributesList: IdentityProviderClaimInterface[];
@@ -57,13 +59,13 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
 
     const [tempAvailableClaims, setTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
     const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
-    
+
     const [tempSelectedAttributes, setTempSelectedClaims] = useState<IdentityProviderClaimInterface[]>([]);
     const [filterTempSelectedClaims, setFilterTempSelectedClaims] = useState<IdentityProviderClaimInterface[]>([]);
-    
+
     const [checkedUnassignedListItems, setCheckedUnassignedListItems] = useState<IdentityProviderClaimInterface[]>([]);
     const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<IdentityProviderClaimInterface[]>([]);
-    
+
     const [isSelectUnassignedClaimsAllClaimsChecked, setSelectUnassignedClaimsAllClaimsChecked] = useState(false);
     const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState(false);
 
@@ -75,8 +77,11 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
-                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
+            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
+                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = tempAvailableClaims.filter((item) =>
+                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             setFilterTempAvailableClaims(tempAvailableClaims);
         }
@@ -241,14 +246,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
             <Modal.Header data-testid={ `${ testId }-modal-header` }>
-                { t("console:develop.features.idp.modals.attributeSelection.title") }
+                { t("console:develop.features.authenticationProvider.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:develop.features.idp.modals.attributeSelection.subTitle") }
+                    { t("console:develop.features.authenticationProvider.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image data-testid={ `${ testId }-modal-content` }>
                 <TransferComponent
-                    searchPlaceholder={ t("console:develop.features.idp.modals.attributeSelection." +
+                    searchPlaceholder={ t("console:develop.features.authenticationProvider.modals.attributeSelection." +
                         "content.searchPlaceholder") }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }
