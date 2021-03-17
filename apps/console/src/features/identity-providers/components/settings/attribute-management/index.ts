@@ -19,3 +19,4 @@
 export * from "./attribute-selection";
 export * from "./uri-attributes-settings";
 export * from "./role-mapping-settings";
+export * from "./subject-attribute-list-item";
