@@ -61,7 +61,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     } = props;
 
     const { t } = useTranslation();
-    
+
     const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
 
     const [searchFilter, setSearchFilter] = useState<string>("");
@@ -109,7 +109,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         icon={ <Icon name="search"/> }
                                         onChange={ handleSearch }
                                         placeholder={
-                                            t("console:develop.features.idp.forms." +
+                                            t("console:develop.features.authenticationProvider.forms." +
                                                 "attributeSettings.attributeSelection." +
                                                 "searchAttributes.placeHolder")
                                         }
@@ -205,15 +205,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     : (
                                         <Segment data-testid={ testId }>
                                             <EmptyPlaceholder
-                                                title={ t("console:develop.features.idp.placeHolders.noAttributes." + 
+                                                title={ t("console:develop.features.authenticationProvider." +
+                                                    "placeHolders.noAttributes." +
                                                     "title") }
                                                 subtitle={ [
-                                                    t("console:develop.features.idp.placeHolders.noAttributes." + 
+                                                    t("console:develop.features.authenticationProvider." +
+                                                        "placeHolders.noAttributes." +
                                                         "subtitles.0")
                                                 ] }
                                                 action={
                                                     <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                        { t("console:develop.features.idp.buttons.addAttribute") }
+                                                        { t("console:develop.features.authenticationProvider." +
+                                                            "buttons.addAttribute") }
                                                     </PrimaryButton>
                                                 }
                                                 image={ getEmptyPlaceholderIllustrations().emptyList }
