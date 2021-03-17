@@ -37,6 +37,7 @@ import {
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
+import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 
 /**
  * Utility class for identity provider operations.
@@ -64,25 +65,37 @@ export class IdentityProviderManagementUtils {
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(addAlert({
-                        description: I18n.instance.t("console:develop.features.idp.notifications." +
-                            "getFederatedAuthenticatorsList.error.description",
-                            { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:develop.features.idp.notifications." +
-                            "getFederatedAuthenticatorsList.error.message")
-                    }));
+                    store.dispatch(
+                        addAlert({
+                            description: I18n.instance.t(
+                                "console:develop.features.authenticationProvider.notifications." +
+                                    "getFederatedAuthenticatorsList.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t(
+                                "console:develop.features.authenticationProvider.notifications." +
+                                    "getFederatedAuthenticatorsList.error.message"
+                            )
+                        })
+                    );
 
                     return;
                 }
 
-                store.dispatch(addAlert({
-                    description: I18n.instance.t("console:develop.features.idp.notifications." +
-                        "getFederatedAuthenticatorsList.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t("console:develop.features.idp.notifications." +
-                        "getFederatedAuthenticatorsList.genericError.message")
-                }));
+                store.dispatch(
+                    addAlert({
+                        description: I18n.instance.t(
+                            "console:develop.features.authenticationProvider.notifications." +
+                                "getFederatedAuthenticatorsList.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t(
+                            "console:develop.features.authenticationProvider.notifications." +
+                                "getFederatedAuthenticatorsList.genericError.message"
+                        )
+                    })
+                );
             });
     }
 
@@ -113,12 +126,7 @@ export class IdentityProviderManagementUtils {
                         return;
                     }
 
-                    if (
-                        [IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.X509_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR].includes(authenticator.name)
-                    ) {
+                    if (identityProviderConfig.utils.isAuthenticatorAllowed(authenticator.name)) {
                         return;
                     }
 
