@@ -23,6 +23,9 @@ import { store } from "../../core";
 import {
     getIdentityProviderTemplateList
 } from "../api";
+import { ExpertModeTemplate } from "../components/meta";
+import { handleGetIDPTemplateListError } from "../components/utils";
+import { getIdPCapabilityIcons } from "../configs";
 import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
 import {
     IdentityProviderTemplateCategoryInterface,
@@ -33,9 +36,6 @@ import {
     SupportedServicesInterface
 } from "../models";
 import { setIdentityProviderTemplates } from "../store";
-import { getIdPCapabilityIcons } from "../configs";
-import { ExpertModeTemplate } from "../components/meta";
-import { handleGetIDPTemplateListError } from "../components/utils";
 
 /**
  * Utility class for IDP Templates related operations.
@@ -65,15 +65,16 @@ export class IdentityProviderTemplateManagementUtils {
             return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
                 .then((response: IdentityProviderTemplateListItemInterface[]) => {
 
-                    const templates: IdentityProviderTemplateListItemInterface[] = IdentityProviderTemplateManagementUtils
-                        .resolveHelpContent(response);
+                    const templates: IdentityProviderTemplateListItemInterface[]
+                        = IdentityProviderTemplateManagementUtils.resolveHelpContent(response);
 
                     let templatesWithServices: IdentityProviderTemplateInterface[] =
                         IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(templates);
 
                     if (sort) {
                         templatesWithServices =
-                            IdentityProviderTemplateManagementUtils.sortIdentityProviderTemplates(templatesWithServices);
+                            IdentityProviderTemplateManagementUtils
+                                .sortIdentityProviderTemplates(templatesWithServices);
                     }
 
                     store.dispatch(setIdentityProviderTemplates(templatesWithServices));
@@ -89,7 +90,7 @@ export class IdentityProviderTemplateManagementUtils {
                 }
                 // sort templateList based on display Order
                 response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                const availableTemplates: IdentityProviderTemplateInterface[] = 
+                const availableTemplates: IdentityProviderTemplateInterface[] =
                     IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(response?.templates);
 
                 // Add expert mode template
@@ -102,6 +103,39 @@ export class IdentityProviderTemplateManagementUtils {
                 handleGetIDPTemplateListError(error);
             });
     };
+
+    /**
+     * Retrieve the IDP template identified by the template ID from local files.
+     *
+     * @param templateId ID of the template.
+     * @param {boolean} skipGrouping - Skip grouping of templates.
+     * @param {boolean} sort - Should the returning templates be sorted.
+     * @return {Promise<void>}
+     */
+    public static getIdentityProviderTemplate = (templateId: string, skipGrouping: boolean = false,
+                                                 sort: boolean = true): Promise<IdentityProviderTemplateInterface> => {
+
+        return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
+            .then((response: IdentityProviderTemplateListItemInterface[]) => {
+
+                response = response.filter((template: IdentityProviderTemplateListItemInterface) => {
+                    return template.id === templateId;
+                });
+                const templates: IdentityProviderTemplateListItemInterface[] = IdentityProviderTemplateManagementUtils
+                    .resolveHelpContent(response);
+
+                let templatesWithServices: IdentityProviderTemplateInterface[] =
+                    IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(templates);
+
+                if (sort) {
+                    templatesWithServices =
+                        IdentityProviderTemplateManagementUtils.sortIdentityProviderTemplates(templatesWithServices);
+                }
+
+                return Promise.resolve(templatesWithServices[0]);
+            });
+    };
+
     /**
      * Build supported services from the given service identifiers.
      *
@@ -112,15 +146,19 @@ export class IdentityProviderTemplateManagementUtils {
             switch (serviceIdentifier) {
                 case SupportedServices.AUTHENTICATION:
                     return {
-                        displayName: I18n.instance.t("console:develop.pages.idpTemplate.supportServices." +
-                            "authenticationDisplayName"),
+                        displayName: I18n.instance.t(
+                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
+                                "authenticationDisplayName"
+                        ),
                         logo: getIdPCapabilityIcons()[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
                     };
                 case SupportedServices.PROVISIONING:
                     return {
-                        displayName: I18n.instance.t("console:develop.pages.idpTemplate.supportServices." +
-                            "provisioningDisplayName"),
+                        displayName: I18n.instance.t(
+                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
+                                "provisioningDisplayName"
+                        ),
                         logo: getIdPCapabilityIcons()[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
                     };
@@ -209,7 +247,8 @@ export class IdentityProviderTemplateManagementUtils {
     private static async loadLocalFileBasedTemplates(): Promise<(IdentityProviderTemplateListItemInterface
         | Promise<IdentityProviderTemplateListItemInterface>)[]> {
 
-        const templates: (IdentityProviderTemplateListItemInterface | Promise<IdentityProviderTemplateListItemInterface>)[] = [];
+        const templates: (IdentityProviderTemplateListItemInterface
+            | Promise<IdentityProviderTemplateListItemInterface>)[] = [];
 
         getIdentityProviderTemplatesConfig().templates
             .map(async (config: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>) => {
@@ -218,7 +257,8 @@ export class IdentityProviderTemplateManagementUtils {
                 }
 
                 templates.push(
-                    config.resource as (IdentityProviderTemplateListItemInterface | Promise<IdentityProviderTemplateListItemInterface>)
+                    config.resource as (IdentityProviderTemplateListItemInterface
+                        | Promise<IdentityProviderTemplateListItemInterface>)
                 );
             });
 
@@ -228,12 +268,14 @@ export class IdentityProviderTemplateManagementUtils {
     /**
      * Loads local file based IDP template categories.
      *
-     * @return {Promise<(IdentityProviderTemplateCategoryInterface | Promise<IdentityProviderTemplateCategoryInterface>)[]>}
+     * @return {Promise<(IdentityProviderTemplateCategoryInterface
+     * | Promise<IdentityProviderTemplateCategoryInterface>)[]>}
      */
     private static async loadLocalFileBasedTemplateCategories(): Promise<(IdentityProviderTemplateCategoryInterface
         | Promise<IdentityProviderTemplateCategoryInterface>)[]> {
 
-        const categories: (IdentityProviderTemplateCategoryInterface | Promise<IdentityProviderTemplateCategoryInterface>)[] = [];
+        const categories: (IdentityProviderTemplateCategoryInterface
+            | Promise<IdentityProviderTemplateCategoryInterface>)[] = [];
 
         getIdentityProviderTemplatesConfig().categories
             .forEach(async (config: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>) => {
@@ -257,7 +299,8 @@ export class IdentityProviderTemplateManagementUtils {
      * @param {IdentityProviderTemplateInterface[]} templates - Input templates.
      * @return {IdentityProviderTemplateInterface[]}
      */
-    private static resolveHelpContent(templates: IdentityProviderTemplateListItemInterface[]): IdentityProviderTemplateListItemInterface[] {
+    private static resolveHelpContent(templates: IdentityProviderTemplateListItemInterface[])
+        : IdentityProviderTemplateListItemInterface[] {
 
         templates.map((template: IdentityProviderTemplateListItemInterface) => {
             const config = getIdentityProviderTemplatesConfig().templates
