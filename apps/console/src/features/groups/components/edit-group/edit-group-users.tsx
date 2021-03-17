@@ -267,7 +267,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         selectAllCheckboxLabel={ "Select all users" }
                         data-testid={ `${ testId }-unselected-transfer-list` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
-                            "roles.selected", { type: "users" }) }
+                            "groups.selected", { type: "users" }) }
                     >
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {
