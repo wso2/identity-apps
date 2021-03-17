@@ -34,7 +34,7 @@ import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";

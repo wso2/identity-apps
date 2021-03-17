@@ -19,7 +19,7 @@
 
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import get from "lodash/get";
+import get from "lodash-es/get";
 import { store } from "../store";
 
 /**

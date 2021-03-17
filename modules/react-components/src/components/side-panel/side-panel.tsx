@@ -24,7 +24,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
-import sortBy from "lodash/sortBy";
+import sortBy from "lodash-es/sortBy";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
 import { SidePanelItems } from "./side-panel-items";

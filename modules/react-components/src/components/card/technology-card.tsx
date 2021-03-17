@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import kebabCase from "lodash/kebabCase";
+import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the selection card component.

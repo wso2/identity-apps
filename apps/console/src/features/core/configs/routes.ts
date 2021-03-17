@@ -17,9 +17,9 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import keyBy from "lodash/keyBy";
-import merge from "lodash/merge";
-import values from "lodash/values";
+import keyBy from "lodash-es/keyBy";
+import merge from "lodash-es/merge";
+import values from "lodash-es/values";
 import { lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { EXTENSION_ROUTES } from "../../../extensions";

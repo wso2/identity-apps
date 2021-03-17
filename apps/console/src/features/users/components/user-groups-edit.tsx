@@ -34,9 +34,9 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import escapeRegExp from "lodash/escapeRegExp";
-import forEachRight from "lodash/forEachRight";
-import isEmpty from "lodash/isEmpty";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import forEachRight from "lodash-es/forEachRight";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {

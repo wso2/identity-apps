@@ -28,7 +28,7 @@ import {
     LabelWithPopup,
     PageLayout
 } from "@wso2is/react-components";
-import get from "lodash/get";
+import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

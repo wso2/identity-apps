@@ -17,8 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import reverse from "lodash/reverse";
-import sortBy from "lodash/sortBy";
+import reverse from "lodash-es/reverse";
+import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

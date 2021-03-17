@@ -21,7 +21,7 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

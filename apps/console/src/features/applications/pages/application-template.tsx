@@ -18,8 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
-import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
+import isEmpty from "lodash-es/isEmpty";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

@@ -18,8 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
-import sortBy from "lodash/sortBy";
-import union from "lodash/union";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ExtendedExternalClaimInterface } from "../../applications/components/settings";

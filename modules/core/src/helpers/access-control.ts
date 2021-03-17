@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import { FeatureAccessConfigInterface } from "../models";
 import { AuthenticateUtils } from "../utils";
 

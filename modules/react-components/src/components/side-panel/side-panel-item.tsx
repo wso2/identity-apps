@@ -19,7 +19,7 @@
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import kebabCase from "lodash/kebabCase";
+import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement } from "react";
 import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";

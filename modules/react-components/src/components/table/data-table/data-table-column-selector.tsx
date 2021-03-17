@@ -18,7 +18,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import cloneDeep from "lodash/cloneDeep";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FormEvent, FunctionComponent, ReactElement } from "react";
 import { Checkbox, Form, Popup } from "semantic-ui-react";
 import { TableColumnInterface } from "./data-table";

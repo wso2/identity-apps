@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import filter from "lodash/filter";
-import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
+import filter from "lodash-es/filter";
+import isEmpty from "lodash-es/isEmpty";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 

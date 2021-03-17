@@ -27,11 +27,11 @@ import {
     SelectionCard,
     useWizardAlert
 } from "@wso2is/react-components";
-import cloneDeep from "lodash/cloneDeep";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-import merge from "lodash/merge";
-import set from "lodash/set";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import merge from "lodash-es/merge";
+import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

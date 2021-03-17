@@ -25,8 +25,8 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import find from "lodash/find";
-import isEmpty from "lodash/isEmpty";
+import find from "lodash-es/find";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";

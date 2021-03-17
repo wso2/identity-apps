@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import kebabCase from "lodash/kebabCase";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Card, Divider, HeaderProps } from "semantic-ui-react";
 import { LinkButton } from "../button";

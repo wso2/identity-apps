@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import keyBy from "lodash/keyBy";
-import merge from "lodash/merge";
-import values from "lodash/values";
+import keyBy from "lodash-es/keyBy";
+import merge from "lodash-es/merge";
+import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
 import EnterpriseIdentityProviderTemplate from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";

@@ -17,7 +17,7 @@
  *
  */
 
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import { matchPath } from "react-router-dom";
 import { hasRequiredScopes } from "../helpers";
 import { ChildRouteInterface, FeatureAccessConfigInterface, RouteInterface } from "../models";
