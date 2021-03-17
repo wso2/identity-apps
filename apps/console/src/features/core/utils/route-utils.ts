@@ -17,10 +17,8 @@
  *
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-// `chain` doesn't play nice with cherry pick imports.
-// TODO: Fix this issue. @see {@link https://github.com/lodash/lodash/issues/3298 }
-import { chain } from "lodash";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import flatten from "lodash/flatten";
 import sortBy from "lodash/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
@@ -125,8 +123,8 @@ export class RouteUtils {
          *
          * Note on default values
          * --
-         * Since we use lodash here we need to make sure default values
-         * are initialized during the chain when the values are null.
+         * We need to make sure default values are initialized during the
+         * children path extraction.
          *
          * How it works?
          * --
@@ -139,15 +137,15 @@ export class RouteUtils {
          * -3 Map out all the children paths in each of the descendants.
          * -4 Flattens the depth of the array.
          * -5 Map out the {@code string} path of each child route.
-         * -6 Unwraps the lodash chain result.
          */
-        const allChildPaths: string[] = chain(routes ?? [])
+        const nestedChildren = (routes ?? [])
             .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
-            .forEach(({ path }) => descendants.add(path)) // #2
-            .map(({ children = [] as RouteInterface[] }) => children) // #3
-            .flatten() // #4
-            .map(({ path = EMPTY_STRING }) => path) // #5
-            .value(); // #6
+            .map((route: RouteInterface) => {
+                descendants.add(route.path); // #2
+                return route.children || [] as ChildRouteInterface[]; // #3
+            });
+        const allChildPaths: string[] = flatten(nestedChildren) // #4 [ [], [], [], [], [] ] => single array []
+            .map(({ path = EMPTY_STRING }) => path); // #5
 
         /**
          * If there's no child paths or descendants have been found in all

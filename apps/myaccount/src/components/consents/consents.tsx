@@ -17,19 +17,18 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-// `chain` doesn't play nice with cherry pick imports.
-// TODO: Fix this issue. @see {@link https://github.com/lodash/lodash/issues/3298 }
-import { chain } from "lodash";
 import cloneDeep from "lodash/cloneDeep";
+import flatten from "lodash/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
+import { fetchHomeRealmIdentifiers } from "../../api";
 import {
     fetchAllPurposes,
-    fetchConsentedApps,
     fetchConsentReceipt,
+    fetchConsentedApps,
     fetchPurposesByIDs,
     revokeConsentedApp,
     updateConsentedClaims
@@ -52,7 +51,6 @@ import {
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
-import { fetchHomeRealmIdentifiers } from "../../api";
 
 /**
  * Proptypes for the user sessions component.
@@ -216,10 +214,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const accepted: Set<PIICategoryClaimToggleItem> = new Set(acceptedPIIClaimList.values());
         const denied: Set<PIICategoryClaimToggleItem> = new Set(deniedPIIClaimList.values());
 
-        const purposes = chain(receipt.services)
-            .map((service: ServiceInterface) => service.purposes)
-            .flatten()
-            .value();
+        const purposes = flatten(
+            (receipt.services || [] as ServiceInterface[])
+                .map((service: ServiceInterface) => service.purposes as PurposeInterface[])
+        );
 
         purposes.forEach((purpose) => {
             purpose.piiCategory.forEach((piiCat: PIICategoryWithStatus) => {
@@ -346,10 +344,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      */
     const bindPIICategoryStatus = (receipt: ConsentReceiptInterface): void => {
 
-        const purposes = chain(receipt.services)
-            .map(({ purposes }) => purposes)
-            .flatten()
-            .value();
+        const purposes = flatten(
+            (receipt.services || [] as ServiceInterface[])
+                .map(({ purposes }) => purposes as PurposeInterface[])
+        );
 
         for (const purpose of purposes) {
             // Set the accepted PII categories.
@@ -652,12 +650,12 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         // Now check whether all the piiCategories of this specific receipt
         // is revoked. Essentially we are checking the sum of all the
         // {@code receipt.services.purposes.piiCategories}
-        const isAllPIICategoriesRemovedFromThisReceipt: boolean = chain(updatingConsent.consentReceipt.services)
-            .map(value => value.purposes)
-            .flatten()
+        const isAllPIICategoriesRemovedFromThisReceipt: boolean = flatten<PurposeInterface>((
+                updatingConsent.consentReceipt.services || [] as ServiceInterface[]
+            ).map(value => value.purposes as PurposeInterface[])
+        )
             .map(v => v.piiCategory.length)
-            .sum()
-            .value() === 0;
+            .reduce((accumulator, currentVal) => accumulator + currentVal) === 0;
         // If consent to all the pii categories in every purpose are revoked
         // then the application (receipt) will have to be revoked.
         if (isAllPIICategoriesRemovedFromThisReceipt) {
