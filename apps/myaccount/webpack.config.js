@@ -360,7 +360,7 @@ module.exports = (env) => {
                         : "",
                     publicPath: !isRootContext
                         ? publicPath
-                        : "",
+                        : "/",
                     serverUrl: !isDeployedOnExternalServer
                         ? "<%=getServerURL(\"\", true, true)%>"
                         : "",
@@ -385,7 +385,7 @@ module.exports = (env) => {
                     hash: true,
                     publicPath: !isRootContext
                         ? publicPath
-                        : "",
+                        : "/",
                     template: path.join(__dirname, "src", "index.html"),
                     title: titleText
                 }),
@@ -395,7 +395,7 @@ module.exports = (env) => {
                 hash: true,
                 publicPath: !isRootContext
                     ? publicPath
-                    : "",
+                    : "/",
                 template: path.join(__dirname, "src", "rpIFrame.html")
             }),
             new webpack.DefinePlugin({
