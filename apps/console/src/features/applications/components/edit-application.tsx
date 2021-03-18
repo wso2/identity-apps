@@ -509,11 +509,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-        if (!tabPaneExtensions) {
+         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
             return [];
         }
 
-        if (tabPaneExtensions.length > 0) {
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -715,7 +715,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        application && !isInboundProtocolsRequestLoading && tabPaneExtensions
+        application && !isInboundProtocolsRequestLoading
+            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs)
             ? (
                 <>
                     <ResourceTab

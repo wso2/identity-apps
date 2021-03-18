@@ -75,6 +75,7 @@ export const applicationConfig = {
         roleMapping: false
     },
     editApplication: {
+        extendTabs: false, //should be true for cloud
         showProvisioningSettings: false
     },
     inboundOIDCForm: {
