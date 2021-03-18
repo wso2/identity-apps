@@ -41,6 +41,7 @@ import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions/configs";
 import { AppState, FeatureConfigInterface } from "../../../../core";
+import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateClaimConfiguration } from "../../../api/";
 import {
     ClaimConfigurationInterface,
