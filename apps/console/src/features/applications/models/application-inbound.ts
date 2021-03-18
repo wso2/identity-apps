@@ -123,26 +123,6 @@ export interface OIDCDataInterface {
     scopeValidators?: string[];
 }
 
-export const emptyOIDCConfig: OIDCDataInterface = ({
-    accessToken: undefined,
-    allowedOrigins: [],
-    callbackURLs: [],
-    clientId: "",
-    clientSecret: "",
-    grantTypes: [],
-    pkce: {
-        mandatory: false,
-        supportPlainTransformAlgorithm: false
-    },
-    publicClient: false,
-    state: undefined,
-    idToken: undefined,
-    logout: undefined,
-    refreshToken: undefined,
-    scopeValidators: [],
-    validateRequestObjectSignature: undefined,
-});
-
 /**
  * Enum for the supported auth protocol types.
  *
