@@ -75,9 +75,6 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <Divider />
             <Heading as="h5">Client secret</Heading>
             <p>Provide the Client Secret obtained from Google.</p>
-            <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the IDP so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
         </div>
     );
 };
