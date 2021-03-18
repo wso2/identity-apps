@@ -44,7 +44,6 @@ import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     CertificateTypeInterface,
-    emptyOIDCConfig,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -2497,5 +2496,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
  */
 InboundOIDCForm.defaultProps = {
     "data-testid": "inbound-oidc-form",
-    initialValues: emptyOIDCConfig
+    initialValues: {
+        accessToken: undefined,
+        allowedOrigins: [],
+        callbackURLs: [],
+        clientId: "",
+        clientSecret: "",
+        grantTypes: [],
+        idToken: undefined,
+        logout: undefined,
+        refreshToken: undefined,
+        pkce: {
+            mandatory: false,
+            supportPlainTransformAlgorithm: false
+        },
+        publicClient: false,
+        scopeValidators: [],
+        state: undefined,
+        validateRequestObjectSignature: undefined
+    }
 };
