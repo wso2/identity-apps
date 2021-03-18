@@ -1173,11 +1173,8 @@ export const console: ConsoleNS = {
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
                                 },
-                                info: "Essayez un exemple d'application en utilisant {{callBackURLFromTemplate}}" +
-                                    " comme URL de redirection autorisée. Vous pouvez télécharger et exécuter un" +
-                                    " exemple ultérieurement.",
-                                infoTraditional: "Vous serez invité à télécharger l'exemple plus tard. Vous aurez" +
-                                    " besoin d'Apache Tomcat 8.x ou d'une version ultérieure pour essayer l'exemple."
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application " +
+                                "en utilisant {{callBackURLFromTemplate}} comme URL autorisée."
                             },
                             clientID: {
                                 label: "Identifiant du client"
@@ -2414,11 +2411,6 @@ export const console: ConsoleNS = {
                         help: {
                             heading: "Aide",
                             subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
-                        },
-                        applicationMode: {
-                            label: "Souhaitez-vous:",
-                            integrate: "Intégrer une application existante",
-                            sample: "Explorer un échantillon"
                         }
                     }
                 }
