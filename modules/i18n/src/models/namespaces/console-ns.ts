@@ -894,7 +894,6 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        applicationMode: FormAttributes;
                     };
                 };
             };

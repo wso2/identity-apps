@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, URLInput, LinkButton } from "@wso2is/react-components";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -32,7 +32,6 @@ import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationTemplateListItemInterface,
-    ApplicationTemplateTypes,
     DefaultProtocolTemplate,
     GrantTypeMetaDataInterface,
     MainApplicationInterface,
@@ -43,10 +42,6 @@ import {
  * Proptypes for the oauth protocol settings wizard form component.
  */
 interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
-    /**
-     * Application mode.
-     */
-    applicationMode?: string;
     /**
      * Set of fields to be displayed.
      */
@@ -59,10 +54,6 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      * Initial form values.
      */
     initialValues?: any;
-    /**
-     * Id of the template.
-     */
-    templateId?: string;
     /**
      * Values from the template.
      */
@@ -111,7 +102,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 ): ReactElement => {
 
     const {
-        applicationMode,
         selectedTemplate,
         isProtocolConfig,
         allowedOrigins,
@@ -120,7 +110,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         initialValues,
         triggerSubmit,
         onSubmit,
-        templateId,
         templateValues,
         showCallbackURL,
         tenantDomain,
@@ -141,7 +130,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
-    const [ isIntegrateMode, setIntegrateMode ] = useState<boolean>(true);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // Maintain the state if the user allowed the CORS for the
@@ -230,14 +218,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
     }, [ templateValues, selectedTemplate ]);
 
-    useEffect( () => {
-        if (applicationMode === "SAMPLES") {
-            setIntegrateMode(false);
-            return;
-        }
-        setIntegrateMode(true);
-    }, [ applicationMode ]);
-
     /**
      * Add regexp to multiple callbackUrls and update configs.
      *
@@ -250,33 +230,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             callbackURL = "regexp=(" + callbackURL?.split(",").join("|") + ")";
         }
         return callbackURL;
-    };
-
-    const resolveApplicationType = (templateId: string): string => {
-
-        if (templateId === "b9c5e11e-fc78-484b-9bec-015d247561b8") {
-            return  ApplicationTemplateTypes.TRADITIONAL_WEB_APPLICATION;
-        }
-        if (templateId === "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7") {
-            return ApplicationTemplateTypes.SINGLE_PAGE_APPLICATION;
-        }
-        return "";
-    };
-
-    const applicationType: string = resolveApplicationType(templateId);
-
-    const resolveInitialUrlValue = (): string => {
-
-        if (isIntegrateMode) {
-            return "";
-        }
-        if (applicationType === ApplicationTemplateTypes.SINGLE_PAGE_APPLICATION) {
-            return callBackURLFromTemplate;
-        }
-        if (applicationType === ApplicationTemplateTypes.TRADITIONAL_WEB_APPLICATION) {
-            return "https://localhost:8080/oidc-sample-app/oauth2client";
-        }
-        return null;
     };
 
     /**
@@ -423,31 +376,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * submitURL function.
      */
     let submitUrl: (callback: (url?: string) => void) => void;
-    
-    const resolveUrlInputMessage = (): ReactElement => {
-
-        if (applicationType === ApplicationTemplateTypes.SINGLE_PAGE_APPLICATION) {
-            return (
-                <Trans
-                    i18nKey={ "console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls.info" }
-                    tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
-                >
-                    Try out a sample app using <strong>{ callBackURLFromTemplate }</strong> as the Authorized
-                    redirect URL. You can download and run a sample at a later step.
-                </Trans>
-            );
-        }
-        return (
-            <Trans
-                i18nKey={ "console:develop.features.applications.forms.inboundOIDC.fields.callBackUrls" +
-                ".infoTraditional" }
-            >
-                You will be prompted to download the sample later. You will need Apache Tomcat 8.x or a later version
-                to try out the sample.
-            </Trans>
-        );
-    };
-
 
     return (
         templateValues
@@ -515,7 +443,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.label")
                                         }
-                                        placeholder={ isIntegrateMode &&
+                                        placeholder={
                                             t("console:develop.features.applications.forms.inboundOIDC." +
                                                 "fields.callBackUrls" +
                                                 ".placeholder")
@@ -560,19 +488,40 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         required={ true }
                                         showPredictions={ false }
                                         customLabel={ callbackURLsErrorLabel }
-                                        initialUrlValue={ resolveInitialUrlValue() }
-                                        enableReinitialize={ true }
                                     />
                                     {
-                                        !isIntegrateMode ? (
+                                        (callBackURLFromTemplate) && (
                                             <Message className="with-inline-icon" icon visible info>
                                                 <Icon name="info" size="mini" />
                                                 <Message.Content> {
-                                                    resolveUrlInputMessage()
+                                                    <Trans
+                                                    i18nKey={ "console:develop.features.applications.forms." +
+                                                        "inboundOIDC.fields.callBackUrls.info" }
+                                                    tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
+                                                    >
+                                                        Don’t have an app? Try out a sample app
+                                                        using <strong>{ callBackURLFromTemplate }</strong> as the Authorized URL.
+                                                    </Trans>
                                                 }
+                                                    {
+                                                        (callBackUrls === undefined || callBackUrls === "") && (
+                                                            <LinkButton
+                                                                className={ "m-1 p-1 with-no-border orange" }
+                                                                onClick={ (e) => {
+                                                                    e.preventDefault();
+                                                                    const host = new URL(callBackURLFromTemplate);
+                                                                    handleAddAllowOrigin(host.origin);
+                                                                    setCallBackUrls(callBackURLFromTemplate);
+                                                                } }
+                                                                data-testid={ `${ testId }-add-now-button` }
+                                                            >
+                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                            </LinkButton>
+                                                        )
+                                                    }
                                                 </Message.Content>
                                             </Message>
-                                            ) : null
+                                        )
                                     }
                                 </Grid.Column>
                             </Grid.Row>
@@ -650,7 +599,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
  */
 OauthProtocolSettingsWizardForm.defaultProps = {
     "data-testid": "oauth-protocol-settings-wizard-form",
-    applicationMode: "INTEGRATE",
     hideFieldHints: false,
     showCallbackURL: false
 };

@@ -623,25 +623,3 @@ export enum DefaultTemplateGroupIds {
     DESKTOP_APPLICATION = "desktop",
     MOBILE_APPLICATION = "mobile"
 }
-
-/**
- * Enum for application step sequence modes.
- *
- * @readonly
- * @enum {string}
- */
-export enum ApplicationSetupModes {
-    INTEGRATE = "INTEGRATE",
-    SAMPLES = "SAMPLES"
-}
-
-/**
- * Enum for application template types.
- *
- * @readonly
- * @enum {string}
- */
-export enum ApplicationTemplateTypes {
-    TRADITIONAL_WEB_APPLICATION = "TRADITIONAL",
-    SINGLE_PAGE_APPLICATION = "SPA"
-}
