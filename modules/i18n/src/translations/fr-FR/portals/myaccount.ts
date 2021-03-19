@@ -1385,7 +1385,7 @@ export const myAccount: MyAccountNS = {
                 empty: "Vous n'avez accordé votre consentement à aucune application"
             },
             description:
-                "Passez en revue les consentements que vous avez fournis pour chaque demande. " + 
+                "Passez en revue les consentements que vous avez fournis pour chaque demande. " +
                 "En outre, vous pouvez révoquer un ou plusieurs d'entre eux selon vos besoins.",
             heading: "Gérer mes consentements",
             placeholders: {

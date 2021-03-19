@@ -65,7 +65,8 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
             <Header as="h5" color="red" floated="left" data-testid={ `${ testId }-header` }>
                 { header }
                 <Header.Subheader className="sub-header" data-testid={ `${ testId }-sub-header` }>
-                    { subheader }</Header.Subheader>
+                    { subheader }
+                </Header.Subheader>
             </Header>
             <Button
                 fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }

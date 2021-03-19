@@ -1360,7 +1360,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 empty: "Você não concedeu consentimento a nenhum aplicativo"
             },
-            description: "Revise os consentimentos que você forneceu para cada aplicativo. " + 
+            description: "Revise os consentimentos que você forneceu para cada aplicativo. " +
                 "Além disso, você pode revogar um ou mais deles, conforme necessário.",
             heading: "Aplicações Consentidas",
             placeholders: {
