@@ -192,6 +192,8 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                                 purpose.purposeId,
                                 editingConsent.consentReceiptID
                             ) }
+                            data-testid={ `${testId}-editing-section-claim` +
+                                `-${ piiCat.piiCategoryDisplayName.replace(" ", "-") }-checkbox` }
                             label={ piiCat.piiCategoryDisplayName }
                             onChange={ () => onPIIClaimToggle(
                                 piiCat.piiCategoryId,
@@ -256,6 +258,9 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                         <Button
                             primary
                             onClick={ () => onClaimUpdate(editingConsent.consentReceiptID) }
+                            data-testid={ `${ testId }-` +
+                                `${ editingConsent.spDisplayName.replace(" ", "-") }` +
+                                `-editing-section-update-button` }
                             disabled={ !isUpdatable() }
                         >
                             { t("common:update") }
@@ -274,6 +279,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                                 subheader={ t("myAccount:components.consentManagement.editConsent.dangerZones." +
                                     "revoke.subheader") }
                                 onActionClick={ () => onAppConsentRevoke(editingConsent) }
+                                data-testid={ `${testId}-editing-section-revoke-application` }
                             />
                         </DangerZoneGroup>
                     </Grid.Column>
