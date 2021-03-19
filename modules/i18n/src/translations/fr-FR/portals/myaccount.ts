@@ -1385,8 +1385,8 @@ export const myAccount: MyAccountNS = {
                 empty: "Vous n'avez accordé votre consentement à aucune application"
             },
             description:
-                "Révoquer le consentement collectivement pour l'ensemble de l'application, ou révoquer le " +
-                "consentement pour des détails personnels particuliers que vous avez accepté de partager",
+                "Passez en revue les consentements que vous avez fournis pour chaque demande. " + 
+                "En outre, vous pouvez révoquer un ou plusieurs d'entre eux selon vos besoins.",
             heading: "Gérer mes consentements",
             placeholders: {
                 emptyConsentList: {

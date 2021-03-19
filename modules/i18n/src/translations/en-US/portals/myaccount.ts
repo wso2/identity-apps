@@ -1377,8 +1377,8 @@ export const myAccount: MyAccountNS = {
                 empty: "You have not granted consent to any application"
             },
             description:
-                "Revoke consent collectively for the whole application, or revoke consent for particular personal " +
-                "details that you have agreed to share",
+                "Review the consents you have provided for each application. " + 
+                "Also, you can revoke one or many of them as required.",
             heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {

@@ -1360,8 +1360,8 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 empty: "Você não concedeu consentimento a nenhum aplicativo"
             },
-            description: "Revogar o consentimento coletivamente para todo o aplicativo ou revogar o " +
-                "consentimento para detalhes pessoais específicos que você concordou em compartilhar",
+            description: "Revise os consentimentos que você forneceu para cada aplicativo. " + 
+                "Além disso, você pode revogar um ou mais deles, conforme necessário.",
             heading: "Aplicações Consentidas",
             placeholders: {
                 emptyConsentList: {
