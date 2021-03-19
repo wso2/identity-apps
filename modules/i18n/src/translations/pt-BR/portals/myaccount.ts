@@ -1279,6 +1279,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Edite ou exporte o seu perfil pessoal",
             title: "Informação pessoal"
         },
+        personalInfoWithoutExportProfile: {
+            subTitle: "Edite o seu perfil pessoal",
+            title: "Informação pessoal"
+        },
         privacy: {
             subTitle: "",
             title: "Política de Privacidade do Servidor de Identidade WSO2"

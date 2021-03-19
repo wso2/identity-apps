@@ -52,7 +52,10 @@ const PersonalInfoPage = (): ReactElement => {
             pageDescription={ isFeatureEnabled(accessConfig?.personalInfo,
                 AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")) ?
                 t("myAccount:pages.personalInfo.subTitle"):
-                t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle") }
+                isFeatureEnabled(accessConfig?.personalInfo,
+                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")) ?
+                t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle"):
+                t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") }
         >
             <Divider hidden/>
             <Grid>
