@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers";
 
-export const identityProviderConfig = {
+export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
         showAdvancedSettings: false,
         showJitProvisioning: false,

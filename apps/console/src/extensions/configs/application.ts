@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ApplicationConfig } from "./models";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -45,7 +46,7 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
 
-export const applicationConfig = {
+export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: false,
         showSaaS: false

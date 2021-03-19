@@ -17,11 +17,11 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { SharedUserStoreConstants } from "../../features/core";
+import { GroupConfig } from "./models";
 import { GroupsInterface } from "../../features/groups";
 import { CONSUMER_USERSTORE } from "../../features/userstores";
 
-export const groupConfig = {
+export const groupConfig: GroupConfig = {
     addGroupWizard: {
         defaultUserstore: CONSUMER_USERSTORE,
         requiredSteps: ["BasicDetails"],
