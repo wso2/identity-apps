@@ -94,7 +94,7 @@ module.exports = {
                         name: "lodash"
                     }
                 ],
-                patterns: [ "@wso2is/**/dist/**" ]
+                patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
             }
         ],
         "semi": 1,
