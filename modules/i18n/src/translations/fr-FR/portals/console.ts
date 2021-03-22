@@ -5582,7 +5582,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Ajouter un modèle d'e-mail",
                 addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
                 approvals: "Approbations",
-                attributeDialects: "Dialectes d'attributs",
+                attributeDialects: "Les attributs",
                 categories: {
                     attributes: "Attributs Utilisateur",
                     certificates: "Certificats",

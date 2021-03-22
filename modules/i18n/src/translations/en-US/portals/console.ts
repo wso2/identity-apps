@@ -6435,7 +6435,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                attributeDialects: "Attributes & Mappings",
+                attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
                     certificates: "Certificates",

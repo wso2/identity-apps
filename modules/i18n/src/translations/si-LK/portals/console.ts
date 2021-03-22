@@ -5550,7 +5550,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "විද්‍යුත් තැපැල් අච්චුව එක් කරන්න",
                 addEmailTemplateLocale: "විද්‍යුත් තැපැල් ආකෘති පෙදෙසි එක් කරන්න",
                 approvals: "අනුමත කිරීම්",
-                attributeDialects: "උපභාෂා ආරෝපණය කරන්න",
+                attributeDialects: "ගුණාංග",
                 categories: {
                     attributes: "ගුණාංග",
                     certificates: "සහතික",
