@@ -20,8 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput, LinkButton } from "@wso2is/react-components";
-import intersection from "lodash/intersection";
-import isEmpty from "lodash/isEmpty";
+import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -430,7 +430,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         }
                         { ((!fields || fields.includes("callbackURLs")) && showCallbackURLField ) && (
                             <Grid.Row column={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
                                         labelEnabled={ true }
                                         handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
@@ -451,6 +451,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         validationErrorMsg={
                                             t("console:develop.features.applications.forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                        }
+                                        emptyErrorMessage={
+                                            t("console:develop.features.applications.forms." +
+                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
                                         }
                                         validation={ (value: string) => {
                                             if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
@@ -491,8 +495,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 <Icon name="info" size="mini" />
                                                 <Message.Content> {
                                                     <Trans
-                                                    i18nKey="console:develop.features.applications.forms.
-                                                    inboundOIDC.fieldscallBackUrls.info"
+                                                    i18nKey={ "console:develop.features.applications.forms." +
+                                                        "inboundOIDC.fields.callBackUrls.info" }
                                                     tOptions={ { callBackURLFromTemplate: callBackURLFromTemplate  } }
                                                     >
                                                         Don’t have an app? Try out a sample app

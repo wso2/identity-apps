@@ -141,18 +141,29 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             });
     }, []);
 
+    const setScriptEditorWidth = () => {
+        let width = "100%";
+
+        if (showAuthTemplatesSidePanel) {
+            width = `calc(100% - ${ authTemplatesSidePanelRef?.current?.ref?.current?.offsetWidth }px)`;
+        }
+
+        scriptEditorSectionRef.current.style.width = width;
+    };
+
     /**
      * Triggered on `showAuthenticatorsSidePanel` change.
      */
     useEffect(() => {
-        let width = "100%";
-
-        if (showAuthTemplatesSidePanel) {
-            width = `calc(100% - ${ authTemplatesSidePanelRef?.current?.ref?.current?.clientWidth }px)`;
-        }
-
-        scriptEditorSectionRef.current.style.width = width;
+        setScriptEditorWidth();
     }, [ showAuthTemplatesSidePanel ]);
+
+    /**
+     * Triggered after component mounted change.
+     */
+    useEffect(() => {
+        setScriptEditorWidth();
+    });
 
     /**
      * Triggered on steps and script change.

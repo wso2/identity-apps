@@ -17,15 +17,25 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { PropsWithChildren, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
+import { 
+    Button, 
+    Container, 
+    Divider, 
+    Form, 
+    Grid, 
+    Icon, 
+    List, 
+    Message, 
+    Modal, 
+    Popup, 
+    Segment  } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
-import { getMFAIcons, getQRCodeScanIcon } from "../../../configs";
+import { getMFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 
@@ -57,13 +67,18 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ step, setStep ] = useState(0);
     const [ error, setError ] = useState(false);
 
-    const [ submit, setSubmit ] = useTrigger();
-
     const { t } = useTranslation();
 
     const totpConfig = useSelector((state: AppState) => state?.config?.ui?.authenticatorApp);
 
     const translateKey = "myAccount:components.mfa.authenticatorApp.";
+
+    const pinCode1 = useRef<HTMLInputElement>();
+    const pinCode2 = useRef<HTMLInputElement>();
+    const pinCode3 = useRef<HTMLInputElement>();
+    const pinCode4 = useRef<HTMLInputElement>();
+    const pinCode5 = useRef<HTMLInputElement>();
+    const pinCode6 = useRef<HTMLInputElement>();
 
     /**
      * Reset error and step when the modal is closed
@@ -85,10 +100,25 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setStep(1);
             } else {
                 setError(true);
+                resetValues();
             }
         }).catch(() => {
             setError(true);
+            resetValues();
         });
+    };
+
+    /**
+     * Reset pin code value in Error state
+     */
+    const resetValues = () => {
+        pinCode1.current.value = "";
+        pinCode2.current.value = "";
+        pinCode3.current.value = "";
+        pinCode4.current.value = "";
+        pinCode5.current.value = "";
+        pinCode6.current.value = "";
+        pinCode1.current.focus();
     };
 
     /**
@@ -129,21 +159,77 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         });
     };
 
+    const handleTOTPVerificationCodeSubmit = (event: React.FormEvent<HTMLFormElement> ):
+        void =>{
+        let verificationCode =  event.target[0].value;
+        for (let pinCodeIndex = 1;pinCodeIndex<6;pinCodeIndex++){
+            verificationCode = verificationCode + event.target[pinCodeIndex].value;
+        }
+        verifyCode(verificationCode);
+    };
+
+    /**
+     * Focus to next pin code after enter a value.
+     *
+     * @param {string} field The name of the field.
+     */
+    const focusInToNextPinCode = (field: string): void => {
+        switch (field) {
+            case "pincode-1":
+                pinCode2.current.focus();
+                break;
+            case "pincode-2":
+                pinCode3.current.focus();
+                break;
+            case "pincode-3":
+                pinCode4.current.focus();
+                break;
+            case "pincode-4":
+                pinCode5.current.focus();
+                break;
+            case "pincode-5":
+                pinCode6.current.focus();
+                break;
+        }
+    };
+
+    /**
+     * Focus to previous pin code after enter Backspace or Delete.
+     *
+     * @param {string} field The name of the field.
+     */
+    const focusInToPreviousPinCode = (field: string): void => {
+    switch (field) {
+        case "pincode-2":
+            pinCode1.current.focus();
+            break;
+        case "pincode-3":
+            pinCode2.current.focus();
+            break;
+        case "pincode-4":
+            pinCode3.current.focus();
+            break;
+        case "pincode-5":
+            pinCode4.current.focus();
+            break;
+        case "pincode-6":
+            pinCode5.current.focus();
+            break;
+        }
+    };
+
     /**
      * This renders the QR code page
      */
-    const renderQRCode = (): JSX.Element => {
+    const renderQRCode = (step: number): JSX.Element => {
         return (
-            <Segment basic>
-                <div className="stepper">
-                    <div className="step-number">1</div>
-                    <div className="step-text">
-                        <h5 >{ t(translateKey + "modals.scan.heading") }</h5>
+            <Segment basic >
+                    <h5 className=" text-center" > { t(translateKey + "modals.scan.heading") }</h5>
                         <Segment textAlign="center" basic className="qr-code">
-                            <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode`}/>
+                            <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                             <Divider hidden />
                             <p className="link" onClick={ refreshCode } 
-                            data-testid={ `${ testId }-modals-scan-generate`}>
+                            data-testid={ `${ testId }-modals-scan-generate` }>
                                 { t(translateKey + "modals.scan.generate") }
                             </p>
                         </Segment>
@@ -170,48 +256,172 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 </Message>
                             )
                             : null }
-                    </div>
-                    <div className="step-connector">
-                        <div className="step-line"></div>
-                    </div>
-                </div>
-                <div className="stepper">
-                    <div className="step-number">2</div>
-                    <div className="step-text">
-                        <h5>{ t(translateKey + "modals.verify.heading") }</h5>
+                        <h5 className=" text-center" > { t(translateKey + "modals.verify.heading") }</h5>
+
                         <Segment basic className="pl-0">
                         {
                             error
                                 ? (
-                                <>
-                                    <Message
-                                        error data-testid={ `${ testId }-code-verification-form-field-error` }>
+                                    <Message 
+                                        className="totp-error-message" 
+                                        data-testid={ `${ testId }-code-verification-form-field-error` }>
                                         { t(translateKey + "modals.verify.error") }
                                     </Message>
-                                </>
                                 )
                                 : null
                         }
-                        <Forms
-                            data-testid={ `${ testId }-code-verification-form` }
-                            onSubmit={ (values: Map<string, string>) => {
-                                verifyCode(values.get("code"));
-                            } }
-                            submitState={ submit }
-                        >
-                            <Field
-                                data-testid={ `${ testId }-code-verification-form-field` }
-                                name="code"
-                                label={ t(translateKey + "modals.verify.label") }
-                                placeholder={ t(translateKey + "modals.verify.placeholder") }
-                                type="text"
-                                required={ true }
-                                requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
-                            />
-                        </Forms>
+                            <Form onSubmit={ (event: React.FormEvent<HTMLFormElement>): void => {
+                                            handleTOTPVerificationCodeSubmit(event);
+                            } }>
+                                <Container>
+                                    <Grid className="ml-3 mr-3">
+                                        <Grid.Row textAlign="center" centered columns={ 6 } >
+                                            <Grid.Column >
+                                                <Form.Field >
+                                                    <input 
+                                                        autoFocus 
+                                                        ref = { pinCode1 } 
+                                                        name = "pincode-1" 
+                                                        placeholder = "." 
+                                                        className = "text-center totp-input" 
+                                                        type = "text" 
+                                                        maxLength = { 1 } 
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-1");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-1");
+                                                            } 
+                                                    } }
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column >
+                                                <Form.Field>
+                                                    <input 
+                                                        ref = { pinCode2 } 
+                                                        name = "pincode-2" 
+                                                        placeholder = "." 
+                                                        className = "text-center totp-input" 
+                                                        type = "text" 
+                                                        maxLength = { 1 } 
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-2");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-2");
+                                                            } 
+                                                    } }/>
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column >
+                                                <Form.Field >
+                                                    <input 
+                                                        ref = { pinCode3 } 
+                                                        name ="pincode-3" 
+                                                        placeholder ="." 
+                                                        className ="text-center totp-input" 
+                                                        type ="text" 
+                                                        maxLength = { 1 } 
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-3");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-3");
+                                                            } 
+                                                    } }/>
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column>
+                                                <Form.Field>
+                                                    <input 
+                                                        ref = { pinCode4 } 
+                                                        name ="pincode-4" 
+                                                        placeholder = "." 
+                                                        className = "text-center totp-input" 
+                                                        type = "text" 
+                                                        maxLength = { 1 } 
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-4");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-4");
+                                                            } 
+                                                    } }/>
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column >
+                                                <Form.Field>
+                                                    <input 
+                                                        ref = { pinCode5 } 
+                                                        name = "pincode-5" 
+                                                        placeholder = "." 
+                                                        className = "text-center totp-input" 
+                                                        type = "text" 
+                                                        maxLength = { 1 }                        
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-5");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-5");
+                                                            } 
+                                                    } }/>
+                                                </Form.Field>
+                                            </Grid.Column>
+                                            <Grid.Column >
+                                                <Form.Field>
+                                                    <input 
+                                                        ref = { pinCode6 } 
+                                                        name = "pincode-6" 
+                                                        placeholder = "." 
+                                                        className = "text-center totp-input" 
+                                                        type = "text" 
+                                                        maxLength = { 1 } 
+                                                        onKeyUp = { (event) => {
+                                                            if (event.currentTarget.value.length !== 0) {
+                                                                focusInToNextPinCode("pincode-6");
+                                                            }
+                                                            if ((event.key === "Backspace") || (event.key === "Delete")) {
+                                                                focusInToPreviousPinCode("pincode-6");
+                                                            } 
+                                                    } }/>
+                                                </Form.Field>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <div className = "totp-verify-step-btn">
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Button
+                                                    primary
+                                                    type="submit"
+                                                    className=" totp-verify-action-button"
+                                                    data-testid={ `${ testId }-modal-actions-primary-button` }
+                                                >
+                                                    { stepButtonText(step) }
+                                                </Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        </div>
+                                        <div className = "totp-verify-step-btn">
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                    < Button onClick={ () => { setOpenWizard(false); } } 
+                                                    className="link-button totp-verify-action-button"
+                                                    data-testid={ `${ testId }-modal-actions-cancel-button` }>
+                                                    { t("common:cancel") }
+                                                    </Button>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </div>
+                                    </Grid>
+                                </Container>
+                            </Form>
                         </Segment>
-                    </div>
-                </div>
             </Segment>
         );
     };
@@ -221,7 +431,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      */
     const renderSuccess = (): JSX.Element => {
         return (
-            <Segment basic textAlign="center">
+            <Segment className="totp">
                 <div className="svg-box">
                     <svg className="circular positive-stroke">
                         <circle
@@ -244,7 +454,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         </g>
                     </svg>
                 </div>
-                <p>{ t(translateKey + "modals.done") }</p>
+                <p className= "success-content">{ t(translateKey + "modals.done") }</p>
             </Segment>
         );
     };
@@ -256,7 +466,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const stepContent = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return renderQRCode();
+                return renderQRCode(stepToDisplay);
             case 1:
                 return renderSuccess();
         }
@@ -276,21 +486,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Generates the right button-click event based on the input step number
-     * @param stepToStep The step number
-     */
-    const handleModalButtonClick = (stepToStep: number) => {
-        switch (stepToStep) {
-            case 0:
-                setSubmit();
-                break;
-            case 1:
-                setOpenWizard(false);
-                break;
-        }
-    };
-
-    /**
      * This renders the TOTP wizard
      */
     const totpWizard = (): JSX.Element => {
@@ -306,14 +501,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 {
                     step !== 3
                         ? (
-                            < Modal.Header className="totp-header">
-                                <div className="illustration">
-                                    <GenericIcon
-                                        transparent
-                                        size="small"
-                                        icon={ getQRCodeScanIcon() }
-                                    />
-                                </div>
+                            < Modal.Header className="wizard-header text-center">
+                                Set Up An Authenticator App
                             </Modal.Header>
                         )
                         : null
@@ -321,23 +510,38 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Modal.Content data-testid={ `${ testId }-modal-content` } scrolling>
                     { stepContent(step) }
                 </Modal.Content>
-                <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
+                <Modal.Actions data-testid={ `${ testId }-modal-actions` } className ="actions">
                     {
-                        step !== 1
+                        step === 0
                             ? (
-                                < Button onClick={ () => { setOpenWizard(false); } } className="link-button"
-                                  data-testid={ `${ testId }-modal-actions-cancel-button`}>
-                                    { t("common:cancel") }
-                                </Button>
-                            )
-                            : null
-                    }
-                    <Button onClick={ () => { handleModalButtonClick(step); } } primary
-                        data-testid={ `${ testId }-modal-actions-primary-button`}>
-                        { stepButtonText(step) }
-                    </Button>
+                        <Message className="totp-tooltip display-flex">      
+                            <Icon name="info circle" />
+                            <Message.Content> 
+                            <Trans
+                                i18nKey={ (translateKey + "modals.toolTip") }
+                            >
+                                Don&apos;t have an app? Download an authenticator 
+                                application like Google Authenticator from 
+                                <a target="_blank" href="https://www.apple.com/us/search/totp?src=globalnav" 
+                                rel="noopener noreferrer"> App Store </a>
+                                or 
+                                <a target="_blank" href="https://play.google.com/store/search?q=totp" 
+                                rel="noopener noreferrer"> Google Play </a> 
+                            </Trans>
+                                
+                            </Message.Content>
+                        </Message>  
+                            ) : (  
+                            <Button
+                                primary
+                                className = "totp-verify-done-button"
+                                data-testid={ `${ testId }-modal-actions-primary-button` }
+                                onClick= { () => { setOpenWizard(false);} }
+                            >
+                                { stepButtonText(step) }
+                            </Button>
+                        ) }
                 </Modal.Actions>
-
             </Modal>
         );
     };
@@ -380,7 +584,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             size="small"
                                             color="grey"
                                             name="eye"
-                                            data-testid={`${testId}-view-button`}
+                                            data-testid={ `${testId}-view-button` }
                                         />
                                     )
                                 }

@@ -20,9 +20,9 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import camelCase from "lodash/camelCase";
-import intersectionBy from "lodash/intersectionBy";
-import unionBy from "lodash/unionBy";
+import camelCase from "lodash-es/camelCase";
+import intersectionBy from "lodash-es/intersectionBy";
+import unionBy from "lodash-es/unionBy";
 import { DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,

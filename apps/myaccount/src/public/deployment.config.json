@@ -35,6 +35,7 @@
         "appName": "My Account",
         "appLogoPath": "/assets/images/logo.svg",
         "authenticatorApp": [],
+        "disableMFAforSuperTenantUser": false,
         "features": {
             "applications": {
                 "disabledFeatures": [],

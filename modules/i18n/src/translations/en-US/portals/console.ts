@@ -111,7 +111,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 description: null,
-                heading: "Update profile picture",
+                heading: "Update Profile Picture",
                 primaryButton: "Save",
                 secondaryButton: "Cancel"
             },
@@ -122,7 +122,7 @@ export const console: ConsoleNS = {
                 primaryButton: "Stay logged in",
                 secondaryButton: "Logout",
                 loginAgainButton: "Login again",
-                sessionTimedOutHeading: "Your session has expired due to inactivity.",
+                sessionTimedOutHeading: "User session has expired due to inactivity.",
                 sessionTimedOutDescription: "Please log in again to continue from where you left off."
             }
         },
@@ -590,10 +590,10 @@ export const console: ConsoleNS = {
                     },
                     deleteApplication: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this application, you will not be able to get it back. All the " +
-                            "applications depending on this also might stop working. Please proceed with caution.",
+                        content: "This action is irreversible and will permanently delete the application.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the application."
+                        message: "If you delete this application, authentication flows for this application will " +
+                            "stop working. Please proceed with caution."
                     },
                     deleteOutboundProvisioningIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
@@ -617,24 +617,48 @@ export const console: ConsoleNS = {
                         message: "This is a handler."
                     },
                     lowOIDCExpiryTimes: {
-                        assertionHint: "Proceed with the existing values.",
-                        content: "You have entered a value less than 60 seconds for the following configuration(s).",
+                        assertionHint: "Click Confirm to continue with your values.",
+                        content: "This means that your tokens may expire too soon. Please recheck your values " +
+                            "for the following configuration(s).",
                         header: "Are you sure?",
-                        message: "Please double check your values."
+                        message: "You have entered a value less than 60 seconds for token expiry."
                     },
                     regenerateSecret: {
-                        assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                        content: "If you regenerate this application, All the applications depending on this also " +
-                            "might stop working. Please proceed with caution.",
+                        assertionHint: "Please type <1>{{ id }}</1> to regenerate the client secret.",
+                        content: "If you regenerate the client secret, authentication flows using old client secret " +
+                            "for this application will stop working. Please update the application client secret on " +
+                            "your client application.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and permanently change the client secret."
+                        message: "This action is irreversible and permanently changes the client secret. " +
+                            "Please proceed with caution."
+                    },
+                    reactivateSPA: {
+                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
+                        content: "If you reactivate the application, authentication flows for this " +
+                            "application will start working. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action can be reversed by revoking the client id later."
+                    },
+                    reactivateOIDC: {
+                        assertionHint: "Please type <1>{{ id }}</1> to reactivate the application.",
+                        content: "If you reactivate the application, a new client secret will be generated. " +
+                            "Please update the application client secret on your client application.",
+                        header: "Are you sure?",
+                        message: ""
+                    },
+                    removeApplicationUserAttribute: {
+                        content : "If you confirm this action, the subject attribute will be set to the default " +
+                            "attribute: <1>{{ default }}</1>",
+                        header: "Are you sure?",
+                        subHeader: "The attribute you are trying to remove is currently selected as the subject " +
+                            "attribute."
                     },
                     revokeApplication: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                        content: "If you Revoke this application, All the applications depending on this also might" +
-                            " stop working. Please proceed with caution.",
+                        content: "This action can be reversed by activating the application later.",
                         header: "Are you sure?",
-                        message: "This action is can be reversed by regenerating client secret."
+                        message: "If you revoke this application, authentication flows for this application will " +
+                            "stop working. Please proceed with caution."
                     }
                 },
                 dangerZoneGroup: {
@@ -726,9 +750,9 @@ export const console: ConsoleNS = {
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
                                 heading: "User Attribute Selection",
-                                attributeComponentHint: "Manage the user attributes you want to share with " +
-                                    "this application. You can configure additional <1>OIDC attribute mappings</1> " +
-                                    "and request them via <3>OIDC Scopes.</3>",
+                                attributeComponentHint: "Manage the user attributes you want to share with this " +
+                                    "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
+                                    "by navigating to <3>Attribute Mappings.</3>",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
@@ -747,7 +771,9 @@ export const console: ConsoleNS = {
                                             makeMandatory: "Make mandatory",
                                             makeRequested: "Make requested",
                                             removeMandatory: "Remove mandatory",
-                                            removeRequested: "Remove requested"
+                                            removeRequested: "Remove requested",
+                                            subjectDisabledSelection: "This attribute is mandatory because it " +
+                                                "is the subject attribute."
                                         },
                                         fields: {
                                             claim: {
@@ -1130,21 +1156,21 @@ export const console: ConsoleNS = {
                                 }
                             },
                             callBackUrls: {
-                                hint: "The redirect URI determines where the authorization code is sent to upon " +
-                                    "user authentication, and where the user is redirected to upon user logout." +
-                                    "The client app should specify the redirect URI in the authorization or logout " +
-                                    "request and {{productName}} will validate it against the redirect URIs " +
-                                    "entered here.",
-                                label: "Authorized URIs",
+                                hint: "The authorized redirect URL determines where the authorization code is sent " +
+                                    "to upon user authentication, and where the user is redirected to upon user " +
+                                    "logout. The client app should specify the authorized redirect URL in the " +
+                                    "authorization or logout request and {{productName}} will validate it against the " +
+                                    "authorized redirect URLs entered here.",
+                                label: "Authorized redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URI.",
+                                    empty: "Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
                                 },
                                 info: "Don’t have an app? Try out a sample app using {{callBackURLFromTemplate}} " +
-                                "as the Authorized URL."
+                                "as the authorized redirect URL. (You can download and run a sample at a later step.)"
                             },
                             clientID: {
                                 label: "Client ID"
@@ -1168,6 +1194,10 @@ export const console: ConsoleNS = {
                                 children: {
                                     implicit: {
                                         hint: "Using the implicit grant with public applications is not recommended.",
+                                        label: "{{grantType}} (Not recommended)"
+                                    },
+                                    password: {
+                                        hint: "Using the password grant with public applications is not recommended.",
                                         label: "{{grantType}} (Not recommended)"
                                     }
                                 },
@@ -1193,9 +1223,9 @@ export const console: ConsoleNS = {
                         },
                         messages: {
                             revokeDisclaimer: {
-                                content: "The application has been revoked. Please regenrate the secret if you wish " +
-                                    "to reactivate the application.",
-                                heading: "Application is Revoked"
+                                content: "The application has been revoked. Reactivate the application to allow " +
+                                    "users to log in.",
+                                heading: "Application is inactive"
                             }
                         },
                         sections: {
@@ -1229,7 +1259,9 @@ export const console: ConsoleNS = {
                                         labelForSPA: "Access token expiry time",
                                         placeholder: "Enter the user access token expiry time",
                                         validations: {
-                                            empty: "Please fill the user access token expiry time"
+                                            empty: "Please fill the user access token expiry time",
+                                            invalid: "Access token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     revokeToken: {
@@ -1272,8 +1304,9 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Enter Audience",
                                         validations: {
+                                            duplicate: "Audience contains duplicate values",
                                             empty: "Please fill the audience",
-                                            duplicate: "Audience contains duplicate values"
+                                            invalid: "Please avoid special characters like commas (,)"
                                         }
                                     },
                                     encryption: {
@@ -1291,7 +1324,9 @@ export const console: ConsoleNS = {
                                         label: "ID Token expiry time",
                                         placeholder: "Enter the id token expiry time",
                                         validations: {
-                                            empty: "Please fill the id token expiry time"
+                                            empty: "Please fill the id token expiry time",
+                                            invalid: "ID token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     method: {
@@ -1359,7 +1394,9 @@ export const console: ConsoleNS = {
                                         label: "Refresh token expiry time",
                                         placeholder: "Enter the refresh token expiry time",
                                         validations: {
-                                            empty: "Please fill the refresh token expiry time"
+                                            empty: "Please fill the refresh token expiry time",
+                                            invalid: "Refresh token expiry time should be in seconds. " +
+                                                "Decimal points and negative numbers are not allowed."
                                         }
                                     },
                                     renew: {
@@ -1780,7 +1817,16 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 label: "Authorized redirect URLs",
                                 validations: {
+                                    empty: "This is a required field.",
                                     invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                                }
+                            },
+                            name: {
+                                label: "Name",
+                                validations: {
+                                    invalid: "{{appName}} is not a valid name. It can contain up to " +
+                                        "{{characterLimit}} characters, including alphanumerics, periods (.), " +
+                                        "dashes (-), underscores (_) and spaces."
                                 }
                             }
                         }
@@ -2278,7 +2324,7 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyAttributesList: {
                         action: "Add User Attribute",
-                        subtitles: "There are no user attributes selected to the application at the moment.",
+                        subtitles: "There are no user attributes selected for the application at the moment.",
                         title: "No user attributes added"
                     },
                     emptyAuthenticatorStep: {
@@ -2454,7 +2500,8 @@ export const console: ConsoleNS = {
                         alias: {
                             hint: "If the resident identity provider is known by an alias at the federated " +
                                 "identity provider, specify it here.",
-                            label: "Alias"
+                            label: "Alias",
+                            placeholder: "Enter value for Alias."
                         },
                         certificateType: {
                             certificateJWKS: {
@@ -2482,7 +2529,8 @@ export const console: ConsoleNS = {
                         },
                         homeRealmIdentifier: {
                             hint: "Enter the home realm identifier for this identity provider",
-                            label: "Home Realm Identifier"
+                            label: "Home Realm Identifier",
+                            placeholder: "Enter value for Home Realm Identifier."
                         }
                     },
                     attributeSettings: {
@@ -4660,7 +4708,7 @@ export const console: ConsoleNS = {
                             description: "View and manage how user attributes are mapped and " +
                                 "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
-                            title: "Attributes and Mappings",
+                            title: "Attributes",
                             view: "View attributes"
                         }
                     },
@@ -6387,7 +6435,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                attributeDialects: "Attributes & Mappings",
+                attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
                     certificates: "Certificates",
@@ -6548,7 +6596,8 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Please enter a valid username."
+                                    regExViolation: "Username is invalid. It should be a valid email that contains " +
+                                        "between 3-30 alphanumeric characters with no whitespaces."
                                 }
                             }
                         },
@@ -7523,7 +7572,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully deleted the user's association to your organization.",
+                            description: "Successfully deleted the user's invitation.",
                             message: "Invitation deletion successful"
                         }
                     },

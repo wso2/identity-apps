@@ -109,6 +109,6 @@ ReactDOM.render(
 );
 
 // Accept HMR for updated modules
-if (module && module.hot) {
-    module.hot.accept();
+if (import.meta.webpackHot) {
+    import.meta.webpackHot.accept();
 }

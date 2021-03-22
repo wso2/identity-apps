@@ -596,6 +596,19 @@
 }
 
 /*-----------------------------
+      ToTP Segment
+------------------------------*/
+
+.ui.segment {
+    &.totp {
+        text-align: center;
+        .success-content {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+/*-----------------------------
       Clickable Segment
 ------------------------------*/
 

@@ -63,6 +63,7 @@ interface EditGroupProps extends SBACInterface<FeatureConfigInterface> {
 export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupProps): ReactElement => {
 
     const {
+        groupId,
         group,
         onGroupUpdate,
         featureConfig,
@@ -160,6 +161,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicGroupDetails
                             data-testid="group-mgt-edit-group-basic"
+                            groupId={ groupId }
                             isGroup={ true }
                             groupObject={ group }
                             onGroupUpdate={ onGroupUpdate }

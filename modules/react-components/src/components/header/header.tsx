@@ -538,7 +538,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                                   key={ index }
                                                                   className="action-panel"
                                                                   onClick={ onClick }
-                                                                  data-testid={ `${ testId }-dropdown-link-${ name }` }
+                                                                  data-testid={ `${ testId }-dropdown-link-${ name.replace(" ", "-") }` }
                                                               >
                                                                   {
                                                                       icon &&

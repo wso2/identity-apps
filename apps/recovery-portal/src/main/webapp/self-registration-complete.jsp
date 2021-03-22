@@ -104,7 +104,7 @@
                 <%
                     try {
                 %>
-                            location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                        location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
                 <%
                 } catch (MalformedURLException e) {
                     request.setAttribute("error", true);

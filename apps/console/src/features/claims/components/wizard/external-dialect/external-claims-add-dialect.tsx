@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
-import differenceWith from "lodash/differenceWith";
-import isEqual from "lodash/isEqual";
+import differenceWith from "lodash-es/differenceWith";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";

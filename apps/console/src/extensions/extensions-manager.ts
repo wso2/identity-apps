@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import isObject from "lodash/isObject";
+import isObject from "lodash-es/isObject";
 import { lazy } from "react";
 import { ExtensionsConfig } from "./config";
 import {

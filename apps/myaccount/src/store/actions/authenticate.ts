@@ -34,7 +34,7 @@ import { AppConstants as CommonAppConstants, TokenConstants } from "@wso2is/core
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
-import _ from "lodash";
+import isEmpty from "lodash-es/isEmpty";
 import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
@@ -155,7 +155,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         );
 
                         // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
-                        if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
+                        if (isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                             isCompletionCalculated = true;
                             dispatch(getScimSchemas(infoResponse,
                                 response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]?.isReadOnlyUser));
@@ -400,7 +400,6 @@ export const initializeAuthentication = () =>(dispatch)=> {
         dispatch(
             setSignIn({
                 displayName: response.displayName,
-                // eslint-disable-next-line @typescript-eslint/camelcase
                 display_name: response.displayName,
                 email: response.email,
                 scope: response.allowedScopes,
@@ -513,7 +512,6 @@ export const handleAccountSwitching = (account: LinkedAccountInterface) => (disp
         .then((response) => {
             dispatch(
                 setSignIn({
-                    // eslint-disable-next-line @typescript-eslint/camelcase
                     display_name: response.displayName,
                     email: response.email,
                     scope: response.allowedScopes,

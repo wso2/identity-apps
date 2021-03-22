@@ -15,11 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash-es/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

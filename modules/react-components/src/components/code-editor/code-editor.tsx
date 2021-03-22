@@ -262,7 +262,6 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         }
 
         if (language === "javascript") {
-            // eslint-disable-next-line @typescript-eslint/camelcase
             return JSBeautify(code, { indent_size: tabSize, space_in_empty_paren: true });
         }
 

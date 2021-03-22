@@ -17,7 +17,7 @@
  */
 
 import { MD5 } from "crypto-js";
-import sortBy from "lodash/sortBy";
+import sortBy from "lodash-es/sortBy";
 import moment from "moment";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 

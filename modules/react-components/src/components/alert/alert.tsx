@@ -18,7 +18,7 @@
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useRef } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import NotificationSystem from "react-notification-system";
 import { ReactComponent as ErrorIcon } from "../../assets/images/error-icon.svg";
 import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
@@ -100,6 +100,8 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const [ intermediateDissmissInterval, setIntermediateDissmissInterval ] = useState<number>(dismissInterval);
+
     const classes = classNames({
         absolute
     }, "");
@@ -175,7 +177,20 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
     }, [ alert ]);
 
     return (
-        <div className={ `alert-wrapper ${ classes }` } data-testid={ testId }>
+        <div 
+            /**
+             * onMouseEnter will set the dissmissal value to 0 so untill mouse is left, the notification will
+             * be shown.
+             */
+            onMouseEnter={ () => setIntermediateDissmissInterval(0) }
+            /**
+             * onMouseLeave will reset the value to initial value passed via props and will dissmiss the
+             * notification once the time is hit.
+             */
+            onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) } 
+            className={ `alert-wrapper ${ classes }` } 
+            data-testid={ testId }
+        >
             <NotificationSystem ref={ alertRef } style={ {
                 NotificationItem: {
                     DefaultStyle: {
@@ -194,7 +209,7 @@ Alert.defaultProps = {
     absolute: false,
     alertsPosition: "br",
     "data-testid": "alert",
-    dismissInterval: 5,
+    dismissInterval: 15,
     dismissible: true,
     withIcon: true
 };

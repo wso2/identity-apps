@@ -146,6 +146,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the tenant. ex: `abc.com`.
+     *
+     * @return {string}
+     */
+    public static getTenant(): string {
+        return window["AppUtils"].getConfig().tenant;
+    }
+
+    /**
      * Set of keys used to enable/disable features.
      * @constant
      * @type {Map<string, string>}

@@ -38,6 +38,7 @@
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.json.JSONObject" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -47,7 +48,7 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     Integer defaultPurposeCatId = null;
-    Integer userNameValidityStatusCode = null;
+    JSONObject usernameValidityResponse;
     String username = request.getParameter("username");
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
@@ -80,8 +81,7 @@
 
 
     try {
-        userNameValidityStatusCode = selfRegistrationMgtClient
-                .checkUsernameValidity(user, skipSignUpEnableCheck);
+        usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
     } catch (SelfRegistrationMgtClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
@@ -104,13 +104,17 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
-    if (userNameValidityStatusCode != null && !SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.
-            equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+    Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+    if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
         if (allowchangeusername || !skipSignUpEnableCheck) {
             request.setAttribute("error", true);
             request.setAttribute("errorCode", userNameValidityStatusCode);
+            if (usernameValidityResponse.has("message")) {
+                if (usernameValidityResponse.get("message") instanceof String) {
+                    request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
+                }
+            }
             request.getRequestDispatcher("register.do").forward(request, response);
-            return;
         } else {
             String errorCode = String.valueOf(userNameValidityStatusCode);
             if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
@@ -123,9 +127,8 @@
             request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
             request.setAttribute("errorCode", errorCode);
             request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-
         }
+        return;
     }
     String purposes = selfRegistrationMgtClient.getPurposes(user.getTenantDomain(), consentPurposeGroupName,
             consentPurposeGroupType);

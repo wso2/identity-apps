@@ -382,6 +382,9 @@ export interface ConsoleNS {
                     handlerAuthenticatorAddition: Confirmation;
                     lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
+                    reactivateSPA: Confirmation;
+                    reactivateOIDC: Confirmation;
+                    removeApplicationUserAttribute: Popup;
                     revokeApplication: Confirmation;
                     clientSecretHashDisclaimer: {
                         modal: Confirmation;
@@ -469,6 +472,7 @@ export interface ConsoleNS {
                                             makeRequested: string;
                                             removeMandatory: string;
                                             removeRequested: string;
+                                            subjectDisabledSelection: string;
                                         };
                                         fields: {
                                             claim: FormAttributes;
@@ -813,6 +817,7 @@ export interface ConsoleNS {
                     spaProtocolSettingsWizard: {
                         fields: {
                             callBackUrls: FormAttributes;
+                            name: FormAttributes;
                         };
                     };
                 };

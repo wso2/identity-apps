@@ -122,7 +122,7 @@ export const console: ConsoleNS = {
                 primaryButton: "Rester connecté",
                 secondaryButton: "Déconnexion",
                 loginAgainButton: "Connectez-vous à nouveau",
-                sessionTimedOutHeading: "Votre session a expiré en raison d'une inactivité.",
+                sessionTimedOutHeading: "La session utilisateur a expiré en raison d'une inactivité.",
                 sessionTimedOutDescription: "Veuillez vous reconnecter pour reprendre là où vous vous étiez arrêté."
             }
         },
@@ -588,8 +588,8 @@ export const console: ConsoleNS = {
                     },
                     deleteApplication: {
                         assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous supprimez cette application, vous ne pourrez pas la récupérer. Toutes les " +
-                            "applications qui en dépendent risquent également de ne plus fonctionner. Veuillez procéder avec prudence.",
+                        content: "Toutes les applications qui en dépendent risquent également " +
+                            "de ne plus fonctionner. Veuillez procéder avec prudence.",
                         header: "Etes-vous sûr ?",
                         message: "Cette action est irréversible et supprimera définitivement l'application."
                     },
@@ -622,18 +622,44 @@ export const console: ConsoleNS = {
                         message: "Veuillez vérifier vos valeurs."
                     },
                     regenerateSecret: {
-                        assertionHint: "Veuillez taper <1>{{ id }}</1> pour confirmer.",
-                        content: "Si vous régénérez le secret, toutes les applications qui en dépendent pourraient également " +
-                            "cesser de fonctionner. Veuillez procéder avec prudence.",
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour régénérer le secret client.",
+                        content: "Si vous régénérez le secret client, les flux d'authentification " +
+                                 "utilisant l'ancien secret client pour cette application cesseront " +
+                                 "de fonctionner. Veuillez mettre à jour le secret du client " +
+                                 "d'application sur votre application cliente.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et modifie définitivement " +
+                                 "le secret client. Veuillez procéder avec prudence."
+                    },
+                    reactivateSPA: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, les flux d'authentification pour " +
+                                 "cette application commenceront à fonctionner. Veuillez procéder " +
+                                 "avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action peut être annulée en révoquant l'ID client ultérieurement."
+                    },
+                    reactivateOIDC: {
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour réactiver l'application.",
+                        content: "Si vous réactivez l'application, un nouveau secret client sera " +
+                                 "généré. Veuillez mettre à jour le secret du client d'application " +
+                                 "sur votre application cliente.",
+                        header: "Êtes-vous sûr?",
+                        message: ""
+                    },
+                    removeApplicationUserAttribute: {
+                        content : "Si vous supprimez cela, l'attribut d'objet sera défini sur " +
+                            "<1>{{ default }}</1>",
                         header: "Etes-vous sûr ?",
-                        message: "Cette action est irréversible et modifie de façon permanente le secret du client."
+                        subHeader: "Vous essayez de supprimer l'attribut d'objet"
                     },
                     revokeApplication: {
-                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
-                        content: "Si vous révoquez cette application, toutes les applications qui en dépendent pourraient également " +
-                            "cesser de fonctionner. Veuillez procéder avec prudence.",
-                        header: "Etes-vous sûr ?",
-                        message: "Cette action peut être inversée en régénérant le secret du client."
+                        assertionHint: "Veuillez saisir <1> {{id}} </1> pour confirmer.",
+                        content: "Cette action peut être annulée en activant l'application ultérieurement.",
+                        header: "Êtes-vous sûr?",
+                        message: "Si vous révoquez cette application, les flux d'authentification " +
+                                 "pour cette application cesseront de fonctionner. Veuillez " +
+                                 "procéder avec prudence."
                     }
                 },
                 dangerZoneGroup: {
@@ -746,7 +772,9 @@ export const console: ConsoleNS = {
                                             makeMandatory: "Rendre obligatoire",
                                             makeRequested: "Rendre demandable",
                                             removeMandatory: "Retirer l'obligation",
-                                            removeRequested: "Retirer la demandabilité"
+                                            removeRequested: "Retirer la demandabilité",
+                                            subjectDisabledSelection: "Cet attribut est obligatoire car il " +
+                                                "s'agit de l'attribut sujet."
                                         },
                                         fields: {
                                             claim: {
@@ -1171,6 +1199,11 @@ export const console: ConsoleNS = {
                                         hint: "L'utilisation de l'octroi implicite avec des applications publiques " +
                                             "n'est pas recommandée.",
                                         label: "{{grantType}} (non recommandé)"
+                                    },
+                                    password: {
+                                        hint: "L'utilisation de l'octroi de mot de passe avec des applications " +
+                                            "publiques n'est pas recommandée.",
+                                        label: "{{grantType}} (non recommandé)"
                                     }
                                 },
                                 hint: "Cela déterminera la manière dont l'application communique avec le service " +
@@ -1233,7 +1266,9 @@ export const console: ConsoleNS = {
                                         label: "Délai d'expiration du jeton d'accès utilisateur",
                                         placeholder: "Saisissez l'heure d'expiration des jetons d'accès utilisateur",
                                         validations: {
-                                            empty: "Veuillez indiquer le délai d'expiration des jetons d'accès"
+                                            empty: "Veuillez indiquer le délai d'expiration des jetons d'accès",
+                                            invalid: "L'heure d'expiration du jeton d'accès doit être exprimée "
+                                                +"en secondes."
                                         }
                                     },
                                     revokeToken: {
@@ -1278,8 +1313,9 @@ export const console: ConsoleNS = {
                                         label: "Audience",
                                         placeholder: "Saisir l'audience",
                                         validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
                                             empty: "Veuillez remplir le public",
-                                            duplicate: "L'audience contient des valeurs en double"
+                                            invalid: "Veuillez ajouter une audience valide."
                                         }
                                     },
                                     encryption: {
@@ -1299,7 +1335,9 @@ export const console: ConsoleNS = {
                                         label: "Délai d'expiration du jeton d'identification",
                                         placeholder: "Entrez l'heure d'expiration du jeton d'identification",
                                         validations: {
-                                            empty: "Veuillez indiquer l'heure d'expiration du jeton d'identification"
+                                            empty: "Veuillez indiquer l'heure d'expiration du jeton d'identification",
+                                            invalid: "Le délai d'expiration du jeton d'identification doit être " +
+                                                "exprimé en secondes."
                                         }
                                     },
                                     method: {
@@ -1371,7 +1409,9 @@ export const console: ConsoleNS = {
                                         placeholder: "Saisissez l'heure d'expiration du jeton de rafraîchissement",
                                         validations: {
                                             empty: "Veuillez indiquer le délai d'expiration du jeton de " +
-                                                "rafraîchissement"
+                                                "rafraîchissement",
+                                            invalid: "L'heure d'expiration du jeton d'actualisation doit " +
+                                                "être exprimée en secondes."
                                         }
                                     },
                                     renew: {
@@ -1791,7 +1831,14 @@ export const console: ConsoleNS = {
                             callBackUrls: {
                                 label: "URL autorisées",
                                 validations: {
+                                    empty: "Ceci est un champ obligatoire",
                                     invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter un URI valide."
+                                }
+                            },
+                            name: {
+                                label: "Name",
+                                validations: {
+                                    invalid: "The application name should contain letters, numbers."
                                 }
                             }
                         }
@@ -2466,7 +2513,8 @@ export const console: ConsoleNS = {
                         alias: {
                             hint: "If the resident identity provider is known by an alias at the federated identity " +
                                 "provider, specify it here.",
-                            label: "Alias"
+                            label: "Alias",
+                            placeholder: "Entrez une valeur pour Alias."
                         },
                         certificateType: {
                             certificateJWKS: {
@@ -2494,7 +2542,8 @@ export const console: ConsoleNS = {
                         },
                         homeRealmIdentifier: {
                             hint: "Entrez l'identifiant du domaine d'identité pour ce fournisseur d'identité",
-                            label: " Identifiant du domaine local"
+                            label: " Identifiant du domaine local",
+                            placeholder: "Entrez la valeur de l'identifiant du royaume d'origine."
                         }
                     },
                     attributeSettings: {
@@ -3795,7 +3844,7 @@ export const console: ConsoleNS = {
                             description: "Affichez et gérez la façon dont les attributs utilisateur d'{{productName}} " +
                                 "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
                             primaryAction: "Nouveau mappage d'attributse",
-                            title: "Dialectes des attributs",
+                            title: "Les attributs",
                             view: "Voir les claims locaux"
                         }
                     },
@@ -5533,7 +5582,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Ajouter un modèle d'e-mail",
                 addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
                 approvals: "Approbations",
-                attributeDialects: "Dialectes d'attributs",
+                attributeDialects: "Les attributs",
                 categories: {
                     attributes: "Attributs Utilisateur",
                     certificates: "Certificats",
@@ -5696,7 +5745,8 @@ export const console: ConsoleNS = {
                                     empty: "Le nom d'utilisateur est obligatoire",
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                    regExViolation: "Ce nom d'utilisateur est invalide"
+                                    regExViolation: "Nom d'utilisateur invalide. Il doit s'agir d'un e-mail valide " +
+                                        "contenant entre 3 et 30 caractères alphanumériques sans espaces."
                                 }
                             }
                         },

@@ -28,6 +28,7 @@ import { Hint } from "../typography";
 export interface URLInputPropsInterface extends TestableComponentInterface {
     addURLTooltip?: string;
     duplicateURLErrorMessage: string;
+    emptyErrorMessage?: string;
     urlState: string;
     setURLState: any;
     placeholder?: string;
@@ -104,6 +105,11 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Skips URL validation.
      */
     skipValidation?: boolean;
+    /**
+     * Skips internal validations only.
+     * Checks validity using provided validator
+     */
+    skipInternalValidation?: boolean;
 }
 
 /**
@@ -123,6 +129,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         restrictSecondaryContent,
         customLabel,
         duplicateURLErrorMessage,
+        emptyErrorMessage,
         isAllowEnabled,
         allowedOrigins,
         handleAddAllowedOrigin,
@@ -149,6 +156,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         tenantDomain,
         onlyOrigin,
         skipValidation,
+        skipInternalValidation,
         [ "data-testid" ]: testId
     } = props;
 
@@ -175,7 +183,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
          * If the entered URL is a invalid i.e not a standard URL input, then we won't add
          * the input to the state.
          */
-        if (!skipValidation && !URLUtils.isURLValid(url, true)) {
+        if (!(skipValidation || skipInternalValidation) && !URLUtils.isURLValid(url, true)) {
             setValidURL(false);
             return;
         }
@@ -470,9 +478,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @return {React.ReactElement | React.ReactNode}
      */
     const resolveValidationLabel = (): ReactElement | ReactNode => {
+        if(!validURL && !changeUrl && emptyErrorMessage) {
+            return (
+                <Label className="prompt" basic color="red" pointing>
+                    { emptyErrorMessage }
+                </Label>
+            );
+        }
+
         if (!validURL) {
             return (
-                <Label basic color="red" pointing>
+                <Label basic className="prompt" color="red" pointing>
                     { validationErrorMsg }
                 </Label>
             );
@@ -480,7 +496,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
         if (duplicateURL) {
             return (
-                <Label basic color="red" pointing>
+                <Label basic className="prompt" color="red" pointing>
                     { duplicateURLErrorMessage }
                 </Label>
             );
@@ -703,7 +719,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
-                    if (skipValidation) {
+                    if (skipValidation || skipInternalValidation) {
                         return (
                             <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>

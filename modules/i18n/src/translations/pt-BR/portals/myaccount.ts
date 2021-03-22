@@ -156,7 +156,7 @@ export const myAccount: MyAccountNS = {
                     },
                     filterValue: {
                         label: "Valor do filtro",
-                        placeholder: "ex: admin, wso2 etc.",
+                        placeholder: "Insira o valor para pesquisar",
                         validations: {
                             empty: "O valor do filtro é um campo obrigatório"
                         }
@@ -532,6 +532,7 @@ export const myAccount: MyAccountNS = {
                 heading: "App autenticador",
                 hint: "Mostrar o QR Code",
                 modals: {
+                    heading: "Set Up An Authenticator App",
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
                         "fatores",
                     scan: {
@@ -549,7 +550,9 @@ export const myAccount: MyAccountNS = {
                         reScan: "Verificar novamente",
                         reScanQuestion: "Deseja digitalizar o código QR novamente?",
                         requiredError: "Insira o código de verificação"
-                    }
+                    },
+                    toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
+                    "Google Authenticator na <3> App Store </3> ou <3> Google Play </3>"
                 },
                 notifications: {
                     initError: {
@@ -1255,7 +1258,7 @@ export const myAccount: MyAccountNS = {
             primaryButton: "Permaneça logado",
             secondaryButton: "Sair",
             loginAgainButton: "Entrar novamente",
-            sessionTimedOutHeading: "Sua sessão expirou devido à inatividade.",
+            sessionTimedOutHeading: "A sessão do usuário expirou devido à inatividade.",
             sessionTimedOutDescription: "Faça login novamente para continuar de onde parou."
         }
     },

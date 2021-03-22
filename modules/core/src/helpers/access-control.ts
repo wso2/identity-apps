@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import _ from "lodash";
+import isEmpty from "lodash-es/isEmpty";
 import { FeatureAccessConfigInterface } from "../models";
 import { AuthenticateUtils } from "../utils";
 
@@ -29,7 +29,9 @@ import { AuthenticateUtils } from "../utils";
  * @return {boolean} True is feature is enabled and false if not.
  */
 export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
-    const isDefined = feature?.disabledFeatures && !_.isEmpty(feature.disabledFeatures);
+    const isDefined = feature?.disabledFeatures
+        && Array.isArray(feature.disabledFeatures)
+        && feature.disabledFeatures.length > 0;
 
     if (!isDefined) {
         return true;
@@ -58,7 +60,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 export const hasRequiredScopes = (
     feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
 ): boolean => {
-    const isDefined = feature?.scopes && !_.isEmpty(feature.scopes) && scopes && !_.isEmpty(scopes);
+    const isDefined = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
 
     if (!isDefined) {
         return true;
@@ -82,7 +84,7 @@ export const hasRequiredScopes = (
  * @return {boolean} True is access is granted, false if not.
  */
 export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: string): boolean => {
-    const isDefined = featureConfig && !_.isEmpty(featureConfig);
+    const isDefined = featureConfig && !isEmpty(featureConfig);
 
     if (!isDefined) {
         return true;

@@ -38,6 +38,10 @@ import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "
  */
 interface BasicGroupProps extends TestableComponentInterface {
     /**
+     * Group id.
+     */
+    groupId: string;
+    /**
      * Group details
      */
     groupObject: GroupsInterface;
@@ -69,6 +73,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const dispatch = useDispatch();
 
     const {
+        groupId,
         groupObject,
         onGroupUpdate,
         isGroup,
@@ -260,11 +265,13 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
                                                 await searchGroupList(searchData).then(response => {
                                                     if (response?.data?.totalResults !== 0) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(
-                                                            t("console:manage.features.roles.addRoleWizard." +
-                                                                "forms.roleBasicDetails.roleName.validations.duplicate",
-                                                                { type: "Group" }));
+                                                        if (response.data.Resources[0]?.id !== groupId) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(
+                                                                t("console:manage.features.roles.addRoleWizard." +
+                                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                                    { type: "Group" }));
+                                                        }
                                                     }
 
                                                 }).catch(() => {

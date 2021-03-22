@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { getUserStoreList } from "@wso2is/core/api";
-import _ from "lodash";
-import { getAUserStore } from "../api";
 import {
     CategorizedProperties,
     TypeProperty,

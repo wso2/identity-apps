@@ -190,7 +190,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "E.g. Starts with etc."
                         },
                         filterValue: {
-                            placeholder: "E.g. Zoom, Salesforce etc."
+                            placeholder: "Enter value to search"
                         }
                     }
                 },
@@ -536,23 +536,26 @@ export const myAccount: MyAccountNS = {
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
+                    heading: "Set Up An Authenticator App",
                     done: "Success! Now you can use your Authenticator App for two-factor authentication",
                     scan: {
                         authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
-                        heading: "Scan this QR Code using an Authenticator App",
+                        heading: "Scan the QR code below using an anthenticator app",
                         messageBody: "You can find a list of Authenticator Apps available here.",
                         messageHeading: "Don't have an Authenticator App installed?"
                     },
                     verify: {
                         error: "Verification failed. Please try again.",
-                        heading: "Enter the verification code from the Authenticator App",
+                        heading: "Enter the generated code to verify",
                         label: "Verification Code",
                         placeholder: "Enter your verification code",
                         reScan: "Re-scan",
                         reScanQuestion: "Want to scan the QR code again?",
                         requiredError: "Enter the verification code"
-                    }
+                    },
+                    toolTip: "Don't have an app? Download an authenticator application like " + 
+                    "Google Authenticator from <3>App Store</3> or <3>Google Play</3>"
                 },
                 notifications: {
                     initError: {
@@ -1273,7 +1276,7 @@ export const myAccount: MyAccountNS = {
             primaryButton: "Stay logged in",
             secondaryButton: "Logout",
             loginAgainButton: "Login again",
-            sessionTimedOutHeading: "Your session has expired due to inactivity.",
+            sessionTimedOutHeading: "User session has expired due to inactivity.",
             sessionTimedOutDescription: "Please log in again to continue from where you left off."
         }
     },

@@ -27,15 +27,15 @@ import {
     SelectionCard,
     useWizardAlert
 } from "@wso2is/react-components";
-import cloneDeep from "lodash/cloneDeep";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-import merge from "lodash/merge";
-import set from "lodash/set";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import merge from "lodash-es/merge";
+import set from "lodash-es/set";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Popup } from "semantic-ui-react";
+import { Dimmer, Grid, Popup } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
@@ -362,8 +362,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
     };
 
+    const renderDimmerOverlay = ( ): ReactNode => {
+
+        return (
+            <Dimmer className="lighter" active={ true }>
+                { t("common:featureAvailable" ) }
+            </Dimmer>
+        );
+    }
+
     const scrollToNotification = () => {
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
+    };
+
+    const isNameValid = (name: string) => {
+        return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
     };
 
     /**
@@ -409,6 +422,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
                                 validation={ async (value: FormValue, validation: Validation) => {
+                                    if(!isNameValid(value.toString())) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.applications.forms." +
+                                                "spaProtocolSettingsWizard.fields.name.validations.invalid",
+                                                { appName: value.toString(),
+                                                    characterLimit: ApplicationManagementConstants
+                                                        .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                            )
+                                        );
+
+                                        return;
+                                    }
                                     let response: ApplicationListInterface = null;
                                     try {
                                         response = await getApplicationList(null, null, "name eq " + value.toString());
@@ -441,6 +467,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         );
                                     }
                                 } }
+                                displayErrorOn="blur"
                                 maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                             />
                         </Grid.Column>
@@ -456,43 +483,34 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 subTemplates.map((
                                                     subTemplate: ApplicationTemplateInterface, index: number
                                                 ) => (
-                                                    <Popup
+                                                    <SelectionCard
+                                                        inline
                                                         key={ index }
-                                                        trigger={
-                                                            <SelectionCard
-                                                                inline
-                                                                key={ index }
-                                                                image={
-                                                                    {
-                                                                        ...getInboundProtocolLogos(),
-                                                                        ...getTechnologyLogos()
-                                                                    }[ subTemplate.image ]
-                                                                }
-                                                                size="x120"
-                                                                className="sub-template-selection-card"
-                                                                header={ subTemplate.name }
-                                                                selected={ selectedTemplate.id === subTemplate.id }
-                                                                onClick={ () => {
-                                                                    if (!subTemplate.previewOnly) {
-                                                                        setSelectedTemplate(subTemplate);
-                                                                        loadTemplateDetails(subTemplate.id,
-                                                                            subTemplate);
-                                                                    }
-                                                                } }
-                                                                imageSize="mini"
-                                                                contentTopBorder={ false }
-                                                                showTooltips={ !subTemplate.previewOnly }
-                                                                disabled={ subTemplate.previewOnly }
-                                                                data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                                                            />
+                                                        image={
+                                                            {
+                                                                ...getInboundProtocolLogos(),
+                                                                ...getTechnologyLogos()
+                                                            }[ subTemplate.image ]
                                                         }
-                                                        content={
-                                                            t("common:comingSoon" )
-                                                        }
-                                                        inverted
-                                                        position="top center"
-                                                        size="mini"
-                                                        disabled={ !subTemplate.previewOnly }
+                                                        size="x120"
+                                                        className="sub-template-selection-card"
+                                                        header={ subTemplate.name }
+                                                        selected={ selectedTemplate.id === subTemplate.id }
+                                                        onClick={ () => {
+                                                            if (!subTemplate.previewOnly) {
+                                                                setSelectedTemplate(subTemplate);
+                                                                loadTemplateDetails(subTemplate.id,
+                                                                    subTemplate);
+                                                            }
+                                                        } }
+                                                        imageSize="mini"
+                                                        contentTopBorder={ false }
+                                                        showTooltips={ !subTemplate.previewOnly }
+                                                        renderDisabledItemsAsGrayscale={ false }
+                                                        disabled={ subTemplate.previewOnly }
+                                                        overlay={ renderDimmerOverlay() }
+                                                        overlayOpacity={ 0.6 }
+                                                        data-testid={ `${ testId }-${ subTemplate.id }-card` }
                                                     />
                                                 ))
                                             }

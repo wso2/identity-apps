@@ -149,6 +149,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      * TOTP authenticator apps.
      */
     authenticatorApp?: AuthenticatorAppInterface[];
+    /**
+     * Config for Remove MFA for Super Tenant User.
+     */
+    disableMFAforSuperTenantUser?: boolean;
 }
 
 /**

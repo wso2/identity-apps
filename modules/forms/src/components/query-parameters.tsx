@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import _ from "lodash";
+import filter from "lodash-es/filter";
+import isEmpty from "lodash-es/isEmpty";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
@@ -102,7 +104,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
      * Called when `initialValue` is changed.
      */
     useEffect(() => {
-        if (_.isEmpty(value)) {
+        if (isEmpty(value)) {
             return;
         }
 
@@ -130,7 +132,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     const handleQueryParameterAdd = (event) => {
         event.preventDefault();
-        if (_.isEmpty(queryParamName) || _.isEmpty(queryParamValue)) {
+        if (isEmpty(queryParamName) || isEmpty(queryParamValue)) {
             return;
         }
 
@@ -174,11 +176,11 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
 
     const handleLabelRemove = (queryParameter: string) => {
         
-        if (_.isEmpty(queryParameter)) {
+        if (isEmpty(queryParameter)) {
             return;
         }
         
-        setQueryParams(_.filter(queryParams, queryParam => !_.isEqual(queryParam,
+        setQueryParams(filter(queryParams, queryParam => !isEqual(queryParam,
             buildQueryParameter(queryParameter))));
     };
 

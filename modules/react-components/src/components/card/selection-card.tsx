@@ -18,8 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Card, CardProps } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
@@ -55,6 +56,18 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      * Should the description have two lines.
      */
     multilineDescription?: boolean;
+    /**
+     * Overlay for the card.
+     */
+    overlay?: any;
+    /**
+     * Opacity for the overlay.
+     */
+    overlayOpacity?: number;
+    /**
+     * Display disabled items as grayscale.
+     */
+    renderDisabledItemsAsGrayscale?: boolean;
     /**
      * If the card is selected.
      */
@@ -113,6 +126,9 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         imageSize,
         multilineDescription,
         onClick,
+        overlay,
+        overlayOpacity,
+        renderDisabledItemsAsGrayscale,
         selected,
         selectionType,
         showText,
@@ -124,10 +140,13 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         ...rest
     } = props;
 
+    const { t } = useTranslation();
+
     const classes = classNames(
         "selection-card",
         {
             disabled,
+            grayscale: disabled && renderDisabledItemsAsGrayscale,
             "filled-selection": selectionType === "filled",
             inline,
             "no-content-top-border": !contentTopBorder,
@@ -140,6 +159,18 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         className
     );
 
+    const [ dimmerState, setDimmerState ] = useState<boolean>(false);
+
+    /**
+     * Inline styles for image container.
+     */
+    const imageContainerStyles = (): object => {
+
+        return {
+            opacity: disabled ? overlayOpacity : 1
+        };
+    };
+
     return (
         <Card
             id={ id }
@@ -148,11 +179,19 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            onMouseEnter={ () => setDimmerState(true) }
+            onMouseLeave={ () => setDimmerState(false) }
             { ...rest }
         >
             {
+                disabled && dimmerState && overlay
+            }
+            {
                 image && (
-                    <Card.Content className="card-image-container">
+                    <Card.Content
+                        className="card-image-container"
+                        style={ imageContainerStyles() }
+                    >
                         <GenericIcon
                             className="card-image"
                             size={ imageSize }
@@ -213,5 +252,6 @@ SelectionCard.defaultProps = {
     showText: true,
     showTooltips: false,
     size: "default",
-    textAlign: "center"
+    textAlign: "center",
+    renderDisabledItemsAsGrayscale: true
 };

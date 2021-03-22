@@ -49,7 +49,6 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
 export interface AdvancedSearchWithBasicFiltersPropsInterface extends
     StrictAdvancedSearchWithBasicFiltersPropsInterface,
     TestableComponentInterface {
-    
     [ key: string ]: any;
 }
 
@@ -227,12 +226,12 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
             dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
             hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
-            hintLabel={ t("console:common.advancedSearch.hints.querySearch.label") }
+            hintLabel={ t("myAccount:components.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
+            searchOptionsHeader={ t("myAccount:components.advancedSearch.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
@@ -256,20 +255,21 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 }
                                 // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
-                                label={ t("console:common.advancedSearch.form.inputs.filterAttribute.label") }
+                                label={ t("myAccount:components.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
                                     filterAttributePlaceholder
                                         ? filterAttributePlaceholder
-                                        : t("console:common.advancedSearch.form.inputs.filterAttribute" +
+                                        : t("myAccount:components.advancedSearch.form.inputs.filterAttribute" +
                                         ".placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("console:common.advancedSearch.form.inputs.filterAttribute" +
+                                    t("myAccount:components.advancedSearch.form.inputs.filterAttribute" +
                                         ".validations.empty")
                                 }
                                 type="dropdown"
+                                value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
                             <Form.Group widths='equal'>
@@ -292,32 +292,33 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                             })
                                     }
                                     label={
-                                        t("console:common.advancedSearch.form.inputs.filterCondition.label")
+                                        t("myAccount:components.advancedSearch.form.inputs.filterCondition.label")
                                     }
                                     name={ FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
                                             ? filterConditionsPlaceholder
-                                            : t("console:common.advancedSearch.form.inputs.filterCondition" +
+                                            : t("myAccount:components.advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("myAccount:components.advancedSearch.form.inputs" +
                                         ".filterCondition.validations.empty") }
                                     type="dropdown"
+                                    value={ defaultSearchOperator }
                                     data-testid={ `${ testId }-filter-condition-dropdown` }
                                 />
                                 <Field
-                                    label={ t("console:common.advancedSearch.form.inputs.filterValue.label") }
+                                    label={ t("myAccount:components.advancedSearch.form.inputs.filterValue.label") }
                                     name={ FILTER_VALUES_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterValuePlaceholder
                                             ? filterValuePlaceholder
-                                            : t("console:common.advancedSearch.form.inputs.filterValue" +
+                                            : t("myAccount:components.advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("myAccount:components.advancedSearch.form.inputs" +
                                         ".filterValue.validations.empty") }
                                     type="text"
                                     data-testid={ `${ testId }-filter-value-input` }
@@ -359,5 +360,5 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    showResetButton: true
+    showResetButton: false
 };

@@ -27,6 +27,7 @@ module.exports = {
         "plugin:react-hooks/recommended"
     ],
     globals: {
+        JSX: false,
         // no-undef complains about globalThis @see {@link https://github.com/eslint/eslint/issues/11553}
         globalThis: false
     },
@@ -84,7 +85,31 @@ module.exports = {
         "object-curly-spacing": ["warn", "always"],
         "no-console": "warn",
         "no-duplicate-imports": "warn",
-        "no-restricted-imports": ["warn", { "patterns": ["@wso2is/**/dist/**"] }],
+        "no-restricted-imports": [
+            "error",
+            {
+                paths: [
+                    {
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
+                        name: "lodash"
+                    },
+                    {
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es/chain"
+                    },
+                    {
+                        importNames: [ "chain" ],
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es"
+                    },
+                    {
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
+                        name: "lodash-es"
+                    }
+                ],
+                patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
+            }
+        ],
         "semi": 1,
         "jsx-quotes": [ "warn", "prefer-double" ]
     },
@@ -113,11 +138,14 @@ module.exports = {
             },
             rules: {
                 "eol-last": "error",
-                "no-undef": 1,
+                // `no-undef` is discouraged in Typescript projects.
+                // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
+                "no-undef": 0,
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "no-use-before-define": "off",
+                "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
                 "@typescript-eslint/no-use-before-define": [
                     "warn",

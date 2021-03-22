@@ -63,6 +63,7 @@ export class ProfileConstants {
         .set("NAME", "name")
         .set("ADDRESSES", "addresses")
         .set("PHONE_NUMBERS", "phoneNumbers")
+        .set("GROUPS", "groups")
         .set("ROLES", "roles")
         .set("ROLES_DEFAULT", "roles.default")
         .set("PROFILE_URL", "profileUrl")

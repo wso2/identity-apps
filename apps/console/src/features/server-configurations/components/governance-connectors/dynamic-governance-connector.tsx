@@ -18,8 +18,8 @@
 
 import { AlertLevels, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import get from "lodash/get";
-import kebabCase from "lodash/kebabCase";
+import get from "lodash-es/get";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

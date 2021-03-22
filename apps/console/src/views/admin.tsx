@@ -30,8 +30,8 @@ import {
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
-import cloneDeep from "lodash/cloneDeep";
-import isEmpty from "lodash/isEmpty";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,

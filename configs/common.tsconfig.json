@@ -10,7 +10,9 @@
         "resolveJsonModule": true,
         "sourceMap": true,
         "noLib": false,
-        "suppressImplicitAnyIndexErrors": true
+        "skipLibCheck": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "types": [ "node" ]
     },
     "compileOnSave": false,
     "exclude": [

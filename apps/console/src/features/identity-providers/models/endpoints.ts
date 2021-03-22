@@ -19,7 +19,6 @@
 /**
  * Interface for the IDP Management feature resource endpoints.
  */
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IDPResourceEndpointsInterface {
     identityProviders: string;
     localAuthenticators: string;

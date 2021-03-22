@@ -190,7 +190,7 @@ export const myAccount: MyAccountNS = {
                             placeholder: "எ.கா.: தொடங்குவது"
                         },
                         filterValue: {
-                            placeholder: "எ.கா.: Zoom, Salesforce போன்றவை"
+                            placeholder: "தேட மதிப்பை உள்ளிடவும்"
                         }
                     }
                 },
@@ -537,6 +537,8 @@ export const myAccount: MyAccountNS = {
                 heading: "அங்கீகார பயன்பாடு",
                 hint: "QR குறியீட்டினை காண்பி",
                 modals: {
+                    heading: "Set Up An Authenticator App",
+
                     done: "வெற்றி! இப்போது இரண்டு காரணி உறுதிப்பாட்டிற்கு உங்கள் உறுதிப்பாட்டு செயலியை பயன்படுத்தலாம்",
                     scan: {
                         authenticatorApps: "உறுதிப்பாட்டு செயலிகள்",
@@ -553,7 +555,9 @@ export const myAccount: MyAccountNS = {
                         reScan: "மீண்டும் பதிவு செய்",
                         reScanQuestion: "QR குறியீட்டினை மீண்டும் பதிவு செய்ய வேண்டுமா?",
                         requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
-                    }
+                    },
+                    toolTip: "பயன்பாடு இல்லையா? <3> App Store </ 3> அல்லது <3> Google Play </ 3> " + 
+                    "இலிருந்து Google Authenticator போன்ற அங்கீகார பயன்பாட்டைப் பதிவிறக்கவும்"
                 },
                 notifications: {
                     initError: {
@@ -1302,7 +1306,7 @@ export const myAccount: MyAccountNS = {
             primaryButton: "உள்நுழைந்திருங்கள்",
             secondaryButton: "வெளியேறு",
             loginAgainButton: "மீண்டும் உள்நுழைக",
-            sessionTimedOutHeading: "செயலற்ற தன்மை காரணமாக உங்கள் அமர்வு காலாவதியானது.",
+            sessionTimedOutHeading: "செயலற்ற தன்மை காரணமாக பயனர் அமர்வு காலாவதியானது.",
             sessionTimedOutDescription: "நீங்கள் நிறுத்திய இடத்திலிருந்து தொடர தயவுசெய்து மீண்டும் உள்நுழைக."
         }
     },

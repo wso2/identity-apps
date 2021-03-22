@@ -45,7 +45,6 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
             <Heading as="h5">Name</Heading>
             <p>A unique name to identify your application.</p>
             <p>E.g., My App</p>
-
             <>
                 <Divider/>
                 <Heading as="h5">Protocol</Heading>
@@ -57,9 +56,9 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Authorized URIs</Heading>
+                <Heading as="h5">Authorized redirect URLs</Heading>
                 <p>
-                    The authorized redirect URIs determine where the authorization code
+                    The authorized redirect URLs determine where the authorization code
                     is sent to once the user is authenticated, and where the user is
                     redirected to once the logout is complete.
                 </p>

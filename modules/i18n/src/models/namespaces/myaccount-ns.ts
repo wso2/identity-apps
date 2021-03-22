@@ -326,6 +326,7 @@ export interface MyAccountNS {
                 heading: string;
                 hint: string;
                 modals: {
+                    heading: string;
                     scan: {
                         heading: string;
                         generate: string;
@@ -343,6 +344,7 @@ export interface MyAccountNS {
                         reScan: string;
                     };
                     done: string;
+                    toolTip: string;
                 };
                 notifications: {
                     initError: {

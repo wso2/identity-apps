@@ -27,7 +27,6 @@ import { Authenticators } from "./authenticators";
 import { AppConstants, getOperationIcons, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
-import {log} from "util";
 
 /**
  * Proptypes for the authenticator side panel component.

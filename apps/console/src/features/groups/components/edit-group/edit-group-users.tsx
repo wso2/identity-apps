@@ -31,8 +31,8 @@ import {
     UserAvatar,
     useWizardAlert
 } from "@wso2is/react-components";
-import _ from "lodash";
-import isEmpty from "lodash/isEmpty";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     Dispatch,
     FormEvent,
@@ -44,7 +44,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
+import { Grid, Header, Icon, Input, Modal, Popup, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface } from "../../../users";
 import { updateGroupDetails } from "../../api";
@@ -113,8 +113,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         let isMatch: boolean = false;
         const filteredRoleList: UserBasicInterface[] = [];
 
-        if (!_.isEmpty(query)) {
-            const regExp = new RegExp(_.escapeRegExp(query), "i");
+        if (!isEmpty(query)) {
+            const regExp = new RegExp(escapeRegExp(query), "i");
 
             list && list.map((user: UserBasicInterface) => {
                 isMatch = regExp.test(user.userName);
@@ -150,6 +150,18 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         setIsSelectAllUsers(addModalUserList?.length === checkedRoles?.length);
     };
 
+    const deleteGroupUser = (user) => {
+        const selectedUsers = !isEmpty(selectedUserList)
+            ? [ ...selectedUserList ]
+            : [];
+
+        if (selectedUsers.includes(user)) {
+            selectedUsers.splice(selectedUsers.indexOf(user), 1);
+            setSelectedUserList(selectedUsers);
+            updateGroupUsersList(selectedUsers);
+        }
+    }
+
     const handleOpenAddNewGroupModal = () => {
         setAddModalUserList(originalUserList);
         setNewlySelectedUsers(selectedUsers);
@@ -165,14 +177,14 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     };
 
     const handleAddUserSubmit = () => {
-        updateGroupUsersList();
+        updateGroupUsersList(newlySelectedUsers);
         setAddNewUserModalView(false);
     };
 
-    const updateGroupUsersList = () => {
+    const updateGroupUsersList = (selectedUsers: UserBasicInterface[]) => {
         const newUsers: CreateGroupMemberInterface[] = [];
 
-        for (const selectedUser of newlySelectedUsers) {
+        for (const selectedUser of selectedUsers) {
             newUsers.push({
                 display: selectedUser.userName,
                 value: selectedUser.id
@@ -255,7 +267,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         selectAllCheckboxLabel={ "Select all users" }
                         data-testid={ `${ testId }-unselected-transfer-list` }
                         emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
-                            "roles.selected", { type: "users" }) }
+                            "groups.selected", { type: "users" }) }
                     >
                         {
                             addModalUserList?.map((user: UserBasicInterface, index: number) => {
@@ -356,6 +368,26 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             </Header.Subheader>
                         </Header.Content>
                     </Header>
+                </Table.Cell>
+                <Table.Cell textAlign="right">
+                    <Popup
+                        trigger={ (
+                            <Icon
+                            link={ true }
+                            data-testid={ `${ testId }-user-delete-button` }
+                            className="list-icon pr-4"
+                            size="large"
+                            color="grey"
+                            name="trash alternate"
+                            onClick={ () => {
+                                deleteGroupUser(user);
+                            } }                    
+                            />
+                        ) }
+                        position="top right"
+                        content={ t("common:remove") }
+                        inverted
+                    />
                 </Table.Cell>
             </Table.Row>
         );

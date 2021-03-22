@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import get from "lodash/get";
-import take from "lodash/take";
+import get from "lodash-es/get";
+import take from "lodash-es/take";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Card, Grid } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";

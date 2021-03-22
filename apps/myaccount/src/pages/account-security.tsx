@@ -48,6 +48,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => state?.config?.ui?.disableMFAforSuperTenantUser);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
@@ -130,6 +131,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                    ) && !(disableMFAforSuperTenantUser && (AppConstants.getTenant() === AppConstants.getSuperTenant())
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -163,9 +165,10 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
 
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <div ref={ consentControl }>
+                                <div>
                                     <Consents onAlertFired={ handleAlerts } />
                                 </div>
+                                <div ref={ consentControl }/>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }

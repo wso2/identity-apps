@@ -56,6 +56,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         // This specifies if a field has been touched or not
         const [ touchedFields, setTouchedFields ] = useState(new Map<string, boolean>());
+        const [ modifyingFields, setModifyingFields ] = useState(new Map<string, boolean>());
 
         // This specifies if the required fields are  filled or not
         const [ requiredFields, setRequiredFields ] = useState(new Map<string, boolean>());
@@ -115,14 +116,17 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         const handleChange = (value: string, name: string) => {
             const tempForm: Map<string, FormValue> = new Map(form);
             const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
+            const tempModifyingFields: Map<string, boolean> = new Map(modifyingFields);
 
             tempForm.set(name, value);
             tempTouchedFields.set(name, true);
+            tempModifyingFields.set(name, true);
             listener(name, tempForm);
             propagateOnChange(tempForm);
             setForm(tempForm);
             setIsPure(false);
             setTouchedFields(tempTouchedFields);
+            setModifyingFields(tempModifyingFields);
         };
 
         /**
@@ -233,9 +237,14 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         const handleBlur = async (event: React.KeyboardEvent, name: string) => {
             const tempRequiredFields: Map<string, boolean> = new Map(requiredFieldsRef.current);
             const tempValidFields: Map<string, Validation> = new Map(validFieldsRef.current);
+            const tempModifyingFields: Map<string, boolean> = new Map(modifyingFields);
+            const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
             isValidatingRef.current = true;
+            tempModifyingFields.set(name, false);
+            tempTouchedFields.set(name, true);
             setIsValidating(true);
+            setTouchedFields(tempTouchedFields);
             await validate(name, tempRequiredFields, tempValidFields);
 
             validFieldsRef.current = new Map(tempValidFields);
@@ -245,6 +254,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
             setValidFields(tempValidFields);
             setRequiredFields(tempRequiredFields);
+            setModifyingFields(tempModifyingFields);
         };
 
         /**
@@ -486,6 +496,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 && !isRadioField(inputField)
                 && inputField.required
                 && !requiredFields.get(inputField.name)
+                && !modifyingFields.get(inputField.name)
                 && (isSubmitting
                     || (touchedFields.get(inputField.name)
                         && inputField.displayErrorOn === "blur"))) {
@@ -496,6 +507,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             } else if (
                 (isTextField(inputField) || isDropdownField(inputField)) &&
                 validFields.get(inputField.name) &&
+                !modifyingFields.get(inputField.name) &&
                 !validFields.get(inputField.name).isValid &&
                 (isSubmitting
                     || (touchedFields.get(inputField.name)

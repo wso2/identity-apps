@@ -17,9 +17,9 @@
  *
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-import { chain } from "lodash";
-import sortBy from "lodash/sortBy";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import flatten from "lodash-es/flatten";
+import sortBy from "lodash-es/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 
@@ -41,7 +41,7 @@ export class RouteUtils {
      * receiving unauthorized pages.
      *
      * @param {RouteInterface[]} routes - Set of app routes.
-     * @param {string} view - Current view ex: Admin or Develop. 
+     * @param {string} view - Current view ex: Admin or Develop.
      * @param {string} pathname - Current path from location.
      * @param {boolean} navigateToUnAuthorized - Should navigate to un-authorized page.
      */
@@ -70,7 +70,7 @@ export class RouteUtils {
                     pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                     search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                 });
-                
+
                 return;
             }
         }
@@ -123,8 +123,8 @@ export class RouteUtils {
          *
          * Note on default values
          * --
-         * Since we use lodash here we need to make sure default values
-         * are initialized during the chain when the values are null.
+         * We need to make sure default values are initialized during the
+         * children path extraction.
          *
          * How it works?
          * --
@@ -137,15 +137,15 @@ export class RouteUtils {
          * -3 Map out all the children paths in each of the descendants.
          * -4 Flattens the depth of the array.
          * -5 Map out the {@code string} path of each child route.
-         * -6 Unwraps the lodash chain result.
          */
-        const allChildPaths: string[] = chain(routes ?? [])
+        const nestedChildren = (routes ?? [])
             .filter(({ path = EMPTY_STRING }) => path?.match(view)) // #1
-            .forEach(({ path }) => descendants.add(path)) // #2
-            .map(({ children = [] as RouteInterface[] }) => children) // #3
-            .flatten() // #4
-            .map(({ path = EMPTY_STRING }) => path) // #5
-            .value(); // #6
+            .map((route: RouteInterface) => {
+                descendants.add(route.path); // #2
+                return route.children || [] as ChildRouteInterface[]; // #3
+            });
+        const allChildPaths: string[] = flatten(nestedChildren) // #4 [ [], [], [], [], [] ] => single array []
+            .map(({ path = EMPTY_STRING }) => path); // #5
 
         /**
          * If there's no child paths or descendants have been found in all

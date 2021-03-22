@@ -96,7 +96,7 @@
                     <% } %>
                     <div class="error-msg"></div>
                     <div class="segment-form">
-                        <form class="ui large form" id="pin_form" name="pin_form" action="../../commonauth"  method="POST">
+                        <form class="ui large form" id="pin_form" name="pin_form" action="../commonauth"  method="POST">
                             <%
                                 String loginFailed = request.getParameter("authFailure");
                                 if (loginFailed != null && "true".equals(loginFailed)) {
