@@ -535,22 +535,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Holds metadata on how to arrange the values when rendering above
-     * {@link TEMPLATE_WISE_ALLOWED_GRANT_TYPES} values in the UI.
-     *
-     * Usage: Map the index => key to rearrange the values.
-     * This temporarily hide grant types for OIDC application.
-     * TODO: Remove this temporary code and need to allow recommende grat types.
-     * See https://github.com/wso2-enterprise/asgardeo-product/issues/1477.
-     */
-    const TEMPROARY_TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number> } = {
-        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
-            [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 1 ]
-        ])
-    };
-
-    /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
      * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
@@ -2029,8 +2013,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         WSO2 Identity Server supports receiving an OIDC authentication request as
                                         a request object that is passed in a single, self-contained request
                                         parameter. Enable signature validation to accept only signed
-                            <Code>request</Code> objects in the authorization request.
-                        </Trans>
+                                        <Code>request</Code> objects in the authorization request.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

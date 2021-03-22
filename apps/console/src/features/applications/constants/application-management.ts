@@ -206,7 +206,7 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.JWT_BEARER,
             ApplicationManagementConstants.UMA_TICKET
     ];
-    
+
     /**
      * Set of grant types allowed for certain templates.
      * @constant
@@ -216,14 +216,14 @@ export class ApplicationManagementConstants {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT
         ],
         ["b9c5e11e-fc78-484b-9bec-015d247561b8"]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     };
 
@@ -240,14 +240,14 @@ export class ApplicationManagementConstants {
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ]),
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
             [ ApplicationManagementConstants.PASSWORD, 2 ],
             [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 3 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ]
         ])
     }
 

@@ -28,6 +28,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
+import { AppState } from "../../../core";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     CertificateInterface,
     CertificateTypeInterface,
@@ -37,8 +39,6 @@ import {
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { AppState } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
@@ -591,7 +591,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
 
-                        {/*Request Validation*/ }
+                        { /*Request Validation*/ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
@@ -674,7 +674,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Row>
                         }
 
-                        {/*Response/Assertion Signing*/ }
+                        { /*Response/Assertion Signing*/ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
@@ -759,7 +759,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
 
-                        {/*Single SignOn Profile*/ }
+                        { /*Single SignOn Profile*/ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
@@ -1203,7 +1203,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
 
-                        {/*Single Logout Profile*/ }
+                        { /*Single Logout Profile*/ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider/>
@@ -1459,7 +1459,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Divider hidden/>
                         </Grid.Column>
 
-                        {/* Assertion Query/Request Profile */ }
+                        { /* Assertion Query/Request Profile */ }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h5">

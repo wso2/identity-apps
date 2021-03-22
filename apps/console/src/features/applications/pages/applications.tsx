@@ -32,8 +32,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-    DropdownItemProps, 
+import {
+    DropdownItemProps,
     DropdownProps,
     Icon,
     PaginationProps
@@ -137,7 +137,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplications.error.message")
+                        message: t("console:develop.features.applications.notifications." +
+                            "fetchApplications.error.message")
                     }));
 
                     return;
@@ -147,7 +148,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     description: t("console:develop.features.applications.notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplications.genericError.message")
+                    message: t("console:develop.features.applications.notifications." +
+                        "fetchApplications.genericError.message")
                 }));
             })
             .finally(() => {
@@ -222,14 +224,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @return {React.ReactElement}
      */
     const renderRemoteFetchStatus = (): ReactElement => {
-        
+
         if (!hasRequiredScopes(featureConfig?.remoteFetchConfig,
             featureConfig?.remoteFetchConfig?.scopes?.read,
             allowedScopes)) {
-            
+
             return null;
         }
-        
+
         return <RemoteFetchStatus data-testid={ "remote-fetch" } />;
     };
 
