@@ -86,10 +86,7 @@ module.exports = {
         "no-console": "warn",
         "no-duplicate-imports": "warn",
         "no-restricted-imports": [
-            // `chain` doesn't play nice with cherry pick imports.
-            // TODO: Fix this issue and make the rule as `error`.
-            // @see {@link https://github.com/lodash/lodash/issues/3298 }
-            "warn",
+            "error",
             {
                 paths: [
                     {
