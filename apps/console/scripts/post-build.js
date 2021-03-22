@@ -23,7 +23,4 @@ const log = console.log;
 
 log("Post build script started...");
 
-log("Cleaning the tmp directory...");
-execSync("npm run remove-i18n-dist");
-
 log("\nFinishing up the post build script.");
