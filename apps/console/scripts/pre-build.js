@@ -70,4 +70,7 @@ for (const value of Object.values(i18nExtensions)) {
     createFile(filePath, fileContent, null, true);
 }
 
+log("Cleaning the tmp directory...");
+execSync("npm run remove-i18n-dist");
+
 log("\nFinishing up the pre build script.....");
