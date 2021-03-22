@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import { FeatureAccessConfigInterface } from "../models";
 import { AuthenticateUtils } from "../utils";
 
@@ -29,7 +29,9 @@ import { AuthenticateUtils } from "../utils";
  * @return {boolean} True is feature is enabled and false if not.
  */
 export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
-    const isDefined = feature?.disabledFeatures && !isEmpty(feature.disabledFeatures);
+    const isDefined = feature?.disabledFeatures
+        && Array.isArray(feature.disabledFeatures)
+        && feature.disabledFeatures.length > 0;
 
     if (!isDefined) {
         return true;

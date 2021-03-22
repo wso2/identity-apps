@@ -21,7 +21,7 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, FileUpload, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";

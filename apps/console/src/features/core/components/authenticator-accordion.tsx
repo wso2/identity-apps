@@ -24,7 +24,7 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitlePropsInterface
 } from "@wso2is/react-components";
-import sortBy from "lodash/sortBy";
+import sortBy from "lodash-es/sortBy";
 import React, {
     Fragment,
     FunctionComponent,

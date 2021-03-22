@@ -25,7 +25,7 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,

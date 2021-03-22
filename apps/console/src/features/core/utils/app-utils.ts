@@ -18,9 +18,9 @@
 
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import cloneDeep from "lodash/cloneDeep";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
 import { store } from "../store";
 
 /**

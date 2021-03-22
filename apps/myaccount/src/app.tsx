@@ -27,7 +27,7 @@ import {
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";

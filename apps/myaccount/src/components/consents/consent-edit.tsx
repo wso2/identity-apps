@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import flatten from "lodash/flatten";
+import flatten from "lodash-es/flatten";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";

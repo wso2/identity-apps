@@ -31,9 +31,9 @@ import {
     URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-import intersection from "lodash/intersection";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import intersection from "lodash-es/intersection";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

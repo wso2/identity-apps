@@ -18,7 +18,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import {
     BasicProfileInterface,
     MultiValue,

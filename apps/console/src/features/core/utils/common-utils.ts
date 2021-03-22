@@ -18,10 +18,10 @@
  */
 
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
-import cloneDeep from "lodash/cloneDeep";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
-import set from "lodash/set";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
 import { CommonConstants } from "../constants";
 

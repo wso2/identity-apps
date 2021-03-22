@@ -29,8 +29,8 @@ import {
     Markdown,
     PageLayout
 } from "@wso2is/react-components";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

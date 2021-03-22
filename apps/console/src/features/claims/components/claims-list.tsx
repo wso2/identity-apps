@@ -40,7 +40,7 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import isEqual from "lodash/isEqual";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

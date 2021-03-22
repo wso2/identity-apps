@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 

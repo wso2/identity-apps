@@ -22,9 +22,9 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import find from "lodash/find";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import find from "lodash-es/find";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

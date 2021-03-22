@@ -18,7 +18,7 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import groupBy from "lodash/groupBy";
+import groupBy from "lodash-es/groupBy";
 import { store } from "../../core";
 import {
     getIdentityProviderTemplateList

@@ -25,7 +25,7 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import find from "lodash/find";
+import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

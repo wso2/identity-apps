@@ -18,7 +18,7 @@
 
 import { useSVGPromise } from "@wso2is/core/hooks";
 import { FormValidation } from "@wso2is/validation";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

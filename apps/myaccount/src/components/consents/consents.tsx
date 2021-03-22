@@ -17,8 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import cloneDeep from "lodash/cloneDeep";
-import flatten from "lodash/flatten";
+import cloneDeep from "lodash-es/cloneDeep";
+import flatten from "lodash-es/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

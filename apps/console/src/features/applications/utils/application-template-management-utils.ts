@@ -21,8 +21,8 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
-import groupBy from "lodash/groupBy";
-import startCase  from "lodash/startCase";
+import groupBy from "lodash-es/groupBy";
+import startCase  from "lodash-es/startCase";
 import { getTechnologyLogos, store } from "../../core";
 import {
     getApplicationTemplateList

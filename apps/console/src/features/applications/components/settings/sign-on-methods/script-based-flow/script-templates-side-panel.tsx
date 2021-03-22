@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
-import sortBy from "lodash/sortBy";
+import sortBy from "lodash-es/sortBy";
 import React, {
     FunctionComponent,
     ReactElement,

@@ -18,8 +18,8 @@
  */
 
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import flatten from "lodash/flatten";
-import sortBy from "lodash/sortBy";
+import flatten from "lodash-es/flatten";
+import sortBy from "lodash-es/sortBy";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 

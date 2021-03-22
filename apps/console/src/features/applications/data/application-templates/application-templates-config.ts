@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import keyBy from "lodash/keyBy";
-import merge from "lodash/merge";
-import values from "lodash/values";
+import keyBy from "lodash-es/keyBy";
+import merge from "lodash-es/merge";
+import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralApplicationTemplateCategory from "./categories/general-application-template-category.json";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";

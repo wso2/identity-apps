@@ -21,7 +21,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import find from "lodash/find";
+import find from "lodash-es/find";
 import React, {
     FunctionComponent,
     MouseEvent,

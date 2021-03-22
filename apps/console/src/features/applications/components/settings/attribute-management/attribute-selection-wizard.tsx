@@ -26,8 +26,8 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import sortBy from "lodash/sortBy";
-import union from "lodash/union";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";

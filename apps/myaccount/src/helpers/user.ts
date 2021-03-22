@@ -17,7 +17,7 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import isEmpty from "lodash/isEmpty";
+import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../constants";
 import { AuthStateInterface } from "../models";
 

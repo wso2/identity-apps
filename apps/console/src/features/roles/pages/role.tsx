@@ -20,7 +20,7 @@ import { getRolesList, getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import find from "lodash/find";
+import find from "lodash-es/find";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

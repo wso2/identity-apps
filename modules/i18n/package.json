@@ -37,14 +37,14 @@
         "i18next-browser-languagedetector": "^3.0.3",
         "i18next-xhr-backend": "^3.2.2",
         "jest": "^26.4.2",
-        "lodash": "^4.17.15",
+        "lodash-es": "^4.17.21",
         "react-i18next": "^10.11.5",
         "ts-jest": "^26.4.0"
     },
     "devDependencies": {
         "@types/i18next": "8.4.3",
         "@types/i18next-xhr-backend": "^1.4.2",
-        "@types/lodash": "^4.14.146",
+        "@types/lodash-es": "^4.17.4",
         "@types/node": "^13.9.2",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",

@@ -30,8 +30,8 @@ import {
     TransferListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import escapeRegExp from "lodash/escapeRegExp";
-import isEmpty from "lodash/isEmpty";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";

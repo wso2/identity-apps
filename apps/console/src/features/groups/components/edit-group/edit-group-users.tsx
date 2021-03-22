@@ -31,8 +31,8 @@ import {
     UserAvatar,
     useWizardAlert
 } from "@wso2is/react-components";
-import escapeRegExp from "lodash/escapeRegExp";
-import isEmpty from "lodash/isEmpty";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     Dispatch,
     FormEvent,
