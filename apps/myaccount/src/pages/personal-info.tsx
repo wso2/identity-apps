@@ -49,13 +49,15 @@ const PersonalInfoPage = (): ReactElement => {
     return (
         <InnerPageLayout
             pageTitle={ t("myAccount:pages.personalInfo.title") }
-            pageDescription={ isFeatureEnabled(accessConfig?.personalInfo,
-                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")) ?
-                t("myAccount:pages.personalInfo.subTitle"):
+            pageDescription={ 
                 isFeatureEnabled(accessConfig?.personalInfo,
-                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")) ?
-                t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle"):
-                t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") }
+                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")) 
+                    ? t("myAccount:pages.personalInfo.subTitle")
+                    : isFeatureEnabled(accessConfig?.personalInfo,
+                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")) 
+                        ? t("myAccount:pages.personalInfoWithoutLinkedAccounts.subTitle")
+                        : t("myAccount:pages.personalInfoWithoutExportProfile.subTitle") 
+            }
         >
             <Divider hidden/>
             <Grid>
