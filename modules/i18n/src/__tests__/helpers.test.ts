@@ -34,7 +34,7 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "code": "en-US",
             "flag": "us",
             "name": "English (United States)",
-            "namespaces": [ "common", "devPortal" ]
+            "namespaces": [ "common", "console" ]
         },
         "resources": {
             "i18key": "i18value"
