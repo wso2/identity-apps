@@ -209,7 +209,9 @@ module.exports = (env) => {
                 }
             ],
             // Makes missing exports an error instead of warning.
-            strictExportPresence: true
+            strictExportPresence: true,
+            // Speeds up the dev-ser by ~800ms. https://github.com/webpack/webpack/issues/12102#issuecomment-762963181
+            unsafeCache: true
         },
         optimization: {
             minimize: isProduction,
