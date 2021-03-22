@@ -22,67 +22,45 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
-import { ClaimManagementConstants } from "../../features/claims";
-
-function isClaimInterface(
-    claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
-): claim is ExtendedClaimInterface {
-    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Check whether claims is  identity claims or not.
- *
- * @param claim claim
- */
-const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
-    const identityRegex = new RegExp("wso2.org/claims/identity");
-    if (isClaimInterface(claim)) {
-        return identityRegex.test(claim.claimURI);
-    }
-    return identityRegex.test(claim.mappedLocalClaimURI);
-};
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
-        showEnableAuthorization: false,
-        showSaaS: false
+        showEnableAuthorization: true,
+        showSaaS: true
     },
     attributeSettings: {
         advancedAttributeSettings: {
-            showIncludeTenantDomain: false,
-            showIncludeUserstoreDomainRole: false,
-            showIncludeUserstoreDomainSubject: false,
-            showRoleAttribute: false,
-            showRoleMapping: false,
-            showUseMappedLocalSubject: false
+            showIncludeTenantDomain: true,
+            showIncludeUserstoreDomainRole: true,
+            showIncludeUserstoreDomainSubject: true,
+            showRoleAttribute: true,
+            showRoleMapping: true,
+            showUseMappedLocalSubject: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
-                return claims.filter(claim => isIdentityClaim(claim) == false);
+                return claims;
             },
             getExternalClaims: (claims: ExtendedExternalClaimInterface[]): ExtendedExternalClaimInterface[] => {
-                return claims.filter(claim => isIdentityClaim(claim) == false);
+                return claims;
             },
             showAttributePlaceholderTitle: false,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             showShareAttributesHint: (selectedDialect: SelectedDialectInterface): boolean => {
-                return selectedDialect.id === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC");
+                return true;
             }
         },
-        makeSubjectMandatory: false,
-        roleMapping: false
+        makeSubjectMandatory: true,
+        roleMapping: true
     },
     editApplication: {
-        extendTabs: false, //should be true for cloud
-        showProvisioningSettings: false
+        extendTabs: false,
+        showProvisioningSettings: true
     },
     inboundOIDCForm: {
-        shouldValidateCertificate: false,
-        showClientSecretMessage: false,
-        showFrontChannelLogout: false,
-        showScopeValidators: false
+        shouldValidateCertificate: true,
+        showClientSecretMessage: true,
+        showFrontChannelLogout: true,
+        showScopeValidators: true
     }
 };
