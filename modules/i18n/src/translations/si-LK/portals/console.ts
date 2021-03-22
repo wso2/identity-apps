@@ -3818,7 +3818,7 @@ export const console: ConsoleNS = {
                         list: {
                             description: "ගුණාංග උපභාෂා සාදන්න සහ කළමනාකරණය කරන්න",
                             primaryAction: "නව බාහිර උපභාෂාව",
-                            title: "උපභාෂා ආරෝපණය කරන්න",
+                            title: "ගුණාංග",
                             view: "දේශීය හිමිකම් බලන්න"
                         }
                     },

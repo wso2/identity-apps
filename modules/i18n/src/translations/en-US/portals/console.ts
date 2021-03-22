@@ -4708,7 +4708,7 @@ export const console: ConsoleNS = {
                             description: "View and manage how user attributes are mapped and " +
                                 "transformed when interacting with APIs or your applications.",
                             primaryAction: "New Attribute Mapping",
-                            title: "Attributes and Mappings",
+                            title: "Attributes",
                             view: "View attributes"
                         }
                     },

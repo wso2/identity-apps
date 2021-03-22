@@ -3844,7 +3844,7 @@ export const console: ConsoleNS = {
                             description: "Affichez et gérez la façon dont les attributs utilisateur d'{{productName}} " +
                                 "sont mappés et transformés lors de l'interaction avec les API ou vos applications.",
                             primaryAction: "Nouveau mappage d'attributse",
-                            title: "Dialectes des attributs",
+                            title: "Les attributs",
                             view: "Voir les claims locaux"
                         }
                     },
