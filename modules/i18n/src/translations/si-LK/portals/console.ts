@@ -3818,7 +3818,7 @@ export const console: ConsoleNS = {
                         list: {
                             description: "ගුණාංග උපභාෂා සාදන්න සහ කළමනාකරණය කරන්න",
                             primaryAction: "නව බාහිර උපභාෂාව",
-                            title: "උපභාෂා ආරෝපණය කරන්න",
+                            title: "ගුණාංග",
                             view: "දේශීය හිමිකම් බලන්න"
                         }
                     },
@@ -5550,7 +5550,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "විද්‍යුත් තැපැල් අච්චුව එක් කරන්න",
                 addEmailTemplateLocale: "විද්‍යුත් තැපැල් ආකෘති පෙදෙසි එක් කරන්න",
                 approvals: "අනුමත කිරීම්",
-                attributeDialects: "උපභාෂා ආරෝපණය කරන්න",
+                attributeDialects: "ගුණාංග",
                 categories: {
                     attributes: "ගුණාංග",
                     certificates: "සහතික",
