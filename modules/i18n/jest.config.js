@@ -29,6 +29,9 @@ module.exports = {
         "^.+\\.(ts|tsx)?$": "ts-jest",
         "^.+\\.(js|jsx)?$": "babel-jest"
     },
+    moduleNameMapper: {
+        "^lodash-es": "<rootDir>/../../node_modules/lodash"
+    },
     modulePaths: [
         "<rootDir>"
     ],

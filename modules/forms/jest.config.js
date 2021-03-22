@@ -32,6 +32,9 @@ module.exports = {
     modulePaths: [
         "<rootDir>"
     ],
+    moduleNameMapper: {
+        "^lodash-es": "<rootDir>/../../node_modules/lodash"
+    },
     globals: {
         "ts-jest": {
             tsConfig: "tsconfig.json"
