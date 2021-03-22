@@ -90,8 +90,21 @@ module.exports = {
             {
                 paths: [
                     {
-                        message: "Please use import foo from 'lodash/foo' instead.",
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
                         name: "lodash"
+                    },
+                    {
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es/chain"
+                    },
+                    {
+                        importNames: [ "chain" ],
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es"
+                    },
+                    {
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
+                        name: "lodash-es"
                     }
                 ],
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
