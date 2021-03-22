@@ -118,7 +118,7 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.md$/,
-                    use: ["raw-loader"],
+                    use: ["raw-loader"]
                 },
                 {
                     exclude: /node_modules/,
@@ -219,7 +219,7 @@ module.exports = (env) => {
         optimization: {
             minimize: isProduction,
             minimizer: [
-                new TerserPlugin({
+                isProduction && new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {

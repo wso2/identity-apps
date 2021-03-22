@@ -216,7 +216,7 @@ module.exports = (env) => {
         optimization: {
             minimize: isProduction,
             minimizer: [
-                new TerserPlugin({
+                isProduction && new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
