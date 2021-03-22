@@ -314,7 +314,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
                             setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                             uiProps={ {
-                                attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ?
+                                attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
                                     t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                         "attributeProvisioning.attributeColumnHeader.0") :
                                     t("console:develop.features.authenticationProvider.forms.attributeSettings." +

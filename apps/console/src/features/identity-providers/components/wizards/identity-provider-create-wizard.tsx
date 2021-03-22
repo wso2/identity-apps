@@ -23,7 +23,7 @@ import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } fro
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
@@ -41,6 +41,7 @@ import {
     CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
+    IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
@@ -58,7 +59,7 @@ interface IdentityProviderCreateWizardPropsInterface extends TestableComponentIn
     currentStep?: number;
     title: string;
     closeWizard: () => void;
-    template: IdentityProviderInterface;
+    template: IdentityProviderTemplateInterface;
     subTitle?: string;
 }
 

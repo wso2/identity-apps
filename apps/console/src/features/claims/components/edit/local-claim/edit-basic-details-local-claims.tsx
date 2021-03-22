@@ -33,12 +33,13 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Hint,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, Popup } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions/configs";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
