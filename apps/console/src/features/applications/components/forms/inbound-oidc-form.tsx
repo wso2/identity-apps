@@ -171,6 +171,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const frontChannelLogoutUrl = useRef<HTMLElement>();
     const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
     const scopeValidator = useRef<HTMLElement>();
+    const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
 
     /**
      * Reset the encryption field initial values if its
@@ -259,6 +260,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
     }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        if (!template?.id || !SinglePageApplicationTemplate?.id) {
+            return;
+        }
+
+        if (template.id == SinglePageApplicationTemplate.id) {
+            setSPAApplication(true);
+        }
+    }, [ template ]);
+
 
     useEffect(() => {
         if (selectedGrantTypes !== undefined) {
@@ -2070,8 +2082,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
             >
-                {
-                    SinglePageApplicationTemplate.id === template.id
+                { isSPAApplication
                         ? (
                             t("console:develop.features.applications.confirmations" +
                             ".revokeApplication.content"))
@@ -2091,7 +2102,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 type="warning"
                 open={showReactiveConfirmationModal}
                 assertion={initialValues?.clientId}
-                assertionHint={SinglePageApplicationTemplate.id === template.id ? (
+                assertionHint={ isSPAApplication ? (
                     <p>
                         <Trans
                             i18nKey={
@@ -2133,8 +2144,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 <ConfirmationModal.Header
                     data-testid={`${testId}-oidc-reactivate-confirmation-modal-header`}
                 >
-                    {
-                        SinglePageApplicationTemplate.id === template.id
+                    { 
+                        isSPAApplication
                             ? (
                                 t("console:develop.features.applications.confirmations" +
                                   ".reactivateSPA.header") )
@@ -2143,8 +2154,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                   ".reactivateOIDC.header") )
                     }
                 </ConfirmationModal.Header>
-                    {
-                        SinglePageApplicationTemplate.id === template.id
+                    { 
+                        isSPAApplication
                             ? (                 
                             <ConfirmationModal.Message
                                 attached
@@ -2160,7 +2171,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     data-testid={`${testId}-oidc-reactivate-confirmation-modal-content`}
                 >
                     {
-                        SinglePageApplicationTemplate.id === template.id
+                        isSPAApplication
                             ? (
                                 t("console:develop.features.applications.confirmations" +
                                   ".reactivateSPA.content"))
@@ -2375,7 +2386,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             </div>
                                         </Form.Field>
                                         { ((initialValues?.state !== State.REVOKED) &&
-                                            SinglePageApplicationTemplate.id === template.id) ?
+                                            isSPAApplication ) ?
                                             (<Message info={ true }>
                                                 <Trans
                                                     i18nKey={
