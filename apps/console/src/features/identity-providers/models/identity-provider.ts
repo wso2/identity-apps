@@ -181,12 +181,12 @@ export interface IdentityProviderTemplateItemInterface {
     id: string;
     name: string;
     description: string;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
     category: string;
     displayOrder: number;
     idp: IdentityProviderInterface;
     disabled?: boolean;
+    provisioning?: ProvisioningInterface
 }
 
 /**
@@ -308,7 +308,7 @@ export enum SupportedAuthenticators {
     GOOGLE = "GoogleOIDCAuthenticator",
     TWITTER = "TwitterAuthenticator",
     OIDC = "OpenIDConnectAuthenticator",
-    SAML = "SAMLSSOAuthenticator",
+    SAML = "SAMLSSOAuthenticator"
 }
 
 /**
@@ -365,7 +365,7 @@ export interface OutboundProvisioningConnectorListItemInterface {
     self?: string;
 }
 
-export interface OutboundProvisioningConnectorInterface extends CommonPluggableComponentInterface{
+export interface OutboundProvisioningConnectorInterface extends CommonPluggableComponentInterface {
     name?: string;
     connectorId?: string;
     isEnabled?: boolean;
@@ -374,7 +374,7 @@ export interface OutboundProvisioningConnectorInterface extends CommonPluggableC
     rulesEnabled?: boolean;
 }
 
-export interface OutboundProvisioningConnectorMetaInterface extends CommonPluggableComponentMetaInterface{
+export interface OutboundProvisioningConnectorMetaInterface extends CommonPluggableComponentMetaInterface {
     connectorId?: string;
     name?: string;
     displayName?: string;
