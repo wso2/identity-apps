@@ -30,7 +30,8 @@ module.exports = {
         "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
             "<rootDir>/test-configs/file-mock.js",
-        "^lodash-es": "<rootDir>/../../node_modules/lodash"
+        "^lodash-es": "<rootDir>/../../node_modules/lodash",
+        "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
     setupFilesAfterEnv: ["<rootDir>/test-configs/setup-test.ts"],
     transform: {
