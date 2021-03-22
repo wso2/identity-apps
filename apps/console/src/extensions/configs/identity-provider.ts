@@ -21,20 +21,20 @@ import { IdentityProviderManagementConstants } from "../../features/identity-pro
 
 export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
-        showAdvancedSettings: false,
-        showJitProvisioning: false,
-        showOutboundProvisioning: false
+        showAdvancedSettings: true,
+        showJitProvisioning: true,
+        showOutboundProvisioning: true
     },
     generalDetailsForm: {
-        showCertificate: false
+        showCertificate: true
     },
     utils: {
         isAuthenticatorAllowed: (name: string): boolean => {
             return [
                 IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR
-            /*  IdentityProviderManagementConstants.X509_AUTHENTICATOR,
-                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR */
+                IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
+                IdentityProviderManagementConstants.X509_AUTHENTICATOR,
+                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
         }
     }
