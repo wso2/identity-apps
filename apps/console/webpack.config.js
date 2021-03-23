@@ -65,6 +65,9 @@ module.exports = (env) => {
     // Profiling mode options.
     const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
 
+    // Dev Server Options.
+    const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+
     // Log level.
     const logLevel = env.LOG_LEVEL
         ? env.LOG_LEVEL
@@ -103,6 +106,11 @@ module.exports = (env) => {
                 });
             },
             contentBase: distFolder,
+            // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
+            // websites from potentially accessing local content through DNS rebinding:
+            // https://github.com/webpack/webpack-dev-server/issues/887
+            // This has resulted in issues such as development in cloud environment or subdomains impossible.
+            disableHostCheck: isDevServerHostCheckDisabled,
             historyApiFallback: true,
             host: "localhost",
             hot: true,
