@@ -390,7 +390,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 data={ list?.identityProviders?.filter((idp: IdentityProviderInterface) => idp.name !== "LOCAL") }
                 onRowClick={ (e: SyntheticEvent, idp: IdentityProviderInterface): void => {
                     handleIdentityProviderEdit(idp.id);
-                    onListItemClick(e, idp);
+                    onListItemClick && onListItemClick(e, idp);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
