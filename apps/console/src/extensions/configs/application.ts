@@ -69,6 +69,6 @@ export const applicationConfig: ApplicationConfig = {
         oidc: true,
         saml: true,
         spa: true,
-        windows: false
+        windows: true
     }
 };
