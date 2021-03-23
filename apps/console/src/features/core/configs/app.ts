@@ -139,7 +139,7 @@ export class Config {
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
-            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/token/.well-known/openid-configuration`
         };
     }
 
