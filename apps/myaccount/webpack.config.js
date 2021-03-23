@@ -296,9 +296,6 @@ module.exports = (env) => {
             }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
-                eslint: {
-                    files: "./src/**/*.{ts,tsx,js,jsx}"
-                },
                 issue: {
                     exclude: [
                         {
