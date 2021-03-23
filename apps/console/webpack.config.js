@@ -467,14 +467,14 @@ module.exports = (env) => {
             },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
-            // We have to polyfill the required once manually.
-            // https://stackoverflow.com/a/65542520
+            // Node.js Polyfills should not be used in front end code.
+            // https://github.com/webpack/webpack/issues/11282
             fallback: {
-                buffer: require.resolve("buffer/"),
-                crypto: require.resolve("crypto-browserify"),
+                buffer: false,
+                crypto: false,
                 fs: false,
-                path: require.resolve("path-browserify"),
-                stream: require.resolve("stream-browserify")
+                path: false,
+                stream: false
             }
         },
         // HMR is breaking in Webpack 5 when there is a `browserlist` present in package.json.

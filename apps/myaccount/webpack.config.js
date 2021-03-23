@@ -461,10 +461,10 @@ module.exports = (env) => {
             },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
-            // We have to polyfill the required once manually.
-            // https://stackoverflow.com/a/65542520
+            // Node.js Polyfills should not be used in front end code.
+            // https://github.com/webpack/webpack/issues/11282
             fallback: {
-                buffer: require.resolve("buffer/"),
+                buffer: false,
                 fs: false
             }
         },
