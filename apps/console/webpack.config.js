@@ -58,6 +58,9 @@ module.exports = (env) => {
     // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
     const analyzerPort = env.ANALYZER_PORT;
+    
+    // Profiling mode options.
+    const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
 
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9001;
@@ -286,6 +289,9 @@ module.exports = (env) => {
                 : `${ publicPath }/`
         },
         plugins: [
+            isProfilingMode && new webpack.ProgressPlugin({
+                profile: true
+            }),
             isAnalyzeMode && new BundleAnalyzerPlugin({
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
