@@ -227,36 +227,38 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                     {
                         sidebarMiniEnabled && !visible && (
                             <div className="sidebar-mini-menu">
-                                {/* Commented the CaretLeftIcon temporarily as help panel contains a single tab. */}
-                                {/*<Menu.Item*/}
-                                {/*    as="a"*/}
-                                {/*    onClick={ onSidebarToggle }*/}
-                                {/*    data-testid={ `${ testId }-visibility-toggle` }*/}
-                                {/*>*/}
-                                {/*    <Tooltip*/}
-                                {/*        compact*/}
-                                {/*        trigger={ (*/}
-                                {/*            <div>*/}
-                                {/*                <GenericIcon*/}
-                                {/*                    link*/}
-                                {/*                    hoverable*/}
-                                {/*                    defaultIcon*/}
-                                {/*                    transparent*/}
-                                {/*                    icon={ CaretLeftIcon }*/}
-                                {/*                    size="default"*/}
-                                {/*                    hoverType="circular"*/}
-                                {/*                    data-testid={ `${ testId }-visibility-toggle-icon` }*/}
-                                {/*                />*/}
-                                {/*            </div>*/}
-                                {/*        ) }*/}
-                                {/*        content={ sidebarToggleTooltip }*/}
-                                {/*        size="mini"*/}
-                                {/*    />*/}
-                                {/*</Menu.Item>*/}
+                                {
+                                    tabPanes && tabPanes instanceof Array && tabPanes.length > 1 && (
+                                        <Menu.Item
+                                            as="a"
+                                            onClick={ onSidebarToggle }
+                                            data-testid={ `${ testId }-visibility-toggle` }
+                                        >
+                                            <Tooltip
+                                                compact
+                                                trigger={ (
+                                                    <div>
+                                                        <GenericIcon
+                                                            link
+                                                            hoverable
+                                                            defaultIcon
+                                                            transparent
+                                                            icon={ CaretLeftIcon }
+                                                            size="default"
+                                                            hoverType="circular"
+                                                            data-testid={ `${ testId }-visibility-toggle-icon` }
+                                                        />
+                                                    </div>
+                                                ) }
+                                                content={ sidebarToggleTooltip }
+                                                size="mini"
+                                            />
+                                        </Menu.Item>
+                                    )
+                                }
                                 {
                                     tabPanes && tabPanes instanceof Array && tabPanes.length > 0 && (
                                         tabPanes.map((pane, index) => (
-                                            // <></>
                                             <Menu.Item
                                                 as="a"
                                                 key={ index }
