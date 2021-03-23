@@ -117,7 +117,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
 
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
-                if (!_.isEmpty(response.headers.location)) {
+                if (!isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
