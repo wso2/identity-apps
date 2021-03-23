@@ -37,7 +37,7 @@ import {
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
-import { identityProviderConfig } from "../../../extensions;
+import { identityProviderConfig } from "../../../extensions";
 
 /**
  * Utility class for identity provider operations.
