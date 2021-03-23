@@ -62,5 +62,13 @@ export const applicationConfig: ApplicationConfig = {
         showClientSecretMessage: true,
         showFrontChannelLogout: true,
         showScopeValidators: true
+    },
+    templates:{
+        android: true,
+        custom: true,
+        oidc: true,
+        saml: true,
+        spa: true,
+        windows: false
     }
 };

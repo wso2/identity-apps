@@ -55,4 +55,12 @@ export interface ApplicationConfig {
         showFrontChannelLogout: boolean;
         showScopeValidators: boolean;
     };
+    templates: {
+        android: boolean;
+        oidc: boolean;
+        saml: boolean;
+        spa: boolean;
+        windows: boolean;
+        custom: boolean;
+    }
 }
