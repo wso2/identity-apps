@@ -28,8 +28,6 @@
         String type = request.getParameter("type");
         if ("samlsso".equals(type)) {
             loginFormActionURL = samlssoURL;
-        } else if ("oauth2".equals(type)){
-            loginFormActionURL = oauth2AuthorizeURL;
         } else {
             loginFormActionURL = commonauthURL;
         }
