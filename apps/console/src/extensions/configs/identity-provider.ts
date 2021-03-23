@@ -28,6 +28,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
     generalDetailsForm: {
         showCertificate: true
     },
+    templates: {
+        enterprise: true,
+        facebook: false,
+        github: false,
+        google: true
+    },
     utils: {
         isAuthenticatorAllowed: (name: string): boolean => {
             return [

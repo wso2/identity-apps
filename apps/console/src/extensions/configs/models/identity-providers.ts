@@ -28,4 +28,10 @@ export interface IdentityProviderConfig {
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
     };
+    templates: {
+        facebook: boolean;
+        google: boolean;
+        github: boolean;
+        enterprise: boolean;
+    }
 }
