@@ -142,6 +142,9 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                     basic
                                                                     labelPosition="right"
                                                                     size="mini"
+                                                                    data-testid={ `${ testId }-` +
+                                                                        `${ consent.spDisplayName }` +
+                                                                        `-app-consent-detail-button` }
                                                                     onClick={
                                                                         () => onConsentDetailClick(
                                                                             index, consent.consentReceiptID

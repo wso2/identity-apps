@@ -16,17 +16,31 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, SyntheticEvent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent  } from "react";
 import { Button, Header, Responsive, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
  */
-interface DangerZoneProps {
-    actionTitle: string;
-    header: string;
-    subheader: string;
-    onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
+ export interface DangerZoneProps extends TestableComponentInterface {
+    /**
+     * Title for the danger zone action.
+     */
+     actionTitle: string;
+     /**
+      * Heading for the danger zone.
+      */
+     header: string;
+     /**
+      * Sub heading for the danger zone.
+      */
+     subheader: string;
+     /**
+      * OnClick callback for the danger zone action.
+      * @param {React.SyntheticEvent<HTMLButtonElement>} e - Click event.
+      */
+     onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
 /**
@@ -35,19 +49,28 @@ interface DangerZoneProps {
  * @param {DangerZoneProps} props - Props injected to the danger zone component.
  * @return {JSX.Element}
  */
-export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
+export const DangerZone: FunctionComponent<DangerZoneProps> = (
     props: DangerZoneProps
-): JSX.Element => {
-    const { actionTitle, header, subheader, onActionClick } = props;
+): ReactElement => {
+    const { 
+        actionTitle, 
+        header, 
+        subheader, 
+        onActionClick,
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
-        <Segment className="danger-zone" padded clearing>
-            <Header as="h5" color="red" floated="left">
+        <Segment data-testid={ testId } className="danger-zone" padded clearing>
+            <Header as="h5" color="red" floated="left" data-testid={ `${ testId }-header` }>
                 { header }
-                <Header.Subheader className="sub-header">{ subheader }</Header.Subheader>
+                <Header.Subheader className="sub-header" data-testid={ `${ testId }-sub-header` }>
+                    { subheader }
+                </Header.Subheader>
             </Header>
             <Button
                 fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                data-testid={ testId + "-delete-button" }
                 negative
                 className={
                     (window.innerWidth <= Responsive.onlyTablet.maxWidth)
@@ -89,4 +112,11 @@ export const DangerZoneGroup: React.FunctionComponent<PropsWithChildren<DangerZo
             </Segment.Group>
         </>
     );
+};
+
+/**
+ * Default props for the danger zone component.
+ */
+ DangerZone.defaultProps = {
+    "data-testid": "danger-zone"
 };

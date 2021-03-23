@@ -729,6 +729,7 @@ export interface MyAccountNS {
         overview: Page;
         personalInfo: Page;
         personalInfoWithoutLinkedAccounts: Page;
+        personalInfoWithoutExportProfile: Page;
         privacy: Page;
         security: Page;
     };
