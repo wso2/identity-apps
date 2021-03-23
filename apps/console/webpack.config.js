@@ -127,7 +127,9 @@ module.exports = (env) => {
                 },
                 {
                     generator: {
-                        filename: `${ PATHS.assets }/[hash][ext][query]`
+                        filename: isProduction
+                            ? `${ PATHS.assets }/[hash][ext][query]`
+                            : `${ PATHS.assets }/[path][name][ext]`
                     },
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     type: "asset/resource"
