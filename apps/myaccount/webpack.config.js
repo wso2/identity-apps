@@ -175,6 +175,17 @@ module.exports = (env) => {
                         {
                             loader: "babel-loader",
                             options: {
+                                // When set, each Babel transform output will be compressed with Gzip.
+                                // Project may benefit from this if it transpiles thousands of files.
+                                // https://github.com/facebook/create-react-app/issues/6846
+                                cacheCompression: false,
+                                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                                // It enables caching results in ./node_modules/.cache/babel-loader/
+                                // directory for faster rebuilds.
+                                cacheDirectory: true,
+                                // Babel will not include superfluous whitespace characters and line terminators.
+                                // This produces warnings and slowness in dev server.
+                                compact: isProduction,
                                 plugins: [
                                     isDevelopment && require.resolve("react-refresh/babel")
                                 ].filter(Boolean)
