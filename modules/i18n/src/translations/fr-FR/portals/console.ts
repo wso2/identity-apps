@@ -3941,7 +3941,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "L'attribut {{type}} a été ajouté au dialecte avec succès !",
-                                message: "L'attribut {{type}} a été ajouté avec succès"
+                                message: "Attribut ajouté"
                             }
                         },
                         deleteExternalClaim: {
@@ -3951,7 +3951,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "L'attribut {{type}} a été supprimé avec succès !",
-                                message: "L'attribut {{type}} a été effacé avec succès"
+                                message: "Attribut supprimé"
                             }
                         },
                         fetchExternalClaims: {
@@ -3981,7 +3981,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "L'attribut {{type}} a été mis à jour avec succès !",
-                                message: "L'attribut {{type}} a été mis à jour avec succès"
+                                message: "Attribut mis à jour"
                             }
                         }
                     },

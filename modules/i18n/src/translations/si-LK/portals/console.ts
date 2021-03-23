@@ -3912,7 +3912,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "බාහිර ගුණාංගය උපභාෂාවට සාර්ථකව එකතු කර ඇත!",
-                                message: "බාහිර ගුණාංගය සාර්ථකව එක් කරන ලදි"
+                                message: "ගුණාංගය එකතු කරන ලදි"
                             }
                         },
                         deleteExternalClaim: {
@@ -3922,7 +3922,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "බාහිර ගුණාංගය සාර්ථකව මකා දමා ඇත!",
-                                message: "බාහිර ගුණාංගය සාර්ථකව මකා දමන ලදි"
+                                message: "ගුණාංගය මකා දමන ලදි"
                             }
                         },
                         fetchExternalClaims: {
@@ -3952,7 +3952,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "බාහිර ගුණාංගය සාර්ථකව යාවත්කාලීන කර ඇත!",
-                                message: "බාහිර ගුණාංගය සාර්ථකව යාවත්කාලීන කරන ලදි"
+                                message: "ගුණාංගය යාවත්කාලීන කරන ලදි"
                             }
                         }
                     },
