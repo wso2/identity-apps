@@ -27,6 +27,7 @@ import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GihubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import { ExtensionsManager } from "../../../../extensions";
+import { identityProviderConfig } from "../../../../extensions/configs";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateListItemInterface
@@ -37,7 +38,7 @@ export interface IdentityProviderTemplatesConfigInterface {
     templates: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>[];
 }
 
-export interface TemplateConfigInterface<T = {}> {
+export interface TemplateConfigInterface<T> {
     content?: TemplateContentInterface;
     enabled: boolean;
     id: string;
@@ -80,7 +81,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
                             },
-                            enabled: true,
+                            enabled: identityProviderConfig.templates.google,
                             id: GoogleIDPTemplate.id,
                             resource: GoogleIDPTemplate
                         },
@@ -88,7 +89,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/facebook/create-wizard-help"))
                             },
-                            enabled: true,
+                            enabled: identityProviderConfig.templates.facebook,
                             id: FacebookIDPTemplate.id,
                             resource: FacebookIDPTemplate
                         },
@@ -96,7 +97,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/github/create-wizard-help"))
                             },
-                            enabled: true,
+                            enabled: identityProviderConfig.templates.github,
                             id: GihubIDPTemplate.id,
                             resource: GihubIDPTemplate
                         },
@@ -106,7 +107,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/enterprise-identity-provider/create-wizard-help")
                                 )
                             },
-                            enabled: true,
+                            enabled: identityProviderConfig.templates.enterprise,
                             id: EnterpriseIdentityProviderTemplate.id,
                             resource: EnterpriseIdentityProviderTemplate
                         }
