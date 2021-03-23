@@ -45,6 +45,7 @@ const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for stati
 
 // Dev Server Default Configs.
 const DEV_SERVER_PORT = 9000;
+const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
 
 module.exports = (env) => {
 
@@ -103,7 +104,13 @@ module.exports = (env) => {
         devServer: {
             before: function (app) {
                 app.get("/", function (req, res) {
-                    res.redirect(publicPath);
+                    // In root context, `publicPath` is `/`. This causes a redirection loop.
+                    // TO overcome this, redirect to `/login` in root context.
+                    res.redirect(
+                        !isRootContext
+                            ? publicPath
+                            : ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT
+                    );
                 });
             },
             // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
