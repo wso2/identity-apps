@@ -62,6 +62,13 @@ module.exports = (env) => {
     // Profiling mode options.
     const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
 
+    // Log level.
+    const logLevel = env.LOG_LEVEL
+        ? env.LOG_LEVEL
+        : isProfilingMode
+            ? "info"
+            : "none";
+
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9000;
     const publicPath = `/${ basename }`;
@@ -112,6 +119,11 @@ module.exports = (env) => {
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx",
             rpIFrame: "./src/init/rpIFrame-script.ts"
+        },
+        infrastructureLogging: {
+            // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
+            // This is set to `info` in profiling mode to get the desired result.
+            level: logLevel
         },
         mode: isProduction ? "production" : "development",
         module: {
