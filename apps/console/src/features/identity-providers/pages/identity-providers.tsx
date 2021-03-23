@@ -295,7 +295,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                     "form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("console:develop.features.authenticationProvider.advancedSearch.placeholder") }
+                            placeholder={ t("console:develop.features.authenticationProvider." +
+                                "advancedSearch.placeholder") }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
