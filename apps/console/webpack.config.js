@@ -43,6 +43,9 @@ const OUTPUT_PATH = "build/console";               // Build artifacts output pat
 const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
 const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
 
+// Dev Server Default Configs.
+const DEV_SERVER_PORT = 9001;
+
 module.exports = (env) => {
 
     // Build Environments.
@@ -70,7 +73,7 @@ module.exports = (env) => {
             : "none";
 
     const basename = deploymentConfig.appBaseName;
-    const devServerPort = 9001;
+    const devServerPort = env.DEV_SERVER_PORT || DEV_SERVER_PORT;
     const publicPath = `/${ basename }`;
     const isRootContext = publicPath === "/";
 
