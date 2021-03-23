@@ -64,9 +64,7 @@
 
 
     if (StringUtils.isBlank(confirmationKey)) {
-        if (request.getAttribute("confirmationKey") != null) {
         confirmationKey = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("confirmationKey"));
-        }
     }
     String message = "" ;
 
