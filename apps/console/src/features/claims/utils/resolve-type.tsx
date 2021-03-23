@@ -30,7 +30,7 @@ import { ClaimManagementConstants } from "../constants";
 export const resolveType = (attributeType: string, capitalize?: boolean, shortForm?: boolean): string => {
     switch (attributeType) {
         case ClaimManagementConstants.OIDC:
-            return shortForm? "OIDC" : "OpendID Connect";
+            return shortForm? "OIDC" : "OpenID Connect";
         case ClaimManagementConstants.SCIM:
             return "SCIM";
         default:

@@ -4804,7 +4804,7 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "The {{type}} attribute has been added to the attribute mapping" +
                                     " successfully!",
-                                message: "{{type}} attribute added successfully"
+                                message: "Attribute added"
                             }
                         },
                         deleteExternalClaim: {
@@ -4814,7 +4814,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The {{type}} attribute has been deleted successfully!",
-                                message: "{{type}} attribute deleted successfully"
+                                message: "Attribute deleted"
                             }
                         },
                         fetchExternalClaims: {
@@ -4844,7 +4844,7 @@ export const console: ConsoleNS = {
                             },
                             success: {
                                 description: "The {{type}} attribute has been updated successfully!",
-                                message: "{{type}} attribute updated successfully"
+                                message: "Attribute updated"
                             }
                         }
                     },
