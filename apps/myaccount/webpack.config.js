@@ -104,7 +104,7 @@ module.exports = (env) => {
             ? isSourceMapsEnabledInProduction
                 ? "source-map"
                 : false
-            : isDevelopment && "cheap-module-source-map",
+            : isDevelopment && "eval-cheap-module-source-map",
         entry: {
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx",
@@ -209,12 +209,14 @@ module.exports = (env) => {
                 }
             ],
             // Makes missing exports an error instead of warning.
-            strictExportPresence: true
+            strictExportPresence: true,
+            // Speeds up the dev-ser by ~800ms. https://github.com/webpack/webpack/issues/12102#issuecomment-762963181
+            unsafeCache: true
         },
         optimization: {
             minimize: isProduction,
             minimizer: [
-                new TerserPlugin({
+                isProduction && new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
