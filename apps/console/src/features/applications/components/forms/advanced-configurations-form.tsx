@@ -22,7 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions/configs";
+import { applicationConfig } from "../../../../extensions";
 import { AdvancedConfigurationsInterface } from "../../models";
 
 /**

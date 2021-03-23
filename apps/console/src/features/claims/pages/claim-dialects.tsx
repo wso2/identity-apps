@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Image, List, Placeholder, Popup } from "semantic-ui-react";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,

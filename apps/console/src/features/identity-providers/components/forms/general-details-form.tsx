@@ -23,7 +23,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
+import { identityProviderConfig } from "../../../../extensions";
 import { getIdentityProviderList } from "../../api";
 import { IdentityProviderInterface } from "../../models";
 import { IdpCertificates } from "../settings";

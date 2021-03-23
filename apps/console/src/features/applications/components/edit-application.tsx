@@ -35,8 +35,7 @@ import {
     ProvisioningSettings,
     SignOnMethods
 } from "./settings";
-import { ComponentExtensionPlaceholder } from "../../../extensions";
-import { applicationConfig } from "../../../extensions/configs";
+import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";

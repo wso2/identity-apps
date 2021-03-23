@@ -31,13 +31,12 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import { ExtensionsManager } from "../../../../extensions";
+import { ExtensionsManager, applicationConfig } from "../../../../extensions";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface
 } from "../../models";
-import { applicationConfig } from "../../../../extensions/configs";
 
 export interface ApplicationTemplatesConfigInterface {
     categories: TemplateConfigInterface<ApplicationTemplateCategoryInterface>[];

@@ -46,7 +46,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,

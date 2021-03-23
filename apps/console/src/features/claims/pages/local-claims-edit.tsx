@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import { getAClaim } from "../api";
 import {

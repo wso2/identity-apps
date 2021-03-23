@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import { AppConstants, history, sortList } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";

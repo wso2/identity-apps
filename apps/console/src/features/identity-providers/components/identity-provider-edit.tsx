@@ -33,7 +33,7 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { ComponentExtensionPlaceholder } from "../../../extensions";
-import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
+import { identityProviderConfig } from "../../../extensions";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,

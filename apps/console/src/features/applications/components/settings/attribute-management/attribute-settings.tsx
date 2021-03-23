@@ -39,7 +39,7 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
-import { applicationConfig } from "../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../extensions";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateClaimConfiguration } from "../../../api/";

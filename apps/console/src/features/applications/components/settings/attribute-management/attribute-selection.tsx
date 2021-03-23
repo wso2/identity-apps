@@ -37,7 +37,7 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { applicationConfig } from "../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../extensions";
 import { ClaimManagementConstants } from "../../../../claims/constants";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../../core";
 import {

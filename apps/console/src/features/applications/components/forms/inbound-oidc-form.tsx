@@ -38,7 +38,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, 
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions/configs";
+import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate

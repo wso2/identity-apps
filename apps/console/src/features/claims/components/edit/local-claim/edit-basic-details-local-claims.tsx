@@ -40,7 +40,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { attributeConfig } from "../../../../../extensions/configs";
+import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
 

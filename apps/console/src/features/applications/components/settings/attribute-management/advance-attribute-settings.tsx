@@ -24,7 +24,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { RoleConfigInterface, SubjectConfigInterface, InboundProtocolListItemInterface } from "../../../models";
-import { applicationConfig } from "../../../../../extensions/configs";
+import { applicationConfig } from "../../../../../extensions";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;

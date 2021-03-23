@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

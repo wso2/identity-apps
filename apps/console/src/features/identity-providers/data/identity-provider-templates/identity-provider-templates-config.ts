@@ -26,8 +26,7 @@ import EnterpriseIdentityProviderTemplate
 import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GihubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
-import { ExtensionsManager } from "../../../../extensions";
-import { identityProviderConfig } from "../../../../extensions/configs";
+import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateListItemInterface

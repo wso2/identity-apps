@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
-import { attributeConfig } from "../../../extensions/configs";
+import { attributeConfig } from "../../../extensions";
 import { AppConstants, AppState, getTechnologyLogos, history } from "../../core";
 import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
