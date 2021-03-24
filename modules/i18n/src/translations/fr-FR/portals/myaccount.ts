@@ -531,8 +531,10 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                description: "Scanner le code QR à l'aide d'une application d'authentification pour "+
-                    "utiliser un TOTP comme deuxième facteur d'authentification",
+                description: "Scannez le code QR à l'aide d'une application " +
+                    "d'authentification pour utiliser des codes d'accès " +
+                    "à usage unique basés sur le temps (également appelés TOTP) " +
+                    "comme deuxième facteur lors de la connexion aux applications.",
                 heading: "Application d'authentification",
                 hint: "Afficher le code QR",
                 modals: {

@@ -266,7 +266,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 11 } className="first-column">
+                        <Grid.Column width={ 1 } className="first-column">
                             <List.Content floated="left">
                                 <GenericIcon
                                     icon={ getMFAIcons().sms }
@@ -278,6 +278,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                     relaxed={ true }
                                 />
                             </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 12 } className="first-column">
                             <List.Content>
                                 <List.Header>{ t("myAccount:components.mfa.smsOtp.heading") }</List.Header>
                                 <List.Description>
@@ -285,7 +287,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 5 } className="last-column">
+                        <Grid.Column width={ 3 } className="last-column">
                             <List.Content floated="right">
                                 <Icon
                                     link={ true }

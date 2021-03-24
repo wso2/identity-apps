@@ -551,7 +551,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             { totpWizard() }
             <Grid padded={ true } data-testid={ testId }>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 11 } className="first-column">
+                    <Grid.Column width={ 1 } className="first-column">
                         <List.Content floated="left">
                             <GenericIcon
                                 icon={ getMFAIcons().authenticatorApp }
@@ -563,6 +563,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 relaxed={ true }
                             />
                         </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 12 } className="first-column">
                         <List.Content>
                             <List.Header>
                                 { t(translateKey + "heading") }
@@ -572,7 +574,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ 5 } className="last-column">
+                    <Grid.Column width={ 3 } className="last-column">
                         <List.Content floated="right">
                             <Popup
                                 trigger={
