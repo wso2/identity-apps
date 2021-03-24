@@ -529,7 +529,7 @@ export const DataTable = <T extends object = {}>(
                     trigger={ (
                         <Icon
                             link={ actionLink && actionLink(item) }
-                            className="list-icon"
+                            className="list-icon data-table-list-icon"
                             disabled={ actionDisabled }
                             size="small"
                             color="grey"
