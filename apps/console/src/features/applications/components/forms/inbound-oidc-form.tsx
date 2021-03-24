@@ -567,7 +567,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const handleReactivateButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         setShowReactiveConfirmationModal(true);
-        console.log("handle reactive btn");
     };
 
     /**
