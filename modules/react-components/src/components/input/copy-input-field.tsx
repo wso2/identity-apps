@@ -17,10 +17,10 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
-import { CommonUtils } from "@wso2is/core/utils";
 
 /**
  * Copy to clipboard input field props.
@@ -46,6 +46,10 @@ export interface CopyInputFieldPropsInterface extends TestableComponentInterface
      * Should the content appear as a secret.
      */
     secret?: boolean;
+    /**
+     * Label of the input field.
+     */
+    label?: string;
 }
 
 /**
@@ -65,6 +69,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
         hideSecretLabel,
         secret,
         showSecretLabel,
+        label,
         [ "data-testid" ]: testId
     } = props;
 
@@ -100,6 +105,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
 
     return (
         <Input
+            label={ label }
             ref={ inputRef }
             value={ value }
             labelPosition="right"
