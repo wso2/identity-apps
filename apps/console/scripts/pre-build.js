@@ -49,7 +49,7 @@ const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "d
 const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
 log("Compiling i18N extensions...");
 try {
-    execSync("npm run compileI18n");
+    execSync("npm run compile:i18n");
 } catch (e) {
     log(e);
 }
@@ -71,6 +71,6 @@ for (const value of Object.values(i18nExtensions)) {
 }
 
 log("Cleaning the tmp directory...");
-execSync("npm run remove-i18n-dist");
+execSync("npm run clean:i18n:dist");
 
 log("\nFinishing up the pre build script.....");
