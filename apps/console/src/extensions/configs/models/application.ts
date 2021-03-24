@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ReactNode } from "react";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -48,12 +49,14 @@ export interface ApplicationConfig {
     editApplication: {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
+        renderHelpPanelItems: () => ReactNode;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
         showClientSecretMessage: boolean;
         showFrontChannelLogout: boolean;
         showScopeValidators: boolean;
+        showNativeClientSecretMessage: boolean;
     };
     templates: {
         android: boolean;

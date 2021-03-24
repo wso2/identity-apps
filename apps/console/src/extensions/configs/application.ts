@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ReactNode } from "react";
 import { ApplicationConfig } from "./models";
 import {
     ExtendedClaimInterface,
@@ -55,15 +56,19 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
+        renderHelpPanelItems: (): ReactNode => {
+            return null;
+        },
         showProvisioningSettings: true
     },
     inboundOIDCForm: {
         shouldValidateCertificate: true,
         showClientSecretMessage: true,
         showFrontChannelLogout: true,
+        showNativeClientSecretMessage: true,
         showScopeValidators: true
     },
-    templates:{
+    templates: {
         android: true,
         custom: true,
         oidc: true,
