@@ -489,9 +489,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             <Grid.Column width={ 6 }>
                                 <PrimaryButton
                                     type="submit"
-                                    value={ t("common:update") }
                                     data-testid={ `${ testId }-form-submit-button` }
-                                />
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
