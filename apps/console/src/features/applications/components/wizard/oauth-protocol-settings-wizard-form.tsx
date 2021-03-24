@@ -278,6 +278,17 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
     }, [ initialValues ]);
 
+    /**
+     * The function resolves the newly added origins for the callback URLs.
+     * Returns the intersection set of,
+     * <ul>
+     * <li>The newly added origins of the callback URLs.</li>
+     * <li>All the available CORS origins.</li>
+     * </ul>
+     *
+     * @param {string} urls - Callback URLs.
+     * @return {string[]} Allowed origin URLs.
+     */
     const resolveAllowedOrigins = (urls: string): string[] => {
         let calBackUrls: string[] = [];
 
