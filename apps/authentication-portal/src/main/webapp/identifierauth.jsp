@@ -67,7 +67,7 @@
     }
 </script>
 
-<form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="identifierForm">
+<form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="identifierForm" onsubmit="event.preventDefault()">
     <%
         if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
     %>
