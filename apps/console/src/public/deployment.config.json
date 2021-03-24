@@ -59,7 +59,7 @@
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
-        "appLogoPath": "/assets/images/logo.svg",
+        "appLogoPath": "/assets/images/branding/logo.svg",
         "features": {
             "applications": {
                 "disabledFeatures": [],

@@ -1,0 +1,55 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="myaccount-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <linearGradient id="linear-gradient" x1="0.757" y1="0.959" x2="0.149" y2="0.196" gradientUnits="objectBoundingBox">
+          <stop offset="0" stop-color="#22b9b3"/>
+          <stop offset="1" stop-color="#29e0d8"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="0.821" y1="0.821" x2="0.126" y2="0.126" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#29e0d8"/>
+            <stop offset="1" stop-color="#23bab4"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1="0.084" y1="0.36" x2="0.818" y2="0.733" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#0f8d87"/>
+            <stop offset="0.472" stop-color="#2ac8c2" stop-opacity="0.49"/>
+            <stop offset="1" stop-color="#29e0d8" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="radial-gradient" cx="0.208" cy="0.202" r="0.5" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset="1" stop-color="#f0f0f0"/>
+        </radialGradient>
+        <radialGradient id="radial-gradient-2" cx="0" cy="0.233" r="0.764" gradientTransform="matrix(0.891, 0.455, -0.455, 0.891, 0.106, 0.025)" xlink:href="#radial-gradient"/>
+        <linearGradient id="linear-gradient-4" x1="0.433" x2="0.678" y2="0.398" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ccc"/>
+            <stop offset="1" stop-color="#ccc" stop-opacity="0.169"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-5" x1="0.719" y1="0.4" x2="1.177" y2="0.537" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ccc" stop-opacity="0.188"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+    </defs>
+    <circle id="Ellipse_177" data-name="Ellipse 177" cx="20" cy="20" r="20" fill="url(#linear-gradient)"/>
+    <circle id="Ellipse_181" data-name="Ellipse 181" cx="15.385" cy="15.385" r="15.385" transform="translate(4.518 4.893)" fill="url(#linear-gradient-2)"/>
+    <path id="Intersection_8" data-name="Intersection 8" d="M0,11.011,11.132,0c6.742,6.479,11.295,10.72,13.512,12.765a19.946,19.946,0,0,1-9.466,11.408Z" transform="translate(14.184 13.43)" fill="url(#linear-gradient-3)"/>
+    <path id="Intersection_5" data-name="Intersection 5" d="M0,7.746q.252-.457.537-.9a14.969,14.969,0,0,1,25.182.047q.288.451.543.918a19.814,19.814,0,0,1-13.093,4.918A19.813,19.813,0,0,1,0,7.746Z" transform="translate(6.718 27.27)" fill="url(#radial-gradient)"/>
+    <ellipse id="Ellipse_180" data-name="Ellipse 180" cx="7.871" cy="7.857" rx="7.871" ry="7.857" transform="translate(11.96 11.165)" fill="url(#radial-gradient-2)"/>
+    <path id="Subtraction_21" data-name="Subtraction 21" d="M8.983,11.836h0A17.481,17.481,0,0,0,0,.3,15.072,15.072,0,0,1,8.046.866a14.9,14.9,0,0,1,4.3,2.4,14.981,14.981,0,0,1,3.273,3.631c.192.3.375.607.543.918a19.74,19.74,0,0,1-7.18,4.024Z" transform="translate(16.816 27.27)" fill="url(#linear-gradient-4)"/>
+    <path id="Subtraction_22" data-name="Subtraction 22" d="M3.217,15.518A7.822,7.822,0,0,1,0,14.834,7.859,7.859,0,0,0,4.964,0,7.856,7.856,0,0,1,3.217,15.518Z" transform="translate(16.614 11.36)" fill="url(#linear-gradient-5)"/>
+</svg>

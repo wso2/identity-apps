@@ -25,6 +25,16 @@ i.icon {
     &.list-icon {
         font-size: 1em;
         margin-right: 8px;
+
+        &.data-table-list-icon {
+            min-width: @dataTableListIconMinWidth;
+            min-height: @dataTableListIconMinHeight;
+            padding-top: @dataTableListIconTopPadding;
+
+            &:hover {
+                background: rgba(0,0,0,.1);
+            }
+        }
     }
 
     &.bordered {

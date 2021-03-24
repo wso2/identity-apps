@@ -197,6 +197,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * System apps list.
      */
     systemAppsIdentifiers: string[];
+    /**
+     * Show App Switch button in the Header.
+     */
+    showAppSwitchButton?: boolean;
+    
 }
 
 /**

@@ -21,6 +21,7 @@ const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin"
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -39,9 +40,15 @@ const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
 // Paths
+const APP_SOURCE_DIRECTORY = "src";                // App source code directory.
+const APP_NODE_MODULES_DIRECTORY = "node_modules"; // Node modules.
 const OUTPUT_PATH = "build/myaccount";             // Build artifacts output path.
 const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
 const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
+
+// Dev Server Default Configs.
+const DEV_SERVER_PORT = 9000;
+const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
 
 module.exports = (env) => {
 
@@ -59,8 +66,21 @@ module.exports = (env) => {
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
     const analyzerPort = env.ANALYZER_PORT;
 
+    // Profiling mode options.
+    const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
+
+    // Dev Server Options.
+    const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+
+    // Log level.
+    const logLevel = env.LOG_LEVEL
+        ? env.LOG_LEVEL
+        : isProfilingMode
+            ? "info"
+            : "none";
+
     const basename = deploymentConfig.appBaseName;
-    const devServerPort = 9000;
+    const devServerPort = env.DEV_SERVER_PORT || DEV_SERVER_PORT;
     const publicPath = `/${ basename }`;
     const isRootContext = publicPath === "/";
 
@@ -70,6 +90,8 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        appNodeModules: APP_NODE_MODULES_DIRECTORY,
+        appSrc: APP_SOURCE_DIRECTORY,
         assets: STATIC_ASSETS_DIRECTORY,
         cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
@@ -87,9 +109,20 @@ module.exports = (env) => {
         devServer: {
             before: function (app) {
                 app.get("/", function (req, res) {
-                    res.redirect(publicPath);
+                    // In root context, `publicPath` is `/`. This causes a redirection loop.
+                    // TO overcome this, redirect to `/login` in root context.
+                    res.redirect(
+                        !isRootContext
+                            ? publicPath
+                            : ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT
+                    );
                 });
             },
+            // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
+            // websites from potentially accessing local content through DNS rebinding:
+            // https://github.com/webpack/webpack-dev-server/issues/887
+            // This has resulted in issues such as development in cloud environment or subdomains impossible.
+            disableHostCheck: isDevServerHostCheckDisabled,
             contentBase: distFolder,
             historyApiFallback: true,
             host: "localhost",
@@ -110,6 +143,11 @@ module.exports = (env) => {
             main: "./src/index.tsx",
             rpIFrame: "./src/init/rpIFrame-script.ts"
         },
+        infrastructureLogging: {
+            // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
+            // This is set to `info` in profiling mode to get the desired result.
+            level: logLevel
+        },
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
@@ -124,7 +162,9 @@ module.exports = (env) => {
                 },
                 {
                     generator: {
-                        filename: `${ PATHS.assets }/[hash][ext][query]`
+                        filename: isProduction
+                            ? `${ PATHS.assets }/[hash][ext][query]`
+                            : `${ PATHS.assets }/[path][name][ext]`
                     },
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     type: "asset/resource"
@@ -141,7 +181,12 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "url-loader"
+                            loader: "file-loader",
+                            options: {
+                                name: isProduction
+                                    ? `${ PATHS.assets }/[contenthash].[ext]`
+                                    : `${ PATHS.assets }/[path][name].[ext]`
+                            }
                         }
                     ]
                 },
@@ -173,6 +218,17 @@ module.exports = (env) => {
                         {
                             loader: "babel-loader",
                             options: {
+                                // When set, each Babel transform output will be compressed with Gzip.
+                                // Project may benefit from this if it transpiles thousands of files.
+                                // https://github.com/facebook/create-react-app/issues/6846
+                                cacheCompression: false,
+                                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                                // It enables caching results in ./node_modules/.cache/babel-loader/
+                                // directory for faster rebuilds.
+                                cacheDirectory: true,
+                                // Babel will not include superfluous whitespace characters and line terminators.
+                                // This produces warnings and slowness in dev server.
+                                compact: isProduction,
                                 plugins: [
                                     isDevelopment && require.resolve("react-refresh/babel")
                                 ].filter(Boolean)
@@ -184,28 +240,6 @@ module.exports = (env) => {
                     enforce: "pre",
                     test: /\.js$/,
                     use: ["source-map-loader"]
-                },
-                {
-                    enforce: "pre",
-                    exclude: /(node_modules|dist|build|target|plugins)/,
-                    test: /\.(ts|tsx|js|jsx)$/,
-                    use: [
-                        {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: 1
-                            }
-                        },
-                        {
-                            loader: "eslint-loader",
-                            options: {
-                                configFile: PATHS.eslintrc,
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
-                        }
-                    ]
                 }
             ],
             // Makes missing exports an error instead of warning.
@@ -214,9 +248,10 @@ module.exports = (env) => {
             unsafeCache: true
         },
         optimization: {
+            concatenateModules: isProduction,
             minimize: isProduction,
             minimizer: [
-                isProduction && new TerserPlugin({
+                 new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
@@ -253,7 +288,9 @@ module.exports = (env) => {
             },
             splitChunks: {
                 chunks: "all"
-            }
+            },
+            // Tells webpack to determine used exports for each module. 
+            usedExports: true
         },
         output: {
             chunkFilename: isProduction
@@ -270,6 +307,9 @@ module.exports = (env) => {
                 : `${ publicPath }/`
         },
         plugins: [
+            isProfilingMode && new webpack.ProgressPlugin({
+                profile: true
+            }),
             isAnalyzeMode && new BundleAnalyzerPlugin({
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
@@ -283,9 +323,6 @@ module.exports = (env) => {
             }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
-                eslint: {
-                    files: "./src/**/*.{ts,tsx,js,jsx}"
-                },
                 issue: {
                     exclude: [
                         {
@@ -319,6 +356,12 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                         from: "lib",
+                        // Only Copy the required resources to distribution.
+                        // ATM, only the theme CSS files, fonts and branding images are required.
+                        globOptions: {
+                            dot: true,
+                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ],
+                        },
                         to: "libs"
                     },
                     {
@@ -422,6 +465,17 @@ module.exports = (env) => {
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
+            }),
+            new ESLintPlugin({
+                cache: true,
+                cacheLocation: path.resolve(
+                    PATHS.appNodeModules,
+                    ".cache/.eslintcache"
+                ),
+                context: PATHS.appSrc,
+                eslintPath: require.resolve("eslint"),
+                extensions: [ "js", "jsx", "ts", "tsx" ],
+                overrideConfigFile: PATHS.eslintrc
             })
         ].filter(Boolean),
         resolve: {
@@ -433,10 +487,10 @@ module.exports = (env) => {
             },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
-            // We have to polyfill the required once manually.
-            // https://stackoverflow.com/a/65542520
+            // Node.js Polyfills should not be used in front end code.
+            // https://github.com/webpack/webpack/issues/11282
             fallback: {
-                buffer: require.resolve("buffer/"),
+                buffer: false,
                 fs: false
             }
         },

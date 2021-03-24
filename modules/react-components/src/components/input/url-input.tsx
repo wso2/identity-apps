@@ -456,7 +456,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                             >
                                                 Therefore enabling CORS for this origin will allow you to access
                                                 Identity Server APIs from the applications registered in the
-                                                <strong>{ tenantDomain }</strong> tenant domain.
+                                                <strong>{ tenantDomain }</strong> organization.
                                             </Trans>
                                         </React.Fragment>
                                     )

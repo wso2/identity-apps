@@ -177,7 +177,8 @@ export class Config {
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,
             systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers,
-            theme: window["AppUtils"].getConfig().ui.theme
+            theme: window["AppUtils"].getConfig().ui.theme,
+            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton
         };
     }
 }

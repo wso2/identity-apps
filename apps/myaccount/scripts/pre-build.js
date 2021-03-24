@@ -26,7 +26,7 @@ log("Pre build script started.....");
 // Run the clean script.
 execSync("npm run clean");
 
-// Run theme folder copying script.
-execSync("npm run copy:themes");
+// Run theme content copying to source script.
+execSync("npm run copy:themes:src");
 
 log("\nFinishing up the pre build script.....");

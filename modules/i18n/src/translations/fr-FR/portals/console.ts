@@ -63,7 +63,7 @@ export const console: ConsoleNS = {
             resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
         },
         header: {
-            tenantSwitchHeader: "Changer de locataire"
+            tenantSwitchHeader: "Changer d'organisation"
         },
         modals: {
             editAvatarModal: {
@@ -342,8 +342,8 @@ export const console: ConsoleNS = {
                     requestRemoval: {
                         description: {
                             para1: "You can request the administrator to delete your account. The administrator is " +
-                                "the administrator of the tenant you are registered under, or the " +
-                                "super-administrator if you do not use the tenant feature.",
+                                "the administrator of the organization you are registered under, or the " +
+                                "super-administrator if you do not use the organization feature.",
                             para2: "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."
                         },
@@ -962,8 +962,9 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     subjectIncludeTenantDomain: {
-                                        hint: "Cette option ajoutera le domaine d'identité à l'identifiant du sujet",
-                                        label: "Inclure le domaine du locataire",
+                                        hint: "Cette option ajoutera le nom de l'organisation à l'identifiant du" +
+                                            " sujet local",
+                                        label: "Inclure le nom de l'organisation",
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
@@ -1008,10 +1009,10 @@ export const console: ConsoleNS = {
                                 }
                             },
                             saas: {
-                                hint: "Par défaut, les applications ne peuvent être utilisées que par les " +
-                                    "utilisateurs appartenant au locataire de l'application. Si cette application " +
-                                    "est compatible SaaS, elle sera accessible à tous les utilisateurs de tous les " +
-                                    "locataires.",
+                                hint: "Par défaut, les applications ne peuvent être utilisées que par les" +
+                                    " utilisateurs appartenant à l'organisation de l'application. Si cette" +
+                                    " application est compatible SaaS, elle sera accessible à tous les utilisateurs" +
+                                    " de toutes les organisations.",
                                 label: "Application SaaS",
                                 validations: {
                                     empty: "Ceci est un champ obligatoire."
@@ -1168,7 +1169,8 @@ export const console: ConsoleNS = {
                                 label: "URI autorisés",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URL valide.",
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter une URL valide.",
                                     required: "Ce champ est obligatoire pour une application fonctionnelle. " +
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
@@ -3573,10 +3575,10 @@ export const console: ConsoleNS = {
                         hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
                         message: "Cette action est irréversible et supprimera définitivement le certificat.",
                         primaryAction: "Confirmer",
-                        tenantContent: "Ceci supprimera définitivement le certificat du locataire."
-                            + "Une fois supprimé, vous ne pourrez plus accéder aux applications du portail, "
-                            + "à moins d'en importer un nouveau certificat. "
-                            + "Pour confirmer la suppression, veuillez saisir l'alias du certificat et cliquez sur 'Supprimer'."
+                        tenantContent: "Cela supprimera définitivement le certificat d'organisation. Une fois" +
+                            " supprimé, à moins que vous n'importiez un nouveau certificat d'organisation, vous ne" +
+                            " pourrez pas accéder aux applications du portail.Pour continuer la suppression, entrez" +
+                            " l'alias du certificat et cliquez sur supprimer."
                     },
                     errorCertificate: "Une erreur s'est produite lors de l'ouverture du certificat"
                         + " Veuillez vous assurer que le certificat est valide.",
@@ -3641,7 +3643,8 @@ export const console: ConsoleNS = {
                         },
                         getPublicCertificate: {
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération du certificat du locataire",
+                                description: "Une erreur s'est produite lors de la récupération du certificat" +
+                                    " d'organisation.",
                                 message: "Quelque chose s'est mal passé !"
                             }
                         }
@@ -5746,8 +5749,10 @@ export const console: ConsoleNS = {
                                     empty: "Le nom d'utilisateur est obligatoire",
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                    regExViolation: "Nom d'utilisateur invalide. Il doit s'agir d'un e-mail valide " +
-                                        "contenant entre 3 et 30 caractères alphanumériques sans espaces."
+                                    regExViolation: "Veuillez saisir une adresse e-mail valide. Il ne peut contenir "+
+                                        "qu'entre 3 et 50 caractères, y compris les caractères alphanumériques, traits de "+
+                                        "soulignement (_), tirets (-), signes plus (+) et points (.) et un signes at "+
+                                        "(@) Sans espaces."
                                 }
                             }
                         },

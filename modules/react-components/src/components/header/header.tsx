@@ -610,6 +610,6 @@ Header.defaultProps = {
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
     showUserDropdown: true,
-    tenantSwitchHeader: "Switch Tenant",
+    tenantSwitchHeader: "Switch Organization",
     userDropdownIcon: null
 };

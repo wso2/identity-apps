@@ -41,6 +41,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            consoleApp: window["AppUtils"].getConfig().consoleApp,
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
@@ -133,7 +134,8 @@ export class Config {
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             theme: window["AppUtils"].getConfig().ui.theme,
             titleText: window["AppUtils"].getConfig().appTitle,
-            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser
+            disableMFAforSuperTenantUser: window["AppUtils"].getConfig().ui.disableMFAforSuperTenantUser,
+            showAppSwitchButton: window["AppUtils"].getConfig().ui.showAppSwitchButton
         };
     }
 

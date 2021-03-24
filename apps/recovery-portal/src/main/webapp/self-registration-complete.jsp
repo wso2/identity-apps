@@ -22,12 +22,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.net.MalformedURLException" %>
 <%@ page import="java.io.File" %>
-
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 <%
     boolean isEmailNotificationEnabled = false;
-
     String callback = (String) request.getAttribute("callback");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -101,13 +99,12 @@
 
 <script type="application/javascript">
     $(document).ready(function () {
-
         $('.notify').modal({
             onHide: function () {
                 <%
                     try {
                 %>
-                location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
+                        location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
                 <%
                 } catch (MalformedURLException e) {
                     request.setAttribute("error", true);
@@ -122,7 +119,6 @@
             closable: false,
             centered: true,
         }).modal("show");
-
     });
 </script>
 </body>

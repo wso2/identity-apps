@@ -17,7 +17,7 @@
  */
 
 import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
-import React, { ReactElement, Suspense, lazy } from "react";
+import React, { ReactElement, Suspense, lazy, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
@@ -29,7 +29,7 @@ import { getEmptyPlaceholderIllustrations } from "../features/core";
  * @interface ExtensionInterface - Component placeholder properties.
  */
 interface ExtensionInterface {
-    section: "feedback-button";
+    section: "feedback-button" | "app-switch-button";
     type: "component";
 }
 
@@ -45,15 +45,18 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
     
     const { t } = useTranslation();
 
+    const [ Component, setComponent ] = useState<JSX.Element|any>(null);
+    
     const fragment = ExtensionsManager.getConfig()?.sections[type + "s"]?.[section];
 
-    let DynamicLoader;
+    useEffect(() => {
+        
+        if (Component || !fragment) {
+            return;
+        }
 
-    if (fragment) {
-        DynamicLoader = lazy(() => import(`${fragment}`));
-    } else {
-        DynamicLoader = () => <></>;
-    }
+        setComponent(lazy(() => import(`${fragment}`)));
+    }, [ fragment ]);
 
     return (
         <ErrorBoundary
@@ -78,7 +81,9 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                         </Placeholder.Header>
                     </Placeholder>
                 ) }>
-                <DynamicLoader />
+                {
+                    Component && <Component />
+                }
             </Suspense>
         </ErrorBoundary>
     );

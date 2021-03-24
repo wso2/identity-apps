@@ -41,7 +41,8 @@ const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";
 const MANIFEST_FILE_NAME = "assets-manifest.json";
 
-const skipSample = process.argv.indexOf('--skipSample') > -1;
+const skipSample = process.argv.indexOf("--skipSample") > -1;     // CLI arg to skip the sample theme generation.
+const skipManifest = process.argv.indexOf("--skipManifest") > -1; // CLI arg to skip the asset manifest generation.
 
 /*
  * Generate Default Site Variables JSON files
@@ -206,13 +207,15 @@ const generateThemes = () => {
             Object.keys(files).map((key) => writeFile(theme, key, files[key], themeIndexFile));
             copyAssets(theme, filePath);
 
-            createAssetManifest(theme, filePath)
-                .then(() => {
-                    console.log("assets manifest generation for " + theme + " theme succeeded.");
-                })
-                .catch((error) => {
-                    console.error("assets manifest generation for " + theme + " theme failed with error - ", error);
-                });
+            if (!skipManifest) {
+                createAssetManifest(theme, filePath)
+                    .then(() => {
+                        console.log("assets manifest generation for " + theme + " theme succeeded.");
+                    })
+                    .catch((error) => {
+                        console.error("assets manifest generation for " + theme + " theme failed with error - ", error);
+                    });
+            }
         }, (error) => {
             console.error(error);
         });

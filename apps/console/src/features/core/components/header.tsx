@@ -205,6 +205,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Menu.Item>
                     ),
                     floated: "right"
+                },
+                {
+                    component: (
+                        <Menu.Item key={ "app-switch-button" }>
+                            <ComponentPlaceholder section="app-switch-button" type="component"/>
+                        </Menu.Item>
+                    ),
+                    floated: "right"
                 }
             ] }
             fluid={ fluid }

@@ -153,9 +153,37 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      * Config for Remove MFA for Super Tenant User.
      */
     disableMFAforSuperTenantUser?: boolean;
-}
-
-/**
- * Portal Deployment config interface inheriting the common configs from core module.
- */
-export type DeploymentConfigInterface = CommonDeploymentConfigInterface<ResponseMode, Storage>;
+    /**
+     * Show App Switch button in the Header for Super Tenant User.
+     */
+     showAppSwitchButton?: boolean;
+    }
+    
+    /**
+     * Interface for defining settings and configs of an external app.
+     */
+     interface ExternalAppConfigInterface {
+        /**
+         * App base path. ex: `/account`, `/admin` etc.
+         */
+        basePath: string;
+        /**
+         * Display name for the app.
+         */
+        displayName: string;
+        /**
+         * Access path/URL for the app.
+         */
+        path: string;
+    }
+    
+    /**
+     * Portal Deployment config interface inheriting the common configs from core module.
+     */
+    export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseMode, Storage> {
+    
+        /**
+         * Configs of the Console app.
+         */
+        consoleApp: ExternalAppConfigInterface;
+    }

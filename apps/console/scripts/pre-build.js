@@ -41,8 +41,8 @@ log("Pre build script started.....");
 // Run the clean script.
 execSync("npm run clean");
 
-// Run theme folder copying script.
-execSync("npm run copy:themes");
+// Run theme content copying to source script.
+execSync("npm run copy:themes:src");
 
 // Path of the build directory.
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");

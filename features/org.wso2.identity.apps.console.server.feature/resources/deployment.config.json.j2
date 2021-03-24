@@ -137,6 +137,9 @@
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
+        {% if console.ui.show_app_switch_button is defined %}
+        "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
+        {% endif %}
         "features": {
             "applications": {
                 "disabledFeatures": [

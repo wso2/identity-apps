@@ -531,8 +531,9 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                description: "Scan the QR code using an Authenticator App to use TOTP" + " as a second " +
-                    "authentication factor",
+                description: " Scan the QR code using an Authenticator App to use " +
+                    "time-based , one-time passcodes (also known as TOTP) as a " +
+                    "second factor when logging in to applications.",
                 heading: "Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
@@ -851,8 +852,8 @@ export const myAccount: MyAccountNS = {
                         description: {
                             para1:
                                 "You can request the administrator to delete your account. The administrator is " +
-                                "the administrator of the tenant you are registered under, or the " +
-                                "super-administrator if you do not use the tenant feature.",
+                                "the administrator of the organization you are registered under, or the " +
+                                "super-administrator if you do not use the organization feature.",
                             para2:
                                 "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."
