@@ -32,8 +32,8 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -245,6 +245,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    useEffect(() => {
+        if (!template?.id || !SinglePageApplicationTemplate?.id) {
+            return;
+        }
+
+        if (template.id == SinglePageApplicationTemplate.id) {
+            setSPAApplication(true);
+        }
+    }, [ template ]);
+
     /**
      * Check whether to show the callback url or not
      */
@@ -298,17 +308,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return selectedGrantTypes?.includes(("refresh_token")) && selectedGrantTypes?.length === 1;
 
     };
-
-    useEffect(() => {
-        if (!template?.id || !SinglePageApplicationTemplate?.id) {
-            return;
-        }
-
-        if (template.id == SinglePageApplicationTemplate.id) {
-            setSPAApplication(true);
-        }
-    }, [ template ]);
-
 
     useEffect(() => {
         if (selectedGrantTypes !== undefined) {
@@ -470,7 +469,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         label: "Opaque",
                         value: ele
                     });
-                } else if ((SinglePageApplicationTemplate.id === template.id) && isBinding && ele === "cookie") {
+                } else if ((isSPAApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
@@ -1053,7 +1052,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (SinglePageApplicationTemplate.id !== template.id) &&
+                (isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -1100,7 +1099,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                 <div ref={ url } />
                                 <URLInput
-                                    isAllowEnabled={ SinglePageApplicationTemplate.id === template.id }
+                                    isAllowEnabled={ isSPAApplication }
                                     handleAddAllowedOrigin={ (url: string) => handleAllowOrigin(url) }
                                     tenantDomain={ tenantDomain }
                                     allowedOrigins={ allowedOriginList }
@@ -1263,7 +1262,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ SinglePageApplicationTemplate.id !== template.id
+                                    children={ isSPAApplication
                                         ? [
                                             {
                                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1375,7 +1374,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (SinglePageApplicationTemplate.id !== template.id) && isTokenBindingTypeSelected && (
+                (isSPAApplication) && isTokenBindingTypeSelected && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1453,7 +1452,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Field
                         ref={ userAccessTokenExpiryInSeconds }
                         name="userAccessTokenExpiryInSeconds"
-                        label={ SinglePageApplicationTemplate.id !== template.id
+                        label={ isSPAApplication
                             ? t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.expiry.label") :
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1683,7 +1682,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (SinglePageApplicationTemplate.id !== template.id) &&
+                (isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -1876,7 +1875,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                (SinglePageApplicationTemplate.id !== template.id) &&
+                (isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1965,7 +1964,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Row> }
             { /*Request Object Signature*/ }
             {
-                (SinglePageApplicationTemplate.id !== template.id) &&
+                (isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2054,7 +2053,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Certificates */ }
             {
-                (SinglePageApplicationTemplate.id !== template.id) &&
+                (isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2376,7 +2375,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
             >
-                { isSPAApplication
+                {
+                    isSPAApplication
                         ? (
                             t("console:develop.features.applications.confirmations" +
                                 ".revokeApplication.content"))
@@ -2596,7 +2596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, url, origin);
 
                         if (!isExpiryTimesTooLowModalShown) {
-                            if (SinglePageApplicationTemplate.id !== template.id) {
+                            if (isSPAApplication) {
                                 onSubmit(updateConfiguration(values, url, origin));
                             } else {
                                 onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -2612,7 +2612,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, undefined, undefined);
 
         if (!isExpiryTimesTooLowModalShown) {
-            if (SinglePageApplicationTemplate.id !== template.id) {
+            if (isSPAApplication) {
                 onSubmit(updateConfiguration(values, undefined, undefined));
             } else {
                 onSubmit(updateConfiguration(values, undefined, undefined));
@@ -2676,7 +2676,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     value={ initialValues?.clientId }
                                                     data-testid={ `${ testId }-client-id-readonly-input` }
                                                 />
-                                                {/*TODO - Application revoke is disabled until proper
+                                                { /*TODO - Application revoke is disabled until proper
                                                 backend support for application disabling is provided
                                                 @link https://github.com/wso2/product-is/issues/11453
                                                 {
@@ -2692,10 +2692,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             { t("common:revoke") }
                                                         </Button>
                                                     )
-                                                }*/}
+                                                }*/ }
                                             </div>
                                         </Form.Field>
-                                        { ((initialValues?.state !== State.REVOKED) &&
+                                        { ( applicationConfig.inboundOIDCForm.showNativeClientSecretMessage &&
+                                            (initialValues?.state !== State.REVOKED) &&
                                             isSPAApplication ) ?
                                             (<Message info={ true }>
                                                 <Trans
@@ -2718,7 +2719,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         {
                             (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (SinglePageApplicationTemplate.id !== template.id)) && (
+                                (isSPAApplication)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
@@ -2827,12 +2828,12 @@ InboundOIDCForm.defaultProps = {
         grantTypes: [],
         idToken: undefined,
         logout: undefined,
-        refreshToken: undefined,
         pkce: {
             mandatory: false,
             supportPlainTransformAlgorithm: false
         },
         publicClient: false,
+        refreshToken: undefined,
         scopeValidators: [],
         state: undefined,
         validateRequestObjectSignature: undefined
