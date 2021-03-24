@@ -278,6 +278,20 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
     }, [ initialValues ]);
 
+    const resolveAllowedOrigins = (urls: string): string[] => {
+        let calBackUrls: string[] = [];
+
+        if (urls?.split(",").length > 1) {
+            calBackUrls = urls?.split(",");
+        } else {
+            calBackUrls.push(urls);
+        }
+        const normalizedOrigins = calBackUrls?.map(
+            (url) => URLUtils.urlComponents(url)?.origin
+        );
+        return [...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value)))];
+    };
+
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -309,12 +323,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         if (showCallbackURLField && (showCallbackURL || !fields || fields.includes("callbackURLs"))) {
-            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = resolveAllowedOrigins( urls ? urls
+                : callBackUrls);
         }
 
         if (!showCallbackURLField && selectedGrantTypes) {
             config.inboundProtocolConfiguration.oidc[ "grantTypes" ] = selectedGrantTypes;
-            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = resolveAllowedOrigins( urls ? urls
+                : callBackUrls);
         }
 
         return config;
