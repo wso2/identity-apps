@@ -53,7 +53,8 @@
 
 
 <script>
-    function submitIdentifier () {
+    function submitIdentifier (e) {
+        e.preventDefault();
         var userName = document.getElementById("username");
         var usernameUserInput = document.getElementById("usernameUserInput");
 
@@ -62,7 +63,18 @@
         }
 
         if (username.value) {
-            document.getElementById("identifierForm").submit();
+            $.ajax({
+                type: "GET",
+                url: "<%=loginContextRequestUrl%>",
+                success: function (data) {
+                    if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        document.getElementById("identifierForm").submit();
+                    }
+                },
+                cache: false
+            });
         }
     }
 </script>
@@ -196,7 +208,7 @@
         <div class="column align-right buttons">
             <input
                 type="submit"
-                onclick="submitIdentifier()"
+                onclick="submitIdentifier(event)"
                 class="ui primary large button"
                 role="button"
                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" />
