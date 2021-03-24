@@ -43,6 +43,10 @@ const OUTPUT_PATH = "build/console";               // Build artifacts output pat
 const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
 const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
 
+// Dev Server Default Configs.
+const DEV_SERVER_PORT = 9001;
+const ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT = "/login";
+
 module.exports = (env) => {
 
     // Build Environments.
@@ -58,9 +62,22 @@ module.exports = (env) => {
     // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
     const analyzerPort = env.ANALYZER_PORT;
+    
+    // Profiling mode options.
+    const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
+
+    // Dev Server Options.
+    const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+
+    // Log level.
+    const logLevel = env.LOG_LEVEL
+        ? env.LOG_LEVEL
+        : isProfilingMode
+            ? "info"
+            : "none";
 
     const basename = deploymentConfig.appBaseName;
-    const devServerPort = 9001;
+    const devServerPort = env.DEV_SERVER_PORT || DEV_SERVER_PORT;
     const publicPath = `/${ basename }`;
     const isRootContext = publicPath === "/";
 
@@ -86,10 +103,21 @@ module.exports = (env) => {
         devServer: {
             before: function (app) {
                 app.get("/", function (req, res) {
-                    res.redirect(publicPath);
+                    // In root context, `publicPath` is `/`. This causes a redirection loop.
+                    // TO overcome this, redirect to `/login` in root context.
+                    res.redirect(
+                        !isRootContext
+                            ? publicPath
+                            : ROOT_CONTEXT_DEV_SERVER_INITIAL_REDIRECT
+                    );
                 });
             },
             contentBase: distFolder,
+            // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
+            // websites from potentially accessing local content through DNS rebinding:
+            // https://github.com/webpack/webpack-dev-server/issues/887
+            // This has resulted in issues such as development in cloud environment or subdomains impossible.
+            disableHostCheck: isDevServerHostCheckDisabled,
             historyApiFallback: true,
             host: "localhost",
             hot: true,
@@ -109,6 +137,11 @@ module.exports = (env) => {
             main: "./src/index.tsx",
             rpIFrame: "./src/init/rpIFrame-script.ts"
         },
+        infrastructureLogging: {
+            // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
+            // This is set to `info` in profiling mode to get the desired result.
+            level: logLevel
+        },
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
@@ -127,7 +160,9 @@ module.exports = (env) => {
                 },
                 {
                     generator: {
-                        filename: `${ PATHS.assets }/[hash][ext][query]`
+                        filename: isProduction
+                            ? `${ PATHS.assets }/[hash][ext][query]`
+                            : `${ PATHS.assets }/[path][name][ext]`
                     },
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     type: "asset/resource"
@@ -176,6 +211,17 @@ module.exports = (env) => {
                         {
                             loader: "babel-loader",
                             options: {
+                                // When set, each Babel transform output will be compressed with Gzip.
+                                // Project may benefit from this if it transpiles thousands of files.
+                                // https://github.com/facebook/create-react-app/issues/6846
+                                cacheCompression: false,
+                                // This is a feature of `babel-loader` for webpack (not Babel itself).
+                                // It enables caching results in ./node_modules/.cache/babel-loader/
+                                // directory for faster rebuilds.
+                                cacheDirectory: true,
+                                // Babel will not include superfluous whitespace characters and line terminators.
+                                // This produces warnings and slowness in dev server.
+                                compact: isProduction,
                                 plugins: [
                                   isDevelopment && require.resolve("react-refresh/babel")
                                 ].filter(Boolean)
@@ -273,6 +319,9 @@ module.exports = (env) => {
                 : `${ publicPath }/`
         },
         plugins: [
+            isProfilingMode && new webpack.ProgressPlugin({
+                profile: true
+            }),
             isAnalyzeMode && new BundleAnalyzerPlugin({
                 analyzerHost: "localhost",
                 analyzerPort: analyzerPort
@@ -286,9 +335,6 @@ module.exports = (env) => {
             }),
             new ForkTsCheckerWebpackPlugin({
                 async: isDevelopment,
-                eslint: {
-                    files: "./src/**/*.{ts,tsx,js,jsx}"
-                },
                 issue: {
                     exclude: [
                         {
@@ -439,14 +485,14 @@ module.exports = (env) => {
             },
             extensions: [".tsx", ".ts", ".js", ".json"],
             // In webpack 5 automatic node.js polyfills are removed.
-            // We have to polyfill the required once manually.
-            // https://stackoverflow.com/a/65542520
+            // Node.js Polyfills should not be used in front end code.
+            // https://github.com/webpack/webpack/issues/11282
             fallback: {
-                buffer: require.resolve("buffer/"),
-                crypto: require.resolve("crypto-browserify"),
+                buffer: false,
+                crypto: false,
                 fs: false,
-                path: require.resolve("path-browserify"),
-                stream: require.resolve("stream-browserify")
+                path: false,
+                stream: false
             }
         },
         // HMR is breaking in Webpack 5 when there is a `browserlist` present in package.json.
