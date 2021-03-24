@@ -279,6 +279,31 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     }, [ initialValues ]);
 
     /**
+     * The function resolves the newly added origins for the callback URLs.
+     * Returns the intersection set of,
+     * <ul>
+     * <li>The newly added origins of the callback URLs.</li>
+     * <li>All the available CORS origins.</li>
+     * </ul>
+     *
+     * @param {string} urls - Callback URLs.
+     * @return {string[]} Allowed origin URLs.
+     */
+    const resolveAllowedOrigins = (urls: string): string[] => {
+        let calBackUrls: string[] = [];
+
+        if (urls?.split(",").length > 1) {
+            calBackUrls = urls?.split(",");
+        } else {
+            calBackUrls.push(urls);
+        }
+        const normalizedOrigins = calBackUrls?.map(
+            (url) => URLUtils.urlComponents(url)?.origin
+        );
+        return [...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value)))];
+    };
+
+    /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
@@ -309,12 +334,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         if (showCallbackURLField && (showCallbackURL || !fields || fields.includes("callbackURLs"))) {
-            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = resolveAllowedOrigins( urls ? urls
+                : callBackUrls);
         }
 
         if (!showCallbackURLField && selectedGrantTypes) {
             config.inboundProtocolConfiguration.oidc[ "grantTypes" ] = selectedGrantTypes;
-            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = resolveAllowedOrigins( urls ? urls
+                : callBackUrls);
         }
 
         return config;
