@@ -132,7 +132,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      *
      * @param values - Form values.
      */
-    const handleAuthenticatorConfigFormSubmit = (values: any): void => {
+    const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface): void => {
+
         setIsPageLoading(true);
 
         // Special checks on Google IDP
@@ -527,6 +528,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // Toggle Switch which enables/disables the authenticator state.
             {
                 defaultChecked: authenticator.data?.isEnabled,
+                disabled: isDefaultAuthenticator,
                 label: t(authenticator.data?.isEnabled ?
                     "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.0" :
                     "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.1"
@@ -575,7 +577,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return p.key === key;
         });
         const dataIndex = properties.indexOf(elementToRemove);
-        properties.splice(dataIndex, 1);
+        if (dataIndex >= 0) {
+            properties.splice(dataIndex, 1);
+        }
     };
 
     const showAuthenticator = (): ReactElement => {
@@ -624,6 +628,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     isMandatory: false,
                     key: "scopes",
                     options: [],
+                    properties: {
+                        email: {
+                            description: "Allows to view user's email address",
+                            icon: <Icon className={ "mr-0" } name="envelope outline" />
+                        },
+                        openid: {
+                            description: "Allows to authenticate using OpenID Connect",
+                            icon: <Icon className={ "mr-0" } name="openid" />
+                        },
+                        profile: {
+                            description: "Allows to view user's basic profile info",
+                            icon: <Icon className={ "mr-0" } name="user outline" />
+                        }
+                    },
                     readOnly: true,
                     regex: ".*",
                     subProperties: [],

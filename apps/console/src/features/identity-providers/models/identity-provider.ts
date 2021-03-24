@@ -423,6 +423,7 @@ export interface CommonPluggableComponentMetaPropertyInterface {
     maxLength?: number;
     isDisabled?: boolean;
     readOnly?: boolean;
+    properties?: any;
     subProperties?: CommonPluggableComponentMetaPropertyInterface[];
 }
 
