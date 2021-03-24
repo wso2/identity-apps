@@ -378,7 +378,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             <div>
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 11 } className="first-column">
+                        <Grid.Column width={ 1 } className="first-column">
                             <List.Content floated="left">
                                 <GenericIcon
                                     icon={ getMFAIcons().fingerprint }
@@ -389,6 +389,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                     relaxed={ true }
                                 />
                             </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 12 } className="first-column">
                             <List.Content>
                                 <List.Header>{ t("myAccount:components.mfa.fido.heading") }</List.Header>
                                 <List.Description>
@@ -396,7 +398,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 5 } className="last-column">
+                        <Grid.Column width={ 3 } className="last-column">
                             <List.Content floated="right">
                                 <Icon
                                     floated="right"

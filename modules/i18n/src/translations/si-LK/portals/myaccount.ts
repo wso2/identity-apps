@@ -529,8 +529,9 @@ export const myAccount: MyAccountNS = {
         },
         mfa: {
             authenticatorApp: {
-                description: "දෙවන සත්‍යාපන සාධකය ලෙස TOTP භාවිතා කිරීම සඳහා Authenticator යෙදුමක් භාවිතයෙන් QR කේතය " +
-                    "පරිලෝකනය කරන්න",
+                description: "යෙදුම් වලට ප්‍රවේශවීමේදී දෙවන සාධකය ලෙස කාලය " +
+                    "මත පදනම් වූ, එක් වරක් මුර කේත (TOTP ලෙසද හැඳින්වේ) භාවිතා " +
+                    "කිරීමට Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න.",
                 heading: "සත්‍යාපන යෙදුම",
                 hint: "QR කේතය පෙන්වන්න",
                 modals: {
