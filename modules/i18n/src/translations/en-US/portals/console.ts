@@ -1164,7 +1164,8 @@ export const console: ConsoleNS = {
                                 label: "Authorized redirect URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Please add a valid URL.",
+                                    empty: "This is a required field.",
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL.",
                                     required: "This field is required for a functional app. " +
                                         "However, if you are planning to try the sample app, " +
                                         "this field can be ignored."
