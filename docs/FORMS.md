@@ -1,6 +1,6 @@
 # Forms
 
-The WSO2 form library can cater to all the requirements that are identified when it comes to its use-cases. The fields of 
+The @wso2is/form-fields library can cater to all the requirements that are identified when it comes to its use-cases. The fields of 
 this module is compatible with the semantic UI elements that are customised in the `react-components` module and 
 support their native behaviors.
 
