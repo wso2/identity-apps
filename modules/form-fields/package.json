@@ -1,5 +1,5 @@
 {
-    "name": "@wso2is/form",
+    "name": "@wso2is/form-fields",
     "version": "1.0.0",
     "description": "Form library for WSO2 Identity Server front end applications.",
     "keywords": [

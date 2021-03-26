@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Field, FieldProps } from "react-final-form";
-import { Grid, MessageProps } from "semantic-ui-react";
+import { Grid, MessageProps, SemanticWIDTHS } from "semantic-ui-react";
 import {
     CopyFieldAdapter,
     PasswordFieldAdapter,
