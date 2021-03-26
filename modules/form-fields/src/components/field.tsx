@@ -58,7 +58,7 @@ interface FormFieldPropsInterface extends FieldProps<any,any,any>, TestableCompo
     /**
      * Width of the message box
      */
-    messageWidth?: number;
+    messageWidth?: SemanticWIDTHS;
     /**
      * Validation of the field.
      */
