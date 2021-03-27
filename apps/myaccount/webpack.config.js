@@ -176,7 +176,12 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "url-loader"
+                            loader: "file-loader",
+                            options: {
+                                name: isProduction
+                                    ? `${ PATHS.assets }/[hash][ext][query]`
+                                    : `${ PATHS.assets }/[path][name].[ext]`
+                            }
                         }
                     ]
                 },
