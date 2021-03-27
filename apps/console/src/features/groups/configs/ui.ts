@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import { AppConstants } from "../../core/constants";
+import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as UserIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 
 export const getGroupsWizardStepIcons = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`),
-        roles: import(`../../../themes/${ theme }/assets/images/icons/gears-icon.svg`),
-        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`),
-        users: import(`../../../themes/${ theme }/assets/images/icons/user-icon.svg`)
+        general: DocumentIcon,
+        roles: GearsIcon,
+        summary: ReportIcon,
+        users: UserIcon
     };
 };
