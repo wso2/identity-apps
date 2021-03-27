@@ -263,9 +263,10 @@ module.exports = (env) => {
             unsafeCache: true
         },
         optimization: {
+            concatenateModules: isProduction,
             minimize: isProduction,
             minimizer: [
-                isProduction && new TerserPlugin({
+                new TerserPlugin({
                     extractComments: true,
                     terserOptions: {
                         compress: {
@@ -302,7 +303,9 @@ module.exports = (env) => {
             },
             splitChunks: {
                 chunks: "all"
-            }
+            },
+            // Tells webpack to determine used exports for each module. 
+            usedExports: true
         },
         output: {
             chunkFilename: isProduction
