@@ -21,6 +21,7 @@ const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin"
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -39,6 +40,8 @@ const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
 const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
 
 // Paths
+const APP_SOURCE_DIRECTORY = "src";                // App source code directory.
+const APP_NODE_MODULES_DIRECTORY = "node_modules"; // Node modules.
 const OUTPUT_PATH = "build/myaccount";             // Build artifacts output path.
 const CACHE_DIRECTORY = "cache";                   // Output directory for the cache files. Only applicable in dev mode.
 const STATIC_ASSETS_DIRECTORY = "static/media";    // Output directory for static assets i.e .png, .jpg etc.
@@ -87,6 +90,8 @@ module.exports = (env) => {
 
     // Paths to configs & other required files.
     const PATHS = {
+        appNodeModules: APP_NODE_MODULES_DIRECTORY,
+        appSrc: APP_SOURCE_DIRECTORY,
         assets: STATIC_ASSETS_DIRECTORY,
         cache: path.resolve(__dirname, CACHE_DIRECTORY),
         eslintrc: isProduction
@@ -235,28 +240,6 @@ module.exports = (env) => {
                     enforce: "pre",
                     test: /\.js$/,
                     use: ["source-map-loader"]
-                },
-                {
-                    enforce: "pre",
-                    exclude: /(node_modules|dist|build|target|plugins)/,
-                    test: /\.(ts|tsx|js|jsx)$/,
-                    use: [
-                        {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: 1
-                            }
-                        },
-                        {
-                            loader: "eslint-loader",
-                            options: {
-                                configFile: PATHS.eslintrc,
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
-                        }
-                    ]
                 }
             ],
             // Makes missing exports an error instead of warning.
@@ -476,6 +459,17 @@ module.exports = (env) => {
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
+            }),
+            new ESLintPlugin({
+                cache: true,
+                cacheLocation: path.resolve(
+                    PATHS.appNodeModules,
+                    ".cache/.eslintcache"
+                ),
+                configFile: PATHS.eslintrc,
+                context: PATHS.appSrc,
+                eslintPath: require.resolve("eslint"),
+                extensions: [ "js", "jsx", "ts", "tsx" ]
             })
         ].filter(Boolean),
         resolve: {
