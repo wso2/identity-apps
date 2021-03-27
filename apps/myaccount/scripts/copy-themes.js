@@ -25,8 +25,9 @@ const log = console.log;
 
 // Paths.
 const src = path.join(__dirname, "..", "src");
-const themeModule = path.join(__dirname, "..", "node_modules", "@wso2is", "theme", "dist", "lib");
+const themeModule = path.join(__dirname, "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes");
 const target = path.join(src, "themes");
+const ASSETS_FOLDER_NAME = "assets";
 
 log("Copying the theme content from @wso2is/theme module to the portal source.");
 
@@ -45,7 +46,27 @@ if (fs.existsSync(target)) {
 
 log("\nStarted copying themes to the source......");
 
-// Copy the content in `wso2is/theme` in to target folder.
-fs.copySync(themeModule, src);
+// Copy the assets of the themes in `wso2is/theme` in to target folder.
+// This to done to make sure that webpack treeshakes unused images.
+fs.readdirSync(themeModule).map((theme) => {
+
+    const themePath = path.join(themeModule, theme);
+
+    if (fs.lstatSync(themePath).isDirectory()) {
+        for (const item of fs.readdirSync(themePath))
+            // If the folder name is `assets`, proceed.
+            if (fs.lstatSync(path.join(themePath, item)).isDirectory() && item === ASSETS_FOLDER_NAME) {
+
+                const assetsFolderOriginalPath = path.join(themePath, ASSETS_FOLDER_NAME);
+                const assetsFolderTargetPath = path.join(target, theme, ASSETS_FOLDER_NAME);
+
+                fs.mkdirSync(assetsFolderTargetPath, { recursive: true });
+                log("\nCreated a directory for " + theme + " theme.");
+
+                fs.copySync(assetsFolderOriginalPath, assetsFolderTargetPath);
+                log("Copying resource to " + assetsFolderTargetPath);
+            }
+    }
+});
 
 log("\nFinishing up the theme copying process......");
