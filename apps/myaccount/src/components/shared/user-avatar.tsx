@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { useSVGPromise } from "@wso2is/core/hooks";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -79,7 +78,6 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     const [ showEditModal, setShowEditModal ] = useState(false);
     const [ url, setUrl ] = useState("");
     const [ urlError, setUrlError ] = useState(Error.NONE);
-    const [ gravatarLogoAsDataURL ] = useSVGPromise(getThirdPartyLogos().gravatar);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -120,7 +118,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const resolveTopLabel = (): string => {
         if (isGravatarURL()) {
-            return gravatarLogoAsDataURL;
+            return getThirdPartyLogos().gravatar;
         }
 
         return null;
