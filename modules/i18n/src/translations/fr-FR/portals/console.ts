@@ -1168,7 +1168,8 @@ export const console: ConsoleNS = {
                                 label: "URI autorisés",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
-                                    empty: "Veuillez ajouter une URL valide.",
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter une URL valide.",
                                     required: "Ce champ est obligatoire pour une application fonctionnelle. " +
                                         "Toutefois, si vous prévoyez d'essayer l'exemple d'application, " +
                                         "ce champ peut être ignoré."
