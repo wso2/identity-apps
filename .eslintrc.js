@@ -47,6 +47,7 @@ module.exports = {
         node: true,
         es6: true
     },
+    root: true,
     rules: {
         "eol-last": "error",
         "quotes": ["warn", "double"],
@@ -86,18 +87,28 @@ module.exports = {
         "no-console": "warn",
         "no-duplicate-imports": "warn",
         "no-restricted-imports": [
-            // `chain` doesn't play nice with cherry pick imports.
-            // TODO: Fix this issue and make the rule as `error`.
-            // @see {@link https://github.com/lodash/lodash/issues/3298 }
-            "warn",
+            "error",
             {
                 paths: [
                     {
-                        message: "Please use import foo from 'lodash/foo' instead.",
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
                         name: "lodash"
+                    },
+                    {
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es/chain"
+                    },
+                    {
+                        importNames: [ "chain" ],
+                        message: "Avoid using chain since it is non tree-shakable. Try out flow instead.",
+                        name: "lodash-es"
+                    },
+                    {
+                        message: "Please use import foo from 'lodash-es/foo' instead.",
+                        name: "lodash-es"
                     }
                 ],
-                patterns: [ "@wso2is/**/dist/**" ]
+                patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
             }
         ],
         "semi": 1,
