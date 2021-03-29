@@ -365,7 +365,15 @@ module.exports = (env) => {
                         // ATM, only the theme CSS files, fonts and branding images are required.
                         globOptions: {
                             dot: true,
-                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ],
+                            ignore: [
+                                "**/**.js",
+                                "**/**.json",
+                                // ATM, some components use static assets from `identity-providers` folder to
+                                // load the images using a absolute path. This is a workaround until the media
+                                // service is enabled.
+                                // TODO: Remove this `identity-providers` folder once the usages are refactored.
+                                "**/assets/images/!(branding|identity-providers)/**"
+                            ],
                         },
                         to: "libs"
                     },
