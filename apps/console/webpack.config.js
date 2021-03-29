@@ -472,10 +472,10 @@ module.exports = (env) => {
                     PATHS.appNodeModules,
                     ".cache/.eslintcache"
                 ),
-                configFile: PATHS.eslintrc,
                 context: PATHS.appSrc,
                 eslintPath: require.resolve("eslint"),
-                extensions: [ "js", "jsx", "ts", "tsx" ]
+                extensions: [ "js", "jsx", "ts", "tsx" ],
+                overrideConfigFile: PATHS.eslintrc
             })
         ].filter(Boolean),
         resolve: {
