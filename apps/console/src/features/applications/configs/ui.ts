@@ -16,125 +16,185 @@
  * under the License.
  */
 
-import { AppConstants } from "../../core/constants";
+import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
+import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
+import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
+import { ReactComponent as SMSOTPIcon } from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
+import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
+import { ReactComponent as AuthorizeIcon } from "../../../themes/default/assets/images/icons/authorize.svg";
+import {
+    ReactComponent as CertificateColoredIcon
+} from "../../../themes/default/assets/images/icons/certificate-colored-icon.svg";
+import { ReactComponent as ClockColoredIcon } from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
+import { ReactComponent as CodeIcon } from "../../../themes/default/assets/images/icons/code-icon.svg";
+import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
+import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import {
+    ReactComponent as IDPCertificateIcon
+} from "../../../themes/default/assets/images/icons/idp-certificate.svg";
+import { ReactComponent as IntrospectIcon } from "../../../themes/default/assets/images/icons/introspect.svg";
+import { ReactComponent as IssuerIcon } from "../../../themes/default/assets/images/icons/issuer.svg";
+import { ReactComponent as JWKSIcon } from "../../../themes/default/assets/images/icons/jwks.svg";
+import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
+import {
+    ReactComponent as MagnifierColoredIcon
+} from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
+import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
+import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
+import  AddCircleOutlineIcon from "../../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
+import { ReactComponent as WellKnownIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
+import PlusIcon from "../../../themes/default/assets/images/icons/plus-icon.svg";
+import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as ShuttleIcon } from "../../../themes/default/assets/images/icons/shuttle-icon.svg";
+import { ReactComponent as SLOIcon } from "../../../themes/default/assets/images/icons/slo.svg";
+import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
+import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
+import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
+import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
+import {
+    ReactComponent as BoxTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";
+import {
+    ReactComponent as CustomApplicationTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
+import {
+    ReactComponent as OIDCMobileTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
+import {
+    ReactComponent as OIDCWebAppTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/oidc-web-app-template-illustration.svg";
+import {
+    ReactComponent as PassiveSTSTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/passive-sts-template-illustration.svg";
+import {
+    ReactComponent as SAMLWebAppTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
+import {
+    ReactComponent as SlackTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/slack-template-illustration.svg";
+import {
+    ReactComponent as SPATemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/spa-template-illustration.svg";
+import {
+    ReactComponent as WindowsTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/windows-template-illustration.svg";
+import {
+    ReactComponent as WorkdayTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/workday-template-illustration.svg";
+import {
+    ReactComponent as WSTrustTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import {
+    ReactComponent as ZoomTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
+import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
+import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
+import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
+import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
+import { ReactComponent as FacebookLogo } from "../../../themes/default/assets/images/social/facebook.svg";
+import { ReactComponent as GoogleLogo } from "../../../themes/default/assets/images/social/google.svg";
+import { ReactComponent as TwitterLogo } from "../../../themes/default/assets/images/social/twitter.svg";
+import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
+import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
+import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
+import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
 
 export const getInboundProtocolLogos = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        oidc: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`),
-        openid: import(`../../../themes/${ theme }/assets/images/protocols/openid.png`),
-        "passive-sts": import(`../../../themes/${ theme }/assets/images/protocols/ws-fed.png`),
-        saml: import(`../../../themes/${ theme }/assets/images/protocols/saml.png`),
-        "ws-trust": import(`../../../themes/${ theme }/assets/images/protocols/ws-trust.png`),
-        wsFed: import(`../../../themes/${ theme }/assets/images/protocols/ws-fed.png`),
-        wsTrust: import(`../../../themes/${ theme }/assets/images/protocols/ws-trust.png`)
+        oidc: OpenIDLogo,
+        openid: OpenIDLogo,
+        "passive-sts": WSFedLogo,
+        saml: SamlLogo,
+        "ws-trust": WSTrustLogo,
+        wsFed: WSFedLogo,
+        wsTrust: WSTrustLogo
     };
 };
 
 export const getApplicationTemplateIllustrations = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        box: import(`../../../themes/${ theme }/assets/images/illustrations/box-template-illustration.svg`),
-        customApp: import(`../../../themes/${ theme }/assets/images/illustrations/custom-app-illustration.svg`),
-        oidcMobile: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/oidc-mobile-template-illustration.svg`),
-        oidcWebApp: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/oidc-web-app-template-illustration.svg`),
-        passiveSTS: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/passive-sts-template-illustration.svg`),
-        samlWebApp: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/saml-web-app-template-illustration.svg`),
-        slack: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/slack-template-illustration.svg`),
-        spa: import(`../../../themes/${ theme }/assets/images/illustrations/spa-template-illustration.svg`),
-        windowsNative: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/windows-template-illustration.svg`),
-        workday: import(`../../../themes/${ theme }/assets/images/illustrations/workday-template-illustration.svg`),
-        wsTrust: import(`../../../themes/${ theme }/assets/images/illustrations/ws-trust-template-illustration.svg`),
-        zoom: import(`../../../themes/${ theme }/assets/images/illustrations/zoom-template-illustration.svg`)
+        box: BoxTemplateIllustration,
+        customApp: CustomApplicationTemplateIllustration,
+        oidcMobile: OIDCMobileTemplateIllustration,
+        oidcWebApp: OIDCWebAppTemplateIllustration,
+        passiveSTS: PassiveSTSTemplateIllustration,
+        samlWebApp: SAMLWebAppTemplateIllustration,
+        slack: SlackTemplateIllustration,
+        spa: SPATemplateIllustration,
+        windowsNative: WindowsTemplateIllustration,
+        workday: WorkdayTemplateIllustration,
+        wsTrust: WSTrustTemplateIllustration,
+        zoom: ZoomTemplateIllustration
     };
 };
 
 export const getApplicationWizardStepIcons = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`),
-        protocolConfig: import(`../../../themes/${ theme }/assets/images/icons/gears-icon.svg`),
-        protocolSelection: import(`../../../themes/${ theme }/assets/images/icons/spin-wheel-icon.svg`),
-        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`)
+        general: DocumentIcon,
+        protocolConfig: GearsIcon,
+        protocolSelection: SpinWheelIcon,
+        summary: ReportIcon
     };
 };
 
 export const getAuthenticatorIcons = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        basic: import(`../../../themes/${ theme }/assets/images/authenticators/basic-auth.png`),
-        default: import(`../../../themes/${ theme }/assets/images/icons/lock-shield.svg`),
-        emailOTP: import(`../../../themes/${ theme }/assets/images/authenticators/email-otp.svg`),
-        facebook: import(`../../../themes/${ theme }/assets/images/social/facebook.svg`),
-        fido: import(`../../../themes/${ theme }/assets/images/authenticators/fido.png`),
-        google: import(`../../../themes/${ theme }/assets/images/social/google.svg`),
-        identifierFirst: import(`../../../themes/${ theme }/assets/images/icons/magnifier-colored-icon.svg`),
-        jwtBasic: import(`../../../themes/${ theme }/assets/images/technologies/jwt-logo.svg`),
-        microsoft: import(`../../../themes/${ theme }/assets/images/third-party/microsoft-logo.svg`),
-        office365: import(`../../../themes/${ theme }/assets/images/third-party/office-365-logo.svg`),
-        sessionExecutor: import(`../../../themes/${ theme }/assets/images/icons/clock-colored-icon.svg`),
-        smsOTP: import(`../../../themes/${ theme }/assets/images/authenticators/sms-otp.svg`),
-        totp: import(`../../../themes/${ theme }/assets/images/authenticators/totp.png`),
-        twitter: import(`../../../themes/${ theme }/assets/images/social/twitter.svg`),
-        x509: import(`../../../themes/${ theme }/assets/images/icons/certificate-colored-icon.svg`),
-        yahoo: import(`../../../themes/${ theme }/assets/images/third-party/yahoo-logo.svg`)
+        basic: BasicAuthIcon,
+        default: LockShieldIcon,
+        emailOTP: EmailOTPIcon,
+        facebook: FacebookLogo,
+        fido: FIDOLogo,
+        google: GoogleLogo,
+        identifierFirst: MagnifierColoredIcon,
+        jwtBasic: JWTLogo,
+        microsoft: MicrosoftLogo,
+        office365: Office365Logo,
+        sessionExecutor: ClockColoredIcon,
+        smsOTP: SMSOTPIcon,
+        totp: TOTPIcon,
+        twitter: TwitterLogo,
+        x509: CertificateColoredIcon,
+        yahoo: YahooLogo
     };
 };
 
 export const getHelpPanelIcons = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
         endpoints: {
-            authorize: import(`../../../themes/${ theme }/assets/images/icons/authorize.svg`),
-            certificate: import(`../../../themes/${ theme }/assets/images/icons/idp-certificate.svg`),
-            introspect: import(`../../../themes/${ theme }/assets/images/icons/introspect.svg`),
-            issuer: import(`../../../themes/${ theme }/assets/images/icons/issuer.svg`),
-            jwks: import(`../../../themes/${ theme }/assets/images/icons/jwks.svg`),
-            metadata: import(`../../../themes/${ theme }/assets/images/icons/metadata.svg`),
-            samlSLO: import(`../../../themes/${ theme }/assets/images/icons/slo.svg`),
-            samlSSO: import(`../../../themes/${ theme }/assets/images/icons/sso.svg`),
-            token: import(`../../../themes/${ theme }/assets/images/icons/token.svg`),
-            userInfo: import(`../../../themes/${ theme }/assets/images/icons/userInfo.svg`),
-            wellKnown: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/discovery-endpoint.svg`)
+            authorize: AuthorizeIcon,
+            certificate: IDPCertificateIcon,
+            introspect: IntrospectIcon,
+            issuer: IssuerIcon,
+            jwks: JWKSIcon,
+            metadata: IDPMetadataIcon,
+            samlSLO: SLOIcon,
+            samlSSO: SSOIcon,
+            token: TokenIcon,
+            userInfo: UserInfoIcon,
+            wellKnown: WellKnownIcon
         },
         tabs: {
-            docs: import(`../../../themes/${ theme }/assets/images/icons/open-book-icon.svg`),
-            guide: import(`../../../themes/${ theme }/assets/images/icons/cog-wheel-icon.svg`),
-            samples: import(`../../../themes/${ theme }/assets/images/icons/code-icon.svg`),
-            sdks: import(`../../../themes/${ theme }/assets/images/icons/cube-stack-icon.svg`),
-            whatsNext: import(`../../../themes/${ theme }/assets/images/icons/shuttle-icon.svg`)
+            docs: OpenBookIcon,
+            guide: CogWheelIcon,
+            samples: CodeIcon,
+            sdks: CubeStack,
+            whatsNext: ShuttleIcon
         }
     };
 };
 
 export const getGeneralIcons = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        addCircleOutline: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/add-circle-outline.svg`),
-        plusIcon: import(`../../../themes/${ theme }/assets/images/icons/plus-icon.svg`)
+        addCircleOutline: AddCircleOutlineIcon,
+        plusIcon: PlusIcon
     };
 };

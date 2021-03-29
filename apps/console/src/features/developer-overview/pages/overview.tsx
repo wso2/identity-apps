@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { useSVGPromise } from "@wso2is/core/hooks";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     GenericIcon,
@@ -53,8 +52,6 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const { t } = useTranslation();
 
-    const [ jumbotronBGAsDataURL ] = useSVGPromise(getOverviewPageImages().jumbotron.background);
-
     return (
         <PageLayout contentTopMargin={ false }>
             <div className="developer-portal page overview-page">
@@ -68,7 +65,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     matchedPadding={ false }
                     borderRadius={ 10 }
                     style={ {
-                        backgroundImage: `url(${ jumbotronBGAsDataURL })`
+                        backgroundImage: `url(${ getOverviewPageImages().jumbotron.background })`
                     } }
                     data-testid={ `${ testId }-jumbotron` }
                 >

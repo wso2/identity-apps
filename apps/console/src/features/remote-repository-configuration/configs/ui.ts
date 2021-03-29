@@ -16,24 +16,21 @@
  * under the License.
  */
 
-import { AppConstants } from "../../core/constants";
+import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
+import {
+    default as RemoteFetchIllustration
+} from "../../../themes/default/assets/images/illustrations/remote-repository-illustration.svg";
 
 export const getEmptyPlaceholderIllustrations = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        add: import(`../../../themes/${ theme }/assets/images/icons/code-fork.svg`)
+        add: CodeForkIcon
     };
 };
 
 export const getSectionIllustrations = () => {
 
-    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
-
     return {
-        appConfigRepo: import(`../../../themes/${
-            theme
-        }/assets/images/illustrations/remote-repository-illustration.svg`)
+        appConfigRepo: RemoteFetchIllustration
     };
 };

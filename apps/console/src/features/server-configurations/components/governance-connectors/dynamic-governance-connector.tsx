@@ -64,15 +64,10 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return;
         }
 
-        const illustration: Promise<SVGRLoadedInterface>  = get(getGovernanceConnectorIllustrations(), connector.id,
+        const illustration: string  = get(getGovernanceConnectorIllustrations(), connector.id,
             getGovernanceConnectorIllustrations()?.default);
-        
-        if (illustration) {
-            illustration
-                .then((image: SVGRLoadedInterface) => {
-                    setConnectorIllustration(image.default);
-                });
-        }
+
+        setConnectorIllustration(illustration);
     }, [ connector, getGovernanceConnectorIllustrations ]);
 
     const handleUpdateError = (error) => {
