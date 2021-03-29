@@ -356,6 +356,12 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                         from: "lib",
+                        // Only Copy the required resources to distribution.
+                        // ATM, only the theme CSS files, fonts and branding images are required.
+                        globOptions: {
+                            dot: true,
+                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ],
+                        },
                         to: "libs"
                     },
                     {
