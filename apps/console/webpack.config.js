@@ -71,6 +71,8 @@ module.exports = (env) => {
 
     // Dev Server Options.
     const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+    
+    const shouldCopyLessDistribution = env.SHOULD_COPY_LESS_DISTRIBUTION === "true";
 
     // Log level.
     const logLevel = env.LOG_LEVEL
@@ -367,7 +369,7 @@ module.exports = (env) => {
                         },
                         to: "libs"
                     },
-                    {
+                    shouldCopyLessDistribution && {
                         context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
                         from: "src",
                         to: "themes-less"
@@ -389,7 +391,7 @@ module.exports = (env) => {
                         from: "auth.jsp",
                         to: "."
                     }
-                ]
+                ].filter(Boolean)
             }),
             isProduction
                 ? new HtmlWebpackPlugin({
