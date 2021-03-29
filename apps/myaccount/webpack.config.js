@@ -184,7 +184,7 @@ module.exports = (env) => {
                             loader: "file-loader",
                             options: {
                                 name: isProduction
-                                    ? `${ PATHS.assets }/[hash][ext][query]`
+                                    ? `${ PATHS.assets }/[contenthash].[ext]`
                                     : `${ PATHS.assets }/[path][name].[ext]`
                             }
                         }
