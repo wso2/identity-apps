@@ -41,6 +41,7 @@ import { ReactComponent as ErrorIcon } from "../themes/default/assets/images/ico
 import { ReactComponent as FingerprintIcon } from "../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icons/info-icon.svg";
+import { ReactComponent as KeyboardIcon } from "../themes/default/assets/images/icons/keyboard.svg";
 import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
 import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
@@ -121,6 +122,7 @@ export const getMFAIcons = () => {
         authenticatorApp: AuthenticatorAppIcon,
         fingerprint: FingerprintIcon,
         sms: SMSIcon
+        keyboard: KeyboardIcon
     };
 };
 

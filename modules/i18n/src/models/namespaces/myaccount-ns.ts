@@ -358,6 +358,32 @@ export interface MyAccountNS {
                 };
             };
         };
+        loginVerifyData: {
+            heading: string;
+            description: string;
+            typingdna: {
+                heading: string;
+                description: string;
+            };
+            modals: {
+                clearTypingPatternsModal: {
+                    heading: string;
+                    message: string;
+                };
+            };
+            notifications: {
+                clearTypingPatterns: {
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+        };
         overview: {
             widgets: {
                 accountActivity: {

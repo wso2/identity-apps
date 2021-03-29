@@ -676,6 +676,32 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "loginVerifyData": {
+            "heading": "Data used to verify your login",
+            "description": "This data is used to further verify your identity during login",
+            "typingdna": {
+                "heading": "TypingDNA Typing Patterns",
+                "description": "Your typing patterns can be cleared from here"
+            },
+            "modals": {
+                "clearTypingPatternsModal": {
+                    "heading": "Confirmation",
+                    "message": "This action will clear your typing patterns that are saved in "
+                }
+            },
+            "notifications": {
+                "clearTypingPatterns": {
+                    "success": {
+                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
+                        "message": "Typing patterns cleared successfully"
+                    },
+                    "error": {
+                        "description": "Typing patterns could not be cleared. Please contact your site admin",
+                        "message": "Failed to clear typing patterns"
+                    }
+                }
+            }
+        },
         overview: {
             widgets: {
                 accountActivity: {

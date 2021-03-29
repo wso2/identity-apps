@@ -179,7 +179,9 @@ export class AppConstants {
         .set("SECURITY_MFA_FIDO", "security.mfa.fido")
         .set("SECURITY_MFA_TOTP", "security.mfa.totp")
         .set("SECURITY_ACTIVE_SESSIONS", "security.activeSessions")
-        .set("SECURITY_CONSENTS", "security.manageConsents");
+        .set("SECURITY_CONSENTS", "security.manageConsents")
+        .set("SECURITY_LOGIN_VERIFY_DATA", "security.loginVerifyData")
+        .set("SECURITY_LOGIN_VERIFY_DATA_TYPINGDNA", "security.loginVerifyData.typingDNA");
 
     /**
      * Get all the app paths as a map.
