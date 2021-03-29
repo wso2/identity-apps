@@ -47,6 +47,7 @@ module.exports = {
         node: true,
         es6: true
     },
+    root: true,
     rules: {
         "eol-last": "error",
         "quotes": ["warn", "double"],
