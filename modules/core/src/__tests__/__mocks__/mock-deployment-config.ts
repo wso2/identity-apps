@@ -36,7 +36,7 @@ export const deploymentConfigMock = {
         appCopyright: "WSO2 Identity Server",
         appTitle: "WSO2 Identity Server Sample Dashboard",
         appName: "Identity Server",
-        appLogoPath: "/assets/images/logo.svg"
+        appLogoPath: "/assets/images/branding/logo.svg"
     }
 };
 /* eslint-enable sort-keys */

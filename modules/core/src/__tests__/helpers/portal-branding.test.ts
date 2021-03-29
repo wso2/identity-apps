@@ -52,7 +52,7 @@ describe("App logo path resolver helper function", () => {
         const prefix = "https://localhost:9443/sample-portal/";
 
         expect(resolveAppLogoFilePath(path, prefix))
-            .toEqual("https://localhost:9443/sample-portal/assets/images/logo.svg");
+            .toEqual("https://localhost:9443/sample-portal/assets/images/branding/logo.svg");
     });
 
     test("Should return the same path for hosted URLs", () => {

@@ -201,7 +201,7 @@ export const App = (): ReactElement => {
                                                         rel="shortcut icon"
                                                         href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
                                                         `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                        `${ state.theme }/assets/images/favicon.ico` }
+                                                        `${ state.theme }/assets/images/branding/favicon.ico` }
                                                     />
                                                     <link
                                                         href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
