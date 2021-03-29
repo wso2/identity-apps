@@ -25,12 +25,10 @@ const log = console.log;
 
 // Paths.
 const src = path.join(__dirname, "..", "src");
-const themeModule = path.join(__dirname, "..", "node_modules", "@wso2is", "theme", "dist", "lib", "themes");
+const themeModule = path.join(__dirname, "..", "node_modules", "@wso2is", "theme", "dist", "lib");
 const target = path.join(src, "themes");
-const imagesFolderPath = path.join("assets", "images");
-const ASSETS_FOLDER_NAME = "assets";
 
-log("Copying the theme images from @wso2is/theme module to the portal source.");
+log("Copying the theme content from @wso2is/theme module to the portal source.");
 
 // Check if the `@wso2is/theme` module is installed, if not terminate the script.
 if (!fs.existsSync(themeModule)) {
@@ -45,29 +43,9 @@ if (fs.existsSync(target)) {
     execSync("npm run clean:themes");
 }
 
-log("\nStarted copying theme images to the source......");
+log("\nStarted copying themes to the source......");
 
-// Copy the images of the themes in `wso2is/theme` in to source folder.
-// This to done to make sure that webpack treeshakes unused images.
-fs.readdirSync(themeModule).map((theme) => {
-
-    const themePath = path.join(themeModule, theme);
-
-    if (fs.lstatSync(themePath).isDirectory()) {
-        for (const item of fs.readdirSync(themePath))
-            // If the folder name is `assets`, proceed.
-            if (fs.lstatSync(path.join(themePath, item)).isDirectory() && item === ASSETS_FOLDER_NAME) {
-
-                const imagesFolderOriginalPath = path.join(themePath, imagesFolderPath);
-                const imagesFolderTargetPath = path.join(target, theme, imagesFolderPath);
-
-                fs.mkdirSync(imagesFolderTargetPath, { recursive: true });
-                log("\nCreated a directory for " + theme + " theme.");
-
-                fs.copySync(imagesFolderOriginalPath, imagesFolderTargetPath);
-                log("Copied images to " + imagesFolderTargetPath);
-            }
-    }
-});
+// Copy the content in `wso2is/theme` in to target folder.
+fs.copySync(themeModule, src);
 
 log("\nFinishing up the theme copying process......");
