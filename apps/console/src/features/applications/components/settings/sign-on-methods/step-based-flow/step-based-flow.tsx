@@ -90,6 +90,14 @@ const AUTHENTICATION_STEP_DROPPABLE_ID = "authentication-step-";
 const LOCAL_AUTHENTICATORS_DROPPABLE_ID = "local-authenticators";
 
 /**
+ * Droppable id for the external authenticators section.
+ * @constant
+ * @type {string}
+ * @default
+ */
+const EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
+
+/**
  * Configure the authentication flow of an application.
  *
  * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
@@ -815,7 +823,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             },
                             {
                                 authenticators: moderateAuthenticators(federatedAuthenticators),
-                                droppableId: ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
+                                droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
                                 heading: ApplicationManagementConstants.SOCIAL_LOGIN_HEADER
                             }
                         ] }

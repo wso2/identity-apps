@@ -861,9 +861,6 @@ export const console: ConsoleNS = {
                                                 addStep: "Nouvelle étape d'authentification",
                                                 selectAuthenticator: "Sélectionner un authentificateur"
                                             },
-                                            authenticatorDisabled: "Vous devez configurer cet authentificateur en " +
-                                                "fournissant un identifiant et un secret client, à utiliser avec " +
-                                                "vos applications.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {

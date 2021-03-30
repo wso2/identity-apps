@@ -128,48 +128,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const { t } = useTranslation();
 
     const [ draggableAuthenticators, setDraggableAuthenticators ] = useState<ReactElement[]>(null);
-    const [ draggableAddSocialAuthenticatorButton, setDraggableAddSocialAuthenticatorButton ] =
-        useState<ReactElement[]>(null);
+    const [ draggableSocialAuthenticators, setDraggableSocialAuthenticators ] = useState<ReactElement[]>(null);
 
     const classes = classNames("authenticators", className);
-
-    const isAuthenticatorDisabled = (authenticator) => {
-        if (droppableId === ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID) {
-            return !(authenticator?.isEnabled);
-        }
-        if (droppableId === ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID) {
-            return !(authenticator
-                && authenticator.authenticators[ 0 ]
-                && authenticator.authenticators[ 0 ].isEnabled);
-        }
-    };
-
-    const resolvePopupContent = () => {
-        if (droppableId === ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID) {
-            return (
-                <Text>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.secondFactorDisabled"
-                        }
-                    >
-                        The second-factor authenticators can only be used if the <Code withBackground>basic</Code>
-                        authenticator has been added in a previous step.
-                    </Trans>
-                </Text>
-            );
-        } else if (droppableId === ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID) {
-            return (
-                <Text>
-                    {
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.authenticatorDisabled")
-                    }
-                </Text>
-            );
-        }
-    };
 
     /**
      * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
@@ -190,7 +151,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     key={ `${ authenticator.idp }-${ authenticator.id }` }
                     draggableId={ authenticator.id }
                     index={ index }
-                    isDragDisabled={ readOnly || isAuthenticatorDisabled(authenticator) }
+                    isDragDisabled={ readOnly || !authenticator.isEnabled }
                 >
                     { (
                         draggableProvided: DraggableProvided,
@@ -202,20 +163,32 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         >
                             <Popup
                                 on="hover"
-                                disabled={ !isAuthenticatorDisabled(authenticator) }
+                                disabled={
+                                    !((droppableId === ApplicationManagementConstants
+                                            .SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)
+                                        && authenticators[0]
+                                        && !authenticators[0].isEnabled)
+                                }
                                 content={ (
                                     <>
                                         <Label attached="top">
                                             <Icon name="info circle" /> Info
                                         </Label>
-                                        { resolvePopupContent() }
+                                        <Text>
+                                            {
+                                                t("console:develop.features.applications.edit." +
+                                                    "sections.signOnMethod.sections." +
+                                                    "authenticationFlow.sections.stepBased." +
+                                                    "secondFactorDisabled")
+                                            }
+                                        </Text>
                                     </>
                                 ) }
                                 trigger={ (
                                     <div>
                                         <LabeledCard
                                             size="tiny"
-                                            disabled={ isAuthenticatorDisabled(authenticator) }
+                                            disabled={ !authenticator.isEnabled }
                                             image={ authenticator.image }
                                             label={ authenticator.displayName || defaultName }
                                             labelEllipsis={ true }
@@ -279,7 +252,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             </Draggable>
         );
 
-        setDraggableAddSocialAuthenticatorButton(draggableNodes);
+        setDraggableSocialAuthenticators(draggableNodes);
     }, [ isSocialLogin ]);
 
     /**
@@ -334,7 +307,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             data-testid={ testId }
                         >
                             { draggableAuthenticators }
-                            { draggableAddSocialAuthenticatorButton }
+                            { draggableSocialAuthenticators }
                             { provided.placeholder }
                         </div>
                     ) }

@@ -860,8 +860,6 @@ export const console: ConsoleNS = {
                                                 addStep: "නව සත්‍යාපන පියවර",
                                                 selectAuthenticator: "Authenticator එකක් තෝරන්න"
                                             },
-                                            authenticatorDisabled: "ඔබේ යෙදුම් සමඟ භාවිතා කිරීම සඳහා ග්‍රාහක හැඳුනුම්පත සහ " +
-                                                "රහස ලබා දීමෙන් ඔබ මෙම සත්‍යාපකය වින්‍යාස කළ යුතුය.",
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
