@@ -848,8 +848,8 @@ export const myAccount: MyAccountNS = {
                         description: {
                             para1:
                                 "You can request the administrator to delete your account. The administrator is " +
-                                "the administrator of the tenant you are registered under, or the " +
-                                "super-administrator if you do not use the tenant feature.",
+                                "the administrator of the organization you are registered under, or the " +
+                                "super-administrator if you do not use the organization feature.",
                             para2:
                                 "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."

@@ -63,7 +63,7 @@ export const console: ConsoleNS = {
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
         header: {
-            tenantSwitchHeader: "Switch Tenant"
+            tenantSwitchHeader: "Switch Organization"
         },
         modals: {
             editAvatarModal: {
@@ -345,8 +345,8 @@ export const console: ConsoleNS = {
                     requestRemoval: {
                         description: {
                             para1: "You can request the administrator to delete your account. The " +
-                                "administrator is the administrator of the tenant you are registered under, or " +
-                                "the super-administrator if you do not use the tenant feature.",
+                                "administrator is the administrator of the organization you are registered under, or " +
+                                "the super-administrator if you do not use the organization feature.",
                             para2: "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."
                         },
@@ -956,9 +956,9 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     subjectIncludeTenantDomain: {
-                                        hint: "This option will append the tenant domain to the local subject " +
+                                        hint: "This option will append the organization name to the local subject " +
                                             " identifier",
-                                        label: "Include tenant domain",
+                                        label: "Include organization name",
                                         validations: {
                                             empty: "This is a required field."
                                         }
@@ -1004,8 +1004,8 @@ export const console: ConsoleNS = {
                             },
                             saas: {
                                 hint: "By default, applications can only be used by users belonging to the " +
-                                    "application's tenant. If this application is SaaS-enabled, it will be " +
-                                    "accessible to all users across all tenants.",
+                                    "application's organization. If this application is SaaS-enabled, it will be " +
+                                    "accessible to all users across all organizations.",
                                 label: "SaaS application",
                                 validations: {
                                     empty: "This is a required field."
@@ -4439,8 +4439,8 @@ export const console: ConsoleNS = {
                         hint: "Please type <1>{{id}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the certificate.",
                         primaryAction: "Confirm",
-                        tenantContent: "This will delete the tenant certificate permanently."
-                            + "Once deleted, unless you import a new tenant certificate,"
+                        tenantContent: "This will delete the organization certificate permanently."
+                            + "Once deleted, unless you import a new organization certificate,"
                             + "you won't be able to access the portal applications."
                             + "To continue deleting, enter the alias of the certificate and click delete."
                     },
@@ -4508,7 +4508,7 @@ export const console: ConsoleNS = {
                         },
                         getPublicCertificate: {
                             genericError: {
-                                description: "There was an error while fetching the tenant certificate.",
+                                description: "There was an error while fetching the organization certificate.",
                                 message: "Something went wrong!"
                             }
                         }
