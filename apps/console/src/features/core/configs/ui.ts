@@ -214,7 +214,7 @@ export const getHelpPanelActionIcons = () => {
     return {
         caretLeft: CaretLeftIcon,
         caretRight: CaretRightIcon,
-        close: CloseIcon,
+        close: CrossIcon,
         pin: PinIcon,
         unpin: UnPinIcon
     };
