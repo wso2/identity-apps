@@ -31,7 +31,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> - <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
                     </h1>
                 </div>
-                <div">
+                <div>
                     <%-- Customizable content. Due to this nature, i18n is not implemented for this section --%>
                     <div id="privacyPolicy" class="padding-double">
                         <h4><a href="http://wso2.org/library/identity-server">About WSO2 Identity Server</a></h4>
@@ -120,7 +120,9 @@
                         </ul>
 
                         <h3 id="how-to-request-removal-of-your-personal-information">How to request removal of your personal information</h3>
-                        <p>You can request the administrator to delete your account. The administrator is the administrator of the tenant you are registered under, or the super-administrator if you do not use the tenant feature.</p>
+                        <p>You can request the administrator to delete your account. The administrator is the
+                            administrator of the organization you are registered under, or the super-administrator if
+                            you do not use the organization feature.</p>
                         <p>Additionally, you can request to anonymize all traces of your activities that WSO2 IS may have retained in logs, databases or analytical storage.</p>
 
                         <h2 id="more-information">More information</h2>
