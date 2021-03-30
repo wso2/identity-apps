@@ -71,6 +71,8 @@ module.exports = (env) => {
 
     // Dev Server Options.
     const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+    
+    const shouldCopyLessDistribution = env.SHOULD_COPY_LESS_DISTRIBUTION === "true";
 
     // Log level.
     const logLevel = env.LOG_LEVEL
@@ -359,9 +361,23 @@ module.exports = (env) => {
                     {
                         context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                         from: "lib",
+                        // Only Copy the required resources to distribution.
+                        // ATM, only the theme CSS files, fonts and branding images are required.
+                        globOptions: {
+                            dot: true,
+                            ignore: [
+                                "**/**.js",
+                                "**/**.json",
+                                // ATM, some components use static assets from `identity-providers` folder to
+                                // load the images using a absolute path. This is a workaround until the media
+                                // service is enabled.
+                                // TODO: Remove this `identity-providers` folder once the usages are refactored.
+                                "**/assets/images/!(branding|identity-providers)/**"
+                            ],
+                        },
                         to: "libs"
                     },
-                    {
+                    shouldCopyLessDistribution && {
                         context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
                         from: "src",
                         to: "themes-less"
@@ -383,7 +399,7 @@ module.exports = (env) => {
                         from: "auth.jsp",
                         to: "."
                     }
-                ]
+                ].filter(Boolean)
             }),
             isProduction
                 ? new HtmlWebpackPlugin({

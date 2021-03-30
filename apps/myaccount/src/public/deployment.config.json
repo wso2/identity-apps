@@ -33,7 +33,7 @@
         "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
         "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
-        "appLogoPath": "/assets/images/logo.svg",
+        "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
         "disableMFAforSuperTenantUser": false,
         "features": {

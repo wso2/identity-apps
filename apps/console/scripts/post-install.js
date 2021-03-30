@@ -23,7 +23,7 @@ const log = console.log;
 
 log("Post install script started.....");
 
-// Run theme folder copying script.
-execSync("npm run copy:themes");
+// Run theme content copying to source script.
+execSync("npm run copy:themes:src");
 
 log("\nFinishing up the post install script.....");
