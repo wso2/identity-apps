@@ -6597,9 +6597,9 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Username is invalid. It should be a valid email, and it can contain " +
-                                        "between 3 to 50 characters including alphanumeric characters, underscores (_), " +
-                                        "dashes (-), plus signs (+), periods (.) and an at sign (@), with no whitespaces."
+                                    regExViolation: "Please enter a valid email. It can only contain between 3 and 50 characters " +
+                                        "including alphanumeric characters, underscores (_), dashes (-), plus signs (+), " +
+                                        "periods (.) and an at sign (@), with no whitespaces."
                                 }
                             }
                         },
