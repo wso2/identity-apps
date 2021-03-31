@@ -163,7 +163,7 @@ export const AppUtils = (function() {
 
             return {
                 consoleApp: {
-                    path: _config?.consoleAppOrigin + this.getTenantPath(false) + _config?.consoleApp?.path
+                    path: _config.consoleAppOrigin + this.getTenantPath(false) + _config.consoleApp?.path
                 },
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
