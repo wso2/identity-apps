@@ -58,7 +58,10 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @return {boolean} True is scopes are enough and false if not.
  */
 export const hasRequiredScopes = (
-    feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
+    feature: FeatureAccessConfigInterface,
+    scopes: string[],
+    allowedScopes: string,
+    shouldAllScopesBePresent: boolean = true
 ): boolean => {
     const isDefined = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
 
@@ -67,7 +70,17 @@ export const hasRequiredScopes = (
     }
 
     if (scopes instanceof Array) {
-        return scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
+        if (shouldAllScopesBePresent) {
+            return scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
+        } else {
+            for (const scope of scopes) {
+                if (AuthenticateUtils.hasScope(scope, allowedScopes)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     return true;
@@ -135,6 +148,10 @@ export const hasRequiredScopesForAdminView = (featureConfig: any, allowedScopes:
             }
 
             isAllowed = hasRequiredManageScopes(feature, feature.scopes?.read, allowedScopes);
+        }
+
+        if (isAllowed) {
+            break;
         }
     }
 
