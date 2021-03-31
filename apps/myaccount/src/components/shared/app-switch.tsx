@@ -124,8 +124,8 @@ const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
 };
 
 /**
- * Default prop types for the Avatar component.
- * See type definitions in {@link AvatarProps}
+ * Default prop types for the App switch component.
+ * See type definitions in {@link AppSwitchProps}
  */
 AppSwitch.defaultProps = {
     background: "transparent",
