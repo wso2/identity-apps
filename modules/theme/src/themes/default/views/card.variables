@@ -160,5 +160,7 @@ Recent Application Card
 
 @appSwitchedCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @appSwitchedCardTransition: @defaultCardTransition;
+@appSwitchedCardRightSpacing: 15px;
+@appSwitchCardWrapperMarginBottom: 8px;
 @appSwitchedCardMarginBottom: 5px;
 @appSwitchedCardLabelFontSize: 1.1em;

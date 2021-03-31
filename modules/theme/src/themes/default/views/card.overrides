@@ -641,6 +641,7 @@
     &.basic {
         .app-switch-card {
             border: none !important;
+            margin-right: 1em;
         }
     }
     &.padding {
@@ -656,17 +657,18 @@
         width: @labeledCardTiny;
     }
     &.with-bottom-margin {
-        margin-bottom: @labeledCardWrapperMarginBottom;
+        margin-bottom: @appSwitchCardWrapperMarginBottom;
     }
     &:hover {
         cursor: pointer;
 
         .ui.card {
             &.app-switch-card {
+                margin-right: 1em;
                 transform: none;
                 text-decoration: none;
                 cursor: pointer;
-                box-shadow: @labeledCardHoverBoxShadow;
+                box-shadow: @appSwitchedCardHoverBoxShadow;
 
                 .close-button {
                     visibility: visible;
@@ -683,12 +685,13 @@
     }
     &.inline {
         display: inline-block;
-        margin-right: @labeledCardRightSpacing;
+        margin-right: @appSwitchedCardRightSpacing;
     }
     .ui.card {
         &.app-switch-card {
+            margin-right: 1em;
             width: auto;
-            transition: @labeledCardTransition;
+            transition: @appSwitchedCardTransition;
             border: none;
             box-shadow: none;
             margin-bottom: -1rem;
@@ -697,7 +700,7 @@
                 transform: none;
                 text-decoration: none;
                 cursor: pointer;
-                box-shadow: @labeledCardHoverBoxShadow;
+                box-shadow: @appSwitchedCardHoverBoxShadow;
             }
             &.background {
                 &-transparent {
@@ -725,7 +728,7 @@
     }
 
     .card-label {
-        font-size: 1.1em;
+        font-size: @appSwitchedCardLabelFontSize;
     }
 
     &.fluid {
