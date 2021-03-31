@@ -45,6 +45,7 @@ import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
+import { AppSwitch } from "./app-switch"
 
 /**
  * Dashboard layout Prop types.
@@ -207,6 +208,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     } }
                 />
             ) }
+            extensions={ [
+                {
+                    component: (
+                        <AppSwitch
+                            bottomMargin={ true }
+                            background="transparent"
+                        />
+                    ),
+                    floated: "right"
+                }
+            ] }
             brandLink={ config.deployment.appHomePath }
             basicProfileInfo={ profileInfo }
             fluid={ fluid }

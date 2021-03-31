@@ -1,0 +1,21 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="app-switch-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <path id="apps" d="M-4188.615-10845.308a2.309,2.309,0,0,1,2.308-2.309,2.309,2.309,0,0,1,2.308,2.309,2.307,2.307,0,0,1-2.308,2.307A2.307,2.307,0,0,1-4188.615-10845.308Zm-7.693,0a2.309,2.309,0,0,1,2.308-2.309,2.309,2.309,0,0,1,2.308,2.309A2.307,2.307,0,0,1-4194-10843,2.307,2.307,0,0,1-4196.308-10845.308Zm-7.692,0a2.309,2.309,0,0,1,2.308-2.309,2.309,2.309,0,0,1,2.308,2.309,2.307,2.307,0,0,1-2.308,2.307A2.307,2.307,0,0,1-4204-10845.308Zm15.385-7.693a2.307,2.307,0,0,1,2.308-2.307A2.307,2.307,0,0,1-4184-10853a2.308,2.308,0,0,1-2.308,2.309A2.307,2.307,0,0,1-4188.615-10853Zm-7.693,0a2.307,2.307,0,0,1,2.308-2.307,2.307,2.307,0,0,1,2.308,2.307,2.308,2.308,0,0,1-2.308,2.309A2.308,2.308,0,0,1-4196.308-10853Zm-7.692,0a2.307,2.307,0,0,1,2.308-2.307,2.307,2.307,0,0,1,2.308,2.307,2.307,2.307,0,0,1-2.308,2.309A2.308,2.308,0,0,1-4204-10853Zm15.385-7.691a2.309,2.309,0,0,1,2.308-2.309,2.309,2.309,0,0,1,2.308,2.309,2.307,2.307,0,0,1-2.308,2.307A2.307,2.307,0,0,1-4188.615-10860.692Zm-7.693,0A2.309,2.309,0,0,1-4194-10863a2.309,2.309,0,0,1,2.308,2.309,2.307,2.307,0,0,1-2.308,2.307A2.307,2.307,0,0,1-4196.308-10860.692Zm-7.692,0a2.309,2.309,0,0,1,2.308-2.309,2.309,2.309,0,0,1,2.308,2.309,2.307,2.307,0,0,1-2.308,2.307A2.307,2.307,0,0,1-4204-10860.692Z" transform="translate(4204 10863.001)" fill="#fff"/>
+</svg>

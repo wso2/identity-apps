@@ -78,6 +78,9 @@ import {
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
+import MyAccountIcon from "../themes/default/assets/images/icons/myaccount-icon.svg";
+import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
+import AppSwitchIcon from "../themes/default/assets/images/icons/app-switch-icon.svg";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon = PackageIcon;
@@ -186,6 +189,15 @@ export const AlertIcons = () => {
         info: InfoIcon,
         success: SuccessIcon,
         warning: WarningIcon
+    };
+};
+
+export const AppSwitchIcons = () => {
+
+    return {
+        appSwitchIcon: AppSwitchIcon,
+        consoleIcon: ConsoleIcon,
+        myAccountIcon: MyAccountIcon
     };
 };
 

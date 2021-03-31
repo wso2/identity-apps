@@ -31,6 +31,7 @@ const getItemFromSessionStorage = (key: string): string => {
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
+        consoleAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9001",
         contextPath: contextPathGlobal,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
