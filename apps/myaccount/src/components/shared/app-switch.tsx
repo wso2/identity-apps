@@ -27,7 +27,7 @@ import { AppState } from "../../store";
 
 /**
  * Prop types for the App Switch component.
- * Also see {@link Avatar.defaultProps}
+ * Also see {@link AppSwitch.defaultProps}
  */
 export interface AppSwitchProps extends TestableComponentInterface {
      /**
@@ -40,11 +40,10 @@ export interface AppSwitchProps extends TestableComponentInterface {
     bottomMargin?: boolean;
 }
 
-
 /**
  * Appswitch component.
  *
- * @param {React.PropsWithChildren<AvatarProps>} props - Props passed in to the Avatar component.
+ * @param {React.PropsWithChildren<AppSwitchProps>} props - Props passed in to the App switch component.
  * @return {JSX.Element}
  */
 export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwitchProps): JSX.Element => {
