@@ -132,18 +132,6 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
 
     const handleGroupEdit = (group: GroupsInterface) => {
-        const userStore = group?.displayName?.split("/").length > 1
-            ? group?.displayName?.split("/")[ 0 ]
-            : "PRIMARY";
-
-        if (!isFeatureEnabled(featureConfig?.groups,
-            GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-            || readOnlyUserStores?.includes(userStore.toString())
-            || !hasRequiredScopes(featureConfig?.groups,
-                featureConfig?.groups?.scopes?.update, allowedScopes)) {
-            return;
-        }
-
         history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", group?.id));
     };
 
