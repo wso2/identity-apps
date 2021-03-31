@@ -17,15 +17,16 @@
  */
 
 import { getRolesList, getUserStoreList } from "@wso2is/core/api";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppState, FeatureConfigInterface, UIConstants } from "../../core";
 import { CreateRoleWizard, RoleList } from "../../roles";
 import { deleteRoleById, searchRoleList } from "../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
@@ -94,6 +95,9 @@ const RolesPage = (): ReactElement => {
     const [ paginatedRoles, setPaginatedRoles ] = useState<RoleListInterface>();
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     useEffect(() => {
         if (searchQuery == "") {
@@ -319,6 +323,7 @@ const RolesPage = (): ReactElement => {
         <PageLayout
             action={
                 (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.Resources?.length <= 0))
+                && hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.create, allowedScopes)
                 && (
                     <PrimaryButton
                         data-testid="role-mgt-roles-list-add-button"
