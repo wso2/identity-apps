@@ -632,6 +632,108 @@
 }
 
 /*******************************
+     App Switch Card Variation
+*******************************/
+
+.app-switch-card-wrapper {
+    text-align: center;
+
+    &.basic {
+        .app-switch-card {
+            border: none !important;
+        }
+    }
+    &.padding {
+        &-none {
+            .app-switch-card {
+                .card-image-container {
+                    padding: 0;
+                }
+            }
+        }
+    }
+    &.tiny {
+        width: @labeledCardTiny;
+    }
+    &.with-bottom-margin {
+        margin-bottom: @labeledCardWrapperMarginBottom;
+    }
+    &:hover {
+        cursor: pointer;
+
+        .ui.card {
+            &.app-switch-card {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+
+                .close-button {
+                    visibility: visible;
+                }
+            }
+        }
+        &.hover-raised {
+            &-none {
+                .app-switch-card {
+                    box-shadow: none !important;
+                }
+            }
+        }
+    }
+    &.inline {
+        display: inline-block;
+        margin-right: @labeledCardRightSpacing;
+    }
+    .ui.card {
+        &.app-switch-card {
+            width: auto;
+            transition: @labeledCardTransition;
+            border: none;
+            box-shadow: none;
+            margin-bottom: -1rem;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+            &.background {
+                &-transparent {
+                    background: transparent;
+                }
+            }
+            .close-button {
+                border-radius: 50% !important;
+                display: inline-table;
+                font-weight: 500;
+                visibility: hidden;
+
+                &:hover {
+                    box-shadow: 1px 1px 4px @darkGray;
+                }
+            }
+            &.selected {
+
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+       }
+    }
+
+    .card-label {
+        font-size: 1.1em;
+    }
+
+    &.fluid {
+        width: 100%;
+    }
+}
+
+/*******************************
       Info Card Variation
 *******************************/
 

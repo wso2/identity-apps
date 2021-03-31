@@ -78,6 +78,7 @@ import {
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
+import MyAccountIcon from "../themes/asgardio/assets/images/icons/myaccount-icon.svg";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon = PackageIcon;
@@ -186,6 +187,17 @@ export const AlertIcons = () => {
         info: InfoIcon,
         success: SuccessIcon,
         warning: WarningIcon
+    };
+};
+
+export const AppSwitchIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        appSwitchIcon: import(`../themes/${ theme }/assets/images/icons/app-switch-icon.svg`),
+        consoleIcon: import(`../themes/${ theme }/assets/images/icons/console-icon.svg`),
+        myAccountIcon: MyAccountIcon
     };
 };
 

@@ -58,6 +58,13 @@
                 }
             }
         }
+        .app-switch-dropdown {
+            .menu {
+                min-width: 230px;
+                min-height: 110px;
+                margin-top: 10px !important;
+            }
+        }
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;

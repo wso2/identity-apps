@@ -1,4 +1,21 @@
 {
+    "consoleApp": {
+        {% if myaccount.applications.console_app.configs is defined %}
+        {% for key, value in myaccount.applications.console_app.configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% elif value is iterable %}
+                "{{ key }}": [
+                    {% for item in value %}
+                        "{{ item }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                ]{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
     "appBaseName": "{{ myaccount.app_base_name }}",
     {% if myaccount.app_base_name_for_history_api is defined %}
         "appBaseNameForHistoryAPI": "{{ myaccount.app_base_name_for_history_api }}",
@@ -82,6 +99,9 @@
         "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
         {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
         "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
+        {% endif %}
+        {% if myaccount.ui.show_app_switch_button is defined %}
+        "showAppSwitchButton": "{{ myaccount.ui.show_app_switch_button }}",
         {% endif %}
         "authenticatorApp": {
                 {% if myaccount.authenticator_app_configs is defined %}
