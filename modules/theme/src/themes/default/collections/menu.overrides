@@ -62,7 +62,7 @@
             .menu {
                 min-width: 230px;
                 min-height: 110px;
-                margin-top: 10px !important;
+                margin-top: 20px !important;
             }
         }
         .user-dropdown {
