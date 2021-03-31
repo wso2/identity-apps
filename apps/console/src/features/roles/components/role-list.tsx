@@ -17,6 +17,7 @@
  */
 
 import { RoleConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
     RoleListInterface,
@@ -38,8 +39,16 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
@@ -131,6 +140,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const handleRoleEdit = (roleId: string) => {
         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
@@ -227,7 +239,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Role" })}
+                                { type: "Role" }) }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
@@ -319,13 +331,18 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
         return [
             {
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS => hasRequiredScopes(featureConfig?.roles,
+                    featureConfig?.roles?.scopes?.update, allowedScopes)
+                    ? "pencil alternate"
+                    : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
                     handleRoleEdit(role?.id),
                 popupText: (): string => t("console:manage.features.roles.list.popups.edit",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             },
+            hasRequiredScopes(featureConfig?.roles,
+                featureConfig?.roles?.scopes?.delete, allowedScopes) &&
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
                     role?.displayName === RoleConstants.ADMIN_GROUP),
