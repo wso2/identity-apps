@@ -131,8 +131,20 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
 
-    const handleGroupEdit = (groupId: string) => {
-        history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", groupId));
+    const handleGroupEdit = (group: GroupsInterface) => {
+        const userStore = group?.displayName?.split("/").length > 1
+            ? group?.displayName?.split("/")[ 0 ]
+            : "PRIMARY";
+
+        if (!isFeatureEnabled(featureConfig?.groups,
+            GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
+            || readOnlyUserStores?.includes(userStore.toString())
+            || !hasRequiredScopes(featureConfig?.groups,
+                featureConfig?.groups?.scopes?.update, allowedScopes)) {
+            return;
+        }
+
+        history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", group?.id));
     };
 
     /**
@@ -315,12 +327,14 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                    || readOnlyUserStores?.includes(userStore.toString())
+                        || readOnlyUserStores?.includes(userStore.toString())
+                        || !hasRequiredScopes(featureConfig?.groups,
+                            featureConfig?.groups?.scopes?.update, allowedScopes)
                         ? "eye"
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
-                    handleGroupEdit(group.id),
+                    handleGroupEdit(group),
                 popupText: (group: GroupsInterface): string => {
                     const userStore = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
@@ -372,7 +386,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 data={ groupList }
                 onRowClick={
                     (e: SyntheticEvent, group: GroupsInterface): void => {
-                        handleGroupEdit(group?.id);
+                        handleGroupEdit(group);
                         onListItemClick && onListItemClick(e, group);
                     }
                 }
