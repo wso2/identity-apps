@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {  AppSwitchCard, GenericIcon } from "@wso2is/react-components";
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Card,  Dropdown, Grid } from "semantic-ui-react";
 import { AppSwitchIcons } from "../../configs";
@@ -44,9 +44,10 @@ export interface AppSwitchProps extends TestableComponentInterface {
  * Appswitch component.
  *
  * @param {React.PropsWithChildren<AppSwitchProps>} props - Props passed in to the App switch component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwitchProps): JSX.Element => {
+export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwitchProps): ReactElement => {
+    
     const {
         background,
         bottomMargin,
@@ -57,35 +58,37 @@ export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwi
     const consoleAppURL: string = useSelector((state: AppState) => state?.config?.deployment?.consoleApp?.path);
     const accountAppURL: string = useSelector((state: AppState) => state?.config?.deployment?.appHomePath);
 
-/**
- * Stops the dropdown from closing on click.
- *
- * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
- */
-const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
-    e.stopPropagation();
-};
+    /**
+     * Stops the dropdown from closing on click.
+     *
+     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
+     */
+    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>): void => {
+        e.stopPropagation();
+    };
 
     return (
         <>
             {
-                showAppSwitchButton && (AppConstants.getTenant() === AppConstants.getSuperTenant()) &&
-                <Dropdown
-                    item
-                    floating
-                    icon={ 
-                        <GenericIcon
-                                    inline
-                                    transparent
-                                    className="display-flex"
-                                    icon={ AppSwitchIcons().appSwitchIcon }
-                                    fill= "white"
-                        />
-                                 }
-                    className="app-switch-dropdown"
-                    data-testid={ `${ testId }-dropdown` }
-                >
-                {
+                showAppSwitchButton 
+                && (AppConstants.getTenant() === AppConstants.getSuperTenant()) 
+                && (
+                    <Dropdown
+                        item
+                        floating
+                        icon={ 
+                            <GenericIcon
+                                        inline
+                                        transparent
+                                        className="display-flex"
+                                        icon={ AppSwitchIcons().appSwitchIcon }
+                                        fill= "white"
+                            />
+                                    }
+                        className="app-switch-dropdown"
+                        data-testid={ `${ testId }-dropdown` }
+                    >
+                    {
                         <Dropdown.Menu className="app-switch-dropdown-menu" onClick={ handleUserDropdownClick }>
                             <Grid className="mt-3 mb-3" centered>
                                 <Grid.Row >
@@ -115,8 +118,9 @@ const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
                                 </Grid.Row>
                             </Grid>
                         </Dropdown.Menu>   
-                }
-            </Dropdown>
+                    }
+                </Dropdown>
+                )
             }
         </>
     );
@@ -131,4 +135,3 @@ AppSwitch.defaultProps = {
     bottomMargin: true,
     ["data-testid"]: "app-switch"
 };
-

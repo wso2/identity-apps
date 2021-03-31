@@ -212,8 +212,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     component: (
                         <AppSwitch
-                            bottomMargin = { true }
-                            background = "transparent"
+                            bottomMargin={ true }
+                            background="transparent"
                         />
                     ),
                     floated: "right"
