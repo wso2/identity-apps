@@ -17,6 +17,7 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -74,6 +75,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -350,6 +352,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         <PageLayout
             action={
                 (isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0))
+                && hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)
                 && (
                     <PrimaryButton
                         data-testid="group-mgt-groups-list-add-button"
