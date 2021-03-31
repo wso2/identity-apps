@@ -218,7 +218,7 @@ export interface AppThemeConfigInterface {
      */
     name: string;
     /**
-     * App theme path. Used to override the default theme path defined in the source. 
+     * App theme path. Used to override the default theme path defined in the source.
      * ex: "https://cdn.wso2.com/is/assets/theme.min.css".
      */
     path?: string;
@@ -315,6 +315,29 @@ export interface FeatureAccessConfigInterface {
      * Enable the feature.
      */
     enabled?: boolean;
+    /**
+     * Determines if all the scopes should be allowed or just one of them.
+     */
+    shouldHaveAllScopes?: ShouldHaveAllScopesInterface;
+}
+
+export interface ShouldHaveAllScopesInterface {
+    /**
+     * Determines if all the create scopes should be allowed.
+     */
+    create?: boolean;
+    /**
+     * Determines if all the read scopes should be allowed.
+     */
+    read?: boolean;
+    /**
+     * Determines if all the update scopes should be allowed.
+     */
+    update?: boolean;
+    /**
+     * Determines if all the delete scopes should be allowed.
+     */
+    delete?: boolean;
 }
 
 /**
