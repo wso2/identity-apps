@@ -46,7 +46,7 @@ export class RouteUtils {
      */
     public static filterEnabledRoutes<T>(routes: RouteInterface[],
                                          featureConfig: T,
-                                         allowedScopes: string): RouteInterface[] { 
+                                         allowedScopes: string): RouteInterface[] {
 
         // Filters features based on scope requirements.
         const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
@@ -69,7 +69,8 @@ export class RouteUtils {
                     return true;
                 }
 
-                return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes);
+                return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes,
+                    feature?.shouldHaveAllScopes?.read);
             });
         };
 
