@@ -5748,7 +5748,8 @@ export const console: ConsoleNS = {
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
                                     regExViolation: "Nom d'utilisateur invalide. Il doit s'agir d'un e-mail valide "+
                                         "pouvant contenir entre 3 et 50 caractères alphanumériques, traits de "+
-                                        "soulignement (_), tirets (-), signes plus (+) et points (.), Sans espaces."
+                                        "soulignement (_), tirets (-), signes plus (+) et points (.) et un signes at "+
+                                        "(@) Sans espaces."
                                 }
                             }
                         },
