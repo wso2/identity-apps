@@ -1,35 +1,48 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * This software is the property of WSO2 Inc. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content."
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
-import React, { SyntheticEvent } from "react";
-import {  AppSwitchCard, GenericIcon } from "@wso2is/react-components";
-import { AppSwitchIcons } from "../../configs";
-import { Card,  Dropdown, Grid } from "semantic-ui-react";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import {  AppSwitchCard, GenericIcon } from "@wso2is/react-components";
+import React, { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../store";
+import { Card,  Dropdown, Grid } from "semantic-ui-react";
+import { AppSwitchIcons } from "../../configs";
 import { AppConstants } from "../../constants";
-
-
+import { AppState } from "../../store";
 
 /**
- * Prop types for the Avatar component.
+ * Prop types for the App Switch component.
  * Also see {@link Avatar.defaultProps}
  */
 export interface AppSwitchProps extends TestableComponentInterface {
+     /**
+     * Card Background color.
+     */
     background?: "transparent" | "default";
-    bottomMargin: boolean
+    /**
+     * If a bottom margin should be added.
+     */
+    bottomMargin?: boolean;
 }
 
 
 /**
- * Avatar component.
+ * Appswitch component.
  *
  * @param {React.PropsWithChildren<AvatarProps>} props - Props passed in to the Avatar component.
  * @return {JSX.Element}
@@ -45,14 +58,14 @@ export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwi
     const consoleAppURL: string = useSelector((state: AppState) => state?.config?.deployment?.consoleApp?.path);
     const accountAppURL: string = useSelector((state: AppState) => state?.config?.deployment?.appHomePath);
 
-    /**
-     * Stops the dropdown from closing on click.
-     *
-     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
-     */
-  const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
+/**
+ * Stops the dropdown from closing on click.
+ *
+ * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
+ */
+const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
     e.stopPropagation();
-    };
+};
 
     return (
         <>
@@ -84,7 +97,7 @@ export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwi
                                     imageSize="x50"
                                     image={ AppSwitchIcons().consoleIcon }
                                     bottomMargin= { bottomMargin }
-                                    onClick= {()=> window.open(consoleAppURL,"_blank", "noopener")}
+                                    onClick= { ()=> window.open(consoleAppURL,"_blank", "noopener") }
                                     data-testid={ `${ testId }-console` }  
                                       
                                 />
@@ -94,7 +107,7 @@ export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwi
                                     imageSize="x50"
                                     image={ AppSwitchIcons().myAccountIcon }
                                     bottomMargin= { true }
-                                    onClick = {() =>window.open(accountAppURL,"_self") }  
+                                    onClick = { () =>window.open(accountAppURL,"_self") }  
                                     data-testid={ `${ testId }-myaccount` } 
                                     
                                 />

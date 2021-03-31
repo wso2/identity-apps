@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,11 +19,11 @@
  import { TestableComponentInterface } from "@wso2is/core/models";
  import classNames from "classnames";
  import React, { FunctionComponent, ReactElement } from "react";
- import { Card, CardProps, Label, LabelProps, Popup, SemanticSIZES } from "semantic-ui-react";
+ import { Card, CardProps, Popup } from "semantic-ui-react";
  import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
  
  /**
-  * Proptypes for the labeled card component.
+  * Proptypes for the app switch card component.
   */
  export interface AppSwitchCardPropsInterface extends TestableComponentInterface {
      /**
@@ -69,9 +69,9 @@
  }
  
  /**
-  * Labeled card component.
+  * App switch card component.
   *
-  * @param {LabeledCardPropsInterface} props - Props injected to the components.
+  * @param {AppSwitchCardPropsInterface} props - Props injected to the components.
   *
   * @return {React.ReactElement}
   */
