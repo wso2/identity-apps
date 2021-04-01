@@ -673,12 +673,12 @@ export const myAccount: MyAccountNS = {
             "heading": "Données utilisées pour vérifier votre connexion",
             "description": "Ces données sont utilisées pour vérifier davantage votre identité lors de la connexion",
             "typingdna": {
-                "heading": "TypingDNA Typing Patterns",
+                "heading": "TypingDNA modèles de frappe",
                 "description": "Vos modèles de frappe peuvent être effacés à partir d'ici"
             },
             "modals": {
                 "clearTypingPatternsModal": {
-                    "heading": "Confirmation",
+                    "heading": "Bestätigung",
                     "message": "Cette action effacera vos modèles de frappe enregistrés dans TypingDNA. "+
                     "Souhaitez-vous continuer?"
                 }

@@ -33,6 +33,7 @@ import { SettingsSection } from "../shared";
  * Prop types for the basic details component.
  */
 interface LoginVerifyDataProps extends SBACInterface<FeatureConfigInterface> {
+
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -54,7 +55,7 @@ export const LoginVerifyingData: React.FunctionComponent<LoginVerifyDataProps> =
     const [typingDNAEnabled, setTypingDNAEnabled] = useState(false);
 
     const getTypingDNAEnabled = (): void => {
-        isTypingDNAEnabled().then(function(data){
+        isTypingDNAEnabled().then(function(data) {
             setTypingDNAEnabled(data);
         }).catch(() => {
             setTypingDNAEnabled(false);
@@ -87,7 +88,8 @@ export const LoginVerifyingData: React.FunctionComponent<LoginVerifyDataProps> =
                                                 onAlertFired={ onAlertFired }
                                             />
                                         </List.Item>
-                                    ) : null }
+                                    ) : null
+                                }
                             </List>
                         </SettingsSection>
                     )

@@ -670,7 +670,7 @@ export const myAccount: MyAccountNS = {
             "heading": "Dados usados para verificar o seu login",
             "description": "Esses dados são usados para verificar ainda mais sua identidade durante o login ",
             "typingdna": {
-                "heading": "TypingDNA Typing Patterns",
+                "heading": "TypingDNA padrões de Digitação",
                 "description": "Seus padrões de digitação podem ser apagados aqui"
             },
             "modals": {

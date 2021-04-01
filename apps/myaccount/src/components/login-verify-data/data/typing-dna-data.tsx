@@ -30,6 +30,7 @@ import { SettingsSection } from "../../shared";
  * Prop types for the TypingDNA component.
  */
 interface TypingDNAProps extends SBACInterface<FeatureConfigInterface> {
+
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -43,7 +44,6 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
     const { t } = useTranslation();
     const [isRevokeClearTypingPatternsModalVisible,setRevokeClearTypingPatternsModalVisible] = useState(false);
     const { onAlertFired, featureConfig } = props;
-
 
     const handleClearTypingPatternsClick = () => {
         setRevokeClearTypingPatternsModalVisible(true);
@@ -66,36 +66,23 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
                     )
                 });
             })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    onAlertFired({
-                        description: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description",
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
-                        )
-                    });
-                } else {
-                    onAlertFired({
-                        description: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
-                        )
-                    });
-                }
+            .catch(() => {
+                onAlertFired({
+                    description: t(
+                        "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
+                    )
+                });
             })
             .finally(() => {
                 setRevokeClearTypingPatternsModalVisible(false);
             });
     };
 
-
-    const ClearTypingPatternsModal = (
+    const clearTypingPatternsModal = (
         <Modal
             size="mini"
             open={ isRevokeClearTypingPatternsModalVisible }
@@ -161,7 +148,7 @@ export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: Typing
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            { ClearTypingPatternsModal }
+            { clearTypingPatternsModal }
             </>
         );
     };

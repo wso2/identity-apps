@@ -29,7 +29,6 @@ export const deleteTypingPatterns = (): Promise<any> => {
 
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -41,6 +40,7 @@ export const deleteTypingPatterns = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -51,7 +51,6 @@ export const deleteTypingPatterns = (): Promise<any> => {
 export const isTypingDNAEnabled = (): Promise<boolean> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -60,14 +59,13 @@ export const isTypingDNAEnabled = (): Promise<boolean> => {
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
+                return Promise.resolve(false);
+            }
+            else if (response.data.enabled == true) {
                 return Promise.resolve(true);
             }
-            else if (response.data.enabled == true){
-                return Promise.resolve(true)
-            }
-            else{
+            else {
                 return Promise.resolve(false);
-
             }
         })
         .catch(() => {
