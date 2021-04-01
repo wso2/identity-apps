@@ -41,6 +41,9 @@ import {
     ReactComponent as EnterpriseModeIdPIcon
 } from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
 import {
+    ReactComponent as ExpertModeIdPIcon
+} from "../../../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
+import {
     ReactComponent as FacebookIdPIcon
 } from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import {
@@ -77,14 +80,14 @@ import Office365Logo from "../../../themes/default/assets/images/third-party/off
 import YahooLogo from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
 import { SupportedServices } from "../models";
 
-export const getAddIDPCertificateWizardStepIcons = () => {
+export const getAddIDPCertificateWizardStepIcons = (): any => {
 
     return {
         general: DocumentIcon
     };
 };
 
-export const getIdentityProviderWizardStepIcons = () => {
+export const getIdentityProviderWizardStepIcons = (): any => {
 
     return {
         authenticatorSettings: GearsIcon,
@@ -94,7 +97,7 @@ export const getIdentityProviderWizardStepIcons = () => {
     };
 };
 
-export const getAuthenticatorIcons = () => {
+export const getAuthenticatorIcons = (): any => {
 
     return {
         basic: BasicAuthIcon,
@@ -116,7 +119,7 @@ export const getAuthenticatorIcons = () => {
     };
 };
 
-export const getConnectorIcons = () => {
+export const getConnectorIcons = (): any => {
 
     return {
         google: GoogleIdPIcon,
@@ -126,12 +129,12 @@ export const getConnectorIcons = () => {
     };
 };
 
-export const getIdPIcons = () => {
+export const getIdPIcons = (): any => {
 
     return {
         default: AuthenticationCapabilityIcon,
         emailOTP: EmailOTPIcon,
-        enterprise: ExpertModeIdPIcon,
+        enterprise: EnterpriseModeIdPIcon,
         facebook: FacebookIdPIcon,
         github: GithubIdPIcon,
         google: GoogleIdPIcon,
@@ -147,18 +150,18 @@ export const getIdPIcons = () => {
     };
 };
 
-export const getIdPTemplateDocsIcons = () => {
+export const getIdPTemplateDocsIcons = (): any => {
 
     return {
         facebook: FacebookIdPIcon,
+        github: GithubIdPIcon,
         google: GoogleIdPIcon,
         manualsetup: ExpertModeIdPIcon,
-        openidconnect: OpenIDLogo,
-        github: GithubIdPIcon
+        openidconnect: OpenIDLogo
     };
 };
 
-export const getIdPCapabilityIcons = () => {
+export const getIdPCapabilityIcons = (): any => {
 
     return {
         [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
@@ -166,7 +169,7 @@ export const getIdPCapabilityIcons = () => {
     };
 };
 
-export const getOutboundProvisioningConnectorWizard = () => {
+export const getOutboundProvisioningConnectorWizard = (): any => {
 
     return {
         connectorDetails: DocumentIcon,
@@ -175,7 +178,7 @@ export const getOutboundProvisioningConnectorWizard = () => {
     };
 };
 
-export const getHelpPanelIcons = () => {
+export const getHelpPanelIcons = (): any => {
 
     return {
         tabs: {
