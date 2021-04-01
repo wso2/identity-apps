@@ -677,7 +677,7 @@ export const myAccount: MyAccountNS = {
             "modals": {
                 "clearTypingPatternsModal": {
                     "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in "
+                    "message": "This action will clear your typing patterns that are saved in TypingDNA. Do you wish to continue?"
                 }
             },
             "notifications": {

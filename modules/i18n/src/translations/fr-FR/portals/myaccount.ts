@@ -670,27 +670,29 @@ export const myAccount: MyAccountNS = {
             }
         },
         "loginVerifyData": {
-            "heading": "Data used to verify your login",
-            "description": "This data is used to further verify your identity during login",
+            "heading": "Données utilisées pour vérifier votre connexion",
+            "description": "Ces données sont utilisées pour vérifier davantage votre identité lors de la connexion",
             "typingdna": {
                 "heading": "TypingDNA Typing Patterns",
-                "description": "Your typing patterns can be cleared from here"
+                "description": "Vos modèles de frappe peuvent être effacés à partir d'ici"
             },
             "modals": {
                 "clearTypingPatternsModal": {
                     "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in "
+                    "message": "Cette action effacera vos modèles de frappe enregistrés dans TypingDNA. "+
+                    "Souhaitez-vous continuer?"
                 }
             },
             "notifications": {
                 "clearTypingPatterns": {
                     "success": {
-                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
-                        "message": "Typing patterns cleared successfully"
+                        "description": "Vos modèles de frappe dans TypingDNA ont été effacés avec succès",
+                        "message": "Modèles de frappe supprimés avec succès"
                     },
                     "error": {
-                        "description": "Typing patterns could not be cleared. Please contact your site admin",
-                        "message": "Failed to clear typing patterns"
+                        "description": "Les modèles de saisie n'ont pas pu être effacés. Veuillez contacter "+
+                        "l'administrateur de votre site",
+                        "message": "Échec de la suppression des modèles de saisie"
                     }
                 }
             }

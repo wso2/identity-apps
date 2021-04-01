@@ -667,27 +667,27 @@ export const myAccount: MyAccountNS = {
             }
         },
         "loginVerifyData": {
-            "heading": "Data used to verify your login",
-            "description": "This data is used to further verify your identity during login",
+            "heading": "ඔබගේ පිවිසුම සත්‍යාපනය සඳහා භාවිතා කරන දත්ත ",
+            "description": "පුරනය වීමේදී ඔබගේ අනන්‍යතාවය තවදුරටත් තහවුරු කර ගැනීමට මෙම දත්ත භාවිතා කරයි",
             "typingdna": {
-                "heading": "TypingDNA Typing Patterns",
-                "description": "Your typing patterns can be cleared from here"
+                "heading": "යතුරු ලියනය කිරීමේ රටා ටයිප් කිරීමේ රටා",
+                "description": "ඔබේ ටයිප් කිරීමේ රටා මෙතැනින් ඉවත් කළ හැකිය"
             },
             "modals": {
                 "clearTypingPatternsModal": {
-                    "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in "
+                    "heading": "තහවුරු කිරීම",
+                    "message": "මෙම ක්‍රියාව මගින් ටයිපින් ඩීඑන්ඒ හි සුරකින ලද ඔබේ ටයිප් රටා ඉවත් කරනු ඇත. ඉදිරියට යාමට ඔබ කැමතිද?"
                 }
             },
             "notifications": {
                 "clearTypingPatterns": {
                     "success": {
-                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
-                        "message": "Typing patterns cleared successfully"
+                        "description": "ටයිපින් ඩීඑන්ඒ හි ඔබේ යතුරු ලියන රටා සාර්ථකව ඉවත් කර ඇත",
+                        "message": "ටයිප් කිරීමේ රටා සාර්ථකව නිෂ්කාශනය විය"
                     },
                     "error": {
-                        "description": "Typing patterns could not be cleared. Please contact your site admin",
-                        "message": "Failed to clear typing patterns"
+                        "description": "ටයිප් කිරීමේ රටා ඉවත් කළ නොහැක. කරුණාකර ඔබේ අඩවි පරිපාලක අමතන්න",
+                        "message": "යතුරු ලියන රටා ඉවත් කිරීමට අපොහොසත් විය"
                     }
                 }
             }

@@ -40,6 +40,7 @@ export const common: CommonNS = {
     challengeQuestionNumber: "Questão Desafio {{number}}",
     change: "Mudança",
     claim: "Afirmação",
+    clear: "apagar",
     close: "Fechar",
     comingSoon: "Em breve",
     completed: "Concluído",

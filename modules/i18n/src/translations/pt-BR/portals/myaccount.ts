@@ -667,27 +667,29 @@ export const myAccount: MyAccountNS = {
             }
         },
         "loginVerifyData": {
-            "heading": "Data used to verify your login",
-            "description": "This data is used to further verify your identity during login",
+            "heading": "Dados usados para verificar o seu login",
+            "description": "Esses dados são usados para verificar ainda mais sua identidade durante o login ",
             "typingdna": {
                 "heading": "TypingDNA Typing Patterns",
-                "description": "Your typing patterns can be cleared from here"
+                "description": "Seus padrões de digitação podem ser apagados aqui"
             },
             "modals": {
                 "clearTypingPatternsModal": {
-                    "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in "
+                    "heading": "Confirmação",
+                    "message": "Esta ação irá limpar seus padrões de digitação salvos no TypingDNA. "+
+                    "Você deseja continuar?"
                 }
             },
             "notifications": {
                 "clearTypingPatterns": {
                     "success": {
-                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
-                        "message": "Typing patterns cleared successfully"
+                        "description": "Seus padrões de digitação no TypingDNA foram apagados com sucesso ",
+                        "message": "Padrões de digitação limpos com sucesso"
                     },
                     "error": {
-                        "description": "Typing patterns could not be cleared. Please contact your site admin",
-                        "message": "Failed to clear typing patterns"
+                        "description": "Os padrões de digitação não puderam ser apagados. Entre em contato com o"+
+                        " administrador do seu site",
+                        "message": "Falha ao limpar padrões de digitação"
                     }
                 }
             }

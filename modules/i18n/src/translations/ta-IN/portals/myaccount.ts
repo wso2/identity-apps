@@ -677,27 +677,28 @@ export const myAccount: MyAccountNS = {
             }
         },
         "loginVerifyData": {
-            "heading": "Data used to verify your login",
-            "description": "This data is used to further verify your identity during login",
+            "heading": "உங்கள் உள்நுழைவைச் சரிபார்க்கப் பயன்படுத்தப்படும் தரவு",
+            "description": "உள்நுழைவின் போது உங்கள் அடையாளத்தை மேலும் சரிபார்க்க இந்தத் தரவு பயன்படுத்தப்படுகிறது",
             "typingdna": {
-                "heading": "TypingDNA Typing Patterns",
-                "description": "Your typing patterns can be cleared from here"
+                "heading": "தட்டச்சு டி.என்.ஏ தட்டச்சு வடிவங்கள்",
+                "description": "உங்கள் தட்டச்சு முறைகளை இங்கிருந்து அழிக்க முடியும்"
             },
             "modals": {
                 "clearTypingPatternsModal": {
-                    "heading": "Confirmation",
-                    "message": "This action will clear your typing patterns that are saved in "
+                    "heading": "உறுதிப்படுத்தல்",
+                    "message": "இந்த செயல் தட்டச்சு டி.என்.ஏவில் சேமிக்கப்பட்ட உங்கள் தட்டச்சு முறைகளை அழிக்கும். "+
+                    "தொடர விரும்புகிறீர்களா?"
                 }
             },
             "notifications": {
                 "clearTypingPatterns": {
                     "success": {
-                        "description": "Your typing patterns in TypingDNA have been cleared successfully",
-                        "message": "Typing patterns cleared successfully"
+                        "description": "தட்டச்சு டி.என்.ஏவில் உங்கள் தட்டச்சு முறைகள் வெற்றிகரமாக அழிக்கப்பட்டுள்ளன",
+                        "message": "தட்டச்சு முறைகள் வெற்றிகரமாக அழிக்கப்பட்டன"
                     },
                     "error": {
-                        "description": "Typing patterns could not be cleared. Please contact your site admin",
-                        "message": "Failed to clear typing patterns"
+                        "description": "தட்டச்சு முறைகளை அழிக்க முடியவில்லை. உங்கள் தள நிர்வாகியைத் தொடர்பு கொள்ளவும்",
+                        "message": "தட்டச்சு முறைகளை அழிக்க முடியவில்லை"
                     }
                 }
             }
