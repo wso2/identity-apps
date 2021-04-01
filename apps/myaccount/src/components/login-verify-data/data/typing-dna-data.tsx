@@ -1,32 +1,29 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
+ * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
-import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import { GenericIcon } from "@wso2is/react-components";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { DeleteTypingPatterns, updateProfileInfo } from "../../../api";
+import { deleteTypingPatterns } from "../../../api";
 import { getMFAIcons } from "../../../configs";
-import { AppConstants, CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, FeatureConfigInterface } from "../../../models";
-import { EditSection, ThemeIcon } from "../../shared";
 import { SettingsSection } from "../../shared";
 
 /**
@@ -37,11 +34,12 @@ interface TypingDNAProps extends SBACInterface<FeatureConfigInterface> {
 }
 
 /**
- * TypingDNA Delete patterns section.
+ * TypingDNA Delete typing patterns section.
  *
+ * @params {<TypingDNAProps>} props - Props injected to the component
  * @return {JSX.Element}
  */
-export const TypingDNA: React.FunctionComponent<any> = (props): JSX.Element => {
+export const TypingDNA: React.FunctionComponent<TypingDNAProps> = (props: TypingDNAProps): JSX.Element => {
     const { t } = useTranslation();
     const [isRevokeClearTypingPatternsModalVisible,setRevokeClearTypingPatternsModalVisible] = useState(false);
     const { onAlertFired, featureConfig } = props;
@@ -56,73 +54,72 @@ export const TypingDNA: React.FunctionComponent<any> = (props): JSX.Element => {
     };
 
     const handleClearTypingPatterns = () => {
-            DeleteTypingPatterns()
-                .then(() => {
+        deleteTypingPatterns()
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.success.message"
+                    )
+                });
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.success.description"
+                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description",
                         ),
-                        level: AlertLevels.SUCCESS,
+                        level: AlertLevels.ERROR,
                         message: t(
-                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.success.message"
+                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
                         )
                     });
-                })
-                .catch((error) => {
-                    if (error.response && error.response.data && error.response.detail) {
-                        onAlertFired({
-                            description: t(
-                                "myAccount:components.userSessions.notifications.revokeUserSession.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "myAccount:components.userSessions.notifications.revokeUserSession.error.message"
-                            )
-                        });
-                    } else {
-                        onAlertFired({
-                            description: t(
-                                "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
-                            )
-                        });
-                    }
-                })
-                .finally(() => {
-                    setRevokeClearTypingPatternsModalVisible(false);
-                });
-        };
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "myAccount:components.loginVerifyData.notifications.clearTypingPatterns.error.message"
+                        )
+                    });
+                }
+            })
+            .finally(() => {
+                setRevokeClearTypingPatternsModalVisible(false);
+            });
+    };
 
 
     const ClearTypingPatternsModal = (
-            <Modal
-                size="mini"
-                open={ isRevokeClearTypingPatternsModalVisible }
-                onClose={ handleClearTypingPatternsModalClose }
-                dimmer="blurring"
-            >
-                <Modal.Content>
-                    <Container>
-                        <h3>{t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.heading")}</h3>
-                    </Container>
-                    <br/>
-                    <p>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.message")}
-                    { <a href='https://www.typingdna.com/'>TypingDNA</a> }{ ". Do you wish to continue?" } </p>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button className="link-button" onClick={ handleClearTypingPatternsModalClose }>
-                        {t("common:cancel")}
-                    </Button>
-                    <Button primary={ true } onClick={ handleClearTypingPatterns }>
-                        {t("common:Clear")}
-                    </Button>
-                </Modal.Actions>
-            </Modal>
-        );
+        <Modal
+            size="mini"
+            open={ isRevokeClearTypingPatternsModalVisible }
+            onClose={ handleClearTypingPatternsModalClose }
+            dimmer="blurring"
+        >
+            <Modal.Content>
+                <Container>
+                    <h3>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.heading") }</h3>
+                </Container>
+                <br/>
+                <p>{ t("myAccount:components.loginVerifyData.modals.clearTypingPatternsModal.message") }
+                { <a href='https://www.typingdna.com/'>...</a> } </p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button className="link-button" onClick={ handleClearTypingPatternsModalClose }>
+                    { t("common:cancel") }
+                </Button>
+                <Button primary={ true } onClick={ handleClearTypingPatterns }>
+                    { t("common:clear") }
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    );
 
     const showEditView = () => {
 
@@ -144,10 +141,10 @@ export const TypingDNA: React.FunctionComponent<any> = (props): JSX.Element => {
                         </List.Content>
                         <List.Content>
                             <List.Header>
-                                {t("myAccount:components.loginVerifyData.typingdna.heading")}
+                                { t("myAccount:components.loginVerifyData.typingdna.heading") }
                             </List.Header>
                             <List.Description>
-                                {t("myAccount:components.loginVerifyData.typingdna.description")}
+                                { t("myAccount:components.loginVerifyData.typingdna.description") }
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
