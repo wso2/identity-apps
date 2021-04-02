@@ -18,11 +18,5 @@
 
 import { Extensions } from "../../models";
 export const extensions: Extensions = {
-    manage: {
-        attributes: {
-            attributes: {
-                description: "View and manage attributes"
-            }
-        }
-    }
+
 };
