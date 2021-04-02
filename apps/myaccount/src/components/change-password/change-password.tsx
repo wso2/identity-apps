@@ -152,7 +152,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     if (message.match(/^\w+?\d{1,5}/g)) {
                         const fragments = message.split(",");
                         if (fragments?.length > 1) {
-                            message = fragments[1]?.trim();
+                            /**
+                             * If message spilt fragments have more than one elemnets,
+                             * we remove first element only i.e., removes strings like
+                             * SUS-605000 , 60501 - , 60502 |
+                             */
+                            message = message.replace(message.split(",")[0] +",","")?.trim();
                         }
                     }
 
@@ -348,7 +353,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             size="small"
                             type="submit"
                             value={ t("common:submit").toString() }
-                            data-testid={ `${testId}-form-actions-group-submit-button`}
+                            data-testid={ `${testId}-form-actions-group-submit-button` }
                         />
                         <Field
                             className="link-button"
@@ -358,7 +363,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             size="small"
                             type="button"
                             value={ t("common:cancel").toString() }
-                            data-testid={ `${testId}-form-actions-group-cancel-button`}
+                            data-testid={ `${testId}-form-actions-group-cancel-button` }
                         />
                     </Form.Group>
 
