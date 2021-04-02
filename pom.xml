@@ -564,7 +564,7 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
-                                <argument>lint:ci</argument>
+                                <argument>lint</argument>
                             </arguments>
                             <skip>${lint.exec.skip}</skip>
                             <workingDirectory>${basedir}</workingDirectory>
