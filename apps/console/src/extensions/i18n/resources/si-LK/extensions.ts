@@ -18,5 +18,11 @@
 
 import { Extensions } from "../../models";
 export const extensions: Extensions = {
-
+    manage: {
+        attributes: {
+            attributes: {
+                description: "ගුණාංග බලන්න සහ කළමනාකරණය කරන්න"
+            }
+        }
+    }
 };
