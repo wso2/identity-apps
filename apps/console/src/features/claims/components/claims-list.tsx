@@ -909,7 +909,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:update"),
                     renderer: "semantic-icon"
                 },
-                attributeConfig.externalAttributes.showActions && {
+                attributeConfig.externalAttributes.showActions(dialectID) && {
                     icon: (claim: ExternalClaim): SemanticICONS => attributeConfig.externalAttributes
                         .getEditIcon(claim, editClaim),
 
