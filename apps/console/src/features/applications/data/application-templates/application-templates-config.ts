@@ -31,7 +31,7 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import { ExtensionsManager } from "../../../../extensions";
+import { ExtensionsManager, applicationConfig } from "../../../../extensions";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
@@ -105,7 +105,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/android-mobile-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.android,
                         id: AndroidMobileApplicationTemplate.id,
                         resource: AndroidMobileApplicationTemplate
                     },
@@ -113,7 +113,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/oidc-web-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.oidc,
                         id: OIDCWebApplicationTemplate.id,
                         resource: OIDCWebApplicationTemplate
                     },
@@ -121,7 +121,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.saml,
                         id: SAMLWebApplicationTemplate.id,
                         resource: SAMLWebApplicationTemplate
                     },
@@ -129,7 +129,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/single-page-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.spa,
                         id: SinglePageApplicationTemplate.id,
                         resource: SinglePageApplicationTemplate
                     },
@@ -137,7 +137,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/windows-desktop-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.windows,
                         id: WindowsDesktopApplicationTemplate.id,
                         resource: WindowsDesktopApplicationTemplate
                     },
@@ -145,7 +145,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         content: {
                             wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
                         },
-                        enabled: true,
+                        enabled: applicationConfig.templates.custom,
                         id: CustomApplicationTemplate.id,
                         resource: CustomApplicationTemplate
                     }

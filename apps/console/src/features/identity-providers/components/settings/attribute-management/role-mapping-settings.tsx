@@ -102,7 +102,9 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         <>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Heading as="h4">{ t("console:develop.features.idp.forms.roleMapping.heading") }</Heading>
+                    <Heading as="h4">
+                        { t("console:develop.features.authenticationProvider.forms.roleMapping.heading") }
+                    </Heading>
                     <DynamicField
                         bottomMargin={ false }
                         data={
@@ -116,13 +118,13 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         }
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName={ t("console:develop.features.idp.forms.roleMapping.keyName") }
-                        valueName={ t("console:develop.features.idp.forms.roleMapping.valueName") }
-                        keyRequiredMessage={ t("console:develop.features.idp.forms.roleMapping." +
+                        keyName={ t("console:develop.features.authenticationProvider.forms.roleMapping.keyName") }
+                        valueName={ t("console:develop.features.authenticationProvider.forms.roleMapping.valueName") }
+                        keyRequiredMessage={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
                             "validation.keyRequiredMessage") }
-                        valueRequiredErrorMessage={ t("console:develop.features.idp.forms.roleMapping." +
-                            "validation.valueRequiredErrorMessage") }
-                        duplicateKeyErrorMsg={ t("console:develop.features.idp.forms.roleMapping." +
+                        valueRequiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
+                            "roleMapping.validation.valueRequiredErrorMessage") }
+                        duplicateKeyErrorMsg={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
                         update={ (data) => {
@@ -140,7 +142,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         } }
                         data-testid={ testId }
                     />
-                    <Hint>{ t("console:develop.features.idp.forms.roleMapping.hint") }</Hint>
+                    <Hint>{ t("console:develop.features.authenticationProvider.forms.roleMapping.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>

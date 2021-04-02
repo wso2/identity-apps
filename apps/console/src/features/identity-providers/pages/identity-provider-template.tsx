@@ -52,7 +52,7 @@ import {
     getIdentityProviderTemplate
 } from "../api";
 import {
-    ExpertModeTemplate,
+    GoogleAuthenticationProviderCreateWizard,
     IdentityProviderCreateWizard,
     handleGetIDPTemplateAPICallError
 } from "../components";
@@ -61,12 +61,12 @@ import {
     getIdPIcons,
     getIdPTemplateDocsIcons
 } from "../configs";
-import { IdentityProviderManagementConstants } from "../constants";
+import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies,
+    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
@@ -196,7 +196,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Categorize the IDP templates.
      */
     useEffect(() => {
-        if (!identityProviderTemplates || !Array.isArray(identityProviderTemplates) || !(identityProviderTemplates.length > 0)) {
+        if (!identityProviderTemplates || !Array.isArray(identityProviderTemplates)
+            || !(identityProviderTemplates.length > 0)) {
             return;
         }
 
@@ -214,13 +215,31 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      */
     const getTemplate = (templateId: string): void => {
 
-        getIdentityProviderTemplate(templateId)
-            .then((response) => {
-                setSelectedTemplate(response as IdentityProviderTemplateInterface);
-            })
-            .catch((error) => {
-                handleGetIDPTemplateAPICallError(error);
-            });
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
+            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
+            IdentityProviderManagementConstants.
+                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+        if (useAPI) {
+            getIdentityProviderTemplate(templateId)
+                .then((response) => {
+                    if (!response.disabled) {
+                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
+                    }
+                })
+                .catch((error) => {
+                    handleGetIDPTemplateAPICallError(error);
+                });
+        } else {
+            IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
+                .then((response) => {
+                    if (!response.disabled) {
+                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
+                    }
+                })
+                .catch((error) => {
+                    handleGetIDPTemplateAPICallError(error);
+                });
+        }
     };
 
     /**
@@ -240,24 +259,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        if (id === "expert-mode") {
-            setSelectedTemplate(ExpertModeTemplate);
-            setSelectedTemplateWithUniqueName({
-                ...ExpertModeTemplate,
-                idp: {
-                    ...selectedTemplate?.idp,
-                    name: ""
-                }
-            });
-
-            setShowWizard(true);
-        } else {
             getTemplate(id);
-        }
     };
 
     const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name eq " + idpName).then(
+        getIdentityProviderList(null, null, "name sw " + idpName).then(
             (response: IdentityProviderListResponseInterface) => {
             setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
                 eachIdp => eachIdp.name) : []);
@@ -309,7 +315,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         });
 
         setShowWizard(true);
-    }, [possibleListOfDuplicateIdps]);
+    }, [ possibleListOfDuplicateIdps ]);
 
     /**
      * Handles help panel template doc change event.
@@ -331,7 +337,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 titleAs="h4"
                                 backButton={ docsTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedTemplateDoc(undefined),
-                                    text: t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.goBack")
+                                    text: t("console:develop.features.authenticationProvider.helpPanel.tabs." +
+                                        "samples.content.docs.goBack")
                                 } }
                                 bottomMargin={ false }
                                 data-testid={ `${ testId }-help-panel-docs-tab-page-header` }
@@ -354,10 +361,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     : (
                         <>
                             <Heading as="h4">
-                                { t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.title") }
+                                { t("console:develop.features.authenticationProvider.helpPanel.tabs.samples." +
+                                    "content.docs.title") }
                             </Heading>
                             <Hint>
-                                { t("console:develop.features.idp.helpPanel.tabs.samples.content.docs.hint") }
+                                { t("console:develop.features.authenticationProvider.helpPanel.tabs.samples." +
+                                    "content.docs.hint") }
                             </Hint>
                             <Divider hidden/>
 
@@ -407,6 +416,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         return (
             <TemplateGrid<IdentityProviderTemplateItemInterface>
+                className="idp-template-grid"
                 type="idp"
                 templates={
                     templatesOverrides
@@ -415,9 +425,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 }
                 templateIcons={ getIdPIcons() }
                 templateIconOptions={ {
+                    as: "data-url",
                     fill: "primary"
                 } }
-                templateIconSize="tiny"
+                templateIconSize="x60"
                 onTemplateSelect={ handleTemplateSelection }
                 paginate={ true }
                 paginationLimit={ 5 }
@@ -425,6 +436,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     showLessButtonLabel: t("common:showLess"),
                     showMoreButtonLabel: t("common:showMore")
                 } }
+                overlayOpacity={ 0.6 }
+                renderDisabledItemsAsGrayscale={ false }
                 emptyPlaceholder={ placeholder }
                 { ...additionalProps }
             />
@@ -442,21 +455,20 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
             unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
         >
             <PageLayout
-                title={ t("console:develop.pages.idpTemplate.title") }
+                title={ t("console:develop.pages.authenticationProviderTemplate.title") }
                 contentTopMargin={ true }
-                description={ t("console:develop.pages.idpTemplate.subTitle") }
+                description={ t("console:develop.pages.authenticationProviderTemplate.subTitle") }
                 backButton={ {
                     "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.idpTemplate.backButton")
+                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
@@ -466,7 +478,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 {
                     (categorizedTemplates && !isIDPTemplateRequestLoading)
                         ? (
-                            categorizedTemplates.map((category: IdentityProviderTemplateCategoryInterface, index: number) => (
+                            categorizedTemplates
+                                .map((category: IdentityProviderTemplateCategoryInterface, index: number) => (
                                 <div key={ index } className="templates quick-start-templates">
                                     {
                                         renderTemplateGrid(
@@ -486,7 +499,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 imageSize="tiny"
                                                 title={ t("console:develop.features.templates.emptyPlaceholder.title") }
                                                 subtitle={
-                                                    [ t("console:develop.features.templates.emptyPlaceholder.subtitles") ]
+                                                    [ t("console:develop.features.templates.emptyPlaceholder." +
+                                                        "subtitles") ]
                                                 }
                                                 data-testid={
                                                     `${ testId }-quick-start-template-grid-empty-placeholder`
@@ -502,16 +516,27 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 }
                 <Divider hidden/>
                 { showWizard && (
-                    <IdentityProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
-                        subTitle={ selectedTemplateWithUniqueName?.description }
-                        closeWizard={ () => {
-                            setSelectedTemplateWithUniqueName(undefined);
-                            setSelectedTemplate(undefined);
-                            setShowWizard(false);
-                        } }
-                        template={ selectedTemplateWithUniqueName?.idp }
-                    />
+                    GOOGLE_IDP_NAME === selectedTemplateWithUniqueName.name ?
+                        <GoogleAuthenticationProviderCreateWizard
+                            title={ selectedTemplateWithUniqueName?.name }
+                            subTitle={ selectedTemplateWithUniqueName?.description }
+                            closeWizard={ () => {
+                                setSelectedTemplateWithUniqueName(undefined);
+                                setSelectedTemplate(undefined);
+                                setShowWizard(false);
+                            } }
+                            template={ selectedTemplateWithUniqueName }
+                        /> :
+                        <IdentityProviderCreateWizard
+                            title={ selectedTemplateWithUniqueName?.name }
+                            subTitle={ selectedTemplateWithUniqueName?.description }
+                            closeWizard={ () => {
+                                setSelectedTemplateWithUniqueName(undefined);
+                                setSelectedTemplate(undefined);
+                                setShowWizard(false);
+                            } }
+                            template={ selectedTemplateWithUniqueName }
+                        />
                 ) }
             </PageLayout>
         </HelpPanelLayout>

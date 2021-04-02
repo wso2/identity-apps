@@ -1,0 +1,37 @@
+{
+    "category": "DEFAULT",
+    "description": "Login with Facebook",
+    "displayOrder": 1,
+    "id": "facebook-idp",
+    "idp": {
+        "certificate": {},
+        "claims": {
+            "provisioningClaims": [],
+            "roleClaim": {
+                "uri": ""
+            },
+            "userIdClaim": {
+                "uri": ""
+            }
+        },
+        "description": "",
+        "federatedAuthenticators": {
+            "authenticators": [],
+            "defaultAuthenticatorId": ""
+        },
+        "homeRealmIdentifier": "",
+        "image": "",
+        "isFederationHub": false,
+        "isPrimary": false,
+        "name": "Facebook Authentication Provider",
+        "provisioning": {},
+        "roles": {
+            "mappings": [],
+            "outboundProvisioningRoles": []
+        }
+    },
+    "image": "facebook",
+    "name": "Facebook",
+    "services": [],
+    "disabled": true
+}

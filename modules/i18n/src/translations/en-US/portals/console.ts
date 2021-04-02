@@ -4976,6 +4976,7 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a description",
                             requiredErrorMessage: "Description is required"
                         },
+                        descriptionHint: "A meaningful description for the attribute.",
                         displayOrder: {
                             label: "Display Order",
                             placeholder: "Enter the display order"
@@ -4992,21 +4993,20 @@ export const console: ConsoleNS = {
                                     " underscores (_), plus signs (+), and spaces."
                             }
                         },
-                        nameHint: "Name of the attribute that will be shown on the user profile "
-                            + "and user registration page",
+                        nameHint: "The display name of the attribute in the user profile.",
                         readOnly: {
-                            label: "Make this attribute read-only"
+                            label: "Make this attribute read-only on the user's profile"
                         },
                         regEx: {
                             label: "Regular expression",
                             placeholder: "Enter a regular expression"
                         },
-                        regExHint: "This regular expression is used to validate the value this attribute can take",
+                        regExHint: "Use a regex pattern to validate the attribute input value.",
                         required: {
                             label: "Make this attribute required during user registration"
                         },
                         supportedByDefault: {
-                            label: "Show this attribute on user profile and user registration page"
+                            label: "Display this attribute on the user's profile"
                         }
                     },
                     mappedAttributes: {

@@ -36,7 +36,8 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
  * @param {CommonPluggableComponentFormPropsInterface} props
  * @return { ReactElement }
  */
-export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (props
+export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
+    props: CommonPluggableComponentFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -51,7 +52,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const { t } = useTranslation();
 
     // Used for field elements which needs to listen for any onChange events in the form.
-    const [dynamicValues, setDynamicValues] = useState<CommonPluggableComponentInterface>(undefined);
+    const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
+    const [ customProperties, setCustomProperties ] = useState<string>(undefined);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
 
@@ -87,15 +89,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         });
 
-        const customProperties = values.get("customProperties") !== ""
-            ? values.get("customProperties")?.toString()?.split(",")?.map((customProperty: string) => {
+        const customProperties = values.get("customProperties")?.toString()?.split(",")
+            ?.map((customProperty: string) => {
                 const keyValuePair = customProperty.split("=");
                 return {
                     key: keyValuePair[ 0 ],
                     value: keyValuePair[ 1 ]
                 };
-            })
-            : [];
+            });
 
         customProperties?.length > 0 && properties.push(...customProperties);
 
@@ -124,7 +125,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
                       eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
-                      disable: boolean,
                       isSub?: boolean,
                       testId?: string,
                       listen?: (key: string, values: Map<string, FormValue>) => void):
@@ -136,7 +136,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
                     </Grid.Column>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
-                        { getPropertyField(property, eachPropertyMeta, disable, listen, testId) }
+                        { getPropertyField(property, eachPropertyMeta, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -144,15 +144,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(property, eachPropertyMeta, disable, listen, testId) }
+                        { getPropertyField(property, eachPropertyMeta, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
         }
     };
 
-    const getSortedPropertyFields = (metaProperties: CommonPluggableComponentMetaPropertyInterface[],
-                                     disable: boolean, isSub: boolean):
+    const getSortedPropertyFields = (metaProperties: CommonPluggableComponentMetaPropertyInterface[], isSub: boolean):
         ReactElement[] => {
 
         const bucket: ReactElement[] = [];
@@ -169,18 +168,17 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
                 let field: ReactElement;
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, disable, isSub, `${ testId }-form`);
+                    field = getField(property, metaProperty, isSub, `${ testId }-form`);
                 } else {
                     field =
                         <React.Fragment key={ metaProperty?.displayOrder }>
                             {
                                 // Render parent property.
-                                getField(property, metaProperty, disable, isSub, `${ testId }-form`,
+                                getField(property, metaProperty, isSub, `${ testId }-form`,
                                     handleParentPropertyChange)
                             }
                             {
-                                getSortedPropertyFields(metaProperty?.subProperties,
-                                    !(property?.value?.toString()?.toLowerCase() === "true"), true)
+                                getSortedPropertyFields(metaProperty?.subProperties, true)
                             }
                         </React.Fragment>;
                 }
@@ -190,23 +188,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
 
         return bucket.sort((a, b) => Number(a.key) - Number(b.key));
-    };
-
-    /**
-     * This returns all the custom properties.
-     *
-     * @return {CommonPluggableComponentPropertyInterface} Custom Properties - Returns all the custom properties.
-     */
-    const getCustomProperties = (): string => {
-        const values: string[] = [];
-        dynamicValues?.properties?.forEach(
-            (property: CommonPluggableComponentPropertyInterface) => {
-            if (!metadata?.properties?.find(meta => meta.key === property.key)) {
-                values.push(property.key+"="+property.value);
-            }
-        });
-
-        return values.join(", ");
     };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
@@ -243,6 +224,25 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         setDynamicValues(initialValues);
     }, []);
 
+    /**
+ * This set all the custom properties.
+ */
+    useEffect(() => {
+        if (!dynamicValues) {
+            return;
+        }
+
+        const values: string[] = [];
+        dynamicValues?.properties?.forEach(
+            (property: CommonPluggableComponentPropertyInterface) => {
+                if (!metadata?.properties?.find(meta => meta.key === property.key)) {
+                    values.push(property.key + "=" + property.value);
+                }
+            });
+
+        setCustomProperties(values.join(", "));
+    }, [ dynamicValues ]);
+
     return (
         <Forms
             onSubmit={ (values) => {
@@ -252,20 +252,24 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             data-testid={ `${ testId }-form` }
         >
             <Grid>
-                { dynamicValues && getSortedPropertyFields(metadata?.properties, false, false) }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="customProperties"
-                            label={ t("console:develop.features.idp.forms.common.customProperties") }
-                            required={ false }
-                            requiredErrorMessage={ t("console:develop.features.idp.forms.common.requiredErrorMessage") }
-                            type="queryParams"
-                            value={ getCustomProperties() }
-                            data-testid={ `${ testId }-${ "customProperties" }` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { customProperties && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="customProperties"
+                                label={ t("console:develop.features.authenticationProvider.forms.common." +
+                                    "customProperties") }
+                                required={ false }
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
+                                    "common.requiredErrorMessage") }
+                                type="queryParams"
+                                value={ customProperties }
+                                data-testid={ `${ testId }-${ "customProperties" }` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 { enableSubmitButton && getSubmitButton("Update") }
             </Grid>
         </Forms>

@@ -20,7 +20,9 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import {
     AdvanceSettings,
@@ -30,9 +32,12 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
+import { ComponentExtensionPlaceholder } from "../../../extensions";
+import { identityProviderConfig } from "../../../extensions";
 import {
     IdentityProviderAdvanceInterface,
-    IdentityProviderInterface
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
 } from "../models";
 
 /**
@@ -55,6 +60,22 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+ * Check if IDP is Google
+ */
+    isGoogle: boolean;
+    /**
+     * IDP template.
+     */
+    template: IdentityProviderTemplateInterface;
+    /**
+     * Default active tab index.
+     */
+    defaultActiveIndex?: number;
+    /**
+     * Callback to see if tab extensions are available
+     */
+    isTabExtensionsAvailable: (isAvailable: boolean) => void;
 }
 
 /**
@@ -70,10 +91,16 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const {
         identityProvider,
         isLoading,
+        isGoogle,
         onDelete,
         onUpdate,
+        template,
+        defaultActiveIndex,
+        isTabExtensionsAvailable,
         [ "data-testid" ]: testId
     } = props;
+
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
         alias: identityProvider.alias,
@@ -157,8 +184,42 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    useEffect(() => {
+        if (tabPaneExtensions) {
+            return;
+        }
+
+        if (!template?.content?.quickStart || !identityProvider?.id) {
+            return;
+        }
+
+        const extensions: any[] = ComponentExtensionPlaceholder({
+            component: "identityProvider",
+            props: {
+                content: template.content.quickStart,
+                identityProvider: identityProvider,
+                template: template
+            },
+            subComponent: "edit",
+            type: "tab"
+        });
+
+        if (Array.isArray(extensions) && extensions.length > 0) {
+            isTabExtensionsAvailable(true);
+        }
+
+        setTabPaneExtensions(extensions);
+    }, [
+        tabPaneExtensions,
+        identityProvider
+    ]);
+
     const getPanes = () => {
         const panes = [];
+
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+            panes.push(...tabPaneExtensions);
+        }
 
         panes.push({
             menuItem: "General",
@@ -166,29 +227,34 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         });
 
         panes.push({
-            menuItem: "Attributes",
-            render: AttributeSettingsTabPane
-        });
-
-        panes.push({
-            menuItem: "Authentication",
+            menuItem: "Settings",
             render: AuthenticatorSettingsTabPane
         });
 
-        panes.push({
-            menuItem: "Outbound Provisioning",
-            render: OutboundProvisioningSettingsTabPane
-        });
+        if (!isGoogle) {
+            panes.push({
+                menuItem: "Attributes",
+                render: AttributeSettingsTabPane
+            });
+        }
 
-        panes.push({
-            menuItem: "Just-in-Time Provisioning",
-            render: JITProvisioningSettingsTabPane
-        });
+        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+            panes.push({
+                menuItem: "Outbound Provisioning",
+                render: OutboundProvisioningSettingsTabPane
+            });
 
-        panes.push({
-            menuItem: "Advanced",
-            render: AdvancedSettingsTabPane
-        });
+        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+            panes.push({
+                menuItem: "Just-in-Time Provisioning",
+                render: JITProvisioningSettingsTabPane
+            });
+
+        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+            panes.push({
+                menuItem: "Advanced",
+                render: AdvancedSettingsTabPane
+            });
 
         return panes;
     };
@@ -198,6 +264,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             <ResourceTab
                 data-testid={ `${ testId }-resource-tabs` }
                 panes={ getPanes() }
+                defaultActiveIndex={ defaultActiveIndex }
             />
         )
     );

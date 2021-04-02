@@ -131,7 +131,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             }
                             children={ [
                                 {
-                                    label: t("console:develop.features.idp.forms." +
+                                    label: t("console:develop.features.authenticationProvider.forms." +
                                         "jitProvisioning.enableJITProvisioning.label"),
                                     value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                 }
@@ -140,7 +140,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             data-testid={ `${ testId }-is-enable` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.jitProvisioning.enableJITProvisioning.hint") }
+                            { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "enableJITProvisioning.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -148,7 +149,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name={ JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY }
-                            label={ t("console:develop.features.idp.forms.jitProvisioning." +
+                            label={ t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                 "provisioningUserStoreDomain.label") }
                             required={ false }
                             requiredErrorMessage=""
@@ -160,7 +161,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             data-testid={ `${ testId }-user-store-domain` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.jitProvisioning.provisioningUserStoreDomain.hint") }
+                            { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "provisioningUserStoreDomain.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -168,29 +170,30 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            label={ t("console:develop.features.idp.forms.jitProvisioning.provisioningScheme.label") }
+                            label={ t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "provisioningScheme.label") }
                             name={ JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY }
                             default={ initialValues?.scheme ? initialValues?.scheme :
                                 SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT }
                             type="radio"
                             children={ [
                                 {
-                                    label: t("console:develop.features.idp.forms.jitProvisioning." +
+                                    label: t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                         "provisioningScheme.children.0"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT
                                 },
                                 {
-                                    label: t("console:develop.features.idp.forms.jitProvisioning." +
+                                    label: t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                         "provisioningScheme.children.1"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_PASSWORD_CONSENT
                                 },
                                 {
-                                    label: t("console:develop.features.idp.forms.jitProvisioning." +
+                                    label: t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                         "provisioningScheme.children.2"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_CONSENT
                                 },
                                 {
-                                    label: t("console:develop.features.idp.forms.jitProvisioning." +
+                                    label: t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
                                         "provisioningScheme.children.3"),
                                     value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
                                 }
@@ -199,11 +202,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             data-testid={ `${ testId }-scheme` }
                         />
                         <Hint>
-                            { t("console:develop.features.idp.forms.jitProvisioning.provisioningScheme.hint") }
+                            { t("console:develop.features.authenticationProvider.forms.jitProvisioning." +
+                                "provisioningScheme.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                
+
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Button

@@ -42,8 +42,8 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
     return (
         <div data-testid={ testId }>
             <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the IDP so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
+            <p>Provide a unique name for the enterprise authentication provider so that it can be easily identified.</p>
+            <p>E.g., MyEnterpriseAuthProvider.</p>
         </div>
     );
 };

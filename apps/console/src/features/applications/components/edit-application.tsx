@@ -35,7 +35,7 @@ import {
     ProvisioningSettings,
     SignOnMethods
 } from "./settings";
-import { ComponentExtensionPlaceholder } from "../../../extensions";
+import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
@@ -44,6 +44,7 @@ import {
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
+    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
@@ -131,6 +132,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
 
@@ -188,6 +191,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (!template?.content?.quickStart || !application?.id || isInboundProtocolConfigRequestLoading) {
             return;
+        }
+
+        if (inboundProtocolConfig && samlConfigurations && samlConfigurations.certificate) {
+            inboundProtocolConfig.certificate = samlConfigurations.certificate;
+            inboundProtocolConfig.ssoUrl = samlConfigurations.ssoUrl;
+            inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
         const extensions: any[] = ComponentExtensionPlaceholder({
@@ -282,8 +291,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const normalizeSAMLNameIDFormat = (protocolConfigs: any): void => {
         const key = "saml";
-        if (protocolConfigs[key]) {
-            const assertion = protocolConfigs[key].singleSignOnProfile?.assertion;
+        if (protocolConfigs[ key ]) {
+            const assertion = protocolConfigs[ key ].singleSignOnProfile?.assertion;
             if (assertion) {
                 const ref = assertion.nameIdFormat as string;
                 assertion.nameIdFormat = ref.replace(/\//g, ":");
@@ -394,6 +403,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 isLoading={ isLoading }
@@ -434,6 +444,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
+                technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
                 onlyOIDCConfigured={
@@ -475,16 +486,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <ProvisioningSettings
-                application={ application }
-                provisioningConfigurations={ application.provisioningConfigurations }
-                onUpdate={ onUpdate }
-                featureConfig={ featureConfig }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-provisioning-settings` }
-            />
-        </ResourceTab.Pane>
+        applicationConfig.editApplication.showProvisioningSettings
+            ? < ResourceTab.Pane controlledSegmentation>
+                <ProvisioningSettings
+                    application={ application }
+                    provisioningConfigurations={ application.provisioningConfigurations }
+                    onUpdate={ onUpdate }
+                    featureConfig={ featureConfig }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-provisioning-settings` }
+                />
+            </ResourceTab.Pane>
+            : null
     );
 
     /**
@@ -494,6 +507,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
+
+         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
+            return [];
+        }
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
@@ -532,8 +549,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     render: SignOnMethodsTabPane
                 });
             }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
+
+            if (applicationConfig.editApplication.showProvisioningSettings
+                && isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
                     menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
@@ -569,7 +588,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
-            {
+            applicationConfig.editApplication.showProvisioningSettings && {
                 menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
@@ -585,7 +604,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @return {React.ReactElement}
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
-        
+
         // If client hashing is disabled, don't show the modal.
         if (!isClientSecretHashEnabled) {
             return null;
@@ -642,51 +661,52 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-content` }
                 >
                     <Form>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Form.Field>
-                                <label>
-                                    {
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
-                                    }
-                                </label>
-                                <CopyInputField
-                                    value={ clientId }
-                                    hideSecretLabel={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
-                                    }
-                                    showSecretLabel={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
-                                    }
-                                    data-testid={ `${ testId }-client-secret-readonly-input` }
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>
-                                    {
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.label")
-                                    }
-                                </label>
-                                <CopyInputField
-                                    secret
-                                    value={ clientSecret }
-                                    hideSecretLabel={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
-                                    }
-                                    showSecretLabel={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
-                                    }
-                                    data-testid={ `${ testId }-client-secret-readonly-input` }
-                                />
-                            </Form.Field>
-                        </Grid.Column>
-                    </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Form.Field>
+                                    <label>
+                                        {
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
+                                        }
+                                    </label>
+                                    <CopyInputField
+                                        value={ clientId }
+                                        hideSecretLabel={
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
+                                        }
+                                        showSecretLabel={
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
+                                        }
+                                        data-testid={ `${ testId }-client-secret-readonly-input` }
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>
+                                        {
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm." +
+                                                "clientSecret.label")
+                                        }
+                                    </label>
+                                    <CopyInputField
+                                        secret
+                                        value={ clientSecret }
+                                        hideSecretLabel={
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
+                                        }
+                                        showSecretLabel={
+                                            t("console:develop.features.applications.confirmations." +
+                                                "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
+                                        }
+                                        data-testid={ `${ testId }-client-secret-readonly-input` }
+                                    />
+                                </Form.Field>
+                            </Grid.Column>
+                        </Grid.Row>
                     </Form>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -695,6 +715,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
+            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs)
             ? (
                 <>
                     <ResourceTab

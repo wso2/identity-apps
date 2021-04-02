@@ -30,7 +30,7 @@ import {
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
@@ -42,8 +42,8 @@ import {
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorsInterface,
-    OutboundProvisioningConnectorWithMetaInterface
+    OutboundProvisioningConnectorWithMetaInterface,
+    OutboundProvisioningConnectorsInterface
 } from "../../models";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import {
@@ -73,10 +73,6 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * Initial activeIndexes value.
-     */
-    defaultActiveIndexes?: number[];
 }
 
 /**
@@ -94,7 +90,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         outboundConnectors,
         isLoading,
         onUpdate,
-        defaultActiveIndexes,
         [ "data-testid" ]: testId
     } = props;
 
@@ -111,8 +106,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         deletingConnector,
         setDeletingConnector
     ] = useState<OutboundProvisioningConnectorWithMetaInterface>(undefined);
-    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
-
 
     /**
      * Fetch available connectors for the identity provider.
@@ -149,11 +142,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
-                            description: t("console:develop.features.idp.notifications." +
+                            description: t("console:develop.features.authenticationProvider.notifications." +
                                 "getOutboundProvisioningConnector.error.description",
                                 { description: error.response.data.description } ),
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.idp.notifications." +
+                            message: t("console:develop.features.authenticationProvider.notifications." +
                                 "getOutboundProvisioningConnector.error.message")
                         }));
 
@@ -161,10 +154,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     }
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.idp.notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnector.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnector.genericError.message")
                     }));
                 });
@@ -194,10 +187,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnector(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateOutboundProvisioningConnector." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateOutboundProvisioningConnector." +
                         "success.message")
                 }));
 
@@ -230,10 +225,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnectors(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateOutboundProvisioningConnectors" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateOutboundProvisioningConnectors" +
                         ".success.message")
                 }));
 
@@ -244,7 +241,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "updateOutboundProvisioningConnectors" +
                             ".error.message")
                     }));
 
@@ -252,10 +250,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateOutboundProvisioningConnectors" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateOutboundProvisioningConnectors" +
                         ".genericError.message")
                 }));
             });
@@ -263,30 +263,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         setDeletingConnector(undefined);
         setShowDeleteConfirmationModal(false);
     };
-
-    /**
-     * Handles accordion title click.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
-     */
-    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
-                                    SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
-        if (!SegmentedAuthenticatedAccordion) {
-            return;
-        }
-        const newIndexes = [ ...accordionActiveIndexes ];
-
-        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
-            newIndexes.splice(removingIndex, 1);
-        } else {
-            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
-        }
-
-        setAccordionActiveIndexes(newIndexes);
-    };
-
 
     /**
      * Handles connector delete button on click action.
@@ -330,8 +306,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             {
                 defaultChecked: connector.data?.isEnabled,
                 label: t(connector.data?.isEnabled ?
-                    "console:develop.features.idp.forms.outboundConnectorAccordion.enable.0" :
-                    "console:develop.features.idp.forms.outboundConnectorAccordion.enable.1"
+                    "console:develop.features.authenticationProvider.forms.outboundConnectorAccordion.enable.0" :
+                    "console:develop.features.authenticationProvider.forms.outboundConnectorAccordion.enable.1"
                 ),
                 onChange: handleConnectorEnableToggle,
                 type: "toggle"
@@ -361,7 +337,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             data-testid={ `${ testId }-add-connector-button` }
                                         >
                                             <Icon name="add"/>
-                                            { t("console:develop.features.idp.buttons.addConnector") }
+                                                { t("console:develop.features.authenticationProvider." +
+                                                    "buttons.addConnector") }
                                         </PrimaryButton>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -401,9 +378,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 }
                                                             ]
                                                         }
-                                                        accordionActiveIndexes = { accordionActiveIndexes }
-                                                        accordionIndex = { index }
-                                                        handleAccordionOnClick = { handleAccordionOnClick }
                                                         data-testid={ `${testId}-accordion` }
                                                     />
                                                 );
@@ -422,13 +396,16 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("console:develop.features.idp.placeHolders.emptyConnectorList." +
+                                            title={ t("console:develop.features.authenticationProvider." +
+                                                "placeHolders.emptyConnectorList." +
                                             "title") }
                                         image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
-                                            t("console:develop.features.idp.placeHolders.emptyConnectorList." +
+                                            t("console:develop.features.authenticationProvider." +
+                                                "placeHolders.emptyConnectorList." +
                                                 "subtitles.0"),
-                                            t("console:develop.features.idp.placeHolders.emptyConnectorList." +
+                                            t("console:develop.features.authenticationProvider." +
+                                                "placeHolders.emptyConnectorList." +
                                                 "subtitles.1")
                                         ] }
                                         imageSize="tiny"
@@ -436,7 +413,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             <PrimaryButton onClick={ () => setShowWizard(true) }
                                                            data-testid={ `${ testId }-add-connector-button` }>
                                                 <Icon name="add"/>
-                                                { t("console:develop.features.idp.buttons.addConnector") }
+                                                { t("console:develop.features.authenticationProvider." +
+                                                    "buttons.addConnector") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${ testId }-empty-placeholder` }
@@ -458,7 +436,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey="console:develop.features.idp.confirmations.deleteConnector.assertionHint"
+                                    i18nKey={ "console:develop.features.authenticationProvider."+
+                                    "confirmations.deleteConnector.assertionHint" }
                                     tOptions={ { name: deletingConnector?.meta.name } }
                                 >
                                     Please type <strong>{ deletingConnector?.meta.name }</strong> to confirm.
@@ -476,14 +455,17 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("console:develop.features.idp.confirmations.deleteConnector.header") }
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteConnector.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning
                                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("console:develop.features.idp.confirmations.deleteConnector.message") }
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteConnector.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("console:develop.features.idp.confirmations.deleteConnector.content") }
+                            { t("console:develop.features.authenticationProvider.confirmations." +
+                                "deleteConnector.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -519,6 +501,5 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
  * Default proptypes for the IDP outbound provisioning settings component.
  */
 OutboundProvisioningSettings.defaultProps = {
-    "data-testid": "idp-edit-outbound-provisioning-settings",
-    defaultActiveIndexes: [ -1 ]
+    "data-testid": "idp-edit-outbound-provisioning-settings"
 };

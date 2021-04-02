@@ -19,16 +19,16 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
-import { AppConstants, AppState, history } from "../../../core";
+import { AppConstants, AppState, ModalWithSidePanel, history } from "../../../core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata,
@@ -41,6 +41,7 @@ import {
     CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
+    IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
@@ -58,7 +59,7 @@ interface IdentityProviderCreateWizardPropsInterface extends TestableComponentIn
     currentStep?: number;
     title: string;
     closeWizard: () => void;
-    template: IdentityProviderInterface;
+    template: IdentityProviderTemplateInterface;
     subTitle?: string;
 }
 
@@ -151,12 +152,16 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param identityProvider Identity provider object.
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
+        // TODO Uncomment below once BE support is available for templateId
+        // identityProvider.templateId = template.id
         createIdentityProvider(identityProvider)
             .then((response) => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.addIDP.success.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.addIDP.success.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "addIDP.success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -167,7 +172,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
                     history.push({
                         pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP__URL_SEARCH_PARAM
+                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
                     });
 
                     return;
@@ -179,19 +184,23 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("console:develop.features.idp.notifications.addIDP.error.description",
+                        description: t("console:develop.features.authenticationProvider.notifications." +
+                            "addIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idp.notifications.addIDP.error.message")
+                        message: t("console:develop.features.authenticationProvider.notifications." +
+                            "addIDP.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:develop.features.idp.notifications.addIDP.genericError.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idp.notifications.addIDP.genericError.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "addIDP.genericError.message")
                 });
             });
     };
@@ -238,7 +247,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param {WizardConstants} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
-        !isExpertMode() && setCurrentWizardStep(currentWizardStep + 1);
+        !isEnterpriseMode() && setCurrentWizardStep(currentWizardStep + 1);
         if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS ||
             wizardSteps[currentWizardStep]?.name === WizardSteps.OUTBOUND_PROVISIONING_SETTINGS) {
             setWizardState({
@@ -266,8 +275,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
-        
-        const connector: OutboundProvisioningConnectorInterface = 
+
+        const connector: OutboundProvisioningConnectorInterface =
             identityProvider?.provisioning?.outboundConnectors?.connectors[0];
 
         const isGoogleConnector: boolean = get(connector,
@@ -300,10 +309,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Returns if the wizard is in the expert mode.
      *
-     * @return {boolean} isExpertMode - True if it's the expert mode.
+     * @return {boolean} isEnterpriseMode - True if it's the expert mode.
      */
-    const isExpertMode = (): boolean => {
-        return !template?.name;
+    const isEnterpriseMode = (): boolean => {
+        return template?.id === "enterprise-idp";
     };
 
     /**
@@ -328,10 +337,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                             handleWizardFormSubmit(values,
                                 WizardConstants.IDENTITY_PROVIDER);
 
-                            isExpertMode() && handleWizardFormFinish(generateWizardSummary());
+                            isEnterpriseMode() && handleWizardFormFinish(generateWizardSummary());
 
                         }
                         }
+                        template={ template }
                         data-testid={ `${ testId }-general-settings` }
                     />
                 );
@@ -388,7 +398,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
         if (isOutboundProvisioningSettingsStepAvailable()) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const status = getProvisioningConnectorMetadata(template.provisioning.outboundConnectors
+            const status = getProvisioningConnectorMetadata(template?.idp?.provisioning.outboundConnectors
                 .defaultConnectorId);
             isWaiting = true;
         }
@@ -434,8 +444,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     useEffect(() => {
         if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
-            template?.federatedAuthenticators?.defaultAuthenticatorId)) {
-            setAuthenticatorMetadata(template?.federatedAuthenticators?.defaultAuthenticatorId);
+            template?.idp?.federatedAuthenticators?.defaultAuthenticatorId)) {
+            setAuthenticatorMetadata(template?.idp?.federatedAuthenticators?.defaultAuthenticatorId);
         }
     }, [availableAuthenticators]);
 
@@ -470,10 +480,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         // For the default authenticator, update values of it's properties with the corresponding value from the
         // template, if any.
         // todo Need to do the same for rest of the configured authenticators in the template.
-        const authenticatorsInTemplate = template?.federatedAuthenticators.authenticators;
+        const authenticatorsInTemplate = template?.idp?.federatedAuthenticators.authenticators;
         return {
             authenticators: authenticatorsInTemplate.map((authenticator) => {
-                return authenticator.authenticatorId === template.federatedAuthenticators.defaultAuthenticatorId ?
+                return authenticator.authenticatorId === template?.idp?.federatedAuthenticators.defaultAuthenticatorId ?
                     {
                         ...authenticator,
                         properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata,
@@ -481,7 +491,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         // properties: merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
                     } : authenticator;
             }),
-            defaultAuthenticatorId: template.federatedAuthenticators.defaultAuthenticatorId
+            defaultAuthenticatorId: template?.idp?.federatedAuthenticators.defaultAuthenticatorId
         };
     };
 
@@ -500,10 +510,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         // For the default connector, update values of it's properties with the corresponding value from the
         // template, if any.
         // todo Need to do the same for rest of the configured authenticators in the template.
-        const connectorsInTemplate = template?.provisioning.outboundConnectors.connectors;
+        const connectorsInTemplate = template?.idp?.provisioning.outboundConnectors.connectors;
         return {
             connectors: connectorsInTemplate.map((templateConnector) => {
-                return templateConnector.connectorId === template.provisioning.outboundConnectors.defaultConnectorId ?
+                return templateConnector.connectorId === template?.idp?.provisioning.outboundConnectors
+                    .defaultConnectorId ?
                     {
                         ...templateConnector,
                         properties: getUpdatedElementsByKey(defaultConnectorPropertiesFromMetadata,
@@ -515,11 +526,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     };
 
     const isAuthenticatorSettingsStepAvailable = () => {
-        return template?.federatedAuthenticators?.defaultAuthenticatorId;
+        return template?.idp?.federatedAuthenticators?.defaultAuthenticatorId;
     };
 
     const isOutboundProvisioningSettingsStepAvailable = () => {
-        return template?.provisioning?.outboundConnectors?.defaultConnectorId;
+        return template?.idp?.provisioning?.outboundConnectors?.defaultConnectorId;
     };
 
     const getWizardSteps = () => {
@@ -528,7 +539,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 submitCallback: setSubmitGeneralSettings,
-                title: t("console:develop.features.idp.wizards.addIDP.steps.generalSettings.title")
+                title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps.generalSettings.title")
             }
         ];
 
@@ -539,7 +550,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                     name: WizardSteps.AUTHENTICATOR_SETTINGS,
                     submitCallback: setSubmitAuthenticator,
-                    title: t("console:develop.features.idp.wizards.addIDP.steps.authenticatorConfiguration.title")
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps." +
+                        "authenticatorConfiguration.title")
                 }
             ];
         }
@@ -551,20 +563,21 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: getIdentityProviderWizardStepIcons().outboundProvisioningSettings,
                     name: WizardSteps.OUTBOUND_PROVISIONING_SETTINGS,
                     submitCallback: setSubmitOutboundProvisioningSettings(),
-                    title: t("console:develop.features.idp.wizards.addIDP.steps.provisioningConfiguration.title")
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps." +
+                        "provisioningConfiguration.title")
                 }
             ];
         }
 
         //Prevent summary step from showing in the expert mode
-        if (!isExpertMode()) {
+        if (!isEnterpriseMode()) {
             STEPS = [
                 ...STEPS,
                 {
                     icon: getIdentityProviderWizardStepIcons().summary,
                     name: WizardSteps.SUMMARY,
                     submitCallback: setFinishSubmit,
-                    title: t("console:develop.features.idp.wizards.addIDP.steps.summary.title")
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps.summary.title")
                 }
             ];
         }
@@ -596,7 +609,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
         setWizardState(merge(wizardState, {
             [WizardConstants.IDENTITY_PROVIDER]: {
-                ...template,
+                ...template?.idp,
                 ...validatedIdpAttributes
             }
         }));
@@ -653,76 +666,105 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         setPartiallyCompletedStep(undefined);
     }, [partiallyCompletedStep]);
 
+    const renderModalActions = (): ReactElement => {
+        return (
+            <Grid>
+                <Grid.Row column={ 1 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                        <LinkButton floated="left" onClick={ handleWizardClose }
+                            data-testid={ `${ testId }-modal-cancel-button` }>
+                            { t("common:cancel") }
+                        </LinkButton>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                        { currentWizardStep < wizardSteps.length - 1 && (
+                            <PrimaryButton floated="right" onClick={ navigateToNext }
+                                data-testid={ `${ testId }-modal-next-button` }>
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                <Icon name="arrow right" />
+                            </PrimaryButton>
+                        ) }
+                        { currentWizardStep === wizardSteps.length - 1 && (
+                            <PrimaryButton floated="right" onClick={ navigateToNext }
+                                data-testid={ `${ testId }-modal-finish-button` }>
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                            </PrimaryButton>
+                        ) }
+                        { currentWizardStep > 0 && (
+                            <LinkButton floated="right" onClick={ navigateToPrevious }
+                                data-testid={ `${ testId }-modal-previous-button` }>
+                                <Icon name="arrow left" />
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                            </LinkButton>
+                        ) }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderHelpPanel = (): ReactElement => {
+
+        // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
+        if (!template?.content?.wizardHelp) {
+            return null;
+        }
+
+        const {
+            wizardHelp: WizardHelp
+        } = template?.content;
+
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
+                    <div className="help-panel-header-text">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    </div>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader /> }>
+                        <WizardHelp />
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        );
+    };
+
     return (
         (
-            wizardSteps ? <Modal
-                open={ true }
-                className="wizard identity-provider-create-wizard"
-                dimmer="blurring"
-                onClose={ handleWizardClose }
-                closeOnDimmerClick={ false }
-                closeOnEscape
-                data-testid={ `${ testId }-modal` }
-            >
-                <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
-                    {title}
-                    {subTitle && <Heading as="h6">{subTitle}</Heading>}
-                </Modal.Header>
-                { !isExpertMode() &&
-                    (
-                        <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
-                            <Steps.Group header={ t("console:develop.features.idp.wizards.addIDP.header") }
-                                current={ currentWizardStep }>
-                                { wizardSteps.map((step, index) => (
-                                    <Steps.Step
-                                        key={ index }
-                                        icon={ step.icon }
-                                        title={ step.title }
-                                    />
-                                )) }
-                            </Steps.Group>
-                        </Modal.Content>
-                    )
-                }
-                <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
-                    { alert && alertComponent }
-                    { resolveStepContent(currentWizardStep) }
-                </Modal.Content>
-                <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
-                    <Grid>
-                        <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }
-                                            data-testid={ `${ testId }-modal-cancel-button` }>
-                                    { t("common:cancel") }
-                                </LinkButton>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                {currentWizardStep < wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }
-                                                   data-testid={ `${ testId }-modal-next-button` }>
-                                        { t("console:develop.features.idp.wizards.buttons.next") }
-                                        <Icon name="arrow right"/>
-                                    </PrimaryButton>
-                                )}
-                                {currentWizardStep === wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }
-                                                   data-testid={ `${ testId }-modal-finish-button` }>
-                                        { t("console:develop.features.idp.wizards.buttons.finish") }
-                                    </PrimaryButton>
-                                )}
-                                {currentWizardStep > 0 && (
-                                    <LinkButton floated="right" onClick={ navigateToPrevious }
-                                                data-testid={ `${ testId }-modal-previous-button` }>
-                                        <Icon name="arrow left"/>
-                                        { t("console:develop.features.idp.wizards.buttons.previous") }
-                                    </LinkButton>
-                                )}
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Modal.Actions>
-            </Modal> : null
+            wizardSteps ?
+                <ModalWithSidePanel
+                    open={ true }
+                    className="wizard identity-provider-create-wizard"
+                    dimmer="blurring"
+                    onClose={ handleWizardClose }
+                    closeOnDimmerClick={ false }
+                    closeOnEscape
+                    data-testid={ `${ testId }-modal` }
+                >
+                    <ModalWithSidePanel.MainPanel>
+                        <ModalWithSidePanel.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
+                            { title }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                        </ModalWithSidePanel.Header>
+                        <ModalWithSidePanel.Content
+                            className="content-container"
+                            data-testid={ `${ testId }-modal-content-2` }
+                        >
+                            { alert && alertComponent }
+                            { resolveStepContent(currentWizardStep) }
+                        </ModalWithSidePanel.Content>
+                        <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
+                            { renderModalActions() }
+                        </ModalWithSidePanel.Actions>
+                    </ModalWithSidePanel.MainPanel>
+                    { renderHelpPanel() }
+                </ModalWithSidePanel> : null
         )
     );
 };

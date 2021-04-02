@@ -75,9 +75,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         { isEmpty(mapping) &&
                         (
                             <Label
-                                basic color='red'
-                                pointing='left'>
-                                { t("console:develop.features.idp.forms.attributeSettings." +
+                                basic color="red"
+                                pointing="left">
+                                { t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                     "attributeListItem.validation.empty") }
                             </Label>
                         ) }

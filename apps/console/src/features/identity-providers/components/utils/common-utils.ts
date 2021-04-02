@@ -21,210 +21,345 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../../core";
 
+const CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE = "IDP-65004";
+
 export const handleIDPDeleteError = (error) => {
-    if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.deleteIDP.error.description",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.deleteIDP.error.message")
-        }));
+    if (
+        error.response &&
+        error.response.data &&
+        error.response.data.code &&
+        error.response.data.code === CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
+    ) {
+        store.dispatch(
+            addAlert({
+                description: "Cannot delete the identity provider as it's been used in applications.",
+                level: AlertLevels.ERROR,
+                message: "Cannot delete the IDP."
+            })
+        );
+        return;
+    } else if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.deleteIDP.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.deleteIDP.error.message"
+                )
+            })
+        );
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.deleteIDP.genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.deleteIDP.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.deleteIDP.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.deleteIDP.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleIDPUpdateError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.updateIDP.error.description",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.updateIDP.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.updateIDP.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.updateIDP.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.updateIDP.genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.updateIDP.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateIDP.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateIDP.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetRoleListError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.getRolesList.error.description",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.getRolesList.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getRolesList.genericError." + 
-            "description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.getRolesList.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError." +
+                    "description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleUpdateIDPRoleMappingsError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications." +
-                "updateIDPRoleMappings.error.description",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.updateIDPRoleMappings.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "updateIDPRoleMappings.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings.error.message"
+                )
+            })
+        );
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.updateIDPRoleMappings." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.updateIDPRoleMappings." + 
-            "genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
+                    "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
+                    "genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetFederatedAuthenticatorMetadataAPICallError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications." + 
-                "getFederatedAuthenticatorMetadata.error.description", 
-                { description: error.response.data.description }
-            ),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications." +
-                "getFederatedAuthenticatorMetadata.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "getFederatedAuthenticatorMetadata.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "getFederatedAuthenticatorMetadata.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getFederatedAuthenticatorMetadata." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications." +
-            "getFederatedAuthenticatorMetadata.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getFederatedAuthenticatorMetadata." +
+                    "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications." +
+                    "getFederatedAuthenticatorMetadata.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetOutboundProvisioningConnectorMetadataError = (error) => {
     if (error?.response?.data?.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications." +
-                "getOutboundProvisioningConnectorMetadata.error.description",
-                { description: error.response.data.description } ),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications." +
-                "getOutboundProvisioningConnectorMetadata.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "getOutboundProvisioningConnectorMetadata.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "getOutboundProvisioningConnectorMetadata.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications." +
-            "getOutboundProvisioningConnectorMetadata.genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications." +
-            "getOutboundProvisioningConnectorMetadata.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications." +
+                    "getOutboundProvisioningConnectorMetadata.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications." +
+                    "getOutboundProvisioningConnectorMetadata.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleUpdateOutboundProvisioningConnectorError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications." + 
-                "updateOutboundProvisioningConnector.error.description", 
-                { description: error.response.data.description } 
-            ),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
-                "error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                        "updateOutboundProvisioningConnector.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications." +
+                    "updateOutboundProvisioningConnector." +
+                        "error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
-            "genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateOutboundProvisioningConnector." +
+                    "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.updateOutboundProvisioningConnector." +
+                    "genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetIDPTemplateListError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplateList." +
-                "error.description", { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplateList.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPTemplateList." +
+                        "error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPTemplateList.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplateList." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplateList.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPTemplateList." +
+                    "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPTemplateList.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetIDPTemplateAPICallError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplate.error.description",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplate.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPTemplate.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPTemplate.error.message"
+                )
+            })
+        );
 
         return;
     }
 
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplate." + 
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.getIDPTemplate.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPTemplate." +
+                    "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPTemplate.genericError.message"
+            )
+        })
+    );
 };
 
 export const handleGetIDPListCallError = (error) => {
     if (error?.response?.data?.description) {
-        store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.getIDPList.error.message",
-                { description: error.response.data.description }),
-            level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.getIDPList.error.message")
-        }));
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPList.error.message",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.authenticationProvider.notifications.getIDPList.error.message"
+                )
+            })
+        );
 
         return;
     }
-    store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getIDPList.genericError.description"),
-        level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.getIDPList.genericError.message")
-    }));
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPList.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.authenticationProvider.notifications.getIDPList.genericError.message"
+            )
+        })
+    );
     return;
 };
-

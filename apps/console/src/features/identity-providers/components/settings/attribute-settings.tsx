@@ -264,25 +264,28 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     return (
         !isLoading
             ? (
-                <EmphasizedSegment padded="very">
+                <EmphasizedSegment>
                     <Grid className="attributes-settings">
-                        {/* Select attributes for mapping. */ }
+                        { /* Select attributes for mapping. */ }
                         { selectedClaimsWithMapping &&
                         <AttributeSelection
                             attributeList={ availableLocalClaims }
                             selectedAttributesWithMapping={ selectedClaimsWithMapping }
                             setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
                             uiProps={ {
-                                attributeColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
-                                    "attributeMapping.attributeColumnHeader"),
-                                attributeMapColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
-                                    "attributeMapping.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features.idp.forms" +
+                                attributeColumnHeader: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings.attributeMapping.attributeColumnHeader"),
+                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings.attributeMapping.attributeMapColumnHeader"),
+                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
+                                    "authenticationProvider.forms" +
                                     ".attributeSettings.attributeMapping.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.idp.forms.attributeSettings." +
+                                componentHeading: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings." +
                                     "attributeMapping.componentHeading"),
                                 enablePrecedingDivider: false,
-                                hint: t("console:develop.features.idp.forms.attributeSettings.attributeMapping.hint")
+                                hint: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings.attributeMapping.hint")
                             } }
                             data-testid={ `${ testId }-claim-attribute-selection` }
                         /> }
@@ -302,7 +305,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             subjectError={ isSubmitting && subjectError && !subjectClaimUri }
                         /> }
 
-                        {/* Select attributes for provisioning. */ }
+                        { /* Select attributes for provisioning. */ }
                         { selectedProvisioningClaimsWithDefaultValue &&
                         <AttributeSelection
                             attributeList={
@@ -312,24 +315,27 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                             uiProps={ {
                                 attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
-                                    t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +
-                                        "attributeColumnHeader.0") :
-                                    t("console:develop.features.idp.forms.attributeSettings.attributeProvisioning." +
-                                        "attributeColumnHeader.1"),
-                                attributeMapColumnHeader: t("console:develop.features.idp.forms.attributeSettings." +
+                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                        "attributeProvisioning.attributeColumnHeader.0") :
+                                    t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                        "attributeProvisioning.attributeColumnHeader.1"),
+                                attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings." +
                                     "attributeProvisioning.attributeMapColumnHeader"),
-                                attributeMapInputPlaceholderPrefix: t("console:develop.features.idp.forms" +
+                                attributeMapInputPlaceholderPrefix: t("console:develop.features." +
+                                    "authenticationProvider.forms" +
                                     ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                                componentHeading: t("console:develop.features.idp.forms.attributeSettings." +
+                                componentHeading: t("console:develop.features.authenticationProvider." +
+                                    "forms.attributeSettings." +
                                     "attributeProvisioning.componentHeading"),
                                 enablePrecedingDivider: false,
-                                hint: t("console:develop.features.idp.forms.attributeSettings." + 
+                                hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                     "attributeProvisioning.hint")
                             } }
                             data-testid={ `${ testId }-provisioning-attribute-selection` }
                         /> }
 
-                        {/* Set role mappings. */ }
+                        { /* Set role mappings. */ }
                         <RoleMappingSettings
                             triggerSubmit={ triggerSubmission }
                             initialRoleMappings={ initialRoleMappings }

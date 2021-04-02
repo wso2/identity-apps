@@ -158,10 +158,11 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
     updateClaimsConfigs(idpId, values)
         .then(() => {
             store.dispatch(addAlert({
-                description: I18n.instance.t("console:develop.features.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateClaimsConfigs.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: I18n.instance.t("console:develop.features.idp.notifications.updateClaimsConfigs." + 
+                message: I18n.instance.t("console:develop.features.authenticationProvider." +
+                    "notifications.updateClaimsConfigs." +
                     "success.message")
             }));
             onUpdate(idpId);
@@ -169,20 +170,21 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
         .catch((error) => {
             if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("console:develop.features.idp.notifications." +
+                    description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                         "updateClaimsConfigs.error.description",
                         { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("console:develop.features.idp.notifications.updateClaimsConfigs." + 
+                    message: I18n.instance.t("console:develop.features.authenticationProvider" +
+                        ".notifications.updateClaimsConfigs." +
                         "error.message")
                 }));
             }
 
             store.dispatch(addAlert({
-                description: I18n.instance.t("console:develop.features.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateClaimsConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("console:develop.features.idp.notifications." +
+                message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateClaimsConfigs.genericError.message")
             }));
         });
@@ -194,10 +196,11 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
     ).then(() => {
         store.dispatch(addAlert(
             {
-                description: I18n.instance.t("console:develop.features.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateIDPRoleMappings.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: I18n.instance.t("console:develop.features.idp.notifications.updateIDPRoleMappings" + 
+                message: I18n.instance.t("console:develop.features.authenticationProvider" +
+                    ".notifications.updateIDPRoleMappings" +
                     ".success.message")
             }
         ));
@@ -210,18 +213,22 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
 export const handleGetAllLocalClaimsError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims." + 
+            description: I18n.instance.t("console:develop.features.authenticationProvider" +
+                ".notifications.getAllLocalClaims." +
                 "error.description",
                 { description: error.response.data.description }),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims.error.message")
+            message: I18n.instance.t("console:develop.features.authenticationProvider" +
+                ".notifications.getAllLocalClaims.error.message")
         }));
     }
 
     store.dispatch(addAlert({
-        description: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims." +
+        description: I18n.instance.t("console:develop.features.authenticationProvider." +
+            "notifications.getAllLocalClaims." +
             "genericError.description"),
         level: AlertLevels.ERROR,
-        message: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims.genericError.message")
+        message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
+            "getAllLocalClaims.genericError.message")
     }));
 };

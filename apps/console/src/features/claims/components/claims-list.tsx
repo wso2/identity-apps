@@ -44,8 +44,9 @@ import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, ItemHeader, Popup, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
+import { attributeConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -518,19 +519,21 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            {
-                            isLocalClaim(list)
-                                ?  t("console:manage.features.claims.list.placeholders.emptyList.action.local")
-                                : isDialect(list)
-                                    ? t("console:manage.features.claims.list.placeholders.emptyList.action.dialect")
-                                    : t("console:manage.features.claims.list.placeholders.emptyList.action.external")
-                            }
-                        </PrimaryButton>
+                    action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
+                        && (
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                {
+                                isLocalClaim(list)
+                                    ?  t("console:manage.features.claims.list.placeholders.emptyList.action.local")
+                                    : isDialect(list)
+                                        ? t("console:manage.features.claims.list.placeholders.emptyList.action.dialect")
+                                        : t("console:manage.features.claims.list.placeholders." +
+                                            "emptyList.action.external")
+                                }
+                            </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -584,7 +587,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         return (
                             <Header as="h6" image>
                                 <>
-                                    { showWarning && (
+                                    { attributeConfig.attributes.showUserstoreMappingWarningIcon && showWarning && (
                                         <Popup
                                             trigger={
                                                 <Icon
@@ -629,7 +632,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 <Header.Content>
                                     { claim.displayName }
                                     <Header.Subheader>
-                                        <code>{ claim.claimURI }</code>
+                                        <code className="inline-code compact transparent">{ claim.claimURI }</code>
                                     </Header.Subheader>
                                 </Header.Content>
                             </Header>
@@ -864,7 +867,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:edit"),
                     renderer: "semantic-icon"
                 },
-                {
+                attributeConfig.attributes.deleteAction && {
                     hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
@@ -886,7 +889,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string =>  t("common:edit"),
                     renderer: "semantic-icon"
                 },
-                {
+                attributeConfig.attributeMappings.deleteAction && {
                     hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
@@ -906,20 +909,23 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:update"),
                     renderer: "semantic-icon"
                 },
-                {
-                    icon: (claim: ExternalClaim): SemanticICONS => editClaim === claim?.id
-                        ? "times"
-                        : "pencil alternate",
+                attributeConfig.externalAttributes.showActions && {
+                    icon: (claim: ExternalClaim): SemanticICONS => attributeConfig.externalAttributes
+                        .getEditIcon(claim, editClaim),
+
+                    link: (claim: ExternalClaim) => {
+                        return attributeConfig.externalAttributes.isEditActionClickable(claim);
+                    },
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
-                        setEditClaim(editClaim ? "" : claim?.id),
-                    popupText: (claim: ExternalClaim): string => editClaim === claim?.id
-                        ? t("common:cancel")
-                        : t("common:edit"),
+                        attributeConfig.externalAttributes.editAttribute(claim, editClaim, setEditClaim),
+                    popupText: (claim: ExternalClaim): string => attributeConfig.externalAttributes
+                        .getEditPopupText(claim, editClaim),
                     renderer: "semantic-icon"
                 },
-                {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
+                attributeConfig.externalAttributes.showDeleteIcon(dialectID) && {
+                    hidden: (claim: ExternalClaim): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
+                        || attributeConfig.externalAttributes.hideDeleteIcon(claim),
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
                         initDelete(ListType.EXTERNAL, claim),
@@ -968,7 +974,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", item.id));
         } else if (isDialect(list)) {
             history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", item.id));
-        } else if (isExternalClaim(list)) {
+        } else if (isExternalClaim(list) && attributeConfig.externalAttributes.isRowClickable(dialectID, ItemHeader)) {
             setEditClaim(editClaim ? "" : item.id);
         } else {
             setEditExternalClaim(item);
@@ -997,6 +1003,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 showHeader={ false }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
+                isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
+                    attributeConfig.isRowSelectable(claim) }
             />
         </>
     );

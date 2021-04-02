@@ -17,8 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Divider, Message } from "semantic-ui-react";
+import { store } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -41,9 +43,38 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
     return (
         <div data-testid={ testId }>
+            <Message info>
+                <Heading as="h5" className="mb-3">Prerequisite</Heading>
+                <p>Before you begin, create an <strong>OAuth Credential</strong> on the <a
+                    href="https://console.developers.google.com"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Google developer console
+                </a>, and obtain a <strong>client ID & secret</strong>. Use the following URL as the <strong>
+                        Authorized Redirect URI</strong>.
+                    <br />
+                    <br />
+                    <CopyInputField
+                        className="copy-input-dark"
+                        value={ store.getState().config.deployment.serverHost + "/commonauth" }
+                    />
+                    <br />
+                    <a
+                        href="https://support.google.com/googleapi/answer/6158849"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        See Google&apos;s guide to obtain the credentials.
+                    </a>
+                </p>
+            </Message>
             <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the IDP so that it can be easily identified.</p>
-            <p>E.g. Zoom, Salesforce, etc.</p>
+            <p>Provide a unique name for the identity provider.</p>
+            <Divider />
+            <Heading as="h5">Client ID</Heading>
+            <p>Provide the Client ID obtained from Google.</p>
+            <Divider />
+            <Heading as="h5">Client secret</Heading>
+            <p>Provide the Client Secret obtained from Google.</p>
         </div>
     );
 };

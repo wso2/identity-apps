@@ -18,7 +18,7 @@
 
 import { getRawDocumentation } from "@wso2is/core/api";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -28,15 +28,19 @@ import {
     LabelWithPopup,
     PageLayout
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Label } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions";
 import {
     AppConstants,
     AppState,
+    AppUtils,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
     FeatureConfigInterface,
@@ -83,6 +87,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     } = props;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
+    const applicationHelpShownStatusKey = "isApplicationHelpShown";
 
     const { t } = useTranslation();
 
@@ -132,12 +137,42 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
 
     /**
+     * Get whether to show the help panel
+     * Help panel only shows for the first time
+     */
+    const showHelpPanel = (): boolean => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        return !isEmpty(userPreferences) &&
+            !userPreferences.identityAppsSettings?.devPortal?.[ applicationHelpShownStatusKey ];
+    };
+
+    /**
+     * Set status of first time help panel is shown
+     */
+    const setHelpPanelShown = (): void => {
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences) || !userPreferences?.identityAppsSettings?.devPortal) {
+            return;
+        }
+
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+        newPref.identityAppsSettings.devPortal[ applicationHelpShownStatusKey ] = true;
+        AppUtils.setUserPreferences(newPref);
+    };
+    /**
      * Fetch the application details on initial component load.
      */
     useEffect(() => {
         const path = history.location.pathname.split("/");
         const id = path[ path.length - 1 ];
 
+        if (showHelpPanel()) {
+            dispatch(toggleHelpPanelVisibility(true));
+            setHelpPanelShown();
+        }
         getApplication(id);
     }, []);
 
@@ -430,6 +465,19 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
     }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY), isExtensionsAvailable ]);
 
+    useEffect(() => {
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(4);
+            }
+
+            return;
+        }
+    }, [
+        urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY),
+        isExtensionsAvailable
+    ]);
+
     /**
      * Retrieves application details from the API.
      *
@@ -525,17 +573,24 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setTabsActiveIndex(tabId);
     };
 
-    const helpPanelTabs: HelpPanelTabInterface[] = [
-        {
-            content: (
+    const resolveHelpPanelContent = (): ReactNode => {
+        return (
+            <div>
                 <HelpPanelOverview
                     applicationType={ applicationTemplate?.name }
                     inboundProtocols={ application?.inboundProtocols }
                     handleTabChange={ handleTabChange }
                 />
-                ),
+                { applicationConfig.editApplication.renderHelpPanelItems() }
+            </div>
+        );
+    };
+
+    const helpPanelTabs: HelpPanelTabInterface[] = [
+        {
+            content: ( resolveHelpPanelContent() ),
             //heading: t("console:develop.features.applications.helpPanel.tabs.start.heading"),
-            heading: "Server Endpoints",
+            heading: "Help",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
                 icon: getHelpPanelIcons().tabs.guide
@@ -770,7 +825,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         if (inboundProtocolList.length === 0) {
-            
+
             return (
                 <LabelWithPopup
                     popupHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.header") }
@@ -828,8 +883,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin,
-                unpin: getHelpPanelActionIcons().unpin
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
@@ -842,9 +896,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 title={ (
                     <>
                         <span>{ application.name }</span>
-                        {/*TODO - Application status is not shown until the backend support for disabling is given
+                        { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
-                        { resolveApplicationStatusLabel() }*/}
+                        { resolveApplicationStatusLabel() }*/ }
                     </>
                 ) }
                 contentTopMargin={ true }

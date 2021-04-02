@@ -194,7 +194,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                     values={ externalClaims }
                     onExternalClaimsChanged={ onExternalClaimsChanged }
                     data-testid={ `${ testId }-external-claims` }
-                    attributeType= { attributeType }
+                    attributeType={ attributeType }
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,

@@ -26,6 +26,7 @@ export const meta: LocaleMeta = {
     namespaces: [
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
-        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE
+        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
+        I18nModuleConstants.EXTENSIONS_NAMESPACE
     ]
 };

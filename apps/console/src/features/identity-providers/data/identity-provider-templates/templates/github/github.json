@@ -1,0 +1,37 @@
+{
+    "category": "DEFAULT",
+    "description": "Login with Github",
+    "displayOrder": 1,
+    "id": "github-idp",
+    "idp": {
+        "certificate": {},
+        "claims": {
+            "provisioningClaims": [],
+            "roleClaim": {
+                "uri": ""
+            },
+            "userIdClaim": {
+                "uri": ""
+            }
+        },
+        "description": "",
+        "federatedAuthenticators": {
+            "authenticators": [],
+            "defaultAuthenticatorId": ""
+        },
+        "homeRealmIdentifier": "",
+        "image": "",
+        "isFederationHub": false,
+        "isPrimary": false,
+        "name": "Github Authentication Provider",
+        "provisioning": {},
+        "roles": {
+            "mappings": [],
+            "outboundProvisioningRoles": []
+        }
+    },
+    "image": "github",
+    "name": "GitHub",
+    "services": [],
+    "disabled": true
+}

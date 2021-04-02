@@ -65,9 +65,10 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
                                 name="jwksUrl"
                                 label="JWKS Endpoint"
                                 required={ true }
-                                requiredErrorMessage={ t("console:develop.features.idp.forms." +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
                                     "advancedConfigs.certificateType.certificateJWKS.validations.empty") }
-                                placeholder={ t("console:develop.features.idp.forms.advancedConfigs." +
+                                placeholder={ t("console:develop.features.authenticationProvider" +
+                                    ".forms.advancedConfigs." +
                                     "certificateType.certificateJWKS.placeholder") }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {

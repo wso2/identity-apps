@@ -33,12 +33,14 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Hint,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, Popup } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
+import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
 
@@ -75,9 +77,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const dispatch = useDispatch();
 
-    const [ isShowNameHint, setIsShowNameHint ] = useState(false);
-    const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
-    const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
 
@@ -85,10 +84,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
     const descriptionField = useRef<HTMLElement>(null);
-
-    const nameTimer = useRef(null);
-    const regExTimer = useRef(null);
-    const displayTimer = useRef(null);
 
     const { t } = useTranslation();
 
@@ -140,7 +135,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
             dispatch(addAlert(
                 {
-                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success." + 
+                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success." +
                         "description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
@@ -157,33 +152,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 }
             ));
         });
-    };
-
-    /**
-     * This shows a popup with a delay of 500 ms.
-     *
-     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
-     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
-     */
-    const delayPopup = (
-        callback: React.Dispatch<React.SetStateAction<boolean>>,
-        ref: React.MutableRefObject<any>
-    ): void => {
-        ref.current = setTimeout(() => callback(true), 500);
-    };
-
-    /**
-     * This closes the popup.
-     *
-     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
-     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
-     */
-    const closePopup = (
-        callback: React.Dispatch<React.SetStateAction<boolean>>,
-        ref: React.MutableRefObject<any>
-    ): void => {
-        clearTimeout(ref.current);
-        callback(false);
     };
 
     /**
@@ -257,6 +225,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 >
                                     <label>{ t("console:manage.features.claims.local.attributes.attributeURI") }</label>
                                     <CopyInputField value={ claim ? claim.claimURI : "" } />
+                                    <Hint>Unique identifier of the attribute.</Hint>
                                 </Form.Field>
                             </Form>
                         </Grid.Column>
@@ -269,12 +238,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claimURI: claim.claimURI,
                             description: values.get("description").toString(),
                             displayName: values.get("name").toString(),
-                            displayOrder: values.get("displayOrder") ?
-                                parseInt(values.get("displayOrder").toString()) : claim.displayOrder,
+                            displayOrder: attributeConfig.editAttributes.getDisplayOrder(
+                                claim.displayOrder, values.get("displayOrder")?.toString()),
                             properties: claim.properties,
                             readOnly: values.get("readOnly").length > 0,
                             regEx: values.get("regularExpression").toString(),
-                            required: values.get("required").length > 0,
+                            required: values.has("required") ? (values.get("required").length > 0) : claim.required,
                             supportedByDefault: values.get("supportedByDefault").length > 0
 
                         };
@@ -322,12 +291,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         <Grid.Row columns={ 1 }>
                             <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                                 <Field
-                                    onMouseOver={ () => {
-                                        delayPopup(setIsShowNameHint, nameTimer);
-                                    } }
-                                    onMouseOut={ () => {
-                                        closePopup(setIsShowNameHint, nameTimer);
-                                    } }
                                     type="text"
                                     name="name"
                                     label={ t("console:manage.features.claims.local.forms.name.label") }
@@ -343,20 +306,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             validation.errorMessages.push(t("console:manage.features.claims.local" +
                                                 ".forms.name.validationErrorMessages.invalidName"));
                                         }
-                                    }}
+                                    } }
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
-                                <Popup
-                                    content={ t("console:manage.features.claims.local.forms.nameHint") }
-                                    inverted
-                                    open={ isShowNameHint }
-                                    trigger={ <span></span> }
-                                    onClose={ () => {
-                                        closePopup(setIsShowNameHint, nameTimer);
-                                    } }
-                                    position="bottom left"
-                                    context={ nameField }
-                                />
+                                <Hint> { t("console:manage.features.claims.local.forms.nameHint") }</Hint>
                                 <Divider hidden />
                                 <Field
                                     type="textarea"
@@ -372,6 +325,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     value={ claim?.description }
                                     data-testid={ `${ testId }-form-description-input` }
                                 />
+                                <Hint>{ t("console:manage.features.claims.local.forms.descriptionHint") }</Hint>
                                 <Divider hidden />
                                 <Field
                                     type="text"
@@ -381,26 +335,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     requiredErrorMessage=""
                                     placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
                                     value={ claim?.regEx }
-                                    onMouseOver={ () => {
-                                        delayPopup(setIsShowRegExHint, regExTimer);
-                                    } }
-                                    onMouseOut={ () => {
-                                        closePopup(setIsShowRegExHint, regExTimer);
-                                    } }
                                     ref={ regExField }
                                     data-testid={ `${ testId }-form-regex-input` }
                                 />
-                                <Popup
-                                    content={ t("console:manage.features.claims.local.forms.regExHint") }
-                                    inverted
-                                    open={ isShowRegExHint }
-                                    trigger={ <span></span> }
-                                    onClose={ () => {
-                                        closePopup(setIsShowRegExHint, regExTimer);
-                                    } }
-                                    position="bottom left"
-                                    context={ regExField }
-                                />
+                                <Hint>{ t("console:manage.features.claims.local.forms.regExHint") }</Hint>
                                 <Divider hidden />
                                 <Field
                                     type="checkbox"
@@ -418,7 +356,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     data-testid={ `${ testId }-form-supported-by-default-input` }
                                 />
                                 {
-                                    isShowDisplayOrder
+                                    attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
                                     && (
                                         <>
                                             <Field
@@ -432,44 +370,33 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 placeholder={ t("console:manage.features.claims.local.forms." +
                                                     "displayOrder.placeholder") }
                                                 value={ claim?.displayOrder.toString() }
-                                                onMouseOver={ () => {
-                                                    delayPopup(setIsShowDisplayOrderHint, displayTimer);
-                                                } }
-                                                onMouseOut={ () => {
-                                                    closePopup(setIsShowDisplayOrderHint, displayTimer);
-                                                } }
                                                 ref={ displayOrderField }
                                                 data-testid={ `${ testId }-form-display-order-input` }
                                             />
-                                            <Popup
-                                                content={
-                                                    t("console:manage.features.claims.local.forms.displayOrderHint")
-                                                }
-                                                inverted
-                                                open={ isShowDisplayOrderHint }
-                                                trigger={ <span></span> }
-                                                onClose={ () => {
-                                                    closePopup(setIsShowDisplayOrderHint, displayTimer);
-                                                } }
-                                                position="bottom left"
-                                                context={ displayOrderField }
-                                            />
+                                            <Hint>
+                                                { t("console:manage.features.claims.local.forms.displayOrderHint") }
+                                            </Hint>
                                         </>
                                     )
                                 }
-                                <Divider hidden />
-                                <Field
-                                    type="checkbox"
-                                    name="required"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    children={ [ {
-                                        label: t("console:manage.features.claims.local.forms.required.label"),
-                                        value: "Required"
-                                    } ] }
-                                    value={ claim?.required ? [ "Required" ] : [] }
-                                    data-testid={ `${ testId }-form-required-checkbox` }
-                                />
+                                {
+                                    attributeConfig.editAttributes.showRequiredCheckBox &&
+                                    <>
+                                        <Divider hidden />
+                                        <Field
+                                            type="checkbox"
+                                            name="required"
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            children={ [ {
+                                                label: t("console:manage.features.claims.local.forms.required.label"),
+                                                value: "Required"
+                                            } ] }
+                                            value={ claim?.required ? [ "Required" ] : [] }
+                                            data-testid={ `${ testId }-form-required-checkbox` }
+                                        />
+                                    </>
+                                }
                                 <Divider hidden />
                                 <Field
                                     type="checkbox"
@@ -499,18 +426,21 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </Forms>
             </EmphasizedSegment>
             <Divider hidden />
-            <DangerZoneGroup
-                sectionHeader={ t("common:dangerZone") }
-                data-testid={ `${ testId }-danger-zone-group` }
-            >
-                <DangerZone
-                    actionTitle={ t("console:manage.features.claims.local.dangerZone.actionTitle") }
-                    header={ t("console:manage.features.claims.local.dangerZone.header") }
-                    subheader={ t("console:manage.features.claims.local.dangerZone.subheader") }
-                    onActionClick={ () => setConfirmDelete(true) }
-                    data-testid={ `${ testId }-local-claim-delete-danger-zone` }
-                />
-            </DangerZoneGroup>
+            {
+                attributeConfig.editAttributes.showDangerZone &&
+                <DangerZoneGroup
+                    sectionHeader={ t("common:dangerZone") }
+                    data-testid={ `${ testId }-danger-zone-group` }
+                >
+                    <DangerZone
+                        actionTitle={ t("console:manage.features.claims.local.dangerZone.actionTitle") }
+                        header={ t("console:manage.features.claims.local.dangerZone.header") }
+                        subheader={ t("console:manage.features.claims.local.dangerZone.subheader") }
+                        onActionClick={ () => setConfirmDelete(true) }
+                        data-testid={ `${ testId }-local-claim-delete-danger-zone` }
+                    />
+                </DangerZoneGroup>
+            }
         </>
     );
 };
