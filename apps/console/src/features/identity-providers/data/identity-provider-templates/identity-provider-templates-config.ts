@@ -27,10 +27,17 @@ import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GihubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
+import { EnterpriseIdentityProviderTemplateExtension }
+    from "../../../../extensions/configs/identity-providers-templates";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateListItemInterface
 } from "../../models";
+
+const EnterpriseIdentityProviderTemplateExtended = {
+    ...EnterpriseIdentityProviderTemplate
+    , ...EnterpriseIdentityProviderTemplateExtension
+};
 
 export interface IdentityProviderTemplatesConfigInterface {
     categories: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>[];
@@ -107,8 +114,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 )
                             },
                             enabled: identityProviderConfig.templates.enterprise,
-                            id: EnterpriseIdentityProviderTemplate.id,
-                            resource: EnterpriseIdentityProviderTemplate
+                            id: EnterpriseIdentityProviderTemplateExtended.id,
+                            resource: EnterpriseIdentityProviderTemplateExtended
                         }
                     ],
                     "id"
