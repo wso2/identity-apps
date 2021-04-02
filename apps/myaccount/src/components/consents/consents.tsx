@@ -191,7 +191,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const response: PurposeModel[] = await fetchPurposesByIDs(purposesIds);
         // Set response value to the hook
         setPurposeDetailModels(response);
-    }
+    };
 
     /**
      * Apply any component side-effects here.
@@ -257,7 +257,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 termination: ConsentConstants.TERMINATION,
                 thirdPartyDisclosure: true,
                 thirdPartyName: ConsentConstants.EMPTY_STRING,
-                allPIICategories: [],
+                allPIICategories: []
             };
         };
 
@@ -270,7 +270,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             const availablePurposes = new Set(service.purposes.map(({ purposeId }) => purposeId));
             for (const purposeModel of allPurposeModelsExceptDefault) {
                 if (!availablePurposes.has(purposeModel.purposeId)) {
-                    service.purposes.push(createEmptyPurposeObject(purposeModel))
+                    service.purposes.push(createEmptyPurposeObject(purposeModel));
                 }
             }
         }
@@ -352,7 +352,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         for (const purpose of purposes) {
             // Set the accepted PII categories.
             const accepted = purpose.piiCategory.map((piiCat: PIICategory): PIICategoryWithStatus => {
-                return { status: "accepted", ...piiCat }
+                return { status: "accepted", ...piiCat };
             });
             // Now keep a reference of these accepted PII categories.
             const acceptedCategoryIDs: Set<number> = new Set<number>(
@@ -370,7 +370,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                             piiCategoryName: piiCat.piiCategory,
                             piiCategoryDisplayName: piiCat.displayName,
                             validity: "DATE_UNTIL:INDEFINITE",
-                            status: "denied",
+                            status: "denied"
                         } as PIICategoryWithStatus;
                     });
             }
@@ -383,7 +383,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             purpose.piiCategory = [ ...accepted, ...denied ] as PIICategoryWithStatus[];
         }
 
-    }
+    };
 
     /**
      * Fetches the consent receipt for the corresponding id.
@@ -636,7 +636,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     }
                     return false;
                 }).map((piiCat) => {
-                    delete piiCat['status'];
+                    delete piiCat["status"];
                     return piiCat;
                 });
             });

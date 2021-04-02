@@ -24,6 +24,7 @@ import {
 import OrangeAppIconBackground from "../themes/default/assets/images/app-icon-background.png";
 import GravatarLogo from "../themes/default/assets/images/gravatar-logo.png";
 import { ReactComponent as AppIcon } from "../themes/default/assets/images/icons/app-icon.svg";
+import AppSwitchIcon from "../themes/default/assets/images/icons/app-switch-icon.svg";
 import {
     ReactComponent as AuthenticatorAppIcon
 } from "../themes/default/assets/images/icons/authenticator-app-icon.svg";
@@ -32,7 +33,9 @@ import {
 } from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
 import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
+import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
@@ -43,6 +46,8 @@ import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images
 import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icons/info-icon.svg";
 import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
+import MyAccountIcon from "../themes/default/assets/images/icons/myaccount-icon.svg";
+import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
 import {
     ReactComponent as SecurityQuestionsIcon
@@ -56,6 +61,9 @@ import AssociatedAccountsMini from "../themes/default/assets/images/illustration
 import AssociatedAccounts from "../themes/default/assets/images/illustrations/associated-accounts.svg";
 import ChangePasswordMini from "../themes/default/assets/images/illustrations/change-password-mini.svg";
 import ChangePassword from "../themes/default/assets/images/illustrations/change-password.svg";
+import {
+    ReactComponent as EnterVerificationCodeIcon
+} from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
 import FederatedAssociationsMini from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
 import FederatedAssociations from "../themes/default/assets/images/illustrations/federated-associations.svg";
 import {
@@ -64,23 +72,15 @@ import {
 import ProfileExportMini from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
 import ProfileExport from "../themes/default/assets/images/illustrations/profile-export.svg";
 import {
+    ReactComponent as QRCodeScanIcon
+} from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
+import {
     ReactComponent as SecurityQuestionsMini
 } from "../themes/default/assets/images/illustrations/security-questions-mini.svg";
 import {
     ReactComponent as SecurityQuestions
 } from "../themes/default/assets/images/illustrations/security-questions.svg";
-import {
-    ReactComponent as QRCodeScanIcon
-} from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
-import {
-    ReactComponent as EnterVerificationCodeIcon
-} from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
-import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
-import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
-import MyAccountIcon from "../themes/default/assets/images/icons/myaccount-icon.svg";
-import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
-import AppSwitchIcon from "../themes/default/assets/images/icons/app-switch-icon.svg";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon = PackageIcon;

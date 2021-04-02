@@ -30,13 +30,13 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { getEmptyPlaceholderIllustrations, history, AppConstants } from "../../../../core";
+import { ClaimManagementConstants } from "../../../../claims/constants";
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../../../core";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
-import { ClaimManagementConstants } from "../../../../claims/constants";
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
     setClaims: any;

@@ -17,11 +17,11 @@
  */
 
 import i18next, { InitOptions, Module, TFunction, i18n as i18nInterface } from "i18next";
-import { UnsupportedI18nFrameworkException } from "./exceptions";
-import { generateI18nOptions } from "./helpers";
-import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-xhr-backend";
+import { initReactI18next } from "react-i18next";
+import { UnsupportedI18nFrameworkException } from "./exceptions";
+import { generateI18nOptions } from "./helpers";
 
 /**
  * Supported list of i18n frameworks.
@@ -107,6 +107,6 @@ export class I18n {
             throw new UnsupportedI18nFrameworkException(framework);
         }
 
-        return this.instance.init(generateI18nOptions(options, override, useBackend, this.debug))
+        return this.instance.init(generateI18nOptions(options, override, useBackend, this.debug));
     }
 }

@@ -22,7 +22,7 @@ import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton, useConfirm
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AccordionTitleProps, Divider, Grid, Icon, Segment} from "semantic-ui-react";
+import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface, getIdentityProviderList } from "../../../../identity-providers";
 import { updateApplicationConfigurations } from "../../../api";

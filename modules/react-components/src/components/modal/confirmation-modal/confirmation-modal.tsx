@@ -293,7 +293,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             );
         } else if (type === "checkbox") {
             if (typeof assertionHint !== "string") {
-                throw new Error("Unsupported hint format. Checkboxes can only have hints of type string.")
+                throw new Error("Unsupported hint format. Checkboxes can only have hints of type string.");
             }
 
             return (
@@ -306,7 +306,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             );
         }
 
-        throw new Error("Unsupported assertion input type. Only `string` and `checkbox` is supported.")
+        throw new Error("Unsupported assertion input type. Only `string` and `checkbox` is supported.");
     };
 
     return (

@@ -1043,7 +1043,7 @@ export const myAccount: MyAccountNS = {
                         "second facteur est activée et pour l'envoi de codes de récupération en cas de " +
                         "récupération d'un nom d'utilisateur / mot de passe. Pour mettre à jour ce numéro, " +
                         "vous devez vérifier le nouveau numéro en entrant le code de vérification envoyé à votre " +
-                        "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer.",
+                        "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer."
                 }
             },
             notifications: {
@@ -1196,7 +1196,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "Succès! Votre numéro de mobile a été vérifié avec succès.",
             submitMobile: {
-                heading: "Entrez votre nouveau numéro de mobile",
+                heading: "Entrez votre nouveau numéro de mobile"
             },
             verifySmsOtp: {
                 generate: "Renvoyer un nouveau code de vérification",
@@ -1204,7 +1204,7 @@ export const myAccount: MyAccountNS = {
                 error: "Échec de la vérification. Veuillez réessayer.",
                 label: "Code de vérification",
                 placeholder: "Entrez votre code de vérification",
-                requiredError: "Entrer le code de vérification",
+                requiredError: "Entrer le code de vérification"
             },
             notifications: {
                 resendSuccess: {

@@ -56,6 +56,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() => import("../../applications/pages/application-template")),
+                                // preLoader: lazy(() => import("listing-page-skeleton")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon

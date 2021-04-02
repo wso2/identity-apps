@@ -23,13 +23,13 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
-import { IdentityProviderManagementConstants } from "../../constants";
-import { IdentityProviderInterface, ConnectedAppsInterface, ConnectedAppInterface } from "../../models";
-import { GeneralDetailsForm } from "../forms";
-import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
+import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
+import { ConnectedAppInterface, ConnectedAppsInterface, IdentityProviderInterface } from "../../models";
+import { GeneralDetailsForm } from "../forms";
+import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -127,7 +127,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     const appNames: string[] = [];
                     results.forEach((app) => {
                         appNames.push(app.name);
-                    })
+                    });
                     setConnectedApps(appNames);
                 }
             })

@@ -27,9 +27,9 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants";
 import { CertificateInterface, CertificateTypeInterface, PassiveStsConfigurationInterface } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
-import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the inbound Passive Sts form component.

@@ -38,9 +38,9 @@ import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
-    getHelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    getHelpPanelActionIcons,
     history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";

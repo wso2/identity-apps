@@ -453,7 +453,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     : null
                                         }
                                     />
-                                    { t("console:manage.features.userstores.forms.connection.testButton")}
+                                    { t("console:manage.features.userstores.forms.connection.testButton") }
                         </Button>
                             </Grid.Column>
                         </Grid.Row>

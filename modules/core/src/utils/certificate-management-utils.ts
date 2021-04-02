@@ -68,7 +68,7 @@ export class CertificateManagementUtils {
         try {
             return forge.pki.certificateFromPem(pemCert);
         } catch (e) {
-            return null
+            return null;
         }
     }
 
@@ -90,14 +90,14 @@ export class CertificateManagementUtils {
                     .map(attribute => {
                         return {
                             [ attribute.shortName ]: attribute.value
-                        }
+                        };
                     }),
                 serialNumber: certificateForge.serialNumber,
                 subjectDN: certificateForge.subject.attributes
                     .map(attribute => {
                         return {
                             [ attribute.shortName ]: attribute.value
-                        }
+                        };
                     }),
                 validFrom: certificateForge.validity.notBefore,
                 validTill: certificateForge.validity.notAfter,
@@ -123,14 +123,14 @@ export class CertificateManagementUtils {
                .map(attribute => {
                    return {
                        [ attribute.shortName ]: attribute.value
-                   }
+                   };
                }),
            serialNumber: certificateForge.serialNumber,
            subjectDN: certificateForge.subject.attributes
                .map(attribute => {
                    return {
                        [ attribute.shortName ]: attribute.value
-                   }
+                   };
                }),
            validFrom: certificateForge.validity.notBefore,
            validTill: certificateForge.validity.notAfter,
@@ -218,7 +218,7 @@ export class CertificateManagementUtils {
         pemValue[ pemValue.length - 1 ]?.includes(CertificateManagementConstants.CERTIFICATE_END)
         && pemValue.pop();
         return pemValue.join("\n");
-    };
+    }
 
     /**
      * This encloses a stripped PEM string with **BEGIN CERTIFICATE** and **END CERTIFICATE**.
@@ -246,7 +246,7 @@ export class CertificateManagementUtils {
             pemValue.push(lastLine);
         }
         return pemValue.join("\n");
-    };
+    }
 
     /**
      * Base 64 decodes the certificate content. If not a valid base 64 content, returns null.

@@ -42,8 +42,8 @@ import {
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorsInterface,
-    OutboundProvisioningConnectorWithMetaInterface
+    OutboundProvisioningConnectorWithMetaInterface,
+    OutboundProvisioningConnectorsInterface
 } from "../../models";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import {

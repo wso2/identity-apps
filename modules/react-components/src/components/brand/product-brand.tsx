@@ -164,7 +164,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                     { constructed }
                 </Label>
             </div>
-        )
+        );
     };
 
     return (

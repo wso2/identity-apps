@@ -22,7 +22,7 @@
 
 import { CommonUtils, CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/ui";
 import { IdentityProvidersListPageConstants } from "./constants";
-import { IdentityProvidersListPage, IdentityProviderTemplatesPage } from "./page-objects";
+import { IdentityProviderTemplatesPage, IdentityProvidersListPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");

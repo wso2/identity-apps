@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { meta } from "./meta";
 import * as portals from "./portals";
 import { LocaleBundle } from "../../models";
-import { meta } from "./meta";
 
 export const PT_BR: LocaleBundle = {
     meta,

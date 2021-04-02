@@ -20,11 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../../models";
-import { Grid } from "semantic-ui-react";
 
 /**
  * Proptypes for the provision settings component.

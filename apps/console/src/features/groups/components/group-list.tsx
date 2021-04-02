@@ -37,9 +37,9 @@ import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    getEmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { GroupConstants } from "../constants";
@@ -214,7 +214,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Group" })}
+                                { type: "Group" }) }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }

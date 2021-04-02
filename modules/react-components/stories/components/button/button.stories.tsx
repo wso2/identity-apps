@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Button, DangerButton, IconButton, LinkButton, PrimaryButton, SecondaryButton } from "../../../src";
+import { withKnobs } from "@storybook/addon-knobs";
+import { UserIcon } from "@wso2is/theme";
 import React, { ReactElement } from "react";
 import { meta } from "./button.stories.meta";
-import { UserIcon } from "@wso2is/theme";
-import { withKnobs } from "@storybook/addon-knobs";
+import { Button, DangerButton, IconButton, LinkButton, PrimaryButton, SecondaryButton } from "../../../src";
 
 export default {
     decorators: [ withKnobs ],

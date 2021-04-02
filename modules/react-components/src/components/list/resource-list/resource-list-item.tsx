@@ -162,7 +162,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                 { content }
                                             </List.Content>
                                         </Grid.Column>
-                                    )
+                                    );
                                 })
                             )
                             : (

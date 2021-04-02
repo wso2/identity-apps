@@ -192,7 +192,7 @@ export const App = (): ReactElement => {
                                                 loginAgainButtonText: I18n.instance.t("myAccount:modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"),
                                                 sessionTimedOutDescription: I18n.instance.t("myAccount:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
+                                                    ".sessionTimeoutModal.sessionTimedOutDescription")
                                             } }
                                         >
                                             <>

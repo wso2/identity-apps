@@ -62,7 +62,7 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
                                     <>
                                         { heading.props.offset && (
                                             <Grid.Column width={ heading.props.offset } />
-                                        )}
+                                        ) }
                                         <Grid.Column key={ index } width={ heading.props.width }>
                                             <List.Header data-testid={ `${ testId }-heading` }>
                                                 { heading }
@@ -73,7 +73,7 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
                         }
                     </Grid.Row>
                 </Grid>
-            )}
+            ) }
         </List.Item>
     );
 };

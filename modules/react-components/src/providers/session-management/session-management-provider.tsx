@@ -164,7 +164,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
         return () => {
             performCleanupTasks();
-        }
+        };
     }, []);
 
     /**

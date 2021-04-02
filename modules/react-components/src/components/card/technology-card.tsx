@@ -18,11 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardProps, Dimmer } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import kebabCase from "lodash-es/kebabCase";
 
 /**
  * Proptypes for the selection card component.
@@ -152,5 +152,5 @@ export const TechnologyCard: FunctionComponent<TechnologyCardPropsInterface> = (
  * Default props for the technology card component.
  */
 TechnologyCard.defaultProps = {
-    "data-testid": "technology-card",
+    "data-testid": "technology-card"
 };

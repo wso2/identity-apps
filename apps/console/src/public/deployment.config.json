@@ -1,6 +1,8 @@
 {
     "accountApp": {
-        "path": "/myaccount/overview"
+        "path": "/myaccount/overview",
+        "skipTenant": true,
+        "useCommonPostLogoutUrl" : true
     },
     "appBaseName": "console",
     "appBaseNameForHistoryAPI": "/",
@@ -9,12 +11,15 @@
     "adminApp": {
         "basePath": "/manage",
         "displayName": "Manage",
-        "path": "/manage/users"
+        "path": "/manage/getting-started"
     },
     "developerApp": {
         "basePath": "/develop",
         "displayName": "Develop",
-        "path": "/develop/applications"
+        "path": "/develop/getting-started"
+    },
+    "extensions": {
+        "feedbackEndPoint": "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/"
     },
     "documentation": {
         "baseURL": "https://api.github.com",
@@ -42,7 +47,7 @@
     "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
-        "home": "/develop/applications",
+        "home": "/develop/getting-started",
         "login": "/login",
         "logout": "/logout"
     },
@@ -54,8 +59,8 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
-        "appTitle": "Console | WSO2 Identity Server",
+        "appCopyright": "${copyright} ${year} WSO2",
+        "appTitle": "Asgardeo Console",
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
@@ -308,7 +313,10 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "FIDOAuthenticator",
+            "IdentifierExecutor"
+        ],
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },
@@ -316,14 +324,14 @@
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
         "isDefaultDialectEditingEnabled": false,
-        "isDialectAddingEnabled": true,
-        "isLeftNavigationCategorized": true,
-        "isRequestPathAuthenticationEnabled": true,
+        "isDialectAddingEnabled": false,
+        "isLeftNavigationCategorized": false,
+        "isRequestPathAuthenticationEnabled": false,
         "listAllAttributeDialects": false,
         "privacyPolicyConfigs": {
-            "visibleOnFooter": true
+            "visibleOnFooter": false
         },
-        "productName": "WSO2 Identity Server",
+        "productName": "Asgardeo",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",
@@ -332,7 +340,7 @@
         "selfAppIdentifier": "Console",
         "systemAppsIdentifiers": [ "Console", "My Account" ],
         "theme": {
-            "name": "default"
+            "name": "asgardio"
         }
     }
 }

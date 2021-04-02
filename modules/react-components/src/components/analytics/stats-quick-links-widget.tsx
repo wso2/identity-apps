@@ -124,7 +124,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                                             showTooltips
                                             { ...linksRest }
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </Card.Group>

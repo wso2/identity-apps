@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
-import { getSidePanelIcons, getAppRoutes } from "../../configs";
+import { getAppRoutes, getSidePanelIcons } from "../../configs";
 import { AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";

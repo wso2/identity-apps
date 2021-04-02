@@ -19,9 +19,9 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
-import { useSelector } from "react-redux";
 
 /**
  * Prop types of the component.

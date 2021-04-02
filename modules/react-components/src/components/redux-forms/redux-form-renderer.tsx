@@ -87,7 +87,7 @@ export const RenderInput = createRenderer(
                 }
                 { ...rest }
             />
-        )
+        );
     }
 );
 
@@ -123,7 +123,7 @@ export const RenderToggle = createRenderer(
                 toggle
                 { ...rest }
             />
-        )
+        );
     }
 );
 
@@ -159,6 +159,6 @@ export const RenderCheckBox = createRenderer(
                 }
                 { ...rest }
             />
-        )
+        );
     }
 );

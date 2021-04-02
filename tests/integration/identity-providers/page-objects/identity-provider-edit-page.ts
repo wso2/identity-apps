@@ -19,8 +19,8 @@
 
 /// <reference types="cypress" />
 
-import { IdentityProviderEditPageConstants } from "../constants";
 import { CommonUtils } from "@wso2/identity-cypress-test-base/ui";
+import { IdentityProviderEditPageConstants } from "../constants";
 
 /**
  * Class containing Identity Provider Edit Page objects.
@@ -33,7 +33,7 @@ export class IdentityProviderEditPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP edit page layout header title element.
@@ -41,7 +41,7 @@ export class IdentityProviderEditPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP edit page layout header sub title element.
@@ -49,7 +49,7 @@ export class IdentityProviderEditPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP edit page layout header image element.
@@ -58,7 +58,7 @@ export class IdentityProviderEditPage {
     public getPageLayoutImage(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_IMAGE_WRAPPER_DATA_ATTR)
             .find("img");
-    };
+    }
 
     /**
      * Get the IDP edit tabs.
@@ -66,7 +66,7 @@ export class IdentityProviderEditPage {
      */
     public getTabs(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.RESOURCE_TABS_DATA_ATTR);
-    };
+    }
 
     /**
      * Get a specif tab.
@@ -95,7 +95,7 @@ export class IdentityProviderEditPage {
 
                 throw new Error("Invalid tab selection - " + tab);
             });
-    };
+    }
 
     /**
      * Select a tab from the resource tabs.
@@ -106,7 +106,7 @@ export class IdentityProviderEditPage {
         "ADVANCED"): void {
 
         this.getTab(tab).click();
-    };
+    }
     
 
     /**
@@ -115,7 +115,7 @@ export class IdentityProviderEditPage {
      */
     public getPageBackButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP name input.
@@ -124,7 +124,7 @@ export class IdentityProviderEditPage {
     public getIDPNameInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_NAME_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the IDP description input.
@@ -132,7 +132,7 @@ export class IdentityProviderEditPage {
      */
     public getIDPDescriptionInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_DESCRIPTION_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP image input.
@@ -141,7 +141,7 @@ export class IdentityProviderEditPage {
     public getIDPImageInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_IMAGE_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the IDP JWKS cert endpoint input.
@@ -150,7 +150,7 @@ export class IdentityProviderEditPage {
     public getIDPCertJWKSURLInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_CERT_JWKS_URL_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the JWKS IDP certificate radio button.
@@ -161,7 +161,7 @@ export class IdentityProviderEditPage {
             .within(() => {
                 cy.get("input[value=\"JWKS\"]");
             });
-    };
+    }
 
     /**
      * Get the custom IDP certificate radio button.
@@ -172,7 +172,7 @@ export class IdentityProviderEditPage {
             .within(() => {
                 cy.get("input[value=\"PEM\"]");
             });
-    };
+    }
 
     /**
      * Get the IDP delete action in the danger zone.
@@ -180,7 +180,7 @@ export class IdentityProviderEditPage {
      */
     public getDangerZoneDeleteButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.DANGER_ZONE_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP delete assertion.
@@ -188,7 +188,7 @@ export class IdentityProviderEditPage {
      */
     public getDeleteAssertion(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_DELETE_ASSERTION_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP delete assertion input.
@@ -197,7 +197,7 @@ export class IdentityProviderEditPage {
     public getDeleteAssertionInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_DELETE_ASSERTION_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the IDP delete confirm button.
@@ -205,7 +205,7 @@ export class IdentityProviderEditPage {
      */
     public getDeleteConfirmButton(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_DELETE_CONFIRM_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP delete confirm modal close button.
@@ -213,7 +213,7 @@ export class IdentityProviderEditPage {
      */
     public getDeleteConfirmModalCloseButton(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the IDP general settings form submit button.
@@ -221,14 +221,14 @@ export class IdentityProviderEditPage {
      */
     public getGeneralSettingsFormSubmitButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.GENERAL_SETTINGS_SUBMIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on get the IDP general settings form submit button.
      */
     public clickOnGeneralSettingsFormSubmitButton(): void {
         this.getGeneralSettingsFormSubmitButton().click();
-    };
+    }
 
     /**
      * Get the IDP certificate update button.
@@ -236,14 +236,14 @@ export class IdentityProviderEditPage {
      */
     public getCertificateUpdateButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.IDP_CERT_UPDATE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on get the IDP certificate update button.
      */
     public clickOnCertificateUpdateButton(): void {
         this.getCertificateUpdateButton().click();
-    };
+    }
 
     /**
      * Get the claim attribute selection list.
@@ -251,7 +251,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionList(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection list edit button.
@@ -259,7 +259,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionListEditButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EDIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection list empty placeholder.
@@ -267,7 +267,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionListEmptyPlaceholder(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection list empty placeholder action.
@@ -277,7 +277,7 @@ export class IdentityProviderEditPage {
         return cy.dataTestId(
             IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_ACTION_DATA_ATTR)
             .find("button");
-    };
+    }
 
     /**
      * Clicks on claim attribute mapping update button.
@@ -292,8 +292,8 @@ export class IdentityProviderEditPage {
                 } else {
                     this.getClaimAttributeSelectionListEditButton().click();
                 }
-            })
-    };
+            });
+    }
 
     /**
      * Get the claim attribute selection wizard.
@@ -301,7 +301,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection wizard unselected list.
@@ -309,7 +309,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizardUnselectedList(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_UNSELECTED_LIST_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection wizard list add button.
@@ -317,7 +317,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizardListAddButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_ADD_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection wizard list remove button.
@@ -325,7 +325,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizardListRemoveButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_REMOVE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection wizard list save button.
@@ -333,7 +333,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizardListSaveButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_SAVE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the claim attribute selection wizard list cancel button.
@@ -341,7 +341,7 @@ export class IdentityProviderEditPage {
      */
     public getClaimAttributeSelectionWizardListCancelButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_SAVE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the subject attribute dropdown.
@@ -349,5 +349,5 @@ export class IdentityProviderEditPage {
      */
     public getSubjectAttributeDropdown(): Cypress.Chainable<Element> {
         return cy.dataTestId(IdentityProviderEditPageConstants.SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR);
-    };
+    }
 }

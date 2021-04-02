@@ -111,7 +111,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
     return (
         <>
             <Grid>
-                {/*  {
+                { /*  {
                     applicationType && applicationType == ApplicationManagementConstants.SPA
                         ? (
                             <Grid.Row textAlign="center">
@@ -154,7 +154,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                             </Grid.Row>
                         )
                         : null
-                }*/}
+                }*/ }
                 <Grid.Row>
                     <Grid.Column>
                         <Heading ellipsis as="h5">

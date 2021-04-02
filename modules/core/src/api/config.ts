@@ -17,8 +17,8 @@
  */
 
 import axios from "axios";
-import { IdentityAppsApiException } from "../exceptions";
 import { AppConstants } from "../constants";
+import { IdentityAppsApiException } from "../exceptions";
 import { StringUtils } from "../utils";
 
 /**

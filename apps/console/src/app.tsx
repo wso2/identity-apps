@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
 import { AuthenticateUtils } from "./features/authentication/utils";
-import { PreLoader } from "./features/core"
+import { PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, getBaseRoutes } from "./features/core/configs";
 import { AppConstants } from "./features/core/constants";
@@ -197,7 +197,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                 loginAgainButtonText: I18n.instance.t("console:common:modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"),
                                                 sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
+                                                    ".sessionTimeoutModal.sessionTimedOutDescription")
                                             } }
                                         >
                                             <>

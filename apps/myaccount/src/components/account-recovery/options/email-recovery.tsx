@@ -292,11 +292,11 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                         </Grid.Column>
                         <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                {email || email !== "" ? (
+                                { email || email !== "" ? (
                                     <Icon
                                         link={ true }
                                         onClick={ handleEdit }
-                                        data-testid={`${testId}-edit-button`}
+                                        data-testid={ `${testId}-edit-button` }
                                         className="list-icon"
                                         size="small"
                                         color="grey"
@@ -307,12 +307,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             link={ true }
                                             onClick={ handleEdit }
                                             className="list-icon"
-                                            data-testid={`${testId}-edit-button`}
+                                            data-testid={ `${testId}-edit-button` }
                                             size="small"
                                             color="grey"
                                             name="plus"
                                         />
-                                    )}
+                                    ) }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -369,10 +369,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             />
                                             <p style={ { fontSize: "12px" } }>
                                                 <Icon color="grey" floated="left" name="info circle" />
-                                                {t(
+                                                { t(
                                                     "myAccount:components.profile.forms.emailChangeForm" +
                                                     ".inputs.email.note"
-                                                )}
+                                                ) }
                                             </p>
                                             <Field
                                                 hidden={ true }
@@ -383,7 +383,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     size="small"
                                                     type="submit"
                                                     value={ t("common:update").toString() }
-                                                    data-testid={`${testId}--edit-section-form-sumbit-button`}
+                                                    data-testid={ `${testId}--edit-section-form-sumbit-button` }
                                                 />
                                                 <Field
                                                     className="link-button"
@@ -391,7 +391,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     size="small"
                                                     type="button"
                                                     value={ t("common:cancel").toString() }
-                                                    data-testid={`${testId}--edit-section-form-cancel-button`}
+                                                    data-testid={ `${testId}--edit-section-form-cancel-button` }
                                                 />
                                             </Form.Group>
                                         </Forms>

@@ -842,9 +842,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 title={ (
                     <>
                         <span>{ application.name }</span>
-                        {/*TODO - Application status is not shown until the backend support for disabling is given
+                        { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
-                        { resolveApplicationStatusLabel() }*/}
+                        { resolveApplicationStatusLabel() }*/ }
                     </>
                 ) }
                 contentTopMargin={ true }

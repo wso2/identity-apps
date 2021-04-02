@@ -107,7 +107,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
         handleTempListChange(checkedRoles);
         handleInitialTempListChange(checkedRoles);
-        setIsSelectUnassignedAllRolesChecked(initialValues?.roleList?.length === checkedRoles.length)
+        setIsSelectUnassignedAllRolesChecked(initialValues?.roleList?.length === checkedRoles.length);
     };
 
     /**

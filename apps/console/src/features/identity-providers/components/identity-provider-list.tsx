@@ -22,19 +22,21 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
+    ContentLoader,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface,
-    ContentLoader
+    TableColumnInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Header, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
+import { getApplicationDetails } from "../../applications/api";
+import { ApplicationBasicInterface } from "../../applications/models";
 import {
     AppConstants,
     UIConstants,
@@ -50,8 +52,6 @@ import {
     IdentityProviderListResponseInterface,
     StrictIdentityProviderInterface
 } from "../models";
-import { getApplicationDetails } from "../../applications/api";
-import { ApplicationBasicInterface } from "../../applications/models";
 
 /**
  * Proptypes for the identity provider list component.
@@ -179,7 +179,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     const appNames: string[] = [];
                     results.forEach((app) => {
                         appNames.push(app.name);
-                    })
+                    });
                     setConnectedApps(appNames);
                 }
             })

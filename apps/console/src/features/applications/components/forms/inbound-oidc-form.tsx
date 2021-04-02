@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -32,14 +32,16 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, List, Message } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
+import SinglePageApplicationTemplate
+    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
@@ -55,8 +57,6 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { CertificateFormFieldModal } from "../modals";
-import SinglePageApplicationTemplate
-    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -493,7 +493,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 if (description) {
                     grant.hint = {
                         header: displayName,
-                        content: description,
+                        content: description
                     };
                 }
 
@@ -1283,24 +1283,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            {/* TODO  Enable this option in future*/ }
-            {/*<Grid.Row columns={ 1 }>*/ }
-            {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>*/ }
-            {/*        <Field*/ }
-            {/*            name="applicationAccessTokenExpiryInSeconds"*/ }
-            {/*            label="Application access token expiry time"*/ }
-            {/*            required={ true }*/ }
-            {/*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
-            {/*            value={ initialValues.accessToken ?*/ }
-            {/*                initialValues.accessToken.
+            { /* TODO  Enable this option in future*/ }
+            { /*<Grid.Row columns={ 1 }>*/ }
+            { /*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>*/ }
+            { /*        <Field*/ }
+            { /*            name="applicationAccessTokenExpiryInSeconds"*/ }
+            { /*            label="Application access token expiry time"*/ }
+            { /*            required={ true }*/ }
+            { /*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
+            { /*            value={ initialValues.accessToken ?*/ }
+            { /*                initialValues.accessToken.
                         applicationAccessTokenExpiryInSeconds.toString() :*/ }
-            {/*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
-            {/*            placeholder="Enter the application access token expiry time "*/ }
-            {/*            type="number"*/ }
-            {/*        />*/ }
-            {/*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
-            {/*    </Grid.Column>*/ }
-            {/*</Grid.Row>*/ }
+            { /*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
+            { /*            placeholder="Enter the application access token expiry time "*/ }
+            { /*            type="number"*/ }
+            { /*        />*/ }
+            { /*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
+            { /*    </Grid.Column>*/ }
+            { /*</Grid.Row>*/ }
 
             { /* Refresh Token */ }
             <Grid.Row columns={ 2 }>
@@ -2097,10 +2097,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const renderReactivateConfirmationModal = (): ReactElement => {
         return (<ConfirmationModal
-                onClose={(): void => setShowReactiveConfirmationModal(false)}
+                onClose={ (): void => setShowReactiveConfirmationModal(false) }
                 type="warning"
-                open={showReactiveConfirmationModal}
-                assertion={initialValues?.clientId}
+                open={ showReactiveConfirmationModal }
+                assertion={ initialValues?.clientId }
                 assertionHint={ isSPAApplication ? (
                     <p>
                         <Trans
@@ -2108,9 +2108,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 "console:develop.features.applications.confirmations" +
                                 ".reactivateSPA.assertionHint"
                             }
-                            tOptions={{id: initialValues?.clientId}}
+                            tOptions={ { id: initialValues?.clientId } }
                         >
-                            Please type <strong>{initialValues?.clientId}</strong> to confirm.
+                            Please type <strong>{ initialValues?.clientId }</strong> to confirm.
                         </Trans>
                     </p>
                 ) : (
@@ -2120,28 +2120,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 "console:develop.features.applications.confirmations" +
                                 ".reactivateOIDC.assertionHint"
                             }
-                            tOptions={{id: initialValues?.clientId}}
+                            tOptions={ { id: initialValues?.clientId } }
                         >
-                            Please type <strong>{initialValues?.clientId}</strong> to confirm.
+                            Please type <strong>{ initialValues?.clientId }</strong> to confirm.
                         </Trans>
                     </p>
                 )
                 }
                 assertionType="input"
-                primaryAction={t("common:confirm")}
-                secondaryAction={t("common:cancel")}
-                onSecondaryActionClick={(): void =>
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void =>
                     setShowReactiveConfirmationModal(false)
                 }
-                onPrimaryActionClick={(): void => {
+                onPrimaryActionClick={ (): void => {
                     onApplicationRegenerate();
                     setShowReactiveConfirmationModal(false);
-                }}
-                data-testid={`${testId}-oidc-reactivate-confirmation-modal`}
-                closeOnDimmerClick={false}
+                } }
+                data-testid={ `${testId}-oidc-reactivate-confirmation-modal` }
+                closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header
-                    data-testid={`${testId}-oidc-reactivate-confirmation-modal-header`}
+                    data-testid={ `${testId}-oidc-reactivate-confirmation-modal-header` }
                 >
                     { 
                         isSPAApplication
@@ -2159,15 +2159,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <ConfirmationModal.Message
                                 attached
                                 warning
-                                data-testid={`${testId}-oidc-reactivate-confirmation-modal-message`}
+                                data-testid={ `${testId}-oidc-reactivate-confirmation-modal-message` }
                             >
-                                {t("console:develop.features.applications.confirmations" +
-                                   ".reactivateSPA.message")}
+                                { t("console:develop.features.applications.confirmations" +
+                                   ".reactivateSPA.message") }
                                 </ConfirmationModal.Message> 
                                 ) : null
                     }
                 <ConfirmationModal.Content
-                    data-testid={`${testId}-oidc-reactivate-confirmation-modal-content`}
+                    data-testid={ `${testId}-oidc-reactivate-confirmation-modal-content` }
                 >
                     {
                         isSPAApplication
@@ -2180,7 +2180,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        )
+        );
     };
 
     /**
@@ -2365,7 +2365,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     value={ initialValues?.clientId }
                                                     data-testid={ `${ testId }-client-id-readonly-input` }
                                                 />
-                                                {/*TODO - Application revoke is disabled until proper
+                                                { /*TODO - Application revoke is disabled until proper
                                                 backend support for application disabling is provided
                                                 @link https://github.com/wso2/product-is/issues/11453
                                                 {
@@ -2381,7 +2381,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             { t("common:revoke") }
                                                         </Button>
                                                     )
-                                                }*/}
+                                                }*/ }
                                             </div>
                                         </Form.Field>
                                         { ((initialValues?.state !== State.REVOKED) &&

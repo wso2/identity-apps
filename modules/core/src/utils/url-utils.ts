@@ -112,7 +112,7 @@ export class URLUtils {
                 origin: details.origin, // https://localhost:9443
                 href: details.href, // https://localhost:9443/some/long/url
                 _url: details, // URL Instance
-                pathWithoutProtocol: details.href.split("://")[ 1 ],
+                pathWithoutProtocol: details.href.split("://")[ 1 ]
             } as URLComponentsInterface;
         } catch (error) {
             return null;

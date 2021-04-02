@@ -17,6 +17,7 @@
  */
 
 import { IdentityClient } from "@wso2/identity-oidc-js";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     ConsentInterface,
     ConsentReceiptInterface,
@@ -27,7 +28,6 @@ import {
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Initialize an axios Http client.
@@ -120,10 +120,10 @@ export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): P
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: { 'limit': limit, 'offset': offset },
+        params: { "limit": limit, "offset": offset },
         url: store.getState().config.endpoints.consentManagement.purpose.list
     };
 
@@ -173,7 +173,7 @@ export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<
         const requestConfiguration: AxiosRequestConfig = {
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             },
             method: HttpMethods.GET,
             /* Contains a additional path parameter :purposeId */

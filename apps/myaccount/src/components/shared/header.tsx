@@ -39,13 +39,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
+import { AppSwitch } from "./app-switch";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
-import { AppSwitch } from "./app-switch"
 
 /**
  * Dashboard layout Prop types.

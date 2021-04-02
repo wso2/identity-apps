@@ -266,7 +266,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             ? (
                 <EmphasizedSegment padded="very">
                     <Grid className="attributes-settings">
-                        {/* Select attributes for mapping. */ }
+                        { /* Select attributes for mapping. */ }
                         { selectedClaimsWithMapping &&
                         <AttributeSelection
                             attributeList={ availableLocalClaims }
@@ -302,7 +302,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             subjectError={ isSubmitting && subjectError && !subjectClaimUri }
                         /> }
 
-                        {/* Select attributes for provisioning. */ }
+                        { /* Select attributes for provisioning. */ }
                         { selectedProvisioningClaimsWithDefaultValue &&
                         <AttributeSelection
                             attributeList={
@@ -329,7 +329,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             data-testid={ `${ testId }-provisioning-attribute-selection` }
                         /> }
 
-                        {/* Set role mappings. */ }
+                        { /* Set role mappings. */ }
                         <RoleMappingSettings
                             triggerSubmit={ triggerSubmission }
                             initialRoleMappings={ initialRoleMappings }

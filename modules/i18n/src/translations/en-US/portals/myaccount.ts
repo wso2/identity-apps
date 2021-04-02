@@ -646,7 +646,7 @@ export const myAccount: MyAccountNS = {
             },
             smsOtp: {
                 descriptions: {
-                    hint: "You'll receive a text message containing an one-time verification code",
+                    hint: "You'll receive a text message containing an one-time verification code"
                 },
                 heading: "SMS Number",
                 notifications: {
@@ -1040,7 +1040,7 @@ export const myAccount: MyAccountNS = {
                     content: "This mobile number is used for sending SMS OTP when second factor authentication " +
                         "is enabled and for sending recovery codes in case of a username/password recovery. " +
                         "To update this number, you have to verify the new number by entering the verification " +
-                        "code sent to your new number. Click update if you wish to proceed.",
+                        "code sent to your new number. Click update if you wish to proceed."
                 }
             },
             notifications: {
@@ -1193,7 +1193,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "Success! Your mobile number is successfully verified.",
             submitMobile: {
-                heading: "Enter your new mobile number",
+                heading: "Enter your new mobile number"
             },
             verifySmsOtp: {
                 generate: "Resend a new verification code",
@@ -1201,7 +1201,7 @@ export const myAccount: MyAccountNS = {
                 error: "Verification failed. Please try again.",
                 label: "Verification Code",
                 placeholder: "Enter your verification code",
-                requiredError: "Enter the verification code",
+                requiredError: "Enter the verification code"
             },
             notifications: {
                 resendSuccess: {

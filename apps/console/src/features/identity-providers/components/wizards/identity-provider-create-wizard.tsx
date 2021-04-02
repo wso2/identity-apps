@@ -665,8 +665,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 data-testid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
-                    {title}
-                    {subTitle && <Heading as="h6">{subTitle}</Heading>}
+                    { title }
+                    { subTitle && <Heading as="h6">{ subTitle }</Heading> }
                 </Modal.Header>
                 { !isExpertMode() &&
                     (
@@ -698,26 +698,26 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                {currentWizardStep < wizardSteps.length - 1 && (
+                                { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-next-button` }>
                                         { t("console:develop.features.idp.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
-                                )}
-                                {currentWizardStep === wizardSteps.length - 1 && (
+                                ) }
+                                { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-finish-button` }>
                                         { t("console:develop.features.idp.wizards.buttons.finish") }
                                     </PrimaryButton>
-                                )}
-                                {currentWizardStep > 0 && (
+                                ) }
+                                { currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }
                                                 data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
                                         { t("console:develop.features.idp.wizards.buttons.previous") }
                                     </LinkButton>
-                                )}
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

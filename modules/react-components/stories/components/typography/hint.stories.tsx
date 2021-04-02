@@ -18,8 +18,8 @@
  */
 
 import * as React from "react";
-import { Hint } from "../../../src";
 import { meta } from "./hint.stories.meta";
+import { Hint } from "../../../src";
 
 export default {
     parameters: {

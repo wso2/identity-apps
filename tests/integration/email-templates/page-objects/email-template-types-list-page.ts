@@ -19,8 +19,8 @@
 
 /// <reference types="cypress" />
 
-import { EmailTemplateTypesListPageConstants } from "../constants";
 import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/ui";
+import { EmailTemplateTypesListPageConstants } from "../constants";
 
 /**
  * Class containing Email Templates Type Page objects.
@@ -38,7 +38,7 @@ export class EmailTemplateTypesListPage {
      */
     public clickOnSidePanelItem(): void {
         cy.dataTestId(SidePanelDomConstants.EMAIL_TEMPLATES_PARENT_ITEM_DATA_ATTR).click();
-    };
+    }
 
     /**
      * Get the email template type table.
@@ -46,7 +46,7 @@ export class EmailTemplateTypesListPage {
      */
     public getTable(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.TABLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email template types table body.
@@ -54,7 +54,7 @@ export class EmailTemplateTypesListPage {
      */
     public getTableBody(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.TABLE_BODY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email template types page layout header element.
@@ -62,7 +62,7 @@ export class EmailTemplateTypesListPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email template types page layout header title element.
@@ -70,7 +70,7 @@ export class EmailTemplateTypesListPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email template types page layout header sub title element.
@@ -78,7 +78,7 @@ export class EmailTemplateTypesListPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the email template types page layout header action element.
@@ -86,14 +86,14 @@ export class EmailTemplateTypesListPage {
      */
     public getPageLayoutHeaderAction(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
-    };
+    }
 
     /**
      * Click on the New template type button.
      */
     public clickOnNewTemplateTypeButton(): void {
         this.getPageLayoutHeaderAction().click();
-    };
+    }
 
     /**
      * Get the add new templates type wizard element.
@@ -101,7 +101,7 @@ export class EmailTemplateTypesListPage {
      */
     public getAddTemplateTypeWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.ADD_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the new templates type name input in the wizard.
@@ -109,7 +109,7 @@ export class EmailTemplateTypesListPage {
      */
     public getTemplateTypeNameInputInWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.TEMPLATE_TYPE_NAME_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the data attribute of the new template type wizard's create button.
@@ -117,5 +117,5 @@ export class EmailTemplateTypesListPage {
      */
     public getTemplateTypeCreateButtonInWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplateTypesListPageConstants.CREATE_TEMPLATE_TYPE_BUTTON_DATA_ATTR);
-    };
+    }
 }

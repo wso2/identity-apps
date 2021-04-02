@@ -66,7 +66,7 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies,
+    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";

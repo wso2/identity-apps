@@ -38,7 +38,7 @@ export class EmailTemplatesAddPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the page layout header title element.
@@ -46,7 +46,7 @@ export class EmailTemplatesAddPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the locale dropdown element.
@@ -54,14 +54,14 @@ export class EmailTemplatesAddPage {
      */
     public getLocaleDropdown(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.LOCALE_DROPDOWN_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on the locale dropdown.
      */
     public openLocaleDropdown(): void {
         this.getLocaleDropdown().click();
-    };
+    }
 
     /**
      * Get the locale dropdown options.
@@ -71,8 +71,8 @@ export class EmailTemplatesAddPage {
         return this.getLocaleDropdown()
             .within(() => {
                 cy.get(EmailTemplatesAddPageConstants.LOCALE_DROPDOWN_OPTIONS_CONTAINER_DATA_ATTR);
-            })
-    };
+            });
+    }
 
     /**
      * Get the locale dropdown options.
@@ -84,7 +84,7 @@ export class EmailTemplatesAddPage {
             .within(() => {
                 cy.dataTestId(code).click();
             });
-    };
+    }
 
     /**
      * Get Subject input element.
@@ -92,7 +92,7 @@ export class EmailTemplatesAddPage {
      */
     public getSubjectInput(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.SUBJECT_INPUT_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Email body code editor element.
@@ -100,7 +100,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailBodyCodeEditor(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Email body code editor HTML code tab pane.
@@ -108,7 +108,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailBodyCodeEditorHTMLCodeTabPane(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_HTML_CODE_TAB_PANE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Email body code editor preview tab pane.
@@ -116,7 +116,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailBodyCodeEditorPreviewTabPane(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_PREVIEW_TAB_PANE_DATA_ATTR);
-    };
+    }
 
     /**
      * Focus on Email body code editor HTML code pane.
@@ -125,7 +125,7 @@ export class EmailTemplatesAddPage {
     public focusOnEmailBodyCodeEditorHTMLCodePane(): Cypress.Chainable<Element> {
         return this.getEmailBodyCodeEditorHTMLCodeTabPane()
             .click();
-    };
+    }
 
     /**
      * Get Email body code editor tabs element.
@@ -136,7 +136,7 @@ export class EmailTemplatesAddPage {
             .within(() => {
                 cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_TABS_DATA_ATTR);
             });
-    };
+    }
 
     /**
      * Click on email body editor preview tab.
@@ -148,9 +148,9 @@ export class EmailTemplatesAddPage {
                 cy.get(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_TAB_MENU_DATA_ATTR)
                     .find(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_TAB_MENU_ITEM_DATA_ATTR)
                     .eq(0)
-                    .click()
-            })
-    };
+                    .click();
+            });
+    }
 
     /**
      * Click on email body editor HTML code tab.
@@ -162,9 +162,9 @@ export class EmailTemplatesAddPage {
                 cy.get(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_TAB_MENU_DATA_ATTR)
                     .find(EmailTemplatesAddPageConstants.EMAIL_BODY_CODE_EDITOR_TAB_MENU_ITEM_DATA_ATTR)
                     .eq(1)
-                    .click()
-            })
-    };
+                    .click();
+            });
+    }
 
     /**
      * Get Mail signature code editor element.
@@ -172,7 +172,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailSignatureCodeEditor(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Email signature code editor tabs element.
@@ -183,7 +183,7 @@ export class EmailTemplatesAddPage {
             .within(() => {
                 cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_TABS_DATA_ATTR);
             });
-    };
+    }
 
     /**
      * Get Email signature code editor HTML code tab pane.
@@ -191,7 +191,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailSignatureCodeEditorHTMLCodeTabPane(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_HTML_CODE_TAB_PANE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get Email signature code editor preview tab pane.
@@ -199,7 +199,7 @@ export class EmailTemplatesAddPage {
      */
     public getEmailSignatureCodeEditorPreviewTabPane(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_PREVIEW_TAB_PANE_DATA_ATTR);
-    };
+    }
 
     /**
      * Click on email signature editor preview tab.
@@ -211,9 +211,9 @@ export class EmailTemplatesAddPage {
                 cy.get(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_TAB_MENU_DATA_ATTR)
                     .find(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_TAB_MENU_ITEM_DATA_ATTR)
                     .eq(0)
-                    .click()
-            })
-    };
+                    .click();
+            });
+    }
 
     /**
      * Click on email signature editor HTML code tab.
@@ -225,9 +225,9 @@ export class EmailTemplatesAddPage {
                 cy.get(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_TAB_MENU_DATA_ATTR)
                     .find(EmailTemplatesAddPageConstants.EMAIL_SIGNATURE_CODE_EDITOR_TAB_MENU_ITEM_DATA_ATTR)
                     .eq(1)
-                    .click()
-            })
-    };
+                    .click();
+            });
+    }
 
     /**
      * Focus on Email signature code editor HTML code pane.
@@ -236,7 +236,7 @@ export class EmailTemplatesAddPage {
     public focusOnEmailSignatureCodeEditorHTMLCodePane(): Cypress.Chainable<Element> {
         return this.getEmailSignatureCodeEditorHTMLCodeTabPane()
             .click();
-    };
+    }
 
     /**
      * Get Add template form submit button element.
@@ -244,12 +244,12 @@ export class EmailTemplatesAddPage {
      */
     public getFormSubmitButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(EmailTemplatesAddPageConstants.FORM_SUBMIT_BUTTON);
-    };
+    }
 
     /**
      * Click on add template form submit button.
      */
     public clickOnFormSubmitButton(): void {
         this.getFormSubmitButton().click();
-    };
+    }
 }

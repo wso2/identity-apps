@@ -1360,7 +1360,7 @@ export const console: ConsoleNS = {
                                             empty: "Please fill the Front Channel Logout URL",
                                             invalid: "Please add valid URL"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1419,7 +1419,7 @@ export const console: ConsoleNS = {
                                     "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable signature validation",
+                                        label: "Enable signature validation"
                                     }
                                 },
                                 heading: "Request Object"

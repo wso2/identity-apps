@@ -21,8 +21,8 @@ import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
-    RolesMemberInterface,
-    RolesInterface
+    RolesInterface,
+    RolesMemberInterface
 } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -469,7 +469,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             checkedRoles.push(role);
             setSelectedRoleList(checkedRoles);
         }
-        setIsSelectAllRolesChecked(checkedRoles.length === roleList.length)
+        setIsSelectAllRolesChecked(checkedRoles.length === roleList.length);
     };
 
     /**
@@ -572,7 +572,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             t("console:manage.features.transferList.list.headers.1"), ""
                                         ] : [
                                             t("console:manage.features.transferList.list.headers.1"), ""
-                                        ]}
+                                        ] }
                                         handleHeaderCheckboxChange={ selectAllRoles }
                                         isHeaderCheckboxChecked={ isSelectAllRolesChecked }
                                         emptyPlaceholderContent={ t("console:manage.features.transferList.list." +

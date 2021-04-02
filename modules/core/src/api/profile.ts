@@ -74,7 +74,7 @@ export const getGravatarImage = (email: string,
                 error.request,
                 error.response,
                 error.config);
-        })
+        });
 };
 
 /**
@@ -251,9 +251,9 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                         const modifiedSubAttributes = [];
                         if(attribute.type === "COMPLEX") {
                             attribute.subAttributes.map((subAttribute) => {
-                                modifiedSubAttributes.push({ ...subAttribute,  extended: true});
+                                modifiedSubAttributes.push({ ...subAttribute,  extended: true });
                             }
-                        )
+                        );
                         attribute.subAttributes = modifiedSubAttributes;
                         }
                         schemaAttributes.push({ ...attribute, extended: true });

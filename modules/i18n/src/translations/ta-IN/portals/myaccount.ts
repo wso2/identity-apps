@@ -1224,7 +1224,7 @@ export const myAccount: MyAccountNS = {
         mobileUpdateWizard: {
             done: "வெற்றி! உங்கள் மொபைல் எண் வெற்றிகரமாக சரிபார்க்கப்பட்டது.",
             submitMobile: {
-                heading: "உங்கள் புதிய மொபைல் எண்ணை உள்ளிடவும்",
+                heading: "உங்கள் புதிய மொபைல் எண்ணை உள்ளிடவும்"
             },
             verifySmsOtp: {
                 generate: "புதிய சரிபார்ப்புக் குறியீட்டை மீண்டும் அனுப்பவும்",
@@ -1232,7 +1232,7 @@ export const myAccount: MyAccountNS = {
                 error: "சரிபார்ப்பு தோல்வியுற்றது. தயவுசெய்து மீண்டும் முயற்சி செய்க.",
                 label: "சரிபார்ப்புக் குறியீடு",
                 placeholder: "உங்கள் சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
-                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
+                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
             },
             notifications: {
                 resendSuccess: {

@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Icon, Message } from "semantic-ui-react";
-import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 import { MessageHeaderProps } from "semantic-ui-react/dist/commonjs/collections/Message/MessageHeader";
+import { SemanticShorthandContent, SemanticShorthandItem } from "semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Proptypes for the messageInfo component.
@@ -57,7 +57,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
                 <>
                     <Divider
                         hidden
-                        className={ 'message-info-text' }/>
+                        className={ "message-info-text" }/>
                     <div>
                         { (content) }
                     </div>
@@ -69,9 +69,9 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
             <Message
                 info
                 header={ (
-                    <Header as='h4'>
+                    <Header as="h4">
                         <Header.Content>
-                            <Icon name='info circle'/>
+                            <Icon name="info circle"/>
                             { (header) }
                         </Header.Content>
                     </Header>
@@ -87,5 +87,5 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
 MessageInfo.defaultProps = {
     header: null,
     content: null,
-    "data-testid": "message-info",
+    "data-testid": "message-info"
 };

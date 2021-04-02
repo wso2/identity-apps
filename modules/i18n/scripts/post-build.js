@@ -16,9 +16,9 @@
  * under the License.
  */
 
+const { execSync } = require("child_process");
 const path = require("path");
 const fs = require("fs-extra");
-const { execSync } = require("child_process");
 
 // eslint-disable-next-line no-console
 const log = console.log;
@@ -104,7 +104,7 @@ for (const value of Object.values(translations)) {
 
             resourcePaths = {
                 ...resourcePaths,
-                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName),
+                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName)
             };
         }
     }
@@ -113,8 +113,8 @@ for (const value of Object.values(translations)) {
         ...metaFileContent,
         [ value.meta.code ] : {
             ...value.meta,
-            paths: resourcePaths,
-        },
+            paths: resourcePaths
+        }
     };
 }
 

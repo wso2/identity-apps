@@ -28,7 +28,7 @@ Cypress.on("test:after:run", (test, runnable) => {
 
     const imagePath = `screenshots/${ Cypress.spec.name }/${ fullTestName } (failed).png`;
 
-    addContext({test}, imagePath);
+    addContext({ test }, imagePath);
 });
 
 const getFullTestName = (runnable) => {

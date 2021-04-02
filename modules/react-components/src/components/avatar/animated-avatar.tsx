@@ -486,7 +486,7 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
                 </Image>
             )
             : <AnimatedSVGBackground/>
-    )
+    );
 };
 
 AnimatedAvatar.defaultProps = {

@@ -21,10 +21,10 @@ import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
+import { AppConsentEdit } from "./consent-edit";
 import { ConsentedAppIcon } from "../../configs";
 import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem } from "../../models";
 import { toSentenceCase } from "../../utils";
-import { AppConsentEdit } from "./consent-edit";
 
 /**
  * Proptypes for the application consents list component.
@@ -144,7 +144,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                     size="mini"
                                                                     data-testid={ `${ testId }-` +
                                                                         `${ consent.spDisplayName }` +
-                                                                        `-app-consent-detail-button` }
+                                                                        "-app-consent-detail-button" }
                                                                     onClick={
                                                                         () => onConsentDetailClick(
                                                                             index, consent.consentReceiptID

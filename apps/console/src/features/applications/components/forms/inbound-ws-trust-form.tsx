@@ -27,6 +27,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     CertificateInterface,
     CertificateTypeInterface,
@@ -34,7 +35,6 @@ import {
     WSTrustConfigurationInterface,
     WSTrustMetaDataInterface
 } from "../../models";
-import { ApplicationManagementConstants } from "../../constants";
 import { CertificateFormFieldModal } from "../modals";
 
 /**

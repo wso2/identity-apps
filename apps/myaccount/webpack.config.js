@@ -360,7 +360,7 @@ module.exports = (env) => {
                         // ATM, only the theme CSS files, fonts and branding images are required.
                         globOptions: {
                             dot: true,
-                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ],
+                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ]
                         },
                         to: "libs"
                     },

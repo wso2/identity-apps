@@ -148,7 +148,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
             modifiedStyle = {
                 ...modifiedStyle,
                 borderRadius: `${ borderRadius }px`
-            }
+            };
         }
 
         return modifiedStyle;
@@ -166,7 +166,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
             additionalProps = {
                 ...additionalProps,
                 inverted: true
-            }
+            };
         }
 
         return additionalProps;

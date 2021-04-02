@@ -35,7 +35,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
+import { UIConstants, UserBasicInterface, getEmptyPlaceholderIllustrations, getUsersList } from "../../../core";
 import { GroupsMemberInterface } from "../../models";
 
 /**

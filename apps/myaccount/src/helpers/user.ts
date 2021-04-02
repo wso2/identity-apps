@@ -63,7 +63,7 @@ export const resolveUserProfileName = (state: AuthStateInterface, isProfileInfoL
         return resolveUserDisplayName(state);
     }
     return null;
-}
+};
 
 /**
  * Same username can exist in two different user stores. This function

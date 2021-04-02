@@ -415,13 +415,13 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     step !== 2
                         ? (
                             < Modal.Header className="totp-header">
-                                <div className="illustration">{stepIllustration(step)}</div>
+                                <div className="illustration">{ stepIllustration(step) }</div>
                             </Modal.Header>
                         )
                         : null
                 }
                 <Modal.Content data-testid={ `${testId}-modal-content` }>
-                    <h3>{stepHeader(step)}</h3>
+                    <h3>{ stepHeader(step) }</h3>
                     <Divider hidden />
                     { stepContent(step) }
                 </Modal.Content>

@@ -332,7 +332,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     { renderEditBubble() }
                 </div>
             </div>
-        )
+        );
     }
 
     if (image && isImageValidUrl) {

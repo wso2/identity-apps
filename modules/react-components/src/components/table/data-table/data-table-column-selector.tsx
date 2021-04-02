@@ -160,7 +160,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelectorI
                                                             onChange={ handleColumnVisibilityChange }
                                                         />
                                                     </Form.Field>
-                                                )
+                                                );
                                             }
                                         )
                                         }

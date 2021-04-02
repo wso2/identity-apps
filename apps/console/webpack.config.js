@@ -142,7 +142,9 @@ module.exports = (env) => {
         entry: {
             init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx",
-            rpIFrame: "./src/init/rpIFrame-script.ts"
+            rpIFrame: "./src/init/rpIFrame-script.ts",
+            signIn: "./src/features/authentication/pages/sign-in.tsx",
+            signOut: "./src/features/authentication/pages/sign-out.tsx"
         },
         infrastructureLogging: {
             // Log level is set to `none` by default to get rid of un-necessary logs from persistent cache etc.
@@ -373,7 +375,7 @@ module.exports = (env) => {
                                 // service is enabled.
                                 // TODO: Remove this `identity-providers` folder once the usages are refactored.
                                 "**/assets/images/!(branding|identity-providers)/**"
-                            ],
+                            ]
                         },
                         to: "libs"
                     },
@@ -451,7 +453,7 @@ module.exports = (env) => {
                     template: path.join(__dirname, "src", "index.html")
                 }),
             new HtmlWebpackPlugin({
-                excludeChunks: [ "main", "init" ],
+                excludeChunks: [ "main", "init", "signIn", "signOut" ],
                 filename: path.join(distFolder, "rpIFrame.html"),
                 hash: true,
                 publicPath: !isRootContext

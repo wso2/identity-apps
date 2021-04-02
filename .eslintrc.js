@@ -63,7 +63,7 @@ module.exports = {
             {
                 "groups": [ "builtin", "external", "index", "sibling", "parent", "internal" ],
                 "alphabetize": {
-                    order: 'asc',
+                    order: "asc",
                     caseInsensitive: true
                 }
             }
@@ -82,7 +82,7 @@ module.exports = {
         "react/no-children-prop": 0,
         "react/display-name": 0,
         "react/prop-types": 1,
-        "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
+        "sort-keys": ["warn", "asc", { "caseSensitive": true, "natural": false, "minKeys": 2 }],
         "object-curly-spacing": ["warn", "always"],
         "no-console": "warn",
         "no-duplicate-imports": "warn",

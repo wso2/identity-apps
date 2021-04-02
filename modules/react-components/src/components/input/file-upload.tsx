@@ -142,13 +142,13 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
      */
     useEffect(() => {
         if (initialName) {
-            setName(initialName)
+            setName(initialName);
         }
         if (initialFile) {
-            setFile(initialFile)
+            setFile(initialFile);
         }
         if (initialPasteValue) {
-            setPasteContent(initialPasteValue)
+            setPasteContent(initialPasteValue);
         }
         if (!loadedInitValue.current) {
             loadedInitValue.current = true;
@@ -227,7 +227,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
             updatePasteContent(pasteContent);
             if (encode) {
                 updateContent(btoa(pasteContent));
-                return
+                return;
             }
             updateContent(pasteContent);
         } else {
@@ -268,7 +268,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
 
         return () => {
             window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
-        }
+        };
     }, []);
 
     const panes = [
@@ -315,7 +315,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                     : (
                         <Segment placeholder>
                             <Segment textAlign="center" basic>
-                                <Icon name='file code outline' size='huge'/>
+                                <Icon name="file code outline" size="huge"/>
                                 <p className="file-name">{ file.name }</p>
                                 <Icon name="trash alternate" link onClick={ () => {
                                     setFile(null);
@@ -412,7 +412,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
 
         </>
 
-    )
+    );
 };
 
 /**

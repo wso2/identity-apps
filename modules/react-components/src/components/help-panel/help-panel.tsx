@@ -211,7 +211,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                             { tab.content }
                         </ResourceTab.Pane>
                     )
-                }
+                };
             }));
         }, [ tabs ]);
 

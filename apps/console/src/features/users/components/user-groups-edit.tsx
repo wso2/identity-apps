@@ -129,7 +129,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (domainName.length > 1) {
             domain = domainName[0];
         }
-        setPrimaryGroupsLoading(true)
+        setPrimaryGroupsLoading(true);
         getGroupList(domain)
             .then((response) => {
                 setPrimaryGroups(response.data.Resources);
@@ -182,7 +182,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             checkedGroups.push(group);
             setSelectedGroupList(checkedGroups);
         }
-        setIsSelectAllGroupsChecked(checkedGroups.length === groupList.length)
+        setIsSelectAllGroupsChecked(checkedGroups.length === groupList.length);
     };
 
     const setInitialLists = () => {

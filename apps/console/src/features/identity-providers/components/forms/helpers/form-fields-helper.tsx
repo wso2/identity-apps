@@ -52,7 +52,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -84,7 +84,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -120,7 +120,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -155,7 +155,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -188,7 +188,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -220,7 +220,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };
@@ -246,7 +246,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
-            )}
+            ) }
         </>
     );
 };

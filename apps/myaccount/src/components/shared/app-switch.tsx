@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {  AppSwitchCard, GenericIcon } from "@wso2is/react-components";
-import React, { SyntheticEvent, ReactElement } from "react";
+import React, { ReactElement, SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { Card,  Dropdown, Grid } from "semantic-ui-react";
 import { AppSwitchIcons } from "../../configs";

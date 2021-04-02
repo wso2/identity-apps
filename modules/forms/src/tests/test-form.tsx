@@ -18,10 +18,10 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
+import constants from "./constants";
 import { Field, Forms } from "../../src";
 import { GroupFields } from "../components";
 import { FormField, Type, Validation } from "../models";
-import constants from "./constants";
 
 export interface FormTestFields {
     isRequired: boolean;
@@ -58,7 +58,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             required: true,
             requiredErrorMessage: constants.CHECKBOX_REQUIRED_MESSAGE,
             type: "checkbox" as const,
-            value: constants.CHECKBOX_VALUE,
+            value: constants.CHECKBOX_VALUE
         },
         custom: {
             element: constants.CUSTOM_ELEMENT,
@@ -136,7 +136,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
         },
         submit: {
             type: "submit" as const,
-            value: constants.SUBMIT,
+            value: constants.SUBMIT
         },
         text: {
             label: constants.TEXT_BOX_LABEL,

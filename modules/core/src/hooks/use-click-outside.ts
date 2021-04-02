@@ -51,4 +51,4 @@ export const useClickOutside = (initialValue = false) => {
     });
 
     return { ref, isComponentVisible, setIsComponentVisible };
-}
+};

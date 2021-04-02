@@ -26,10 +26,10 @@
  * npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
  */
 
-const path = require("path");
-const fs = require("fs-extra");
-const XmlParser = require("fast-xml-parser");
 const { execSync } = require("child_process");
+const path = require("path");
+const XmlParser = require("fast-xml-parser");
+const fs = require("fs-extra");
 
 const packageJson = path.join(__dirname, "..", "package.json");
 const pomXml = path.join(__dirname, "..", "pom.xml");

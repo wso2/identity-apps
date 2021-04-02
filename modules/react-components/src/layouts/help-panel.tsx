@@ -200,7 +200,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
      * @return {HelpPanelTabInterface[]} Modified tabs array.
      */
     const getFilteredHelpPanelTabs = (): HelpPanelTabInterface[] => {
-        return tabs.filter((tab) => !tab.hidden)
+        return tabs.filter((tab) => !tab.hidden);
     };
 
     /**

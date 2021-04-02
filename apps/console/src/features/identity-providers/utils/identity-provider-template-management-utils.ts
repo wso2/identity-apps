@@ -23,6 +23,9 @@ import { store } from "../../core";
 import {
     getIdentityProviderTemplateList
 } from "../api";
+import { ExpertModeTemplate } from "../components/meta";
+import { handleGetIDPTemplateListError } from "../components/utils";
+import { getIdPCapabilityIcons } from "../configs";
 import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
 import {
     IdentityProviderTemplateCategoryInterface,
@@ -33,9 +36,6 @@ import {
     SupportedServicesInterface
 } from "../models";
 import { setIdentityProviderTemplates } from "../store";
-import { getIdPCapabilityIcons } from "../configs";
-import { ExpertModeTemplate } from "../components/meta";
-import { handleGetIDPTemplateListError } from "../components/utils";
 
 /**
  * Utility class for IDP Templates related operations.

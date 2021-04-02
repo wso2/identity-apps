@@ -67,7 +67,7 @@ export const getPortalDocumentationStructure = <T = {}>(
             let structure = response.data;
 
             if (fileType === DocumentationStructureFileTypes.YAML) {
-                structure = parsePortalDocumentationStructureYAML<T>(response.data)
+                structure = parsePortalDocumentationStructureYAML<T>(response.data);
             }
 
             return Promise.resolve(structure);

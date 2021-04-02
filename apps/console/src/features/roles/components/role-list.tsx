@@ -227,7 +227,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Role" })}
+                                { type: "Role" }) }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }

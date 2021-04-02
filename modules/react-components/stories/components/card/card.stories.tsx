@@ -17,11 +17,11 @@
  *
  */
 
-import * as React from "react";
-import { CSharpLogo, GravatarLogo, JavaScriptLogo, ReactLogo } from "@wso2is/theme";
-import { InfoCard, LabeledCard, SelectionCard } from "../../../src";
 import { action } from "@storybook/addon-actions";
+import { CSharpLogo, GravatarLogo, JavaScriptLogo, ReactLogo } from "@wso2is/theme";
+import * as React from "react";
 import { meta } from "./card.stories.meta";
+import { InfoCard, LabeledCard, SelectionCard } from "../../../src";
 
 export default {
     parameters: {

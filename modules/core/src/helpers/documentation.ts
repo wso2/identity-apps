@@ -61,20 +61,20 @@ const convertYAMLArrayToObject = <T = {}>(parsed: object[]): T => {
                     formatted = {
                         ...formatted,
                         [ key ]: convertYAMLArrayToObject(value)
-                    }
+                    };
                 }
                 if (typeof value === "string") {
                     formatted = {
                         ...formatted,
                         [ key ] : value
-                    }
+                    };
                 }
             }
         } else if (typeof item === "string") {
             formatted = {
                 ...formatted,
                 [ "Overview" ]: item
-            }
+            };
         }
     });
 

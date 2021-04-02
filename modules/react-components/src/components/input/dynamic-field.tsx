@@ -236,7 +236,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         key: key.id,
                                                                         text: key.value,
                                                                         value: key.value
-                                                                    }
+                                                                    };
                                                                 })
                                                             )
                                                             : []
@@ -369,7 +369,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                                                 key: key.id,
                                                                                                 text: key.value,
                                                                                                 value: key.value
-                                                                                            }
+                                                                                            };
                                                                                         })
                                                                                 )
                                                                                 : []
@@ -528,7 +528,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                 </List.Item>
                                             </List>
 
-                                        )
+                                        );
                                     })
 
                                 }
@@ -538,7 +538,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                     : null
             }
         </>
-    )
+    );
 };
 
 // Set default props

@@ -245,7 +245,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         getGravatarImage(selectedGravatarEmail)
             .then(() => {
-                setIsGravatarQualified(true)
+                setIsGravatarQualified(true);
             })
             .catch(() => {
                 setIsGravatarQualified(false);
@@ -619,7 +619,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                                                         key: index,
                                                                                         text: email,
                                                                                         value: email
-                                                                                    }
+                                                                                    };
                                                                                 })
                                                                         }
                                                                         onChange={ handleGravatarEmailDropdownChange }

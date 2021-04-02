@@ -343,7 +343,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             validation.errorMessages.push(t("console:manage.features.claims.local" +
                                                 ".forms.name.validationErrorMessages.invalidName"));
                                         }
-                                    }}
+                                    } }
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
                                 <Popup

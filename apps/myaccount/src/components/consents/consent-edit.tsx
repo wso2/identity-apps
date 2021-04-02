@@ -260,7 +260,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                             onClick={ () => onClaimUpdate(editingConsent.consentReceiptID) }
                             data-testid={ `${ testId }-` +
                                 `${ editingConsent.spDisplayName.replace(" ", "-") }` +
-                                `-editing-section-update-button` }
+                                "-editing-section-update-button" }
                             disabled={ !isUpdatable() }
                         >
                             { t("common:update") }

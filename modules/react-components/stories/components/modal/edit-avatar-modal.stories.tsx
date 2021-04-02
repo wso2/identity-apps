@@ -59,7 +59,7 @@ export const BasicUsage = (): ReactElement => {
                 heading="Update profile picture"
             />
         </>
-    )
+    );
 };
 
 BasicUsage.story = {

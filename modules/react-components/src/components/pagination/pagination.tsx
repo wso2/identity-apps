@@ -243,7 +243,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         } }
                     />
                 </>
-            )
+            );
         }
 
         return (
@@ -258,7 +258,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                     onPageChange={ pageChangeHandler }
                 />
             </>
-        )
+        );
     };
 
     return (

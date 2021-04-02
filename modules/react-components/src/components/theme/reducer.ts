@@ -30,7 +30,7 @@ export const themeInitialState: ThemeContextStateInterface = {
     productName: "",
     styles: {},
     theme: "default"
-}
+};
 
 /**
  * ThemeContext reducer.

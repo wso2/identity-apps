@@ -19,13 +19,13 @@
 
 require("@babel/register");
 
-const { Theme } = require("../src/theme");
 const path = require("path");
-const fs = require("fs-extra");
 const CleanCSS = require("clean-css");
-const replace = require("replace");
+const fs = require("fs-extra");
 const lessToJson = require("less-to-json");
 const mergeFiles = require("merge-files");
+const replace = require("replace");
+const { Theme } = require("../src/theme");
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
@@ -367,7 +367,7 @@ const createSemanticUICore = () => {
             replacement: "@import (multiple) '../../theme.less';\n.loadVariables();",
             paths: [ semanticUICoreDefinitions ],
             recursive: true,
-            silent: true,
+            silent: true
         });
 
         console.log("semantic-ui-core/definitions changes updated.");

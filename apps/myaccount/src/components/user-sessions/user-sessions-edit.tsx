@@ -306,5 +306,5 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
  */
 UserSessionsEdit.defaultProps = {
     "data-testid": "user-sessions-edit",
-    showUsernameInApplicationUsingSub: false,
+    showUsernameInApplicationUsingSub: false
 };
