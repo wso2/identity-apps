@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/console",
-    "version": "1.2.121",
+    "version": "1.2.122",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -31,16 +31,15 @@
         "clean:i18n:dist:default": "rimraf src/extensions/i18n/dist",
         "clean:i18n:dist:win32": "rimraf src\\extensions\\i18n\\dist",
         "start:profile": "npm run start -- --env ENABLE_BUILD_PROFILER=true",
-        "start:verbose": "npm run start -- --env LOG_LEVEL=verbose",
-        "test": "npx jest --passWithNoTests"
+        "start:verbose": "npm run start -- --env LOG_LEVEL=verbose"
     },
     "dependencies": {
-        "@wso2is/core": "^1.2.121",
-        "@wso2is/forms": "^1.2.121",
-        "@wso2is/i18n": "^1.2.121",
-        "@wso2is/react-components": "^1.2.121",
-        "@wso2is/theme": "^1.2.121",
-        "@wso2is/validation": "^1.2.121",
+        "@wso2is/core": "^1.2.122",
+        "@wso2is/forms": "^1.2.122",
+        "@wso2is/i18n": "^1.2.122",
+        "@wso2is/react-components": "^1.2.122",
+        "@wso2is/theme": "^1.2.122",
+        "@wso2is/validation": "^1.2.122",
         "axios": "^0.19.2",
         "country-language": "^0.1.7",
         "file-saver": "^2.0.5",
