@@ -178,6 +178,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isGroupAndRoleSeparationEnabled?: boolean;
     /**
+     * Enable roles and groups separation improvements.
+     */
+    isGroupAndRoleSeparationImprovementsEnabled?: boolean;
+    /**
      * Is Request path section enabled in applications.
      */
     isRequestPathAuthenticationEnabled?: boolean;

@@ -167,6 +167,7 @@ export class Config {
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window["AppUtils"].getConfig().ui.isDialectAddingEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
+            isGroupAndRoleSeparationImprovementsEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationImprovementsEnabled,
             isLeftNavigationCategorized: window["AppUtils"].getConfig().ui.isLeftNavigationCategorized,
             isRequestPathAuthenticationEnabled: window["AppUtils"].getConfig().ui.isRequestPathAuthenticationEnabled,
             isSignatureValidationCertificateAliasEnabled: window["AppUtils"].getConfig().ui

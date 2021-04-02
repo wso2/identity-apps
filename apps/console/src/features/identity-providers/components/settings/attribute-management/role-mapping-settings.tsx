@@ -17,13 +17,15 @@
  */
 
 import { getRolesList } from "@wso2is/core/api";
+import { getGroupList } from "../../../../groups/api";
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getGroupList } from "../../../../groups/api";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../../core/store";
 import { handleGetRoleListError } from "../../utils";
 
 /**
@@ -59,6 +61,20 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
+    const isGroupAndRoleSeparationImprovementsEnabledFlag = useSelector((state: AppState) =>
+        state?.config?.ui?.isGroupAndRoleSeparationImprovementsEnabled);
+
+    const getGroupAndRoleSeparationImprovementsEnabled = (
+        groupRoleSeparationEnabledFlag: boolean, groupRoleSeparationImprovementsEnabledFlag: boolean): boolean => {
+        return groupRoleSeparationEnabledFlag ? groupRoleSeparationImprovementsEnabledFlag : false;
+    }
+
+    const isGroupAndRoleSeparationImprovementsEnabled = getGroupAndRoleSeparationImprovementsEnabled(
+        isGroupAndRoleSeparationEnabled, isGroupAndRoleSeparationImprovementsEnabledFlag);
+
     const {
         onSubmit,
         triggerSubmit,
@@ -85,17 +101,39 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         });
     };
 
+    /**
+     * Get corresponding role name.
+     *
+     * @param localRole
+     */
+    const getLocalRoleName = (localRole: string): string => {
+        return isGroupAndRoleSeparationImprovementsEnabled && !localRole.startsWith("Internal/") ?
+            "Internal/" + localRole : localRole;
+    };
+
     useEffect(() => {
-        getGroupList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch((error) => {
-                handleGetRoleListError(error);
-            });
+        isGroupAndRoleSeparationImprovementsEnabled ?
+            getRolesList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                })
+            :
+            getGroupList(null)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const allRole: RoleListInterface = response.data;
+                        setRoleList(allRole.Resources);
+                    }
+                })
+                .catch((error) => {
+                    handleGetRoleListError(error);
+                });
     }, [initialRoleMappings]);
 
     return (
@@ -132,7 +170,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                 const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
                                     return {
                                         idpRole: mapping.value,
-                                        localRole: mapping.key
+                                        localRole: getLocalRoleName(mapping.key)
                                     };
                                 });
                                 onSubmit(finalData);
