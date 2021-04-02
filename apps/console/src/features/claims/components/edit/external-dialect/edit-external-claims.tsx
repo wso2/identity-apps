@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
+import { attributeConfig } from "../../../../../extensions";
 import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../../../core";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
@@ -289,7 +290,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
-                <PrimaryButton
+                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton
+                && <PrimaryButton
                     onClick={ (): void => {
                         setShowAddExternalClaim(true);
                     } }
