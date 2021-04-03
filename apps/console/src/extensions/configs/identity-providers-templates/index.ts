@@ -15,7 +15,4 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export * from "./attribute";
-export * from "./application";
-export * from "./identity-provider";
+export const EnterpriseIdentityProviderTemplateExtension = {};

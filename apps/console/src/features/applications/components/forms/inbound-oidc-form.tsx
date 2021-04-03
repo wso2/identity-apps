@@ -34,6 +34,7 @@ import { FormValidation } from "@wso2is/validation";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
+import union from "lodash-es/union";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -316,6 +317,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         if (initialValues?.grantTypes) {
             setSelectedGrantTypes(initialValues?.grantTypes);
+        }
+
+        if (initialValues?.allowedOrigins) {
+            setAllowedOrigins(initialValues?.allowedOrigins.toString());
         }
 
     }, [ initialValues ]);
@@ -883,7 +888,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const handleAllowOrigin = (url: string): void => {
         const allowedURLs = initialValues?.allowedOrigins;
-        allowedURLs.push(url);
+        if (allowedURLs.indexOf(url) < 0) {
+            allowedURLs.push(url);
+        }
         setAllowedOrigins(allowedURLs?.toString());
     };
 
@@ -1052,7 +1059,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (isSPAApplication) &&
+                (!isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -1101,8 +1108,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <URLInput
                                     isAllowEnabled={ isSPAApplication }
                                     handleAddAllowedOrigin={ (url: string) => handleAllowOrigin(url) }
+                                    handleRemoveAllowedOrigin={ () => { return; } }
                                     tenantDomain={ tenantDomain }
-                                    allowedOrigins={ allowedOriginList }
+                                    allowedOrigins={ union(allowedOriginList, allowedOrigins.split(",")) }
                                     labelEnabled={ true }
                                     urlState={ callBackUrls }
                                     setURLState={ setCallBackUrls }
@@ -1123,24 +1131,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     validationErrorMsg={
                                         t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                            "callBackUrls.validations.invalid")
+                                    }
+                                    emptyErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                             "callBackUrls.validations.empty")
                                     }
                                     validation={ (value: string) => {
-                                        let label: ReactElement = null;
+                                        if (!(URLUtils.isURLValid(value, true) &&
+                                            (URLUtils.isHttpUrl(value) ||
+                                                URLUtils.isHttpsUrl(value)))) {
 
-                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                            label = (
-                                                <Label basic color="orange" className="mt-2">
-                                                    { t("console:common.validations.unrecognizedURL.description") }
-                                                </Label>
-                                            );
+                                            return false;
                                         }
 
                                         if (!URLUtils.isMobileDeepLink(value)) {
                                             return false;
                                         }
 
-                                        setCallbackURLsErrorLabel(label);
+                                        setCallbackURLsErrorLabel(null);
 
                                         return true;
                                     } }
@@ -1181,23 +1190,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC" +
                                             ".fields.allowedOrigins.placeholder")
                                     }
-                                    value={ initialValues?.allowedOrigins?.toString() }
+                                    value={ allowedOrigins }
                                     validationErrorMsg={
                                         t("console:develop.features.applications.forms.inboundOIDC" +
                                             ".fields.allowedOrigins.validations.empty")
                                     }
                                     validation={ (value: string) => {
 
-                                        let label: ReactElement = null;
-
                                         if (!(((URLUtils.isHttpsUrl(value) || URLUtils.isHttpUrl(value))) &&
                                             URLUtils.isAValidOriginUrl(value))) {
-                                            label = (
-                                                <Label basic color="orange" className="mt-2">
-                                                    { "Invalid origin URL" }
-                                                </Label>
-                                            );
-                                            setAllowedOriginsErrorLabel(label);
+
                                             return false;
                                         }
 
@@ -1205,7 +1207,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             return false;
                                         }
 
-                                        setAllowedOriginsErrorLabel(label);
+                                        setAllowedOriginsErrorLabel(null);
 
                                         return true;
                                     } }
@@ -1262,7 +1264,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ isSPAApplication
+                                    children={ !isSPAApplication
                                         ? [
                                             {
                                                 label: t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1374,7 +1376,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (isSPAApplication) && isTokenBindingTypeSelected && (
+                (!isSPAApplication) && isTokenBindingTypeSelected && (
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1452,7 +1454,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Field
                         ref={ userAccessTokenExpiryInSeconds }
                         name="userAccessTokenExpiryInSeconds"
-                        label={ isSPAApplication
+                        label={ !isSPAApplication
                             ? t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".accessToken.fields.expiry.label") :
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1682,7 +1684,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (isSPAApplication) &&
+                (!isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -1875,7 +1877,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                (isSPAApplication) &&
+                (!isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1964,7 +1966,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Row> }
             { /*Request Object Signature*/ }
             {
-                (isSPAApplication) &&
+                (!isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2053,7 +2055,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Certificates */ }
             {
-                (isSPAApplication) &&
+                (!isSPAApplication) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2439,7 +2441,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 data-testid={ `${ testId }-oidc-reactivate-confirmation-modal-header` }
             >
                 {
-                    isSPAApplication
+                    !isSPAApplication
                         ? (
                             t("console:develop.features.applications.confirmations" +
                                 ".reactivateSPA.header"))
@@ -2505,7 +2507,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowLowExpiryTimesConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
-                        if (isSPAApplication) {
+                        if (!isSPAApplication) {
                             onSubmit(updateConfiguration(values, url, origin));
                         } else {
                             onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -2596,7 +2598,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, url, origin);
 
                         if (!isExpiryTimesTooLowModalShown) {
-                            if (isSPAApplication) {
+                            if (!isSPAApplication) {
                                 onSubmit(updateConfiguration(values, url, origin));
                             } else {
                                 onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -2612,7 +2614,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, undefined, undefined);
 
         if (!isExpiryTimesTooLowModalShown) {
-            if (isSPAApplication) {
+            if (!isSPAApplication) {
                 onSubmit(updateConfiguration(values, undefined, undefined));
             } else {
                 onSubmit(updateConfiguration(values, undefined, undefined));
@@ -2719,7 +2721,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         {
                             (initialValues?.clientSecret && (initialValues?.state !== State.REVOKED) &&
-                                (isSPAApplication)) && (
+                                (!isSPAApplication)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Form.Field>
