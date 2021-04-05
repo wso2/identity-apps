@@ -240,13 +240,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
                     }
             ] }
+            tenantDropdownLinks={ [
+                {
+                    icon: "plus",
+                    name: t("console:common.header.tenantAddHeader"),
+                    onClick: () => { /* TODO: Open new organization modal logic */ }
+                }
+            ] }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
+            showTenantDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             tenantAssociations={ tenantAssociations }
             tenantSwitchHeader={ t("console:common.header.tenantSwitchHeader") }
             tenantIcon={ getMiscellaneousIcons().tenantIcon }
             onTenantSwitch={ handleTenantSwitch }
+            tenantDefaultButtonText={ t("console:common.header.tenantDefaultButton") }
+            tenantMakeDefaultButtonText={  t("console:common.header.tenantMakeDefaultButton") }
             data-testid={ testId }
             { ...rest }
         >
