@@ -676,13 +676,13 @@ export const myAccount: MyAccountNS = {
             "modals": {
                 "clearTypingPatternsModal": {
                     "heading": "තහවුරු කිරීම",
-                    "message": "මෙම ක්‍රියාව මගින් ටයිපින් ඩීඑන්ඒ හි සුරකින ලද ඔබේ ටයිප් රටා ඉවත් කරනු ඇත. ඉදිරියට යාමට ඔබ කැමතිද?"
+                    "message": "මෙම ක්‍රියාව මගින් TypingDNA හි සුරකින ලද ඔබේ ටයිප් රටා ඉවත් කරනු ඇත. ඉදිරියට යාමට ඔබ කැමතිද?"
                 }
             },
             "notifications": {
                 "clearTypingPatterns": {
                     "success": {
-                        "description": "ටයිපින් ඩීඑන්ඒ හි ඔබේ යතුරු ලියන රටා සාර්ථකව ඉවත් කර ඇත",
+                        "description": "TypingDNA හි ඔබේ යතුරු ලියන රටා සාර්ථකව ඉවත් කර ඇත",
                         "message": "ටයිප් කිරීමේ රටා සාර්ථකව නිෂ්කාශනය විය"
                     },
                     "error": {
