@@ -42,6 +42,8 @@
             .icon.bars {
                 color: @appHeaderHamburgerIconColor;
             }
+            display: flex;
+            justify-content: space-between;
         }
         &.has-announcement {
             display: block;
@@ -57,6 +59,14 @@
                     border-bottom: @appHeaderPortalSwitchExtensionActiveBorderBottom;
                 }
             }
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .dropdown-container {
+            display: flex;
+            justify-content: flex-end;
         }
         .app-switch-dropdown {
             .menu {
@@ -138,6 +148,110 @@
                         margin: @userDropdownLinkedAccountMargin;
                         border: none;
                         transition: none !important;
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
+                    }
+                }
+                .action-panel {
+                    border: none;
+                    margin: @userDropdownLinkMargin;
+                    padding: 1.2em 1em!important;
+                    border-radius: @defaultBorderRadius;
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                    &.no-hover {
+                        &:hover {
+                            background: transparent !important;
+                        }
+                    }
+                    .link-icon {
+                        color: @textColor;
+                    }
+                    .link-text {
+                        color: @textColor;
+                        text-decoration: none;
+                    }
+                    .action-button {
+                        background: #f8f8f8;
+                        border: 1px solid #c6c6c6;
+                        line-height: 28px;
+                        padding: 6px 20px;
+                        color: #666;
+
+                        &, &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+        .tenant-dropdown {
+            color: @userDropdownTriggerTextColor;
+
+            &:hover, &:active, &:focus {
+                color: @userDropdownTriggerTextColor;
+                background: transparent;
+            }
+            .divider {
+                margin: 0;
+            }
+            .tenant-dropdown-trigger {
+                .tenant-domain {
+                    min-width: 100px;
+                    display: inline-block;
+                    margin-right: 0.7em;
+                    text-align: right;
+                }
+            }
+            .menu {
+                min-width: @userDropdownMinWidth;
+                padding: @userDropdownPadding;
+
+                .header {
+                    border-bottom: 1px solid @defaultBorderColor;
+
+                    .content{
+                        padding-left: 15px;
+
+                        .description {
+                            margin-top: 0;
+
+                            .name {
+                                font-weight: bold;
+                                min-width: 100px;
+                            }
+                            .default-button {
+                                color: @nobel;
+                                min-width: 60px;
+                                padding: 0.4em 1em;
+                                color: @white;
+                            }
+                            .default-button.disabled {
+                                background-color: lighten(@grey, 5);
+                            }
+                        }
+                    }
+                }
+                .tenants-list {
+                    max-height: 200px;
+                    overflow: auto;
+
+                    .tenant-account {
+                        border-radius: @defaultBorderRadius !important;
+                        margin: @userDropdownTenantMargin;
+                        padding: @userDropdownTenantPadding !important;
+                        border: none;
+                        transition: none !important;
 
                         &:hover {
                             cursor: pointer;
@@ -197,13 +311,22 @@
                 padding: @relativeMini @relativeLarge;
             }
         }
-        .ui.dropdown.item.user-dropdown .menu .item.tenant-account {
+        .ui.dropdown.item.tenant-dropdown .menu .item.tenant-account {
             &, &:not(.filtered) {
                 display: flex;
                 padding: @relativeMini @relativeLarge;
             }
         }
         .ui.dropdown.item.user-dropdown .menu .item.header {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+            .ui.divider {
+                margin: 0.5rem 0rem;
+            }
+        }
+        .ui.dropdown.item.tenant-dropdown .menu .item.header {
             &, &:not(.filtered) {
                 display: flex;
                 padding: @relativeMini @relativeLarge;
@@ -464,6 +587,13 @@
                 .linked-accounts-list {
                     .ui.image.user-image.little {
                         width: @littleWidth !important;
+                    }
+                }
+            }
+            .tenant-dropdown {
+                .current-tenant {
+                    .ui.image.tenant-image.x60 {
+                        width: 60px !important;
                     }
                 }
             }

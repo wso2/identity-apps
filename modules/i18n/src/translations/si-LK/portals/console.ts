@@ -63,7 +63,10 @@ export const console: ConsoleNS = {
             resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
         },
         header: {
-            tenantSwitchHeader: "සංවිධානය මාරු කරන්න"
+            tenantSwitchHeader: "සංවිධානය මාරු කරන්න",
+            tenantAddHeader: "නව සංවිධානය",
+            tenantDefaultButton: "පෙරනිමිය",
+            tenantMakeDefaultButton: "පෙරනිමිය කරන්න"
         },
         modals: {
             editAvatarModal: {

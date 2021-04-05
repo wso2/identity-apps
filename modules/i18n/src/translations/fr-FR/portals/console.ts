@@ -63,7 +63,10 @@ export const console: ConsoleNS = {
             resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
         },
         header: {
-            tenantSwitchHeader: "Changer d'organisation"
+            tenantSwitchHeader: "Changer d'organisation",
+            tenantAddHeader: "Nouvelle organisation",
+            tenantDefaultButton: "Défaut",
+            tenantMakeDefaultButton: "Faire défaut"
         },
         modals: {
             editAvatarModal: {
