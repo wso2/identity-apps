@@ -95,6 +95,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
 
+    const showAppSwitchButton: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.showAppSwitchButton);   
+
     useEffect(() => {
         if (isEmpty(config)) {
             return;
@@ -217,18 +220,25 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ] }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
-            userDropdownLinks={ [
-                {
-                    icon: "arrow right",
-                    name: t("console:manage.features.header.links.userPortalNav"),
-                    onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
-                        "_blank", "noopener")
-                },
-                {
-                    icon: "power off",
-                    name: t("common:logout"),
-                    onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
-                }
+            userDropdownLinks={ 
+                showAppSwitchButton
+                ? [ 
+                    {
+                        icon: "power off",
+                        name: t("common:logout"),
+                        onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
+                    }
+                ] : [
+                    {
+                        icon: "arrow right",
+                        name: t("console:manage.features.header.links.userPortalNav"),
+                        onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
+                            "_blank", "noopener")
+                    },{
+                        icon: "power off",
+                        name: t("common:logout"),
+                        onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
+                    }
             ] }
             profileInfo={ profileInfo }
             showUserDropdown={ true }

@@ -72,7 +72,7 @@ export const AppSwitch: React.FunctionComponent<AppSwitchProps> = (props: AppSwi
             {
                 showAppSwitchButton 
                 && (AppConstants.getTenant() === AppConstants.getSuperTenant()) 
-                && (
+                && consoleAppURL && consoleAppURL != "" && (
                     <Dropdown
                         item
                         floating
