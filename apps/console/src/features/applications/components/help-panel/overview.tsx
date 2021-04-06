@@ -39,6 +39,7 @@ interface HelpPanelOverviewPropsInterface extends TestableComponentInterface {
     inboundProtocols?: InboundProtocolListItemInterface[];
     handleTabChange?: (tabId: number) => void;
     applicationType?: string;
+    handleMetadataLoading?: (isMetadataLoading: boolean) => void;
 }
 
 /**
@@ -58,7 +59,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
 
-    const { inboundProtocols } = props;
+    const { inboundProtocols, handleMetadataLoading } = props;
 
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
@@ -84,12 +85,16 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
 
     useEffect(() => {
         if (oidcConfigurations !== undefined) {
+            handleMetadataLoading(false);
             return;
         }
+        handleMetadataLoading(true);
+        setOIDCConfigsLoading(true);
 
         ApplicationManagementUtils.getOIDCApplicationMeta()
             .finally(() => {
                 setOIDCConfigsLoading(false);
+                handleMetadataLoading(false);
             });
     }, [ oidcConfigurations ]);
 
@@ -110,8 +115,10 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
 
     return (
         <>
-            <Grid>
-                {/*  {
+            {
+                !isOIDCConfigsLoading ? (
+                    <Grid>
+                        {/*  {
                     applicationType && applicationType == ApplicationManagementConstants.SPA
                         ? (
                             <Grid.Row textAlign="center">
@@ -155,42 +162,44 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                         )
                         : null
                 }*/}
-                <Grid.Row>
-                    <Grid.Column>
-                        <Heading ellipsis as="h5">
-                            <strong>
-                                { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                "title") }
-                            </strong>
-                        </Heading>
-                        <Hint>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                "subTitle") }
-                        </Hint>
-                        <Divider hidden/>
-                        {
-                            isOIDC && (
-                                <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                            )
-                        }
-                        {
-                            isOIDC && isSAML
-                                ? (
-                                    <>
-                                        <Divider hidden />
-                                        <Divider/>
-                                        <Divider hidden />
-                                    </>
-                                ) : null
-                        }
-                        {
-                            isSAML && (
-                                <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                            )
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Heading ellipsis as="h5">
+                                    <strong>
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
+                                            "title") }
+                                    </strong>
+                                </Heading>
+                                <Hint>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
+                                        "subTitle") }
+                                </Hint>
+                                <Divider hidden/>
+                                {
+                                    isOIDC && (
+                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                    )
+                                }
+                                {
+                                    isOIDC && isSAML
+                                        ? (
+                                            <>
+                                                <Divider hidden />
+                                                <Divider/>
+                                                <Divider hidden />
+                                            </>
+                                        ) : null
+                                }
+                                {
+                                    isSAML && (
+                                        <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                    )
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) : null
+            }
         </>
     );
 };
