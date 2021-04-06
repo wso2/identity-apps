@@ -121,7 +121,7 @@ export const getMFAIcons = () => {
     return {
         authenticatorApp: AuthenticatorAppIcon,
         fingerprint: FingerprintIcon,
-        sms: SMSIcon
+        sms: SMSIcon,
         keyboard: KeyboardIcon
     };
 };
