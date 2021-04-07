@@ -22,9 +22,10 @@ import {
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { Hint } from "@wso2is/react-components";
+import { GenericIcon, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
+import { Grid } from "semantic-ui-react";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
@@ -239,6 +240,82 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
     );
 };
 
+export const getTableField = (eachProp: CommonPluggableComponentPropertyInterface,
+                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                              testId?: string): ReactElement => {
+    return (
+        <>
+            <div className="field read-only">
+                <div>
+                    <div className="field">
+                        <label>Scopes</label>
+                    </div>
+                </div>
+            </div>
+            <Field
+                hidden={ true }
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                    "requiredErrorMessage") }
+                placeholder={ propertyMetadata?.defaultValue }
+                type="text"
+                value={ eachProp?.value }
+                key={ eachProp?.key }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                validation={ (value: string, validation: Validation) => {
+                    if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push(I18n.instance.t("console:manage.features.users.forms." +
+                            "validation.formatError", {
+                            field: propertyMetadata?.displayName
+                        }));
+                    }
+                    if (propertyMetadata?.maxLength && value.length > propertyMetadata.maxLength) {
+                        validation.isValid = false;
+                        validation.errorMessages.push( propertyMetadata.displayName + " cannot have more than " +
+                            propertyMetadata.maxLength + " characters.");
+                    }
+                } }
+            />
+            { eachProp?.value.split(" ").map(scope => {
+                return (
+                    <Grid key={ scope } verticalAlign="middle">
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                <GenericIcon
+                                    icon={ propertyMetadata.properties[scope].icon }
+                                    size="micro"
+                                    square
+                                    transparent
+                                    inline
+                                    className="left-icon"
+                                    verticalAlign="middle"
+                                    spaced="right"
+                                />
+                                <label data-testid={ `${ testId }-authorize-label` }>
+                                    { scope }
+                                </label>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 14 }>
+                                <label data-testid={ `${ testId }-authorize-label` }>
+                                    { propertyMetadata.properties[scope].description }
+                                </label>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                );
+            }) }
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
 export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                  testId?: string): ReactElement => {
@@ -281,6 +358,7 @@ const getDropDownChildren = (key: string, options: string[]) => {
 export enum FieldType {
     CHECKBOX = "CheckBox",
     TEXT = "Text",
+    TABLE = "Table",
     CONFIDENTIAL = "Confidential",
     URL = "URL",
     QUERY_PARAMS = "QueryParameters",
@@ -293,7 +371,8 @@ export enum FieldType {
 export enum CommonConstants {
     BOOLEAN = "BOOLEAN",
     FIELD_COMPONENT_KEYWORD_URL = "URL",
-    FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM"
+    FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
+    SCOPE_KEY = "scopes"
 }
 
 /**
@@ -307,6 +386,8 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
         return FieldType.CHECKBOX;
     } else if (propertyMetadata?.isConfidential) {
         return FieldType.CONFIDENTIAL;
+    } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
+        return FieldType.TABLE;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
         // todo Need proper backend support to identity URL fields.
         return FieldType.URL;
@@ -353,6 +434,9 @@ export const getPropertyField = (property: CommonPluggableComponentPropertyInter
         }
         case FieldType.DROP_DOWN : {
             return getDropDownField(property, propertyMetadata, testId);
+        }
+        case FieldType.TABLE:{
+            return getTableField(property, propertyMetadata, testId);
         }
         default: {
             return getTextField(property, propertyMetadata, testId);
