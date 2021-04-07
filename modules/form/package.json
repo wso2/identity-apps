@@ -1,5 +1,5 @@
 {
-    "name": "@wso2is/form-fields",
+    "name": "@wso2is/form",
     "version": "1.0.0",
     "description": "Form library for WSO2 Identity Server front end applications.",
     "keywords": [
@@ -25,20 +25,26 @@
         "jest:default": "./node_modules/.bin/jest"
     },
     "dependencies": {
-        "@types/jest": "^26.0.14",
+        "lodash-es": "^4.17.21",
         "@wso2is/core": "^1.2.107",
         "@wso2is/react-components": "^1.2.107",
         "@wso2is/validation": "^1.2.107",
-        "jest": "^26.4.2",
+        "final-form": "^4.20.2",
         "joi": "^17.4.0",
-        "ts-jest": "^26.4.0"
+        "react-final-form": "^6.5.3",
+        "semantic-ui-react": "^2.0.3"
     },
     "devDependencies": {
+        "@types/lodash-es": "^4.17.4",
+        "@types/jest": "^26.0.14",
+        "jest": "^26.6.3",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7"
+        "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
-        "classnames": "*"
+        "@types/react": "*",
+        "react": "*"
     },
     "author": "WSO2",
     "license": "Apache-2.0"

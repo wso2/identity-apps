@@ -18,5 +18,5 @@
 
 export * from "./helpers";
 export * from "./models";
-export { FormField } from "./components";
+export * from "./components";
 export * from "./utils";

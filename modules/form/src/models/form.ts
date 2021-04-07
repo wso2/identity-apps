@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { MessageInfoProps } from "@wso2is/react-components";
 import * as React from "react";
 import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
@@ -297,3 +298,10 @@ export type FormField =
  * FormField value types
  */
 export type FormValue = string | string[];
+
+/**
+ * Form field message model
+ */
+export interface FormFieldMessage extends MessageInfoProps {
+    type: "info" | "warning" | "error" | "success";
+}

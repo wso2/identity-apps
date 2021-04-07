@@ -17,49 +17,56 @@
  */
 
 import { FormValidation } from "@wso2is/validation";
+import { FieldConstants } from "../constants";
 
-export const getDefaultValidation = (field: string, fieldType: string, value: string): string => {
-
-    const INVALID_EMAIL_ERROR = "Please enter a valid email";
-    const INVALID_URL_ERROR = "Please enter a valid URL";
-    const INVALID_NAME_ERROR = "Please enter a valid name";
-    const INVALID_PHONE_NUMBER_ERROR = "Please enter a valid phone number";
+/**
+ * Util method to apply default validations to the fields.
+ *
+ * @param field string - HTML input type of the field.
+ * @param fieldType string - Usage type of the field
+ * @param value - value of the field.
+ */
+export const getDefaultValidation = (field: string, fieldType: string, value: any): string => {
 
     if (field === "text") {
         switch (fieldType) {
             case "resourceName":
                 if (!FormValidation.resourceName(value)) {
-                    return INVALID_NAME_ERROR;
+                    return FieldConstants.INVALID_NAME_ERROR;
                 }
                 break;
             case "email":
                 if (!FormValidation.email(value)) {
-                    return INVALID_EMAIL_ERROR;
+                    return FieldConstants.INVALID_EMAIL_ERROR;
                 }
                 break;
             case "phoneNumber":
                 if (!FormValidation.mobileNumber(value)) {
-                    return INVALID_PHONE_NUMBER_ERROR;
+                    return FieldConstants.INVALID_PHONE_NUMBER_ERROR;
                 }
                 break;
             case "url":
                 if (!FormValidation.url(value)) {
-                    return INVALID_URL_ERROR;
+                    return FieldConstants.INVALID_URL_ERROR;
                 }
                 break;
         }
     }
 };
 
-export const getValidation = (value: any, field: string, fieldType: string, validation: any): string => {
+export const getValidation = (meta, value: any, field: string, fieldType: string, validation: any, required: boolean) => {
 
-        if (validation?.type) {
-            const errorMessage = validation.validator();
+    debugger;
 
-            if (!errorMessage && errorMessage !== "") {
-                return errorMessage;
-            }
-        }
+    if (required && !value) {
+        return FieldConstants.FIELD_REQUIRED_ERROR;
+    }
 
-        return getDefaultValidation(field, fieldType, value);
+    if (validation instanceof Promise) {
+        validation.then(message => {
+            return message;
+        });
+    }
+
+    return getDefaultValidation(field, fieldType, value);
 };
