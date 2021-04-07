@@ -585,9 +585,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     handleMetadataLoading={ (isMetadataLoading) => setHelpPanelLoading(isMetadataLoading) }
                 />
                 {
-                    !isHelpPanelLoading ? (
-                        applicationConfig.editApplication.renderHelpPanelItems()
-                        ): <ContentLoader/>
+                    !isHelpPanelLoading
+                        ? (
+                            applicationConfig.editApplication.renderHelpPanelItems()
+                        )
+                        : <ContentLoader/>
                  }
             </>
         );
