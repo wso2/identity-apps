@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "rootDir": "src",
+        "outDir": "dist/src",
+        "declaration": true,
+        "declarationDir": "dist/typings",
+        "types": [ "node", "jest", "@testing-library/jest-dom" ]
+    },
+    "extends": "../../configs/common.tsconfig.json",
+    "exclude": ["src/tests","test-configs"]
+}

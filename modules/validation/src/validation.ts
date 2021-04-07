@@ -30,7 +30,7 @@ type ValidationFunction = (value: string) => boolean;
 export const email: ValidationFunction = (value: string): boolean => {
     if (
         Joi.string()
-            .email({ tlds: false })
+            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
             .validate(value).error
     ) {
         return false;
@@ -89,4 +89,20 @@ export const imageUrl = async (value: string): Promise<boolean> => {
             return Promise.resolve(false);
         }
     }
+};
+
+/**
+ * This validates resource names. Returns true if valid. False if not valid.
+ * @param value
+ */
+export const resourceName: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .alphanum()
+            .min(3)
+            .validate(value).error
+    ) {
+        return false;
+    }
+    return true;
 };

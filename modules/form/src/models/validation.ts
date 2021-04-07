@@ -16,5 +16,18 @@
  * under the License.
  */
 
-export * from "./message-info";
-export * from "./message-with-icon";
+/**
+ * Custom validation type.
+ */
+export interface CustomValidation {
+    type: "custom";
+    validator: () => string | Promise<string>;
+}
+
+/**
+ * Backend validation type.
+ */
+export interface BackendValidation {
+    type: "backend";
+    validator: () => string | Promise<string>;
+}
