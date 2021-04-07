@@ -108,14 +108,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         const settingValues = {
             role: {
                 claim: getDefaultDropDownValue(dropDownOptions, values.get("roleAttribute")),
-                includeUserDomain: values.get("role").includes("includeUserDomain"),
+                includeUserDomain: values.get("role")?.includes("includeUserDomain"),
                 mappings: []
             },
             subject: {
                 claim: getDefaultDropDownValue(dropDownOptions, values.get("subjectAttribute")),
-                includeTenantDomain: values.get("subjectIncludeTenantDomain").includes("includeTenantDomain"),
-                includeUserDomain: values.get("subjectIncludeUserDomain").includes("includeUserDomain"),
-                useMappedLocalSubject: values.get("subjectUseMappedLocalSubject").includes("useMappedLocalSubject")
+                includeTenantDomain: values.get("subjectIncludeTenantDomain")?.includes("includeTenantDomain"),
+                includeUserDomain: values.get("subjectIncludeUserDomain")?.includes("includeUserDomain"),
+                useMappedLocalSubject: values.get("subjectUseMappedLocalSubject")?.includes("useMappedLocalSubject")
             }
         };
         const config = applicationConfig.attributeSettings.advancedAttributeSettings;
