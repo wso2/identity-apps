@@ -268,7 +268,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 }
                 isLoading={ isLoading }
                 title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                description={ attributeConfig.attributes.description }
+                description={ t(attributeConfig.attributes.description) }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
                     text: t("console:manage.features.claims.local.pageLayout.local.back")

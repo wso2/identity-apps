@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -164,7 +164,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
     const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
 
         const connector: OutboundProvisioningConnectorInterface =
-            identityProvider?.provisioning?.outboundConnectors?.connectors[0];
+            identityProvider?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
         const isGoogleConnector: boolean = get(connector,
             IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
@@ -174,7 +174,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
         if (connector && isGoogleConnector) {
             delete connector[
                 IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
-                ];
+            ];
         }
 
         createNewIdentityProvider(identityProvider);
@@ -210,7 +210,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                 onSubmit={ (values): void => {
                     const identityProvider: IdentityProviderInterface = template.idp;
                     identityProvider.name = values.get("name").toString();
-                    identityProvider.federatedAuthenticators.authenticators[0].properties = [
+                    identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                         {
                             "key": "ClientId",
                             "value": values.get("ClientId").toString()
@@ -230,7 +230,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                     ];
 
                     // Allow to set empty client ID and client secret but make the authenticator disabled.
-                    identityProvider.federatedAuthenticators.authenticators[0].isEnabled =
+                    identityProvider.federatedAuthenticators.authenticators[ 0 ].isEnabled =
                         !(isEmpty(values.get("ClientId").toString())
                             || isEmpty(values.get("ClientSecret").toString()));
 
@@ -247,6 +247,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                     }
                     handleWizardFormFinish(identityProvider);
                 } }
+                autoComplete="off"
                 submitState={ submitGeneralSettings }
                 data-testid={ testId }
             >
@@ -305,11 +306,11 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                                     if (value.length > CLIENT_ID_MAX_LENGTH) {
                                         validation.isValid = false;
                                         validation.errorMessages.push("Client ID cannot exceed " +
-                                        CLIENT_ID_MAX_LENGTH + " characters.");
+                                            CLIENT_ID_MAX_LENGTH + " characters.");
                                     }
                                 } }
-                                autoComplete="off"
-                                displayErrorOn="blur"
+                                autoComplete={ "" + Math.random() }
+                                displayErrorOn="submit"
                                 onKeyDown={ keyPressed }
                                 data-testid={ `${ testId }-idp-client-id` }
                             />
@@ -333,8 +334,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                                 } }
                                 hidePassword={ t("common:hide") }
                                 showPassword={ t("common:show") }
-                                autoComplete="off"
-                                displayErrorOn="blur"
+                                autoComplete={ "" + Math.random() }
+                                displayErrorOn="submit"
                                 onKeyDown={ keyPressed }
                                 data-testid={ `${ testId }-idp-client-secret` }
                             />
@@ -377,7 +378,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                 <Grid.Row column={ 1 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                         <LinkButton floated="left" onClick={ handleWizardClose }
-                                    data-testid={ `${ testId }-modal-cancel-button` }>
+                            data-testid={ `${ testId }-modal-cancel-button` }>
                             { t("common:cancel") }
                         </LinkButton>
                     </Grid.Column>
@@ -386,17 +387,17 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                             <PrimaryButton floated="right" onClick={ () => {
                                 setCurrentWizardStep(1);
                             } }
-                                           data-testid={ `${ testId }-modal-finish-button` }>
+                                data-testid={ `${ testId }-modal-finish-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                             </PrimaryButton>
                         ) : (
-                            <>
-                                <PrimaryButton floated="right" onClick={ setSubmitGeneralSettings }
-                                               data-testid={ `${ testId }-modal-finish-button` }>
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
-                                </PrimaryButton>
-                            </>
-                        ) }
+                                <>
+                                    <PrimaryButton floated="right" onClick={ setSubmitGeneralSettings }
+                                        data-testid={ `${ testId }-modal-finish-button` }>
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    </PrimaryButton>
+                                </>
+                            ) }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -447,7 +448,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
         >
             <ModalWithSidePanel.MainPanel>
                 <ModalWithSidePanel.Header className="page-header-inner with-image"
-                                           data-testid={ `${ testId }-modal-header` }>
+                    data-testid={ `${ testId }-modal-header` }>
                     <div className="display-flex">
                         <GenericIcon
                             icon={ getAuthenticatorIcons().google }

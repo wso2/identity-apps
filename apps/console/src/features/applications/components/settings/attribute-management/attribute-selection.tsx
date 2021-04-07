@@ -845,29 +845,27 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             .showShareAttributesHint(selectedDialect)
                             ? (
                                 <Hint>
-                                    <Hint>
-                                        <Trans
-                                            i18nKey={ "console:develop.features.applications.edit.sections." +
-                                                "attributes.selection.attributeComponentHint" }
-                                        >
-                                            Manage the user attributes you want to share with this application via
-                                        <a href="javascript:void()" onClick={ () => {
+                                    <Trans
+                                        i18nKey={ "console:develop.features.applications.edit.sections." +
+                                            "attributes.selection.attributeComponentHint" }
+                                    >
+                                        Manage the user attributes you want to share with this application via
+                                    <a href="javascript:void()" onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("OIDC_SCOPES")
+                                            );
+                                        } }>OpenID Connect Scopes.</a>
+                                    You can map additional attributes under
+                                    <a
+                                            href="javascript:void()"
+                                            onClick={ () => {
                                                 history.push(
-                                                    AppConstants.getPaths().get("OIDC_SCOPES")
+                                                    AppConstants.getPaths()
+                                                        .get("ATTRIBUTE_MAPPINGS")
+                                                        .replace(":type", ClaimManagementConstants.OIDC)
                                                 );
-                                            } }>OpenID Connect Scopes.</a>
-                                        You can map additional attributes under
-                                        <a
-                                                href="javascript:void()"
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.OIDC)
-                                                    );
-                                                } }>attribute mappings.</a>
-                                        </Trans>
-                                    </Hint>
+                                            } }>attribute mappings.</a>
+                                    </Trans>
                                 </Hint>
                             )
                             : (

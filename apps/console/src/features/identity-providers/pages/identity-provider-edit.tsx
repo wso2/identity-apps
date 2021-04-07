@@ -308,8 +308,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             return null;
         }
 
-        if (identityProvider?.federatedAuthenticators?.authenticators[ 0 ]
-            && identityProvider?.federatedAuthenticators?.authenticators[ 0 ].isEnabled) {
+        if (identityProvider?.isEnabled) {
             return (
                 <LabelWithPopup
                     popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus.enabled.header") }

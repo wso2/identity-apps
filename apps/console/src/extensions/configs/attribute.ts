@@ -35,7 +35,7 @@ export const attributeConfig: AttributeConfig = {
     attributes: {
         addAttribute: true,
         deleteAction: true,
-        description: I18n.instance.t("console:manage.features.claims.local.pageLayout.local.description"),
+        description: "console:manage.features.claims.local.pageLayout.local.description",
         excludeIdentityClaims: false,
         showEditTabs: true,
         showUserstoreMappingWarningIcon: true
