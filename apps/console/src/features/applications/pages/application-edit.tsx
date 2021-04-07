@@ -23,6 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
+    ContentLoader,
     HelpPanelLayout,
     HelpPanelTabInterface,
     LabelWithPopup,
@@ -105,6 +106,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
+    const [ isHelpPanelLoading, setHelpPanelLoading ] = useState<boolean>(true);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
     const [ helpPanelSDKContent, setHelpPanelSDKContent ] = useState<string>(undefined);
@@ -575,14 +577,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const resolveHelpPanelContent = (): ReactNode => {
         return (
-            <div>
+            <>
                 <HelpPanelOverview
                     applicationType={ applicationTemplate?.name }
                     inboundProtocols={ application?.inboundProtocols }
                     handleTabChange={ handleTabChange }
+                    handleMetadataLoading={ (isMetadataLoading) => setHelpPanelLoading(isMetadataLoading) }
                 />
-                { applicationConfig.editApplication.renderHelpPanelItems() }
-            </div>
+                {
+                    !isHelpPanelLoading
+                        ? (
+                            applicationConfig.editApplication.renderHelpPanelItems()
+                        )
+                        : <ContentLoader/>
+                 }
+            </>
         );
     };
 
