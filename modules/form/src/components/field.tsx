@@ -94,7 +94,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                         name={ props.name }
                         component={ PasswordFieldAdapter }
                         validate={ (value,allValues, meta) =>
-                            getValidation(meta, value, props.type, fieldType, validation, props.required)
+                            getValidation(value, props.type, fieldType, validation, props.required)
                         }
                     />
                 );
@@ -107,7 +107,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                         name={ props.name }
                         component={ CopyFieldAdapter }
                         validate={ (value,allValues, meta) =>
-                            getValidation(meta, value, props.type, fieldType, validation, props.required)
+                            getValidation(value, props.type, fieldType, validation, props.required)
                         }
                     />
                 );
@@ -132,7 +132,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ TextAreaAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(meta, value, props.type, fieldType, validation, props.required)
+                        getValidation(value, props.type, fieldType, validation, props.required)
                     }
                 />
             );
@@ -145,7 +145,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ ToggleAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(meta, value, props.type, fieldType, validation, props.required)
+                        getValidation(value, props.type, fieldType, validation, props.required)
                     }
                 />
             );
