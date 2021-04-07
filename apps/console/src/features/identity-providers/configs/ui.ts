@@ -43,24 +43,15 @@ import {
 import {
     ReactComponent as ExpertModeIdPIcon
 } from "../../../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
-import {
-    ReactComponent as FacebookIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
-import {
-    ReactComponent as GithubIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-import {
-    ReactComponent as GoogleIdPIcon
-} from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-import {
-    ReactComponent as IWAKerberosIdPIllustration
-} from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
-import {
-    ReactComponent as MicrosoftIdPIllustration
-} from "../../../themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
-import {
-    ReactComponent as Office365IdPIllustration
-} from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
+import FacebookIdPIcon from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import GoogleIdPIcon from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import IWAKerberosIdPIllustration
+    from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
+import MicrosoftIdPIllustration
+    from "../../../themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
+import Office365IdPIllustration
+    from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
 import {
     ReactComponent as TwitterIdPIllustration
 } from "../../../themes/default/assets/images/identity-providers/twitter-idp-illustration.svg";
