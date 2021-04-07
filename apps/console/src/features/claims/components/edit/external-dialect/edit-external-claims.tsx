@@ -290,7 +290,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
-                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton
+                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
                 && <PrimaryButton
                     onClick={ (): void => {
                         setShowAddExternalClaim(true);
