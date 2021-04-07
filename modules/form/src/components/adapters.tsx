@@ -122,7 +122,7 @@ export const ToggleAdapter = ({ childFieldProps, input, meta }): ReactElement =>
     />
 );
 
-export const ButtonAdaptor  = ({ childFieldProps }): ReactElement => {
+export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     if (childFieldProps.fieldType === "primary-btn") {
         return (
             <PrimaryButton

@@ -22,7 +22,7 @@ import React, { ReactElement } from "react";
 import { FieldProps, Field as FinalFormField } from "react-final-form";
 import { Grid } from "semantic-ui-react";
 import {
-    ButtonAdaptor,
+    ButtonAdapter,
     CopyFieldAdapter,
     PasswordFieldAdapter,
     TextAreaAdapter,
@@ -154,7 +154,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                 <FinalFormField
                     key={ testId }
                     name={ props.name }
-                    component={ ButtonAdaptor }
+                    component={ ButtonAdapter }
                     { ...props }
                 />
             );
