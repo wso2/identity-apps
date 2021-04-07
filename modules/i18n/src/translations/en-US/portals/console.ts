@@ -6597,9 +6597,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Please enter a valid email. It can only contain between 3 and 50 characters " +
-                                        "including alphanumeric characters, underscores (_), dashes (-), plus signs (+), " +
-                                        "periods (.) and an at sign (@), with no whitespaces."
+                                    regExViolation: "Please enter a valid username."
                                 }
                             }
                         },
@@ -7082,6 +7080,37 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                consumerUsers: {
+                    fields: {
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "A user already exists with this username.",
+                                invalidCharacters: "Username seems to contain invalid characters.",
+                                regExViolation: "Enter a valid email between 3 and 50 characters. You can use " +
+                                    "alphanumeric characters, underscores (_), dashes (-), plus signs (+), " +
+                                    "periods (.), and an at sign (@)."
+                            }
+                        }
+                    }
+                },
+                guestUsers: {
+                    fields: {
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "A user already exists with this username.",
+                                invalidCharacters: "Username seems to contain invalid characters.",
+                                regExViolation: "Enter a valid email. You can use " +
+                                    "alphanumeric characters, dashes (-), periods (.), and an at sign (@)."
+                            }
+                        }
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {
