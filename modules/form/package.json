@@ -35,12 +35,14 @@
         "semantic-ui-react": "^2.0.3"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.14",
+        "@testing-library/jest-dom": "^5.11.10",
+        "@testing-library/react": "^11.2.6",
+        "@types/jest": "^26.0.22",
         "@types/lodash-es": "^4.17.4",
         "jest": "^26.6.3",
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7",
-        "ts-jest": "^26.4.0"
+        "ts-jest": "^26.5.4"
     },
     "peerDependencies": {
         "@types/react": "*",
