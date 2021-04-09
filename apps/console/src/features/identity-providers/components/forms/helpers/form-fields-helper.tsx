@@ -25,7 +25,7 @@ import { I18n } from "@wso2is/i18n";
 import { GenericIcon, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
@@ -248,7 +248,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
             <div className="field read-only">
                 <div>
                     <div className="field">
-                        <label>Scopes</label>
+                        <label>{ propertyMetadata?.displayName }</label>
                     </div>
                 </div>
             </div>
@@ -281,34 +281,35 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                     }
                 } }
             />
-            { eachProp?.value.split(" ").map(scope => {
-                return (
-                    <Grid key={ scope } verticalAlign="middle">
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                <GenericIcon
-                                    icon={ propertyMetadata.properties[scope].icon }
-                                    size="micro"
-                                    square
-                                    transparent
-                                    inline
-                                    className="left-icon"
-                                    verticalAlign="middle"
-                                    spaced="right"
-                                />
-                                <label data-testid={ `${ testId }-authorize-label` }>
-                                    { scope }
-                                </label>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 14 }>
-                                <label data-testid={ `${ testId }-authorize-label` }>
-                                    { propertyMetadata.properties[scope].description }
-                                </label>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                );
-            }) }
+            <Grid>
+                { eachProp?.value.split(" ").map((scope,index) => (
+                    <Grid.Row columns={ 3 } key={ index }>
+                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                            <GenericIcon
+                                icon={ propertyMetadata.properties[scope].icon }
+                                size="micro"
+                                square
+                                transparent
+                                inline
+                                className="left-icon"
+                                verticalAlign="middle"
+                                spaced="left"
+                            />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
+                            <Label data-testid={ `${ testId }-authorize-label` } className="scope-name">
+                                { scope }
+                            </Label>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 13 } tablet={ 13 } computer={ 13 }>
+                            <Label data-testid={ `${ testId }-authorize-label` } className="scope-name">
+                                { propertyMetadata.properties[scope].description }
+                            </Label>
+                        </Grid.Column>
+                    </Grid.Row>
+                    )
+                ) }
+            </Grid>
             { propertyMetadata?.description && (
                 <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
             ) }
