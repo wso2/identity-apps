@@ -18,8 +18,9 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails,
-    getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserDisplayName,
+    resolveUserEmails } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -77,6 +78,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Set the if the email verification is pending.
@@ -607,7 +609,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                            <List.Content>{fieldName}</List.Content>
+                            <List.Content>{ fieldName }</List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
@@ -697,8 +699,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         >
                             <List.Content floated="right">
                                 { !isReadOnlyUser
-                                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA
-                                    && !isEmpty(profileInfo.get(schema.name))
+                                && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+                                && !isEmpty(profileInfo.get(schema.name))
+                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                    featureConfig?.personalInfo?.scopes?.update, allowedScopes)
                                     ? (
                                         < Popup
                                             trigger={
@@ -799,16 +803,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <>
             <UserAvatar
                 data-testid={ `${testId}-user-avatar` }
-                editable
+                editable={ !isProfileUrlReadOnly() }
                 showGravatarLabel
                 size="tiny"
                 tabIndex={ 0 }
                 onKeyPress={ (e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" && !isProfileUrlReadOnly()) {
                         handleAvatarOnClick();
                     }
                 } }
-                onClick={ handleAvatarOnClick }
+                onClick={ !isProfileUrlReadOnly() ? handleAvatarOnClick : undefined }
                 profileInfo={ profileDetails?.profileInfo as any }
                 gravatarInfoPopoverText={ (
                     <Trans i18nKey="myAccount:components.userAvatar.infoPopover">
@@ -890,6 +894,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     );
 
     /**
+     * Check whether the profile url is readonly.
+     */
+    const isProfileUrlReadOnly = (): boolean => {
+        return !(!isReadOnlyUser && hasRequiredScopes(featureConfig?.personalInfo,
+            featureConfig?.personalInfo?.scopes?.update, allowedScopes)
+            && profileSchema?.some((schema: ProfileSchema) => {
+                return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
+            }));
+    };
+
+    /**
      * Handles the onclick action of the avatar.
      */
     const handleAvatarOnClick = () => {
@@ -948,7 +964,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     }
                                     {
                                         !isEmpty(profileInfo.get(schema.name)) ||
-                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA))
+                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                            && hasRequiredScopes(featureConfig?.personalInfo,
+                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
                                             ? (
                                                 <List.Item key={ index } className="inner-list-item"
                                                            data-testid={ `${testId}-schema-list-item` }>
