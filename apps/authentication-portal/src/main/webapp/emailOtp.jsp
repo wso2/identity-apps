@@ -66,6 +66,8 @@
 
 <body class="login-portal layout email-otp-portal-layout">
 
+<%@ include file="utility/timeout.jsp" %>
+
 <main class="center-segment">
     <div class="ui container medium center aligned middle aligned">
         <!-- product-title -->
