@@ -490,7 +490,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             "removeApplicationUserAttribute.content" }
                     >
                         If you remove this, the subject attribute will be set to
-                        the <strong>{ { default: defaultSubjectClaim.displayName } }</strong>
+                        the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
                     </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
