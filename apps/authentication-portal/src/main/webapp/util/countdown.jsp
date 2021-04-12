@@ -139,7 +139,7 @@
         const minutes = Math.floor((total / THOUSAND_MILLISECONDS / ONE_MINUTE) % ONE_MINUTE);
         const hours = Math.floor((total / (THOUSAND_MILLISECONDS * ONE_MINUTE * ONE_MINUTE)) % ONE_DAY);
         const days = Math.floor(total / (THOUSAND_MILLISECONDS * ONE_MINUTE * ONE_MINUTE * ONE_DAY));
-        return {total, days, hours, minutes, seconds};
+        return { total, days, hours, minutes, seconds };
     };
 
     /**

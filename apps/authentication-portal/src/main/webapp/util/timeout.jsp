@@ -28,7 +28,7 @@
 <jsp:directive.include file="countdown.jsp"/>
 
 <%--Include the reusable modal component--%>
-<jsp:include page="utility/modal.jsp">
+<jsp:include page="util/modal.jsp">
     <jsp:param name="title" value="Heads Up!"/>
     <jsp:param name="description"
                value="You have been in idle for too long. You will be redirected to the signup page soon."/>
@@ -112,14 +112,15 @@
      * This will allow the script functions to access the variable
      * simply via a object.
      */
-    const DYNAMIC_PROPS = {
+    const PROPS = {
         totalTimeoutMinutes: <%= totalTimeoutMinutes %>,
-        notifyOnMinute: <%= notifyOnMinute %>
+        notifyOnMinute: <%= notifyOnMinute %>,
+        appAccessUrlEncoded: "<%= appAccessUrlEncoded %>"
     };
 
     $(document).ready(function () {
 
-        const timeout = Countdown.minutes(DYNAMIC_PROPS.totalTimeoutMinutes);
+        const timeout = Countdown.minutes(PROPS.totalTimeoutMinutes);
         const countdown = new Countdown(timeout, onDone, onTick);
         const modal = new ModalRef(function () {
             countdown.stop();
@@ -131,12 +132,12 @@
          * @param time {{total: number, hours: number, seconds: number, minutes: number, days: number}}
          */
         function onTick(time) {
-            if (time.total < Countdown.minutes(DYNAMIC_PROPS.notifyOnMinute)) {
+            if (time.total < Countdown.minutes(PROPS.notifyOnMinute)) {
                 modal.changeDescriptionAsHTML(
                     "You have been in idle for too long. You will be redirected to " +
                     "the signup page <b>" + Countdown.timeToReadable(time) + "</b>.");
             }
-            if (time.total === Countdown.minutes(DYNAMIC_PROPS.notifyOnMinute)) {
+            if (time.total === Countdown.minutes(PROPS.notifyOnMinute)) {
                 modal.show();
             }
         }
@@ -146,7 +147,7 @@
          * action. It will redirect the user to the specified URL immediately.
          */
         function onDone() {
-            window.location = "<%= appAccessUrlEncoded %>";
+            window.location = PROPS.appAccessUrlEncoded;
         }
 
         countdown.start();
