@@ -18,9 +18,13 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserDisplayName,
-    resolveUserEmails } from "@wso2is/core/helpers";
+import {
+    getUserNameWithoutDomain,
+    hasRequiredScopes,
+    isFeatureEnabled,
+    resolveUserDisplayName,
+    resolveUserEmails
+} from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -895,6 +899,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
     /**
      * Check whether the profile url is readonly.
+     *
+     * @return {boolean}
      */
     const isProfileUrlReadOnly = (): boolean => {
         return !(!isReadOnlyUser && hasRequiredScopes(featureConfig?.personalInfo,
