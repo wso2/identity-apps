@@ -6276,8 +6276,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Entrer un email valide. Vous pouvez utiliser des caractères " +
-                                    "alphanumériques, des tirets (-), des points (.), et un signe arobase (@)."
+                                regExViolation: "Veuillez saisir une adresse e-mail valide."
                             }
                         }
                     }
