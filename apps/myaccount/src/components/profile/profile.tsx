@@ -18,7 +18,12 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails, hasRequiredScopes } from "@wso2is/core/helpers";
+import {
+    isFeatureEnabled,
+    resolveUserDisplayName,
+    resolveUserEmails,
+    hasRequiredScopes
+} from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
