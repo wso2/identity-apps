@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import {
     DataTable,
     EmptyPlaceholder,
-    PrimaryButton,
+    LinkButton,
     TableActionsInterface,
     TableColumnInterface,
     TableDataInterface
@@ -69,6 +69,10 @@ interface EditScopePropsInterface extends SBACInterface<FeatureConfigInterface>,
      * Triggers the add attribute modal.
      */
     triggerAddAttributeModal: boolean;
+    /**
+     * Callback to clear the searched attributed list.
+     */
+    clearSearchedAttributes?: () => void;
 }
 
 /**
@@ -88,6 +92,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         unselectedAttributes,
         isRequestLoading,
         triggerAddAttributeModal,
+        clearSearchedAttributes,
         ["data-testid"]: testId
     } = props;
 
@@ -252,22 +257,17 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         return selectedAttributes?.length === 0 ? (
             <EmptyPlaceholder
                 data-testid="scope-mgt-empty-claims-list"
-                title={ t("console:manage.features.oidcScopes.editScope.claimList." + "emptyPlaceholder.title") }
+                title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
                 subtitle={ [
-                    t("console:manage.features.oidcScopes.editScope.claimList." + "emptyPlaceholder.subtitles.0"),
-                    t("console:manage.features.oidcScopes.editScope.claimList." + "emptyPlaceholder.subtitles.1")
+                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
+                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
                 ] }
-                action={
-                    <PrimaryButton
-                        data-testid="scope-mgt-empty-claims-list-add-claim-button"
-                        onClick={ handleOpenSelectionModal }
-                        icon="plus"
-                    >
-                        <Icon name="add" />
-                        { t("console:manage.features.oidcScopes.editScope.claimList." + "emptyPlaceholder.action") }
-                    </PrimaryButton>
-                }
-                image={ getEmptyPlaceholderIllustrations().emptyList }
+                action={ (
+                    <LinkButton onClick={ clearSearchedAttributes }>
+                        { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
+                    </LinkButton>
+                ) }
+                image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
             />
         ) : null;

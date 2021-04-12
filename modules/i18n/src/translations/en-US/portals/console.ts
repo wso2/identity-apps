@@ -5643,6 +5643,14 @@ export const console: ConsoleNS = {
                             },
                             title: "No OIDC attributes"
                         },
+                        emptySearch: {
+                            action: "View all",
+                            subtitles: {
+                                0: "We couldn't find the attribute you searched for.",
+                                1: "Please try a different name."
+                            },
+                            title: "No results found"
+                        },
                         popupDelete: "Delete attribute",
                         searchClaims: "search attributes",
                         subTitle: "Add or remove attributes of an OIDC scope",

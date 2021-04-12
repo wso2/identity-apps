@@ -4754,6 +4754,14 @@ export const console: ConsoleNS = {
                             },
                             title: "OIDC ගුණාංග නොමැත"
                         },
+                        emptySearch: {
+                            action: "සියල්ල බලන්න",
+                            subtitles: {
+                                0: "ඔබ සෙවූ ගුණාංගය අපට සොයාගත නොහැකි විය.",
+                                1: "කරුණාකර වෙනත් නමක් උත්සාහ කරන්න."
+                            },
+                            title: "ප්‍රතිපල හමු නොවීය"
+                        },
                         popupDelete: "ගුණාංගය මකන්න",
                         searchClaims: "සෙවුම් ගුණාංග",
                         subTitle: "OIDC විෂය පථයේ ලක්ෂණ එකතු කිරීම හෝ ඉවත් කිරීම",
