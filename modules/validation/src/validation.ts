@@ -30,7 +30,7 @@ type ValidationFunction = (value: string) => boolean;
 export const email: ValidationFunction = (value: string): boolean => {
     if (
         Joi.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+            .email({ tlds: false })
             .validate(value).error
     ) {
         return false;
