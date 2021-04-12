@@ -18,7 +18,7 @@
 
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails, hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -70,6 +70,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Set the if the email verification is pending.
@@ -575,9 +576,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         >
                             <List.Content floated="right">
                                 { !isReadOnlyUser
-                                    && schema.mutability !== "READ_ONLY"
-                                    && schema.name !== "userName"
-                                    && !isEmpty(profileInfo.get(schema.name))
+                                && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+                                && schema.name !== "userName"
+                                && !isEmpty(profileInfo.get(schema.name))
+                                && hasRequiredScopes(featureConfig?.personalInfo,
+                                    featureConfig?.personalInfo?.scopes?.update, allowedScopes)
                                     ? (
                                         < Popup
                                             trigger={
@@ -666,10 +669,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const renderAvatar = () => (
         <>
             <UserAvatar
-                editable
+                editable={ !isProfileUrlReadOnly() }
                 showGravatarLabel
                 size="tiny"
-                onClick={ handleAvatarOnClick }
+                onClick={ !isProfileUrlReadOnly() ? handleAvatarOnClick : undefined }
                 profileInfo={ profileDetails?.profileInfo as any }
                 gravatarInfoPopoverText={ (
                     <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
@@ -750,6 +753,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     );
 
     /**
+     * Check whether the profile url is readonly.
+     *
+     * @return {boolean}
+     */
+    const isProfileUrlReadOnly = (): boolean => {
+        return !(!isReadOnlyUser && hasRequiredScopes(featureConfig?.personalInfo,
+            featureConfig?.personalInfo?.scopes?.update, allowedScopes)
+            && profileSchema?.some((schema: ProfileSchema) => {
+                return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
+            }));
+    };
+
+    /**
      * Handles the onclick action of the avatar.
      */
     const handleAvatarOnClick = () => {
@@ -801,9 +818,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             )
                                             : null
                                     }
-                                    <List.Item key={ index } className="inner-list-item">
-                                        { generateSchemaForm(schema) }
-                                    </List.Item>
+                                    {
+                                        !isEmpty(profileInfo.get(schema.name)) ||
+                                        (!isReadOnlyUser && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                            && hasRequiredScopes(featureConfig?.personalInfo,
+                                                featureConfig?.personalInfo?.scopes?.update, allowedScopes))
+                                            ? (
+                                                <List.Item key={index} className="inner-list-item">
+                                                    {generateSchemaForm(schema)}
+                                                </List.Item>
+                                            ) : null
+                                    }
                                 </>
                             );
                         }
