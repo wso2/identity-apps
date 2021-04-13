@@ -25,10 +25,10 @@
 <%@ page import="static org.apache.commons.lang.StringUtils.isNotBlank" %>
 
 <%--Include timeout JS functions--%>
-<jsp:directive.include file="countdown.jsp"/>
+<jsp:include page="countdown.jsp"/>
 
 <%--Include the reusable modal component--%>
-<jsp:include page="util/modal.jsp">
+<jsp:include page="modal.jsp">
     <jsp:param name="title" value="Heads Up!"/>
     <jsp:param name="description"
                value="You have been in idle for too long. You will be redirected to the signup page soon."/>
