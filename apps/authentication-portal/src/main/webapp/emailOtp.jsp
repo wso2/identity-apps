@@ -66,7 +66,9 @@
 
 <body class="login-portal layout email-otp-portal-layout">
 
-<%@ include file="utility/timeout.jsp" %>
+<% if (new File(getServletContext().getRealPath("util/timeout.jsp")).exists()) { %>
+<jsp:include page="util/timeout.jsp"/>
+<% } %>
 
 <main class="center-segment">
     <div class="ui container medium center aligned middle aligned">
