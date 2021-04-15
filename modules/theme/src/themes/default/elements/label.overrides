@@ -111,7 +111,7 @@
 .ui.label {
     &.scope-name {
         background: none !important;
-        border-radius: 0px !important;
+        border-radius: 0 !important;
         color: initial !important;
         font-size: 0.89em !important;
         margin: 0 0 !important;
