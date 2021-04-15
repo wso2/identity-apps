@@ -4785,6 +4785,14 @@ export const console: ConsoleNS = {
                             },
                             title: "Pas d'attributs OIDC"
                         },
+                        emptySearch: {
+                            action: "Voir tout",
+                            subtitles: {
+                                0: "Nous n'avons pas trouvé l'attribut recherché.",
+                                1: "Veuillez essayer un autre nom."
+                            },
+                            title: "Aucun résultat trouvé"
+                        },
                         popupDelete: "Supprimer l'attribut",
                         searchClaims: "Recherche d'attributs",
                         subTitle: "Ajouter ou supprimer des attributs d'un scope OIDC",

@@ -106,6 +106,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ triggerAddAttributeModal, setTriggerAttributeModal ] = useTrigger();
         const [ sortOrder, setSortOrder ] = useState(true);
         const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+        const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
 
         const initialRender = useRef(true);
 
@@ -241,6 +242,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         const searchSelectedAttributes = (event) => {
             const changeValue = event.target.value;
+            setAttributeSearchQuery(changeValue);
             if (changeValue.length > 0) {
                 setTempSelectedAttributes(
                     selectedAttributes.filter(
@@ -324,6 +326,14 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         */
         const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
             setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        };
+
+        /**
+         * Handles clearing the searched attributes.
+         */
+        const clearSearchedAttributes = (): void => {
+            setAttributeSearchQuery("");
+            setTempSelectedAttributes(selectedAttributes);
         };
 
         return (
@@ -481,6 +491,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     + "claimList.searchClaims") }
                                 floated="right"
                                 size="small"
+                                value={ attributeSearchQuery }
                             />
                         </div>
                     }
@@ -498,6 +509,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         unselectedAttributes={ unselectedAttributes }
                         isRequestLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                         triggerAddAttributeModal={ triggerAddAttributeModal }
+                        clearSearchedAttributes={ clearSearchedAttributes }
                     />
                 </ListLayout>
             </PageLayout>
