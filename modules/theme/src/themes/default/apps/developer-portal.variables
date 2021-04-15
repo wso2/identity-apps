@@ -68,3 +68,11 @@
 --------------------------------*/
 
 @idpTemplateGridPaddingTop: 1.5em;
+
+/*----------------------------------
+          Form Container
+------------------------------------*/
+
+@formContainerMaxWidth: 750px;
+@@formWrapperMaxHeight: 55vh;
+@applicationSubjectSelectWidth: 820px;

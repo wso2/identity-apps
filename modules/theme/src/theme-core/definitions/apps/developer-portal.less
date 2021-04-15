@@ -731,3 +731,21 @@
         }
     }
 }
+
+/*-------------------------------
+      Form Container Styles
+--------------------------------*/
+.form-wrapper {
+    &.with-max-height {
+        max-height: @formWrapperMaxHeight;
+        overflow: auto;
+    }
+}
+.form-container {
+    &.with-max-width {
+        max-width: @formContainerMaxWidth;
+    }
+    &.subject-attribute-selection {
+        max-width: @applicationSubjectSelectWidth;
+    }
+}
