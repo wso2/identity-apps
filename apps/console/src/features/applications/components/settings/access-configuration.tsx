@@ -463,7 +463,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         return (
-            <EmphasizedSegment className="protocol-settings-section" padded="very">
+            <EmphasizedSegment className="protocol-settings-section form-wrapper with-max-height" padded="very">
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
