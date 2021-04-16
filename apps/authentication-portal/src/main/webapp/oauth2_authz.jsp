@@ -56,8 +56,8 @@
 </head>
 <body class="login-portal layout authentication-portal-layout">
 
-    <% if (new File(getServletContext().getRealPath("util/timeout.jsp")).exists()) { %>
-    <jsp:include page="util/timeout.jsp"/>
+    <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
+    <jsp:include page="extensions/timeout.jsp"/>
     <% } %>
 
     <main class="center-segment">
