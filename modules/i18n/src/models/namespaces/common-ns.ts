@@ -41,6 +41,7 @@ export interface CommonNS {
     challengeQuestionNumber: string;
     change: string;
     claim: string;
+    clear: string;
     comingSoon: string;
     completed: string;
     configure: string;

@@ -85,6 +85,8 @@ export interface ServiceResourceEndpointsInterface {
     token: string;
     totp: string;
     totpSecret: string;
+    typingDNAMe: string;
+    typingDNAServer: string;
     user: string;
     revoke: string;
     wellKnown: string;
