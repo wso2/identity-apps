@@ -41,6 +41,13 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout" onload="talkToDevice();">
+
+    <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
+        <jsp:include page="extensions/timeout.jsp"/>
+    <% } else { %>
+        <jsp:include page="util/timeout.jsp"/>
+    <% } %>
+
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
 
