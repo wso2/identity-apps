@@ -25,7 +25,7 @@ import { I18n } from "@wso2is/i18n";
 import { GenericIcon, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
-import { Grid, Label } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
@@ -297,14 +297,14 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                             />
                         </Grid.Column>
                         <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
-                            <Label data-testid={ `${ testId }-authorize-label` } className="scope-name">
+                            <div data-testid={ `${ testId }-authorize-label` } className="scope-name">
                                 { scope }
-                            </Label>
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 13 } tablet={ 13 } computer={ 13 }>
-                            <Label data-testid={ `${ testId }-authorize-label` } className="scope-name">
+                            <div data-testid={ `${ testId }-authorize-label` } className="scope-name">
                                 { propertyMetadata.properties[scope].description }
-                            </Label>
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                     )

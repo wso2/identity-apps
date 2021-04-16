@@ -103,18 +103,3 @@
         }
     }
 }
-
-/*******************************
-        Scope Label
-*******************************/
-
-.ui.label {
-    &.scope-name {
-        background: none !important;
-        border-radius: 0 !important;
-        color: initial !important;
-        font-size: 0.89em !important;
-        margin: 0 0 !important;
-        padding: 0 !important;
-    }
-}
