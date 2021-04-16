@@ -4785,6 +4785,14 @@ export const console: ConsoleNS = {
                             },
                             title: "Pas d'attributs OIDC"
                         },
+                        emptySearch: {
+                            action: "Voir tout",
+                            subtitles: {
+                                0: "Nous n'avons pas trouvé l'attribut recherché.",
+                                1: "Veuillez essayer un autre nom."
+                            },
+                            title: "Aucun résultat trouvé"
+                        },
                         popupDelete: "Supprimer l'attribut",
                         searchClaims: "Recherche d'attributs",
                         subTitle: "Ajouter ou supprimer des attributs d'un scope OIDC",
@@ -6276,8 +6284,7 @@ export const console: ConsoleNS = {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                 invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
-                                regExViolation: "Entrer un email valide. Vous pouvez utiliser des caractères " +
-                                    "alphanumériques, des tirets (-), des points (.), et un signe arobase (@)."
+                                regExViolation: "Veuillez saisir une adresse e-mail valide."
                             }
                         }
                     }

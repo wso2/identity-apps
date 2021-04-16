@@ -216,7 +216,7 @@ public class AppPortalUtils {
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
                             consumerSecret, adminUsername, tenantId, tenantDomain,
-                            OAuth2Constants.TokenBinderType.SSO_SESSION_BASED_TOKEN_BINDER, grantTypes);
+                            OAuth2Constants.TokenBinderType.COOKIE_BASED_TOKEN_BINDER, grantTypes);
                 } catch (IdentityOAuthAdminException e) {
                     if ("Error when adding the application. An application with the same name already exists."
                             .equals(e.getMessage())) {

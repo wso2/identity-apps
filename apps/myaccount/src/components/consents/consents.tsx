@@ -654,8 +654,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 updatingConsent.consentReceipt.services || [] as ServiceInterface[]
             ).map(value => value.purposes as PurposeInterface[])
         )
-            .map(v => v.piiCategory.length)
-            .reduce((accumulator, currentVal) => accumulator + currentVal) === 0;
+            .map(v => v.piiCategory?.length ?? 0)
+            .reduce((accumulator, currentVal) => accumulator + currentVal, 0) === 0;
         // If consent to all the pii categories in every purpose are revoked
         // then the application (receipt) will have to be revoked.
         if (isAllPIICategoriesRemovedFromThisReceipt) {

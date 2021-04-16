@@ -5643,6 +5643,14 @@ export const console: ConsoleNS = {
                             },
                             title: "No OIDC attributes"
                         },
+                        emptySearch: {
+                            action: "View all",
+                            subtitles: {
+                                0: "We couldn't find the attribute you searched for.",
+                                1: "Please try a different name."
+                            },
+                            title: "No results found"
+                        },
                         popupDelete: "Delete attribute",
                         searchClaims: "search attributes",
                         subTitle: "Add or remove attributes of an OIDC scope",
@@ -7105,8 +7113,7 @@ export const console: ConsoleNS = {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
                                 invalidCharacters: "Username seems to contain invalid characters.",
-                                regExViolation: "Enter a valid email. You can use " +
-                                    "alphanumeric characters, dashes (-), periods (.), and an at sign (@)."
+                                regExViolation: "Please enter a valid email."
                             }
                         }
                     }

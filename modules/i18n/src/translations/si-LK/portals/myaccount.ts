@@ -666,6 +666,32 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "loginVerifyData": {
+            "heading": "ඔබගේ පිවිසුම සත්‍යාපනය සඳහා භාවිතා කරන දත්ත ",
+            "description": "පුරනය වීමේදී ඔබගේ අනන්‍යතාවය තවදුරටත් තහවුරු කර ගැනීමට මෙම දත්ත භාවිතා කරයි",
+            "typingdna": {
+                "heading": "TypingDNA ටයිප් කිරීමේ රටා",
+                "description": "ඔබේ ටයිප් කිරීමේ රටා මෙතැනින් ඉවත් කළ හැකිය"
+            },
+            "modals": {
+                "clearTypingPatternsModal": {
+                    "heading": "තහවුරු කිරීම",
+                    "message": "මෙම ක්‍රියාව මගින් TypingDNA හි සුරකින ලද ඔබේ ටයිප් රටා ඉවත් කරනු ඇත. ඉදිරියට යාමට ඔබ කැමතිද?"
+                }
+            },
+            "notifications": {
+                "clearTypingPatterns": {
+                    "success": {
+                        "description": "TypingDNA හි ඔබේ යතුරු ලියන රටා සාර්ථකව ඉවත් කර ඇත",
+                        "message": "ටයිප් කිරීමේ රටා සාර්ථකව නිෂ්කාශනය විය"
+                    },
+                    "error": {
+                        "description": "ටයිප් කිරීමේ රටා ඉවත් කළ නොහැක. කරුණාකර ඔබේ අඩවි පරිපාලක අමතන්න",
+                        "message": "යතුරු ලියන රටා ඉවත් කිරීමට අපොහොසත් විය"
+                    }
+                }
+            }
+        },
         overview: {
             widgets: {
                 accountActivity: {

@@ -669,6 +669,34 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "loginVerifyData": {
+            "heading": "Données utilisées pour vérifier votre connexion",
+            "description": "Ces données sont utilisées pour vérifier davantage votre identité lors de la connexion",
+            "typingdna": {
+                "heading": "TypingDNA modèles de frappe",
+                "description": "Vos modèles de frappe peuvent être effacés à partir d'ici"
+            },
+            "modals": {
+                "clearTypingPatternsModal": {
+                    "heading": "Bestätigung",
+                    "message": "Cette action effacera vos modèles de frappe enregistrés dans TypingDNA. "+
+                    "Souhaitez-vous continuer?"
+                }
+            },
+            "notifications": {
+                "clearTypingPatterns": {
+                    "success": {
+                        "description": "Vos modèles de frappe dans TypingDNA ont été effacés avec succès",
+                        "message": "Modèles de frappe supprimés avec succès"
+                    },
+                    "error": {
+                        "description": "Les modèles de saisie n'ont pas pu être effacés. Veuillez contacter "+
+                        "l'administrateur de votre site",
+                        "message": "Échec de la suppression des modèles de saisie"
+                    }
+                }
+            }
+        },
         overview: {
             widgets: {
                 accountActivity: {

@@ -2484,6 +2484,7 @@ export interface ConsoleNS {
                 editScope: {
                     claimList: {
                         emptyPlaceholder: Placeholder;
+                        emptySearch: Placeholder;
                         title: string;
                         subTitle: string;
                         addClaim: string;

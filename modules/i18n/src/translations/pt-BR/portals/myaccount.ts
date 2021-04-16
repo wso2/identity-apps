@@ -666,6 +666,34 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "loginVerifyData": {
+            "heading": "Dados usados para verificar o seu login",
+            "description": "Esses dados são usados para verificar ainda mais sua identidade durante o login ",
+            "typingdna": {
+                "heading": "TypingDNA padrões de Digitação",
+                "description": "Seus padrões de digitação podem ser apagados aqui"
+            },
+            "modals": {
+                "clearTypingPatternsModal": {
+                    "heading": "Confirmação",
+                    "message": "Esta ação irá limpar seus padrões de digitação salvos no TypingDNA. "+
+                    "Você deseja continuar?"
+                }
+            },
+            "notifications": {
+                "clearTypingPatterns": {
+                    "success": {
+                        "description": "Seus padrões de digitação no TypingDNA foram apagados com sucesso ",
+                        "message": "Padrões de digitação limpos com sucesso"
+                    },
+                    "error": {
+                        "description": "Os padrões de digitação não puderam ser apagados. Entre em contato com o"+
+                        " administrador do seu site",
+                        "message": "Falha ao limpar padrões de digitação"
+                    }
+                }
+            }
+        },
         overview: {
             widgets: {
                 accountActivity: {

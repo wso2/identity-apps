@@ -30,6 +30,7 @@ import {
     AccountRecoveryComponent,
     ChangePassword,
     Consents,
+    LoginVerifyingData,
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
@@ -136,6 +137,21 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication
+                                    featureConfig={ accessConfig }
+                                    onAlertFired={ handleAlerts }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_LOGIN_VERIFY_DATA")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <LoginVerifyingData
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />

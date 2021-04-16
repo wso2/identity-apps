@@ -365,15 +365,3 @@
         }
     }
 }
-
-/*----------------------------------
-          Form Grids
-------------------------------------*/
-
-.ui.grid {
-    &.form-container {
-        &.with-max-width {
-            max-width: @formGridContainerMaxWidth;
-        }
-    }
-}
