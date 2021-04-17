@@ -87,6 +87,7 @@
         <param-name>EnableAuthenticationWithAuthenticationRESTAPI</param-name>
         <param-value>true</param-value>
     </context-param-->
+
     <!-- *************** Authentication REST API URL Configuration ********************** -->
     {% if authenticationendpoint.auth_rest_endpoint_url is defined %}
     <context-param>
@@ -95,6 +96,24 @@
     </context-param>
     {% endif %}
     <!-- *************** End of Authentication REST API URL Configuration ********************** -->
+
+    <!-- *************** ToS URL Configuration ********************** -->
+    {% if authenticationendpoint.terms_of_service_url is defined %}
+    <context-param>
+        <param-name>TermsOfServiceURL</param-name>
+        <param-value>{{ authenticationendpoint.terms_of_service_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of ToS URL Configuration ********************** -->
+
+    <!-- *************** Privacy Policy URL Configuration ********************** -->
+    {% if authenticationendpoint.privacy_policy_url is defined %}
+    <context-param>
+        <param-name>PrivacyPolicyURL</param-name>
+        <param-value>{{ authenticationendpoint.privacy_policy_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of Privacy Policy URL Configuration ********************** -->
 
     <!--Display scopes in the consent page.-->
     <context-param>
