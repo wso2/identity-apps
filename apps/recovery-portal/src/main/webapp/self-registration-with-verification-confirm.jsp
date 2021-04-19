@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
@@ -86,7 +87,8 @@
         String userStoreDomain = user.getRealm();
         tenantDomain = user.getTenantDomain();
         if (isAutoLoginEnable) {
-            username = userStoreDomain + "/" + username + "@" + tenantDomain;
+            String fullyQualifiedUsername = UserCoreUtil.addDomainToName(tenantAwareUsername, userStoreDomain);
+            username = UserCoreUtil.addTenantDomainToEntry(fullyQualifiedUsername, tenantDomain);
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", username);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
