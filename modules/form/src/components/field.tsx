@@ -32,7 +32,7 @@ import {
 import { FormFieldMessage } from "../models";
 import { getValidation } from "../utils";
 
-interface FormFieldPropsInterface extends FieldProps<any,any,any>, TestableComponentInterface {
+export interface FormFieldPropsInterface extends FieldProps<any,any,any>, TestableComponentInterface {
     /**
      * Aria label for the field.
      */
