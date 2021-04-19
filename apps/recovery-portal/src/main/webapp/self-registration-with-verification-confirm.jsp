@@ -31,16 +31,25 @@
 <%@ page import="javax.ws.rs.HttpMethod" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="javax.servlet.http.Cookie" %>
+<%@ page import="java.util.Base64" %>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+    String AUTO_LOGIN_COOKIE_NAME = "ALOR";
+    String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
+    String username = null;
 
-
-    String username = request.getParameter("username");
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
+    Boolean isAutoLoginEnable = Boolean.parseBoolean(Utils.getConnectorConfig("SelfRegistration.AutoLogin.Enable",
+                    tenantDomain));
 
     // Some mail providers initially sends a HEAD request to
     // check the validity of the link before redirecting users.
@@ -55,7 +64,7 @@
     }
 
 
-    if (StringUtils.isBlank(username) || StringUtils.isBlank(confirmationKey)) {
+    if (StringUtils.isBlank(confirmationKey)) {
         confirmationKey = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("confirmationKey"));
     }
     String message = "" ;
@@ -72,7 +81,28 @@
         validationRequest.setCode(confirmationKey);
         validationRequest.setProperties(properties);
 
-        selfRegisterApi.validateCodePostCall(validationRequest);
+        User user = selfRegisterApi.validateCodeUserPostCall(validationRequest);
+        username = user.getUsername();
+        String userStoreDomain = user.getRealm();
+        tenantDomain = user.getTenantDomain();
+        if (isAutoLoginEnable) {
+            username = userStoreDomain + "/" + username + "@" + tenantDomain;
+            JSONObject contentValueInJson = new JSONObject();
+            contentValueInJson.put("username", username);
+            contentValueInJson.put("createdTime", System.currentTimeMillis());
+            contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+            String content = contentValueInJson.toString();
+            JSONObject cookieValueInJson = new JSONObject();
+            cookieValueInJson.put("content", content);
+            String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+            cookieValueInJson.put("signature", signature);
+            Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE_NAME,
+                    Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
+            cookie.setPath("/");
+            cookie.setSecure(true);
+            cookie.setMaxAge(300);
+            response.addCookie(cookie);
+        }
 
         request.setAttribute("callback", callback);
         request.setAttribute("confirm", "true");
