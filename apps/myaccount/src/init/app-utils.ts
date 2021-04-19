@@ -191,6 +191,7 @@ export const AppUtils = (function() {
                 serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(true),
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
+                superTenantProxy: this.getSuperTenantProxy(),
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
                 tenantPrefix: this.getTenantPrefix(),
