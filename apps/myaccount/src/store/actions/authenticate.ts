@@ -394,6 +394,12 @@ export const initializeAuthentication = () =>(dispatch)=> {
                     window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL);
             }
 
+            // If super tenant proxy is configured, logout url is updated with the configured super tenant proxy.
+            if (window["AppUtils"].getConfig().superTenantProxy) {
+                logoutUrl = logoutUrl.replace(window["AppUtils"].getConfig().superTenant,
+                                    window["AppUtils"].getConfig().superTenantProxy);
+            }
+
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
         }
 
