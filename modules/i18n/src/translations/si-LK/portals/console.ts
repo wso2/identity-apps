@@ -2384,7 +2384,43 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "උදව්",
-                            subHeading: "මඟ පෙන්වීමක් ලෙස පහත සඳහන් දෑ භාවිතා කරන්න"
+                            subHeading: "මඟ පෙන්වීමක් ලෙස පහත සඳහන් දෑ භාවිතා කරන්න",
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: "උදා., https://myapp.io/login",
+                                        subTitle: "සත්‍යාපනය මත බලය පැවරීමේ කේතය යවන URL සහ පරිශීලකයා ලොග්අවුට්" +
+                                            " වෙත හරවා යවන ස්ථානය.",
+                                        title: "බලයලත් යළි-යොමුවීම් URL"
+                                    },
+                                    heading: {
+                                        example: "උදා., My App",
+                                        subTitle: "ඔබගේ යෙදුම හඳුනා ගැනීමට අද්විතීය නමක්.",
+                                        title: "නම"
+                                    },
+                                    protocol: {
+                                        subTitle: "SSO භාවිතයෙන් යෙදුමට ප්‍රවේශ වීම සඳහා භාවිතා වන ප්‍රවේශ" +
+                                            " වින්‍යාසකරණ ප්‍රොටෝකෝලය.",
+                                        title: "ප්රොටෝකෝලය"
+                                    }
+                                },
+                                label: "අවම යෙදුම විශාරද උදව් පැනල් සැකිලි.",
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: "උදා., http://my-app.com/home.jsp",
+                                        subTitle: "සාර්ථක සත්‍යාපනය මත බ්‍රව්සරය යළි හරවා යවන URL ය. සේවා " +
+                                            "සපයන්නාගේ සහතික කිරීමේ පාරිභෝගික සේවය (ACS) URL ලෙසද හැඳින්වේ.",
+                                        title: "ප්‍රකාශ ප්‍රතිචාර URL"
+                                    },
+                                    issuer: {
+                                        example: "උදා., my-app.com",
+                                        subTitle: "යෙදුමේ අද්විතීය අනන්‍යතාවය අඩංගු <1>saml:Issuer</1> අංගය. මෙහි" +
+                                            " එකතු කළ අගය ග්‍රාහක යෙදුමෙන් යවන ලද SAML සත්‍යාපන ඉල්ලීමෙහි සඳහන් කළ" +
+                                            " යුතුය.",
+                                        title: "නිකුත් කරන්නා"
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
 
 /**
  * Prop types of the component.
@@ -40,39 +41,72 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>A unique name to identify your application.</p>
-            <p>E.g., My App</p>
-
+            <Heading as="h5">
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.title") }
+            </Heading>
+            <p>
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.subTitle") }
+            </p>
+            <p>
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.example") }
+            </p>
             <>
                 <Divider/>
-                <Heading as="h5">Protocol</Heading>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".protocol.title") }
+                </Heading>
                 <p>
-                    The access configuration protocol which will be used to log in to the application using SSO.
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".protocol.subTitle") }
                 </p>
             </>
 
             <Divider />
 
             <>
-                <Heading as="h5">Issuer</Heading>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                        ".issuer.title") }
+                </Heading>
                 <p>
-                    The <strong>saml:Issuer</strong> element that contains the unique identifier of the
-                    application. The value added here should be specified in the SAML authentication
-                    request sent from the client application.
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.wizards.minimalAppCreationWizard.help.template" +
+                            ".samlWeb.issuer.subTitle"
+                        }
+                    >
+                        The <strong>saml:Issuer</strong> element that contains the unique identifier of the application.
+                        The value added here should be specified in the SAML authentication request sent from the
+                        client application.
+                    </Trans>
                 </p>
-                <p>E.g., my-app.com</p>
+                <p>
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                    ".issuer.example") }
+                </p>
 
                 <Divider/>
 
-                <Heading as="h5">Assertion response URLs</Heading>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                        ".assertionResponseURLs.title") }
+                </Heading>
                 <p>
-                    The URLs to which the browser is redirected to upon successful authentication.
-                    Also known as the Assertion Consumer Service (ACS) URL of the service provider.
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                        ".assertionResponseURLs.subTitle") }
                 </p>
-                <p>E.g., http://my-app.com/home.jsp</p>
+                <p>
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.samlWeb" +
+                        ".assertionResponseURLs.example") }
+                </p>
             </>
 
             <Divider hidden/>

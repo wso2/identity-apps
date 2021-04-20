@@ -2412,7 +2412,45 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Aide",
-                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
+                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider",
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: "par ex., https://myapp.io/login",
+                                        subTitle: "URL vers laquelle le code d'autorisation est envoyé lors de" +
+                                            " l'authentification et vers laquelle l'utilisateur est redirigé lors de" +
+                                            " la déconnexion.",
+                                        title: "URL de redirection autorisées"
+                                    },
+                                    heading: {
+                                        example: "par ex., My App",
+                                        subTitle: "Un nom unique pour identifier votre application.",
+                                        title: "Nom"
+                                    },
+                                    protocol: {
+                                        subTitle: "Le protocole de configuration d'accès qui sera utilisé pour se" +
+                                            " connecter à l'application en utilisant SSO.",
+                                        title: "Protocole"
+                                    }
+                                },
+                                label: "Modèles de panneau d'aide de l'assistant de création d'application minimale.",
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: "par ex., http://my-app.com/home.jsp",
+                                        subTitle: "URL vers lesquelles le navigateur est redirigé une fois" +
+                                            " l'authentification réussie. Également connue sous le nom d'URL" +
+                                            " Assertion Consumer Service (ACS) du fournisseur de services.",
+                                        title: "URL de réponse d'assertion"
+                                    },
+                                    issuer: {
+                                        example: "par ex., my-app.com",
+                                        subTitle: "L'élément <1>saml: Issuer</1> qui contient l'identifiant unique de" +
+                                            " l'application. La valeur ajoutée ici doit être spécifiée dans la" +
+                                            " demande d'authentification SAML envoyée depuis l'application cliente.",
+                                        title: "Émetteur"
+                                    }
+                                }
+                            }
                         }
                     }
                 }

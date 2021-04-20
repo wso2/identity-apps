@@ -893,6 +893,7 @@ export interface ConsoleNS {
                         help: {
                             heading: string;
                             subHeading: string;
+                            template : FormAttributes;
                         };
                     };
                 };

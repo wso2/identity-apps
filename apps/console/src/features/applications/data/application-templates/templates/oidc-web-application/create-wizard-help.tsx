@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Prop types of the component.
@@ -40,28 +41,49 @@ const OIDCWebApplicationCreateWizardHelp: FunctionComponent<OIDCWebApplicationCr
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>A unique name to identify your application.</p>
-            <p>E.g., My App</p>
+            <Heading as="h5">
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.title") }
+            </Heading>
+            <p>
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.subTitle") }
+            </p>
+            <p>
+                { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    ".heading.example") }
+            </p>
             <>
                 <Divider/>
-                <Heading as="h5">Protocol</Heading>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".protocol.title") }
+                </Heading>
                 <p>
-                    The access configuration protocol which will be used to log in to the application using SSO.
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".protocol.subTitle") }
                 </p>
             </>
 
             <Divider />
 
             <React.Fragment>
-                <Heading as="h5">Authorized redirect URLs</Heading>
+                <Heading as="h5">
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".authorizedRedirectURLs.title") }
+                </Heading>
                 <p>
-                    The URL to which the authorization code is sent to upon authentication and where the user
-                    is redirected to upon logout.
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".authorizedRedirectURLs.subTitle") }
                 </p>
-                <p>E.g., https://myapp.io/login</p>
+                <p>
+                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                        ".authorizedRedirectURLs.example") }
+                </p>
             </React.Fragment>
         </div>
     );

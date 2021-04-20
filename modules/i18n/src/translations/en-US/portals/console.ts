@@ -2398,7 +2398,45 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
-                            subHeading: "Use the guide below"
+                            subHeading: "Use the guide below",
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: "E.g., https://myapp.io/login",
+                                        subTitle: "The URL to which the authorization code is sent to upon" +
+                                            " authentication and where the user is redirected to upon logout.",
+                                        title: "Authorized redirect URLs"
+                                    },
+                                    heading: {
+                                        example: "E.g., My App",
+                                        subTitle: "A unique name to identify your application.",
+                                        title: "Name"
+                                    },
+                                    protocol: {
+                                        subTitle: "The access configuration protocol which will be used to log in to" +
+                                            " the application using SSO.",
+                                        title: "Protocol"
+                                    }
+                                },
+                                label: "Minimal application create wizard help panel templates.",
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: "E.g., http://my-app.com/home.jsp",
+                                        subTitle: "The URLs to which the browser is redirected to upon successful" +
+                                            " authentication. Also known as the Assertion Consumer Service (ACS) URL" +
+                                            " of the service provider.",
+                                        title: "Assertion response URLs"
+                                    },
+                                    issuer: {
+                                        example: "E.g., my-app.com",
+                                        subTitle: "The <1>saml:Issuer</1> element that contains the unique" +
+                                            " identifier of the application. The value added here should be" +
+                                            " specified in the SAML authentication request sent from the client" +
+                                            " application.",
+                                        title: "Issuer"
+                                    }
+                                }
+                            }
                         }
                     }
                 }
