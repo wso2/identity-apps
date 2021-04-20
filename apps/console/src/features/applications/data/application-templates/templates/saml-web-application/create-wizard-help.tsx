@@ -50,8 +50,7 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
                 <Divider/>
                 <Heading as="h5">Protocol</Heading>
                 <p>
-                    The access configuration protocol which will be used to SSO (Single sign-on) to
-                    the application.
+                    The access configuration protocol which will be used to log in to the application using SSO.
                 </p>
             </>
 
@@ -60,9 +59,9 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
             <>
                 <Heading as="h5">Issuer</Heading>
                 <p>
-                    This is the <strong>saml:Issuer</strong> element that contains the unique identifier of the
+                    The <strong>saml:Issuer</strong> element that contains the unique identifier of the
                     application. The value added here should be specified in the SAML authentication
-                    request sent by the client application.
+                    request sent from the client application.
                 </p>
                 <p>E.g., my-app.com</p>
 
@@ -70,9 +69,8 @@ const SAMLWebApplicationCreateWizardHelp: FunctionComponent<SAMLWebApplicationCr
 
                 <Heading as="h5">Assertion response URLs</Heading>
                 <p>
-                    These are the URLs to which the browser should be redirected to, after the
-                    authentication is successful. These are also known as the Assertion Consumer Service (ACS) URL
-                    of the service provider.
+                    The URLs to which the browser is redirected to upon successful authentication.
+                    Also known as the Assertion Consumer Service (ACS) URL of the service provider.
                 </p>
                 <p>E.g., http://my-app.com/home.jsp</p>
             </>
