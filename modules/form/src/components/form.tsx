@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { cloneElement, ReactElement } from "react";
+import React, { ReactElement, cloneElement } from "react";
 import { Form as FinalForm, FormProps } from "react-final-form";
-import { Form as SemanticForm } from "semantic-ui-react";
+import { Grid, Form as SemanticForm } from "semantic-ui-react";
 
 /**
  * Implementation of the Form component.
@@ -26,34 +26,52 @@ import { Form as SemanticForm } from "semantic-ui-react";
  */
 export const Form = (props: FormProps): ReactElement => {
 
-    const { children, ...rest } = props;
+    const { children, onSubmit, ...rest } = props;
 
     const childNodes = React.Children.toArray(children);
 
     return (
         <FinalForm
-            { ...rest }
+            onSubmit={ (values, form) => {
+                onSubmit(values, form);
+            } }
+            keepDirtyOnReinitialize={ true }
             render={ ({ handleSubmit, form, submitting, pristine, values }) => (
-                <SemanticForm>
-                    {
-                        childNodes.map((child: any) => {
-                            if (!child) {
-                                return null;
-                            }
+                <form
+                    onSubmit={ handleSubmit }
+                >
+                    <SemanticForm>
+                        <Grid className="form-container with-max-width">
+                                {
+                                    childNodes.map((child: any, index: number) => {
+                                        if (!child) {
+                                            return null;
+                                        }
 
-                            const parentFormProps = { form, handleSubmit, pristine, submitting, values };
-                            const childFieldProps = child.props;
+                                        const parentFormProps = { form, handleSubmit, pristine, submitting, values };
+                                        const childFieldProps = child.props;
 
-                            const childProps = {
-                                childFieldProps,
-                                parentFormProps
-                            };
+                                        const childProps = {
+                                            childFieldProps,
+                                            parentFormProps
+                                        };
 
-                            return cloneElement(child, childProps);
-                        })
-                    }
-                </SemanticForm>
+                                         if (!childProps.childFieldProps.hidden) {
+                                             return (
+                                                 <Grid.Row key={ index }>
+                                                     <Grid.Column width={ childProps.childFieldProps.width }>
+                                                         { cloneElement(child, childProps) }
+                                                     </Grid.Column>
+                                                 </Grid.Row>
+                                             );
+                                         }
+                                    })
+                                }
+                        </Grid>
+                    </SemanticForm>
+                </form>
             ) }
+            { ...rest }
         />
     );
 };

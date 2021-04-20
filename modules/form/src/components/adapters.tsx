@@ -34,7 +34,6 @@ export const TextFieldAdapter = (props): ReactElement => {
 
     return (
         <Form.Input
-            defaultValue={ childFieldProps.initialValue ? childFieldProps.initialValue : "" }
             aria-label={ childFieldProps.ariaLabel }
             key={ childFieldProps.testId }
             required={ childFieldProps.required }
@@ -44,83 +43,106 @@ export const TextFieldAdapter = (props): ReactElement => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
             onChange={ (event, data) => {
-                event.preventDefault();
                 input.onChange(data?.value);
             } }
             onBlur={ (event) => input.onBlur(event) }
             error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
             control={ Input }
+            autoFocus={ childFieldProps.autoFocus || false }
+            value={ meta.dirty ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
             { ...childFieldProps }
         />
     );
 };
 
-export const PasswordFieldAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Password
-        key={ childFieldProps.testId }
-        data-testid={ childFieldProps.testId }
-        hidePassword="Hide password"
-        label={ childFieldProps.label !== "" ? childFieldProps.label : null }
-        name="newPassword"
-        required={ true }
-        showPassword="Show password"
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data?.name);
-        } }
-        onChange={ (event, data) => input.onChange(data?.value) }
-        onBlur={ (event) => input.onBlur(event) }
-        error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
-        { ...childFieldProps }
-    />
-);
+export const PasswordFieldAdapter = (props): ReactElement => {
 
-export const CopyFieldAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <CopyInputField
-        key={ childFieldProps.testId }
-        data-testid={ childFieldProps.testId }
-        { ...childFieldProps }
-    />
-);
+    const { childFieldProps, input, meta } = props;
+    
+    return (
+        <Password
+            key={ childFieldProps.testId }
+            data-testid={ childFieldProps.testId }
+            hidePassword="Hide password"
+            label={ childFieldProps.label !== "" ? childFieldProps.label : null }
+            name="newPassword"
+            required={ true }
+            showPassword="Show password"
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data?.name);
+            } }
+            onChange={ (event, data) => input.onChange(data?.value) }
+            onBlur={ (event) => input.onBlur(event) }
+            error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
+            autoFocus={ childFieldProps.autoFocus || false }
+            { ...childFieldProps }
+        />
+    );
+};
 
-export const TextAreaAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Form.TextArea
-        label={ childFieldProps.label !== "" ? childFieldProps.label : null }
-        width={ input.width }
-        error={ meta.touched && meta.error !== "" ? meta.error : null }
-        placeholder={ input.placeholder }
-        name={ input.name }
-        onBlur={ (event) => input.onBlur(event) }
-        onChange={ (event, data) => input.onChange(data.value) }
-        autoFocus={ input.autoFocus || false }
-        readOnly={ input.readOnly }
-        disabled={ input.disabled }
-        required={ input.label ? input.required : false }
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data.name);
-        } }
-        { ...childFieldProps }
-    />
-);
+export const CopyFieldAdapter = (props): ReactElement => {
 
-export const ToggleAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Form.Checkbox
-        label={ input.label }
-        name={ input.name }
-        value={ input.value }
-        onChange={ (event, data) => {
-            input.onToggle(data.name);
-        } }
-        onBlur={ (event) => input.onBlur(event) }
-        autoFocus={ input.autoFocus || false }
-        readOnly={ input.readOnly }
-        disabled={ input.disabled }
-        defaultChecked={ input.defaultChecked }
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data.name);
-        } }
-        { ...childFieldProps }
-    />
-);
+    const { childFieldProps } = props;
+    
+    return (
+        <CopyInputField
+            key={ childFieldProps.testId }
+            data-testid={ childFieldProps.testId }
+            autoFocus={ childFieldProps.autoFocus || false }
+            { ...childFieldProps }
+        />
+    );
+};
+
+export const TextAreaAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+    
+    return (
+        <Form.TextArea
+            label={ childFieldProps.label !== "" ? childFieldProps.label : null }
+            width={ input.width }
+            error={ meta.touched && meta.error !== "" ? meta.error : null }
+            placeholder={ input.placeholder }
+            name={ input.name }
+            onBlur={ (event) => input.onBlur(event) }
+            onChange={ (event, data) => input.onChange(data.value) }
+            autoFocus={ childFieldProps.autoFocus || false }
+            readOnly={ input.readOnly }
+            disabled={ input.disabled }
+            required={ input.required }
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data.name);
+            } }
+            { ...childFieldProps }
+        />
+    );
+};
+
+export const ToggleAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+
+    return (
+        <Form.Checkbox
+            label={ childFieldProps.label }
+            name={ childFieldProps.name }
+            children={ childFieldProps.children }
+            onChange={ (event, data) => {
+                event.preventDefault();
+                input.onChange(data.name);
+            } }
+            onBlur={ (event) => input.onBlur(event) }
+            readOnly={ childFieldProps.readOnly }
+            disabled={ childFieldProps.disabled }
+            defaultChecked={ childFieldProps.defaultChecked }
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data.name);
+            } }
+            autoFocus={ childFieldProps.autoFocus || false }
+        />
+    );
+};
 
 export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     if (childFieldProps.fieldType === "primary-btn") {

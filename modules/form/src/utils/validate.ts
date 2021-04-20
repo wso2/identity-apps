@@ -18,6 +18,7 @@
 
 import { FormValidation } from "@wso2is/validation";
 import { FieldConstants } from "../constants";
+import {FieldState} from "final-form";
 
 /**
  * Util method to apply default validations to the fields.
@@ -54,7 +55,9 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
     }
 };
 
-export const getValidation = (value: any, field: string, fieldType: string, validation: any, required: boolean) => {
+export const getValidation = (
+    value: any, meta: any, field: string, fieldType: string, validation: any, required: boolean
+) => {
 
     if (required && !value) {
         return FieldConstants.FIELD_REQUIRED_ERROR;

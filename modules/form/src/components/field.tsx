@@ -20,7 +20,6 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint, MessageWithIcon } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { FieldProps, Field as FinalFormField } from "react-final-form";
-import { Grid } from "semantic-ui-react";
 import {
     ButtonAdapter,
     CopyFieldAdapter,
@@ -42,11 +41,11 @@ export interface FormFieldPropsInterface extends FieldProps<any,any,any>, Testab
      */
     fieldType: "default" | "identifier" | "name" | "resourceName" | "email" | "url" | "copy-input" |
         "password" | "phoneNumber" | "primary-btn" | "cancel-btn" | "danger-btn" | "secondary-btn" |
-        "link-btn";
+        "link-btn"| "checkbox";
     /**
      * Hint of the form field.
      */
-    hint?: string;
+    hint?: string | ReactElement;
     /**
      * Max length of the input.
      */
@@ -81,8 +80,6 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
         ...rest
     } = props;
 
-    const required = value => (value ? undefined : 'Required');
-
     const formFieldGenerator = (): ReactElement => {
         if (props.type === "text") {
             if (fieldType == "password") {
@@ -94,7 +91,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                         name={ props.name }
                         component={ PasswordFieldAdapter }
                         validate={ (value,allValues, meta) =>
-                            getValidation(value, props.type, fieldType, validation, props.required)
+                            getValidation(value, meta, props.type, fieldType, validation, props.required)
                         }
                     />
                 );
@@ -107,7 +104,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                         name={ props.name }
                         component={ CopyFieldAdapter }
                         validate={ (value,allValues, meta) =>
-                            getValidation(value, props.type, fieldType, validation, props.required)
+                            getValidation(value, meta, props.type, fieldType, validation, props.required)
                         }
                     />
                 );
@@ -118,7 +115,9 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                         type="text"
                         name={ props.name }
                         component={ TextFieldAdapter }
-                        validate={ required }
+                        validate={ (value,allValues, meta) => {
+                            getValidation(value, meta, props.type, fieldType, validation, props.required);
+                        } }
                         { ...props }
                     />
                 );
@@ -132,11 +131,11 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ TextAreaAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(value, props.type, fieldType, validation, props.required)
+                        getValidation(value, meta, props.type, fieldType, validation, props.required)
                     }
                 />
             );
-        } else if (props.type === "toggle") {
+        } else if (props.type === "checkbox") {
             return (
                 <FinalFormField
                     { ...rest }
@@ -145,7 +144,7 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ ToggleAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(value, props.type, fieldType, validation, props.required)
+                        getValidation(value, meta, props.type, fieldType, validation, props.required)
                     }
                 />
             );
@@ -176,25 +175,19 @@ export const Field = (props: FormFieldPropsInterface): ReactElement => {
 
     return (
         <>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ props.width }>
-                        { formFieldGenerator() }
-                        {
-                            props.hint && (
-                                <Hint>
-                                    { props.hint }
-                                </Hint>
-                            )
-                        }
-                        {
-                            props.message && (
-                                resolveFormFieldMessage()
-                            )
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            { formFieldGenerator() }
+            {
+                props.hint && (
+                    <Hint compact>
+                        { props.hint }
+                    </Hint>
+                )
+            }
+            {
+                props.message && (
+                    resolveFormFieldMessage()
+                )
+            }
         </>
     );
 };
