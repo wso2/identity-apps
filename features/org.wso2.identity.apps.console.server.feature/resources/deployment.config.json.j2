@@ -458,7 +458,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.manage_getting_started.enabled }},
+                "enabled":{% if console.manage_getting_started.scopes is defined %} {{ console.manage_getting_started.enabled }},
+                    {% else %} true,
+                    {% endif %}
                 "scopes": {
                     {% if console.manage_getting_started.scopes is defined %}
                     {% for operation, scopes in console.manage_getting_startedscopes.items() %}
