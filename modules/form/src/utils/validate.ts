@@ -56,8 +56,15 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
 };
 
 export const getValidation = (
-    value: any, meta: any, field: string, fieldType: string, validation: any, required: boolean
+    value: any, meta: any, field: string, required: boolean, fieldType?: string, validation?: any
 ) => {
+
+    debugger;
+    if (!meta.modified) {
+        return;
+    }
+
+    console.log("Validation value", value);
 
     if (required && !value) {
         return FieldConstants.FIELD_REQUIRED_ERROR;

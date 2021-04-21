@@ -20,6 +20,7 @@ import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButt
 import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
 import { Form, Input } from "semantic-ui-react";
+import { FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -46,11 +47,11 @@ export const TextFieldAdapter = (props): ReactElement => {
                 input.onChange(data?.value);
             } }
             onBlur={ (event) => input.onBlur(event) }
-            error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
-            value={ meta.dirty ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
-            { ...childFieldProps }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            { ...omit(childFieldProps, ["value"]) }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
         />
     );
 };
@@ -76,6 +77,7 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
         />
     );
 };
@@ -90,6 +92,7 @@ export const CopyFieldAdapter = (props): ReactElement => {
             data-testid={ childFieldProps.testId }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
+            value={ childFieldProps?.value ? childFieldProps?.value : "" }
         />
     );
 };
@@ -145,7 +148,7 @@ export const ToggleAdapter = (props): ReactElement => {
 };
 
 export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
-    if (childFieldProps.fieldType === "primary-btn") {
+    if (childFieldProps.type === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -156,7 +159,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </PrimaryButton>
         );
-    } else if (childFieldProps.fieldType === "cancel-btn") {
+    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_CANCEL) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -166,7 +169,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { "Cancel" }
             </LinkButton>
         );
-    } else if (childFieldProps.fieldType === "link-btn") {
+    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_LINK) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -176,7 +179,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </LinkButton>
         );
-    } else if (childFieldProps.fieldType === "danger-btn") {
+    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_DANGER) {
         return (
             <DangerButton
                 { ...omit(childFieldProps, ["label"]) }

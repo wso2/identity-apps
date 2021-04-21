@@ -17,19 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Hint, MessageWithIcon } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
-import { FieldProps, Field as FinalFormField } from "react-final-form";
-import {
-    ButtonAdapter,
-    CopyFieldAdapter,
-    PasswordFieldAdapter,
-    TextAreaAdapter,
-    TextFieldAdapter,
-    ToggleAdapter
-} from "./adapters";
-import { FormFieldMessage } from "../models";
-import { getValidation } from "../utils";
+import classNames from "classnames";
+import React, { cloneElement, ReactElement } from "react";
+import { FieldProps } from "react-final-form";
+import { FieldButton } from "./field-button";
+import { FieldCheckbox } from "./field-checkbox";
+import { FieldInput } from "./field-input";
+import { FieldTextarea } from "./field-textarea";
 
 export interface FormFieldPropsInterface extends FieldProps<any,any,any>, TestableComponentInterface {
     /**
@@ -37,166 +31,53 @@ export interface FormFieldPropsInterface extends FieldProps<any,any,any>, Testab
      */
     ariaLabel: string;
     /**
-     * Type of the form field.
+     * Additional classes.
      */
-    fieldType: "default" | "identifier" | "name" | "resourceName" | "email" | "url" | "copy-input" |
-        "password" | "phoneNumber" | "primary-btn" | "cancel-btn" | "danger-btn" | "secondary-btn" |
-        "link-btn"| "checkbox";
+    className?: string;
     /**
-     * Hint of the form field.
+     * Custom styles object
      */
-    hint?: string | ReactElement;
-    /**
-     * Max length of the input.
-     */
-    maxLength?: number;
-    /**
-     * Regex pattern to validate the input against.
-     */
-    pattern?: string;
-    /**
-     * Message to be displayed.
-     */
-    message?: FormFieldMessage;
-    /**
-     * Validation of the field.
-     */
-    validation?: any;
+    style?: object;
 }
 
 /**
  * Implementation of the Form Field component.
  * @param props
  */
-export const Field = (props: FormFieldPropsInterface): ReactElement => {
-
+ export const Field = (props: FormFieldPropsInterface): ReactElement => {
     const {
-        fieldType,
-        hint,
-        maxLength,
-        message,
-        validation,
-        [ "data-testid" ]: testId,
-        ...rest
+        children,
+        className,
+        style
     } = props;
 
-    const formFieldGenerator = (): ReactElement => {
-        if (props.type === "text") {
-            if (fieldType == "password") {
-                return (
-                    <FinalFormField
-                        { ...rest }
-                        key={ testId }
-                        type="password"
-                        name={ props.name }
-                        component={ PasswordFieldAdapter }
-                        validate={ (value,allValues, meta) =>
-                            getValidation(value, meta, props.type, fieldType, validation, props.required)
-                        }
-                    />
-                );
-            } else if (fieldType == "copy-input") {
-                return (
-                    <FinalFormField
-                        { ...rest }
-                        key={ testId }
-                        type="text"
-                        name={ props.name }
-                        component={ CopyFieldAdapter }
-                        validate={ (value,allValues, meta) =>
-                            getValidation(value, meta, props.type, fieldType, validation, props.required)
-                        }
-                    />
-                );
-            } else {
-                return (
-                    <FinalFormField
-                        key={ testId }
-                        type="text"
-                        name={ props.name }
-                        component={ TextFieldAdapter }
-                        validate={ (value,allValues, meta) => {
-                            getValidation(value, meta, props.type, fieldType, validation, props.required);
-                        } }
-                        { ...props }
-                    />
-                );
-            }
-        } else if (props.type === "textarea") {
-            return (
-                <FinalFormField
-                    { ...rest }
-                    key={ testId }
-                    type="textarea"
-                    name={ props.name }
-                    component={ TextAreaAdapter }
-                    validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, fieldType, validation, props.required)
-                    }
-                />
-            );
-        } else if (props.type === "checkbox") {
-            return (
-                <FinalFormField
-                    { ...rest }
-                    key={ testId }
-                    type="checkbox"
-                    name={ props.name }
-                    component={ ToggleAdapter }
-                    validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, fieldType, validation, props.required)
-                    }
-                />
-            );
-        } else if (props.type === "button") {
-            return (
-                <FinalFormField
-                    key={ testId }
-                    name={ props.name }
-                    component={ ButtonAdapter }
-                    { ...props }
-                />
-            );
-        }
-    };
+    const classes = classNames(
+        "fields",
+        className
+    );
 
-    const resolveFormFieldMessage = () => {
-        switch (props.message.type) {
-            case "info":
-                return (
-                    <MessageWithIcon
-                        type={ props.message.type }
-                        content={ props.message.content }
-                        header={ props.message.header }
-                    />
-                );
-        }
-    };
+    const childNodes = React.Children.toArray(children);
 
     return (
-        <>
-            { formFieldGenerator() }
+        <div className={ classes } style={ style }>
             {
-                props.hint && (
-                    <Hint compact>
-                        { props.hint }
-                    </Hint>
-                )
+                childNodes.map((child: any) => {
+                    if (!child) {
+                        return null;
+                    }
+
+                    const childProps = {
+                        ...child.props
+                    };
+
+                    return cloneElement(child, childProps);
+                })
             }
-            {
-                props.message && (
-                    resolveFormFieldMessage()
-                )
-            }
-        </>
+        </div>
     );
 };
 
-/**
- * Default props for the component.
- */
-Field.defaultProps = {
-    fieldType: "default",
-    maxLength: 50,
-    width: 10
-};
+Field.Input = FieldInput;
+Field.Button = FieldButton;
+Field.Textarea = FieldTextarea;
+Field.Checkbox = FieldCheckbox;

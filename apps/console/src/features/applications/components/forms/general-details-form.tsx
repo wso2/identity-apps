@@ -136,9 +136,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
         >
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
-                <Field
+                <Field.Input
                     ariaLabel="Application name"
-                    fieldType="resourceName"
+                    type="resourceName"
                     name="name"
                     label={
                         t("console:develop.features.applications.forms.generalDetails.fields.name" +
@@ -150,16 +150,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".placeholder")
                     }
                     value={ name }
-                    type="text"
                     readOnly={ readOnly }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     data-testid={ `${ testId }-application-name-input` }
                     width={ 16 }
                 />
             ) }
-            <Field
+            <Field.Textarea
                 ariaLabel="Application description"
-                fieldType="name"
                 name="description"
                 label={
                     t("console:develop.features.applications.forms.generalDetails.fields.description" +
@@ -170,7 +168,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     t("console:develop.features.applications.forms.generalDetails.fields.description" +
                         ".placeholder")
                 }
-                type="textarea"
                 value={ description }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-description-textarea` }
@@ -179,9 +176,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 width={ 16 }
             />
             {
-                <Field
+                <Field.Input
                     ariaLabel="Application image URL"
-                    fieldType="url"
+                    type="url"
                     name="imageUrl"
                     label={
                         t("console:develop.features.applications.forms.generalDetails" +
@@ -192,7 +189,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         t("console:develop.features.applications.forms.generalDetails" +
                             ".fields.imageUrl.placeholder")
                     }
-                    type="text"
                     value={ imageUrl }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-application-image-url-input` }
@@ -203,12 +199,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     width={ 16 }
                 />
             }
-            <Field
+            <Field.Checkbox
                 ariaLabel="Make application discoverable by end users"
-                fieldType="checkbox"
+                type="checkbox"
                 name="discoverableByEndUsers"
                 required={ false }
-                type="checkbox"
                 label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                             ".discoverable.label") }
                 value={ isDiscoverable ? [ "discoverable" ] : [] }
@@ -230,9 +225,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 width={ 16 }
             />
-            <Field
+            <Field.Input
                 ariaLabel="Application access URL"
-                fieldType="url"
+                type="url"
                 name="accessUrl"
                 label={
                     t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
@@ -242,7 +237,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
                         ".placeholder")
                 }
-                type="text"
                 value={ accessUrl }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-access-url-input` }
@@ -251,12 +245,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             />
             {
                 !readOnly && (
-                    <Field
+                    <Field.Button
                         size="small"
-                        fieldType="primary-btn"
+                        type="primary_btn"
                         ariaLabel="Update button"
                         name="update-button"
-                        type="button"
                         data-testid={ `${ testId }-submit-button` }
                         disabled={ false }
                         label="Update"
