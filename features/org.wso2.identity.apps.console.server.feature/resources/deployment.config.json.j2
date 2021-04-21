@@ -162,6 +162,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.applications.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.applications.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "approvals": {
@@ -187,6 +200,19 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.approvals.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.approvals.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             },
@@ -214,6 +240,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.attribute_dialects.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.attribute_dialects.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "certificates": {
@@ -239,6 +278,19 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.certificates.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.certificates.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             },
@@ -266,6 +318,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.email_templates.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.email_templates.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "generalConfigurations": {
@@ -291,6 +356,19 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.general_configurations.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.general_configurations.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             },
@@ -318,6 +396,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.groups.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.groups.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "identityProviders": {
@@ -343,6 +434,58 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.identity_providers.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.identity_providers.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
+                }
+            },
+            "manageGettingStarted": {
+                "disabledFeatures": [
+                    {% if console.manage_getting_started.disabled_features is defined %}
+                    {% for feature in console.manage_getting_started.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.manage_getting_started.enabled }},
+                "scopes": {
+                    {% if console.manage_getting_started.scopes is defined %}
+                    {% for operation, scopes in console.manage_getting_startedscopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.manage_getting_started.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.manage_getting_started.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             },
@@ -370,6 +513,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.oidc_scopes.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.oidc_scopes.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "remoteFetchConfig": {
@@ -395,6 +551,19 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.remote_fetch.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.remote_fetch.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             },
@@ -422,6 +591,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.roles.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.roles.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "users": {
@@ -448,6 +630,19 @@
                         "update": [],
                         "delete": []
                     {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.users.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.users.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
+                    {% endif %}
                 }
             },
             "userStores": {
@@ -473,6 +668,19 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                },
+                "shouldHaveAllScopes": {
+                    {% if console.user_stores.shouldHaveAllScopes is defined %}
+                    {% for operation, flag in console.user_stores.shouldHaveAllScopes.items() %}
+                    "{{ operation }}": "{{ flag }}"
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": true,
+                        "read": true,
+                        "update": true,
+                        "delete": true
                     {% endif %}
                 }
             }
@@ -549,7 +757,7 @@
                 {% for value in console.system_apps_identifiers %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
-            {% endif %} 
+            {% endif %}
         ],
         "theme": {
             "name": "{{ console.theme }}"
