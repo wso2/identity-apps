@@ -64,8 +64,9 @@ export const LoginVerifyingData: React.FunctionComponent<LoginVerifyDataProps> =
             }).catch(() => {
                 setTypingDNAEnabled(false);
             });
+        } else {
+            setTypingDNAEnabled(false);
         }
-        setTypingDNAEnabled(false);
     };
 
     useEffect(() => {
