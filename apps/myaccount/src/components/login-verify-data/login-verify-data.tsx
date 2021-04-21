@@ -55,11 +55,18 @@ export const LoginVerifyingData: React.FunctionComponent<LoginVerifyDataProps> =
     const [typingDNAEnabled, setTypingDNAEnabled] = useState(false);
 
     const getTypingDNAEnabled = (): void => {
-        isTypingDNAEnabled().then(function(data) {
-            setTypingDNAEnabled(data);
-        }).catch(() => {
+        if (isFeatureEnabled(
+            featureConfig?.security,
+            AppConstants.FEATURE_DICTIONARY.get("SECURITY_LOGIN_VERIFY_DATA_TYPINGDNA")
+        )) {
+            isTypingDNAEnabled().then(function(data) {
+                setTypingDNAEnabled(data);
+            }).catch(() => {
+                setTypingDNAEnabled(false);
+            });
+        } else {
             setTypingDNAEnabled(false);
-        });
+        }
     };
 
     useEffect(() => {
@@ -69,6 +76,7 @@ export const LoginVerifyingData: React.FunctionComponent<LoginVerifyDataProps> =
     return (
         <>
             {
+                // TODO: Need to add a general check for hiding the section if no items available.
                 typingDNAEnabled ?
                     (
                         <SettingsSection
