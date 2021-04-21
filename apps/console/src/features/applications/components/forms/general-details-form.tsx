@@ -138,7 +138,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
-                    type="resourceName"
+                    inputType="email"
                     name="name"
                     label={
                         t("console:develop.features.applications.forms.generalDetails.fields.name" +
@@ -152,6 +152,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     value={ name }
                     readOnly={ readOnly }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                    minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
                     width={ 16 }
                 />
@@ -170,6 +171,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ description }
                 readOnly={ readOnly }
+                maxLength={ 300 }
+                minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
                 hint={ t("console:develop.features.applications.forms.generalDetails.fields.description." +
                     "description") }
@@ -178,7 +181,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             {
                 <Field.Input
                     ariaLabel="Application image URL"
-                    type="url"
+                    inputType="url"
                     name="imageUrl"
                     label={
                         t("console:develop.features.applications.forms.generalDetails" +
@@ -192,6 +195,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     value={ imageUrl }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-application-image-url-input` }
+                    maxLength={ 200 }
+                    minLength={ 3 }
                     hint={
                         t("console:develop.features.applications.forms.generalDetails" +
                             ".fields.imageUrl.hint")
@@ -201,7 +206,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             }
             <Field.Checkbox
                 ariaLabel="Make application discoverable by end users"
-                type="checkbox"
                 name="discoverableByEndUsers"
                 required={ false }
                 label={ t("console:develop.features.applications.forms.generalDetails.fields" +
@@ -227,7 +231,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             />
             <Field.Input
                 ariaLabel="Application access URL"
-                type="url"
+                inputType="url"
                 name="accessUrl"
                 label={
                     t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
@@ -239,6 +243,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ accessUrl }
                 readOnly={ readOnly }
+                maxLength={ 200 }
+                minLength={ 3 }
                 data-testid={ `${ testId }-application-access-url-input` }
                 hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
                 width={ 16 }
@@ -247,7 +253,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 !readOnly && (
                     <Field.Button
                         size="small"
-                        type="primary_btn"
+                        buttonType="primary_btn"
                         ariaLabel="Update button"
                         name="update-button"
                         data-testid={ `${ testId }-submit-button` }

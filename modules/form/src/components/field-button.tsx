@@ -26,11 +26,7 @@ export interface FieldButtonPropsInterface extends FormFieldPropsInterface {
     /**
      * Type of the button field.
      */
-    type: FieldButtonTypes.BUTTON_DANGER
-        | FieldButtonTypes.BUTTON_LINK
-        | FieldButtonTypes.BUTTON_PRIMARY
-        | FieldButtonTypes.BUTTON_CANCEL
-        | FieldButtonTypes.BUTTON_DEFAULT;
+    buttonType: "primary_btn" | "cancel_btn" | "danger_btn" | "secondary_btn";
 }
 
 /**

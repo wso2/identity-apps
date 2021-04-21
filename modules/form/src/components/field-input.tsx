@@ -28,15 +28,8 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
     /**
      * Type of the input field.
      */
-    type: FieldInputTypes.INPUT_DEFAULT
-        | FieldInputTypes.INPUT_COPY
-        | FieldInputTypes.INPUT_PASSWORD
-        | FieldInputTypes.INPUT_EMAIL
-        | FieldInputTypes.INPUT_IDENTIFIER
-        | FieldInputTypes.INPUT_NAME
-        | FieldInputTypes.INPUT_PHONE_NUMBER
-        | FieldInputTypes.INPUT_RESOURCE_NAME
-        | FieldInputTypes.INPUT_URL;
+    inputType: "default" | "identifier" | "name" | "resourceName" | "email" | "url" | "copy_input" | "password"
+        | "phoneNumber";
     /**
      * Hint of the form field.
      */
@@ -44,7 +37,11 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
     /**
      * Max length of the input.
      */
-    maxLength?: number;
+    maxLength: number;
+    /**
+     * Minimum length of the input.
+     */
+    minLength: number;
     /**
      * Message to be displayed.
      */
@@ -62,7 +59,7 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
 export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
     
     const {
-        type,
+        inputType,
         hint,
         maxLength,
         message,
@@ -72,7 +69,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
     } = props;
     
     const inputFieldGenerator = () => {
-        if (type == FieldInputTypes.INPUT_PASSWORD) {
+        if (inputType == FieldInputTypes.INPUT_PASSWORD) {
             return (
                 <FinalFormField
                     { ...rest }
@@ -81,11 +78,11 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ PasswordFieldAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, props.required, type, validation)
+                        getValidation(value, meta, props.type, props.required, inputType, validation)
                     }
                 />
             );
-        } else if (type == FieldInputTypes.INPUT_COPY) {
+        } else if (inputType == FieldInputTypes.INPUT_COPY) {
             return (
                 <FinalFormField
                     { ...rest }
@@ -94,7 +91,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ CopyFieldAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, props.required, type, validation)
+                        getValidation(value, meta, props.type, props.required, inputType, validation)
                     }
                 />
             );
@@ -107,7 +104,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     component={ TextFieldAdapter }
                     validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.childFieldProps.type, props.required, type, validation)
+                        getValidation(value, meta, props.childFieldProps.type, props.required, inputType, validation)
                     }
                 />
             );
@@ -150,6 +147,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
  * Default props for the component.
  */
 FieldInput.defaultProps = {
+    inputType: "default",
     maxLength: 50,
     minLength: 3,
     type: FieldInputTypes.INPUT_DEFAULT,

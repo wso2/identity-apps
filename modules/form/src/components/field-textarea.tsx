@@ -29,9 +29,13 @@ export interface FieldTextareaPropsInterface extends FormFieldPropsInterface {
      */
     hint?: string | ReactElement;
     /**
-     * Max length of the input.
+     * Maximum length of the input.
      */
-    maxLength?: number;
+    maxLength: number;
+    /**
+     * Minimum length of the input.
+     */
+    minLength: number;
     /**
      * Message to be displayed.
      */

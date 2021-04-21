@@ -148,7 +148,7 @@ export const ToggleAdapter = (props): ReactElement => {
 };
 
 export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
-    if (childFieldProps.type === FieldButtonTypes.BUTTON_PRIMARY) {
+    if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -159,7 +159,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </PrimaryButton>
         );
-    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_CANCEL) {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_CANCEL) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -169,7 +169,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { "Cancel" }
             </LinkButton>
         );
-    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_LINK) {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_LINK) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -179,7 +179,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </LinkButton>
         );
-    } else if (childFieldProps.type === FieldButtonTypes.BUTTON_DANGER) {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_DANGER) {
         return (
             <DangerButton
                 { ...omit(childFieldProps, ["label"]) }
