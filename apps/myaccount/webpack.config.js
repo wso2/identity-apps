@@ -289,7 +289,7 @@ module.exports = (env) => {
             splitChunks: {
                 chunks: "all"
             },
-            // Tells webpack to determine used exports for each module. 
+            // Tells webpack to determine used exports for each module.
             usedExports: true
         },
         output: {
@@ -360,7 +360,7 @@ module.exports = (env) => {
                         // ATM, only the theme CSS files, fonts and branding images are required.
                         globOptions: {
                             dot: true,
-                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding)/**" ],
+                            ignore: [ "**/**.js", "**/**.json", "**/assets/images/!(branding|flags.png)/**" ],
                         },
                         to: "libs"
                     },

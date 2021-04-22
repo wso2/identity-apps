@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import { FlagProps, SemanticShorthandItem, SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
@@ -194,6 +194,7 @@ export interface DropdownChild {
     text: React.ReactNode;
     value: string;
     key: string | number;
+    flag?: SemanticShorthandItem<FlagProps>;
 }
 
 /**
