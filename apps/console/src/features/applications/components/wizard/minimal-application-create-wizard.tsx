@@ -351,6 +351,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         } else if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML) {
             return (
                 <SAMLProtocolSettingsWizardForm
+                    tenantDomain={ tenantName }
+                    allowedOrigins={ allowedOrigins }
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
