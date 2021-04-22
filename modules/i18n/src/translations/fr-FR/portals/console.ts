@@ -1462,7 +1462,10 @@ export const console: ConsoleNS = {
                                 placeholder: "http://localhost:8080/sample-app",
                                 validations: {
                                     invalid: "Veuillez ajouter une URL valide"
-                                }
+                                },
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application en utilisant" +
+                                    " {{assertionURLFromTemplate}} comme URL de réponse d'assertion. (Vous pouvez" +
+                                    " télécharger et exécuter un exemple ultérieurement.)"
                             },
                             defaultAssertionURL: {
                                 hint: "Comme il peut y avoir plusieurs URLs de consommateur d'assertions, " +

@@ -22,8 +22,8 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import {Trans, useTranslation} from "react-i18next";
-import {Grid, Icon, Label, Message} from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
+import { Grid, Icon, Label, Message } from "semantic-ui-react";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -164,14 +164,14 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
     };
 
     /**
-     * The function resolves the newly added origins for the callback URLs.
+     * The function resolves the newly added origins for the assertion URLs.
      * Returns the intersection set of,
      * <ul>
-     * <li>The newly added origins of the callback URLs.</li>
+     * <li>The newly added origins of the assertion URLs.</li>
      * <li>All the available CORS origins.</li>
      * </ul>
      *
-     * @param {string} urls - Callback URLs.
+     * @param {string} urls - Assertion URLs.
      * @return {string[]} Allowed origin URLs.
      */
     const resolveAllowedOrigins = (urls: string): string[] => {
@@ -368,22 +368,28 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                 <Message.Content> {
                                                     <Trans
                                                         i18nKey={ "console:develop.features.applications.forms." +
-                                                        "inboundOIDC.fields.callBackUrls.info" }
-                                                        tOptions={ { callBackURLFromTemplate: assertionConsumerURLFromTemplate  } }
+                                                        "inboundSAML.fields.assertionURLs.info" }
+                                                        tOptions={ { assertionURLFromTemplate:
+                                                            assertionConsumerURLFromTemplate } }
                                                     >
                                                         Don’t have an app? Try out a sample app
-                                                        using <strong>{ assertionConsumerURLFromTemplate }</strong> as the Authorized URL.
+                                                        using <strong>{ assertionConsumerURLFromTemplate }</strong> as
+                                                        the assertion Response URL. (You can download and run a sample
+                                                        at a later step.)
                                                     </Trans>
                                                 }
                                                     {
-                                                        (assertionConsumerUrls === undefined || assertionConsumerUrls === "") && (
+                                                        (assertionConsumerUrls === undefined ||
+                                                            assertionConsumerUrls === "") && (
                                                             <LinkButton
                                                                 className={ "m-1 p-1 with-no-border orange" }
                                                                 onClick={ (e) => {
                                                                     e.preventDefault();
-                                                                    const host = new URL(assertionConsumerURLFromTemplate);
+                                                                    const host = new URL(
+                                                                        assertionConsumerURLFromTemplate);
                                                                     handleAddAllowOrigin(host.origin);
-                                                                    setAssertionConsumerUrls(assertionConsumerURLFromTemplate);
+                                                                    setAssertionConsumerUrls(
+                                                                        assertionConsumerURLFromTemplate);
                                                                 } }
                                                                 data-testid={ `${ testId }-add-now-button` }
                                                             >

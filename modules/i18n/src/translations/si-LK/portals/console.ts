@@ -1436,7 +1436,10 @@ export const console: ConsoleNS = {
                                 placeholder: "http://localhost:8080/sample-app",
                                 validations: {
                                     invalid: "කරුණාකර වලංගු URL එක් කරන්න"
-                                }
+                                },
+                                info: "යෙදුමක් නැද්ද? ප්‍රතිචාර දැක්වීමේ URL ලෙස {{assertionURLFromTemplate}} භාවිතා" +
+                                    " කරමින් නියැදි යෙදුමක් උත්සාහ කරන්න. (ඔබට පසු පියවරකදී නියැදියක් බාගත කර" +
+                                    " ක්‍රියාත්මක කළ හැකිය.)"
                             },
                             defaultAssertionURL: {
                                 hint: "බහු ප්‍රකාශිත පාරිභෝගික URL තිබිය හැකි බැවින්, සත්‍යාපන " +
