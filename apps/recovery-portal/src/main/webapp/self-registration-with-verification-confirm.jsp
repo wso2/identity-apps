@@ -87,7 +87,7 @@
         String userStoreDomain = user.getRealm();
         tenantDomain = user.getTenantDomain();
         if (isAutoLoginEnable) {
-            String fullyQualifiedUsername = UserCoreUtil.addDomainToName(tenantAwareUsername, userStoreDomain);
+            String fullyQualifiedUsername = UserCoreUtil.addDomainToName(username, userStoreDomain);
             username = UserCoreUtil.addTenantDomainToEntry(fullyQualifiedUsername, tenantDomain);
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", username);
