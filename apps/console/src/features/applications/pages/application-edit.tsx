@@ -440,7 +440,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * TODO: IMPORTANT - Refactor this code.
      */
     useEffect(() => {
-        if (isExtensionsAvailable == undefined) {
+        if (isExtensionsAvailable === undefined) {
             return;
         }
 
