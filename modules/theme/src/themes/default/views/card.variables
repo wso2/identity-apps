@@ -127,6 +127,7 @@ Recent Application Card
 @labeledCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @labeledCardTransition: @defaultCardTransition;
 @labeledCardBorder: @defaultCardBorder;
+@labeledCardSelectedBorder: @primaryColor;
 @labeledCardMarginBottom: 5px;
 @labeledCardLabelFontColor: 1em;
 @labeledCardWrapperMarginBottom: 8px;
