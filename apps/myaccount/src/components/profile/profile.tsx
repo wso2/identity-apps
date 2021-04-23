@@ -574,6 +574,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 type="dropdown"
                                                 children={ countryList ? countryList.map(list => {
                                                     return {
+                                                        "data-testid": `${testId}-` + list.value as string,
                                                         key: list.key as string,
                                                         text: list.text as string,
                                                         value: list.value as string,
