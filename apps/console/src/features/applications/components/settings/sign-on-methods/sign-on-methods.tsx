@@ -18,7 +18,7 @@
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
@@ -27,6 +27,7 @@ import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequen
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
+import { GenericAuthenticatorInterface, IdentityProviderManagementUtils } from "../../../../identity-providers";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
@@ -86,6 +87,18 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
+    const [ authenticators, setAuthenticators ] = useState<GenericAuthenticatorInterface[][]>(undefined);
+
+    /**
+     * Loads federated authenticators and local authenticators on component load.
+     */
+    useEffect(() => {
+        IdentityProviderManagementUtils.getAllAuthenticators()
+            .then((response: GenericAuthenticatorInterface[][]) => {
+                    setAuthenticators(response);
+                }
+            );
+    }, []);
 
     /**
      * Check if the sequence is default.
@@ -162,6 +175,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         <>
                             <SignInMethodCustomization
                                 appId={ appId }
+                                authenticators={ authenticators }
                                 authenticationSequence={
                                     resolveAuthenticationSequence(loginFlow, authenticationSequence)
                                 }

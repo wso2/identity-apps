@@ -28,6 +28,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
+import { GenericAuthenticatorInterface } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -46,6 +47,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * ID of the application.
      */
     appId: string;
+    /**
+     * All authenticators in the system.
+     */
+    authenticators: GenericAuthenticatorInterface[][];
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -77,6 +82,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const {
         appId,
+        authenticators,
         authenticationSequence,
         featureConfig,
         isLoading,
@@ -372,6 +378,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             <StepBasedFlow
+                authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }

@@ -45,8 +45,7 @@ import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface,
-    IdentityProviderManagementUtils
+    GenericAuthenticatorInterface
 } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -60,6 +59,10 @@ import {
  * Proptypes for the applications settings component.
  */
 interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
+    /**
+     * All authenticators in the system.
+     */
+    authenticators: GenericAuthenticatorInterface[][];
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -97,7 +100,16 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
 export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
     props: AuthenticationFlowPropsInterface
 ): ReactElement => {
-    const { authenticationSequence, onUpdate, readOnly, triggerUpdate, updateSteps, [ "data-testid" ]: testId } = props;
+
+    const {
+        authenticators,
+        authenticationSequence,
+        onUpdate,
+        readOnly,
+        triggerUpdate,
+        updateSteps,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -115,33 +127,37 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
 
     /**
-     * Loads federated authenticators and local authenticators on component load.
+     * Separates out the different authenticators to their relevant categories.
      */
     useEffect(() => {
-        IdentityProviderManagementUtils.getAllAuthenticators().then(
-            ([ localAuthenticators, federatedAuthenticators ]) => {
-                const localAuth: GenericAuthenticatorInterface[] = [];
-                const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
-                localAuthenticators.forEach((authenticator) => {
-                    if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
-                        const newAuthenticator: GenericAuthenticatorInterface = {
-                            ...authenticator,
-                            isEnabled: hasSpecificFactorsInSteps(
-                                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ])
-                        };
-                        secondFactorAuth.push(newAuthenticator);
-                    } else {
-                        localAuth.push(authenticator);
-                    }
-                });
+        if (!authenticators || !Array.isArray(authenticators) || !authenticators[ 0 ] || !authenticators[ 1 ]) {
+            return;
+        }
 
-                setSecondFactorAuthenticators(secondFactorAuth);
-                setLocalAuthenticators(localAuth);
-                setFederatedAuthenticators(federatedAuthenticators);
+        const localAuthenticators: GenericAuthenticatorInterface[] = authenticators[ 0 ];
+        const federatedAuthenticators: GenericAuthenticatorInterface[] = authenticators[ 1 ];
+
+        const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
+        const secondFactorAuth: GenericAuthenticatorInterface[] = [];
+
+        localAuthenticators.forEach((authenticator) => {
+            if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
+                const newAuthenticator: GenericAuthenticatorInterface = {
+                    ...authenticator,
+                    isEnabled: hasSpecificFactorsInSteps(
+                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ])
+                };
+                secondFactorAuth.push(newAuthenticator);
+            } else {
+                moderatedLocalAuthenticators.push(authenticator);
             }
-        );
-    }, []);
+        });
+
+        setSecondFactorAuthenticators(secondFactorAuth);
+        setLocalAuthenticators(moderatedLocalAuthenticators);
+        setFederatedAuthenticators(federatedAuthenticators);
+    }, [ authenticators ]);
 
     /**
      * If the `authenticationSequence` prop is available, sets the authentication steps,
@@ -190,7 +206,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         setSecondFactorAuthenticators(
-            secondFactorAuthenticators.map((authenticator) => {
+            [ ...secondFactorAuthenticators ].map((authenticator) => {
                 authenticator.isEnabled = shouldEnable;
                 return authenticator;
             })
