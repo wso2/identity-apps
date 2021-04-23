@@ -113,267 +113,273 @@
 }
 
  /*****************************************
-             Sign on methods
+             Sign-in Method Section
  *****************************************/
 
- .sign-on-methods-tab-content {
-     .authentication-flow-section {
-         .main-content {
-             transition: width ease 500ms;
-             width: 100%;
-         }
+.sign-on-methods-tab-content {
+    .sign-in-method-landing {
+        .default-config-column {
+            border-right: @defaultBorderWidth solid @defaultBorderColor;
+            
+            .default-config-description {
+                padding: 2em 3em;
+            }
+        }
+        .flow-options-column {
+            
+        }
+    }
 
-         .authenticators-panel {
-             display: inline-block;
-             z-index: 9;
+    .authentication-steps-section {
+        display: @signOnMethodsAuthStepSectionDisplay;
+        overflow: @signOnMethodsAuthStepSectionOverflow;
+        max-height: @signOnMethodsAuthStepSectionMaxHeight;
+        border: @signOnMethodsAuthStepSectionBorder;
+        padding: @signOnMethodsAuthStepSectionPadding;
+        max-width: @signOnMethodsAuthStepSectionMaxWidth;
 
-             .drag-handle {
-                 cursor: grab;
+        .authentication-step-container {
+            .step-header {
+                display: inline-block;
+            }
+            .delete-button {
+                display: inline-block;
+                float: right;
+                color: @nobel;
 
-                 &:active, &:focus {
-                     cursor: grabbing;
-                 }
-             }
+                &:hover {
+                    color: @black;
+                    cursor: pointer;
+                }
+            }
+            .authentication-step {
+                background-color: @whiteSmoke;
+                padding: 15px;
+                border-radius: @defaultBorderRadius;
+                display: @signOnMethodsAuthStepDisplay;
+                width: @signOnMethodsAuthStepWidth;
+                overflow: @signOnMethodsAuthStepOverflow;
+                flex-direction: @signOnMethodsAuthStepFlexDirection;
+                min-height: @signOnMethodsAuthStepMinHeight;
+                max-height: @signOnMethodsAuthStepMinHeight;
+                flex-wrap: wrap;
+            }
 
-             .authenticators-section {
-                 .ui.accordion {
-                     .title {
-                         font-size: 0.9em;
+            .checkboxes {
+                margin: 15px 0;
 
-                         .caret-icon {
-                             transition: transform .1s ease-in-out;
-                         }
-                         &.active {
-                             .caret-icon {
-                                 transform: rotate(90deg);
-                             }
-                         }
-                     }
-                 }
-             }
-         }
-
-         .authentication-steps-section {
-             display: @signOnMethodsAuthStepSectionDisplay;
-             overflow: @signOnMethodsAuthStepSectionOverflow;
-             max-height: @signOnMethodsAuthStepSectionMaxHeight;
-             border: @signOnMethodsAuthStepSectionBorder;
-             padding: @signOnMethodsAuthStepSectionPadding;
-             max-width: @signOnMethodsAuthStepSectionMaxWidth;
-
-             .authentication-step-container {
-                 .step-header {
-                     display: inline-block;
-                 }
-                 .delete-button {
-                     display: inline-block;
-                     float: right;
-                     color: @nobel;
-
-                     &:hover {
-                         color: @black;
-                         cursor: pointer;
-                     }
-                 }
-                 .authentication-step {
-                     background-color: @whiteSmoke;
-                     padding: 15px;
-                     border-radius: @defaultBorderRadius;
-                     display: @signOnMethodsAuthStepDisplay;
-                     width: @signOnMethodsAuthStepWidth;
-                     overflow: @signOnMethodsAuthStepOverflow;
-                     flex-direction: @signOnMethodsAuthStepFlexDirection;
-                     min-height: @signOnMethodsAuthStepMinHeight;
-                     max-height: @signOnMethodsAuthStepMinHeight;
-                     flex-wrap: wrap;
-                 }
-
-                 .checkboxes {
-                     margin: 15px 0;
-
-                     .checkbox {
-                         &:not(:last-child) {
-                             margin-right: 20px;
-                         }
-                     }
-                 }
-             }
-
-             .trail {
-                 &:after {
-                     content: '';
-                     margin-top: 0;
-                     margin-left: 10px;
-                     width: 50px;
-                     z-index: 9;
-                     height: 0;
-                     border: @signOnMethodsAuthStepBorder;
-                 }
-             }
-
-             .add-step-button {
-                 padding-left: 0;
-             }
-
-             .flow-button-container {
-                 text-align: center;
-                 align-items: center;
-                 justify-content: center;
-                 display: flex;
-
-                 &.with-trail {
-                     &:after {
-                         content: '';
-                         margin-top: 0;
-                         margin-left: 10px;
-                         width: 47px;
-                         z-index: 9999;
-                         height: 0;
-                         border: @signOnMethodsAuthStepBorder;
-                     }
-                 }
-
-                 &.with-margin {
-                     margin-right: @signOnMethodsAuthStepButtonMarginRight;
-                 }
-             }
-         }
-         &.flex {
-             display: flex;
-
-             .main-content {
-                 padding-right: 2em;
-             }
-         }
-     }
-
-     /**
-        TODO: This styling is used by the SQL editor component as well.
-        This should be refactored into a separate class.
-     **/
-     .adaptive-scripts-section {
-         .script-editor-section {
-             border: @defaultBorderWidth solid @defaultBorderColor;
-             border-radius: @defaultBorderRadius;
-
-             .script-editor-container {
-                 transition: width ease-in-out 0.2s;
-
-                 .code-editor-wrapper {
-                     padding: 0;
-                     border: none;
-                 }
-
-                 .action-panel {
-                     border: none;
-
-                     .action {
-                         padding: 8px;
-
-                         i {
-                             margin-right: 0;
-                         }
-                     }
-                 }
-             }
-
-             .reset-button {
-                 cursor: pointer;
-
-                 &:hover {
-                     color: @primaryColor;
-                 }
-             }
-
-             .script-templates-panel {
-                 padding: 1em;
-                 border: none;
-                 box-shadow: none !important;
-
-                 &.left {
-                    ~.pusher {
-                        display: flex;
-                        justify-content: flex-end;
+                .checkbox {
+                    &:not(:last-child) {
+                        margin-right: 20px;
                     }
-                 }
+                }
+            }
+        }
+        
+        .step-actions-container {
+            display: flex;
+            margin-left: 25px;
 
-                 .template-category-menu {
-                     margin-right: 0;
+            .action-button-group {
+                margin: auto 0;
+                width: max-content;
+                
+                .action-divider {
+                    margin-left: 20px;
+                }
+            }
+        }
 
-                     > .item {
-                         padding: 0;
+        .trail {
+            &:after {
+                content: '';
+                margin-top: 0;
+                margin-left: 10px;
+                width: 50px;
+                z-index: 9;
+                height: 0;
+                border: @signOnMethodsAuthStepBorder;
+            }
+        }
 
-                         .category-name {
-                             background: @white;
-                             padding: 0.9em 1em;
-                             border-radius: @defaultBorderRadius;
-                             border-left: 3px solid transparent;
+        .flow-button-container {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
 
-                             &.active {
-                                 box-shadow: 0 2px 3px 0 @darkGray;
-                                 border-left: 3px solid @primaryColor;
-                             }
+            &.with-trail {
+                &:after {
+                    content: '';
+                    margin-top: 0;
+                    margin-left: 10px;
+                    width: 47px;
+                    z-index: 9999;
+                    height: 0;
+                    border: @signOnMethodsAuthStepBorder;
+                }
+            }
 
-                             .caret-icon {
-                                 transition: transform .1s ease-in-out;
-                                 float: right;
-                             }
-                             &.active {
-                                 .caret-icon {
-                                     transform: rotate(90deg);
-                                 }
-                             }
-                         }
+            &.with-margin {
+                margin-right: @signOnMethodsAuthStepButtonMarginRight;
+            }
+        }
+    }
 
-                         .template-list {
-                             > .item {
-                                 background: darken(@white, 1);
-                                 margin: 0;
-                                 text-overflow: ellipsis;
-                                 white-space: nowrap;
-                                 overflow: hidden;
-                                 color: lighten(@textColor, 20);
-                                 font-size: 0.9em;
+    .conditional-auth-section {
+        .conditional-auth-accordion {
+            &-title {
+                display: flex;
 
-                                 &:not(:last-child) {
-                                     border-bottom: 1px solid lighten(@defaultBorderColor, 30);
-                                     border-bottom-right-radius: 0;
-                                     border-bottom-left-radius: 0;
-                                 }
+                &-text {
+                    margin-left: 20px;
+                }
+            }
+            
+            &-content {
+                padding: 0;
+            }
 
-                                 &:not(:first-child) {
-                                     border-top-right-radius: 0;
-                                     border-top-left-radius: 0;
-                                 }
+            &-toggle {
+                margin: auto 0;
+            }
+        }
+    }
+}
 
-                                 .template-name {
-                                     display: inline-block;
-                                     width: 120px;
-                                     text-overflow: ellipsis;
-                                     white-space: nowrap;
-                                     overflow: hidden;
-                                 }
+.authenticator-card {
+    font-size: @signOnMethodsAuthCardFontSize;
+}
 
-                                 .add-button {
-                                     cursor: pointer;
+/*****************************************
+   Script editor with selection panel
+*****************************************/
 
-                                     &:hover {
-                                         color: @primaryColor;
-                                     }
-                                 }
+.script-editor-with-template-panel {
+    
+    &:not(.no-border) {
+        border: @defaultBorderWidth solid @defaultBorderColor;
+        border-radius: @defaultBorderRadius; 
+    }
 
-                                 &.active {
-                                    border-left: 2px solid @primaryColor;
-                                 }
-                             }
-                         }
-                     }
-                 }
-             }
-         }
-     }
- }
+    .script-editor-container {
+        transition: width ease-in-out 0.2s;
 
+        .code-editor-wrapper {
+            padding: 0;
+            border: none;
+        }
+
+        .action-panel {
+            border: none !important;
+
+            .action {
+                padding: 8px;
+
+                i {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .reset-button {
+        cursor: pointer;
+
+        &:hover {
+            color: @primaryColor;
+        }
+    }
+
+    .script-templates-panel {
+        padding: 1em !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        &.left {
+            ~.pusher {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+
+        .template-category-menu {
+            margin-right: 0;
+
+            > .item {
+                padding: 0;
+                line-height: 1.1em;
+
+                .category-name {
+                    background: @white;
+                    padding: 0.9em 1em;
+                    border-radius: @defaultBorderRadius;
+                    border-left: 3px solid transparent;
+
+                    &.active {
+                        box-shadow: 0 2px 3px 0 @darkGray;
+                        border-left: 3px solid @primaryColor;
+                    }
+
+                    .caret-icon {
+                        transition: transform .1s ease-in-out;
+                        float: right;
+                    }
+
+                    &.active {
+                        .caret-icon {
+                            transform: rotate(90deg);
+                        }
+                    }
+                }
+
+                .template-list {
+                    > .item {
+                        background: darken(@white, 1);
+                        margin: 0;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        color: lighten(@textColor, 20);
+                        font-size: 0.9em;
+
+                        &:not(:last-child) {
+                            border-bottom: 1px solid lighten(@defaultBorderColor, 30);
+                            border-bottom-right-radius: 0;
+                            border-bottom-left-radius: 0;
+                        }
+
+                        &:not(:first-child) {
+                            border-top-right-radius: 0;
+                            border-top-left-radius: 0;
+                        }
+
+                        .template-name {
+                            display: inline-block;
+                            width: 120px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+
+                        .add-button {
+                            cursor: pointer;
+
+                            &:hover {
+                                color: @primaryColor;
+                            }
+                        }
+
+                        &.active {
+                            border-left: 2px solid @primaryColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+ 
 /*****************************************
         Email Template
 *****************************************/
