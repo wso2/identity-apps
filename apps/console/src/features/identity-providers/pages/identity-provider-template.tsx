@@ -35,6 +35,7 @@ import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Divider, Grid } from "semantic-ui-react";
 import {
     AppConstants,
@@ -75,7 +76,7 @@ import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provi
 /**
  * Proptypes for the IDP template selection page component.
  */
-type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterface
+type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterface & RouteComponentProps;
 
 /**
  * Choose the application template from this page.
@@ -89,8 +90,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 ): ReactElement => {
 
     const {
+        location,
         [ "data-testid" ]: testId
     } = props;
+
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -209,6 +213,25 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 setCategorizedTemplates([]);
             });
     }, [ identityProviderTemplates ]);
+
+    /**
+     * Subscribe to the URS search params to check for IDP create wizard triggers.
+     * ex: If the URL contains a search param `?open=8ea23303-49c0-4253-b81f-82c0fe6fb4a0`,
+     * it'll open up the IDP create template with ID `8ea23303-49c0-4253-b81f-82c0fe6fb4a0`.
+     */
+    useEffect(() => {
+
+        if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
+            return;
+        }
+        
+        if (urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
+            === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
+
+            handleTemplateSelection(null, { id: IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE });
+            return;
+        }
+    }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Retrieve Identity Provider template.
@@ -516,29 +539,35 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         : <ContentLoader dimmer/>
                 }
                 <Divider hidden/>
-                { showWizard && (
-                    GOOGLE_IDP_NAME === selectedTemplateWithUniqueName.name ?
-                        <GoogleAuthenticationProviderCreateWizard
-                            title={ selectedTemplateWithUniqueName?.name }
-                            subTitle={ selectedTemplateWithUniqueName?.description }
-                            closeWizard={ () => {
-                                setSelectedTemplateWithUniqueName(undefined);
-                                setSelectedTemplate(undefined);
-                                setShowWizard(false);
-                            } }
-                            template={ selectedTemplateWithUniqueName }
-                        /> :
-                        <IdentityProviderCreateWizard
-                            title={ selectedTemplateWithUniqueName?.name }
-                            subTitle={ selectedTemplateWithUniqueName?.description }
-                            closeWizard={ () => {
-                                setSelectedTemplateWithUniqueName(undefined);
-                                setSelectedTemplate(undefined);
-                                setShowWizard(false);
-                            } }
-                            template={ selectedTemplateWithUniqueName }
-                        />
-                ) }
+                {
+                    showWizard && (
+                        (selectedTemplateWithUniqueName.name === GOOGLE_IDP_NAME)
+                            ? (
+                                <GoogleAuthenticationProviderCreateWizard
+                                    title={ selectedTemplateWithUniqueName?.name }
+                                    subTitle={ selectedTemplateWithUniqueName?.description }
+                                    closeWizard={ () => {
+                                        setSelectedTemplateWithUniqueName(undefined);
+                                        setSelectedTemplate(undefined);
+                                        setShowWizard(false);
+                                    } }
+                                    template={ selectedTemplateWithUniqueName }
+                                />
+                            )
+                            : (
+                                <IdentityProviderCreateWizard
+                                    title={ selectedTemplateWithUniqueName?.name }
+                                    subTitle={ selectedTemplateWithUniqueName?.description }
+                                    closeWizard={ () => {
+                                        setSelectedTemplateWithUniqueName(undefined);
+                                        setSelectedTemplate(undefined);
+                                        setShowWizard(false);
+                                    } }
+                                    template={ selectedTemplateWithUniqueName }
+                                />
+                            )
+                    )
+                }
             </PageLayout>
         </HelpPanelLayout>
     );

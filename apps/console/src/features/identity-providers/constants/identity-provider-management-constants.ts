@@ -71,6 +71,21 @@ export class IdentityProviderManagementConstants {
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
+     * Key for the URL search param for IDP create wizard trigger.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
+
+    /**
+     * Set of IDP template Ids.
+     * @type {Record<string, unknown>}
+     */
+    public static readonly IDP_TEMPLATE_IDS: Record<string, unknown> = {
+        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
+    };
+
+    /**
      * Default IDP template loading strategy.
      * @constant
      * @type {IdentityProviderTemplateLoadingStrategies}
