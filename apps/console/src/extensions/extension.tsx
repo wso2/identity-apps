@@ -29,7 +29,7 @@ import { getEmptyPlaceholderIllustrations } from "../features/core";
  * @interface ExtensionInterface - Component placeholder properties.
  */
 interface ExtensionInterface {
-    section: "feedback-button" | "app-switch-button";
+    section: "feedback-button" | "app-switch-button" | "tenant-dropdown";
     type: "component";
 }
 

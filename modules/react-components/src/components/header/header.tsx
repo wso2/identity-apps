@@ -18,17 +18,15 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { resolveUserDisplayName, resolveUsername } from "@wso2is/core/helpers";
-import { LinkedAccountInterface, TenantAssociationsInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { LinkedAccountInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import {
-    Button,
     Container,
     Divider,
     Dropdown,
     DropdownItemProps,
-    Grid,
     Icon,
     Item,
     Menu,
@@ -37,7 +35,6 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
-import { GenericIcon } from "../icon";
 
 /**
  * Header component prop types.
@@ -67,20 +64,9 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     onSidePanelToggleClick?: () => void;
     showSidePanelToggle?: boolean;
     showUserDropdown?: boolean;
-    showTenantDropdown?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
     userDropdownLinks?: HeaderLinkInterface[];
-    tenantDropdownLinks?: HeaderLinkInterface[];
-    tenantAssociations?: TenantAssociationsInterface;
-    onTenantSwitch?: (tenant: string | string[]) => void;
-    /**
-     * Heading for the tenant switcher.
-     */
-    tenantSwitchHeader?: ReactNode;
-    tenantIcon?: any;
-    tenantDefaultButtonText?: ReactNode;
-    tenantMakeDefaultButtonText?: ReactNode;
 }
 
 /**
@@ -142,7 +128,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const {
         announcement,
-        tenantAssociations,
         brand,
         brandLink,
         basicProfileInfo,
@@ -157,17 +142,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownInfoAction,
         showSidePanelToggle,
         showUserDropdown,
-        showTenantDropdown,
-        tenantIcon,
-        tenantSwitchHeader,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
-        onTenantSwitch,
         userDropdownIcon,
         userDropdownLinks,
-        tenantDropdownLinks,
-        tenantDefaultButtonText,
-        tenantMakeDefaultButtonText,
         [ "data-testid" ]: testId
     } = props;
 
@@ -180,9 +158,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         , className
     );
 
-    const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
-
-    const triggerUser = (
+    const trigger = (
         <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
             <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
                 {
@@ -205,32 +181,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         </span>
     );
 
-    const triggerTenant = (
-        <span className="tenant-dropdown-trigger" data-testid={ `${ testId }-tenant-dropdown-trigger` }>
-            <Icon
-                className="link-icon"
-                name={ "warehouse" }
-            />
-            <Responsive minWidth={ 767 } className="tenant-domain" data-testid={ `${ testId }-tenant-display-name` }>
-                {
-                    !tenantAssociations
-                        ? (
-                            <Placeholder data-testid={ `${ testId }-tenant-loading-placeholder` }>
-                                <Placeholder.Line/>
-                            </Placeholder>
-                        )
-                        : tenantAssociations.currentTenant
-                }
-            </Responsive>
-        </span>
-    );
-
     /**
      * Stops the dropdown from closing on click.
      *
      * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
      */
-    const handleDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
+    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
         e.stopPropagation();
     };
 
@@ -261,60 +217,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         return null;
-    };
-
-    const resolveAssociatedTenants = (): ReactElement => {
-        if (Array.isArray(tenantAssociations.associatedTenants)) {
-            return (
-                <Item.Group
-                    className="tenants-list"
-                    unstackable
-                    data-testid={ `${ testId }-linked-accounts-container` }
-                >
-                    {
-                        tenantAssociations.associatedTenants.map((association, index) => (
-                            <Item
-                                className="tenant-account"
-                                key={ index }
-                                onClick={ () => onTenantSwitch(association) }
-                            >
-                                <GenericIcon
-                                    icon={ tenantIcon }
-                                    inline
-                                    size="micro"
-                                    relaxed="very"
-                                    rounded
-                                    spaced="right"
-                                    fill="white"
-                                    background={
-                                        association === tenantAssociations.currentTenant
-                                            ? "primary"
-                                            : "grey"
-                                    }
-                                    className="mt-3"
-                                />
-                                <Item.Content verticalAlign="middle">
-                                    <Item.Description>
-                                        <div
-                                            className="name"
-                                            data-testid={ `${ testId }-la-name` }
-                                        >
-                                            { association }
-                                        </div>
-                                        <div
-                                            className="email"
-                                            data-testid={ `${ testId }-la-email` }
-                                        >
-                                            { tenantAssociations.username }
-                                        </div>
-                                    </Item.Description>
-                                </Item.Content>
-                            </Item>
-                        ))
-                    }
-                </Item.Group>
-            );
-        }
     };
 
     return (
@@ -374,381 +276,200 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                       )
                   )
               }
-
-              <div className="dropdown-container">
-                  { (<Menu.Menu
-                          position="right"
-                          className="header-extensions right"
-                          data-testid={ `${ testId }-tenant-dropdown-container` }
-                      >
-                          {
-                              showTenantDropdown && (
-                                  <Dropdown
-                                      onBlur={ () => setIsSwitchTenantsSelected(false) }
-                                      item
-                                      trigger={ triggerTenant }
-                                      floating
-                                      className="tenant-dropdown"
-                                      data-testid={ `${ testId }-tenant-dropdown` }
-                                  >
-                                      {
-                                          !isSwitchTenantsSelected ? (
-                                              <Dropdown.Menu onClick={ handleDropdownClick }>
-                                                  <Item.Group className="current-tenant" unstackable>
-                                                      <Item
-                                                          className="header"
-                                                          key={ `logged-in-user-${ profileInfo.userName }` }
-                                                      >
-                                                          {
-                                                              <Icon
-                                                                  className="link-icon"
-                                                                  name={ "warehouse" }
-                                                              />
-                                                          }
-                                                          <Item.Content verticalAlign="middle">
-                                                              <Item.Description>
-                                                                  <div
-                                                                      className="name"
-                                                                      data-testid={
-                                                                          `${ testId }-tenant-dropdown-display-name`
-                                                                      }
-                                                                  >
-                                                                      {
-                                                                          tenantAssociations
-                                                                              ? tenantAssociations.currentTenant
-                                                                              : <Placeholder>
-                                                                                  <Placeholder.Line/>
-                                                                              </Placeholder>
-                                                                      }
-                                                                  </div>
-                                                                  {
-                                                                      tenantAssociations ? (
-                                                                          tenantAssociations.currentTenant ===
-                                                                              tenantAssociations.defaultTenant ? (
-                                                                                  <Button
-                                                                                      primary
-                                                                                      size="tiny"
-                                                                                      // Temporarily hidden
-                                                                                      style={{display:'none'}}
-                                                                                      className="default-button disabled"
-                                                                                      onClick={ undefined }
-                                                                                      data-testid={ `${ testId }-default-button` }
-                                                                                  >
-                                                                                      { tenantDefaultButtonText }
-                                                                                  </Button>
-                                                                                  )
-                                                                                  : (
-                                                                                      <Button
-                                                                                          primary
-                                                                                          size="tiny"
-                                                                                          // Temporarily hidden
-                                                                                          style={{display:'none'}}
-                                                                                          className="default-button"
-                                                                                          onClick={ undefined }
-                                                                                          data-testid={ `${ testId }-default-button` }
-                                                                                      >
-                                                                                          { tenantMakeDefaultButtonText }
-
-                                                                                      </Button>
-                                                                                  )
-                                                                      ) : null
-                                                                  }
-                                                              </Item.Description>
-                                                          </Item.Content>
-                                                      </Item>
-                                                  </Item.Group>
-                                                  {
-
-                                                      tenantAssociations &&
-                                                      tenantAssociations.associatedTenants &&
-                                                      Array.isArray(tenantAssociations.associatedTenants)
-                                                          ? (
-                                                              <Dropdown.Item
-                                                                  className="action-panel"
-                                                                  onClick={ () => setIsSwitchTenantsSelected(true) }
-                                                                  data-testid={ `${ testId }
-                                                            -dropdown-link-${ name }` }
-                                                              >
-                                                                  <Icon
-                                                                      className="link-icon"
-                                                                      name="exchange"
-                                                                  />
-                                                                  { tenantSwitchHeader }
-                                                              </Dropdown.Item>
-                                                          )
-                                                          : null
-                                                  }
-                                                  {
-                                                      (tenantDropdownLinks
-                                                          && tenantDropdownLinks.length
-                                                          && tenantDropdownLinks.length > 0)
-                                                          ? tenantDropdownLinks.map((link, index) => {
-                                                              const {
-                                                                  content,
-                                                                  icon,
-                                                                  name,
-                                                                  onClick
-                                                              } = link;
-
-                                                              return (
-                                                                  <Dropdown.Item
-                                                                      key={ index }
-                                                                      className="action-panel"
-                                                                      onClick={ onClick }
-                                                                      // Temporarily hiding dropdown item until
-                                                                      // modal is implemented.
-                                                                      style={{display:'none'}}
-                                                                      data-testid={ `${ testId }-dropdown-link-${ name.replace(" ", "-") }` }
-                                                                  >
-                                                                      {
-                                                                          icon &&
-                                                                          <Icon
-                                                                              className="link-icon"
-                                                                              name={ icon }
-                                                                          />
-                                                                      }
-                                                                      { name }
-                                                                      { content }
-                                                                  </Dropdown.Item>
-                                                              );
-                                                          })
-                                                          : null
-                                                  }
-                                              </Dropdown.Menu>
-                                          ) : (
-                                              <Dropdown.Menu onClick={ handleDropdownClick }>
-                                                  <Item.Group className="authenticated-user" unstackable>
-                                                      <Item
-                                                          className="header"
-                                                          key={ `logged-in-user-${ profileInfo.userName }` }
-                                                      >
-                                                          <Grid>
-                                                              <Grid.Row columns={ 2 }>
-                                                                  <Grid.Column width={ 2 } floated="left">
-                                                                      <Icon
-                                                                          onClick={
-                                                                              () => setIsSwitchTenantsSelected(false)
-                                                                          }
-                                                                          className="link-icon spaced-right"
-                                                                          name="arrow left"
-                                                                      />
-                                                                  </Grid.Column>
-                                                                  <Grid.Column width={ 12 }>
-                                                                      { tenantSwitchHeader }
-                                                                  </Grid.Column>
-                                                              </Grid.Row>
-                                                          </Grid>
-                                                      </Item>
-                                                  </Item.Group>
-                                                  {
-                                                      tenantAssociations
-                                                          ? resolveAssociatedTenants()
-                                                          : null
-                                                  }
-                                              </Dropdown.Menu>
-                                          )
-                                      }
-                                  </Dropdown>
-                              )
-                          }
-                      </Menu.Menu>
-                  ) }
-                  { (
-                      <Menu.Menu
-                          position="right"
-                          className="header-extensions right"
-                          data-testid={ `${ testId }-user-dropdown-container` }
-                      >
-                          {
-                              extensions && (
-                                  extensions instanceof Array
-                                  && extensions.length > 0
-                                  && extensions.some((extension: HeaderExtension) =>
-                                      extension.floated === "right")
-                                  && extensions.map((extension: HeaderExtension) =>
-                                      extension.floated === "right" && extension.component)
-                              )
-                          }
-                          {
-                              showUserDropdown && (
-                                  <Dropdown
-                                      item
-                                      trigger={ triggerUser }
-                                      floating
-                                      icon={ userDropdownIcon }
-                                      className="user-dropdown"
-                                      data-testid={ `${ testId }-user-dropdown` }
-                                  >
-                                      { (
-                                          <Dropdown.Menu onClick={ handleDropdownClick }>
-                                              <Item.Group className="authenticated-user" unstackable>
-                                                  <Item
-                                                      className="header"
-                                                      key={ `logged-in-user-${ profileInfo.userName }` }
-                                                  >
-                                                      <UserAvatar
-                                                          authState={ basicProfileInfo }
-                                                          profileInfo={ profileInfo }
-                                                          isLoading={ isProfileInfoLoading }
-                                                          data-testid={ `${ testId }-user-dropdown-avatar` }
-                                                          size="x60"
-                                                      />
-                                                      <Item.Content verticalAlign="middle">
-                                                          <Item.Description>
-                                                              <div
-                                                                  className="name"
-                                                                  data-testid={
-                                                                      `${ testId }-user-dropdown-display-name`
-                                                                  }
-                                                              >
-                                                                  {
-                                                                      isProfileInfoLoading
-                                                                          ? <Placeholder>
-                                                                              <Placeholder.Line/>
-                                                                          </Placeholder>
-                                                                          : resolveUserDisplayName(
-                                                                          profileInfo, basicProfileInfo
-                                                                          )
-                                                                  }
-                                                              </div>
-
-                                                              {
-                                                                  (profileInfo.emails !== undefined
-                                                                      && profileInfo.emails !== null) && (
-                                                                      <div
-                                                                          className="email"
-                                                                          data-testid={
-                                                                              `${ testId }-user-dropdown-email`
-                                                                          }
-                                                                      >
-                                                                          { isProfileInfoLoading
-                                                                              ? (
-                                                                                  <Placeholder>
-                                                                                      <Placeholder.Line/>
-                                                                                  </Placeholder>)
-                                                                              : resolveAuthenticatedUserEmail()
-                                                                          }
-                                                                      </div>
-                                                                  )
+              { (
+                  <Menu.Menu
+                      position="right"
+                      className="header-extensions right"
+                      data-testid={ `${ testId }-user-dropdown-container` }
+                  >
+                      {
+                          extensions && (
+                              extensions instanceof Array
+                              && extensions.length > 0
+                              && extensions.some((extension: HeaderExtension) =>
+                                  extension.floated === "right")
+                              && extensions.map((extension: HeaderExtension) =>
+                                  extension.floated === "right" && extension.component)
+                          )
+                      }
+                      {
+                          showUserDropdown && (
+                              <Dropdown
+                                  item
+                                  trigger={ trigger }
+                                  floating
+                                  icon={ userDropdownIcon }
+                                  className="user-dropdown"
+                                  data-testid={ `${ testId }-user-dropdown` }
+                              >
+                                  {
+                                      <Dropdown.Menu onClick={ handleUserDropdownClick }>
+                                          <Item.Group className="authenticated-user" unstackable>
+                                              <Item
+                                                  className="header"
+                                                  key={ `logged-in-user-${ profileInfo.userName }` }
+                                              >
+                                                  <UserAvatar
+                                                      authState={ basicProfileInfo }
+                                                      profileInfo={ profileInfo }
+                                                      isLoading={ isProfileInfoLoading }
+                                                      data-testid={ `${ testId }-user-dropdown-avatar` }
+                                                      size="x60"
+                                                  />
+                                                  <Item.Content verticalAlign="middle">
+                                                      <Item.Description>
+                                                          <div
+                                                              className="name"
+                                                              data-testid={
+                                                                  `${ testId }-user-dropdown-display-name`
                                                               }
-                                                              {
-                                                                  userDropdownInfoAction && (
-                                                                      <>
-                                                                          <Divider hidden/>
-                                                                          { userDropdownInfoAction }
-                                                                      </>
-                                                                  )
-                                                              }
-                                                          </Item.Description>
-                                                      </Item.Content>
-                                                  </Item>
-                                              </Item.Group>
-                                              {
-                                                  (linkedAccounts
-                                                      && linkedAccounts.length
-                                                      && linkedAccounts.length > 0)
-                                                      ? (
-                                                          <Item.Group
-                                                              className="linked-accounts-list"
-                                                              unstackable
-                                                              data-testid={ `${ testId }-linked-accounts-container` }
                                                           >
                                                               {
-                                                                  linkedAccounts.map((association, index) => (
-                                                                      <Item
-                                                                          className="linked-account"
-                                                                          key={ `${ association.userId }
-                                                                  -${ index }` }
-                                                                          onClick={
-                                                                              () => handleLinkedAccountSwitch(
-                                                                                  association
-                                                                              )
-                                                                          }
-                                                                      >
-                                                                          <UserAvatar
-                                                                              bordered
-                                                                              avatar
-                                                                              size="little"
-                                                                              image={ getGravatarImage(
-                                                                                  association.email
-                                                                              ) }
-                                                                              name={ association.username }
-                                                                              data-testid={ `${ testId }-la-avatar` }
-                                                                              spaced="right"
-                                                                          />
-                                                                          <Item.Content verticalAlign="middle">
-                                                                              <Item.Description>
-                                                                                  <div
-                                                                                      className="name"
-                                                                                      data-testid={
-                                                                                          `${ testId }-la-name`
-                                                                                      }
-                                                                                  >
-                                                                                      {
-                                                                                          resolveUsername(
-                                                                                              association.username,
-                                                                                              association.userStoreDomain
-                                                                                          )
-                                                                                      }
-                                                                                  </div>
-                                                                                  <div
-                                                                                      className="email"
-                                                                                      data-testid={
-                                                                                          `${ testId }-la-email` }
-                                                                                  >
-                                                                                      { association.tenantDomain }
-                                                                                  </div>
-                                                                              </Item.Description>
-                                                                          </Item.Content>
-                                                                      </Item>
-                                                                  ))
+                                                                  isProfileInfoLoading
+                                                                      ? <Placeholder>
+                                                                          <Placeholder.Line/>
+                                                                      </Placeholder>
+                                                                      : resolveUserDisplayName(
+                                                                      profileInfo, basicProfileInfo
+                                                                      )
                                                               }
-                                                          </Item.Group>
-                                                      )
-                                                      : null
-                                              }
-                                              {
-                                                  (userDropdownLinks
-                                                      && userDropdownLinks.length
-                                                      && userDropdownLinks.length > 0)
-                                                      ? userDropdownLinks.map((link, index) => {
-                                                          const {
-                                                              content,
-                                                              icon,
-                                                              name,
-                                                              onClick
-                                                          } = link;
+                                                          </div>
 
-                                                          return (
-                                                              <Dropdown.Item
-                                                                  key={ index }
-                                                                  className="action-panel"
-                                                                  onClick={ onClick }
-                                                                  data-testid={ `${ testId }-dropdown-link-${ name.replace(" ", "-") }` }
-                                                              >
-                                                                  {
-                                                                      icon &&
-                                                                      <Icon
-                                                                          className="link-icon"
-                                                                          name={ icon }
+                                                          {
+                                                              (profileInfo.emails !== undefined
+                                                                  && profileInfo.emails !== null) && (
+                                                                  <div
+                                                                      className="email"
+                                                                      data-testid={
+                                                                          `${ testId }-user-dropdown-email`
+                                                                      }
+                                                                  >
+                                                                      { isProfileInfoLoading
+                                                                          ? (
+                                                                              <Placeholder>
+                                                                                  <Placeholder.Line/>
+                                                                              </Placeholder>)
+                                                                          : resolveAuthenticatedUserEmail()
+                                                                      }
+                                                                  </div>
+                                                              )
+                                                          }
+                                                          {
+                                                              userDropdownInfoAction && (
+                                                                  <>
+                                                                      <Divider hidden/>
+                                                                      { userDropdownInfoAction }
+                                                                  </>
+                                                              )
+                                                          }
+                                                      </Item.Description>
+                                                  </Item.Content>
+                                              </Item>
+                                          </Item.Group>
+                                          {
+                                              (linkedAccounts
+                                                  && linkedAccounts.length
+                                                  && linkedAccounts.length > 0)
+                                                  ? (
+                                                      <Item.Group
+                                                          className="linked-accounts-list"
+                                                          unstackable
+                                                          data-testid={ `${ testId }-linked-accounts-container` }
+                                                      >
+                                                          {
+                                                              linkedAccounts.map((association, index) => (
+                                                                  <Item
+                                                                      className="linked-account"
+                                                                      key={ `${ association.userId }
+                                                              -${ index }` }
+                                                                      onClick={
+                                                                          () => handleLinkedAccountSwitch(
+                                                                              association
+                                                                          )
+                                                                      }
+                                                                  >
+                                                                      <UserAvatar
+                                                                          bordered
+                                                                          avatar
+                                                                          size="little"
+                                                                          image={ getGravatarImage(
+                                                                              association.email
+                                                                          ) }
+                                                                          name={ association.username }
+                                                                          data-testid={ `${ testId }-la-avatar` }
+                                                                          spaced="right"
                                                                       />
-                                                                  }
-                                                                  { name }
-                                                                  { content }
-                                                              </Dropdown.Item>
-                                                          );
-                                                      })
-                                                      : null
-                                              }
-                                          </Dropdown.Menu>
+                                                                      <Item.Content verticalAlign="middle">
+                                                                          <Item.Description>
+                                                                              <div
+                                                                                  className="name"
+                                                                                  data-testid={
+                                                                                      `${ testId }-la-name`
+                                                                                  }
+                                                                              >
+                                                                                  {
+                                                                                      resolveUsername(
+                                                                                          association.username,
+                                                                                          association.userStoreDomain
+                                                                                      )
+                                                                                  }
+                                                                              </div>
+                                                                              <div
+                                                                                  className="email"
+                                                                                  data-testid={
+                                                                                      `${ testId }-la-email` }
+                                                                              >
+                                                                                  { association.tenantDomain }
+                                                                              </div>
+                                                                          </Item.Description>
+                                                                      </Item.Content>
+                                                                  </Item>
+                                                              ))
+                                                          }
+                                                      </Item.Group>
+                                                  )
+                                                  : null
+                                          }
+                                          {
+                                              (userDropdownLinks
+                                                  && userDropdownLinks.length
+                                                  && userDropdownLinks.length > 0)
+                                                  ? userDropdownLinks.map((link, index) => {
+                                                      const {
+                                                          content,
+                                                          icon,
+                                                          name,
+                                                          onClick
+                                                      } = link;
 
-                                      ) }
-                                  </Dropdown>
-                              )
-                          }
-                      </Menu.Menu>
-                  ) }
-              </div>
+                                                      return (
+                                                          <Dropdown.Item
+                                                              key={ index }
+                                                              className="action-panel"
+                                                              onClick={ onClick }
+                                                              data-testid={ `${ testId }-dropdown-link-${ name.replace(" ", "-") }` }
+                                                          >
+                                                              {
+                                                                  icon &&
+                                                                  <Icon
+                                                                      className="link-icon"
+                                                                      name={ icon }
+                                                                  />
+                                                              }
+                                                              { name }
+                                                              { content }
+                                                          </Dropdown.Item>
+                                                      );
+                                                  })
+                                                  : null
+                                          }
+                                      </Dropdown.Menu>
+                                  }
+                              </Dropdown>
+                          )
+                      }
+                  </Menu.Menu>
+              ) }
           </Container>
           { children }
       </Menu>
@@ -766,9 +487,5 @@ Header.defaultProps = {
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
     showUserDropdown: true,
-    tenantSwitchHeader: "Switch Organization",
-    userDropdownIcon: null,
-    showTenantDropdown: false,
-    tenantDefaultButtonText: "Default",
-    tenantMakeDefaultButtonText: "Make default"
+    userDropdownIcon: null
 };

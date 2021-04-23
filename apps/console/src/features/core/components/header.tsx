@@ -17,8 +17,8 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AnnouncementBannerInterface, ProfileInfoInterface, TenantAssociationsInterface } from "@wso2is/core/models";
-import { CommonUtils as ReusableCommonUtils, SessionStorageUtils } from "@wso2is/core/utils";
+import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
     Logo,
@@ -86,14 +86,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isProfileInfoLoading: boolean = useSelector(
         (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const username: string = useSelector((state: AppState) => state.auth.username);
-    const email: string = useSelector((state: AppState) => state.auth.email);
-    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const defaultTenant: string = useSelector((state: AppState) => state.auth.defaultTenant);
-    const associatedTenants: string | string[] = useSelector((state: AppState) => state.auth.associatedTenants);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
-    const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
 
     const showAppSwitchButton: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.showAppSwitchButton);   
@@ -114,18 +108,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             CommonUtils.getSeenAnnouncements()));
     }, [ config ]);
 
-    useEffect(() => {
-
-        const association: TenantAssociationsInterface = {
-            associatedTenants: associatedTenants,
-            currentTenant: tenantDomain,
-            defaultTenant: defaultTenant,
-            username: email ? email : username
-        };
-
-        setTenantAssociations(association);
-    }, [ associatedTenants && defaultTenant ]);
-
     /**
      * Handles announcement dismiss callback.
      */
@@ -141,21 +123,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         setAnnouncement(validAnnouncement);
-    };
-
-    /**
-     * Handle the tenant switch action and redirect the user to the selected
-     * tenant path of the console.
-     */
-    const handleTenantSwitch = (tenantName: string) => {
-        const newTenantedPath = window["AppUtils"].getConfig().clientOrigin + "/t/" + tenantName + "/" +
-            window["AppUtils"].getConfig().appBase;
-
-        // Clear the callback url of the previous tenant.
-        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
-
-        // Redirect the user to the newly selected tenant path.
-        window.location.replace(newTenantedPath);
     };
 
     return (
@@ -216,6 +183,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Menu.Item>
                     ),
                     floated: "right"
+                },
+                {
+                    component: (
+                        <Menu.Item key={ "tenant-dropdown" }>
+                            <ComponentPlaceholder section="tenant-dropdown" type="component"/>
+                        </Menu.Item>
+                    ),
+                    floated: "right"
                 }
             ] }
             fluid={ fluid }
@@ -240,23 +215,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
                     }
             ] }
-            tenantDropdownLinks={ [
-                {
-                    icon: "plus",
-                    name: t("console:common.header.tenantAddHeader"),
-                    onClick: () => { /* TODO: Open new organization modal logic */ }
-                }
-            ] }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
-            showTenantDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
-            tenantAssociations={ tenantAssociations }
-            tenantSwitchHeader={ t("console:common.header.tenantSwitchHeader") }
-            tenantIcon={ getMiscellaneousIcons().tenantIcon }
-            onTenantSwitch={ handleTenantSwitch }
-            tenantDefaultButtonText={ t("console:common.header.tenantDefaultButton") }
-            tenantMakeDefaultButtonText={  t("console:common.header.tenantMakeDefaultButton") }
             data-testid={ testId }
             { ...rest }
         >
