@@ -340,5 +340,15 @@ export class ApplicationManagementConstants {
     public static readonly FORM_FIELD_CONSTRAINTS = {
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    }
+    };
+    
+    public static readonly AUTHENTICATOR_CATEGORIES = {
+        ENTERPRISE: "enterprise-authenticators",
+        LOCAL: "local-authenticators",
+        SECOND_FACTOR: "second-factor-authenticators",
+        SOCIAL: "social-authenticators"
+    };
+
+    public static readonly AUTHENTICATOR_DISPLAY_NAMES: Map<string, string> = new Map<string, string>()
+        .set("BasicAuthenticator", "Username & Password");
 }

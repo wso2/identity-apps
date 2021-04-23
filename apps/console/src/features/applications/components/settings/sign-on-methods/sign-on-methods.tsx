@@ -16,24 +16,19 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { Field, Forms } from "@wso2is/forms";
-import { EmphasizedSegment, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
-import { ScriptBasedFlow } from "./script-based-flow";
-import { StepBasedFlow } from "./step-based-flow";
+import { SignInMethodCustomization } from "./sign-in-method-customization";
+import { SignInMethodLanding } from "./sign-in-method-landing";
+import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
+import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
-import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
-import {
-    AdaptiveAuthTemplateInterface,
-    AuthenticationSequenceInterface,
-    AuthenticationStepInterface
-} from "../../../models";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
+import { AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
 /**
@@ -88,317 +83,93 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
-    const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
-    const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
-    const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
-    const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
-    const [ steps, setSteps ] = useState<number>(1);
-    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
-    const [ showAdvancedFlows, setShowAdvancedFlows ] = useState<boolean>(false);
-
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    /**
-     * Toggles the update trigger.
-     */
-    useEffect(() => {
-        if (!updateTrigger) {
-            return;
-        }
-
-        setUpdateTrigger(false);
-    }, [ updateTrigger ]);
+    const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
 
     /**
-     * Fetch data on component load
-     */
-    useEffect(() => {
-        fetchRequestPathAuthenticators();
-    }, []);
-
-    /**
-     * Updates the steps when the authentication sequence updates.
-     */
-    useEffect(() => {
-
-        if (!authenticationSequence || !authenticationSequence?.steps || !Array.isArray(authenticationSequence.steps)) {
-            return;
-        }
-
-        setSteps(authenticationSequence.steps.length);
-    }, [ authenticationSequence ]);
-
-    /**
-     * Updates the number of authentication steps.
+     * Check if the sequence is default.
+     * If only on step is configured with BasicAuthenticator and the script is default,
+     * this function will identify the sequence as a default flow.
      *
-     * @param {boolean} add - Set to `true` to add and `false` to remove.
+     * @return {boolean}
      */
-    const updateSteps = (add: boolean): void => {
-        setSteps(add ? steps + 1 : steps - 1);
+    const isDefaultFlowConfiguration = (): boolean => {
+
+        if (authenticationSequence?.steps?.length !== 1 || authenticationSequence.steps[ 0 ].options?.length !== 1) {
+            return false;
+        }
+
+        const isBasicStep: boolean = authenticationSequence.steps[ 0 ].options[ 0 ].authenticator
+            === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
+        const isBasicScript: boolean = !authenticationSequence.script
+            || AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
+
+        return isBasicStep && isBasicScript;
     };
 
     /**
-     * Handles the data loading from a adaptive auth template when it is selected
-     * from the panel.
+     * Resolve the authentication sequence based on the login flow.
      *
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
-     */
-    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
-        if (!template) {
-            return;
-        }
-
-        setIsDefaultScript(false);
-        let newSequence = { ...sequence };
-
-        if (template.code) {
-            newSequence = {
-                ...newSequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: JSON.stringify(template.code)
-            };
-        }
-
-        if (template.defaultAuthenticators) {
-            const steps: AuthenticationStepInterface[] = [];
-
-            for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
-                steps.push({
-                    id: parseInt(key, 10),
-                    options: value.local.map((authenticator) => {
-                        return {
-                            authenticator,
-                            idp: "LOCAL"
-                        };
-                    })
-                });
-            }
-
-            newSequence = {
-                ...newSequence,
-                attributeStepId: 1,
-                steps,
-                subjectStepId: 1
-            };
-        }
-
-        setSequence(newSequence);
-    };
-
-    /**
-     * Handles authentication sequence update.
-     */
-    const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface) => {
-        const requestBody = {
-            authenticationSequence: {
-                ...sequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: adaptiveScript
-            }
-        };
-
-        updateAuthenticationSequence(appId, requestBody)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".success.message")
-                }));
-
-                onUpdate(appId);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                            ".error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".genericError.message")
-                }));
-            });
-    };
-
-    const fetchRequestPathAuthenticators = (): void => {
-        getRequestPathAuthenticators()
-            .then((response) => {
-                setRequestPathAuthenticators(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
-                            { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
-                    }));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
-                            "description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
-                    }));
-                }
-            });
-    };
-
-    /**
-     * Handles adaptive script change event.
+     * @param {LoginFlowTypes} loginFlow - Selected login flow.
+     * @param {AuthenticationSequenceInterface} defaultSequence - Default sequence.
      *
-     * @param {string | string[]} script - Adaptive script from the editor.
+     * @return {AuthenticationSequenceInterface}
      */
-    const handleAdaptiveScriptChange = (script: string | string[]): void => {
-        setAdaptiveScript(script);
-    };
+    const resolveAuthenticationSequence = (loginFlow: LoginFlowTypes,
+        defaultSequence: AuthenticationSequenceInterface): AuthenticationSequenceInterface => {
 
-    /**
-     * Handles the update button click event.
-     */
-    const handleUpdateClick = (): void => {
-        if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
-            setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
-            setIsDefaultScript(true);
+        if (!loginFlow) {
+            return defaultSequence;
         }
-        setUpdateTrigger(true);
-    };
-
-    const showRequestPathAuthenticators: ReactElement = (
-        <>
-            <Heading as="h4">{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.subTitle") }</Hint>
-            <Forms>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="requestPathAuthenticators"
-                                label=""
-                                type="checkbox"
-                                required={ false }
-                                value={ authenticationSequence?.requestPathAuthenticators }
-                                requiredErrorMessage=""
-                                children={
-                                    requestPathAuthenticators?.map(authenticator => {
-                                        return {
-                                            label: authenticator.displayName,
-                                            value: authenticator.name
-                                        };
-                                    })
-                                }
-                                listen={
-                                    (values) => {
-                                        setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
-                                    }
-                                }
-                                readOnly={ readOnly }
-                                data-testid={ `${ testId }-request-path-authenticators` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-        </>
-    );
-
-    /**
-     * Renders update button.
-     *
-     * @return {React.ReactElement}
-     */
-    const renderUpdateButton = (): ReactElement => {
-
-        if (!(!readOnly && hasRequiredScopes(featureConfig?.applications,
-            featureConfig?.applications?.scopes?.update, allowedScopes))) {
-
-            return null;
+        
+        if (loginFlow === LoginFlowTypes.DEFAULT) {
+            return {
+                ...defaultSequence,
+                ...DefaultFlowConfigurationSequenceTemplate
+            } as AuthenticationSequenceInterface;
         }
-
-        return (
-            <>
-                <Divider hidden/>
-                <PrimaryButton
-                    onClick={ handleUpdateClick }
-                    data-testid={ `${ testId }-update-button` }
-                >
-                    { t("common:update") }
-                </PrimaryButton>
-            </>
-        );
+        
+        if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
+            return {
+                ...defaultSequence,
+                ...GoogleLoginSequenceTemplate
+            } as AuthenticationSequenceInterface;
+        }
+        
+        if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
+            return {
+                ...defaultSequence,
+                ...SecondFactorTOTPSequenceTemplate
+            } as AuthenticationSequenceInterface;
+        }
+        
+        return defaultSequence;
     };
 
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
-            <StepBasedFlow
-                authenticationSequence={ sequence }
-                isLoading={ isLoading }
-                onUpdate={ handleSequenceUpdate }
-                triggerUpdate={ updateTrigger }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
-                data-testid={ `${ testId }-step-based-flow` }
-                updateSteps={ updateSteps }
-            />
-            <Divider hidden/>
-            { !showAdvancedFlows && renderUpdateButton() }
-            <div className="text-center md-3">
-                <LinkButton
-                    type="button"
-                    onClick={ () => setShowAdvancedFlows(!showAdvancedFlows) }
-                    data-testid={ `${ testId }-show-advanced-flows` }
-                >
-                    <Icon name={ showAdvancedFlows ? "chevron up" : "chevron down" }/>
-                    { showAdvancedFlows ? t("common:showLess") : t("common:showMore") }
-                </LinkButton>
-            </div>
-            <div className={ !showAdvancedFlows ? "display-none" : "" }>
-                <ScriptBasedFlow
-                    authenticationSequence={ sequence }
-                    isLoading={ isLoading }
-                    onTemplateSelect={ handleLoadingDataFromTemplate }
-                    onScriptChange={ handleAdaptiveScriptChange }
-                    readOnly={
-                        readOnly
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update,
-                            allowedScopes)
-                    }
-                    data-testid={ `${ testId }-script-based-flow` }
-                    authenticationSteps={ steps }
-                    isDefaultScript={ isDefaultScript }
-                    onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-                />
-                {
-                    (config?.ui?.isRequestPathAuthenticationEnabled === false)
-                        ? null
-                        : requestPathAuthenticators && showRequestPathAuthenticators
-                }
-                { renderUpdateButton() }
-            </div>
+            {
+                !loginFlow && isDefaultFlowConfiguration()
+                    ? (
+                        <SignInMethodLanding
+                            isLoading={ isLoading }
+                            readOnly={ readOnly }
+                            onLoginFlowSelect={ (type: LoginFlowTypes) => setLoginFlow(type) }
+                        />
+                    )
+                    : (
+                        <>
+                            <SignInMethodCustomization
+                                appId={ appId }
+                                authenticationSequence={
+                                    resolveAuthenticationSequence(loginFlow, authenticationSequence)
+                                }
+                                onUpdate={ onUpdate }
+                            />
+                        </>
+                    )
+            }
         </EmphasizedSegment>
     );
 };

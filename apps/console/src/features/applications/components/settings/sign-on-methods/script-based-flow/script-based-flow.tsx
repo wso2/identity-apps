@@ -20,12 +20,18 @@ import { UIConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
-import { CodeEditor, ConfirmationModal, Heading, Hint } from "@wso2is/react-components";
+import {
+    CodeEditor,
+    ConfirmationModal,
+    Heading,
+    SegmentedAccordion,
+    Text
+} from "@wso2is/react-components";
 import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, Grid, Icon, Menu, Popup, Sidebar } from "semantic-ui-react";
+import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
 import { getAdaptiveAuthTemplates } from "../../../../api";
@@ -57,6 +63,10 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Toggle the accordion.
+     */
+    isMinimized?: boolean;
     /**
      * Delegates the event to the parent component. Once
      * called the resetting event will be notified to it
@@ -96,6 +106,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         authenticationSteps,
         isDefaultScript,
+        isMinimized,
         onAdaptiveScriptReset,
         ["data-testid"]: testId
     } = props;
@@ -116,6 +127,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
+    const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -164,6 +176,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     useEffect(() => {
         setScriptEditorWidth();
     });
+
+    /**
+     * Checks for a script in auth sequence to handle content visibility.
+     */
+    useEffect(() => {
+        
+        if (authenticationSequence?.script) {
+            setShowConditionalAuthContent(true);
+            return;
+        }
+        
+        setShowConditionalAuthContent(false);
+    }, [ authenticationSequence ]);
 
     /**
      * Triggered on steps and script change.
@@ -255,6 +280,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
+        setShowConditionalAuthContent(false);
     };
 
     /**
@@ -281,75 +307,92 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setIsEditorDarkMode(!isEditorDarkMode);
     };
 
+    /**
+     * Handles conditional authentication on/off swicth.
+     */
+    const handleConditionalAuthToggleChange = (): void => {
+        
+        if (showConditionalAuthContent) {
+            setShowScriptResetWarning(true);
+            return;
+        }
+
+        setShowConditionalAuthContent(true);
+    };
+
     return (
         <>
-            <div className="adaptive-scripts-section" data-testid={ testId }>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <Heading as="h5">
-                                { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                    ".authenticationFlow.sections.scriptBased.heading") }
-                            </Heading>
-                            { !readOnly && (
-                                <Hint>
-                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                        ".authenticationFlow.sections.scriptBased.hint") }
-                                </Hint>
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <Sidebar.Pushable className="script-editor-section">
-                                { !readOnly && (
-                                    <ScriptTemplatesSidePanel
-                                        title={
-                                            t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections" +
-                                                ".authenticationFlow.sections.scriptBased.editor.templates.heading")
-                                        }
-                                        ref={ authTemplatesSidePanelRef }
-                                        onTemplateSelect={ handleTemplateSelection }
-                                        templates={
-                                            scriptTemplates?.templatesJSON &&
-                                            Object.values(scriptTemplates.templatesJSON)
-                                        }
-                                        visible={ showAuthTemplatesSidePanel }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-script-templates-side-panel` }
+            <div className="conditional-auth-section">
+                <SegmentedAccordion
+                    fluid
+                    data-testid={ `${ testId }-accordion` }
+                    className="conditional-auth-accordion"
+                >
+                    <SegmentedAccordion.Title
+                        data-testid={ `${ testId }-accordion-title` }
+                        active={ showConditionalAuthContent }
+                        content={ (
+                            <>
+                                <div
+                                    className="conditional-auth-accordion-title"
+                                >
+                                    <Checkbox
+                                        toggle
+                                        onChange={ handleConditionalAuthToggleChange }
+                                        checked={ showConditionalAuthContent }
+                                        className="conditional-auth-accordion-toggle"
                                     />
-                                ) }
-                                <Sidebar.Pusher>
-                                    <div className="script-editor-container" ref={ scriptEditorSectionRef }>
-                                        <Menu attached="top" className="action-panel" secondary>
-                                            <Menu.Item>
-                                                <Checkbox
-                                                    label={
-                                                        t("console:develop.features.applications.edit.sections" +
-                                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                                            ".scriptBased.editor.templates.darkMode")
-                                                    }
-                                                    checked={ isEditorDarkMode }
-                                                    onChange={ handleEditorDarkModeToggle }
-                                                    data-testid={ `${ testId }-code-editor-mode-toggle` }
-                                                    slider
-                                                />
-                                                <Popup
-                                                    trigger={ (
-                                                        <Icon
-                                                            className="reset-button ml-3"
-                                                            name="undo"
-                                                            onClick={ () => setShowScriptResetWarning(true) }
-                                                        />
-                                                    ) }
-                                                    position="top center"
-                                                    content={ "Reset to Default" }
-                                                    inverted
-                                                />
-                                            </Menu.Item>
-                                            { !readOnly && (
-                                                <Menu.Menu position="right">
+                                    <div className="conditional-auth-accordion-title-text">
+                                        <Heading as="h5" compact>Conditional Authentication</Heading>
+                                        <Text muted compact>Control your Authentication flow using a script.</Text>
+                                    </div>
+                                </div>
+                            </>
+                        ) }
+                        hideChevron={ true }
+                    />
+                    <SegmentedAccordion.Content
+                        active={ showConditionalAuthContent }
+                        className="conditional-auth-accordion-content"
+                        data-testid={ `${ testId }-accordion-content` }
+                    >
+                        <Sidebar.Pushable className="script-editor-with-template-panel no-border">
+                            { !readOnly && (
+                                <ScriptTemplatesSidePanel
+                                    title={
+                                        t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections" +
+                                            ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                    }
+                                    ref={ authTemplatesSidePanelRef }
+                                    onTemplateSelect={ handleTemplateSelection }
+                                    templates={
+                                        scriptTemplates?.templatesJSON &&
+                                        Object.values(scriptTemplates.templatesJSON)
+                                    }
+                                    visible={ showAuthTemplatesSidePanel }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-script-templates-side-panel` }
+                                />
+                            ) }
+                            <Sidebar.Pusher>
+                                <div className="script-editor-container" ref={ scriptEditorSectionRef }>
+                                    <Menu attached="top" className="action-panel" secondary>
+                                            <Menu.Menu position="right">
+                                                <Menu.Item>
+                                                    <Checkbox
+                                                        label={
+                                                            t("console:develop.features.applications.edit.sections" +
+                                                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                                                ".scriptBased.editor.templates.darkMode")
+                                                        }
+                                                        checked={ isEditorDarkMode }
+                                                        onChange={ handleEditorDarkModeToggle }
+                                                        data-testid={ `${ testId }-code-editor-mode-toggle` }
+                                                        slider
+                                                    />
+                                                </Menu.Item>
+                                                { !readOnly && (
                                                     <Menu.Item
                                                         onClick={ handleScriptTemplateSidebarToggle }
                                                         className="action"
@@ -357,33 +400,32 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     >
                                                         <Icon name="bars"/>
                                                     </Menu.Item>
-                                                </Menu.Menu>
-                                            ) }
-                                        </Menu>
+                                                ) }
+                                            </Menu.Menu>
+                                    </Menu>
 
-                                        <div className="code-editor-wrapper">
-                                            <CodeEditor
-                                                lint
-                                                language="javascript"
-                                                sourceCode={ sourceCode }
-                                                options={ {
-                                                    lineWrapping: true
-                                                } }
-                                                onChange={ (editor, data, value) => {
-                                                    setInternalScript(value);
-                                                    onScriptChange(value);
-                                                } }
-                                                theme={ isEditorDarkMode ? "dark" : "light" }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-code-editor` }
-                                            />
-                                        </div>
+                                    <div className="code-editor-wrapper">
+                                        <CodeEditor
+                                            lint
+                                            language="javascript"
+                                            sourceCode={ sourceCode }
+                                            options={ {
+                                                lineWrapping: true
+                                            } }
+                                            onChange={ (editor, data, value) => {
+                                                setInternalScript(value);
+                                                onScriptChange(value);
+                                            } }
+                                            theme={ isEditorDarkMode ? "dark" : "light" }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-code-editor` }
+                                        />
                                     </div>
-                                </Sidebar.Pusher>
-                            </Sidebar.Pushable>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                                </div>
+                            </Sidebar.Pusher>
+                        </Sidebar.Pushable>
+                    </SegmentedAccordion.Content>
+                </SegmentedAccordion>
             </div>
             <ConfirmationModal
                 onClose={ (): void => setShowScriptResetWarning(false) }
@@ -426,5 +468,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
  * Default props for the script based flow component.
  */
 ScriptBasedFlow.defaultProps = {
-    "data-testid": "script-based-flow"
+    "data-testid": "script-based-flow",
+    isMinimized: true
 };
