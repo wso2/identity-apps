@@ -140,9 +140,9 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
-            item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            (item.localClaimDisplayName ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             const uriFilterClaims = tempAvailableClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                (item.claimURI ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
                 requestedComparator(tempSelectedClaims), "localClaimDisplayName"));
         } else {
