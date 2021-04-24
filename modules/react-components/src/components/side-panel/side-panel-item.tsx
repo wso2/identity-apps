@@ -17,7 +17,6 @@
  */
 
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { ReactElement } from "react";
@@ -151,56 +150,53 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     return (
         <>
             {
-                (route.showOnSidePanel && (route.scope ? AuthenticateUtils.hasScope(route.scope, allowedScopes) : true))
-                    ? (
-                        <Menu.Item
-                            name={ route.name }
-                            className={ classes }
-                            active={ selected && (selected.path === route.path) }
-                            onClick={ (): void => onSidePanelItemClick(route) }
-                            data-testid={ `${ testId }-${ kebabCase(route.id) }` }
-                        >
-                            <GenericIcon
-                                transparent
-                                className="left-icon"
-                                size={ iconSize }
-                                floated="left"
-                                spaced="right"
-                                { ...route.icon }
-                                data-testid={ `${ testId }-icon` }
-                            />
-                            <span className="route-name" data-testid={ `${ testId }-label` }>
-                                { translationHook ? translationHook(route.name) : route.name }
-                                { route.featureStatus && (
-                                    <Label
-                                        color={ resolveFeatureStatusLabelColor() }
-                                        className="feature-status-label"
-                                        size="mini"
-                                        data-testid={ `${ testId }-version` }
-                                    >
-                                        { route.featureStatus.toUpperCase() }
-                                    </Label>
-                                ) }
-                            </span>
-                            {
-                                // Check if any of the child items are defined to be shown on the side panel.
-                                // If not hides the caret icon.
-                                (caretIcon && validateChildren(route.children))
-                                    ? (
-                                        <GenericIcon
-                                            className={ `caret ${ route.open ? "down" : "right" }` }
-                                            icon={ caretIcon }
-                                            size="auto"
-                                            floated="right"
-                                            data-testid={ `${ testId }-caret` }
-                                            transparent
-                                        />
-                                    )
-                                    : null
-                            }
-                        </Menu.Item>
-                    )
-                    : null
+                route &&
+                    <Menu.Item
+                        name={ route.name }
+                        className={ classes }
+                        active={ selected && (selected.path === route.path) }
+                        onClick={ (): void => onSidePanelItemClick(route) }
+                        data-testid={ `${ testId }-${ kebabCase(route.id) }` }
+                    >
+                        <GenericIcon
+                            transparent
+                            className="left-icon"
+                            size={ iconSize }
+                            floated="left"
+                            spaced="right"
+                            { ...route.icon }
+                            data-testid={ `${ testId }-icon` }
+                        />
+                        <span className="route-name" data-testid={ `${ testId }-label` }>
+                            { translationHook ? translationHook(route.name) : route.name }
+                            { route.featureStatus && (
+                                <Label
+                                    color={ resolveFeatureStatusLabelColor() }
+                                    className="feature-status-label"
+                                    size="mini"
+                                    data-testid={ `${ testId }-version` }
+                                >
+                                    { route.featureStatus.toUpperCase() }
+                                </Label>
+                            ) }
+                        </span>
+                        {
+                            // Check if any of the child items are defined to be shown on the side panel.
+                            // If not hides the caret icon.
+                            (caretIcon && validateChildren(route.children))
+                                ? (
+                                    <GenericIcon
+                                        className={ `caret ${ route.open ? "down" : "right" }` }
+                                        icon={ caretIcon }
+                                        size="auto"
+                                        floated="right"
+                                        data-testid={ `${ testId }-caret` }
+                                        transparent
+                                    />
+                                )
+                                : null
+                        }
+                    </Menu.Item>
             }
             {
                 (route.children && route.children.length && route.children.length > 0)
