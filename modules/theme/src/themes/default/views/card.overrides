@@ -774,7 +774,6 @@
         .card-header-section {
             .card-header {
                 font-weight: 600;
-                color: @lightFontColor;
             }
             .card-subheader {
                 font-weight: 600;
