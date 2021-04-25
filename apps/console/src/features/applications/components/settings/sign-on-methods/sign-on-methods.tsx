@@ -184,6 +184,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
             // If there are more than 1 IDP's with google authenticator, show authenticator select modal.
            if (googleAuthenticators.length > 1) {
+               // Set the first element as the selected google authenticator.
+               setSelectedGoogleAuthenticator(googleAuthenticators[0]);
                setShowDuplicateGoogleAuthenticatorSelectionModal(true);
                
                return;
@@ -362,6 +364,17 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         </ConfirmationModal>
     );
 
+    /**
+     * Resets the internal state back to default on reset.
+     */
+    const handleLoginFlowReset = (): void => {
+        setLoginFlow(undefined);
+        setShowMissingGoogleAuthenticatorModal(false);
+        setShowDuplicateGoogleAuthenticatorSelectionModal(false);
+        setSelectedGoogleAuthenticator(undefined);
+        setModeratedAuthenticationSequence(authenticationSequence);
+    };
+
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
@@ -380,6 +393,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 authenticators={ authenticators }
                                 authenticationSequence={ moderatedAuthenticationSequence }
                                 onUpdate={ onUpdate }
+                                onReset={ handleLoginFlowReset }
                             />
                         </>
                     )

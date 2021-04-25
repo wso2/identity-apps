@@ -61,6 +61,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      */
     isLoading?: boolean;
     /**
+     * Callback for sequence reset.
+     */
+    onReset: () => void;
+    /**
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
@@ -87,6 +91,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         authenticationSequence,
         featureConfig,
         isLoading,
+        onReset,
         onUpdate,
         readOnly,
         [ "data-testid" ]: testId
@@ -388,7 +393,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         className="pr-0"
                         onClick={ () => {
                             handleSequenceUpdate(null, true);
-                            setUpdateTrigger(true);
+                            onReset();
                         } }
                     >
                         <Icon
