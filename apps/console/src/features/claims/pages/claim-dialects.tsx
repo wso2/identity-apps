@@ -226,9 +226,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </Grid.Column>
                                                 <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                     <Popup
-                                                        content={ t("common:edit") }
+                                                        content={ 
+                                                            hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.scopes?.create,
+                                                                allowedScopes
+                                                            ) ? 
+                                                            t("common:edit") :
+                                                            t("common:view")
+                                                        }
                                                         trigger={
-                                                            <Icon color="grey" name="pencil" />
+                                                            hasRequiredScopes(
+                                                                featureConfig?.attributeDialects,
+                                                                featureConfig?.attributeDialects?.scopes?.create,
+                                                                allowedScopes
+                                                            ) ? 
+                                                            <Icon color="grey" name="pencil" /> :
+                                                            <Icon color="grey" name="eye" />
                                                         }
                                                         inverted
                                                     />
@@ -288,9 +302,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
                                                 <Popup
-                                                    content={ t("common:edit") }
+                                                    content={ 
+                                                        hasRequiredScopes(
+                                                            featureConfig?.attributeDialects,
+                                                            featureConfig?.attributeDialects?.scopes?.create,
+                                                            allowedScopes
+                                                        ) ? 
+                                                        t("common:edit") :
+                                                        t("common:view")
+                                                    }
                                                     trigger={
-                                                        <Icon color="grey" name="pencil" />
+                                                        hasRequiredScopes(
+                                                            featureConfig?.attributeDialects,
+                                                            featureConfig?.attributeDialects?.scopes?.create,
+                                                            allowedScopes
+                                                        ) ? 
+                                                        <Icon color="grey" name="pencil" /> :
+                                                        <Icon color="grey" name="eye" />
                                                     }
                                                     inverted
                                                 />
