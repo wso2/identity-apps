@@ -386,7 +386,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <div className="display-inline-block floated right">
                     <LinkButton
                         className="pr-0"
-                        onClick={ () => handleSequenceUpdate(null, true) }
+                        onClick={ () => {
+                            handleSequenceUpdate(null, true);
+                            setUpdateTrigger(true);
+                        } }
                     >
                         <Icon
                             name="refresh"
