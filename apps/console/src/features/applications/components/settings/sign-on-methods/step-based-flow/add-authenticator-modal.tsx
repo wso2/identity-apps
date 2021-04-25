@@ -296,7 +296,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 { ...rest }
             >
                 <Modal.Header>{ header }</Modal.Header>
-                <Modal.Content>
+                <Modal.Content scrolling>
                     { showStepSelector && (
                         <>
                             <Heading as="h5">
@@ -342,6 +342,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     authenticatorGroups.map((authenticator, index: number) => (
                                         authenticator?.authenticators
                                         && authenticator.authenticators instanceof Array
+                                        && authenticator.authenticators.length > 0
                                         && (
                                             renderAuthenticatorGroup(authenticator, index)
                                         )
