@@ -191,17 +191,33 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
             // If there are only 1 IDP's with google authenticator, move on.
            if (googleAuthenticators.length === 1) {
-               const modifiedGoogleLoginSequenceTemplate = { ...GoogleLoginSequenceTemplate };
-               modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = googleAuthenticators[0].idp;
-
                setModeratedAuthenticationSequence({
                    ...authenticationSequence,
-                   ...modifiedGoogleLoginSequenceTemplate
+                   ...updateGoogleLoginSequenceWithIDPName(googleAuthenticators[0].idp)
                });
            }
         }
 
         setLoginFlow(loginFlow);
+    };
+
+    /**
+     * Updates the predefined google login sequence with the desired IDP name.
+     * i.e. Replaces the `<GOOGLE_IDP>` in the JSON with a properly configured IDP.
+     *
+     * @return {AuthenticationSequenceInterface}
+     */
+    const updateGoogleLoginSequenceWithIDPName = (idp: string): AuthenticationSequenceInterface => {
+
+        const modifiedGoogleLoginSequenceTemplate = { ...GoogleLoginSequenceTemplate };
+        modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = googleAuthenticators[0].idp;
+        modifiedGoogleLoginSequenceTemplate.steps[0].options.forEach((option) => {
+            if (option.authenticator === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME) {
+                option.idp = idp;
+            }
+        });
+
+        return modifiedGoogleLoginSequenceTemplate;
     };
 
     /**
@@ -282,13 +298,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
             onSecondaryActionClick={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
             onPrimaryActionClick={ (): void => {
-                
-                const modifiedGoogleLoginSequenceTemplate = { ...GoogleLoginSequenceTemplate };
-                modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = selectedGoogleAuthenticator.idp;
-
                 setModeratedAuthenticationSequence({
                     ...authenticationSequence,
-                    ...modifiedGoogleLoginSequenceTemplate
+                    ...updateGoogleLoginSequenceWithIDPName(selectedGoogleAuthenticator.idp)
                 });
 
                 setLoginFlow(LoginFlowTypes.GOOGLE_LOGIN);
