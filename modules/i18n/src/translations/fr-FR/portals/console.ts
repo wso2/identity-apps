@@ -876,6 +876,11 @@ export const console: ConsoleNS = {
                                                                 "charge par {{productName}}.",
                                                             heading: "De base"
                                                         },
+                                                        enterprise: {
+                                                            description: "Connexion d'entreprise via des protocoles " +
+                                                                "standard.",
+                                                            heading: "Connexion Entreprise"
+                                                        },
                                                         mfa: {
                                                             description: "Ajoutez une couche de sécurité " +
                                                                 "supplémentaire à votre flux de connexion.",

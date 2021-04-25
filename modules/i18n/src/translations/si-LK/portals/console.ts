@@ -873,6 +873,10 @@ export const console: ConsoleNS = {
                                                             description: "{{productName}} සහාය දක්වන මූලික සත්‍යාපක කට්ටල.",
                                                             heading: "මූලික"
                                                         },
+                                                        enterprise: {
+                                                            description: "සම්මත ප්‍රොටෝකෝල හරහා ව්‍යවසාය පිවිසීම.",
+                                                            heading: "ව්යවසාය පිවිසුම"
+                                                        },
                                                         mfa: {
                                                             description: "ඔබගේ පිවිසුම් ප්‍රවාහයට අමතර ආරක්ෂිත තට්ටුවක් එක් " +
                                                                 "කරන්න.",

@@ -873,6 +873,10 @@ export const console: ConsoleNS = {
                                                                 "{{productName}}.",
                                                             heading: "Basic"
                                                         },
+                                                        enterprise: {
+                                                            description: "Enterprise login via standard protocols.",
+                                                            heading: "Enterprise Login"
+                                                        },
                                                         mfa: {
                                                             description: "Add additional layer of security to your " +
                                                                 "login flow.",

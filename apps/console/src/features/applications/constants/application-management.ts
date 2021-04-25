@@ -324,6 +324,13 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
     ];
 
+    // Known social authenticators.
+    public static readonly SOCIAL_AUTHENTICATORS = [
+        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID
+    ];
+
     /**
      * PEM certificate field default placeholder.
      */

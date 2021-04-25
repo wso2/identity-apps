@@ -116,7 +116,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ secondFactorAuthenticators, setSecondFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
@@ -137,11 +138,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const localAuthenticators: GenericAuthenticatorInterface[] = authenticators[ 0 ];
         const federatedAuthenticators: GenericAuthenticatorInterface[] = authenticators[ 1 ];
+        const filteredSocialAuthenticators: GenericAuthenticatorInterface[] = [];
+        const filteredEnterpriseAuthenticators: GenericAuthenticatorInterface[] = [];
 
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
-        localAuthenticators.forEach((authenticator) => {
+        localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
                 const newAuthenticator: GenericAuthenticatorInterface = {
                     ...authenticator,
@@ -153,10 +156,21 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 moderatedLocalAuthenticators.push(authenticator);
             }
         });
+        
+        federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
+            if (ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
+                .includes(authenticator.defaultAuthenticator.authenticatorId)) {
+                
+                filteredSocialAuthenticators.push(authenticator);
+            } else {
+                filteredEnterpriseAuthenticators.push(authenticator);
+            }
+        });
 
         setSecondFactorAuthenticators(secondFactorAuth);
         setLocalAuthenticators(moderatedLocalAuthenticators);
-        setFederatedAuthenticators(federatedAuthenticators);
+        setEnterpriseAuthenticators(filteredEnterpriseAuthenticators);
+        setSocialAuthenticators(filteredSocialAuthenticators);
     }, [ authenticators ]);
 
     /**
@@ -260,7 +274,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const updateAuthenticationStep = (stepIndex: number, authenticatorId: string): void => {
         const authenticators: GenericAuthenticatorInterface[] = [
             ...localAuthenticators,
-            ...federatedAuthenticators,
+            ...enterpriseAuthenticators,
+            ...socialAuthenticators,
             ...secondFactorAuthenticators
         ];
 
@@ -620,7 +635,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         "basic.heading")
                 },
                 {
-                    authenticators: moderateAuthenticators(federatedAuthenticators),
+                    authenticators: moderateAuthenticators(socialAuthenticators),
                     category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
                     description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
@@ -638,6 +653,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
                         "mfa.heading")
+                },
+                {
+                    authenticators: moderateAuthenticators(enterpriseAuthenticators),
+                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
+                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "enterprise.description"),
+                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "enterprise.heading")
                 }
             ] }
             showStepSelector={ authenticationSteps.length > 1 }
@@ -658,7 +683,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                     <AuthenticationStep
                                         authenticators={ [
                                             ...localAuthenticators,
-                                            ...federatedAuthenticators,
+                                            ...enterpriseAuthenticators,
+                                            ...socialAuthenticators,
                                             ...secondFactorAuthenticators
                                         ] }
                                         onStepDelete={ handleStepDelete }
