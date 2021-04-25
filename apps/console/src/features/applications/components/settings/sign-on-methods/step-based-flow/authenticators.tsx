@@ -23,7 +23,6 @@ import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
-    useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -36,6 +35,10 @@ import { ApplicationManagementConstants } from "../../../../constants";
  * Proptypes for the authenticators component.
  */
 interface AuthenticatorsPropsInterface extends TestableComponentInterface {
+    /**
+     * Allow social login addition.
+     */
+    allowSocialLoginAddition: boolean;
     /**
      * List of authenticators.
      */
@@ -89,6 +92,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 ): ReactElement => {
 
     const {
+        allowSocialLoginAddition,
         authenticators,
         className,
         category,
@@ -103,8 +107,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const [ draggableAddSocialAuthenticatorButton, setDraggableAddSocialAuthenticatorButton ] =
-        useState<ReactElement[]>(null);
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
 
     const classes = classNames("authenticators", className);
@@ -146,37 +148,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
     };
-
-    /**
-     * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
-     * triggering every time dom nodes are updated. Having it in a state fixes the flicker.
-     */
-    useEffect(() => {
-
-        if (!isSocialLogin) {
-            return;
-        }
-
-        const draggableNodes: ReactElement[] = [];
-
-        draggableNodes.push(
-            <LabeledCard
-                size="tiny"
-                image={ getGeneralIcons()?.addCircleOutline }
-                label={ "Add" }
-                labelEllipsis={ true }
-                data-testid={
-                    `${ testId }-authenticator-add`
-                }
-                imageOptions={ {
-                    as: "data-url"
-                } }
-                onClick={ handleSocialLoginAdd }
-            />
-        );
-
-        setDraggableAddSocialAuthenticatorButton(draggableNodes);
-    }, [ isSocialLogin ]);
     
     const handleAuthenticatorSelect = (selectedAuthenticator): void => {
         
@@ -253,7 +224,29 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             </div>
                         ))
                     }
-                    { draggableAddSocialAuthenticatorButton }
+                    {
+                        isSocialLogin && allowSocialLoginAddition && (
+                            <div className="inline">
+                                <div>
+                                    <LabeledCard
+                                        multilineLabel
+                                        className="authenticator-card"
+                                        size="tiny"
+                                        image={ getGeneralIcons()?.addCircleOutline }
+                                        label={ t("common:add") }
+                                        labelEllipsis={ true }
+                                        data-testid={
+                                            `${ testId }-authenticator-add`
+                                        }
+                                        imageOptions={ {
+                                            as: "data-url"
+                                        } }
+                                        onClick={ handleSocialLoginAdd }
+                                    />
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </>
         )

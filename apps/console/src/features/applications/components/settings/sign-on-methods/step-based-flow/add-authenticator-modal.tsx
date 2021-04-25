@@ -55,6 +55,10 @@ import { ApplicationManagementConstants } from "../../../../constants";
  */
 interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface, ModalProps {
     /**
+     * Allow social login addition.
+     */
+    allowSocialLoginAddition: boolean;
+    /**
      * Set of authenticator groups.
      */
     authenticatorGroups: AuthenticatorGroupInterface[];
@@ -107,10 +111,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 ): ReactElement => {
 
     const {
+        allowSocialLoginAddition,
         authenticatorGroups,
         className,
         header,
         onClose,
+        open,
         onModalSubmit,
         message,
         showStepSelector,
@@ -121,7 +127,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const { t } = useTranslation();
 
-    const [ AddSocialLoginConfirm, setAddSocialLoginConfirm ] = useState(false);
+    const [ isModalOpen, setIsModalOpen ] = useState<boolean>(open);
+    const [
+        addSocialLoginRedirectionConfirmationModal,
+        setAddSocialLoginRedirectionConfirmationModal
+    ] = useState<boolean>(false);
     const [
         selectedAuthenticators,
         setSelectedAuthenticators
@@ -137,22 +147,24 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Handles the addition of new social login.
      */
     const handleSocialLoginAdd = (): void => {
-        setAddSocialLoginConfirm(true);
+        setIsModalOpen(false);
+        setAddSocialLoginRedirectionConfirmationModal(true);
     };
 
     const closeAddSocialLoginConfirmation = (): void => {
-        setAddSocialLoginConfirm(false);
+        setIsModalOpen(true);
+        setAddSocialLoginRedirectionConfirmationModal(false);
     };
 
     /**
      * Shows the aAdd social login confirmation modal
      * @return {ReactElement}
      */
-    const showAddSocialLoginConfirmation = (): ReactElement => (
+    const renderAddSocialLoginRedirectionConfirmationModal = (): ReactElement => (
         <ConfirmationModal
             onClose={ closeAddSocialLoginConfirmation }
             type="warning"
-            open={ AddSocialLoginConfirm }
+            open={ addSocialLoginRedirectionConfirmationModal }
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeAddSocialLoginConfirmation }
@@ -212,6 +224,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 )
             }
             <Authenticators
+                allowSocialLoginAddition={ allowSocialLoginAddition }
                 authenticators={ authenticatorGroup.authenticators }
                 category={ authenticatorGroup.category }
                 emptyPlaceholder={ (
@@ -228,7 +241,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         }
                     />
                 ) }
-                isSocialLogin={ authenticatorGroup.heading === ApplicationManagementConstants.SOCIAL_LOGIN_HEADER }
+                isSocialLogin={
+                    authenticatorGroup.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL
+                }
                 handleSocialLoginAdd={ handleSocialLoginAdd }
                 onAuthenticatorSelect={ (authenticators) => {
                     setSelectedAuthenticators({
@@ -289,10 +304,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     return (
         <>
-            { AddSocialLoginConfirm && showAddSocialLoginConfirmation() }
             <Modal
                 className={ classes }
                 data-testid={ testId }
+                open={ isModalOpen }
                 { ...rest }
             >
                 <Modal.Header>{ header }</Modal.Header>
@@ -339,14 +354,22 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         && authenticatorGroups.length > 0 && (
                             <div className="authenticators-section">
                                 {
-                                    authenticatorGroups.map((authenticator, index: number) => (
-                                        authenticator?.authenticators
-                                        && authenticator.authenticators instanceof Array
-                                        && authenticator.authenticators.length > 0
-                                        && (
-                                            renderAuthenticatorGroup(authenticator, index)
-                                        )
-                                    ))
+                                    authenticatorGroups.map((authenticator, index: number) => {
+                                        
+                                        const shouldAllowSocialAddition: boolean = (authenticator.category
+                                            === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL)
+                                            && allowSocialLoginAddition;
+
+                                        return (
+                                            (authenticator?.authenticators
+                                            && authenticator.authenticators instanceof Array
+                                            && authenticator.authenticators.length > 0)
+                                                ? renderAuthenticatorGroup(authenticator, index)
+                                                : shouldAllowSocialAddition
+                                                    ? renderAuthenticatorGroup(authenticator, index)
+                                                    : null
+                                        );
+                                    })
                                 }
                             </div>
                         )
@@ -377,6 +400,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     </Grid>
                 </Modal.Actions>
             </Modal>
+            { addSocialLoginRedirectionConfirmationModal && renderAddSocialLoginRedirectionConfirmationModal() }
         </>
     );
 };

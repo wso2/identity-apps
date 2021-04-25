@@ -610,6 +610,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const renderAuthenticatorAddModal = (): ReactElement => (
 
         <AddAuthenticatorModal
+            allowSocialLoginAddition={ true }
             open={ showAuthenticatorAddModal }
             onModalSubmit={ (authenticators, stepToAdd: number) => {
                 authenticators.map((authenticator) => {
