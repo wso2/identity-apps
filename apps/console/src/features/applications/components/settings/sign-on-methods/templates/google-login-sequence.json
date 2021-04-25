@@ -5,7 +5,7 @@
             "options": [
                 {
                     "authenticator": "GoogleOIDCAuthenticator",
-                    "idp": "Google"
+                    "idp": "<GOOGLE_IDP>"
                 },
                 {
                     "authenticator": "BasicAuthenticator",
