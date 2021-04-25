@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
+import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
@@ -195,15 +196,31 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     /**
      * Handles authentication sequence update.
+     *
+     * @param {AuthenticationSequenceInterface} sequence - New authentication sequence.
+     * @param {boolean} forceReset - Force reset to default configuration.
      */
-    const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface) => {
-        const requestBody = {
-            authenticationSequence: {
-                ...sequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: adaptiveScript
-            }
-        };
+    const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface, forceReset?: boolean): void => {
+
+        let requestBody = {};
+
+        if (forceReset) {
+            requestBody = {
+                authenticationSequence: {
+                    ...DefaultFlowConfigurationSequenceTemplate,
+                    requestPathAuthenticators: selectedRequestPathAuthenticators,
+                    script: ""
+                }
+            };
+        } else {
+            requestBody = {
+                authenticationSequence: {
+                    ...sequence,
+                    requestPathAuthenticators: selectedRequestPathAuthenticators,
+                    script: adaptiveScript
+                }
+            };
+        }
 
         updateAuthenticationSequence(appId, requestBody)
             .then(() => {
@@ -367,7 +384,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     }
                 </Heading>
                 <div className="display-inline-block floated right">
-                    <LinkButton className="pr-0">
+                    <LinkButton
+                        className="pr-0"
+                        onClick={ () => handleSequenceUpdate(null, true) }
+                    >
                         <Icon
                             name="refresh"
                         >
