@@ -522,6 +522,12 @@ export interface ConsoleNS {
                                     heading: string;
                                     sections: {
                                         scriptBased: {
+                                            accordion: {
+                                                title: {
+                                                    description: string;
+                                                    heading: string;
+                                                };
+                                            };
                                             heading: string;
                                             hint: string;
                                             editor: {
@@ -541,6 +547,7 @@ export interface ConsoleNS {
                                                 addStep: string;
                                                 selectAuthenticator: string;
                                             };
+                                            addAuthenticatorModal: ModalInterface;
                                             heading: string;
                                             hint: string;
                                             forms: {
@@ -554,6 +561,41 @@ export interface ConsoleNS {
                                         };
                                     };
                                 };
+                                customization: {
+                                    heading: string;
+                                    revertToDefaultButton: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                };
+                                landing: {
+                                    defaultConfig: {
+                                        description: {
+                                            0: string;
+                                            1: string;
+                                        },
+                                        heading: string;
+                                    },
+                                    flowBuilder: {
+                                        addMissingGoogleAuthenticatorModal: ModalInterface;
+                                        duplicateGoogleAuthenticatorSelectionModal: ModalInterface;
+                                        heading: string;
+                                        types: {
+                                            defaultConfig: {
+                                                description: string;
+                                                heading: string;
+                                            },
+                                            google: {
+                                                description: string;
+                                                heading: string;
+                                            },
+                                            totp: {
+                                                description: string;
+                                                heading: string;
+                                            }
+                                        }
+                                    }
+                                },
                                 requestPathAuthenticators: {
                                     title: string;
                                     subTitle: string;

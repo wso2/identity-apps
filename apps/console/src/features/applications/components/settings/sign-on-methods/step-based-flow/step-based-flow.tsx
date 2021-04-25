@@ -600,25 +600,40 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 setShowAuthenticatorAddModal(false);
             } }
             onClose={ () => setShowAuthenticatorAddModal(false) }
-            header="Add Authentication"
+            header={
+                t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
+                    "sections.stepBased.addAuthenticatorModal.heading")
+            }
             authenticatorGroups={ [
                 {
                     authenticators: moderateAuthenticators(localAuthenticators),
                     category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
-                    description: `Set of basic authenticators supported by ${ config.ui.productName }`,
-                    heading: "Basic"
+                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "basic.description", { productName: config.ui.productName }),
+                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "basic.heading")
                 },
                 {
                     authenticators: moderateAuthenticators(federatedAuthenticators),
                     category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
-                    description: "Use existing login information from a social network provider",
-                    heading: "Social login"
+                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "social.description"),
+                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "social.heading")
                 },
                 {
                     authenticators: moderateAuthenticators(secondFactorAuthenticators),
                     category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
-                    description: "Add additional layer of security to your login flow.",
-                    heading: "Multi-factor options"
+                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "mfa.description"),
+                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                        "mfa.heading")
                 }
             ] }
             showStepSelector={ authenticationSteps.length > 1 }

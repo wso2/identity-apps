@@ -361,7 +361,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     as="h4"
                     className="display-inline-block"
                 >
-                    Customize Sign-in Method
+                    {
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "customization.heading")
+                    }
                 </Heading>
                 <div className="display-inline-block floated right">
                     <LinkButton className="pr-0">
@@ -369,10 +372,16 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             name="refresh"
                         >
                         </Icon>
-                        Revert to default
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "customization.revertToDefaultButton.label")
+                        }
                     </LinkButton>
                     <Hint inline popup>
-                        Revert back to the default configuration (Username & Password)
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "customization.revertToDefaultButton.hint")
+                        }
                     </Hint>
                 </div>
             </div>

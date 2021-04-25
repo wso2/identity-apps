@@ -33,7 +33,7 @@ import React, {
     ReactElement,
     ReactNode,
     SyntheticEvent,
-    useEffect, useState
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -98,7 +98,7 @@ export interface AuthenticatorGroupInterface {
 /**
  * Authenticator side panel component.
  *
- * @param {AuthenticatorSidePanelPropsInterface} props - Props injected to the component.
+ * @param {AddAuthenticatorModalPropsInterface} props - Props injected to the component.
  *
  * @return {ReactElement}
  */
@@ -300,16 +300,28 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     { showStepSelector && (
                         <>
                             <Heading as="h5">
-                                Select step
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                        "stepSelectDropdown.label")
+                                }
                             </Heading>
                             <Hint>
-                                Select the step that you want to add authenticators to.
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                        "stepSelectDropdown.hint")
+                                }
                             </Hint>
                             <Form>
                                 <Form.Field inline>
                                     <Form.Select
                                         scrolling
-                                        placeholder="Select step"
+                                        placeholder={
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.authenticationFlow.sections.stepBased." +
+                                                "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
+                                        }
                                         options={ generateStepSelectorOptions() }
                                         onChange={ handleAddStepChange }
                                         value={ authenticatorAddStep }

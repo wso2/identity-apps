@@ -333,9 +333,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         active={ showConditionalAuthContent }
                         content={ (
                             <>
-                                <div
-                                    className="conditional-auth-accordion-title"
-                                >
+                                <div className="conditional-auth-accordion-title">
                                     <Checkbox
                                         toggle
                                         onChange={ handleConditionalAuthToggleChange }
@@ -343,8 +341,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         className="conditional-auth-accordion-toggle"
                                     />
                                     <div className="conditional-auth-accordion-title-text">
-                                        <Heading as="h5" compact>Conditional Authentication</Heading>
-                                        <Text muted compact>Control your Authentication flow using a script.</Text>
+                                        <Heading as="h5" compact>
+                                            {
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                    "title.heading")
+                                            }
+                                        </Heading>
+                                        <Text muted compact>
+                                            {
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                    "title.description")
+                                            }
+                                        </Text>
                                     </div>
                                 </div>
                             </>

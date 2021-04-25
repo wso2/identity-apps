@@ -838,6 +838,12 @@ export const console: ConsoleNS = {
                                     heading: "සත්‍යාපන ප්‍රවාහය",
                                     sections: {
                                         scriptBased: {
+                                            accordion: {
+                                                title: {
+                                                    description: "ස්ක්‍රිප්ට් භාවිතයෙන් ඔබේ සත්‍යාපන ප්‍රවාහය පාලනය කරන්න.",
+                                                    heading: "කොන්දේසිගත සත්‍යාපනය"
+                                                }
+                                            },
                                             editor: {
                                                 resetConfirmation: {
                                                     content: "මෙම ක්‍රියාව අනුවර්තී සත්‍යාපන ස්ක්‍රිප්ට් නැවත" +
@@ -860,6 +866,35 @@ export const console: ConsoleNS = {
                                                 addStep: "නව සත්‍යාපන පියවර",
                                                 selectAuthenticator: "Authenticator එකක් තෝරන්න"
                                             },
+                                            addAuthenticatorModal: {
+                                                content: {
+                                                    authenticatorGroups: {
+                                                        basic: {
+                                                            description: "{{productName}} සහාය දක්වන මූලික සත්‍යාපක කට්ටල.",
+                                                            heading: "මූලික"
+                                                        },
+                                                        mfa: {
+                                                            description: "ඔබගේ පිවිසුම් ප්‍රවාහයට අමතර ආරක්ෂිත තට්ටුවක් එක් " +
+                                                                "කරන්න.",
+                                                            heading: "බහු සාධක විකල්ප"
+                                                        },
+                                                        social: {
+                                                            description: "සමාජ ජාල සැපයුම්කරුවෙකුගෙන් පවතින පිවිසුම් තොරතුරු " +
+                                                                "භාවිතා කරන්න.",
+                                                            heading: "සමාජ පිවිසුම"
+                                                        }
+                                                    },
+                                                    stepSelectDropdown: {
+                                                        hint: "ඔබට සත්‍යාපකයන් එකතු කිරීමට අවශ්‍ය පියවර තෝරන්න.",
+                                                        label:  "පියවර තෝරන්න",
+                                                        placeholder: "පියවර තෝරන්න",
+                                                    }
+                                                },
+                                                description: null,
+                                                heading: "සත්‍යාපනය එක් කරන්න",
+                                                primaryButton: null,
+                                                secondaryButton: null
+                                            },
                                             authenticatorDisabled: "ඔබේ යෙදුම් සමඟ භාවිතා කිරීම සඳහා ග්‍රාහක හැඳුනුම්පත සහ " +
                                                 "රහස ලබා දීමෙන් ඔබ මෙම සත්‍යාපකය වින්‍යාස කළ යුතුය.",
                                             forms: {
@@ -879,6 +914,64 @@ export const console: ConsoleNS = {
                                                 "යාමෙන් සත්‍යාපන පියවර සාදන්න.",
                                             secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ මූලික " +
                                                 "සත්‍යාපකය පෙර පියවරක් තුළ එකතු කර ඇත්නම් පමණි."
+                                        }
+                                    }
+                                },
+                                customization: {
+                                    heading: "පුරනය වීමේ ක්‍රමය රිසිකරණය කරන්න",
+                                    revertToDefaultButton: {
+                                        hint: "පෙරනිමි වින්‍යාසය වෙත ආපසු යන්න (පරිශීලක නාමය සහ මුරපදය)",
+                                        label: "පෙරනිමියට ආපසු යන්න"
+                                    }
+                                },
+                                landing: {
+                                    defaultConfig: {
+                                        description: {
+                                            0: "ඔබගේ යෙදුම පරිශීලක නාමය සහ මුරපද සත්‍යාපනය සමඟ වැඩ කිරීමට දැනටමත් වින්‍යාස කර " +
+                                                "ඇත.",
+                                            1: "අභිරුචිකරණය කිරීම ආරම්භ කිරීම සඳහා දකුණු පැත්තේ ඇති විකල්ප වලින් එකක් තෝරන්න."
+                                        },
+                                        heading: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ යෙදුම වින්‍යාස කර ඇත"
+                                    },
+                                    flowBuilder: {
+                                        addMissingGoogleAuthenticatorModal: {
+                                            content: {
+                                                body: "ඔබට අනන්‍යතා සැපයුම්කරුවෙකු <1>ගූගල් සත්‍යාපකය</ 1> සමඟ වින්‍යාස කර " +
+                                                    "නොමැත. වින්‍යාස කිරීමේ ක්‍රියාවලිය ආරම්භ කිරීමට <3>වින්‍යාස කරන්න</3> බොත්තම " +
+                                                    "ක්ලික් කරන්න හෝ <5>අනන්‍යතා සැපයුම්කරුවන්</5> කොටස අතින්.",
+                                                message: "ගූගල් හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කර නොමැත"
+                                            },
+                                            description: "",
+                                            heading: "ගූගල් හැඳුනුම් සැපයුම්කරු වින්‍යාස කරන්න",
+                                            primaryButton: "වින්‍යාස කරන්න",
+                                            secondaryButton: "අවලංගු කරන්න"
+                                        },
+                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                            content: {
+                                                body: "<1>Google Authenticator</1> සමඟ වින්‍යාස කර ඇති අනන්‍යතා " +
+                                                    "සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් අපේක්ෂිත එකක් තෝරන්න.",
+                                                message: "Google Authenticator සමඟ බහු අනන්‍යතා සපයන්නන් හමු විය."
+                                            },
+                                            description: "",
+                                            heading: "ගූගල් හැඳුනුම් සැපයුම්කරු තෝරන්න",
+                                            primaryButton: "දිගටම කරගෙන යන්න",
+                                            secondaryButton: "අවලංගු කරන්න"
+                                        },
+                                        heading: "ඔබේ පිවිසුම් ප්‍රවාහය ගොඩනැගීම ආරම්භ කරන්න",
+                                        types: {
+                                            defaultConfig: {
+                                                description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ පිවිසුම් " +
+                                                    "ප්‍රවාහය ගොඩනඟන්න.",
+                                                heading: "පෙරනිමි වින්‍යාසය සමඟ ආරම්භ කරන්න"
+                                            },
+                                            google: {
+                                                description: "ගූගල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                                                heading: "ගූගල් පිවිසුම එක් කරන්න"
+                                            },
+                                            totp: {
+                                                description: "කාලය පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
+                                                heading: "TOTP දෙවන සාධකය ලෙස එක් කරන්න"
+                                            }
                                         }
                                     }
                                 },

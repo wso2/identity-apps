@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, InfoCard, Text } from "@wso2is/react-components";
+import { GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Segment } from "semantic-ui-react";
@@ -83,13 +83,26 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             <Divider hidden />
                             
                             <div className="default-config-description">
-                                <Text>
-                                    Your application is already configured to work with username and password
-                                    authentication.
-                                </Text>
-                                <Text>
-                                    Select one of the options available on the right side to begin customising.
-                                </Text>
+                                <Heading as="h3">
+                                    {
+                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.landing.defaultConfig.heading")
+                                    }
+                                </Heading>
+                                <div className="default-config-description-content">
+                                    <Text subHeading muted>
+                                        {
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.landing.defaultConfig.description.0")
+                                        }
+                                    </Text>
+                                    <Text subHeading muted>
+                                        {
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.landing.defaultConfig.description.1")
+                                        }
+                                    </Text>
+                                </div>
                             </div>
                         </div>
                     </Grid.Column>
@@ -99,23 +112,38 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                     >
                         <div className="pr-5 pl-5">
                             <h2>
-                                Start building your login flow
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.heading")
+                                }
                             </h2>
                             <Divider hidden />
                             <InfoCard
                                 fluid
                                 imageSize="mini"
                                 image={ getAuthenticatorIcons().google }
-                                header="Add Google Login"
-                                description="Enable users to login with Google."
+                                header={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.google.heading")
+                                }
+                                description={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.google.description")
+                                }
                                 onClick={ () => onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN) }
                             />
                             <InfoCard
                                 fluid
                                 image={ getAuthenticatorIcons().totp }
                                 imageSize="mini"
-                                header="Add TOTP as a Second Factor"
-                                description="Enable additional authentication layer with Time based OTP."
+                                header={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.totp.heading")
+                                }
+                                description={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.totp.description")
+                                }
                                 onClick={ () => onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP) }
                             />
                             
@@ -125,8 +153,14 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 fluid
                                 image={ getAuthenticatorIcons().basic }
                                 imageSize="mini"
-                                header="Start with default configuration"
-                                description="Build your login flow starting with Username & Password login."
+                                header={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                        "sections.landing.flowBuilder.types.defaultConfig.heading")
+                                }
+                                description={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                        "sections.landing.flowBuilder.types.defaultConfig.description")
+                                }
                                 onClick={ () => onLoginFlowSelect(LoginFlowTypes.DEFAULT) }
                             />
                         </div>
