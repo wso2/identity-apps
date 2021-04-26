@@ -120,6 +120,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             <Divider hidden />
                             <InfoCard
                                 fluid
+                                data-testid="google-login-flow-card"
                                 imageSize="mini"
                                 image={ getAuthenticatorIcons().google }
                                 header={
@@ -134,6 +135,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             />
                             <InfoCard
                                 fluid
+                                data-testid="totp-mfa-flow-card"
                                 image={ getAuthenticatorIcons().totp }
                                 imageSize="mini"
                                 header={
@@ -151,6 +153,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
                             <InfoCard
                                 fluid
+                                data-testid="basic-configuration-flow-card"
                                 image={ getAuthenticatorIcons().basic }
                                 imageSize="mini"
                                 header={

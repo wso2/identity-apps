@@ -384,6 +384,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             isLoading={ isLoading }
                             readOnly={ readOnly }
                             onLoginFlowSelect={ handleLoginFlowSelect }
+                            data-testid={ `${ testId }-landing` }
                         />
                     )
                     : (
@@ -394,6 +395,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 authenticationSequence={ moderatedAuthenticationSequence }
                                 onUpdate={ onUpdate }
                                 onReset={ handleLoginFlowReset }
+                                data-testid={ testId }
                             />
                         </>
                     )
