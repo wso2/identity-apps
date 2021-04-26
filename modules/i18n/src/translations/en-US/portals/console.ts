@@ -889,6 +889,8 @@ export const console: ConsoleNS = {
                                         },
                                         stepBased: {
                                             actions: {
+                                                addAuthentication: "Add Authentication",
+                                                addNewStep: "Add new step",
                                                 addStep: "New Authentication Step",
                                                 selectAuthenticator: "Select an Authenticator"
                                             },

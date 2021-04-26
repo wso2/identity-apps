@@ -567,6 +567,8 @@ export interface ConsoleNS {
                                         };
                                         stepBased: {
                                             actions: {
+                                                addAuthentication: string;
+                                                addNewStep: string;
                                                 addStep: string;
                                                 selectAuthenticator: string;
                                             };

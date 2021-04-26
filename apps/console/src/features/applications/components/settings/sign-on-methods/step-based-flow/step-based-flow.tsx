@@ -724,7 +724,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         } }
                                     >
                                         <Icon name="plus"/>
-                                        Add Authentication
+                                        {
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.authenticationFlow.sections.stepBased.actions." +
+                                                "addAuthentication")
+                                        }
                                     </LinkButton>
                                     <LinkButton
                                         fluid
@@ -733,7 +737,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         onClick={ handleAuthenticationStepAdd }
                                     >
                                         <Icon name="plus"/>
-                                        Add new step
+                                        {
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.authenticationFlow.sections.stepBased.actions.addNewStep")
+                                        }
                                     </LinkButton>
                                 </div>
                             </div>
