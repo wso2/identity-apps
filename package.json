@@ -31,6 +31,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardio/oidc-js": "^0.1.23",
+        "@octokit/core": "^3.4.0",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",
@@ -70,7 +71,7 @@
         "js-beautify": "^1.10.3",
         "js-yaml": "3.13.1",
         "jshint": "^2.11.0",
-        "jsrsasign": "^10.0.5",
+        "jsrsasign": "^8.0.24",
         "lodash": "^4.17.15",
         "moment": "2.24.0",
         "node-forge": "^0.10.0",
@@ -95,7 +96,8 @@
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-less": "^2.4.1",
         "semantic-ui-react": "^0.87.3",
-        "ua-parser-js": "^0.7.20"
+        "ua-parser-js": "^0.7.20",
+        "vue": "^3.0.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",
