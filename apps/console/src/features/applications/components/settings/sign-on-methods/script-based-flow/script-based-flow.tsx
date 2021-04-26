@@ -187,12 +187,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Checks for a script in auth sequence to handle content visibility.
      */
     useEffect(() => {
-        
-        if (authenticationSequence?.script) {
+
+        if (authenticationSequence?.script
+            && !AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script,
+                authenticationSequence?.steps?.length)) {
+
             setShowConditionalAuthContent(true);
             return;
         }
-        
+
         setShowConditionalAuthContent(false);
     }, [ authenticationSequence ]);
 
