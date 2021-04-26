@@ -317,7 +317,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.heading")
                 }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached info>
+            <ConfirmationModal.Message attached warning>
                 {
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.content.message")
