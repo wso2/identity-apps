@@ -188,6 +188,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
 
+        // If the user has read only access, show the script editor.
+        if (readOnly) {
+            setShowConditionalAuthContent(true);
+            return;
+        }
+
         // If there is a script and if the script is not a default script,
         // assume the user has modified the script and show the editor.
         if (authenticationSequence?.script
