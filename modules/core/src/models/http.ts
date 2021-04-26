@@ -52,7 +52,13 @@ export enum HttpMethods {
      *
      * @type {string}
      */
-    DELETE = "DELETE"
+    DELETE = "DELETE",
+    /**
+     * Value for `HEAD` requests.
+     *
+     * @type {string}
+     */
+    HEAD = "HEAD"
 }
 
 /**

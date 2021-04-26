@@ -49,6 +49,7 @@ export const common: CommonNS = {
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
+    create: "සාදන්න",
     dangerZone: "අන්තරා කලාපය",
     delete: "මකන්න",
     description: "විස්තරය",

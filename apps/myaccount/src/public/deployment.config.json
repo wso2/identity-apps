@@ -68,7 +68,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": [],
+                "disabledFeatures": ["security.loginVerifyData.typingDNA"],
                 "enabled": true,
                 "scopes": {
                     "create": [],

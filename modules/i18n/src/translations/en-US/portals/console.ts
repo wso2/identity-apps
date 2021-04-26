@@ -62,9 +62,6 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
-        header: {
-            tenantSwitchHeader: "Switch Organization"
-        },
         modals: {
             editAvatarModal: {
                 content: {
@@ -554,8 +551,8 @@ export const console: ConsoleNS = {
                     addSocialLogin: {
                         content : "To add a new social login, we will need to route you to a different page and " +
                             "any unsaved changes in this page will be lost. Please confirm.",
-                        header: "Are you sure?",
-                        subHeader: "This action is irreversible."
+                        header: "Do you want to continue?",
+                        subHeader: "You will lose any unsaved changes."
                     },
                     clientSecretHashDisclaimer: {
                         forms: {

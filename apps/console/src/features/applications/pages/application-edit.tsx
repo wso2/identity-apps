@@ -133,7 +133,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
-    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
+    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
@@ -440,6 +440,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * TODO: IMPORTANT - Refactor this code.
      */
     useEffect(() => {
+        if (isExtensionsAvailable === undefined) {
+            return;
+        }
+
         if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
             if (isExtensionsAvailable) {
                 setDefaultActiveIndex(1);
@@ -892,7 +896,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
                 close: getHelpPanelActionIcons().close,
-                pin: getHelpPanelActionIcons().pin
+                pin: getHelpPanelActionIcons().pin,
+                unpin: getHelpPanelActionIcons().unpin
             } }
             sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
