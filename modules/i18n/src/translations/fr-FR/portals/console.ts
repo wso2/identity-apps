@@ -836,6 +836,43 @@ export const console: ConsoleNS = {
                                     heading: "Flux d'authentification",
                                     sections: {
                                         scriptBased: {
+                                            accordion: {
+                                                title: {
+                                                    description: "Contrôlez votre flux d'authentification à l'aide " +
+                                                        "d'un script.",
+                                                    heading: "Authentification conditionnelle"
+                                                }
+                                            },
+                                            conditionalAuthTour: {
+                                                steps: {
+                                                    0: {
+                                                        content: {
+                                                            0: "Configurez le flux de connexion pour l'adapter " +
+                                                                "à la situation ou à l'utilisateur pendant le " +
+                                                                "processus d'authentification.",
+                                                            1: "Cliquez sur le bouton <1>Suivant</1> pour en savoir " +
+                                                                "plus sur le processus."
+                                                        },
+                                                        heading: "Authentification conditionnelle"
+                                                    },
+                                                    1: {
+                                                        content: {
+                                                            0: "Cliquez sur ce bouton pour ajouter les options " +
+                                                                "d'authentification requises à l'étape."
+                                                        },
+                                                        heading: "Ajouter une authentification"
+                                                    },
+                                                    2: {
+                                                        content: {
+                                                            0: "Cliquez ici si vous devez ajouter d'autres étapes " +
+                                                                "au flux. Une fois que vous avez ajouté une nouvelle " +
+                                                                "étape, <1>executeStep(STEP_NUMBER);</1> apparaîtra " +
+                                                                "dans l'éditeur de script."
+                                                        },
+                                                        heading: "Ajouter une nouvelle étape"
+                                                    }
+                                                }
+                                            },
                                             editor: {
                                                 resetConfirmation: {
                                                     content: "Cette action réinitialisera le script d'authentification" +
@@ -855,8 +892,46 @@ export const console: ConsoleNS = {
                                         },
                                         stepBased: {
                                             actions: {
+                                                addAuthentication: "Ajouter une authentification",
+                                                addNewStep: "Ajouter une nouvelle étape",
                                                 addStep: "Nouvelle étape d'authentification",
                                                 selectAuthenticator: "Sélectionner un authentificateur"
+                                            },
+                                            addAuthenticatorModal: {
+                                                content: {
+                                                    authenticatorGroups: {
+                                                        basic: {
+                                                            description: "Ensemble d'authentificateurs de base pris en " +
+                                                                "charge par {{productName}}.",
+                                                            heading: "De base"
+                                                        },
+                                                        enterprise: {
+                                                            description: "Connexion d'entreprise via des protocoles " +
+                                                                "standard.",
+                                                            heading: "Connexion Entreprise"
+                                                        },
+                                                        mfa: {
+                                                            description: "Ajoutez une couche de sécurité " +
+                                                                "supplémentaire à votre flux de connexion.",
+                                                            heading: "Options multifactorielles"
+                                                        },
+                                                        social: {
+                                                            description: "Utiliser les informations de connexion " +
+                                                                "existantes d'un fournisseur de réseau social.",
+                                                            heading: "Connexion sociale"
+                                                        }
+                                                    },
+                                                    stepSelectDropdown: {
+                                                        hint: "Sélectionnez l'étape à laquelle vous souhaitez " +
+                                                            "ajouter des authentificateurs.",
+                                                        label:  "Sélectionnez l'étape",
+                                                        placeholder: "Sélectionnez l'étape"
+                                                    }
+                                                },
+                                                description: null,
+                                                heading: "Ajouter une authentification",
+                                                primaryButton: null,
+                                                secondaryButton: null
                                             },
                                             authenticatorDisabled: "Vous devez configurer cet authentificateur en " +
                                                 "fournissant un identifiant et un secret client, à utiliser avec " +
@@ -879,6 +954,71 @@ export const console: ConsoleNS = {
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne peuvent " +
                                                 "être utilisés que si l'authentificateur de base a été ajouté à une" +
                                                 " étape précédente."
+                                        }
+                                    }
+                                },
+                                customization: {
+                                    heading: "Personnaliser la méthode de connexion",
+                                    revertToDefaultButton: {
+                                        hint: "Revenir à la configuration par défaut (nom d'utilisateur et " +
+                                            "mot de passe)",
+                                        label: "Rétablir la valeur par défaut"
+                                    }
+                                },
+                                landing: {
+                                    defaultConfig: {
+                                        description: {
+                                            0: "Votre application est déjà configurée pour fonctionner avec " +
+                                                "l'authentification par nom d'utilisateur et mot de passe.",
+                                            1: "Sélectionnez l'une des options disponibles sur le côté droit pour " +
+                                                "commencer la personnalisation."
+                                        },
+                                        heading: "Application configurée avec nom d'utilisateur et mot de passe " +
+                                            "de connexion"
+                                    },
+                                    flowBuilder: {
+                                        addMissingGoogleAuthenticatorModal: {
+                                            content: {
+                                                body: "Vous n'avez pas de fournisseur d'identité configuré avec " +
+                                                    "<1>Google Authenticator</1>. Cliquez sur <3>Configurer</3> " +
+                                                    "bouton pour lancer le processus de configuration ou accéder à" +
+                                                    "la section <5>Fournisseurs d'identité</5> manuellement.",
+                                                message: "Aucun fournisseur d'identité Google configuré"
+                                            },
+                                            description: "",
+                                            heading: "Configurer le fournisseur d'identité Google",
+                                            primaryButton: "Configurer",
+                                            secondaryButton: "Annuler"
+                                        },
+                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                            content: {
+                                                body: "Vous avez plusieurs fournisseurs d'identité configurés " +
+                                                    "avec <1> Google Authenticator </1>. Sélectionnez celui de " +
+                                                    "votre choix dans la sélection ci-dessous pour continuer.",
+                                                message: "Plusieurs fournisseurs d'identité trouvés avec Google " +
+                                                    "Authenticator."
+                                            },
+                                            description: "",
+                                            heading: "Sélectionnez le fournisseur d'identité Google",
+                                            primaryButton: "Continuer",
+                                            secondaryButton: "Annuler"
+                                        },
+                                        heading: "Commencez à créer votre flux de connexion",
+                                        types: {
+                                            defaultConfig: {
+                                                description: "Créez votre flux de connexion en commençant par la " +
+                                                    "connexion Nom d'utilisateur et mot de passe.",
+                                                heading: "Commencer avec la configuration par défaut"
+                                            },
+                                            google: {
+                                                description: "Permettre aux utilisateurs de se connecter avec Google.",
+                                                heading: "Ajouter une connexion Google"
+                                            },
+                                            totp: {
+                                                description: "Activez une couche d'authentification supplémentaire " +
+                                                    "avec OTP basé sur le temps.",
+                                                heading: "Ajouter TOTP comme deuxième facteur"
+                                            }
                                         }
                                     }
                                 },

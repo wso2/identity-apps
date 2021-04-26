@@ -122,6 +122,7 @@ export interface CommonNS {
     showLess: string;
     showMore: string;
     showPassword: string;
+    skip: string;
     generatePassword: string;
     startsWith: string;
     step: string;

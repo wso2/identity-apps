@@ -324,6 +324,13 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.FIDO_AUTHENTICATOR_ID
     ];
 
+    // Known social authenticators.
+    public static readonly SOCIAL_AUTHENTICATORS = [
+        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID
+    ];
+
     /**
      * PEM certificate field default placeholder.
      */
@@ -340,5 +347,17 @@ export class ApplicationManagementConstants {
     public static readonly FORM_FIELD_CONSTRAINTS = {
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    }
+    };
+    
+    public static readonly AUTHENTICATOR_CATEGORIES = {
+        ENTERPRISE: "enterprise-authenticators",
+        LOCAL: "local-authenticators",
+        SECOND_FACTOR: "second-factor-authenticators",
+        SOCIAL: "social-authenticators"
+    };
+
+    public static readonly AUTHENTICATOR_DISPLAY_NAMES: Map<string, string> = new Map<string, string>()
+        .set("BasicAuthenticator", "Username & Password");
+
+    public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
 }

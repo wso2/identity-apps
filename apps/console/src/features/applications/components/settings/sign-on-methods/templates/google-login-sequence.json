@@ -1,0 +1,17 @@
+{
+    "steps": [
+        {
+            "id": 1,
+            "options": [
+                {
+                    "authenticator": "GoogleOIDCAuthenticator",
+                    "idp": "<GOOGLE_IDP>"
+                },
+                {
+                    "authenticator": "BasicAuthenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        }
+    ]
+}

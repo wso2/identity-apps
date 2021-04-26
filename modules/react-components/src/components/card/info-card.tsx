@@ -146,7 +146,11 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                         <GenericIcon
                             data-testid={ `${ testId }-image` }
                             className="card-image"
-                            size={ fluid? fluidImageSize : imageSize }
+                            size={
+                                fluid && !imageSize
+                                    ? "tiny"
+                                    : imageSize
+                            }
                             icon={ image }
                             floated="left"
                             square
@@ -283,7 +287,6 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
  */
 InfoCard.defaultProps = {
     "data-testid": "info-card",
-    fluidImageSize: "tiny",
     imageSize: "mini",
     inline: false,
     onClick: () => null,

@@ -623,3 +623,15 @@ export enum DefaultTemplateGroupIds {
     DESKTOP_APPLICATION = "desktop",
     MOBILE_APPLICATION = "mobile"
 }
+
+/**
+ * Enum for sign-in method login flow options.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum LoginFlowTypes {
+    GOOGLE_LOGIN = "GOOGLE_LOGIN",
+    SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
+    DEFAULT = "DEFAULT"
+}

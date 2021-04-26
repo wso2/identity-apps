@@ -79,6 +79,10 @@ export interface LabeledCardPropsInterface extends TestableComponentInterface {
      */
     labelEllipsis?: boolean;
     /**
+     * Should the label go in to 2 lines.
+     */
+    multilineLabel?: boolean;
+    /**
      * On click callback for the element.
      */
     onClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
@@ -129,6 +133,7 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
         imageSize,
         label,
         labelEllipsis,
+        multilineLabel,
         onClick,
         onCloseClick,
         padding,
@@ -165,7 +170,8 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
     const cardLabelClasses = classNames(
         "card-label",
         {
-            "ellipsis": labelEllipsis
+            "ellipsis": !multilineLabel && labelEllipsis,
+            "multiline": multilineLabel
         }
     );
 

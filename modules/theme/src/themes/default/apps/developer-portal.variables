@@ -49,11 +49,12 @@
 @signOnMethodsAuthStepSectionDisplay: flex;
 @signOnMethodsAuthStepSectionOverflow: auto;
 @signOnMethodsAuthStepSectionMaxHeight: 375px;
-@signOnMethodsAuthStepSectionBorder: @defaultBorderWidth solid @defaultBorderColor;
-@signOnMethodsAuthStepSectionPadding: 3em;
-@signOnMethodsAuthStepSectionMaxWidth: 1150px;
+@signOnMethodsAuthStepSectionBorder: none;
+@signOnMethodsAuthStepSectionPadding: 1em 3em 1em 0;
+@signOnMethodsAuthStepSectionMaxWidth: 75vw;
 @signOnMethodsAuthStepBorder: 1px dashed rgba(34,36,38,.15);
 @signOnMethodsAuthStepButtonMarginRight: 10px;
+@signOnMethodsAuthCardFontSize: 0.8em;
 
 @signOnMethodsAuthStepContainerMarginRight: 68px;
 
