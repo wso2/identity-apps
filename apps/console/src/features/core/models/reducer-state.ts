@@ -47,4 +47,9 @@ export interface HelpPanelReducerStateInterface {
     visibility: boolean;
 }
 
+export interface AccessControlReducerStateInterface {
+    isDevelopAllowed: boolean,
+    isManageAllowed: boolean
+}
+
 export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInterface { }

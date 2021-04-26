@@ -53,10 +53,6 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
      * Active view.
      */
     activeView?: "ADMIN" | "DEVELOPER";
-    /**
-     * Flag to show/hide manage view.
-     */
-    isManageViewAllowed?: boolean;
 }
 
 /**
@@ -70,7 +66,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        isManageViewAllowed,
         activeView,
         fluid,
         onSidePanelToggleClick,
@@ -91,6 +86,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const defaultTenant: string = useSelector((state: AppState) => state.auth.defaultTenant);
     const associatedTenants: string | string[] = useSelector((state: AppState) => state.auth.associatedTenants);
+
+    const isDevelopAllowed: boolean = 
+        useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
+    const isManageAllowed: boolean = 
+        useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
@@ -251,7 +251,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             { ...rest }
         >
             {
-                isManageViewAllowed && (
+                isDevelopAllowed && isManageAllowed && (
                     <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                         <Container fluid={ fluid }>
                             <Menu className="inner-menu">

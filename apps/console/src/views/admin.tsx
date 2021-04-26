@@ -47,6 +47,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
+import { setManageVisibility } from "../features/core/store/actions/acess-control";
 import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
@@ -153,6 +154,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             }
             
         });
+
+        // TODO : Temporary fix for access controlled routes
+        if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
+            setAccessControlledRoutes(controlledRoutes); 
+        } else {
+            dispatch(setManageVisibility(false));
+        }
         setAccessControlledRoutes(controlledRoutes);   
     }, [ allowedScopes ]);
 
@@ -419,7 +427,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
-                    isManageViewAllowed={ isManageViewAllowed }
                     activeView="ADMIN"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }

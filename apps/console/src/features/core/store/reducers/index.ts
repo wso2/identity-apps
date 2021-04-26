@@ -21,3 +21,4 @@ export * from "./global";
 export * from "./help-panel";
 export * from "./loaders";
 export * from "./profile";
+export * from "./access-control";

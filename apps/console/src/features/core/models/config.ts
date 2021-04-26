@@ -75,6 +75,10 @@ export interface FeatureConfigInterface {
      */
     groups?: FeatureAccessConfigInterface;
     /**
+     * Guest User Feature
+     */
+    guestUser?: FeatureAccessConfigInterface;
+    /**
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;

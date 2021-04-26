@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
+import { hasRequiredScopes } from "@wso2is/core//helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils, AuthenticateUtils } from "@wso2is/core/utils";
@@ -64,6 +64,7 @@ import {
     history,
     useUIElementSizes
 } from "../features/core";
+import { setDeveloperVisibility } from "../features/core/store/actions/acess-control";
 
 /**
  * Developer View Prop types.
@@ -142,7 +143,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             }
             
         });
-        setAccessControlledRoutes(controlledRoutes); 
+
+        if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
+            setAccessControlledRoutes(controlledRoutes); 
+        } else {
+            dispatch(setDeveloperVisibility(false));
+        }
+        
     }, [ allowedScopes ]);
 
     /**
@@ -164,10 +171,30 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
             allowedScopes);
+
+        // TODO : Temporary fix for access control module
+        if (routes.length === 3) {
+            if (routes.filter(route => route.id === "developer-getting-started").length > 0 
+                && routes.filter(route => route.id === "identityProviders").length > 0 
+                && routes.filter(route => route.id === "404").length > 0) {
+                    if (hasRequiredScopes(featureConfig?.identityProviders, 
+                            featureConfig?.identityProviders?.scopes?.read, allowedScopes) 
+                            && !hasRequiredScopes(featureConfig?.applications, 
+                                featureConfig?.applications?.scopes?.read,  allowedScopes)) {
+                        routes = routes.filter(route => route.id === "404");
+                        dispatch(setDeveloperVisibility(false));
+                    } 
+            }
+        } else if (routes.length === 2 
+            && routes.filter(route => route.id === "developer-getting-started").length > 0 
+                && routes.filter(route => route.id === "404").length > 0) {
+            routes = routes.filter(route => route.id === "404");
+            dispatch(setDeveloperVisibility(false));
+        }
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.
         RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
@@ -339,7 +366,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
-                    isManageViewAllowed={ isDevelopViewAllowed }
                     activeView="DEVELOPER"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
