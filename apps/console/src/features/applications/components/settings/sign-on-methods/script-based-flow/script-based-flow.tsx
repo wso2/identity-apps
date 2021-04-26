@@ -34,7 +34,7 @@ import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import Tour from "reactour";
+import Tour, { ReactourStep } from "reactour";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
@@ -188,6 +188,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
 
+        // If there is a script and if the script is not a default script,
+        // assume the user has modified the script and show the editor.
         if (authenticationSequence?.script
             && !AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script,
                 authenticationSequence?.steps?.length)) {
@@ -333,9 +335,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Steps for the conditional authentication toggle tour.
      *
-     * @type {({selector: string; content: any})[]}
+     * @type {ReactourStep[]}
      */
-    const conditionalAuthTourSteps = [
+    const conditionalAuthTourSteps: ReactourStep[] = [
         {
             content: (
                 <>
