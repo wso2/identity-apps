@@ -17,7 +17,6 @@
  */
 
 import { ConsoleNS } from "../../../models";
-import { Heading } from "../../../../../react-components/dist/typings";
 
 export const console: ConsoleNS = {
     common: {
