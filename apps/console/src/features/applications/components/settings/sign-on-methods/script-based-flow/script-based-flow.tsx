@@ -17,7 +17,7 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -31,6 +31,10 @@ import {
     Text
 } from "@wso2is/react-components";
 import beautify from "js-beautify";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -38,6 +42,7 @@ import Tour, { ReactourStep } from "reactour";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
+import { AppUtils } from "../../../../../core/utils";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -419,14 +424,29 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     ];
 
     /**
+     * Should the conditional auth tour open.
+     *
+     * @return {boolean}
+     */
+    const shouldConditionalAuthTourOpen = (): boolean => {
+
+        if (!isConditionalAuthToggled) {
+            return false;
+        }
+
+        return getConditionalAuthTourViewedStatus() === false;
+    };
+
+    /**
      * Renders the Conditional Auth tour.
+     *
      * @return {React.ReactElement}
      */
     const renderConditionalAuthTour = (): ReactElement => (
         <Tour
             rounded={ 3 }
             steps={ conditionalAuthTourSteps }
-            isOpen={ isConditionalAuthToggled }
+            isOpen={ shouldConditionalAuthTourOpen() }
             className="basic-tour"
             showNumber={ false }
             showCloseButton={ false }
@@ -445,6 +465,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     onClick={ () => {
                         setIsConditionalAuthToggled(false);
                         setConditionalAuthTourCurrentStep(undefined);
+                        persistConditionalAuthTourViewedStatus();
                     } }
                 >
                     { t("common:done") }
@@ -458,6 +479,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             onClick={ () => {
                                 setIsConditionalAuthToggled(false);
                                 setConditionalAuthTourCurrentStep(undefined);
+                                persistConditionalAuthTourViewedStatus();
                             } }
                         >
                             { t("common:skip") }
@@ -467,6 +489,43 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
         />
     );
+
+    /**
+     * Persist the Conditional Auth Tour seen status in Local Storage.
+     *
+     * @param {boolean} status - Status to set.
+     */
+    const persistConditionalAuthTourViewedStatus = (status: boolean = true): void => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return;
+        }
+
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+        set(newPref?.identityAppsSettings?.devPortal,
+            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, status);
+
+        AppUtils.setUserPreferences(newPref);
+    };
+
+    /**
+     * Check if the Conditional Auth Tour has already been seen by the user.
+     *
+     * @return {boolean}
+     */
+    const getConditionalAuthTourViewedStatus = (): boolean => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return false;
+        }
+
+        return get(userPreferences?.identityAppsSettings?.devPortal,
+            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
+    };
 
     return (
         <>

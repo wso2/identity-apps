@@ -358,4 +358,6 @@ export class ApplicationManagementConstants {
 
     public static readonly AUTHENTICATOR_DISPLAY_NAMES: Map<string, string> = new Map<string, string>()
         .set("BasicAuthenticator", "Username & Password");
+
+    public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
 }
