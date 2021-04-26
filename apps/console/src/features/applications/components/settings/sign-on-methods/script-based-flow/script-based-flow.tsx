@@ -21,16 +21,20 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
+    Code,
     CodeEditor,
     ConfirmationModal,
     Heading,
+    LinkButton,
+    PrimaryButton,
     SegmentedAccordion,
     Text
 } from "@wso2is/react-components";
 import beautify from "js-beautify";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import Tour from "reactour";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
@@ -128,6 +132,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
+    const [ isConditionalAuthToggled, setIsConditionalAuthToggled ] = useState<boolean>(false);
+    const [ conditionalAuthTourCurrentStep, setConditionalAuthTourCurrentStep ] = useState<number>(undefined);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -318,7 +324,88 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         setShowConditionalAuthContent(true);
+        setIsConditionalAuthToggled(true);
     };
+
+    /**
+     * Steps for the conditional authentication toggle tour.
+     *
+     * @type {({selector: string; content: any})[]}
+     */
+    const conditionalAuthTourSteps = [
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.0")
+                        }
+                    </Text>
+                    <Text>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.1"
+                            }
+                        >
+                            Click on the <Code>Next</Code> button to learn about the process.
+                        </Trans>
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"conditional-auth\"]"
+        },
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.content.0")
+                        }
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"add-authentication-options-button\"]"
+        },
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.content.0"
+                            }
+                        >
+                            Click here if you need to add more steps to the flow. Once you add a new step, 
+                            <Code>executeStep(STEP_NUMBER);</Code> will appear on the script editor.
+                        </Trans>
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"add-new-step-button\"]"
+        }
+    ];
 
     return (
         <>
@@ -329,6 +416,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     className="conditional-auth-accordion"
                 >
                     <SegmentedAccordion.Title
+                        data-tourid="conditional-auth"
                         data-testid={ `${ testId }-accordion-title` }
                         active={ showConditionalAuthContent }
                         content={ (
@@ -357,6 +445,51 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Text>
                                     </div>
                                 </div>
+                                <Tour
+                                    rounded={ 3 }
+                                    steps={ conditionalAuthTourSteps }
+                                    isOpen={ isConditionalAuthToggled }
+                                    className="basic-tour"
+                                    showNumber={ false }
+                                    showCloseButton={ false }
+                                    showNavigationNumber={ false }
+                                    showNavigation={
+                                        conditionalAuthTourCurrentStep !== (conditionalAuthTourSteps.length - 1)
+                                    }
+                                    startAt={ 0 }
+                                    onRequestClose={ () => {
+                                        setIsConditionalAuthToggled(false);
+                                        setConditionalAuthTourCurrentStep(undefined);
+                                    } }
+                                    nextButton={ (
+                                        <PrimaryButton>{ t("common:next") }</PrimaryButton>
+                                    ) }
+                                    lastStepNextButton={ (
+                                        <PrimaryButton
+                                            onClick={ () => {
+                                                setIsConditionalAuthToggled(false);
+                                                setConditionalAuthTourCurrentStep(undefined);
+                                            } }
+                                        >
+                                            { t("common:done") }
+                                        </PrimaryButton>
+                                    ) }
+                                    prevButton={
+                                        (conditionalAuthTourCurrentStep === (conditionalAuthTourSteps.length - 1))
+                                            ? <></>
+                                            : (
+                                                <LinkButton
+                                                    onClick={ () => {
+                                                        setIsConditionalAuthToggled(false);
+                                                        setConditionalAuthTourCurrentStep(undefined);
+                                                    } }
+                                                >
+                                                    { t("common:skip") }
+                                                </LinkButton>
+                                            )
+                                    }
+                                    getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
+                                />
                             </>
                         ) }
                         hideChevron={ true }

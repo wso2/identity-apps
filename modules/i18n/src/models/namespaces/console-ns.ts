@@ -528,6 +528,29 @@ export interface ConsoleNS {
                                                     heading: string;
                                                 };
                                             };
+                                            conditionalAuthTour: {
+                                                steps: {
+                                                    0: {
+                                                        heading: string;
+                                                        content: {
+                                                            0: string;
+                                                            1: string;
+                                                        };
+                                                    };
+                                                    1: {
+                                                        heading: string;
+                                                        content: {
+                                                            0: string;
+                                                        };
+                                                    };
+                                                    2: {
+                                                        heading: string;
+                                                        content: {
+                                                            0: string;
+                                                        };
+                                                    };
+                                                };
+                                            },
                                             heading: string;
                                             hint: string;
                                             editor: {

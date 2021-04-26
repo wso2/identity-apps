@@ -846,6 +846,36 @@ export const console: ConsoleNS = {
                                                     heading: "Authentification conditionnelle"
                                                 }
                                             },
+                                            conditionalAuthTour: {
+                                                steps: {
+                                                    0: {
+                                                        content: {
+                                                            0: "Configurez le flux de connexion pour l'adapter " +
+                                                                "à la situation ou à l'utilisateur pendant le " +
+                                                                "processus d'authentification.",
+                                                            1: "Cliquez sur le bouton <1>Suivant</1> pour en savoir " +
+                                                                "plus sur le processus."
+                                                        },
+                                                        heading: "Authentification conditionnelle"
+                                                    },
+                                                    1: {
+                                                        content: {
+                                                            0: "Cliquez sur ce bouton pour ajouter les options " +
+                                                                "d'authentification requises à l'étape."
+                                                        },
+                                                        heading: "Ajouter une authentification"
+                                                    },
+                                                    2: {
+                                                        content: {
+                                                            0: "Cliquez ici si vous devez ajouter d'autres étapes " +
+                                                                "au flux. Une fois que vous avez ajouté une nouvelle " +
+                                                                "étape, <1>executeStep(STEP_NUMBER);</1> apparaîtra " +
+                                                                "dans l'éditeur de script."
+                                                        },
+                                                        heading: "Ajouter une nouvelle étape"
+                                                    }
+                                                }
+                                            },
                                             editor: {
                                                 resetConfirmation: {
                                                     content: "Cette action réinitialisera le script d'authentification" +

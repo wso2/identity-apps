@@ -715,6 +715,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         <div className="action-button-group">
                             <LinkButton
                                 fluid
+                                data-tourid="add-authentication-options-button"
                                 className="text-left"
                                 onClick={ () => {
                                     setShowAuthenticatorAddModal(true);
@@ -725,6 +726,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             </LinkButton>
                             <LinkButton
                                 fluid
+                                data-tourid="add-new-step-button"
                                 className="text-left"
                                 onClick={ handleAuthenticationStepAdd }
                             >

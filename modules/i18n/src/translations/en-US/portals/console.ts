@@ -844,6 +844,34 @@ export const console: ConsoleNS = {
                                                     heading: "Conditional Authentication"
                                                 }
                                             },
+                                            conditionalAuthTour: {
+                                                steps: {
+                                                    0: {
+                                                        content: {
+                                                            0: "Configure the login flow to adapt to the situation " +
+                                                                "or the user during the authentication process.",
+                                                            1: "Click on the <1>Next</1> button to learn about the " +
+                                                                "process."
+                                                        },
+                                                        heading: "Conditional Authentication"
+                                                    },
+                                                    1: {
+                                                        content: {
+                                                            0: "Click on this button to add the required " +
+                                                                "authentication options to the step."
+                                                        },
+                                                        heading: "Add Authentication"
+                                                    },
+                                                    2: {
+                                                        content: {
+                                                            0: "Click here if you need to add more steps to the " +
+                                                                "flow. Once you add a new step, <1>executeStep" +
+                                                                "(STEP_NUMBER);</1> will appear on the script editor."
+                                                        },
+                                                        heading: "Add New Step"
+                                                    }
+                                                }
+                                            },
                                             editor: {
                                                 resetConfirmation: {
                                                     content: "This action will reset the adaptive authentication" +
