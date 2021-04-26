@@ -62,9 +62,6 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
         },
-        header: {
-            tenantSwitchHeader: "Changer d'organisation"
-        },
         modals: {
             editAvatarModal: {
                 content: {

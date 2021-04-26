@@ -49,6 +49,7 @@ export const common: CommonNS = {
     contains: "Contient",
     continue: "Continuer",
     createdOn: "Créé le",
+    create: "Créer",
     dangerZone: "Zone de danger",
     delete: "Supprimer",
     description: "Description",

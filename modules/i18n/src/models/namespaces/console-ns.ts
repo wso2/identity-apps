@@ -82,9 +82,6 @@ export interface ConsoleNS {
             };
             resultsIndicator: string;
         };
-        header: {
-            tenantSwitchHeader: string;
-        };
         modals: {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: {

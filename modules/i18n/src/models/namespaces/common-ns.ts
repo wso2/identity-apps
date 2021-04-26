@@ -49,6 +49,7 @@ export interface CommonNS {
     contains: string;
     continue: string;
     createdOn: string;
+    create: string;
     dangerZone: string;
     delete: string;
     description: string;
