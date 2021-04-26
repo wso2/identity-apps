@@ -427,12 +427,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         content={ (
                             <>
                                 <div className="conditional-auth-accordion-title">
-                                    <Checkbox
-                                        toggle
-                                        onChange={ handleConditionalAuthToggleChange }
-                                        checked={ showConditionalAuthContent }
-                                        className="conditional-auth-accordion-toggle"
-                                    />
+                                    {
+                                        !readOnly && (
+                                            <Checkbox
+                                                toggle
+                                                onChange={ handleConditionalAuthToggleChange }
+                                                checked={ showConditionalAuthContent }
+                                                className="conditional-auth-accordion-toggle"
+                                            />
+                                        )
+                                    }
                                     <div className="conditional-auth-accordion-title-text">
                                         <Heading as="h5" compact>
                                             {

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
@@ -89,7 +88,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         appId,
         authenticators,
         authenticationSequence,
-        featureConfig,
         isLoading,
         onReset,
         onUpdate,
@@ -102,6 +100,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
@@ -109,8 +108,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Toggles the update trigger.
@@ -357,9 +354,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const renderUpdateButton = (): ReactElement => {
 
-        if (!(!readOnly && hasRequiredScopes(featureConfig?.applications,
-            featureConfig?.applications?.scopes?.update, allowedScopes))) {
-
+        if (readOnly) {
             return null;
         }
 
@@ -388,30 +383,34 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             "customization.heading")
                     }
                 </Heading>
-                <div className="display-inline-block floated right">
-                    <LinkButton
-                        className="pr-0"
-                        onClick={ () => {
-                            handleSequenceUpdate(null, true);
-                            onReset();
-                        } }
-                    >
-                        <Icon
-                            name="refresh"
-                        >
-                        </Icon>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "customization.revertToDefaultButton.label")
-                        }
-                    </LinkButton>
-                    <Hint inline popup>
-                        {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                "customization.revertToDefaultButton.hint")
-                        }
-                    </Hint>
-                </div>
+                {
+                    !readOnly && (
+                        <div className="display-inline-block floated right">
+                            <LinkButton
+                                className="pr-0"
+                                onClick={ () => {
+                                    handleSequenceUpdate(null, true);
+                                    onReset();
+                                } }
+                            >
+                                <Icon
+                                    name="refresh"
+                                >
+                                </Icon>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "customization.revertToDefaultButton.label")
+                                }
+                            </LinkButton>
+                            <Hint inline popup>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "customization.revertToDefaultButton.hint")
+                                }
+                            </Hint>
+                        </div>
+                    )
+                }
             </div>
             <Divider hidden />
             <StepBasedFlow
@@ -420,12 +419,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
             />
@@ -435,12 +429,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 isLoading={ isLoading }
                 onTemplateSelect={ handleLoadingDataFromTemplate }
                 onScriptChange={ handleAdaptiveScriptChange }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-script-based-flow` }
                 authenticationSteps={ steps }
                 isDefaultScript={ isDefaultScript }

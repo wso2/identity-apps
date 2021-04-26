@@ -711,30 +711,34 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             ))
                             : null
                     }
-                    <div className="step-actions-container">
-                        <div className="action-button-group">
-                            <LinkButton
-                                fluid
-                                data-tourid="add-authentication-options-button"
-                                className="text-left"
-                                onClick={ () => {
-                                    setShowAuthenticatorAddModal(true);
-                                } }
-                            >
-                                <Icon name="plus"/>
-                                Add Authentication
-                            </LinkButton>
-                            <LinkButton
-                                fluid
-                                data-tourid="add-new-step-button"
-                                className="text-left"
-                                onClick={ handleAuthenticationStepAdd }
-                            >
-                                <Icon name="plus"/>
-                                Add new step
-                            </LinkButton>
-                        </div>
-                    </div>
+                    {
+                        !readOnly && (
+                            <div className="step-actions-container">
+                                <div className="action-button-group">
+                                    <LinkButton
+                                        fluid
+                                        data-tourid="add-authentication-options-button"
+                                        className="text-left"
+                                        onClick={ () => {
+                                            setShowAuthenticatorAddModal(true);
+                                        } }
+                                    >
+                                        <Icon name="plus"/>
+                                        Add Authentication
+                                    </LinkButton>
+                                    <LinkButton
+                                        fluid
+                                        data-tourid="add-new-step-button"
+                                        className="text-left"
+                                        onClick={ handleAuthenticationStepAdd }
+                                    >
+                                        <Icon name="plus"/>
+                                        Add new step
+                                    </LinkButton>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             { !readOnly && authenticationSteps.length > 1 && (

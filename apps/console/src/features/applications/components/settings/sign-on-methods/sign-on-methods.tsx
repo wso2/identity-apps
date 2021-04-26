@@ -378,7 +378,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
-                !loginFlow && isDefaultFlowConfiguration()
+                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
                     ? (
                         <SignInMethodLanding
                             isLoading={ isLoading }
@@ -396,6 +396,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 onUpdate={ onUpdate }
                                 onReset={ handleLoginFlowReset }
                                 data-testid={ testId }
+                                readOnly={ readOnly }
                             />
                         </>
                     )

@@ -17,7 +17,7 @@
  */
 
 import { getRawDocumentation } from "@wso2is/core/api";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -95,6 +95,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
@@ -876,14 +877,16 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
-     * URL and the `access` attribute in application info response.
+     * URL, the `access` attribute in application info response && the scope validation.
      *
      * @return {boolean} If an application is Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
 
         return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
-            || application.access === ApplicationAccessTypes.READ;
+            || application.access === ApplicationAccessTypes.READ
+            || !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
+                allowedScopes);
     };
 
     return (
