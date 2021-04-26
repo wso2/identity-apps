@@ -239,14 +239,17 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     useEffect(() => {
         
-        if (!authenticationStepsDivRef?.current
-            || !authenticationStepsDivRef.current?.scrollLeft
-            || !authenticationStepsDivRef.current?.scrollWidth) {
-
+        if (!authenticationStepsDivRef?.current) {
             return;
         }
 
-        authenticationStepsDivRef.current.scrollLeft = authenticationStepsDivRef.current.scrollWidth;
+        try {
+            authenticationStepsDivRef.current.scrollLeft = authenticationStepsDivRef.current.scrollWidth;
+        } catch (e) {
+            // Silent any issues occurred when trying to scroll.
+            // Add debug logs here one a logger is added.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
     }, [ authenticationSteps ]);
 
     /**
