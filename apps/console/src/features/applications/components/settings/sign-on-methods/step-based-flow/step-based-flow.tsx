@@ -30,6 +30,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -116,6 +117,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -123,9 +125,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
-    const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
+
+    const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -229,6 +232,21 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 return authenticator;
             })
         );
+    }, [ authenticationSteps ]);
+
+    /**
+     * Try to scroll to the end when a new step is added.
+     */
+    useEffect(() => {
+        
+        if (!authenticationStepsDivRef?.current
+            || !authenticationStepsDivRef.current?.scrollLeft
+            || !authenticationStepsDivRef.current?.scrollWidth) {
+
+            return;
+        }
+
+        authenticationStepsDivRef.current.scrollLeft = authenticationStepsDivRef.current.scrollWidth;
     }, [ authenticationSteps ]);
 
     /**
@@ -534,13 +552,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Toggles the authenticator side panel visibility.
-     */
-    const toggleAuthenticatorsSidePanelVisibility = (): void => {
-        setAuthenticatorsSidePanelVisibility(!showAuthenticatorsSidePanel);
-    };
-
-    /**
      * Filter out the displayable set of authenticators by validating against
      * the array of authenticators defined to be hidden in the config.
      *
@@ -674,7 +685,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
             <div className="authentication-flow-section">
-                <div className="authentication-steps-section">
+                <div className="authentication-steps-section" ref={ authenticationStepsDivRef }>
                     {
                         authenticationSteps &&
                         authenticationSteps instanceof Array &&
