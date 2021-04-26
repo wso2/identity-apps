@@ -412,6 +412,56 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
     ];
 
+    /**
+     * Renders the Conditional Auth tour.
+     * @return {React.ReactElement}
+     */
+    const renderConditionalAuthTour = (): ReactElement => (
+        <Tour
+            rounded={ 3 }
+            steps={ conditionalAuthTourSteps }
+            isOpen={ isConditionalAuthToggled }
+            className="basic-tour"
+            showNumber={ false }
+            showCloseButton={ false }
+            showNavigationNumber={ false }
+            showNavigation={ conditionalAuthTourCurrentStep !== (conditionalAuthTourSteps.length - 1) }
+            startAt={ 0 }
+            onRequestClose={ () => {
+                setIsConditionalAuthToggled(false);
+                setConditionalAuthTourCurrentStep(undefined);
+            } }
+            nextButton={ (
+                <PrimaryButton>{ t("common:next") }</PrimaryButton>
+            ) }
+            lastStepNextButton={ (
+                <PrimaryButton
+                    onClick={ () => {
+                        setIsConditionalAuthToggled(false);
+                        setConditionalAuthTourCurrentStep(undefined);
+                    } }
+                >
+                    { t("common:done") }
+                </PrimaryButton>
+            ) }
+            prevButton={
+                (conditionalAuthTourCurrentStep === (conditionalAuthTourSteps.length - 1))
+                    ? <></>
+                    : (
+                        <LinkButton
+                            onClick={ () => {
+                                setIsConditionalAuthToggled(false);
+                                setConditionalAuthTourCurrentStep(undefined);
+                            } }
+                        >
+                            { t("common:skip") }
+                        </LinkButton>
+                    )
+            }
+            getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
+        />
+    );
+
     return (
         <>
             <div className="conditional-auth-section">
@@ -454,51 +504,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Text>
                                     </div>
                                 </div>
-                                <Tour
-                                    rounded={ 3 }
-                                    steps={ conditionalAuthTourSteps }
-                                    isOpen={ isConditionalAuthToggled }
-                                    className="basic-tour"
-                                    showNumber={ false }
-                                    showCloseButton={ false }
-                                    showNavigationNumber={ false }
-                                    showNavigation={
-                                        conditionalAuthTourCurrentStep !== (conditionalAuthTourSteps.length - 1)
-                                    }
-                                    startAt={ 0 }
-                                    onRequestClose={ () => {
-                                        setIsConditionalAuthToggled(false);
-                                        setConditionalAuthTourCurrentStep(undefined);
-                                    } }
-                                    nextButton={ (
-                                        <PrimaryButton>{ t("common:next") }</PrimaryButton>
-                                    ) }
-                                    lastStepNextButton={ (
-                                        <PrimaryButton
-                                            onClick={ () => {
-                                                setIsConditionalAuthToggled(false);
-                                                setConditionalAuthTourCurrentStep(undefined);
-                                            } }
-                                        >
-                                            { t("common:done") }
-                                        </PrimaryButton>
-                                    ) }
-                                    prevButton={
-                                        (conditionalAuthTourCurrentStep === (conditionalAuthTourSteps.length - 1))
-                                            ? <></>
-                                            : (
-                                                <LinkButton
-                                                    onClick={ () => {
-                                                        setIsConditionalAuthToggled(false);
-                                                        setConditionalAuthTourCurrentStep(undefined);
-                                                    } }
-                                                >
-                                                    { t("common:skip") }
-                                                </LinkButton>
-                                            )
-                                    }
-                                    getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
-                                />
+                                { renderConditionalAuthTour() }
                             </>
                         ) }
                         hideChevron={ true }
