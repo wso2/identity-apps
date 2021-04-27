@@ -64,6 +64,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     onSidePanelToggleClick?: () => void;
     showSidePanelToggle?: boolean;
     showUserDropdown?: boolean;
+    showUserDropdownTriggerLabel?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
     userDropdownLinks?: HeaderLinkInterface[];
@@ -142,6 +143,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         userDropdownInfoAction,
         showSidePanelToggle,
         showUserDropdown,
+        showUserDropdownTriggerLabel,
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
@@ -160,17 +162,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const trigger = (
         <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
-            <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
-                {
-                    isProfileInfoLoading
-                        ? (
-                            <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
-                                <Placeholder.Line/>
-                            </Placeholder>
-                        )
-                        : resolveUserDisplayName(profileInfo, basicProfileInfo)
-                }
-            </Responsive>
+            {
+                showUserDropdownTriggerLabel && (
+                    <Responsive minWidth={ 767 } className="username" data-testid={ `${ testId }-user-display-name` }>
+                        {
+                            isProfileInfoLoading
+                                ? (
+                                    <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
+                                        <Placeholder.Line/>
+                                    </Placeholder>
+                                )
+                                : resolveUserDisplayName(profileInfo, basicProfileInfo)
+                        }
+                    </Responsive>
+                )
+            }
             <UserAvatar
                 isLoading={ isProfileInfoLoading }
                 authState={ basicProfileInfo }
@@ -487,5 +493,6 @@ Header.defaultProps = {
     onSidePanelToggleClick: () => null,
     showSidePanelToggle: true,
     showUserDropdown: true,
+    showUserDropdownTriggerLabel: true,
     userDropdownIcon: null
 };
