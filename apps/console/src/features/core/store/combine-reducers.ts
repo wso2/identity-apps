@@ -35,6 +35,7 @@ import { System } from "react-notification-system";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import {
+    accessControlReducer,
     commonConfigReducerInitialState,
     commonGlobalReducerInitialState,
     commonProfileReducerInitialState,
@@ -59,6 +60,7 @@ import {
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
+    accessControl: accessControlReducer,
     application: applicationReducer,
     auth: commonAuthenticateReducer<
         AuthReducerStateInterface,

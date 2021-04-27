@@ -53,10 +53,6 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
      * Active view.
      */
     activeView?: "ADMIN" | "DEVELOPER";
-    /**
-     * Flag to show/hide manage view.
-     */
-    isManageViewAllowed?: boolean;
 }
 
 /**
@@ -70,7 +66,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
-        isManageViewAllowed,
         activeView,
         fluid,
         onSidePanelToggleClick,
@@ -86,6 +81,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isProfileInfoLoading: boolean = useSelector(
         (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    const isDevelopAllowed: boolean = 
+        useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
+    const isManageAllowed: boolean = 
+        useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
@@ -222,7 +222,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             { ...rest }
         >
             {
-                isManageViewAllowed && (
+                isDevelopAllowed && isManageAllowed && (
                     <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                         <Container fluid={ fluid }>
                             <Menu className="inner-menu">

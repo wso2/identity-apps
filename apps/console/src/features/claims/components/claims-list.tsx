@@ -860,6 +860,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isLocalClaim(list)) {
             return [
                 {
+                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
@@ -882,6 +884,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isDialect(list)) {
             return [
                 {
+                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, dialect: ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", dialect.id));
@@ -910,6 +914,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.externalAttributes.showActions(dialectID) && {
+                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
                     icon: (claim: ExternalClaim): SemanticICONS => attributeConfig.externalAttributes
                         .getEditIcon(claim, editClaim),
 
@@ -969,6 +975,12 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @param {Claim | ExternalClaim | ClaimDialect | any} item - Row item.
      */
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
+
+        //Disables inline edit if create scope is not available
+        if (!hasRequiredScopes(featureConfig?.attributeDialects,
+            featureConfig?.attributeDialects?.scopes?.create, allowedScopes)) {
+                return;
+        }
 
         if (isLocalClaim(list)) {
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", item.id));

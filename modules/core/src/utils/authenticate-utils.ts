@@ -53,6 +53,16 @@ export class AuthenticateUtils {
     }
 
     /**
+     * Check if the logged in user has atleast one scope.
+     * 
+     * @return {boolean} True or false.
+     */
+    public static hasScopes(scope: string[], allowedScopes: string): boolean {
+        const userScopes: string[] = allowedScopes.split(" ");
+        return scope.every(i => userScopes.includes(i));
+    }
+
+    /**
      * Get the authentication callback URL from the session storage.
      *
      * @param {string} app - The name of the app.

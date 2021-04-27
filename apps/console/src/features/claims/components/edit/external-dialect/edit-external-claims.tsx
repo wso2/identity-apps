@@ -16,17 +16,25 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../../";
 import { attributeConfig } from "../../../../../extensions";
-import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../../../core";
+import { 
+    AdvancedSearchWithBasicFilters, 
+    AppState, 
+    FeatureConfigInterface, 
+    UIConstants, 
+    filterList, 
+    sortList 
+} from "../../../../core";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -90,6 +98,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             value: "mappedLocalClaimURI"
         }
     ];
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -291,7 +302,8 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
                 attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID)
-                && <PrimaryButton
+                && hasRequiredScopes(featureConfig?.attributeDialects,
+                    featureConfig?.attributeDialects?.scopes?.create, allowedScopes) && <PrimaryButton
                     onClick={ (): void => {
                         setShowAddExternalClaim(true);
                     } }
@@ -403,6 +415,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
                         attributeType={ attributeType }
+                        featureConfig={ featureConfig }
                     />
                 </Grid.Column>
             </Grid>

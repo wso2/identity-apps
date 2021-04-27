@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
+import { hasRequiredScopes } from "@wso2is/core//helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils, AuthenticateUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -64,6 +64,7 @@ import {
     history,
     useUIElementSizes
 } from "../features/core";
+import { setDeveloperVisibility } from "../features/core/store/actions/acess-control";
 
 /**
  * Developer View Prop types.
@@ -111,7 +112,45 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-    const [ isAdminViewAllowed, setIsAdminViewAllowed ] = useState<boolean>(false);
+    const [ isDevelopViewAllowed, setIsDevelopViewAllowed ] = useState<boolean>(false);
+    const [ accessControlledRoutes, setAccessControlledRoutes ] = useState<RouteInterface[]>([]);
+
+    useEffect(() => {
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
+        const routes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes));
+        const controlledRoutes = [];
+        routes.forEach((route: RouteInterface) => {
+            const feature = featureConfig[route.id];
+            if (feature) {
+                let shouldShowRoute: boolean = false;
+                for (const [ key, value ] of Object.entries(feature?.scopes)) {
+                    if (value && value instanceof Array) {
+                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
+                            shouldShowRoute = true;
+                        }
+                    }
+                }
+    
+                if (route.showOnSidePanel && shouldShowRoute) {
+                    controlledRoutes.push(route);
+                }
+            } else {
+                controlledRoutes.push(route);
+            }
+            
+        });
+
+        if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
+            setAccessControlledRoutes(controlledRoutes); 
+        } else {
+            dispatch(setDeveloperVisibility(false));
+        }
+        
+    }, [ allowedScopes ]);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -132,10 +171,30 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        let routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getDeveloperViewRoutes(),
             featureConfig,
             allowedScopes);
+
+        // TODO : Temporary fix for access control module
+        if (routes.length === 3) {
+            if (routes.filter(route => route.id === "developer-getting-started").length > 0 
+                && routes.filter(route => route.id === "identityProviders").length > 0 
+                && routes.filter(route => route.id === "404").length > 0) {
+                    if (hasRequiredScopes(featureConfig?.identityProviders, 
+                            featureConfig?.identityProviders?.scopes?.read, allowedScopes) 
+                            && !hasRequiredScopes(featureConfig?.applications, 
+                                featureConfig?.applications?.scopes?.read,  allowedScopes)) {
+                        routes = routes.filter(route => route.id === "404");
+                        dispatch(setDeveloperVisibility(false));
+                    } 
+            }
+        } else if (routes.length === 2 
+            && routes.filter(route => route.id === "developer-getting-started").length > 0 
+                && routes.filter(route => route.id === "404").length > 0) {
+            routes = routes.filter(route => route.id === "404");
+            dispatch(setDeveloperVisibility(false));
+        }
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.
         RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
@@ -162,9 +221,9 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         }
 
         // Check if the users has the relevant scopes to access the manage section.
-        setIsAdminViewAllowed(hasRequiredScopesForAdminView(featureConfig, allowedScopes));
+        setIsDevelopViewAllowed(accessControlledRoutes.length > 0);
 
-    }, [ allowedScopes, featureConfig ]);
+    }, [ allowedScopes, featureConfig, accessControlledRoutes ]);
 
     /**
      * Handles side panel toggle click.
@@ -307,7 +366,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
-                    isManageViewAllowed={ isAdminViewAllowed }
                     activeView="DEVELOPER"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
