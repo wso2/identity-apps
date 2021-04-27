@@ -1041,7 +1041,7 @@ export const console: ConsoleNS = {
                                     popupContent: "More details"
                                 }
                             },
-                            tabName: "Sign-on Method"
+                            tabName: "Sign-in Method"
                         }
                     }
                 },
