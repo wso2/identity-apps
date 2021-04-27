@@ -165,6 +165,10 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     i18nConfigs: I18nConfigsInterface;
     /**
+     * Should show/hide the avatar label in app header.
+     */
+    isHeaderAvatarLabelAllowed: boolean;
+    /**
      * Should the left navigation be categorized.
      */
     isLeftNavigationCategorized?: boolean;
