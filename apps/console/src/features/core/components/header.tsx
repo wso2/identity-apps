@@ -39,7 +39,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
-import { getMiscellaneousIcons } from "../configs";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -171,27 +170,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             basicProfileInfo={ profileInfo }
             extensions={ [
                 {
-                    component: (
-                        <Menu.Item className="help-center-button-wrapper" key="feedback-button">
-                            <ComponentPlaceholder section="feedback-button" type="component"/>
-                        </Menu.Item>
-                    ),
+                    component: <ComponentPlaceholder section="feedback-button" type="component"/>,
                     floated: "right"
                 },
                 {
-                    component: (
-                        <Menu.Item className="app-switch-button-wrapper" key="app-switch-button">
-                            <ComponentPlaceholder section="app-switch-button" type="component"/>
-                        </Menu.Item>
-                    ),
+                    component: <ComponentPlaceholder section="app-switch-button" type="component"/>,
                     floated: "right"
                 },
                 {
-                    component: (
-                        <Menu.Item className="tenant-dropdown-wrapper" key="tenant-dropdown">
-                            <ComponentPlaceholder section="tenant-dropdown" type="component"/>
-                        </Menu.Item>
-                    ),
+                    component: <ComponentPlaceholder section="tenant-dropdown" type="component"/>,
                     floated: "left"
                 }
             ] }
