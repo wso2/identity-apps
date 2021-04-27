@@ -1459,9 +1459,13 @@ export const console: ConsoleNS = {
                                     "doit être redirigé une fois l'authentification réussie. Il s'agit de l'URL " +
                                     "du service consommateur d'assertions (ACS) de l'application.",
                                 label: "URL du réponse d'assertions",
-                                placeholder: "http://localhost:8080/sample-app",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    invalid: "Veuillez ajouter une URL valide"
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter une URL valide.",
+                                    required: "Ce champ est obligatoire pour une application fonctionnelle." +
+                                        " Toutefois, si vous prévoyez d'essayer l'exemple d'application, ce champ" +
+                                        " peut être ignoré."
                                 },
                                 info: "Vous n’avez pas d’application? Essayez un exemple d'application en utilisant" +
                                     " {{assertionURLFromTemplate}} comme URL de réponse d'assertion. (Vous pouvez" +

@@ -302,7 +302,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         ) }
                         { (!fields || fields.includes("assertionConsumerURLs")) && (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
                                         labelEnabled={ true }
                                         urlState={ assertionConsumerUrls }
@@ -320,27 +320,25 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                 ".fields.assertionURLs.placeholder")
                                         }
                                         validationErrorMsg={
-
+                                            t("console:develop.features.applications.forms." +
+                                                "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                        }
+                                        emptyErrorMessage={
                                             t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".fields.assertionURLs.validations.invalid")
+                                                ".fields.assertionURLs.validations.empty")
                                         }
                                         validation={ (value: string) => {
+                                            if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
+                                                URLUtils.isHttpsUrl(value)))) {
 
-                                            let label: ReactElement = null;
-
-                                            if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                                label = (
-                                                    <Label basic color="orange" className="mt-2">
-                                                        { t("console:common.validations.unrecognizedURL.description") }
-                                                    </Label>
-                                                );
+                                                return false;
                                             }
 
                                             if (!URLUtils.isMobileDeepLink(value)) {
                                                 return false;
                                             }
 
-                                            setAssertionConsumerURLsErrorLabel(label);
+                                            setAssertionConsumerURLsErrorLabel(null);
 
                                             return true;
                                         } }

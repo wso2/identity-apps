@@ -1444,9 +1444,13 @@ export const console: ConsoleNS = {
                                     "should be redirected to after the authentication is successful. " +
                                     "This is the Assertion Consumer Service (ACS) URL of the Application.",
                                 label: "Assertion response URLs",
-                                placeholder: "http://localhost:8080/sample-app",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    invalid: "Please add valid URL"
+                                    empty: "This is a required field.",
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL.",
+                                    required: "This field is required for a functional app. " +
+                                        "However, if you are planning to try the sample app, " +
+                                        "this field can be ignored."
                                 },
                                 info: "Don’t have an app? Try out a sample app using {{assertionURLFromTemplate}} " +
                                     "as the assertion Response URL. (You can download and run a sample at a later" +
