@@ -59,6 +59,20 @@
                     border-bottom: @appHeaderPortalSwitchExtensionActiveBorderBottom;
                 }
             }
+            &.right {
+                >.item {
+                    padding-left: @appHeaderExtensionItemPaddingLeft;
+    
+                    &:not(:last-child) {
+                        padding-right: @appHeaderExtensionItemPaddingRight;
+                    }
+    
+                    >.item {
+                        padding-left: @appHeaderExtensionInnerItemPaddingLeft;
+                        padding-right: @appHeaderExtensionInnerItemPaddingRight;
+                    }
+                }
+            }
         }
         .header-container {
             display: flex;
@@ -79,12 +93,18 @@
                 margin: 0;
             }
             .user-dropdown-trigger {
+                display: contents;
+
                 .username {
                     color: @userDropdownTriggerTextColor;
-                    min-width: 100px;
                     display: inline-block;
                     margin-right: 0.7em;
                     text-align: right;
+                    display: inline-block;
+                    max-width: 100px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
             .menu {
