@@ -834,6 +834,40 @@ export const console: ConsoleNS = {
                                     heading: "Authentication flow",
                                     sections: {
                                         scriptBased: {
+                                            accordion: {
+                                                title: {
+                                                    description: "Control your Authentication flow using a script.",
+                                                    heading: "Conditional Authentication"
+                                                }
+                                            },
+                                            conditionalAuthTour: {
+                                                steps: {
+                                                    0: {
+                                                        content: {
+                                                            0: "Configure the login flow to adapt to the situation " +
+                                                                "or the user during the authentication process.",
+                                                            1: "Click on the <1>Next</1> button to learn about the " +
+                                                                "process."
+                                                        },
+                                                        heading: "Conditional Authentication"
+                                                    },
+                                                    1: {
+                                                        content: {
+                                                            0: "Click on this button to add the required " +
+                                                                "authentication options to the step."
+                                                        },
+                                                        heading: "Add Authentication"
+                                                    },
+                                                    2: {
+                                                        content: {
+                                                            0: "Click here if you need to add more steps to the " +
+                                                                "flow. Once you add a new step, <1>executeStep" +
+                                                                "(STEP_NUMBER);</1> will appear on the script editor."
+                                                        },
+                                                        heading: "Add New Step"
+                                                    }
+                                                }
+                                            },
                                             editor: {
                                                 resetConfirmation: {
                                                     content: "This action will reset the adaptive authentication" +
@@ -852,8 +886,43 @@ export const console: ConsoleNS = {
                                         },
                                         stepBased: {
                                             actions: {
+                                                addAuthentication: "Add Authentication",
+                                                addNewStep: "Add new step",
                                                 addStep: "New Authentication Step",
                                                 selectAuthenticator: "Select an Authenticator"
+                                            },
+                                            addAuthenticatorModal: {
+                                                content: {
+                                                    authenticatorGroups: {
+                                                        basic: {
+                                                            description: "Set of basic authenticators supported by " +
+                                                                "{{productName}}.",
+                                                            heading: "Basic"
+                                                        },
+                                                        enterprise: {
+                                                            description: "Enterprise login via standard protocols.",
+                                                            heading: "Enterprise Login"
+                                                        },
+                                                        mfa: {
+                                                            description: "Add additional layer of security to your " +
+                                                                "login flow.",
+                                                            heading: "Multi-factor options"
+                                                        },
+                                                        social: {
+                                                            description: "Use existing social login account.",
+                                                            heading: "Social login"
+                                                        }
+                                                    },
+                                                    stepSelectDropdown: {
+                                                        hint: "Select the step that you want to add authenticators to.",
+                                                        label:  "Select step",
+                                                        placeholder: "Select step"
+                                                    }
+                                                },
+                                                description: null,
+                                                heading: "Add Authentication",
+                                                primaryButton: null,
+                                                secondaryButton: null
                                             },
                                             authenticatorDisabled: "You need to configure this authenticator by " +
                                                 "providing client id & secret, to use with your applications.",
@@ -874,6 +943,68 @@ export const console: ConsoleNS = {
                                                 "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can only be used " +
                                                 "if the <1>basic</1> authenticator has been added in a previous step."
+                                        }
+                                    }
+                                },
+                                customization: {
+                                    heading: "Customize Sign-in Method",
+                                    revertToDefaultButton: {
+                                        hint: "Revert back to the default configuration (Username & Password)",
+                                        label: "Revert to default"
+                                    }
+                                },
+                                landing: {
+                                    defaultConfig: {
+                                        description: {
+                                            0: "Your application is already configured to work with username and " +
+                                                "password authentication.",
+                                            1: "Select one of the options available on the right side to begin " +
+                                                "customizing."
+                                        },
+                                        heading: "Application configured with Username & Password Login"
+                                    },
+                                    flowBuilder: {
+                                        addMissingGoogleAuthenticatorModal: {
+                                            content: {
+                                                body: "You do not have an active Identity Provider configured with " +
+                                                    "<1>Google Authenticator</1>. Click on the <3>Configure</3> " +
+                                                    "button to initiate the configuration process or navigate to " +
+                                                    "the <5>Identity Providers</5> section manually.",
+                                                message: "No active Google Identity Provider configured"
+                                            },
+                                            description: "",
+                                            heading: "Configure Google Identity Provider",
+                                            primaryButton: "Configure",
+                                            secondaryButton: "Cancel"
+                                        },
+                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                            content: {
+                                                body: "You have multiple Identity Providers configured with <1>" +
+                                                    "Google Authenticator</1>. Select the desired one from the " +
+                                                    "selection bellow to proceed.",
+                                                message: "Multiple Identity Providers found with Google Authenticator."
+                                            },
+                                            description: "",
+                                            heading: "Select Google Identity Provider",
+                                            primaryButton: "Continue",
+                                            secondaryButton: "Cancel"
+                                        },
+                                        heading: "Start building your login flow",
+                                        types: {
+                                            defaultConfig: {
+                                                description: "Build your login flow starting with Username & " +
+                                                    "Password login.",
+                                                heading: "Start with default configuration"
+                                            },
+                                            google: {
+                                                description: "Enable users to login with Google.",
+                                                heading: "Add Google Login"
+                                            },
+                                            totp: {
+                                                description: "Enable additional authentication layer with Time " +
+                                                    "based OTP.",
+                                                heading: "Add TOTP as a Second Factor"
+                                            }
                                         }
                                     }
                                 },
@@ -910,7 +1041,7 @@ export const console: ConsoleNS = {
                                     popupContent: "More details"
                                 }
                             },
-                            tabName: "Sign-on Method"
+                            tabName: "Sign-in Method"
                         }
                     }
                 },
@@ -2327,8 +2458,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Drag and drop authenticators from the panel",
-                            1: "to build an authentication sequence."
+                            0: "Click on the Add Authentication button",
+                            1: "add options to this step."
                         },
                         title: null
                     },

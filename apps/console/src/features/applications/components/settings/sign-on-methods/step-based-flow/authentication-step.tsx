@@ -20,13 +20,14 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants } from "../../../../../identity-providers";
+    IdentityProviderManagementConstants
+} from "../../../../../identity-providers";
+import { ApplicationManagementConstants } from "../../../../constants";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
 /**
@@ -41,10 +42,6 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      * Additional CSS classes.
      */
     className?: string;
-    /**
-     * ID for the dropable field.
-     */
-    droppableId: string;
     /**
      * Callback for the step delete.
      */
@@ -63,6 +60,14 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      * Callback for the step option delete.
      */
     onStepOptionDelete: (stepIndex: number, optionIndex: number) => void;
+    /**
+     * Should show step delete action
+     */
+    showStepDeleteAction?: boolean;
+    /**
+     * Should show step number and other info.
+     */
+    showStepMeta?: boolean;
     /**
      * Current step.
      */
@@ -91,11 +96,12 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const {
         authenticators,
         className,
-        droppableId,
         onStepDelete,
         onStepOptionAuthenticatorChange,
         onStepOptionDelete,
         readOnly,
+        showStepDeleteAction,
+        showStepMeta,
         step,
         stepIndex,
         [ "data-testid" ]: testId
@@ -147,8 +153,13 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     trigger={ (
                         <div className="inline" data-testid={ `${ testId }-option` }>
                             <LabeledCard
+                                multilineLabel
+                                className="authenticator-card"
                                 image={ authenticator.image }
-                                label={ authenticator.displayName }
+                                label={
+                                    ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(option.authenticator)
+                                    || authenticator.displayName
+                                }
                                 labelEllipsis={ true }
                                 bottomMargin={ false }
                                 size="tiny"
@@ -198,50 +209,51 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     };
 
     return (
-        <Droppable
-            droppableId={ droppableId }
-            isDropDisabled={ readOnly }
+        <div
+            className={ classes }
+            data-testid={ testId }
         >
-            { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
-                <div
-                    ref={ provided.innerRef }
-                    { ...provided.droppableProps }
-                    className={ classes }
-                    data-testid={ testId }
-                >
-                    <Heading className="step-header" as="h6">{ t("common:step") } { step.id }</Heading>
-                    {
-                        !readOnly && (
-                            <Icon
-                                className="delete-button"
-                                name="cancel"
-                                onClick={ (): void => onStepDelete(stepIndex) }
-                                data-testid={ `${ testId }-delete-button` }
+            {
+                showStepMeta && (
+                    <>
+                        <Heading
+                            className="step-header"
+                            as="h6"
+                        >
+                            { t("common:step") }{ " " }{ step.id }
+                        </Heading>
+                        {
+                            !readOnly && showStepDeleteAction && (
+                                <Icon
+                                    className="delete-button"
+                                    name="cancel"
+                                    onClick={ (): void => onStepDelete(stepIndex) }
+                                    data-testid={ `${ testId }-delete-button` }
+                                />
+                            )
+                        }
+                    </>
+                )
+            }
+            <div className="authentication-step">
+                {
+                    (step.options && step.options instanceof Array && step.options.length > 0)
+                        ? step.options.map((option, optionIndex) =>
+                            resolveStepOption(option, stepIndex, optionIndex))
+                        : (
+                            <EmptyPlaceholder
+                                subtitle={ [
+                                    t("console:develop.features.applications.placeholders" +
+                                        ".emptyAuthenticatorStep.subtitles.0"),
+                                    t("console:develop.features.applications.placeholders" +
+                                        ".emptyAuthenticatorStep.subtitles.1")
+                                ] }
+                                data-testid={ `${ testId }-empty-placeholder` }
                             />
                         )
-                    }
-                    <div className="authentication-step">
-                        {
-                            (step.options && step.options instanceof Array && step.options.length > 0)
-                                ? step.options.map((option, optionIndex) =>
-                                    resolveStepOption(option, stepIndex, optionIndex))
-                                : (
-                                    <EmptyPlaceholder
-                                        subtitle={ [
-                                            t("console:develop.features.applications.placeholders" +
-                                                ".emptyAuthenticatorStep.subtitles.0"),
-                                            t("console:develop.features.applications.placeholders" +
-                                                ".emptyAuthenticatorStep.subtitles.1")
-                                        ] }
-                                        data-testid={ `${ testId }-empty-placeholder` }
-                                    />
-                                )
-                        }
-                        { provided.placeholder }
-                    </div>
-                </div>
-            ) }
-        </Droppable>
+                }
+            </div>
+        </div>
     );
 };
 

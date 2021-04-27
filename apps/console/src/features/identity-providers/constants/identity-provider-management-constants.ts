@@ -71,6 +71,21 @@ export class IdentityProviderManagementConstants {
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
+     * Key for the URL search param for IDP create wizard trigger.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
+
+    /**
+     * Set of IDP template Ids.
+     * @type {Record<string, unknown>}
+     */
+    public static readonly IDP_TEMPLATE_IDS: Record<string, unknown> = {
+        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
+    };
+
+    /**
      * Default IDP template loading strategy.
      * @constant
      * @type {IdentityProviderTemplateLoadingStrategies}
@@ -116,4 +131,12 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
+    
+    // Known Social authenticator IDs.
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
+    public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
+    public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
+    
+    // Known Social authenticator names;
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
 }

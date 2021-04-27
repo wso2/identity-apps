@@ -17,17 +17,32 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
-import { CodeEditor, ConfirmationModal, Heading, Hint } from "@wso2is/react-components";
+import {
+    Code,
+    CodeEditor,
+    ConfirmationModal,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    SegmentedAccordion,
+    Text
+} from "@wso2is/react-components";
 import beautify from "js-beautify";
+import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, Grid, Icon, Menu, Popup, Sidebar } from "semantic-ui-react";
+import Tour, { ReactourStep } from "reactour";
+import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
+import { AppUtils } from "../../../../../core/utils";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -57,6 +72,10 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Toggle the accordion.
+     */
+    isMinimized?: boolean;
     /**
      * Delegates the event to the parent component. Once
      * called the resetting event will be notified to it
@@ -96,6 +115,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         authenticationSteps,
         isDefaultScript,
+        isMinimized,
         onAdaptiveScriptReset,
         ["data-testid"]: testId
     } = props;
@@ -116,6 +136,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isScriptFromTemplate, setIsScriptFromTemplate ] = useState<boolean>(false);
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
+    const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
+    const [ isConditionalAuthToggled, setIsConditionalAuthToggled ] = useState<boolean>(false);
+    const [ conditionalAuthTourCurrentStep, setConditionalAuthTourCurrentStep ] = useState<number>(undefined);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -164,6 +187,30 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     useEffect(() => {
         setScriptEditorWidth();
     });
+
+    /**
+     * Checks for a script in auth sequence to handle content visibility.
+     */
+    useEffect(() => {
+
+        // If the user has read only access, show the script editor.
+        if (readOnly) {
+            setShowConditionalAuthContent(true);
+            return;
+        }
+
+        // If there is a script and if the script is not a default script,
+        // assume the user has modified the script and show the editor.
+        if (authenticationSequence?.script
+            && !AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script,
+                authenticationSequence?.steps?.length)) {
+
+            setShowConditionalAuthContent(true);
+            return;
+        }
+
+        setShowConditionalAuthContent(false);
+    }, [ authenticationSequence ]);
 
     /**
      * Triggered on steps and script change.
@@ -255,6 +302,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
+        setShowConditionalAuthContent(false);
     };
 
     /**
@@ -281,75 +329,293 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setIsEditorDarkMode(!isEditorDarkMode);
     };
 
+    /**
+     * Handles conditional authentication on/off swicth.
+     */
+    const handleConditionalAuthToggleChange = (): void => {
+        
+        if (showConditionalAuthContent) {
+            setShowScriptResetWarning(true);
+            return;
+        }
+
+        setShowConditionalAuthContent(true);
+        setIsConditionalAuthToggled(true);
+    };
+
+    /**
+     * Steps for the conditional authentication toggle tour.
+     *
+     * @type {ReactourStep[]}
+     */
+    const conditionalAuthTourSteps: ReactourStep[] = [
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.0")
+                        }
+                    </Text>
+                    <Text>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.1"
+                            }
+                        >
+                            Click on the <Code>Next</Code> button to learn about the process.
+                        </Trans>
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"conditional-auth\"]"
+        },
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.content.0")
+                        }
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"add-authentication-options-button\"]"
+        },
+        {
+            content: (
+                <>
+                    <Heading bold as="h6">
+                        {
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.heading")
+                        }
+                    </Heading>
+                    <Text>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.content.0"
+                            }
+                        >
+                            Click here if you need to add more steps to the flow. Once you add a new step, 
+                            <Code>executeStep(STEP_NUMBER);</Code> will appear on the script editor.
+                        </Trans>
+                    </Text>
+                </>
+            ),
+            selector: "[data-tourid=\"add-new-step-button\"]"
+        }
+    ];
+
+    /**
+     * Should the conditional auth tour open.
+     *
+     * @return {boolean}
+     */
+    const shouldConditionalAuthTourOpen = (): boolean => {
+
+        if (!isConditionalAuthToggled) {
+            return false;
+        }
+
+        return getConditionalAuthTourViewedStatus() === false;
+    };
+
+    /**
+     * Renders the Conditional Auth tour.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderConditionalAuthTour = (): ReactElement => (
+        <Tour
+            rounded={ 3 }
+            steps={ conditionalAuthTourSteps }
+            isOpen={ shouldConditionalAuthTourOpen() }
+            className="basic-tour"
+            showNumber={ false }
+            showCloseButton={ false }
+            showNavigationNumber={ false }
+            showNavigation={ conditionalAuthTourCurrentStep !== (conditionalAuthTourSteps.length - 1) }
+            startAt={ 0 }
+            onRequestClose={ () => {
+                setIsConditionalAuthToggled(false);
+                setConditionalAuthTourCurrentStep(undefined);
+            } }
+            nextButton={ (
+                <PrimaryButton>{ t("common:next") }</PrimaryButton>
+            ) }
+            lastStepNextButton={ (
+                <PrimaryButton
+                    onClick={ () => {
+                        setIsConditionalAuthToggled(false);
+                        setConditionalAuthTourCurrentStep(undefined);
+                        persistConditionalAuthTourViewedStatus();
+                    } }
+                >
+                    { t("common:done") }
+                </PrimaryButton>
+            ) }
+            prevButton={
+                (conditionalAuthTourCurrentStep === (conditionalAuthTourSteps.length - 1))
+                    ? <></>
+                    : (
+                        <LinkButton
+                            onClick={ () => {
+                                setIsConditionalAuthToggled(false);
+                                setConditionalAuthTourCurrentStep(undefined);
+                                persistConditionalAuthTourViewedStatus();
+                            } }
+                        >
+                            { t("common:skip") }
+                        </LinkButton>
+                    )
+            }
+            getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
+        />
+    );
+
+    /**
+     * Persist the Conditional Auth Tour seen status in Local Storage.
+     *
+     * @param {boolean} status - Status to set.
+     */
+    const persistConditionalAuthTourViewedStatus = (status: boolean = true): void => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return;
+        }
+
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+        set(newPref?.identityAppsSettings?.devPortal,
+            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, status);
+
+        AppUtils.setUserPreferences(newPref);
+    };
+
+    /**
+     * Check if the Conditional Auth Tour has already been seen by the user.
+     *
+     * @return {boolean}
+     */
+    const getConditionalAuthTourViewedStatus = (): boolean => {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return false;
+        }
+
+        return get(userPreferences?.identityAppsSettings?.devPortal,
+            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
+    };
+
     return (
         <>
-            <div className="adaptive-scripts-section" data-testid={ testId }>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <Heading as="h5">
-                                { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                    ".authenticationFlow.sections.scriptBased.heading") }
-                            </Heading>
+            <div className="conditional-auth-section">
+                <SegmentedAccordion
+                    fluid
+                    data-testid={ `${ testId }-accordion` }
+                    className="conditional-auth-accordion"
+                >
+                    <SegmentedAccordion.Title
+                        data-tourid="conditional-auth"
+                        data-testid={ `${ testId }-accordion-title` }
+                        active={ showConditionalAuthContent }
+                        content={ (
+                            <>
+                                <div className="conditional-auth-accordion-title">
+                                    {
+                                        !readOnly && (
+                                            <Checkbox
+                                                toggle
+                                                onChange={ handleConditionalAuthToggleChange }
+                                                checked={ showConditionalAuthContent }
+                                                className="conditional-auth-accordion-toggle"
+                                            />
+                                        )
+                                    }
+                                    <div className="conditional-auth-accordion-title-text">
+                                        <Heading as="h5" compact>
+                                            {
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                    "title.heading")
+                                            }
+                                        </Heading>
+                                        <Text muted compact>
+                                            {
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                    "title.description")
+                                            }
+                                        </Text>
+                                    </div>
+                                </div>
+                                { renderConditionalAuthTour() }
+                            </>
+                        ) }
+                        hideChevron={ true }
+                    />
+                    <SegmentedAccordion.Content
+                        active={ showConditionalAuthContent }
+                        className="conditional-auth-accordion-content"
+                        data-testid={ `${ testId }-accordion-content` }
+                    >
+                        <Sidebar.Pushable className="script-editor-with-template-panel no-border">
                             { !readOnly && (
-                                <Hint>
-                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
-                                        ".authenticationFlow.sections.scriptBased.hint") }
-                                </Hint>
+                                <ScriptTemplatesSidePanel
+                                    title={
+                                        t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections" +
+                                            ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                    }
+                                    ref={ authTemplatesSidePanelRef }
+                                    onTemplateSelect={ handleTemplateSelection }
+                                    templates={
+                                        scriptTemplates?.templatesJSON &&
+                                        Object.values(scriptTemplates.templatesJSON)
+                                    }
+                                    visible={ showAuthTemplatesSidePanel }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-script-templates-side-panel` }
+                                />
                             ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <Sidebar.Pushable className="script-editor-section">
-                                { !readOnly && (
-                                    <ScriptTemplatesSidePanel
-                                        title={
-                                            t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections" +
-                                                ".authenticationFlow.sections.scriptBased.editor.templates.heading")
-                                        }
-                                        ref={ authTemplatesSidePanelRef }
-                                        onTemplateSelect={ handleTemplateSelection }
-                                        templates={
-                                            scriptTemplates?.templatesJSON &&
-                                            Object.values(scriptTemplates.templatesJSON)
-                                        }
-                                        visible={ showAuthTemplatesSidePanel }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-script-templates-side-panel` }
-                                    />
-                                ) }
-                                <Sidebar.Pusher>
-                                    <div className="script-editor-container" ref={ scriptEditorSectionRef }>
-                                        <Menu attached="top" className="action-panel" secondary>
-                                            <Menu.Item>
-                                                <Checkbox
-                                                    label={
-                                                        t("console:develop.features.applications.edit.sections" +
-                                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                                            ".scriptBased.editor.templates.darkMode")
-                                                    }
-                                                    checked={ isEditorDarkMode }
-                                                    onChange={ handleEditorDarkModeToggle }
-                                                    data-testid={ `${ testId }-code-editor-mode-toggle` }
-                                                    slider
-                                                />
-                                                <Popup
-                                                    trigger={ (
-                                                        <Icon
-                                                            className="reset-button ml-3"
-                                                            name="undo"
-                                                            onClick={ () => setShowScriptResetWarning(true) }
-                                                        />
-                                                    ) }
-                                                    position="top center"
-                                                    content={ "Reset to Default" }
-                                                    inverted
-                                                />
-                                            </Menu.Item>
-                                            { !readOnly && (
-                                                <Menu.Menu position="right">
+                            <Sidebar.Pusher>
+                                <div className="script-editor-container" ref={ scriptEditorSectionRef }>
+                                    <Menu attached="top" className="action-panel" secondary>
+                                            <Menu.Menu position="right">
+                                                <Menu.Item>
+                                                    <Checkbox
+                                                        label={
+                                                            t("console:develop.features.applications.edit.sections" +
+                                                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                                                ".scriptBased.editor.templates.darkMode")
+                                                        }
+                                                        checked={ isEditorDarkMode }
+                                                        onChange={ handleEditorDarkModeToggle }
+                                                        data-testid={ `${ testId }-code-editor-mode-toggle` }
+                                                        slider
+                                                    />
+                                                </Menu.Item>
+                                                { !readOnly && (
                                                     <Menu.Item
                                                         onClick={ handleScriptTemplateSidebarToggle }
                                                         className="action"
@@ -357,33 +623,32 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     >
                                                         <Icon name="bars"/>
                                                     </Menu.Item>
-                                                </Menu.Menu>
-                                            ) }
-                                        </Menu>
+                                                ) }
+                                            </Menu.Menu>
+                                    </Menu>
 
-                                        <div className="code-editor-wrapper">
-                                            <CodeEditor
-                                                lint
-                                                language="javascript"
-                                                sourceCode={ sourceCode }
-                                                options={ {
-                                                    lineWrapping: true
-                                                } }
-                                                onChange={ (editor, data, value) => {
-                                                    setInternalScript(value);
-                                                    onScriptChange(value);
-                                                } }
-                                                theme={ isEditorDarkMode ? "dark" : "light" }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-code-editor` }
-                                            />
-                                        </div>
+                                    <div className="code-editor-wrapper">
+                                        <CodeEditor
+                                            lint
+                                            language="javascript"
+                                            sourceCode={ sourceCode }
+                                            options={ {
+                                                lineWrapping: true
+                                            } }
+                                            onChange={ (editor, data, value) => {
+                                                setInternalScript(value);
+                                                onScriptChange(value);
+                                            } }
+                                            theme={ isEditorDarkMode ? "dark" : "light" }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-code-editor` }
+                                        />
                                     </div>
-                                </Sidebar.Pusher>
-                            </Sidebar.Pushable>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                                </div>
+                            </Sidebar.Pusher>
+                        </Sidebar.Pushable>
+                    </SegmentedAccordion.Content>
+                </SegmentedAccordion>
             </div>
             <ConfirmationModal
                 onClose={ (): void => setShowScriptResetWarning(false) }
@@ -426,5 +691,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
  * Default props for the script based flow component.
  */
 ScriptBasedFlow.defaultProps = {
-    "data-testid": "script-based-flow"
+    "data-testid": "script-based-flow",
+    isMinimized: true
 };

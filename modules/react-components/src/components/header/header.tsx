@@ -153,7 +153,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         "app-header",
         {
             [ "fluid-header" ]: fluid,
-            [ "has-announcement" ]: announcement
+            [ "has-announcement" ]: announcement !== undefined
         }
         , className
     );

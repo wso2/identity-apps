@@ -152,7 +152,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     } = props;
 
     const classes = classNames({
-        "with-top-action-bar": topActionBar
+        "with-top-action-bar": topActionBar !== undefined
     }, className);
 
     /**

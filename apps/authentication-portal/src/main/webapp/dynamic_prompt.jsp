@@ -73,7 +73,7 @@
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
+        <div class="ui container medium center aligned middle aligned">
 
             <!-- product-title -->
             <%

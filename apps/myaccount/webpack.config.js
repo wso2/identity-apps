@@ -315,7 +315,11 @@ module.exports = (env) => {
                 analyzerPort: analyzerPort
             }),
             isDevelopment && new webpack.HotModuleReplacementPlugin(),
-            isDevelopment && new ReactRefreshWebpackPlugin(),
+            isDevelopment && new ReactRefreshWebpackPlugin({
+                // React Refresh overlay shows errors for rejected promises and other errors
+                // that shouldn't block the development. Hence, switching off for now.
+                overlay: false
+            }),
             // In webpack 5 automatic node.js polyfills are removed.
             // https://github.com/vfile/vfile/issues/38#issuecomment-640479137
             new webpack.ProvidePlugin({

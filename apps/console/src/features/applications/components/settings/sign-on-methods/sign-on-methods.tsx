@@ -16,24 +16,29 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { Field, Forms } from "@wso2is/forms";
-import { EmphasizedSegment, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { Code, ConfirmationModal, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
-import { ScriptBasedFlow } from "./script-based-flow";
-import { StepBasedFlow } from "./step-based-flow";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../../core";
-import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
+import { Divider } from "semantic-ui-react";
+import { SignInMethodCustomization } from "./sign-in-method-customization";
+import { SignInMethodLanding } from "./sign-in-method-landing";
+import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
+import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import {
-    AdaptiveAuthTemplateInterface,
-    AuthenticationSequenceInterface,
-    AuthenticationStepInterface
-} from "../../../models";
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    history
+} from "../../../../core";
+import { GenericAuthenticatorInterface, IdentityProviderManagementUtils } from "../../../../identity-providers";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
+import { ApplicationManagementConstants } from "../../../constants";
+import { AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
 /**
@@ -88,317 +93,316 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
-    const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
-    const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
-    const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
-    const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
-    const [ steps, setSteps ] = useState<number>(1);
-    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
-    const [ showAdvancedFlows, setShowAdvancedFlows ] = useState<boolean>(false);
-
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
+    const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
+    const [ authenticators, setAuthenticators ] = useState<GenericAuthenticatorInterface[][]>(undefined);
+    const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
+    const [ showMissingGoogleAuthenticatorModal, setShowMissingGoogleAuthenticatorModal ] = useState<boolean>(false);
+    const [
+        showDuplicateGoogleAuthenticatorSelectionModal,
+        setShowDuplicateGoogleAuthenticatorSelectionModal
+    ] = useState<boolean>(false);
+    const [
+        selectedGoogleAuthenticator,
+        setSelectedGoogleAuthenticator
+    ] = useState<GenericAuthenticatorInterface>(undefined);
+    const [
+        moderatedAuthenticationSequence,
+        setModeratedAuthenticationSequence
+    ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+
     /**
-     * Toggles the update trigger.
+     * Loads federated authenticators and local authenticators on component load.
      */
     useEffect(() => {
-        if (!updateTrigger) {
-            return;
-        }
+        IdentityProviderManagementUtils.getAllAuthenticators()
+            .then((response: GenericAuthenticatorInterface[][]) => {
 
-        setUpdateTrigger(false);
-    }, [ updateTrigger ]);
+                const google: GenericAuthenticatorInterface[] = [];
 
-    /**
-     * Fetch data on component load
-     */
-    useEffect(() => {
-        fetchRequestPathAuthenticators();
+                response[ 1 ].filter((authenticator: GenericAuthenticatorInterface) => {
+                    if (authenticator.defaultAuthenticator.authenticatorId
+                        ===  IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+
+                        google.push(authenticator);
+                    }
+                });
+
+                setGoogleAuthenticators(google);
+                setAuthenticators(response);
+            });
     }, []);
 
     /**
-     * Updates the steps when the authentication sequence updates.
+     * Check if the sequence is default.
+     * If only on step is configured with BasicAuthenticator and the script is default,
+     * this function will identify the sequence as a default flow.
+     *
+     * @return {boolean}
      */
-    useEffect(() => {
+    const isDefaultFlowConfiguration = (): boolean => {
 
-        if (!authenticationSequence || !authenticationSequence?.steps || !Array.isArray(authenticationSequence.steps)) {
-            return;
+        if (authenticationSequence?.steps?.length !== 1 || authenticationSequence.steps[ 0 ].options?.length !== 1) {
+            return false;
         }
 
-        setSteps(authenticationSequence.steps.length);
-    }, [ authenticationSequence ]);
+        const isBasicStep: boolean = authenticationSequence.steps[ 0 ].options[ 0 ].authenticator
+            === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
+        const isBasicScript: boolean = !authenticationSequence.script
+            || AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
 
-    /**
-     * Updates the number of authentication steps.
-     *
-     * @param {boolean} add - Set to `true` to add and `false` to remove.
-     */
-    const updateSteps = (add: boolean): void => {
-        setSteps(add ? steps + 1 : steps - 1);
+        return isBasicStep && isBasicScript;
     };
 
     /**
-     * Handles the data loading from a adaptive auth template when it is selected
-     * from the panel.
+     * Handles the login flow select action.
      *
-     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
+     * @param {LoginFlowTypes} loginFlow - Selected login flow.
      */
-    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
-        if (!template) {
-            return;
+    const handleLoginFlowSelect = (loginFlow: LoginFlowTypes): void => {
+
+        if (!loginFlow) {
+            setModeratedAuthenticationSequence(authenticationSequence);
+        } else if (loginFlow === LoginFlowTypes.DEFAULT) {
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...DefaultFlowConfigurationSequenceTemplate
+            });
+        } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...SecondFactorTOTPSequenceTemplate
+            });
+        } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
+            // If there are no IDP's with google authenticator, show missing authenticator modal.
+           if (isEmpty(googleAuthenticators)) {
+               setShowMissingGoogleAuthenticatorModal(true);
+               
+               return;
+           }
+
+            // If there are more than 1 IDP's with google authenticator, show authenticator select modal.
+           if (googleAuthenticators.length > 1) {
+               // Set the first element as the selected google authenticator.
+               setSelectedGoogleAuthenticator(googleAuthenticators[0]);
+               setShowDuplicateGoogleAuthenticatorSelectionModal(true);
+               
+               return;
+           }
+
+            // If there are only 1 IDP's with google authenticator, move on.
+           if (googleAuthenticators.length === 1) {
+               setModeratedAuthenticationSequence({
+                   ...authenticationSequence,
+                   ...updateGoogleLoginSequenceWithIDPName(googleAuthenticators[0].idp)
+               });
+           }
         }
 
-        setIsDefaultScript(false);
-        let newSequence = { ...sequence };
+        setLoginFlow(loginFlow);
+    };
 
-        if (template.code) {
-            newSequence = {
-                ...newSequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: JSON.stringify(template.code)
-            };
-        }
+    /**
+     * Updates the predefined google login sequence with the desired IDP name.
+     * i.e. Replaces the `<GOOGLE_IDP>` in the JSON with a properly configured IDP.
+     *
+     * @return {AuthenticationSequenceInterface}
+     */
+    const updateGoogleLoginSequenceWithIDPName = (idp: string): AuthenticationSequenceInterface => {
 
-        if (template.defaultAuthenticators) {
-            const steps: AuthenticationStepInterface[] = [];
+        const modifiedGoogleLoginSequenceTemplate = { ...GoogleLoginSequenceTemplate };
+        modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = googleAuthenticators[0].idp;
+        modifiedGoogleLoginSequenceTemplate.steps[0].options.forEach((option) => {
+            if (option.authenticator === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME) {
+                option.idp = idp;
+            }
+        });
 
-            for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
-                steps.push({
-                    id: parseInt(key, 10),
-                    options: value.local.map((authenticator) => {
-                        return {
-                            authenticator,
-                            idp: "LOCAL"
-                        };
-                    })
+        return modifiedGoogleLoginSequenceTemplate;
+    };
+
+    /**
+     * Shows the missing google authenticator modal.
+     *
+     * @return {ReactElement}
+     */
+    const renderMissingGoogleAuthenticatorModal = (): ReactElement => (
+        <ConfirmationModal
+            type="info"
+            onClose={ () => setShowMissingGoogleAuthenticatorModal(false) }
+            open={ showMissingGoogleAuthenticatorModal }
+            primaryAction={
+                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "flowBuilder.addMissingGoogleAuthenticatorModal.primaryButton")
+            }
+            secondaryAction={
+                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "flowBuilder.addMissingGoogleAuthenticatorModal.secondaryButton")
+            }
+            onSecondaryActionClick={ () => setShowMissingGoogleAuthenticatorModal(false) }
+            onPrimaryActionClick={ (): void => {
+                history.push({
+                    pathname: AppConstants.getPaths().get("IDP_TEMPLATES"),
+                    search: `?${
+                        IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY }=${
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE
+                        }`
                 });
-            }
-
-            newSequence = {
-                ...newSequence,
-                attributeStepId: 1,
-                steps,
-                subjectStepId: 1
-            };
-        }
-
-        setSequence(newSequence);
-    };
-
-    /**
-     * Handles authentication sequence update.
-     */
-    const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface) => {
-        const requestBody = {
-            authenticationSequence: {
-                ...sequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
-                script: adaptiveScript
-            }
-        };
-
-        updateAuthenticationSequence(appId, requestBody)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".success.message")
-                }));
-
-                onUpdate(appId);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                            ".error.message")
-                    }));
-
-                    return;
+            } }
+            data-testid={ `${ testId }-add-missing-authenticator-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header>
+                {
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        "flowBuilder.addMissingGoogleAuthenticatorModal.heading")
                 }
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                        ".genericError.message")
-                }));
-            });
-    };
-
-    const fetchRequestPathAuthenticators = (): void => {
-        getRequestPathAuthenticators()
-            .then((response) => {
-                setRequestPathAuthenticators(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
-                            { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
-                    }));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert({
-                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
-                            "description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
-                    }));
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message attached info>
+                {
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        "flowBuilder.addMissingGoogleAuthenticatorModal.content.message")
                 }
-            });
-    };
-
-    /**
-     * Handles adaptive script change event.
-     *
-     * @param {string | string[]} script - Adaptive script from the editor.
-     */
-    const handleAdaptiveScriptChange = (script: string | string[]): void => {
-        setAdaptiveScript(script);
-    };
-
-    /**
-     * Handles the update button click event.
-     */
-    const handleUpdateClick = (): void => {
-        if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
-            setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
-            setIsDefaultScript(true);
-        }
-        setUpdateTrigger(true);
-    };
-
-    const showRequestPathAuthenticators: ReactElement = (
-        <>
-            <Heading as="h4">{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.subTitle") }</Hint>
-            <Forms>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="requestPathAuthenticators"
-                                label=""
-                                type="checkbox"
-                                required={ false }
-                                value={ authenticationSequence?.requestPathAuthenticators }
-                                requiredErrorMessage=""
-                                children={
-                                    requestPathAuthenticators?.map(authenticator => {
-                                        return {
-                                            label: authenticator.displayName,
-                                            value: authenticator.name
-                                        };
-                                    })
-                                }
-                                listen={
-                                    (values) => {
-                                        setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
-                                    }
-                                }
-                                readOnly={ readOnly }
-                                data-testid={ `${ testId }-request-path-authenticators` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-        </>
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                <Trans
+                    i18nKey={
+                        "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        "flowBuilder.addMissingGoogleAuthenticatorModal.content.body"
+                    }
+                >
+                    You do not have an Identity Provider configured with <Code>Google Authenticator</Code>. 
+                    Click on the <strong>Configure</strong> button to initiate the configuration process or 
+                    navigate to the <Code>Identity Providers</Code> section to manually configure.
+                </Trans>
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
     );
 
     /**
-     * Renders update button.
+     * Shows a modal to select the IDP when multiple IDP's have google authenticator configured as default.
      *
-     * @return {React.ReactElement}
+     * @return {ReactElement}
      */
-    const renderUpdateButton = (): ReactElement => {
+    const renderDuplicateGoogleAuthenticatorSelectionModal = (): ReactElement => (
+        <ConfirmationModal
+            type="warning"
+            onClose={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
+            open={ showDuplicateGoogleAuthenticatorSelectionModal }
+            primaryAction={
+                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.primaryButton")
+            }
+            secondaryAction={
+                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.secondaryButton")
+            }
+            onSecondaryActionClick={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
+            onPrimaryActionClick={ (): void => {
+                setModeratedAuthenticationSequence({
+                    ...authenticationSequence,
+                    ...updateGoogleLoginSequenceWithIDPName(selectedGoogleAuthenticator.idp)
+                });
 
-        if (!(!readOnly && hasRequiredScopes(featureConfig?.applications,
-            featureConfig?.applications?.scopes?.update, allowedScopes))) {
+                setLoginFlow(LoginFlowTypes.GOOGLE_LOGIN);
+                setShowDuplicateGoogleAuthenticatorSelectionModal(false);
+            } }
+            data-testid={ `${ testId }-duplicate-authenticator-selection-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header>
+                {
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.heading")
+                }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Message attached warning>
+                {
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                        "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.content.message")
+                }
+            </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                <Text>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.content.body"
+                        }
+                    >
+                        You have multiple Identity Providers configured with <Code>Google Authenticator</Code>. 
+                        Select the desired one from the selection bellow to proceed
+                    </Trans>
+                </Text>
+                <Divider hidden />
+                <div>
+                    {
+                        googleAuthenticators.map((authenticator, index) => (
+                            <LabeledCard
+                                key={ index }
+                                multilineLabel
+                                className="authenticator-card"
+                                size="tiny"
+                                selected={ selectedGoogleAuthenticator?.id === authenticator.id }
+                                image={ authenticator.image }
+                                label={
+                                    ApplicationManagementConstants
+                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                                    || authenticator.displayName
+                                }
+                                labelEllipsis={ true }
+                                data-testid={
+                                    `${ testId }-authenticator-${ authenticator.name }`
+                                }
+                                onClick={ () => setSelectedGoogleAuthenticator(authenticator) }
+                            />
+                        ))
+                    }
+                </div>
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
-            return null;
-        }
-
-        return (
-            <>
-                <Divider hidden/>
-                <PrimaryButton
-                    onClick={ handleUpdateClick }
-                    data-testid={ `${ testId }-update-button` }
-                >
-                    { t("common:update") }
-                </PrimaryButton>
-            </>
-        );
+    /**
+     * Resets the internal state back to default on reset.
+     */
+    const handleLoginFlowReset = (): void => {
+        setLoginFlow(undefined);
+        setShowMissingGoogleAuthenticatorModal(false);
+        setShowDuplicateGoogleAuthenticatorSelectionModal(false);
+        setSelectedGoogleAuthenticator(undefined);
+        setModeratedAuthenticationSequence(authenticationSequence);
     };
 
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
-            <StepBasedFlow
-                authenticationSequence={ sequence }
-                isLoading={ isLoading }
-                onUpdate={ handleSequenceUpdate }
-                triggerUpdate={ updateTrigger }
-                readOnly={
-                    readOnly
-                    || !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update,
-                        allowedScopes)
-                }
-                data-testid={ `${ testId }-step-based-flow` }
-                updateSteps={ updateSteps }
-            />
-            <Divider hidden/>
-            { !showAdvancedFlows && renderUpdateButton() }
-            <div className="text-center md-3">
-                <LinkButton
-                    type="button"
-                    onClick={ () => setShowAdvancedFlows(!showAdvancedFlows) }
-                    data-testid={ `${ testId }-show-advanced-flows` }
-                >
-                    <Icon name={ showAdvancedFlows ? "chevron up" : "chevron down" }/>
-                    { showAdvancedFlows ? t("common:showLess") : t("common:showMore") }
-                </LinkButton>
-            </div>
-            <div className={ !showAdvancedFlows ? "display-none" : "" }>
-                <ScriptBasedFlow
-                    authenticationSequence={ sequence }
-                    isLoading={ isLoading }
-                    onTemplateSelect={ handleLoadingDataFromTemplate }
-                    onScriptChange={ handleAdaptiveScriptChange }
-                    readOnly={
-                        readOnly
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update,
-                            allowedScopes)
-                    }
-                    data-testid={ `${ testId }-script-based-flow` }
-                    authenticationSteps={ steps }
-                    isDefaultScript={ isDefaultScript }
-                    onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-                />
-                {
-                    (config?.ui?.isRequestPathAuthenticationEnabled === false)
-                        ? null
-                        : requestPathAuthenticators && showRequestPathAuthenticators
-                }
-                { renderUpdateButton() }
-            </div>
+            {
+                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                    ? (
+                        <SignInMethodLanding
+                            isLoading={ isLoading }
+                            readOnly={ readOnly }
+                            onLoginFlowSelect={ handleLoginFlowSelect }
+                            data-testid={ `${ testId }-landing` }
+                        />
+                    )
+                    : (
+                        <>
+                            <SignInMethodCustomization
+                                appId={ appId }
+                                authenticators={ authenticators }
+                                authenticationSequence={ moderatedAuthenticationSequence }
+                                onUpdate={ onUpdate }
+                                onReset={ handleLoginFlowReset }
+                                data-testid={ testId }
+                                readOnly={ readOnly }
+                            />
+                        </>
+                    )
+            }
+            { showMissingGoogleAuthenticatorModal && renderMissingGoogleAuthenticatorModal() }
+            { showDuplicateGoogleAuthenticatorSelectionModal && renderDuplicateGoogleAuthenticatorSelectionModal() }
         </EmphasizedSegment>
     );
 };

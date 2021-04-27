@@ -55,6 +55,9 @@ import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import {
+    ReactComponent as BasicAuthIllustration
+} from "../../../themes/default/assets/images/illustrations/basic-auth-illustration.svg";
+import {
     ReactComponent as BoxTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";
 import {
@@ -196,5 +199,12 @@ export const getGeneralIcons = () => {
     return {
         addCircleOutline: AddCircleOutlineIcon,
         plusIcon: PlusIcon
+    };
+};
+
+export const getSignInMethodIllustrations = (): Record<string, unknown> => {
+    
+    return {
+        basicAuth: BasicAuthIllustration
     };
 };

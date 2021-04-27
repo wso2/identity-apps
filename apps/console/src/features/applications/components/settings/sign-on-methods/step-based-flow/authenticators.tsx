@@ -21,21 +21,10 @@ import { Code, Heading, LabeledCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
     FunctionComponent,
-    PropsWithChildren,
     ReactElement,
     ReactNode,
-    ReactPortal,
-    useEffect,
     useState
 } from "react";
-import {
-    Draggable,
-    DraggableProvided,
-    DraggableStateSnapshot,
-    Droppable,
-    DroppableProvided
-} from "react-beautiful-dnd";
-import ReactDOM from "react-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
@@ -47,6 +36,10 @@ import { ApplicationManagementConstants } from "../../../../constants";
  */
 interface AuthenticatorsPropsInterface extends TestableComponentInterface {
     /**
+     * Allow social login addition.
+     */
+    allowSocialLoginAddition: boolean;
+    /**
      * List of authenticators.
      */
     authenticators: GenericAuthenticatorInterface[];
@@ -55,13 +48,13 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     className?: string;
     /**
+     * Authenticators category.
+     */
+    category: string;
+    /**
      * Default name for authenticators with no name.
      */
     defaultName?: string;
-    /**
-     * ID for the droppable field.
-     */
-    droppableId: string;
     /**
      * Empty placeholder.
      */
@@ -71,17 +64,9 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     heading?: string;
     /**
-     * Is dropping allowed.
-     */
-    isDropDisabled?: boolean;
-    /**
      * Is the application info request loading.
      */
     isLoading?: boolean;
-    /**
-     * Make the form read only.
-     */
-    readOnly?: boolean;
     /**
      * Denotes whether the authenticator is a social login.
      */
@@ -90,16 +75,11 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Handles on click of social login add.
      */
     handleSocialLoginAdd?: any;
+    /**
+     * Callback triggered when authenticators are selected.
+     */
+    onAuthenticatorSelect: (selectedAuthenticators: GenericAuthenticatorInterface[]) => void;
 }
-
-const portal: HTMLElement = document.createElement("div");
-portal.classList.add("draggable-portal");
-
-if (!document.body) {
-    throw new Error("document body is not ready for portal creation!");
-}
-
-document.body.appendChild(portal);
 
 /**
  * Component to render the list of authenticators.
@@ -112,32 +92,30 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 ): ReactElement => {
 
     const {
+        allowSocialLoginAddition,
         authenticators,
         className,
+        category,
         defaultName,
-        droppableId,
         emptyPlaceholder,
         heading,
-        isDropDisabled,
-        readOnly,
         isSocialLogin,
         handleSocialLoginAdd,
+        onAuthenticatorSelect,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ draggableAuthenticators, setDraggableAuthenticators ] = useState<ReactElement[]>(null);
-    const [ draggableAddSocialAuthenticatorButton, setDraggableAddSocialAuthenticatorButton ] =
-        useState<ReactElement[]>(null);
+    const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
 
     const classes = classNames("authenticators", className);
 
     const isAuthenticatorDisabled = (authenticator) => {
-        if (droppableId === ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID) {
+        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
             return !(authenticator?.isEnabled);
         }
-        if (droppableId === ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID) {
+        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
             return !(authenticator
                 && authenticator.authenticators[ 0 ]
                 && authenticator.authenticators[ 0 ].isEnabled);
@@ -145,7 +123,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     };
 
     const resolvePopupContent = () => {
-        if (droppableId === ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID) {
+        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
             return (
                 <Text>
                     <Trans
@@ -159,7 +137,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Trans>
                 </Text>
             );
-        } else if (droppableId === ApplicationManagementConstants.EXTERNAL_AUTHENTICATORS_DROPPABLE_ID) {
+        } else if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
             return (
                 <Text>
                     {
@@ -170,175 +148,106 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
     };
+    
+    const handleAuthenticatorSelect = (selectedAuthenticator): void => {
+        
+        if (isAuthenticatorDisabled(selectedAuthenticator)) {
+            return;
+        }
+         
+        if (selectedAuthenticators.some((authenticator) => authenticator.id === selectedAuthenticator.id)) {
+            
+            const filtered = selectedAuthenticators.filter((authenticator) => {
+                return authenticator.id !== selectedAuthenticator.id;
+            });
 
-    /**
-     * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
-     * triggering every time dom nodes are updated. Having it in a state fixes the flicker.
-     */
-    useEffect(() => {
-
-        if (!authenticators || !Array.isArray(authenticators) || authenticators.length < 1) {
+            onAuthenticatorSelect(filtered);
+            setSelectedAuthenticators(filtered);
+            
             return;
         }
 
-        const draggableNodes: ReactElement[] = [];
-
-        authenticators.map((authenticator, index) => {
-
-            draggableNodes.push(
-                <Draggable
-                    key={ `${ authenticator.idp }-${ authenticator.id }` }
-                    draggableId={ authenticator.id }
-                    index={ index }
-                    isDragDisabled={ readOnly || isAuthenticatorDisabled(authenticator) }
-                >
-                    { (
-                        draggableProvided: DraggableProvided,
-                        draggableSnapshot: DraggableStateSnapshot
-                    ): React.ReactElement<HTMLElement> => (
-                        <PortalAwareDraggable
-                            provided={ draggableProvided }
-                            snapshot={ draggableSnapshot }
-                        >
-                            <Popup
-                                on="hover"
-                                disabled={ !isAuthenticatorDisabled(authenticator) }
-                                content={ (
-                                    <>
-                                        <Label attached="top">
-                                            <Icon name="info circle" /> Info
-                                        </Label>
-                                        { resolvePopupContent() }
-                                    </>
-                                ) }
-                                trigger={ (
-                                    <div>
-                                        <LabeledCard
-                                            size="tiny"
-                                            disabled={ isAuthenticatorDisabled(authenticator) }
-                                            image={ authenticator.image }
-                                            label={ authenticator.displayName || defaultName }
-                                            labelEllipsis={ true }
-                                            data-testid={
-                                                `${ testId }-authenticator-${ authenticator.name }`
-                                            }
-                                        />
-                                    </div>
-                                ) }
-                            />
-                        </PortalAwareDraggable>
-                    ) }
-                </Draggable>
-            );
-        });
-
-        setDraggableAuthenticators(draggableNodes);
-    }, [ authenticators ]);
-
-    /**
-     * Having `PortalAwareDraggable` in return causes flickers due to `ReactDOM.createPortal`
-     * triggering every time dom nodes are updated. Having it in a state fixes the flicker.
-     */
-    useEffect(() => {
-
-        if (!isSocialLogin) {
-            return;
-        }
-
-        const draggableNodes: ReactElement[] = [];
-
-        draggableNodes.push(
-            <Draggable
-                draggableId="Add"
-                isDragDisabled={ true }
-                index={ 0 }
-            >
-                { (
-                    draggableProvided: DraggableProvided,
-                    draggableSnapshot: DraggableStateSnapshot
-                ): React.ReactElement<HTMLElement> => (
-                    <PortalAwareDraggable
-                        provided={ draggableProvided }
-                        snapshot={ draggableSnapshot }
-                    >
-                        <LabeledCard
-                            size="tiny"
-                            image={ getGeneralIcons()?.addCircleOutline }
-                            label={ "Add" }
-                            labelEllipsis={ true }
-                            data-testid={
-                                `${ testId }-authenticator-add`
-                            }
-                            imageOptions={ {
-                                as: "data-url"
-                            } }
-                            onClick={ handleSocialLoginAdd }
-                        />
-                    </PortalAwareDraggable>
-                ) }
-            </Draggable>
-        );
-
-        setDraggableAddSocialAuthenticatorButton(draggableNodes);
-    }, [ isSocialLogin ]);
-
-    /**
-     * Add a wrapper portal so that the `transform` attributes in the parent
-     * component won't affect the draggable position.
-     *
-     * @see {@link https://github.com/atlassian/react-beautiful-dnd/issues/128)}
-     * @param {React.PropsWithChildren<{provided: DraggableProvided; snapshot: DraggableStateSnapshot}>} props
-     * @return {React.ReactElement | React.ReactPortal}
-     */
-    const PortalAwareDraggable = (
-        props: PropsWithChildren<{ provided: DraggableProvided; snapshot: DraggableStateSnapshot }>
-    ): ReactElement | ReactPortal => {
-
-        const {
-            children,
-            provided,
-            snapshot
-        } = props;
-
-        const usePortal: boolean = snapshot.isDragging;
-
-        const child: ReactElement = (
-            <div
-                ref={ provided.innerRef }
-                { ...provided.draggableProps }
-                { ...provided.dragHandleProps }
-                className="inline"
-            >
-                { children }
-            </div>
-        );
-
-        if (!usePortal) {
-            return child;
-        }
-
-        // if dragging - put the item in a portal.
-        return ReactDOM.createPortal(child, portal);
+        onAuthenticatorSelect([ ...selectedAuthenticators, selectedAuthenticator ]);
+        setSelectedAuthenticators([ ...selectedAuthenticators, selectedAuthenticator ]);
     };
 
     return authenticators && authenticators instanceof Array
         ? (
             <>
                 { heading && <Heading as="h6">{ heading }</Heading> }
-                <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
-                    { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
-                        <div
-                            ref={ provided.innerRef }
-                            { ...provided.droppableProps }
-                            className={ classes }
-                            data-testid={ testId }
-                        >
-                            { draggableAuthenticators }
-                            { draggableAddSocialAuthenticatorButton }
-                            { provided.placeholder }
-                        </div>
-                    ) }
-                </Droppable>
+                <div
+                    className={ classes }
+                    data-testid={ testId }
+                >
+                    {
+                        authenticators.map((authenticator, index) => (
+                            <div key={ index } className="inline">
+                                <Popup
+                                    on="hover"
+                                    disabled={ !isAuthenticatorDisabled(authenticator) }
+                                    content={ (
+                                        <>
+                                            <Label attached="top">
+                                                <Icon name="info circle"/> Info
+                                            </Label>
+                                            { resolvePopupContent() }
+                                        </>
+                                    ) }
+                                    trigger={ (
+                                        <div>
+                                            <LabeledCard
+                                                multilineLabel
+                                                className="authenticator-card"
+                                                size="tiny"
+                                                disabled={ isAuthenticatorDisabled(authenticator) }
+                                                selected={
+                                                    selectedAuthenticators.some((evalAuthenticator) => {
+                                                        return evalAuthenticator.id === authenticator.id
+                                                    })
+                                                }
+                                                image={ authenticator.image }
+                                                label={
+                                                    ApplicationManagementConstants
+                                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                                                    || authenticator.displayName
+                                                    || defaultName
+                                                }
+                                                labelEllipsis={ true }
+                                                data-testid={
+                                                    `${ testId }-authenticator-${ authenticator.name }`
+                                                }
+                                                onClick={ () => handleAuthenticatorSelect(authenticator) }
+                                            />
+                                        </div>
+                                    ) }
+                                />
+                            </div>
+                        ))
+                    }
+                    {
+                        isSocialLogin && allowSocialLoginAddition && (
+                            <div className="inline">
+                                <div>
+                                    <LabeledCard
+                                        multilineLabel
+                                        className="authenticator-card"
+                                        size="tiny"
+                                        image={ getGeneralIcons()?.addCircleOutline }
+                                        label={ t("common:add") }
+                                        labelEllipsis={ true }
+                                        data-testid={
+                                            `${ testId }-authenticator-add`
+                                        }
+                                        imageOptions={ {
+                                            as: "data-url"
+                                        } }
+                                        onClick={ handleSocialLoginAdd }
+                                    />
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
             </>
         )
         : (
@@ -352,6 +261,5 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 Authenticators.defaultProps = {
     "data-testid": "authenticators",
     defaultName: "Unknown",
-    isDropDisabled: true,
     isSocialLogin: false
 };

@@ -203,7 +203,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 
     const imgElementClasses = classNames(AVATAR_MODULE_CSS_CLASS,
         {
-            "hoverable": onClick,
+            "hoverable": onClick !== undefined,
             [ `initials-color-${ initialsColor }` ]: initialsColor,
             relaxed,
             rounded,
