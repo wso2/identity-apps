@@ -95,12 +95,6 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     <Text subHeading muted>
                                         {
                                             t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.landing.defaultConfig.description.0")
-                                        }
-                                    </Text>
-                                    <Text subHeading muted>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
                                                 "sections.landing.defaultConfig.description.1")
                                         }
                                     </Text>
