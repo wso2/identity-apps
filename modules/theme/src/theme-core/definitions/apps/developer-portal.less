@@ -119,8 +119,6 @@
 .sign-on-methods-tab-content {
     .sign-in-method-landing {
         .default-config-column {
-            border-right: @defaultBorderWidth solid @defaultBorderColor;
-            
             .default-config-description {
                 padding: 2em 3em;
                 
@@ -247,6 +245,29 @@
 
             &-toggle {
                 margin: auto 0;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: @computerBreakpoint) {
+    .sign-on-methods-tab-content {
+        .sign-in-method-landing {
+            .default-config-column {
+                border-right: @defaultBorderWidth solid @defaultBorderColor;
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: @computerBreakpoint) {
+    .sign-on-methods-tab-content {
+        .sign-in-method-landing {
+            .default-config-column {
+                border-right: none;
+                border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+                margin-bottom: 3em !important;
             }
         }
     }

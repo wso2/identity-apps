@@ -20,7 +20,7 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Segment } from "semantic-ui-react";
+import { Divider, Grid, Responsive, Segment } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
 import { getAuthenticatorIcons, getSignInMethodIllustrations } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
@@ -70,7 +70,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
             <Grid>
                 <Grid.Row>
                     <Grid.Column
-                        width={ 8 }
+                        computer={ 8 }
+                        tablet={ 16 }
+                        mobile={ 16 }
                         className="default-config-column"
                         textAlign="center"
                     >
@@ -93,12 +95,6 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     <Text subHeading muted>
                                         {
                                             t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.landing.defaultConfig.description.0")
-                                        }
-                                    </Text>
-                                    <Text subHeading muted>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
                                                 "sections.landing.defaultConfig.description.1")
                                         }
                                     </Text>
@@ -107,16 +103,21 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                         </div>
                     </Grid.Column>
                     <Grid.Column
-                        width={ 8 }
+                        computer={ 8 }
+                        tablet={ 16 }
+                        mobile={ 16 }
                         className="flow-options-column"
                     >
                         <div className="pr-5 pl-5">
-                            <h2>
+                            <Heading
+                                as="h2"
+                                textAlign={ window.innerWidth <= Responsive.onlyTablet.maxWidth ? "center" : "left" }
+                            >
                                 {
                                     t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                         "landing.flowBuilder.heading")
                                 }
-                            </h2>
+                            </Heading>
                             <Divider hidden />
                             <InfoCard
                                 fluid

@@ -186,11 +186,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 },
                 {
                     component: (
-                        <Menu.Item key={ "tenant-dropdown" }>
+                        <Menu.Item className="tenant-dropdown-wrapper" key="tenant-dropdown">
                             <ComponentPlaceholder section="tenant-dropdown" type="component"/>
                         </Menu.Item>
                     ),
-                    floated: "right"
+                    floated: "left"
                 }
             ] }
             fluid={ fluid }
