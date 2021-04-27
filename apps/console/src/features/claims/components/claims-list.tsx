@@ -870,7 +870,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributes.deleteAction && {
-                    hidden: (): boolean => hasRequiredScopes(featureConfig?.attributeDialects,
+                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void =>
@@ -894,7 +894,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributeMappings.deleteAction && {
-                    hidden: (): boolean => hasRequiredScopes(featureConfig?.attributeDialects,
+                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, dialect: ClaimDialect): void => initDelete(ListType.DIALECT, dialect),
