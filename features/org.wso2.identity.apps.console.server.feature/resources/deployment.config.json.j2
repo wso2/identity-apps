@@ -543,6 +543,9 @@
         "isDialectAddingEnabled": {{ console.ui.is_dialect_adding_enabled }},
         {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
+        {% if console.ui.is_header_avatar_label_allowed is defined %}
+        "isHeaderAvatarLabelAllowed": {{ console.ui.is_header_avatar_label_allowed }},
+        {% endif %}
         {% if console.ui.is_request_path_authentication_enabled is defined %}
         "isRequestPathAuthenticationEnabled": {{ console.ui.is_request_path_authentication_enabled }},
         {% endif %}

@@ -312,6 +312,7 @@
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },
+        "isHeaderAvatarLabelAllowed": true,
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
