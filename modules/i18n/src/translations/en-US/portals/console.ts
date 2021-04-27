@@ -909,8 +909,7 @@ export const console: ConsoleNS = {
                                                             heading: "Multi-factor options"
                                                         },
                                                         social: {
-                                                            description: "Use existing login information from a " +
-                                                                "social network provider.",
+                                                            description: "Use existing social login account.",
                                                             heading: "Social login"
                                                         }
                                                     },
@@ -967,11 +966,11 @@ export const console: ConsoleNS = {
                                     flowBuilder: {
                                         addMissingGoogleAuthenticatorModal: {
                                             content: {
-                                                body: "You do not have an Identity Provider configured with " +
+                                                body: "You do not have an active Identity Provider configured with " +
                                                     "<1>Google Authenticator</1>. Click on the <3>Configure</3> " +
                                                     "button to initiate the configuration process or navigate to " +
                                                     "the <5>Identity Providers</5> section manually.",
-                                                message: "No Google Identity Provider configured"
+                                                message: "No active Google Identity Provider configured"
                                             },
                                             description: "",
                                             heading: "Configure Google Identity Provider",
@@ -2459,8 +2458,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Drag and drop authenticators from the panel",
-                            1: "to build an authentication sequence."
+                            0: "Click on the Add Authentication button",
+                            1: "add options to this step."
                         },
                         title: null
                     },
