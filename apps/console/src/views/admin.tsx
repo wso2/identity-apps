@@ -157,11 +157,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         // TODO : Temporary fix for access controlled routes
         if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
-            setAccessControlledRoutes(controlledRoutes); 
+            setAccessControlledRoutes(controlledRoutes);
+            RouteUtils.gracefullyHandleRouting(controlledRoutes,
+                AppConstants.getAdminViewBasePath(),
+                location.pathname);
         } else {
             dispatch(setManageVisibility(false));
         }
-        setAccessControlledRoutes(controlledRoutes);   
     }, [ allowedScopes ]);
 
     /**
