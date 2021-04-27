@@ -81,6 +81,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) => state.loaders.isProfileInfoLoading);
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
+        state.config.ui.isHeaderAvatarLabelAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
@@ -239,6 +241,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ] }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
+            showUserDropdownTriggerLabel={
+                (isHeaderAvatarLabelAllowed === undefined)
+                    ? false
+                    : isHeaderAvatarLabelAllowed
+            }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
         />

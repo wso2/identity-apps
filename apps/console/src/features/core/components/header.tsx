@@ -81,6 +81,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isProfileInfoLoading: boolean = useSelector(
         (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
+        state.config.ui.isHeaderAvatarLabelAllowed);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -170,7 +172,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={ [
                 {
                     component: (
-                        <Menu.Item key={ "feedback-button" }>
+                        <Menu.Item className="help-center-button-wrapper" key="feedback-button">
                             <ComponentPlaceholder section="feedback-button" type="component"/>
                         </Menu.Item>
                     ),
@@ -178,7 +180,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 },
                 {
                     component: (
-                        <Menu.Item key={ "app-switch-button" }>
+                        <Menu.Item className="app-switch-button-wrapper" key="app-switch-button">
                             <ComponentPlaceholder section="app-switch-button" type="component"/>
                         </Menu.Item>
                     ),
@@ -217,6 +219,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ] }
             profileInfo={ profileInfo }
             showUserDropdown={ true }
+            showUserDropdownTriggerLabel={
+                (isHeaderAvatarLabelAllowed === undefined)
+                    ? false
+                    : isHeaderAvatarLabelAllowed
+            }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             data-testid={ testId }
             { ...rest }

@@ -242,6 +242,9 @@
                 }
             }
         },
+        {% if myaccount.ui.is_header_avatar_label_allowed is defined %}
+        "isHeaderAvatarLabelAllowed": {{ myaccount.ui.is_header_avatar_label_allowed }},
+        {% endif %}
         "i18nConfigs": {
             {% if myaccount.i18n_configs.items() is defined %}
             {% for key, value in myaccount.i18n_configs.items() %}
