@@ -369,6 +369,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
+                        featureConfig={ featureConfig }
                     />
                 </ListLayout>
             </PageLayout>
