@@ -968,8 +968,8 @@ export const console: ConsoleNS = {
                                             content: {
                                                 body: "You do not have an active Identity Provider configured with " +
                                                     "<1>Google Authenticator</1>. Click on the <3>Configure</3> " +
-                                                    "button to initiate the configuration process or navigate to " +
-                                                    "the <5>Identity Providers</5> section manually.",
+                                                    "button to register a new <5>Google Identity Provider</5> " +
+                                                    "or navigate to the <7>Identity Providers</7> section manually.",
                                                 message: "No active Google Identity Provider configured"
                                             },
                                             description: "",
@@ -998,12 +998,12 @@ export const console: ConsoleNS = {
                                             },
                                             google: {
                                                 description: "Enable users to login with Google.",
-                                                heading: "Add Google Login"
+                                                heading: "Add Google login"
                                             },
                                             totp: {
                                                 description: "Enable additional authentication layer with Time " +
                                                     "based OTP.",
-                                                heading: "Add TOTP as a Second Factor"
+                                                heading: "Add TOTP as a second factor"
                                             }
                                         }
                                     }

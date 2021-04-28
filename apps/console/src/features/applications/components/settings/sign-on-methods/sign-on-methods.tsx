@@ -272,9 +272,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         "flowBuilder.addMissingGoogleAuthenticatorModal.content.body"
                     }
                 >
-                    You do not have an Identity Provider configured with <Code>Google Authenticator</Code>. 
-                    Click on the <strong>Configure</strong> button to initiate the configuration process or 
-                    navigate to the <Code>Identity Providers</Code> section to manually configure.
+                    You do not have an active Identity Provider configured with <Code> Google Authenticator</Code>.
+                    Click on the <strong>Configure</strong> button to register a new <Code>Google Identity 
+                    Provider</Code> or navigate to the <a
+                        onClick={ () => {
+                            history.push(AppConstants.getPaths().get("IDP"));
+                        } }
+                        className="external-link link pointing primary"
+                    >Identity Providers</a> section manually.
                 </Trans>
             </ConfirmationModal.Content>
         </ConfirmationModal>
