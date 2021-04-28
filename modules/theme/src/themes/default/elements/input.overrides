@@ -91,15 +91,3 @@
         }
     }
 }
-
-/*-------------------------------
-         Password Input Field
---------------------------------*/
-
-.ui.input {
-    &.password-input {
-        .password-input-eye-icon {
-            margin-right: @passwordInputFieldMarginRight;
-        }
-    }
-}

@@ -62,8 +62,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any): void => {
-        console.log("Values", values);
-
         const data = {
             advancedConfigurations: {
                 enableAuthorization: !!values.enableAuthorization,
