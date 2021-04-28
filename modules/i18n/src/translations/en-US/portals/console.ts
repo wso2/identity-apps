@@ -969,7 +969,7 @@ export const console: ConsoleNS = {
                                                 body: "You do not have an active Identity Provider configured with " +
                                                     "<1>Google Authenticator</1>. Click on the <3>Configure</3> " +
                                                     "button to register a new <5>Google Identity Provider</5> " +
-                                                    "or navigate to the <7>Identity Providers</7> section maually.",
+                                                    "or navigate to the <7>Identity Providers</7> section manually.",
                                                 message: "No active Google Identity Provider configured"
                                             },
                                             description: "",
