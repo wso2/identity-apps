@@ -279,7 +279,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             history.push(AppConstants.getPaths().get("IDP"));
                         } }
                         className="external-link link pointing primary"
-                    >Identity Providers</a> section maually.
+                    >Identity Providers</a> section manually.
                 </Trans>
             </ConfirmationModal.Content>
         </ConfirmationModal>
