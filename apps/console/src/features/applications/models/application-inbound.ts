@@ -276,12 +276,21 @@ export interface SAML2ServiceProviderInterface {
 }
 
 /**
+ * SAML template configurations for an application.
+ */
+export interface SAML2TemplateServiceProviderInterface {
+    issuer: string;
+    assertionConsumerUrls?: Array<string>;
+}
+
+/**
  * SAML configuration interface.
  */
 export interface SAML2ConfigurationInterface {
     metadataFile?: string;
     metadataURL?: string;
     manualConfiguration?: SAML2ServiceProviderInterface;
+    templateConfiguration?: SAML2TemplateServiceProviderInterface;
 }
 
 /**

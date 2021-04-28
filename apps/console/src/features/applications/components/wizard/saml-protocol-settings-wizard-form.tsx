@@ -30,10 +30,6 @@ import { Grid, Icon, Label, Message } from "semantic-ui-react";
  */
 interface SAMLProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
     /**
-     * CORS allowed origin list for the tenant.
-     */
-    allowedOrigins?: string[];
-    /**
      * Set of fields to be displayed.
      */
     fields?: ("issuer" | "applicationQualifier" | "assertionConsumerURLs")[];
@@ -76,7 +72,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 ): ReactElement => {
 
     const {
-        allowedOrigins,
         fields,
         hideFieldHints,
         initialValues,
@@ -90,25 +85,34 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
     const { t } = useTranslation();
 
     const [ assertionConsumerUrls, setAssertionConsumerUrls ] = useState<string>("");
+    const [ issuer, setIssuer ] = useState<string>("");
     const [ assertionConsumerURLFromTemplate, setAssertionConsumerURLFromTemplate ] = useState("");
+    const [ issuerFromTemplate, setIssuerLFromTemplate ] = useState("");
     const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
     const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
-    const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>(allowedOrigins ? allowedOrigins: []);
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
+            const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
                 setAssertionConsumerUrls("");
+            }
+            if (!isEmpty(tempIssuer)) {
+                setIssuer(tempIssuer.toString());
+            } else {
+                setIssuer("");
             }
         } else {
             setAssertionConsumerUrls(
                 initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                     .assertionConsumerUrls?.toString()
             );
+            setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                .issuer?.toString());
         }
     }, [initialValues]);
 
@@ -123,10 +127,16 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             return;
         }
 
-        const templatedCallbacks: string[] = templateValues?.inboundProtocolConfiguration?.saml?.assertionConsumerURLs;
+        const templatedCallbacks: string[] =
+            templateValues?.inboundProtocolConfiguration?.saml?.templateConfiguration?.assertionConsumerUrls;
+        const templatedIssuer: string =
+            templateValues?.inboundProtocolConfiguration?.saml?.templateConfiguration?.issuer;
 
         if (templatedCallbacks && Array.isArray(templatedCallbacks) && templatedCallbacks.length > 0) {
             setAssertionConsumerURLFromTemplate(templatedCallbacks[ 0 ]);
+        }
+        if (templatedIssuer) {
+            setIssuerLFromTemplate(templatedIssuer);
         }
     }, [ templateValues ]);
 
@@ -164,53 +174,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
     };
 
     /**
-     * The function resolves the newly added origins for the assertion URLs.
-     * Returns the intersection set of,
-     * <ul>
-     * <li>The newly added origins of the assertion URLs.</li>
-     * <li>All the available CORS origins.</li>
-     * </ul>
-     *
-     * @param {string} urls - Assertion URLs.
-     * @return {string[]} Allowed origin URLs.
-     */
-    const resolveAllowedOrigins = (urls: string): string[] => {
-        let calBackUrls: string[] = [];
-
-        if (urls?.split(",").length > 1) {
-            calBackUrls = urls?.split(",");
-        } else {
-            calBackUrls.push(urls);
-        }
-        const normalizedOrigins = calBackUrls?.map(
-            (url) => URLUtils.urlComponents(url)?.origin
-        );
-        return [...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value)))];
-    };
-
-    /**
-     * The following function handles removing CORS allowed origin.
-     *
-     * @param {string} url - Removing origin
-     */
-    const handleRemoveAllowOrigin = (url: string): void => {
-        const allowedURLs = [ ...allowCORSUrls ];
-        allowedURLs.splice(allowedURLs.indexOf(url), 1);
-        setAllowCORSUrls(allowedURLs);
-    };
-
-    /**
-     * The following function handles allowing CORS for a new origin.
-     *
-     * @param {string} url - Allowed origin
-     */
-    const handleAddAllowOrigin = (url: string): void => {
-        const allowedURLs = [ ...allowCORSUrls ];
-        allowedURLs.push(url);
-        setAllowCORSUrls(allowedURLs);
-    };
-
-    /**
      * submitURL function.
      */
     let submitUrl: (callback: (url?: string) => void) => void;
@@ -221,7 +184,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {
                         submitUrl((url: string) => {
-                            // check whether assertionConsumer url is empty or not
+                            // Check whether assertionConsumer url is empty or not.
                             if (isEmpty(assertionConsumerUrls) && isEmpty(url)) {
                                 setAssertionConsumerUrlError(true);
                             } else {
@@ -251,10 +214,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                             t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                 ".issuer.placeholder")
                                         }
-                                        value={
-                                            initialValues?.inboundProtocolConfiguration?.saml?.[
-                                                "manualConfiguration" ]?.issuer
-                                        }
+                                        value={ issuer }
+                                        enableReinitialize={ true }
                                         data-testid={ `${ testId }-issuer-input` }
                                     />
                                     { !hideFieldHints && (
@@ -304,13 +265,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                     <URLInput
-                                        labelEnabled={ true }
                                         urlState={ assertionConsumerUrls }
                                         setURLState={ setAssertionConsumerUrls }
-                                        handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
-                                        handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
-                                        tenantDomain={ tenantDomain }
-                                        allowedOrigins={ allowCORSUrls }
                                         labelName={
                                             t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".fields.assertionURLs.label")
@@ -383,11 +339,9 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                                 className={ "m-1 p-1 with-no-border orange" }
                                                                 onClick={ (e) => {
                                                                     e.preventDefault();
-                                                                    const host = new URL(
-                                                                        assertionConsumerURLFromTemplate);
-                                                                    handleAddAllowOrigin(host.origin);
                                                                     setAssertionConsumerUrls(
                                                                         assertionConsumerURLFromTemplate);
+                                                                    setIssuer(issuerFromTemplate);
                                                                 } }
                                                                 data-testid={ `${ testId }-add-now-button` }
                                                             >
