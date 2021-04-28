@@ -16,12 +16,23 @@
  * under the License.
  */
 
+import { Hint, MessageWithIcon } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { ToggleAdapter } from "./adapters";
 import { FormFieldPropsInterface } from "./field";
+import { FormFieldMessage } from "../models";
 
-export type FieldCheckboxPropsInterface = FormFieldPropsInterface;
+export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface {
+    /**
+     * Hint of the form field.
+     */
+    hint?: string | ReactElement;
+    /**
+     * Message to be displayed.
+     */
+    message?: FormFieldMessage;
+}
 
 /**
  * Implementation of the Checkbox Field component.
@@ -31,13 +42,41 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
 
     const { [ "data-testid" ]: testId, ...rest } = props;
 
+    const resolveInputFieldMessage = () => {
+        switch (props.message.type) {
+            case "info":
+                return (
+                    <MessageWithIcon
+                        type={ props.message.type }
+                        content={ props.message.content }
+                        header={ props.message.header }
+                    />
+                );
+        }
+    };
+
     return (
-        <FinalFormField
-            { ...rest }
-            key={ testId }
-            type="checkbox"
-            name={ props.name }
-            component={ ToggleAdapter }
-        />
+        <>
+            <FinalFormField
+                { ...rest }
+                key={ testId }
+                parse={ value => value }
+                type="checkbox"
+                name={ props.name }
+                component={ ToggleAdapter }
+            />
+            {
+                props.hint && (
+                    <Hint compact>
+                        { props.hint }
+                    </Hint>
+                )
+            }
+            {
+                props.message && (
+                    resolveInputFieldMessage()
+                )
+            }
+        </>
     );
 };

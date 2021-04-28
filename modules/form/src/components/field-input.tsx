@@ -76,9 +76,10 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="password"
                     name={ props.name }
+                    parse={ value => value }
                     component={ PasswordFieldAdapter }
-                    validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, props.required, inputType, validation)
+                    validate={ (value, allValues, meta) =>
+                        getValidation(value, meta, "password", props.required, inputType, validation)
                     }
                 />
             );
@@ -89,9 +90,10 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="text"
                     name={ props.name }
+                    parse={ value => value }
                     component={ CopyFieldAdapter }
-                    validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.type, props.required, inputType, validation)
+                    validate={ (value, allValues, meta) =>
+                        getValidation(value, meta, "text", props.required, inputType, validation)
                     }
                 />
             );
@@ -102,9 +104,10 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     key={ testId }
                     type="text"
                     name={ props.name }
+                    parse={ value => value }
                     component={ TextFieldAdapter }
-                    validate={ (value,allValues, meta) =>
-                        getValidation(value, meta, props.childFieldProps.type, props.required, inputType, validation)
+                    validate={ (value, allValues, meta) =>
+                        getValidation(value, meta, "text", props.required, inputType, validation)
                     }
                 />
             );

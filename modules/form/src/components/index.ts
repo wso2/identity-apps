@@ -22,4 +22,5 @@ export * from "./field-button";
 export * from "./field-checkbox";
 export * from "./field-input";
 export * from "./field-textarea";
+export * from "./field-dropdown";
 export * from "./form";

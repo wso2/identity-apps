@@ -19,7 +19,7 @@
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
-import { Form, Input } from "semantic-ui-react";
+import { Checkbox, Form, Input } from "semantic-ui-react";
 import { FieldButtonTypes } from "../models";
 
 /**
@@ -131,18 +131,39 @@ export const ToggleAdapter = (props): ReactElement => {
             label={ childFieldProps.label }
             name={ childFieldProps.name }
             children={ childFieldProps.children }
-            onChange={ (event, data) => {
-                event.preventDefault();
-                input.onChange(data.name);
-            } }
-            onBlur={ (event) => input.onBlur(event) }
+            onChange={ (event, data) => input.onChange(data.checked) }
+            control={ Checkbox }
             readOnly={ childFieldProps.readOnly }
             disabled={ childFieldProps.disabled }
-            defaultChecked={ childFieldProps.defaultChecked }
-            onKeyPress={ (event: React.KeyboardEvent, data) => {
-                event.key === ENTER_KEY && input.onBlur(data.name);
-            } }
+            defaultChecked={ !(childFieldProps.value.length == 0) }
             autoFocus={ childFieldProps.autoFocus || false }
+            { ...childFieldProps }
+        />
+    );
+};
+
+export const SelectAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+
+    return (
+        <Form.Select
+            label={ childFieldProps.label }
+            name={ childFieldProps.name }
+            options={ childFieldProps.children }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                input.onChange(value.toString(), childFieldProps.name);
+            } }
+            onBlur={ (event: React.KeyboardEvent) => input.onBlur(event) }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            autoFocus={ childFieldProps.autoFocus || false }
+            disabled={ childFieldProps.disabled }
+            required={ childFieldProps.required }
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data?.name);
+            } }
+            { ...omit(childFieldProps, ["value", "children"]) }
         />
     );
 };

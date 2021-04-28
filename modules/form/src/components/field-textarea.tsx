@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Hint, MessageWithIcon } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { TextAreaAdapter } from "./adapters";
@@ -54,16 +55,44 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
 
     const { [ "data-testid" ]: testId, ...rest } = props;
 
+    const resolveInputFieldMessage = () => {
+        switch (props.message.type) {
+            case "info":
+                return (
+                    <MessageWithIcon
+                        type={ props.message.type }
+                        content={ props.message.content }
+                        header={ props.message.header }
+                    />
+                );
+        }
+    };
+
     return (
-        <FinalFormField
-            { ...rest }
-            key={ testId }
-            type="textarea"
-            name={ props.name }
-            component={ TextAreaAdapter }
-            validate={ (value,allValues, meta) =>
-                getValidation(value, meta, props.type, props.required)
+        <>
+            <FinalFormField
+                { ...rest }
+                key={ testId }
+                type="textarea"
+                name={ props.name }
+                parse={ value => value }
+                component={ TextAreaAdapter }
+                validate={ (value,allValues, meta) =>
+                    getValidation(value, meta, props.type, props.required)
+                }
+            />
+            {
+                props.hint && (
+                    <Hint compact>
+                        { props.hint }
+                    </Hint>
+                )
             }
-        />
+            {
+                props.message && (
+                    resolveInputFieldMessage()
+                )
+            }
+        </>
     );
 };

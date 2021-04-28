@@ -18,10 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { cloneElement, ReactElement } from "react";
+import React, { ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
+import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
 import { FieldTextarea } from "./field-textarea";
 
@@ -81,3 +82,4 @@ Field.Input = FieldInput;
 Field.Button = FieldButton;
 Field.Textarea = FieldTextarea;
 Field.Checkbox = FieldCheckbox;
+Field.Dropdown = FieldDropdown;
