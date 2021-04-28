@@ -430,6 +430,13 @@ export const initializeAuthentication = () =>(dispatch)=> {
                         window[ "AppUtils" ].getConfig().idpConfigs.authorizeEndpointURL);
                 }
 
+                // If super tenant proxy is configured, `authorize` endpoint is updated with the configured
+                // super tenant proxy.
+                if (window["AppUtils"].getConfig().superTenantProxy) {
+                    authorizationEndpoint = authorizationEndpoint.replace(window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy);
+                }
+
                 // If `oidc session iframe` endpoint is overridden, save that in the session.
                 if (window[ "AppUtils" ].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
                     oidcSessionIframeEndpoint = resolveIdpURLSAfterTenantResolves(oidcSessionIframeEndpoint,
