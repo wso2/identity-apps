@@ -2415,7 +2415,7 @@ export const console: ConsoleNS = {
                                 label: "අවම යෙදුම විශාරද උදව් පැනල් සැකිලි.",
                                 samlWeb: {
                                     assertionResponseURLs: {
-                                        example: "උදා., http://my-app.com/home.jsp",
+                                        example: "උදා., https://my-app.com/home.jsp",
                                         subTitle: "සාර්ථක සත්‍යාපනය මත බ්‍රව්සරය යළි හරවා යවන URL ය. සේවා " +
                                             "සපයන්නාගේ සහතික කිරීමේ පාරිභෝගික සේවය (ACS) URL ලෙසද හැඳින්වේ.",
                                         title: "ප්‍රකාශ ප්‍රතිචාර URL"

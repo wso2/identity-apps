@@ -2428,7 +2428,7 @@ export const console: ConsoleNS = {
                                 label: "Minimal application create wizard help panel templates.",
                                 samlWeb: {
                                     assertionResponseURLs: {
-                                        example: "E.g., http://my-app.com/home.jsp",
+                                        example: "E.g., https://my-app.com/home.jsp",
                                         subTitle: "The URLs to which the browser is redirected to upon successful" +
                                             " authentication. Also known as the Assertion Consumer Service (ACS) URL" +
                                             " of the service provider.",

@@ -2443,7 +2443,7 @@ export const console: ConsoleNS = {
                                 label: "Modèles de panneau d'aide de l'assistant de création d'application minimale.",
                                 samlWeb: {
                                     assertionResponseURLs: {
-                                        example: "par ex., http://my-app.com/home.jsp",
+                                        example: "par ex., https://my-app.com/home.jsp",
                                         subTitle: "URL vers lesquelles le navigateur est redirigé une fois" +
                                             " l'authentification réussie. Également connue sous le nom d'URL" +
                                             " Assertion Consumer Service (ACS) du fournisseur de services.",
