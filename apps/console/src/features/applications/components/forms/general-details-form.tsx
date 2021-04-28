@@ -107,12 +107,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: !!values.discoverableByEndUsers?.includes("discoverable")
+                discoverableByEndUsers: !!values.discoverableByEndUsers
             },
             description: values.description?.toString(),
             id: appId,
             name: values.name?.toString(),
-            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.get("imageUrl")?.toString() }
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
         });
     };
 
@@ -138,7 +138,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             { !UIConfig.systemAppsIdentifiers.includes(name) && (
                 <Field.Input
                     ariaLabel="Application name"
-                    inputType="email"
+                    inputType="resourceName"
                     name="name"
                     label={
                         t("console:develop.features.applications.forms.generalDetails.fields.name" +
@@ -249,19 +249,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
                 width={ 16 }
             />
-            {
-                !readOnly && (
-                    <Field.Button
-                        size="small"
-                        buttonType="primary_btn"
-                        ariaLabel="Update button"
-                        name="update-button"
-                        data-testid={ `${ testId }-submit-button` }
-                        disabled={ false }
-                        label="Update"
-                    />
-                )
-            }
+            <Field.Button
+                size="small"
+                buttonType="primary_btn"
+                ariaLabel="Update button"
+                name="update-button"
+                data-testid={ `${ testId }-submit-button` }
+                disabled={ false }
+                label={ t("common:update") }
+                hidden={ readOnly }
+            />
         </Form>
     );
 };

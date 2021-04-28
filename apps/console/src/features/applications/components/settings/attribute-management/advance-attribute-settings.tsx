@@ -17,7 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/form";
+import { Forms, FormValue } from "@wso2is/forms";
 import { Heading, Hint, Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
@@ -31,7 +32,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     setSubmissionValues: any;
     setSelectedValue: any;
     defaultSubjectAttribute: string;
-    triggerSubmission: boolean;
+    triggerSubmission: any;
     initialSubject: SubjectConfigInterface;
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
@@ -107,15 +108,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const submitValues = (values) => {
         const settingValues = {
             role: {
-                claim: getDefaultDropDownValue(dropDownOptions, values.get("roleAttribute")),
-                includeUserDomain: values.get("role")?.includes("includeUserDomain"),
+                claim: getDefaultDropDownValue(dropDownOptions, values.roleAttribute),
+                includeUserDomain: !!values.role,
                 mappings: []
             },
             subject: {
-                claim: getDefaultDropDownValue(dropDownOptions, values.get("subjectAttribute")),
-                includeTenantDomain: values.get("subjectIncludeTenantDomain")?.includes("includeTenantDomain"),
-                includeUserDomain: values.get("subjectIncludeUserDomain")?.includes("includeUserDomain"),
-                useMappedLocalSubject: values.get("subjectUseMappedLocalSubject")?.includes("useMappedLocalSubject")
+                claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
+                includeTenantDomain: !!values.subjectIncludeTenantDomain,
+                includeUserDomain: !!values.subjectIncludeUserDomain,
+                useMappedLocalSubject: !!values.subjectUseMappedLocalSubject
             }
         };
         const config = applicationConfig.attributeSettings.advancedAttributeSettings;
@@ -144,7 +145,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             switch (technology[ 0 ].type) {
                 case ("oauth2"):
                     return (
-                        <Hint>
+                        <Hint compact>
                             <Trans
                                 i18nKey={
                                     "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
@@ -159,7 +160,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     );
                 case ("samlsso"):
                     return (
-                        <Hint>
+                        <Hint compact>
                             <Trans
                                 i18nKey={
                                     "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
@@ -174,7 +175,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     );
                 default:
                     return (
-                        <Hint>
+                        <Hint compact>
                             { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                                 ".subject.fields.subjectAttribute.hint") }
                         </Hint>
@@ -182,7 +183,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             }
         }
         return (
-            <Hint>
+            <Hint compact>
                 { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
                     ".subject.fields.subjectAttribute.hint") }
             </Hint>
@@ -192,216 +193,138 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     return (
         (initialRole && initialSubject)
             ? (
-                <Forms
-                    onSubmit={ (values) => {
+                <Form
+                    onSubmit={ (values, form) => {
                         submitValues(values);
                     } }
-                    submitState={ triggerSubmission }
+                    triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
                 >
-                    <Grid className="form-container subject-attribute-selection">
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                                        "sections.subject.heading") }
-                                </Heading>
-                                <Divider hidden/>
-                                <Field
-                                    name="subjectAttribute"
-                                    label={
-                                        t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                            ".sections.subject.fields.subjectAttribute.label")
-                                    }
-                                    required={ claimMappingOn }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                                            "sections.subject.fields.subjectAttribute.validations.empty")
-                                    }
-                                    type="dropdown"
-                                    value={ selectedSubjectValue }
-                                    children={ dropDownOptions }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-subject-attribute-dropdown` }
-                                    listen={ subjectAttributeChangeListener }
-                                    enableReinitialize={ true }
-                                />
-                                { resolveSubjectAttributeHint() }
-                            </Grid.Column>
-                        </Grid.Row>
-                        { applicationConfig.attributeSettings
-                            .advancedAttributeSettings.showIncludeUserstoreDomainSubject &&
-                            < Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        name="subjectIncludeUserDomain"
-                                        label=""
-                                        type="checkbox"
-                                        required={ false }
-                                        value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.subject.fields.subjectIncludeUserDomain.validations.empty")
-                                        }
-                                        children={
-                                            [
-                                                {
-                                                    label: t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectIncludeUserDomain.label"),
-                                                    value: "includeUserDomain"
-                                                }
-                                            ]
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                                    />
-                                    <Hint>
-                                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                            ".sections.subject.fields.subjectIncludeUserDomain.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                    <Heading as="h4">
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.subject.heading") }
+                    </Heading>
+                    <Divider hidden/>
+                    <Field.Dropdown
+                        ariaLabel="Subject attribute"
+                        name="subjectAttribute"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.subjectAttribute.label")
                         }
-                        { applicationConfig.attributeSettings.advancedAttributeSettings.showIncludeTenantDomain &&
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        name="subjectIncludeTenantDomain"
-                                        label=""
-                                        type="checkbox"
-                                        required={ false }
-                                        value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.subject.fields.subjectIncludeTenantDomain.validations.empty")
-                                        }
-                                        children={
-                                            [
-                                                {
-                                                    label: t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectIncludeTenantDomain.label"),
-                                                    value: "includeTenantDomain"
-                                                }
-                                            ]
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                                    />
-                                    <Hint>
-                                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                            ".sections.subject.fields.subjectIncludeTenantDomain.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                        required={ claimMappingOn }
+                        value={ selectedSubjectValue }
+                        children={ dropDownOptions }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-subject-attribute-dropdown` }
+                        onChange={ subjectAttributeChangeListener }
+                        enableReinitialize={ true }
+                        hint={ resolveSubjectAttributeHint() }
+                    />
+                    <Field.Checkbox
+                        ariaLabel="Subject include user domain"
+                        name="subjectIncludeUserDomain"
+                        label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.subject.fields.subjectIncludeUserDomain.label") }
+                        required={ false }
+                        value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
+                        hidden={
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.
+                                showIncludeUserstoreDomainSubject
                         }
-                        { applicationConfig.attributeSettings.advancedAttributeSettings.showUseMappedLocalSubject &&
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        name="subjectUseMappedLocalSubject"
-                                        label=""
-                                        type="checkbox"
-                                        required={ false }
-                                        value={
-                                            initialSubject?.useMappedLocalSubject
-                                                ? [ "useMappedLocalSubject" ]
-                                                : []
-                                        }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.subject.fields.subjectUseMappedLocalSubject" +
-                                                ".validations.empty")
-                                        }
-                                        children={
-                                            [
-                                                {
-                                                    label: t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectUseMappedLocalSubject.label"),
-                                                    value: "useMappedLocalSubject"
-                                                }
-                                            ]
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
-                                    />
-                                    <Hint>
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                        ".sections.subject.fields.subjectUseMappedLocalSubject.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                        hint={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "subject.fields.subjectIncludeUserDomain.hint")
                         }
-                        { applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Heading as="h4">
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                        ".sections.role.heading") }
-                                    </Heading>
-                                    <Divider hidden/>
-                                    <Field
-                                        name="roleAttribute"
-                                        label={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.role.fields.roleAttribute.label")
-                                        }
-                                        required={ claimMappingOn }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.role.fields.roleAttribute.validations.empty")
-                                        }
-                                        type="dropdown"
-                                        value={ initialRole?.claim?.uri }
-                                        children={ dropDownOptions }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-role-attribute-dropdown` }
-                                    />
-                                    <Hint>
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                        ".sections.role.fields.roleAttribute.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                    />
+                    <Field.Checkbox
+                        ariaLabel="Subject include tenant domain"
+                        name="subjectIncludeTenantDomain"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "subject.fields.subjectIncludeTenantDomain.label")
                         }
-                        { applicationConfig.attributeSettings
-                            .advancedAttributeSettings.showIncludeUserstoreDomainRole &&
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        name="role"
-                                        label=""
-                                        type="checkbox"
-                                        required={ false }
-                                        value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                                ".sections.role.fields.role.validations.empty")
-                                        }
-                                        children={
-                                            [
-                                                {
-                                                    label: t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.role.fields.role.label"),
-                                                    value: "includeUserDomain"
-                                                }
-                                            ]
-                                        }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-role-checkbox` }
-                                    />
-                                    <Hint>
-                                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                            ".sections.role.fields.role.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                        required={ false }
+                        value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
+                        hidden={
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showIncludeTenantDomain
                         }
-                    </Grid>
-                </Forms>
-            )
-            : null
+                        hint={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                            "subject.fields.subjectIncludeTenantDomain.hint")
+                        }
+                    />
+                    <Field.Checkbox
+                        ariaLabel="Subject use mapped local subject"
+                        name="subjectUseMappedLocalSubject"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "subject.fields.subjectUseMappedLocalSubject.label")
+                        }
+                        required={ false }
+                        value={
+                            initialSubject?.useMappedLocalSubject
+                                ? [ "useMappedLocalSubject" ]
+                                : []
+                        }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
+                        hidden={
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showUseMappedLocalSubject
+                        }
+                        hint={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.subject.fields.subjectUseMappedLocalSubject.hint")
+                        }
+                    />
+                    <Heading as="h4">
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                        ".sections.role.heading") }
+                    </Heading>
+                    <Divider hidden/>
+                    <Field.Dropdown
+                        ariaLabel="Role attribute"
+                        name="roleAttribute"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.role.fields.roleAttribute.label")
+                        }
+                        required={ claimMappingOn }
+                        value={ initialRole?.claim?.uri }
+                        children={ dropDownOptions }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-role-attribute-dropdown` }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
+                        hint={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "role.fields.roleAttribute.hint")
+                        }
+                    />
+                    <Field.Checkbox
+                        ariaLabel="Role"
+                        name="role"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "role.fields.role.label")
+                        }
+                        required={ false }
+                        value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-role-checkbox` }
+                        hidden={
+                            !applicationConfig.attributeSettings.advancedAttributeSettings
+                                .showIncludeUserstoreDomainRole
+                        }
+                        hint={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
+                                "role.fields.role.hint")
+                        }
+                    />
+                </Form>
+            ) : null
     );
 };
 

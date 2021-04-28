@@ -195,9 +195,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [claimMappingError, setClaimMappingError] = useState(false);
 
     //Advance Settings.
-    const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
+    const [ advanceSettingValues, setAdvanceSettingValues ] = useState<AdvanceSettingsSubmissionInterface>();
     const [ triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission ] = useTrigger();
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
+    const [ isAdvanceFormSubmitTriggered, setIsAdvanceFormSubmitTriggered ] = useState<boolean>(false);
 
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
@@ -497,6 +498,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     };
 
     const updateValues = () => {
+        submitAdvanceForm();
         setTriggerAdvanceSettingFormSubmission();
     };
 
@@ -674,13 +676,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     useEffect(() => {
 
-        if (advanceSettingValues) {
+        if (advanceSettingValues && triggerAdvanceSettingFormSubmission) {
             const mappingList = getFinalMappingList();
             if (mappingList !== null) {
                 submitUpdateRequest(mappingList);
             }
         }
-    }, [advanceSettingValues]);
+    }, [ advanceSettingValues, triggerAdvanceSettingFormSubmission ]);
 
     /**
      * Util function to handle claim mapping.
@@ -705,6 +707,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             setClaimMappingOn(true);
         }
     }, [claimConfigurations]);
+
+    /**
+     * submit form function.
+     */
+    let submitAdvanceForm: () => void;
 
     return (
         !isClaimRequestLoading && selectedDialect && !(isClaimLoading && isEmpty(externalClaims))
@@ -754,7 +761,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <AdvanceAttributeSettings
                                     dropDownOptions={ createDropdownOption() }
-                                    triggerSubmission={ triggerAdvanceSettingFormSubmission }
+                                    triggerSubmission={ (submitFunction: () => void) => {
+                                        submitAdvanceForm = submitFunction;
+                                    } }
                                     setSubmissionValues={ setAdvanceSettingValues }
                                     setSelectedValue={ setSelectedSubjectValue }
                                     defaultSubjectAttribute={ DefaultSubjectAttribute }

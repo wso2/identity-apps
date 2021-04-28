@@ -17,11 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../models";
 
 /**
@@ -63,15 +61,17 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
      * @param values - Form values.
      * @return {any} Sanitized form values.
      */
-    const updateConfiguration = (values: any): any => {
-        return {
+    const updateConfiguration = (values: any): void => {
+        const formData = {
             provisioningConfigurations: {
                 inboundProvisioning: {
-                    provisioningUserstoreDomain: values.get("provisioningUserstoreDomain"),
-                    proxyMode: values.get("proxyMode").includes("modeOn")
+                    provisioningUserstoreDomain: values.provisioningUserstoreDomain,
+                    proxyMode: !!values.proxyMode
                 }
             }
         };
+
+        onSubmit(formData);
     };
 
     /**
@@ -100,81 +100,56 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
     }, [config]);
 
     return (
-        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="proxyMode"
-                            label=""
-                            required={ false }
-                            requiredErrorMessage=""
-                            value={ config?.inboundProvisioning?.proxyMode ? ["modeOn"] : [] }
-                            type="checkbox"
-                            listen={
-                                (values) => {
-                                    setIsProxyModeOn(values.get("proxyMode").includes("modeOn"));
-                                }
-                            }
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.provisioningConfig.fields" +
-                                        ".proxyMode.label"),
-                                    value: "modeOn"
-                                }
-                            ] }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-proxy-mode-checkbox` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode" +
-                                ".hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="provisioningUserstoreDomain"
-                            label={
-                                t("console:develop.features.applications.forms.provisioningConfig.fields" +
-                                    ".userstoreDomain.label")
-                            }
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="dropdown"
-                            default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
-                            value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
-                            children={ getUserStoreOption() }
-                            disabled={ isProxyModeOn }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.provisioningConfig.fields" +
-                                ".userstoreDomain.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                {
-                    !readOnly && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={ `${ testId }-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+        <Form
+            onSubmit={ (values, form) => {
+                updateConfiguration(values);
+            } }
+        >
+            <Field.Checkbox
+                ariaLabel="Proxy mode"
+                name="proxyMode"
+                label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
+                required={ false }
+                requiredErrorMessage=""
+                value={ config?.inboundProvisioning?.proxyMode ? ["modeOn"] : [] }
+                type="checkbox"
+                listen={
+                    (values) => {
+                        setIsProxyModeOn(values.get("proxyMode").includes("modeOn"));
+                    }
                 }
-            </Grid>
-        </Forms>
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-proxy-mode-checkbox` }
+                hint={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.hint") }
+            />
+            <Field.Dropdown
+                ariaLabel="Provisioning userstore domain"
+                name="provisioningUserstoreDomain"
+                label={
+                    t("console:develop.features.applications.forms.provisioningConfig.fields" +
+                        ".userstoreDomain.label")
+                }
+                required={ false }
+                default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
+                value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
+                children={ getUserStoreOption() }
+                disabled={ isProxyModeOn }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
+                hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
+                    "userstoreDomain.hint") }
+            />
+            <Field.Button
+                size="small"
+                buttonType="primary_btn"
+                ariaLabel="Update button"
+                name="update-button"
+                data-testid={ `${ testId }-submit-button` }
+                disabled={ false }
+                label={ t("common:update") }
+                hidden={ readOnly }
+            />
+        </Form>
     );
 };
 
