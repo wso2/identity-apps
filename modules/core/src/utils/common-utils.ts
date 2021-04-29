@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import * as Country from "country-language";
 import { MD5 } from "crypto-js";
 import sortBy from "lodash-es/sortBy";
 import moment from "moment";
+import { DropdownItemProps } from "semantic-ui-react";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 
 /**
@@ -129,7 +131,7 @@ export class CommonUtils {
 
     /**
      * Scroll page to a specific target element.
-     * 
+     *
      * @param {any} element - target element.
      * @param {number?} offset - scroll stop offset value.
      */
@@ -138,7 +140,7 @@ export class CommonUtils {
         const elementRect = element.getBoundingClientRect().top;
         const elementPosition = elementRect - bodyRect;
         const offsetPosition = offset ? elementPosition - offset : elementPosition;
-    
+
         window.scrollTo({
             behavior: "smooth",
             top: offsetPosition
@@ -181,5 +183,29 @@ export class CommonUtils {
         }
 
         return navigator.clipboard.writeText(text).then(() => true, () => false);
+    }
+
+    /**
+     * Get the list of countries to be added to the country dropdown input field.
+     *
+     * @return List of country objects.
+     */
+    public static getCountryList(): DropdownItemProps[] {
+        const countryCodesToSkip = ["AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS"];
+        const countries: any[] = Country.getCountries();
+        const countryDropDown: DropdownItemProps[] = [];
+
+        countries.forEach((country, index) => {
+            if (!countryCodesToSkip.includes(country.code_2)) {
+                countryDropDown.push({
+                    key: index,
+                    value: country.name,
+                    text: country.name,
+                    flag: country.code_2.toLowerCase()
+                });
+            }
+        });
+
+        return countryDropDown;
     }
 }

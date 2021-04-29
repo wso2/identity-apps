@@ -26,11 +26,10 @@ import {
     resolveUserEmails
 } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { ProfileUtils } from "@wso2is/core/utils";
+import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import * as Country from "country-language";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -189,22 +188,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * This will load the countries to the dropdown.
      */
     useEffect(() => {
-        const countryCodesToSkip = ["AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS"];
-        const countries: any[] = Country.getCountries();
-        const countryDropDown: DropdownItemProps[] = [];
-
-        countries.forEach((country, index) => {
-            if (!countryCodesToSkip.includes(country.code_2)) {
-                countryDropDown.push({
-                    key: index,
-                    value: country.name,
-                    text: country.name,
-                    flag: country.code_2.toLowerCase()
-                });
-            }
-        });
-
-        setCountryList(countryDropDown);
+        setCountryList(CommonUtils.getCountryList());
     }, []);
 
     /**
@@ -587,7 +571,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 search
                                                 selection
                                                 fluid
-                                                scrolling
                                             />
                                         ) : (
                                             <Field

@@ -27,7 +27,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ProfileUtils } from "@wso2is/core/utils";
+import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
@@ -45,7 +45,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input, Message } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { AppConstants, AppState, FeatureConfigInterface, history, UIUtils } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { deleteUser, getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
@@ -202,7 +202,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * This will load the countries to the dropdown.
      */
     useEffect(() => {
-        setCountryList(UIUtils.getCountryList());
+        setCountryList(CommonUtils.getCountryList());
     }, []);
 
     /**
@@ -732,7 +732,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     search
                     selection
                     fluid
-                    scrolling
                 />
             );
         } else {
