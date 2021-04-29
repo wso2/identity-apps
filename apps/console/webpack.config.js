@@ -65,13 +65,13 @@ module.exports = (env) => {
     // Analyzing mode options.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
     const analyzerPort = env.ANALYZER_PORT;
-    
+
     // Profiling mode options.
     const isProfilingMode = env.ENABLE_BUILD_PROFILER === "true";
 
     // Dev Server Options.
     const isDevServerHostCheckDisabled = env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
-    
+
     const shouldCopyLessDistribution = env.SHOULD_COPY_LESS_DISTRIBUTION === "true";
 
     // Log level.
@@ -294,7 +294,7 @@ module.exports = (env) => {
             splitChunks: {
                 chunks: "all"
             },
-            // Tells webpack to determine used exports for each module. 
+            // Tells webpack to determine used exports for each module.
             usedExports: true
         },
         output: {
@@ -376,7 +376,7 @@ module.exports = (env) => {
                                 // load the images using a absolute path. This is a workaround until the media
                                 // service is enabled.
                                 // TODO: Remove this `identity-providers` folder once the usages are refactored.
-                                "**/assets/images/!(branding|identity-providers)/**"
+                                "**/assets/images/!(branding|identity-providers|flags.png)/**"
                             ],
                         },
                         to: "libs"

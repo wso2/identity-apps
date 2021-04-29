@@ -27,7 +27,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ProfileUtils } from "@wso2is/core/utils";
+import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
@@ -43,7 +43,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input, Message } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input, Message } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
@@ -107,7 +107,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    
+
     const dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -132,6 +132,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ accountDisable, setAccountDisable ] = useState<string>(undefined);
     const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
 
     useEffect(() => {
 
@@ -196,6 +197,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
             });
     }, [ user ]);
+
+    /**
+     * This will load the countries to the dropdown.
+     */
+    useEffect(() => {
+        setCountryList(CommonUtils.getCountryList());
+    }, []);
 
     /**
      * The following function maps profile details to the SCIM schemas.
@@ -695,6 +703,35 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ] }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                     key={ key }
+                />
+            );
+        } else if (schema.name === "country") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " " + "is required" }
+                    placeholder={ "Enter your" + " " + fieldName }
+                    type="dropdown"
+                    value={ profileInfo.get(schema.name) }
+                    children={ countryList ? countryList.map(list => {
+                        return {
+                            "data-testid": `${ testId }-profile-form-country-dropdown-` +  list.value as string,
+                            key: list.key as string,
+                            text: list.text as string,
+                            value: list.value as string,
+                            flag: list.flag
+                        };
+                    }) : [] }
+                    key={ key }
+                    disabled={ false }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    clearable={ !schema.required }
+                    search
+                    selection
+                    fluid
                 />
             );
         } else {

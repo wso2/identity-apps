@@ -26,7 +26,7 @@ import {
     resolveUserEmails
 } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { ProfileUtils } from "@wso2is/core/utils";
+import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -34,7 +34,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
+import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
@@ -82,6 +82,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
+    const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
@@ -182,6 +183,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             setProfileInfo(tempProfileInfo);
         }
     }, [profileSchema, profileDetails.profileInfo]);
+
+    /**
+     * This will load the countries to the dropdown.
+     */
+    useEffect(() => {
+        setCountryList(CommonUtils.getCountryList());
+    }, []);
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -531,51 +539,87 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             handleSubmit(values, schema.name, schema.extended, schema);
                                         } }
                                     >
-                                        <Field
-                                            autoFocus={ true }
-                                            label=""
-                                            name={ schema.name }
-                                            placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
-                                                "placeholder", {
-                                                fieldName
-                                            }) }
-                                            required={ schema.required }
-                                            requiredErrorMessage={ t(
-                                                "myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                                {
+                                        { checkSchemaType(schema.name, "country") ? (
+                                            <Field
+                                                autoFocus={ true }
+                                                label=""
+                                                name={ schema.name }
+                                                placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
+                                                    "placeholder", {
                                                     fieldName
-                                                }
-                                            ) }
-                                            type="text"
-                                            validation={ (value: string, validation: Validation) => {
-                                                if (!RegExp(schema.regEx).test(value)) {
-                                                    validation.isValid = false;
-                                                    if (checkSchemaType(schema.name, "emails")) {
-                                                        validation.errorMessages.push(t(
-                                                            "myAccount:components.profile.forms.emailChangeForm." +
-                                                            "inputs.email.validations.invalidFormat"
-                                                        ));
-                                                    } else if (checkSchemaType(schema.name, "phoneNumbers")) {
-                                                        validation.errorMessages.push(t(
-                                                            "myAccount:components.profile.forms.mobileChangeForm." +
-                                                            "inputs.mobile.validations.invalidFormat"
-                                                        ));
-                                                    } else {
-                                                        validation.errorMessages.push(
-                                                            t(
-                                                                "myAccount:components.profile.forms." +
-                                                                "generic.inputs.validations.invalidFormat",
-                                                                {
-                                                                    fieldName
-                                                                }
-                                                            )
-                                                        );
+                                                }) }
+                                                required={ schema.required }
+                                                requiredErrorMessage={ t(
+                                                    "myAccount:components.profile.forms.generic.inputs.validations.empty",
+                                                    {
+                                                        fieldName
                                                     }
-                                                }
-                                            } }
+                                                ) }
+                                                type="dropdown"
+                                                children={ countryList ? countryList.map(list => {
+                                                    return {
+                                                        "data-testid": `${testId}-` + list.value as string,
+                                                        key: list.key as string,
+                                                        text: list.text as string,
+                                                        value: list.value as string,
+                                                        flag: list.flag
+                                                    };
+                                                }) : [] }
+                                                value={ resolveProfileInfoSchemaValue(schema) }
+                                                disabled={ false }
+                                                clearable={ !schema.required }
+                                                search
+                                                selection
+                                                fluid
+                                            />
+                                        ) : (
+                                            <Field
+                                                autoFocus={ true }
+                                                label=""
+                                                name={ schema.name }
+                                                placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
+                                                    "placeholder", {
+                                                    fieldName
+                                                }) }
+                                                required={ schema.required }
+                                                requiredErrorMessage={ t(
+                                                    "myAccount:components.profile.forms.generic.inputs.validations.empty",
+                                                    {
+                                                        fieldName
+                                                    }
+                                                ) }
+                                                type="text"
+                                                validation={ (value: string, validation: Validation) => {
+                                                    if (!RegExp(schema.regEx).test(value)) {
+                                                        validation.isValid = false;
+                                                        if (checkSchemaType(schema.name, "emails")) {
+                                                            validation.errorMessages.push(t(
+                                                                "myAccount:components.profile.forms.emailChangeForm." +
+                                                                "inputs.email.validations.invalidFormat"
+                                                            ));
+                                                        } else if (checkSchemaType(schema.name, "phoneNumbers")) {
+                                                            validation.errorMessages.push(t(
+                                                                "myAccount:components.profile.forms.mobileChangeForm." +
+                                                                "inputs.mobile.validations.invalidFormat"
+                                                            ));
+                                                        } else {
+                                                            validation.errorMessages.push(
+                                                                t(
+                                                                    "myAccount:components.profile.forms." +
+                                                                    "generic.inputs.validations.invalidFormat",
+                                                                    {
+                                                                        fieldName
+                                                                    }
+                                                                )
+                                                            );
+                                                        }
+                                                    }
+                                                } }
                                                 value={ resolveProfileInfoSchemaValue(schema) }
                                                 maxLength={ schema.name === "emails" ? 50 : 30 }
-                                        />
+                                            />
+                                            )
+                                        }
                                         <Field
                                             hidden={ true }
                                             type="divider"
