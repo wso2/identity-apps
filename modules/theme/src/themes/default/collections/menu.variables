@@ -70,10 +70,9 @@
 @appHeaderPortalSwitchExtensionActiveColor: @textColor !important;
 @appHeaderPortalSwitchExtensionActiveBorderBottom: 3px solid @primaryColor;
 
-@appHeaderExtensionItemPaddingLeft: 8px;
-@appHeaderExtensionItemPaddingRight: 8px;
-@appHeaderExtensionInnerItemPaddingLeft: 5px;
-@appHeaderExtensionInnerItemPaddingRight: 5px;
+@appHeaderExtensionItemPaddingLeft: 3px;
+@appHeaderExtensionItemPaddingRight: 3px;
+@appHeaderExtensionInnerItemPadding: 0;
 
 /*-------------------
       App Footer
@@ -144,6 +143,7 @@
 @userDropdownTenantMargin: 5px 0;
 @userDropdownTenantPadding: 5px 10px;
 @userDropdownTriggerTextColor: inherit;
+@userDropdownTriggerPaddingLeft: 13px;
 
 /*-------------------------------
       Governance Connectors
