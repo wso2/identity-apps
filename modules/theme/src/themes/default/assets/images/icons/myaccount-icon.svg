@@ -16,40 +16,6 @@
  * under the License.
 -->
 
-<svg class="icon" id="myaccount-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
-    <defs>
-        <linearGradient id="linear-gradient" x1="0.757" y1="0.959" x2="0.149" y2="0.196" gradientUnits="objectBoundingBox">
-          <stop offset="0" stop-color="#22b9b3"/>
-          <stop offset="1" stop-color="#29e0d8"/>
-        </linearGradient>
-        <linearGradient id="linear-gradient-2" x1="0.821" y1="0.821" x2="0.126" y2="0.126" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#29e0d8"/>
-            <stop offset="1" stop-color="#23bab4"/>
-        </linearGradient>
-        <linearGradient id="linear-gradient-3" x1="0.084" y1="0.36" x2="0.818" y2="0.733" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#0f8d87"/>
-            <stop offset="0.472" stop-color="#2ac8c2" stop-opacity="0.49"/>
-            <stop offset="1" stop-color="#29e0d8" stop-opacity="0"/>
-        </linearGradient>
-        <radialGradient id="radial-gradient" cx="0.208" cy="0.202" r="0.5" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#fff"/>
-            <stop offset="1" stop-color="#f0f0f0"/>
-        </radialGradient>
-        <radialGradient id="radial-gradient-2" cx="0" cy="0.233" r="0.764" gradientTransform="matrix(0.891, 0.455, -0.455, 0.891, 0.106, 0.025)" xlink:href="#radial-gradient"/>
-        <linearGradient id="linear-gradient-4" x1="0.433" x2="0.678" y2="0.398" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ccc"/>
-            <stop offset="1" stop-color="#ccc" stop-opacity="0.169"/>
-        </linearGradient>
-        <linearGradient id="linear-gradient-5" x1="0.719" y1="0.4" x2="1.177" y2="0.537" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ccc" stop-opacity="0.188"/>
-            <stop offset="1" stop-color="#ccc"/>
-        </linearGradient>
-    </defs>
-    <circle id="Ellipse_177" data-name="Ellipse 177" cx="20" cy="20" r="20" fill="url(#linear-gradient)"/>
-    <circle id="Ellipse_181" data-name="Ellipse 181" cx="15.385" cy="15.385" r="15.385" transform="translate(4.518 4.893)" fill="url(#linear-gradient-2)"/>
-    <path id="Intersection_8" data-name="Intersection 8" d="M0,11.011,11.132,0c6.742,6.479,11.295,10.72,13.512,12.765a19.946,19.946,0,0,1-9.466,11.408Z" transform="translate(14.184 13.43)" fill="url(#linear-gradient-3)"/>
-    <path id="Intersection_5" data-name="Intersection 5" d="M0,7.746q.252-.457.537-.9a14.969,14.969,0,0,1,25.182.047q.288.451.543.918a19.814,19.814,0,0,1-13.093,4.918A19.813,19.813,0,0,1,0,7.746Z" transform="translate(6.718 27.27)" fill="url(#radial-gradient)"/>
-    <ellipse id="Ellipse_180" data-name="Ellipse 180" cx="7.871" cy="7.857" rx="7.871" ry="7.857" transform="translate(11.96 11.165)" fill="url(#radial-gradient-2)"/>
-    <path id="Subtraction_21" data-name="Subtraction 21" d="M8.983,11.836h0A17.481,17.481,0,0,0,0,.3,15.072,15.072,0,0,1,8.046.866a14.9,14.9,0,0,1,4.3,2.4,14.981,14.981,0,0,1,3.273,3.631c.192.3.375.607.543.918a19.74,19.74,0,0,1-7.18,4.024Z" transform="translate(16.816 27.27)" fill="url(#linear-gradient-4)"/>
-    <path id="Subtraction_22" data-name="Subtraction 22" d="M3.217,15.518A7.822,7.822,0,0,1,0,14.834,7.859,7.859,0,0,0,4.964,0,7.856,7.856,0,0,1,3.217,15.518Z" transform="translate(16.614 11.36)" fill="url(#linear-gradient-5)"/>
+<svg xmlns="http://www.w3.org/2000/svg" id="myaccount-icon" class="icon" width="14" height="14" viewBox="0 0 21.163 21.167">
+    <path id="myaccount" d="M-13081.564-2693.251l-.368-1.528a9.2,9.2,0,0,1-2.825-1.169l-1.314.785-2.437-2.438.789-1.311a9.186,9.186,0,0,1-1.17-2.825l-1.527-.371v-3.456l1.527-.368a9.121,9.121,0,0,1,1.17-2.825l-.789-1.311,2.438-2.441,1.314.788a9.127,9.127,0,0,1,2.825-1.169l.368-1.528h3.456l.371,1.528a9.186,9.186,0,0,1,2.825,1.169l1.312-.788,2.438,2.441-.789,1.311a9.1,9.1,0,0,1,1.173,2.825l1.524.368v3.456l-1.524.371a9.169,9.169,0,0,1-1.173,2.825l.789,1.311-2.437,2.438-1.312-.785a9.258,9.258,0,0,1-2.825,1.169l-.371,1.528Zm.253-2.665.395.072.328,1.35h1.5l.328-1.35.395-.072a8.228,8.228,0,0,0,3.41-1.5l1.159.7,1.068-1.071-.7-1.156a8.214,8.214,0,0,0,1.5-3.41l.072-.394,1.351-.329v-1.5l-1.351-.328-.072-.394a8.185,8.185,0,0,0-1.5-3.407l.7-1.16-1.068-1.068-1.159.693a8.274,8.274,0,0,0-3.41-1.5l-.395-.076-.328-1.347h-1.5l-.328,1.347-.395.076a8.251,8.251,0,0,0-3.407,1.5l-1.159-.693-1.067,1.068.692,1.16a8.254,8.254,0,0,0-1.5,3.407l-.075.394-1.348.328v1.5l1.348.329.075.394a8.268,8.268,0,0,0,1.5,3.41l-.692,1.156,1.067,1.071,1.159-.7A8.206,8.206,0,0,0-13081.312-2695.916Zm-5.345-7.921a6.827,6.827,0,0,1,6.82-6.82,6.827,6.827,0,0,1,6.819,6.82,6.826,6.826,0,0,1-6.819,6.82A6.827,6.827,0,0,1-13086.656-2703.836Zm4.037,4.836a5.551,5.551,0,0,0,2.783.746,5.561,5.561,0,0,0,2.785-.746,3.085,3.085,0,0,0-2.785-1.735A3.081,3.081,0,0,0-13082.619-2699Zm6.577-.746a5.576,5.576,0,0,0,1.787-4.09,5.586,5.586,0,0,0-5.581-5.578,5.586,5.586,0,0,0-5.579,5.578,5.565,5.565,0,0,0,1.787,4.09,4.334,4.334,0,0,1,3.792-2.227,3.1,3.1,0,0,1-3.1-3.1,3.1,3.1,0,0,1,3.1-3.1,3.1,3.1,0,0,1,3.1,3.1,3.1,3.1,0,0,1-3.1,3.1A4.336,4.336,0,0,1-13076.042-2699.746Zm-5.654-5.329a1.862,1.862,0,0,0,1.86,1.859,1.863,1.863,0,0,0,1.862-1.859,1.863,1.863,0,0,0-1.862-1.86A1.863,1.863,0,0,0-13081.7-2705.075Z" transform="translate(13090.418 2714.418)" fill="#3b3b3b"/>
 </svg>
