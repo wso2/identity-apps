@@ -191,6 +191,10 @@ npm run build:external
 
 The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
 
+## Troubleshoot
+
+If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/product-is/issues).
