@@ -79,6 +79,10 @@ export interface GenericIconProps extends TestableComponentInterface {
      */
     inline?: boolean;
     /**
+     * Should show inverted styles.
+     */
+    inverted?: boolean;
+    /**
      * Should the icon appear as a link. i.e On hover it'll be highlighted.
      */
     link?: boolean;
@@ -181,6 +185,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         hoverType,
         icon: Icon,
         inline,
+        inverted,
         link,
         linkType,
         onClick,
@@ -212,6 +217,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         hoverable,
         [ `hover-${ hoverType }` ]: hoverType,
         "inline": inline,
+        inverted,
         link,
         [ `link-${ linkType }` ]: linkType,
         "relaxed": relaxed,
