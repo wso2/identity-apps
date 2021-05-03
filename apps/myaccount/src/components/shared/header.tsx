@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
+    AppSwitcher,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -38,14 +39,14 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Image } from "semantic-ui-react";
+import { Image, Menu } from "semantic-ui-react";
+import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
-import { AppSwitch } from "./app-switch"
 
 /**
  * Dashboard layout Prop types.
@@ -83,6 +84,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.consoleApp.path);
+    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
 
@@ -170,6 +174,51 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         setAnnouncement(validAnnouncement);
     };
 
+    /**
+     * Renders the app switcher dropdown.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderAppSwitcher = (): ReactElement => (
+
+        <Menu.Item
+            className="app-switch-button-wrapper"
+            key="app-switch-trigger"
+            data-testid="app-switch-trigger"
+        >
+            <AppSwitcher
+                enabled={
+                    showAppSwitchButton
+                    && (AppConstants.getTenant() === AppConstants.getSuperTenant())
+                    && (consoleAppURL && consoleAppURL != "")
+                }
+                tooltip={ t("myAccount:components.header.appSwitch.tooltip") }
+                apps={ [
+                    {
+                        "data-testid": "app-switch-console",
+                        description: t("myAccount:components.header.appSwitch.console.description"),
+                        enabled: true,
+                        icon: AppSwitcherIcons().console,
+                        name: t("myAccount:components.header.appSwitch.console.name"),
+                        onClick: () => {
+                            window.open(consoleAppURL,"_blank", "noopener");
+                        }
+                    },
+                    {
+                        "data-testid": "app-switch-myaccount",
+                        description: t("myAccount:components.header.appSwitch.myAccount.description"),
+                        enabled: true,
+                        icon: AppSwitcherIcons().myAccount,
+                        name: t("myAccount:components.header.appSwitch.myAccount.name"),
+                        onClick: () => {
+                            window.open(accountAppURL,"_self");
+                        }
+                    }
+                ] }
+            />
+        </Menu.Item>
+    );
+
     return (
         <ReusableHeader
             announcement={ announcement && (
@@ -212,12 +261,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             extensions={ [
                 {
-                    component: (
-                        <AppSwitch
-                            bottomMargin={ true }
-                            background="transparent"
-                        />
-                    ),
+                    component: renderAppSwitcher(),
                     floated: "right"
                 }
             ] }
