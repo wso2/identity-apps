@@ -20,6 +20,7 @@ import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import TimerWorker from "worker-loader!./worker";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
@@ -138,7 +139,8 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         _idleSecondsCounter = 0;
     };
 
-    window.setInterval(() => {
+    const worker = new TimerWorker();
+    worker.onmessage = () => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;
 
@@ -178,5 +180,5 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
             sendPromptNoneRequest();
             _sessionAgeCounter = 0;
         }
-    }, 1000);
+    };
 }

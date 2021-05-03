@@ -195,6 +195,11 @@ module.exports = (env) => {
                         }
                     ]
                 },
+                // Handle our workers
+                {
+                    test: /\.worker\.js$/,
+                    use: { loader: "worker-loader" },
+                },
                 {
                     exclude: {
                         and: [

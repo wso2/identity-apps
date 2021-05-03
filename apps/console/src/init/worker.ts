@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,28 +16,9 @@
  * under the License.
  */
 
-declare module "*.json" {
-    const value: any;
-    export default value;
-}
+const ctx: Worker = self as any;
 
-declare module "*.svg" {
-    import React = require("react");
-    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    const src: string;
-    export default src;
-}
+setInterval(function() {
+    ctx.postMessage('');
+}, 1000);
 
-declare module "*.png" {
-    const content: string;
-    export default content;
-}
-
-declare module "*.md";
-
-declare module "worker-loader!*" {
-    class WebpackWorker extends Worker {
-        constructor();
-    }
-    export default WebpackWorker;
-}
