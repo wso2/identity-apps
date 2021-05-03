@@ -217,15 +217,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         if (typeof profileInfo.userName === "string") {
-            const userName = profileInfo?.userName?.split("/").length > 1
+            return profileInfo?.userName?.split("/").length > 1
                 ? profileInfo.userName.split("/")[ 1 ]
                 : profileInfo.userName;
-            return userName;
         } else if (typeof profileInfo.userName === "object") {
-            const userName = profileInfo?.userName?.value.split("/").length > 1
+            return profileInfo?.userName?.value.split("/").length > 1
                 ? profileInfo.userName.value.split("/")[ 1 ]
                 : profileInfo.userName.value;
-            return userName;
         }
 
         return null;
