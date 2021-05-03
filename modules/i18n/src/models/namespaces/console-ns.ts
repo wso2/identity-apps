@@ -17,6 +17,7 @@
  */
 
 import {
+    AppSwitchItemInterface,
     Confirmation,
     DangerZone,
     EditPage,
@@ -82,6 +83,13 @@ export interface ConsoleNS {
             };
             resultsIndicator: string;
         };
+        header: {
+            appSwitch: {
+                console: AppSwitchItemInterface;
+                myAccount: AppSwitchItemInterface;
+                tooltip: string;
+            };
+        },
         modals: {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: {

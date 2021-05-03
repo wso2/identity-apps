@@ -62,6 +62,19 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
         },
+        header: {
+            appSwitch: {
+                console: {
+                    description: "Gérer en tant que développeurs ou administrateurs",
+                    name: "Console"
+                },
+                myAccount: {
+                    description: "Gérez votre propre compte",
+                    name: "My Account"
+                },
+                tooltip: "Apps"
+            }
+        },
         modals: {
             editAvatarModal: {
                 content: {

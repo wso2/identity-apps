@@ -62,6 +62,19 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
         },
+        header: {
+            appSwitch: {
+                console: {
+                    description: "සංවර්ධකයින් හෝ පරිපාලකයින් ලෙස කළමනාකරණය කරන්න",
+                    name: "Console"
+                },
+                myAccount: {
+                    description: "ඔබේම ගිණුම කළමනාකරණය කරන්න",
+                    name: "My Account"
+                },
+                tooltip: "Apps"
+            }
+        },
         modals: {
             editAvatarModal: {
                 content: {

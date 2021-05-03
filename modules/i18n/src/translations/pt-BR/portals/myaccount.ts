@@ -425,6 +425,19 @@ export const myAccount: MyAccountNS = {
         footer: {
             copyright: "Servidor de Identidade WSO2 © {{year}}"
         },
+        header: {
+            appSwitch: {
+                console: {
+                    description: "Gerenciar como desenvolvedores ou administradores",
+                    name: "Console"
+                },
+                myAccount: {
+                    description: "Gerenciar sua própria conta",
+                    name: "My Account"
+                },
+                tooltip: "Apps"
+            }
+        },
         linkedAccounts: {
             accountTypes: {
                 local: {

@@ -86,6 +86,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
+    const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -137,30 +139,30 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         <Menu.Item
             className="app-switch-button-wrapper"
             key="app-switch-trigger"
-            data-testid={ testId }
+            data-testid="app-switch-trigger"
         >
             <AppSwitcher
                 enabled={ showAppSwitchButton }
-                tooltip="Apps"
+                tooltip={ t("console:common.header.appSwitch.tooltip") }
                 apps={ [
                     {
                         "data-testid": "app-switch-console",
-                        description: "Manage as developers or administrators",
+                        description: t("console:common.header.appSwitch.console.description"),
                         enabled: true,
                         icon: AppSwitcherIcons().console,
-                        name: "Console",
+                        name: t("console:common.header.appSwitch.console.name"),
                         onClick: () => {
-                            window.open(AppConstants.getAppHomePath(), "_self");
+                            window.open(accountAppURL,"_self");
                         }
                     },
                     {
                         "data-testid": "app-switch-myaccount",
-                        description: "Manage your own account",
+                        description: t("console:common.header.appSwitch.myAccount.description"),
                         enabled: true,
                         icon: AppSwitcherIcons().myAccount,
-                        name: "My Account",
+                        name: t("console:common.header.appSwitch.myAccount.name"),
                         onClick: () => {
-                            window.open(window[ "AppUtils" ].getConfig().accountApp.path, "_blank", "noopener");
+                            window.open(consoleAppURL,"_blank", "noopener");
                         }
                     }
                 ] }
