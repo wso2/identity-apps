@@ -231,6 +231,64 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return null;
     };
 
+    /**
+     * Renders the list of linked accounts.
+     *
+     * @param {LinkedAccountInterface[]} accounts - Linked accounts.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderLinkedAccounts = (accounts: LinkedAccountInterface[]): ReactElement => {
+
+        if (!(accounts && Array.isArray(accounts) && accounts.length > 0)) {
+            return null;
+        }
+
+        return (
+            <Item.Group
+                unstackable
+                className="linked-accounts-list"
+                data-testid={ `${ testId }-linked-accounts-container` }
+            >
+                {
+                    accounts.map((association, index) => (
+                        <Item
+                            className="linked-account"
+                            key={ `${ association.userId }-${ index }` }
+                            onClick={ () => handleLinkedAccountSwitch(association) }
+                        >
+                            <UserAvatar
+                                bordered
+                                avatar
+                                size="little"
+                                image={ getGravatarImage(association.email) }
+                                name={ association.username }
+                                data-testid={ `${ testId }-la-avatar` }
+                                spaced="right"
+                            />
+                            <Item.Content verticalAlign="middle">
+                                <Item.Description>
+                                    <div
+                                        className="name"
+                                        data-testid={ `${ testId }-la-name` }
+                                    >
+                                        { resolveUsername(association.username, association.userStoreDomain) }
+                                    </div>
+                                    <div
+                                        className="email"
+                                        data-testid={ `${ testId }-la-email` }
+                                    >
+                                        { association.tenantDomain }
+                                    </div>
+                                </Item.Description>
+                            </Item.Content>
+                        </Item>
+                    ))
+                }
+            </Item.Group>
+        );
+    };
+
     return (
         <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
             { announcement }
@@ -380,71 +438,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                         </Item.Content>
                                                     </Item>
                                                 </Item.Group>
-                                                {
-                                                    (linkedAccounts
-                                                        && linkedAccounts.length
-                                                        && linkedAccounts.length > 0)
-                                                        ? (
-                                                            <Item.Group
-                                                                className="linked-accounts-list"
-                                                                unstackable
-                                                                data-testid={ `${ testId }-linked-accounts-container` }
-                                                            >
-                                                                {
-                                                                    linkedAccounts.map((association, index) => (
-                                                                        <Item
-                                                                            className="linked-account"
-                                                                            key={
-                                                                                `${ association.userId }-${ index }`
-                                                                            }
-                                                                            onClick={
-                                                                                () => handleLinkedAccountSwitch(
-                                                                                    association
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <UserAvatar
-                                                                                bordered
-                                                                                avatar
-                                                                                size="little"
-                                                                                image={ getGravatarImage(
-                                                                                    association.email
-                                                                                ) }
-                                                                                name={ association.username }
-                                                                                data-testid={ `${ testId }-la-avatar` }
-                                                                                spaced="right"
-                                                                            />
-                                                                            <Item.Content verticalAlign="middle">
-                                                                                <Item.Description>
-                                                                                    <div
-                                                                                        className="name"
-                                                                                        data-testid={
-                                                                                            `${ testId }-la-name`
-                                                                                        }
-                                                                                    >
-                                                                                        {
-                                                                                            resolveUsername(
-                                                                                                association.username,
-                                                                                                association.userStoreDomain
-                                                                                            )
-                                                                                        }
-                                                                                    </div>
-                                                                                    <div
-                                                                                        className="email"
-                                                                                        data-testid={
-                                                                                            `${ testId }-la-email` }
-                                                                                    >
-                                                                                        { association.tenantDomain }
-                                                                                    </div>
-                                                                                </Item.Description>
-                                                                            </Item.Content>
-                                                                        </Item>
-                                                                    ))
-                                                                }
-                                                            </Item.Group>
-                                                        )
-                                                        : null
-                                                }
+                                                { renderLinkedAccounts(linkedAccounts) }
                                                 {
                                                     (userDropdownLinks
                                                         && userDropdownLinks.length
