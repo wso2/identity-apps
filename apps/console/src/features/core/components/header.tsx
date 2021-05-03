@@ -21,6 +21,7 @@ import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/
 import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
+    AppSwitcher,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -39,6 +40,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
+import { AppSwitcherIcons } from "../configs";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -82,6 +85,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -89,9 +93,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
-
-    const showAppSwitchButton: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showAppSwitchButton);   
 
     useEffect(() => {
         if (isEmpty(config)) {
@@ -125,6 +126,47 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         setAnnouncement(validAnnouncement);
     };
+
+    /**
+     * Renders the app switcher dropdown.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderAppSwitcher = (): ReactElement => (
+
+        <Menu.Item
+            className="app-switch-button-wrapper"
+            key="app-switch-trigger"
+            data-testid={ testId }
+        >
+            <AppSwitcher
+                enabled={ showAppSwitchButton }
+                tooltip="Apps"
+                apps={ [
+                    {
+                        "data-testid": "app-switch-console",
+                        description: "Manage as developers or administrators",
+                        enabled: true,
+                        icon: AppSwitcherIcons().console,
+                        name: "Console",
+                        onClick: () => {
+                            window.open(AppConstants.getAppHomePath(), "_self");
+                        }
+                    },
+                    {
+                        "data-testid": "app-switch-myaccount",
+                        description: "Manage your own account",
+                        enabled: true,
+                        icon: AppSwitcherIcons().myAccount,
+                        name: "My Account",
+                        onClick: () => {
+                            window.open(window[ "AppUtils" ].getConfig().accountApp.path, "_blank", "noopener");
+                        }
+                    }
+                ] }
+            />
+        </Menu.Item>
+    );
 
     return (
         <ReusableHeader
@@ -174,7 +216,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     floated: "right"
                 },
                 {
-                    component: <ComponentPlaceholder section="app-switch-button" type="component"/>,
+                    component: renderAppSwitcher(),
                     floated: "right"
                 },
                 {

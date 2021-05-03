@@ -92,7 +92,7 @@
                     border: none;
                     margin: @userDropdownLinkMargin;
                     padding: 1.2em 1em!important;
-                    border-radius: @defaultBorderRadius;
+                    border-radius: @defaultBorderRadius !important;
 
                     &:last-child {
                         margin-bottom: 0 !important;
@@ -110,6 +110,17 @@
                         }
                         .meta {
                             color: @nobel;
+                        }
+                    }
+                }
+
+                // App switch dropdown overrides.
+                &.app-switch-dropdown {
+                    .header-dropdown-menu {
+                        .header-dropdown-item {
+                            &:first-child {
+                                margin-top: 0;
+                            }
                         }
                     }
                 }
