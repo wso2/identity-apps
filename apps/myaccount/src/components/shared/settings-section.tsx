@@ -85,7 +85,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
     } = props;
 
     const classes = classNames({
-        "with-top-action-bar": topActionBar
+        "with-top-action-bar": topActionBar !== undefined
     }, className);
 
     /**
