@@ -153,8 +153,15 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
             }
         }
 
+        const productTitleMetaClasses = classNames(
+            "product-title-meta",
+            {
+                "absolute": (versionUISettings?.labelPosition === "absolute")
+            }
+        );
+
         return (
-            <div className="product-title-meta">
+            <div className={ productTitleMetaClasses }>
                 <Label
                     color={ resolveVersionLabelColor(releaseType) }
                     className={ versionLabelClasses }

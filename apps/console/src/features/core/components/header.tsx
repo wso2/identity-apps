@@ -206,6 +206,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
                         labelColor: config.ui.productVersionConfig?.labelColor,
+                        labelPosition: "absolute",
                         textCase: config.ui.productVersionConfig?.textCase
                     } }
                 />

@@ -177,6 +177,10 @@ export interface ProductVersionConfigInterface {
      * Text case.
      */
     textCase?: "lowercase" | "uppercase";
+    /**
+     * Label position.
+     */
+    labelPosition?: "absolute" | "relative";
 }
 
 /**
