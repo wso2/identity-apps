@@ -154,14 +154,3 @@ Recent Application Card
 ------------------------------*/
 
 @relaxedCardContentPadding: 2em 1.5em;
-
-/*-------------------------------
-        App Switch Card
---------------------------------*/
-
-@appSwitchedCardHoverBoxShadow: @defaultCardHoverBoxShadow;
-@appSwitchedCardTransition: @defaultCardTransition;
-@appSwitchedCardRightSpacing: 15px;
-@appSwitchCardWrapperMarginBottom: 8px;
-@appSwitchedCardMarginBottom: 5px;
-@appSwitchedCardLabelFontSize: 1.1em;
