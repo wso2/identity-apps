@@ -292,7 +292,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                                 transparent
                                 inline
                                 className="left-icon"
-                                verticalAlign="middle"
+                                verticalAlign="top"
                                 spaced="left"
                             />
                         </Grid.Column>
