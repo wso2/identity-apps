@@ -116,6 +116,10 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      * Manually trigger query clear action from outside.
      */
     triggerClearQuery?: boolean;
+    /**
+     * Enable query search with shift and enter.
+     */
+    enableQuerySearch?: boolean;
 }
 
 /**
@@ -137,6 +141,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         defaultSearchStrategy,
         dropdownPosition,
         dropdownTriggerPopupLabel,
+        enableQuerySearch,
         externalSearchQuery,
         fill,
         hintActionKeys,
@@ -269,7 +274,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         }
         // If both `Enter` key and `Shift` key are pressed, treat the input
         // as a query and perform the search.
-        if (shiftKey && key === "Enter") {
+        if (shiftKey && key === "Enter" && enableQuerySearch) {
             query = internalSearchQuery;
             onSearchQuerySubmit(true, query);
             setShowSearchFieldHint(false);
@@ -358,13 +363,19 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     onKeyDown={ handleSearchQuerySubmit }
                 />
             </div>
-            <div
-                className={ `search-query-hint ${ searchFieldHintClasses }` }
-                data-testid={ `${ testId }-query-hint` }
-            >
-                <div className="query">{ hintLabel }</div>
-                <div className="short-cut"><Icon name="keyboard outline"/>{ " " }{ hintActionKeys }</div>
-            </div>
+            {
+                enableQuerySearch
+                    ? (
+                        <div
+                            className={ `search-query-hint ${ searchFieldHintClasses }` }
+                            data-testid={ `${ testId }-query-hint` }
+                        >
+                            <div className="query">{ hintLabel }</div>
+                            <div className="short-cut"><Icon name="keyboard outline"/>{ " " }{ hintActionKeys }</div>
+                        </div>
+                    )
+                    : null
+            }
             <Popup
                 context={ searchInputRef }
                 content={ (
@@ -402,6 +413,7 @@ AdvancedSearch.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
+    enableQuerySearch: true,
     externalSearchQuery: "",
     fill: "default",
     hintActionKeys: "Enter",

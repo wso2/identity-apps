@@ -103,6 +103,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Manually trigger query clear action from outside.
      */
     triggerClearQuery?: boolean;
+    /**
+     * Enable query search with shift and enter.
+     */
+    enableQuerySearch?: boolean;
 }
 
 /**
@@ -119,6 +123,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
+        enableQuerySearch,
         filterAttributeOptions,
         filterConditionOptions,
         filterConditionsPlaceholder,
@@ -216,6 +221,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         }
     ];
 
+    //console.log("enableQuerySearch in advance basic filter=" + enableQuerySearch);
     return (
         <AdvancedSearch
             aligned="left"
@@ -230,6 +236,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
+            enableQuerySearch={ enableQuerySearch }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
@@ -361,5 +368,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
+    enableQuerySearch: true,
     showResetButton: false
 };
