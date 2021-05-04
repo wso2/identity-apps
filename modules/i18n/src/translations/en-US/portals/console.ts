@@ -753,6 +753,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHint: "Manage the user attributes you want to share with this " +
                                     "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
                                     "by navigating to <3>Attribute Mappings.</3>",
+                                attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
+                                    " application.",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
