@@ -200,7 +200,7 @@ The respective build artifacts could be found inside the build folder. (`apps/(m
   <settings>
     <mirrors>
       <mirror>
-        <id>wso2-nexus-pubic</id>
+        <id>wso2-nexus-public</id>
         <mirrorOf>external:http:*</mirrorOf>
         <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
         <blocked>false</blocked>
@@ -212,7 +212,7 @@ The respective build artifacts could be found inside the build folder. (`apps/(m
         <blocked>false</blocked>
       </mirror>
       <mirror>
-        <id>wso2-nexus-snapsshots</id>
+        <id>wso2-nexus-snapshots</id>
         <mirrorOf>external:http:*</mirrorOf>
         <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         <blocked>false</blocked>
