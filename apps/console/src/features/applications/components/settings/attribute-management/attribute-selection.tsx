@@ -872,7 +872,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 <Hint>
                                     {
                                         t("console:develop.features.applications.edit.sections.attributes." +
-                                            "selection.attributeComponentHint")
+                                            "selection.attributeComponentHintAlt")
                                     }
                                 </Hint>
                             )

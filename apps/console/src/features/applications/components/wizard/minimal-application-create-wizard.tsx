@@ -196,6 +196,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             set(templateSettingsClone, `application.${ allowedOriginsPathKey }`, []);
         }
 
+        if(templateSettingsClone?.application?.inboundProtocolConfiguration?.saml?.templateConfiguration) {
+            delete templateSettingsClone?.application?.inboundProtocolConfiguration?.saml?.templateConfiguration;
+        }
+
         const application: MainApplicationInterface = merge(templateSettingsClone?.application, protocolFormValues);
 
         application.name = generalFormValues.get("name").toString();

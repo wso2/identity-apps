@@ -483,54 +483,63 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <div ref={ consumerURL }></div>
-                        <URLInput
-                            urlState={ assertionConsumerUrls }
-                            setURLState={ setAssertionConsumerUrls }
-                            labelName={
-                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs.label")
-                            }
-                            value={ initialValues?.assertionConsumerUrls.toString() }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
-                                    ".placeholder")
-                            }
-                            validationErrorMsg={
-                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
-                                    ".validations.invalid")
-                            }
-                            validation={ (value: string) => {
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <URLInput
+                                    urlState={ assertionConsumerUrls }
+                                    setURLState={ setAssertionConsumerUrls }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.label")
+                                    }
+                                    value={ initialValues?.assertionConsumerUrls.toString() }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs" +
+                                            ".placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs" +
+                                            ".validations.invalid")
+                                    }
+                                    validation={ (value: string) => {
 
-                                let label: ReactElement = null;
+                                        let label: ReactElement = null;
 
-                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
+                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
 
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                                setAssertionConsumerURLsErrorLabel(label);
+                                        setAssertionConsumerURLsErrorLabel(label);
 
-                                return true;
-                            } }
-                            required={ true }
-                            showError={ showAssertionConsumerUrlError }
-                            setShowError={ setAssertionConsumerUrlError }
-                            hint={
-                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs.hint")
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-assertion-consumer-url-input` }
-                            showPredictions={ false }
-                            customLabel={ assertionConsumerURLsErrorLabel }
-                        />
+                                        return true;
+                                    } }
+                                    required={ true }
+                                    showError={ showAssertionConsumerUrlError }
+                                    setShowError={ setAssertionConsumerUrlError }
+                                    hint={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.hint")
+                                    }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-assertion-consumer-url-input` }
+                                    showPredictions={ false }
+                                    customLabel={ assertionConsumerURLsErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
@@ -904,105 +913,113 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <div ref={ audience }></div>
-                        <URLInput
-                            urlState={ audiences }
-                            setURLState={ setAudiences }
-                            labelName={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.audience.label")
-                            }
-                            value={ initialValues?.singleSignOnProfile.assertion.audiences.toString() }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.audience.placeholder")
-                            }
-                            validationErrorMsg={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.audience.validations.invalid")
-                            }
-                            validation={ (value: string) => {
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <URLInput
+                                    urlState={ audiences }
+                                    setURLState={ setAudiences }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.audience.label")
+                                    }
+                                    value={ initialValues?.singleSignOnProfile.assertion.audiences.toString() }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.audience.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.audience.validations.invalid")
+                                    }
+                                    validation={ (value: string) => {
 
-                                let label: ReactElement = null;
+                                        let label: ReactElement = null;
 
-                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
+                                        if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
 
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                                setAudiencesErrorLabel(label);
+                                        setAudiencesErrorLabel(label);
 
-                                return true;
-                            } }
-                            showError={ showAudienceError }
-                            setShowError={ setAudienceError }
-                            hint={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.audience.hint")
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-audience-url-input` }
-                            showPredictions={ false }
-                            customLabel={ audiencesErrorLabel }
-                        />
+                                        return true;
+                                    } }
+                                    showError={ showAudienceError }
+                                    setShowError={ setAudienceError }
+                                    hint={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.audience.hint")
+                                    }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-audience-url-input` }
+                                    showPredictions={ false }
+                                    customLabel={ audiencesErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                         <div ref={ recipient }></div>
-                        <URLInput
-                            urlState={ recipients }
-                            setURLState={ setRecipients }
-                            labelName={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.recipients.label")
-                            }
-                            value={ initialValues?.singleSignOnProfile.assertion.recipients.toString() }
-                            placeholder={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.recipients.placeholder")
-                            }
-                            validationErrorMsg={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.recipients.validations.invalid")
-                            }
-                            validation={ (value: string) => {
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <URLInput
+                                    urlState={ recipients }
+                                    setURLState={ setRecipients }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.recipients.label")
+                                    }
+                                    value={ initialValues?.singleSignOnProfile.assertion.recipients.toString() }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.recipients.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.recipients.validations.invalid")
+                                    }
+                                    validation={ (value: string) => {
 
-                                let label: ReactElement = null;
+                                        let label: ReactElement = null;
 
-                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
+                                        if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
 
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                                setRecipientsErrorLabel(label);
+                                        setRecipientsErrorLabel(label);
 
-                                return true;
-                            } }
-                            showError={ showRecipientsError }
-                            setShowError={ setRecipientsError }
-                            hint={
-                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
-                                    ".fields.recipients.hint")
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-recipients-url-input` }
-                            showPredictions={ false }
-                            customLabel={ recipientsErrorLabel }
-                        />
+                                        return true;
+                                    } }
+                                    showError={ showRecipientsError }
+                                    setShowError={ setRecipientsError }
+                                    hint={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".assertion.fields.recipients.hint")
+                                    }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-recipients-url-input` }
+                                    showPredictions={ false }
+                                    customLabel={ recipientsErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Heading as="h6">

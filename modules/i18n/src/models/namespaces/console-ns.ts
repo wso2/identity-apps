@@ -444,6 +444,7 @@ export interface ConsoleNS {
                                 };
                                 heading: string;
                                 attributeComponentHint: string;
+                                attributeComponentHintAlt: string;
                                 mandatoryAttributeHint: string;
                                 mappingTable: {
                                     actions: {
@@ -957,6 +958,7 @@ export interface ConsoleNS {
                         help: {
                             heading: string;
                             subHeading: string;
+                            template : FormAttributes;
                         };
                     };
                 };

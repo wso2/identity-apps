@@ -750,6 +750,8 @@ export const console: ConsoleNS = {
                                 attributeComponentHint: "Manage the user attributes you want to share with this " +
                                     "application via <1>OpenID Connect Scopes.</1> You can map additional attributes " +
                                     "by navigating to <3>Attribute Mappings.</3>",
+                                attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
+                                    " application.",
                                 mandatoryAttributeHint: "Mark which attributes are mandatory for a user to share" +
                                     " with the application. When logging in, Asgardeo prompts the user to enter the" +
                                     " attribute value if it is not already provided in the user's profile.",
@@ -1572,10 +1574,17 @@ export const console: ConsoleNS = {
                                     "should be redirected to after the authentication is successful. " +
                                     "This is the Assertion Consumer Service (ACS) URL of the Application.",
                                 label: "Assertion response URLs",
-                                placeholder: "http://localhost:8080/sample-app",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    invalid: "Please add valid URL"
-                                }
+                                    empty: "This is a required field.",
+                                    invalid: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL.",
+                                    required: "This field is required for a functional app. " +
+                                        "However, if you are planning to try the sample app, " +
+                                        "this field can be ignored."
+                                },
+                                info: "Don’t have an app? Try out a sample app using {{assertionURLFromTemplate}} " +
+                                    "as the assertion Response URL. (You can download and run a sample at a later" +
+                                    " step.)"
                             },
                             defaultAssertionURL: {
                                 hint: "As there can be multiple assertion consumer URLs, you must define a " +
@@ -2526,7 +2535,45 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Help",
-                            subHeading: "Use the guide below"
+                            subHeading: "Use the guide below",
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: "E.g., https://myapp.io/login",
+                                        subTitle: "The URL to which the authorization code is sent to upon" +
+                                            " authentication and where the user is redirected to upon logout.",
+                                        title: "Authorized redirect URLs"
+                                    },
+                                    heading: {
+                                        example: "E.g., My App",
+                                        subTitle: "A unique name to identify your application.",
+                                        title: "Name"
+                                    },
+                                    protocol: {
+                                        subTitle: "The access configuration protocol which will be used to log in to" +
+                                            " the application using SSO.",
+                                        title: "Protocol"
+                                    }
+                                },
+                                label: "Minimal application create wizard help panel templates.",
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: "E.g., https://my-app.com/home.jsp",
+                                        subTitle: "The URLs to which the browser is redirected to upon successful" +
+                                            " authentication. Also known as the Assertion Consumer Service (ACS) URL" +
+                                            " of the service provider.",
+                                        title: "Assertion response URLs"
+                                    },
+                                    issuer: {
+                                        example: "E.g., my-app.com",
+                                        subTitle: "The <1>saml:Issuer</1> element that contains the unique" +
+                                            " identifier of the application. The value added here should be" +
+                                            " specified in the SAML authentication request sent from the client" +
+                                            " application.",
+                                        title: "Issuer"
+                                    }
+                                }
+                            }
                         }
                     }
                 }

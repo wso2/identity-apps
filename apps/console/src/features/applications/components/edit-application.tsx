@@ -185,6 +185,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [ isAllowedOriginsUpdated ]);
 
     useEffect(() => {
+        if (samlConfigurations !== undefined) {
+            return;
+        }
+        ApplicationManagementUtils.getSAMLApplicationMeta();
+    }, [ samlConfigurations ]);
+
+    useEffect(() => {
         if (tabPaneExtensions) {
             return;
         }

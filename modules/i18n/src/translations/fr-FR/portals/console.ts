@@ -750,6 +750,8 @@ export const console: ConsoleNS = {
                                 heading: "Sélection des attributs utilisateur",
                                 attributeComponentHint: "Gérez les attributs utilisateur que vous souhaitez partager" +
                                     " avec cette application.",
+                                attributeComponentHintAlt: "Gérez les attributs utilisateur que vous souhaitez" +
+                                    " partager avec cette application.",
                                 mandatoryAttributeHint: "Marquez les attributs que l'utilisateur doit partager avec" +
                                     " l'application. Lors de la connexion, Asgardeo invite l'utilisateur à saisir la" +
                                     " valeur de l'attribut si elle n'est pas déjà fournie dans le profil de" +
@@ -1596,10 +1598,17 @@ export const console: ConsoleNS = {
                                     "doit être redirigé une fois l'authentification réussie. Il s'agit de l'URL " +
                                     "du service consommateur d'assertions (ACS) de l'application.",
                                 label: "URL du réponse d'assertions",
-                                placeholder: "http://localhost:8080/sample-app",
+                                placeholder: "https://myapp.io/login",
                                 validations: {
-                                    invalid: "Veuillez ajouter une URL valide"
-                                }
+                                    empty: "Ceci est un champ obligatoire.",
+                                    invalid: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez ajouter une URL valide.",
+                                    required: "Ce champ est obligatoire pour une application fonctionnelle." +
+                                        " Toutefois, si vous prévoyez d'essayer l'exemple d'application, ce champ" +
+                                        " peut être ignoré."
+                                },
+                                info: "Vous n’avez pas d’application? Essayez un exemple d'application en utilisant" +
+                                    " {{assertionURLFromTemplate}} comme URL de réponse d'assertion. (Vous pouvez" +
+                                    " télécharger et exécuter un exemple ultérieurement.)"
                             },
                             defaultAssertionURL: {
                                 hint: "Comme il peut y avoir plusieurs URLs de consommateur d'assertions, " +
@@ -2549,7 +2558,45 @@ export const console: ConsoleNS = {
                     minimalAppCreationWizard: {
                         help: {
                             heading: "Aide",
-                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider"
+                            subHeading: "Utilisez les descriptions ci-dessous pour vous guider",
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: "par ex., https://myapp.io/login",
+                                        subTitle: "URL vers laquelle le code d'autorisation est envoyé lors de" +
+                                            " l'authentification et vers laquelle l'utilisateur est redirigé lors de" +
+                                            " la déconnexion.",
+                                        title: "URL de redirection autorisées"
+                                    },
+                                    heading: {
+                                        example: "par ex., My App",
+                                        subTitle: "Un nom unique pour identifier votre application.",
+                                        title: "Nom"
+                                    },
+                                    protocol: {
+                                        subTitle: "Le protocole de configuration d'accès qui sera utilisé pour se" +
+                                            " connecter à l'application en utilisant SSO.",
+                                        title: "Protocole"
+                                    }
+                                },
+                                label: "Modèles de panneau d'aide de l'assistant de création d'application minimale.",
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: "par ex., https://my-app.com/home.jsp",
+                                        subTitle: "URL vers lesquelles le navigateur est redirigé une fois" +
+                                            " l'authentification réussie. Également connue sous le nom d'URL" +
+                                            " Assertion Consumer Service (ACS) du fournisseur de services.",
+                                        title: "URL de réponse d'assertion"
+                                    },
+                                    issuer: {
+                                        example: "par ex., my-app.com",
+                                        subTitle: "L'élément <1>saml: Issuer</1> qui contient l'identifiant unique de" +
+                                            " l'application. La valeur ajoutée ici doit être spécifiée dans la" +
+                                            " demande d'authentification SAML envoyée depuis l'application cliente.",
+                                        title: "Émetteur"
+                                    }
+                                }
+                            }
                         }
                     }
                 }
