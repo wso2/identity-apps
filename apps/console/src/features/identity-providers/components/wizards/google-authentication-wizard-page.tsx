@@ -85,9 +85,7 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
      * @returns error msg if name is already taken.
      */
     const idpNameValidation= (value) => {
-        console.log(idpList);
         let nameExist = false;
-        debugger;
         if (idpList?.count > 0){
            idpList?.identityProviders.map((idp)=>{
                if (idp?.name === value ){
@@ -101,7 +99,6 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
             "authenticationProvider.forms.generalDetails.name." +
             "validations.duplicate")
         }
-
     } 
 
     return (

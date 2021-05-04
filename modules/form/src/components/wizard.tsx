@@ -70,7 +70,6 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
      */
     useEffect(() => {
         if(setTotalPage){
-            console.log(React.Children.count(children));
             setTotalPage(React.Children.count(children));
         }
     }, []);
@@ -112,8 +111,6 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
     const activePage = React.Children.toArray(children)[page];
     const isLastPage = page === React.Children.count(children) - 1;
 
-    console.log(values);
-
     return (
         <Form
             initialValues={values}
@@ -127,7 +124,6 @@ export const Wizard= (props: WizardFormInterface ): ReactElement => {
         </Form>
     )
    
-
 }
 
 Wizard.Page= WizardPage;
