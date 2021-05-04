@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../configs";
+import { coreConfig } from "../../../extensions";
 
 /**
  * Filter attribute field identifier.
@@ -221,7 +222,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         }
     ];
 
-    //console.log("enableQuerySearch in advance basic filter=" + enableQuerySearch);
     return (
         <AdvancedSearch
             aligned="left"
@@ -368,6 +368,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
-    enableQuerySearch: true,
+    enableQuerySearch: coreConfig.AdvancedSearchWithBasicFilters.enableQuerySearch,
     showResetButton: false
 };

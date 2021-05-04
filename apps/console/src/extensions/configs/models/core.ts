@@ -16,7 +16,8 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./application";
-export * from "./identity-provider";
-export * from "./core";
+export interface CoreConfig {
+    AdvancedSearchWithBasicFilters: {
+        enableQuerySearch: boolean;
+    }
+}
