@@ -185,3 +185,10 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
             </>
     )
 }
+
+/**
+ * Default props for the google creation wizard.
+ */
+ GoogleAuthenticationWizardFrom.defaultProps = {
+    "data-testid": "idp-edit-idp-create-wizard"
+};
