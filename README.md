@@ -9,7 +9,8 @@ End-user apps in WSO2 Identity Server
 ## Setup build environment
 
 1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi). * For Maven 3.8 and up, please check the Troubleshoot section.
+3. Install JDK 1.8 [https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
 ## Build & Run
 
@@ -193,7 +194,32 @@ The respective build artifacts could be found inside the build folder. (`apps/(m
 
 ## Troubleshoot
 
-If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
+- If you face any out of memory build failures, make sure that you have set maven options to `set MAVEN_OPTS=-Xmx384M`
+- For Maven v3.8 up, add below configuration to the `~/.m2/settings.xml` (Create a new file if the file exist)
+  ```xml
+  <settings>
+    <mirrors>
+      <mirror>
+        <id>wso2-nexus-pubic</id>
+        <mirrorOf>external:http:*</mirrorOf>
+        <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+        <blocked>false</blocked>
+      </mirror>
+      <mirror>
+        <id>wso2-nexus-release</id>
+        <mirrorOf>external:http:*</mirrorOf>
+        <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+        <blocked>false</blocked>
+      </mirror>
+      <mirror>
+        <id>wso2-nexus-snapsshots</id>
+        <mirrorOf>external:http:*</mirrorOf>
+        <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+        <blocked>false</blocked>
+      </mirror>
+    </mirrors>
+  </settings>
+  ```
 
 ## Reporting Issues
 
