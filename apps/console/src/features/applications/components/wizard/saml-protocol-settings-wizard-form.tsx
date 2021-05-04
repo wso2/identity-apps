@@ -42,10 +42,6 @@ interface SAMLProtocolSettingsWizardFormPropsInterface extends TestableComponent
      */
     initialValues?: any;
     /**
-     * Tenant domain
-     */
-    tenantDomain?: string;
-    /**
      * Values from the template.
      */
     templateValues: any;
@@ -76,7 +72,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         hideFieldHints,
         initialValues,
         templateValues,
-        tenantDomain,
         triggerSubmit,
         onSubmit,
         [ "data-testid" ]: testId
