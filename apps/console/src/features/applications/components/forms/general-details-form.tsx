@@ -17,14 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
+import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, AppState, UIConfigInterface} from "../../../core";
+import { AppState, UIConfigInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 
 /**
@@ -105,220 +102,151 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @param values - Form values.
      * @return {any} Sanitized form values.
      */
-    const updateConfigurations = (values: Map<string, FormValue>): any => {
-        return {
-            accessUrl: values.get("accessUrl").toString(),
+    const updateConfigurations = (values) => {
+        onSubmit({
+            accessUrl: values.accessUrl ? values.accessUrl?.toString() : "",
             advancedConfigurations: {
-                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverable")
+                discoverableByEndUsers: !!values.discoverableByEndUsers
             },
-            description: values.get("description").toString(),
+            description: values.description ? values.description?.toString() : "",
             id: appId,
-            name: values.get("name")?.toString(),
-            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.get("imageUrl").toString() }
-        };
-    };
-
-    /**
-     * Handles form value change.
-     *
-     * @param {boolean} isPure - Is the form pure.
-     * @param {Map<string, FormValue>} values - Form values
-     */
-    const handleFormValuesOnChange = (isPure: boolean, values: Map<string, FormValue>) => {
-        // Set the discoverability based on the checkbox toggle.
-        if (values.get("discoverableByEndUsers").includes("discoverable") !== isDiscoverable) {
-            setDiscoverability(!!values.get("discoverableByEndUsers").includes("discoverable"));
-        }
+            name: values.name?.toString(),
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl ? values.imageUrl.toString() : "" }
+        });
     };
 
     return (
-        <Forms
-            onSubmit={ (values): void => {
-                onSubmit(updateConfigurations(values));
+        <Form
+            onSubmit={ (values, form) => {
+                updateConfigurations(values);
             } }
-            onChange={ handleFormValuesOnChange }
         >
-            <Grid className="form-container with-max-width">
-                { !UIConfig.systemAppsIdentifiers.includes(name) && (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Field
-                                name="name"
-                                label={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
-                                        ".label")
-                                }
-                                required={ true }
-                                requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
-                                        ".validations.empty")
-                                }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.name" +
-                                        ".placeholder")
-                                }
-                                type="text"
-                                value={ name }
-                                readOnly={ readOnly }
-                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                                data-testid={ `${ testId }-application-name-input` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                ) }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            name="description"
-                            label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
-                                    ".label")
-                            }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
-                                    ".placeholder")
-                            }
-                            type="textarea"
-                            value={ description }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-description-textarea` }
-                        />
-                        <Hint compact>
-                            { t("console:develop.features.applications.forms" +
-                                ".generalDetails.fields.description.description") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                {
-                    !hiddenFields?.includes("imageUrl") && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    name="imageUrl"
-                                    label={
-                                        t("console:develop.features.applications.forms.generalDetails" +
-                                            ".fields.imageUrl.label")
-                                    }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder={
-                                        t("console:develop.features.applications.forms.generalDetails" +
-                                            ".fields.imageUrl.placeholder")
-                                    }
-                                    type="text"
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(
-                                                t("console:develop.features.applications.forms.generalDetails" +
-                                                    ".fields.imageUrl.validations.invalid")
-                                            );
-                                        }
-                                    } }
-                                    value={ imageUrl }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-application-image-url-input` }
-                                />
-                                <Hint compact>
-                                    {
-                                        t("console:develop.features.applications.forms.generalDetails" +
-                                            ".fields.imageUrl.hint")
-                                    }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+            { !UIConfig.systemAppsIdentifiers.includes(name) && (
+                <Field.Input
+                    ariaLabel="Application name"
+                    inputType="resourceName"
+                    name="name"
+                    label={
+                        t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                            ".label")
+                    }
+                    required={ true }
+                    placeholder={
+                        t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                            ".placeholder")
+                    }
+                    value={ name }
+                    readOnly={ readOnly }
+                    maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                    minLength={ 3 }
+                    data-testid={ `${ testId }-application-name-input` }
+                    width={ 16 }
+                />
+            ) }
+            <Field.Textarea
+                ariaLabel="Application description"
+                name="description"
+                label={
+                    t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                        ".label")
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            name="discoverableByEndUsers"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.generalDetails.fields" +
-                                        ".discoverable.label"),
-                                    value: "discoverable"
-                                }
-                            ] }
-                            value={ isDiscoverable ? [ "discoverable" ] : [] }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-discoverable-checkbox` }
-                        />
-                        <Hint compact>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.forms.generalDetails.fields." +
-                                    "discoverable.hint"
-                                }
-                                tOptions={ { myAccount: "My Account" } }
-                            >
-                                Please type
-                                <strong data-testid="application-name-assertion">
-                                    My Account
-                                </strong>
-                            </Trans>
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            name="accessUrl"
-                            label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
-                            }
-                            required={ isDiscoverable }
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
-                                    ".validations.empty")
-                            }
-                            placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
-                                    ".placeholder")
-                            }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.generalDetails.fields" +
-                                            ".accessUrl.validations.invalid")
-                                    );
-                                }
-                            } }
-                            value={ accessUrl }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-access-url-input` }
-                        />
-                        <Hint compact>
-                            { t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                {
-                    !readOnly && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Button
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={ `${ testId }-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
+                required={ false }
+                placeholder={
+                    t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                        ".placeholder")
                 }
-            </Grid>
-        </Forms>
+                value={ description }
+                readOnly={ readOnly }
+                maxLength={ 300 }
+                minLength={ 3 }
+                data-testid={ `${ testId }-application-description-textarea` }
+                hint={ t("console:develop.features.applications.forms.generalDetails.fields.description." +
+                    "description") }
+                width={ 16 }
+            />
+            {
+                <Field.Input
+                    ariaLabel="Application image URL"
+                    inputType="url"
+                    name="imageUrl"
+                    label={
+                        t("console:develop.features.applications.forms.generalDetails" +
+                            ".fields.imageUrl.label")
+                    }
+                    required={ false }
+                    placeholder={
+                        t("console:develop.features.applications.forms.generalDetails" +
+                            ".fields.imageUrl.placeholder")
+                    }
+                    value={ imageUrl }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-application-image-url-input` }
+                    maxLength={ 200 }
+                    minLength={ 3 }
+                    hint={
+                        t("console:develop.features.applications.forms.generalDetails" +
+                            ".fields.imageUrl.hint")
+                    }
+                    width={ 16 }
+                />
+            }
+            <Field.Checkbox
+                ariaLabel="Make application discoverable by end users"
+                name="discoverableByEndUsers"
+                required={ false }
+                label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+                            ".discoverable.label") }
+                value={ isDiscoverable ? [ "discoverable" ] : [] }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-application-discoverable-checkbox` }
+                listen={ (value) => setDiscoverability(value) }
+                hint={
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.forms.generalDetails.fields." +
+                            "discoverable.hint"
+                        }
+                        tOptions={ { myAccount: "My Account" } }
+                    >
+                        Please type
+                        <strong data-testid="application-name-assertion">
+                            My Account
+                        </strong>
+                    </Trans>
+                }
+                width={ 16 }
+            />
+            <Field.Input
+                ariaLabel="Application access URL"
+                inputType="url"
+                name="accessUrl"
+                label={
+                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
+                }
+                required={ isDiscoverable }
+                placeholder={
+                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                        ".placeholder")
+                }
+                value={ accessUrl }
+                readOnly={ readOnly }
+                maxLength={ 200 }
+                minLength={ 3 }
+                data-testid={ `${ testId }-application-access-url-input` }
+                hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                width={ 16 }
+            />
+            <Field.Button
+                size="small"
+                buttonType="primary_btn"
+                ariaLabel="Update button"
+                name="update-button"
+                data-testid={ `${ testId }-submit-button` }
+                disabled={ false }
+                label={ t("common:update") }
+                hidden={ readOnly }
+            />
+        </Form>
     );
 };
 

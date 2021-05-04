@@ -19,7 +19,8 @@
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
-import { Form, Input } from "semantic-ui-react";
+import { Checkbox, Form, Input } from "semantic-ui-react";
+import { FieldButtonTypes } from "../models";
 
 /**
  * The enter key.
@@ -34,7 +35,6 @@ export const TextFieldAdapter = (props): ReactElement => {
 
     return (
         <Form.Input
-            defaultValue={ childFieldProps.initialValue ? childFieldProps.initialValue : "" }
             aria-label={ childFieldProps.ariaLabel }
             key={ childFieldProps.testId }
             required={ childFieldProps.required }
@@ -44,86 +44,151 @@ export const TextFieldAdapter = (props): ReactElement => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
             onChange={ (event, data) => {
-                event.preventDefault();
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.value);
+                }
+
                 input.onChange(data?.value);
             } }
             onBlur={ (event) => input.onBlur(event) }
-            error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
             control={ Input }
+            autoFocus={ childFieldProps.autoFocus || false }
+            type="text"
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            { ...omit(childFieldProps, ["value", "listen"]) }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+        />
+    );
+};
+
+export const PasswordFieldAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+    
+    return (
+        <Password
+            key={ childFieldProps.testId }
+            data-testid={ childFieldProps.testId }
+            hidePassword="Hide password"
+            label={ childFieldProps.label !== "" ? childFieldProps.label : null }
+            name="newPassword"
+            required={ true }
+            showPassword="Show password"
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data?.name);
+            } }
+            onChange={ (event, data) => input.onChange(data?.value) }
+            onBlur={ (event) => input.onBlur(event) }
+            error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
+            autoFocus={ childFieldProps.autoFocus || false }
+            { ...childFieldProps }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+        />
+    );
+};
+
+export const CopyFieldAdapter = (props): ReactElement => {
+
+    const { childFieldProps } = props;
+    
+    return (
+        <CopyInputField
+            key={ childFieldProps.testId }
+            data-testid={ childFieldProps.testId }
+            autoFocus={ childFieldProps.autoFocus || false }
+            { ...childFieldProps }
+            value={ childFieldProps?.value ? childFieldProps?.value : "" }
+        />
+    );
+};
+
+export const TextAreaAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+    
+    return (
+        <Form.TextArea
+            label={ childFieldProps.label !== "" ? childFieldProps.label : null }
+            width={ input.width }
+            placeholder={ input.placeholder }
+            name={ input.name }
+            onBlur={ (event) => input.onBlur(event) }
+            onChange={ (event, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.value);
+                }
+
+                input.onChange(data?.value);
+            } }
+            autoFocus={ childFieldProps.autoFocus || false }
+            readOnly={ input.readOnly }
+            disabled={ input.disabled }
+            required={ input.required }
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data.name);
+            } }
+            type="textarea"
+            { ...omit(childFieldProps, ["value", "listen"]) }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+        />
+    );
+};
+
+export const ToggleAdapter = (props): ReactElement => {
+
+    const { childFieldProps, input, meta } = props;
+
+    return (
+        <Form.Checkbox
+            label={ childFieldProps.label }
+            name={ childFieldProps.name }
+            children={ childFieldProps.children }
+            onChange={ (event, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.checked);
+                }
+
+                input.onChange(data?.checked);
+            } }
+            control={ Checkbox }
+            readOnly={ childFieldProps.readOnly }
+            disabled={ childFieldProps.disabled }
+            defaultChecked={ !(childFieldProps.value.length == 0) }
+            autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
         />
     );
 };
 
-export const PasswordFieldAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Password
-        key={ childFieldProps.testId }
-        data-testid={ childFieldProps.testId }
-        hidePassword="Hide password"
-        label={ childFieldProps.label !== "" ? childFieldProps.label : null }
-        name="newPassword"
-        required={ true }
-        showPassword="Show password"
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data?.name);
-        } }
-        onChange={ (event, data) => input.onChange(data?.value) }
-        onBlur={ (event) => input.onBlur(event) }
-        error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
-        { ...childFieldProps }
-    />
-);
+export const SelectAdapter = (props): ReactElement => {
 
-export const CopyFieldAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <CopyInputField
-        key={ childFieldProps.testId }
-        data-testid={ childFieldProps.testId }
-        { ...childFieldProps }
-    />
-);
+    const { childFieldProps, input, meta } = props;
 
-export const TextAreaAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Form.TextArea
-        label={ childFieldProps.label !== "" ? childFieldProps.label : null }
-        width={ input.width }
-        error={ meta.touched && meta.error !== "" ? meta.error : null }
-        placeholder={ input.placeholder }
-        name={ input.name }
-        onBlur={ (event) => input.onBlur(event) }
-        onChange={ (event, data) => input.onChange(data.value) }
-        autoFocus={ input.autoFocus || false }
-        readOnly={ input.readOnly }
-        disabled={ input.disabled }
-        required={ input.label ? input.required : false }
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data.name);
-        } }
-        { ...childFieldProps }
-    />
-);
-
-export const ToggleAdapter = ({ childFieldProps, input, meta }): ReactElement => (
-    <Form.Checkbox
-        label={ input.label }
-        name={ input.name }
-        value={ input.value }
-        onChange={ (event, data) => {
-            input.onToggle(data.name);
-        } }
-        onBlur={ (event) => input.onBlur(event) }
-        autoFocus={ input.autoFocus || false }
-        readOnly={ input.readOnly }
-        disabled={ input.disabled }
-        defaultChecked={ input.defaultChecked }
-        onKeyPress={ (event: React.KeyboardEvent, data) => {
-            event.key === ENTER_KEY && input.onBlur(data.name);
-        } }
-        { ...childFieldProps }
-    />
-);
+    return (
+        <Form.Select
+            label={ childFieldProps.label }
+            name={ childFieldProps.name }
+            options={ childFieldProps.children }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                input.onChange(value.toString(), childFieldProps.name);
+            } }
+            onBlur={ (event: React.KeyboardEvent) => input.onBlur(event) }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            autoFocus={ childFieldProps.autoFocus || false }
+            disabled={ childFieldProps.disabled }
+            required={ childFieldProps.required }
+            onKeyPress={ (event: React.KeyboardEvent, data) => {
+                event.key === ENTER_KEY && input.onBlur(data?.name);
+            } }
+            { ...omit(childFieldProps, ["value", "children"]) }
+        />
+    );
+};
 
 export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
-    if (childFieldProps.fieldType === "primary-btn") {
+    if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -134,7 +199,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </PrimaryButton>
         );
-    } else if (childFieldProps.fieldType === "cancel-btn") {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_CANCEL) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -144,7 +209,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { "Cancel" }
             </LinkButton>
         );
-    } else if (childFieldProps.fieldType === "link-btn") {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_LINK) {
         return (
             <LinkButton
                 { ...omit(childFieldProps, ["label"]) }
@@ -154,7 +219,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
                 { childFieldProps.label }
             </LinkButton>
         );
-    } else if (childFieldProps.fieldType === "danger-btn") {
+    } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_DANGER) {
         return (
             <DangerButton
                 { ...omit(childFieldProps, ["label"]) }

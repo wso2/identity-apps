@@ -16,6 +16,22 @@
  * under the License.
  */
 
-export * from "./fields";
-export * from "./form";
-export * from "./validation";
+export enum FieldInputTypes {
+    INPUT_DEFAULT = "default",
+    INPUT_IDENTIFIER = "identifier",
+    INPUT_PHONE_NUMBER = "phone_number",
+    INPUT_NAME = "name",
+    INPUT_RESOURCE_NAME = "resourceName",
+    INPUT_EMAIL = "email",
+    INPUT_URL = "url",
+    INPUT_COPY = "copy_input",
+    INPUT_PASSWORD = "password"
+}
+
+export enum FieldButtonTypes {
+    BUTTON_PRIMARY = "primary_btn",
+    BUTTON_CANCEL = "cancel_btn",
+    BUTTON_LINK = "link_btn",
+    BUTTON_DANGER= "danger_btn",
+    BUTTON_DEFAULT = "default_btn",
+}

@@ -30,6 +30,11 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
 
     if (field === "text") {
         switch (fieldType) {
+            case "identifier":
+                if (!FormValidation.identifier(value)) {
+                    return FieldConstants.INVALID_NAME_ERROR;
+                }
+                break;
             case "resourceName":
                 if (!FormValidation.resourceName(value)) {
                     return FieldConstants.INVALID_NAME_ERROR;
@@ -54,10 +59,20 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
     }
 };
 
-export const getValidation = (value: any, field: string, fieldType: string, validation: any, required: boolean) => {
+export const getValidation = (
+    value: any, meta: any, field: string, required: boolean, fieldType?: string, validation?: any
+) => {
 
-    if (required && !value) {
+    if (!meta.modified) {
+        return;
+    }
+
+    if (meta.modified && required && !value) {
         return FieldConstants.FIELD_REQUIRED_ERROR;
+    }
+
+    if (!value) {
+        return;
     }
 
     if (validation instanceof Promise) {
