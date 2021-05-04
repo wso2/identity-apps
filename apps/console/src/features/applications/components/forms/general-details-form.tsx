@@ -18,7 +18,6 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { FormValue } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -105,28 +104,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const updateConfigurations = (values) => {
         onSubmit({
-            accessUrl: values.accessUrl?.toString(),
+            accessUrl: values.accessUrl ? values.accessUrl?.toString() : "",
             advancedConfigurations: {
                 discoverableByEndUsers: !!values.discoverableByEndUsers
             },
-            description: values.description?.toString(),
+            description: values.description ? values.description?.toString() : "",
             id: appId,
             name: values.name?.toString(),
-            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl ? values.imageUrl.toString() : "" }
         });
-    };
-
-    /**
-     * Handles form value change.
-     *
-     * @param {boolean} isPure - Is the form pure.
-     * @param {Map<string, FormValue>} values - Form values
-     */
-    const handleFormValuesOnChange = (isPure: boolean, values: Map<string, FormValue>) => {
-        // Set the discoverability based on the checkbox toggle.
-        if (values.get("discoverableByEndUsers").includes("discoverable") !== isDiscoverable) {
-            setDiscoverability(!!values.get("discoverableByEndUsers").includes("discoverable"));
-        }
     };
 
     return (
@@ -213,6 +199,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 value={ isDiscoverable ? [ "discoverable" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-discoverable-checkbox` }
+                listen={ (value) => setDiscoverability(value) }
                 hint={
                     <Trans
                         i18nKey={

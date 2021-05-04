@@ -44,13 +44,18 @@ export const TextFieldAdapter = (props): ReactElement => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
             onChange={ (event, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.value);
+                }
+
                 input.onChange(data?.value);
             } }
             onBlur={ (event) => input.onBlur(event) }
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
+            type="text"
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
-            { ...omit(childFieldProps, ["value"]) }
+            { ...omit(childFieldProps, ["value", "listen"]) }
             error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
         />
     );
@@ -105,11 +110,16 @@ export const TextAreaAdapter = (props): ReactElement => {
         <Form.TextArea
             label={ childFieldProps.label !== "" ? childFieldProps.label : null }
             width={ input.width }
-            error={ meta.touched && meta.error !== "" ? meta.error : null }
             placeholder={ input.placeholder }
             name={ input.name }
             onBlur={ (event) => input.onBlur(event) }
-            onChange={ (event, data) => input.onChange(data.value) }
+            onChange={ (event, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.value);
+                }
+
+                input.onChange(data?.value);
+            } }
             autoFocus={ childFieldProps.autoFocus || false }
             readOnly={ input.readOnly }
             disabled={ input.disabled }
@@ -117,7 +127,10 @@ export const TextAreaAdapter = (props): ReactElement => {
             onKeyPress={ (event: React.KeyboardEvent, data) => {
                 event.key === ENTER_KEY && input.onBlur(data.name);
             } }
-            { ...childFieldProps }
+            type="textarea"
+            { ...omit(childFieldProps, ["value", "listen"]) }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
         />
     );
 };
@@ -131,7 +144,13 @@ export const ToggleAdapter = (props): ReactElement => {
             label={ childFieldProps.label }
             name={ childFieldProps.name }
             children={ childFieldProps.children }
-            onChange={ (event, data) => input.onChange(data.checked) }
+            onChange={ (event, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data?.checked);
+                }
+
+                input.onChange(data?.checked);
+            } }
             control={ Checkbox }
             readOnly={ childFieldProps.readOnly }
             disabled={ childFieldProps.disabled }

@@ -110,14 +110,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 name="proxyMode"
                 label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
                 required={ false }
-                requiredErrorMessage=""
                 value={ config?.inboundProvisioning?.proxyMode ? ["modeOn"] : [] }
-                type="checkbox"
-                listen={
-                    (values) => {
-                        setIsProxyModeOn(values.get("proxyMode").includes("modeOn"));
-                    }
-                }
+                listen={ (value) => setIsProxyModeOn(value) }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-proxy-mode-checkbox` }
                 hint={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.hint") }

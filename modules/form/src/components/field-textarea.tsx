@@ -45,6 +45,10 @@ export interface FieldTextareaPropsInterface extends FormFieldPropsInterface {
      * Validation of the field.
      */
     validation?: any;
+    /**
+     * Call back to trigger on input onChange.
+     */
+    listen?: (values) => void;
 }
 
 /**
