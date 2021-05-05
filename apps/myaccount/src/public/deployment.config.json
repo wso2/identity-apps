@@ -81,6 +81,7 @@
         "i18nConfigs": {
             "showLanguageSwitcher": true
         },
+        "isCookieConsentBannerEnabled": true,
         "isHeaderAvatarLabelAllowed": true,
         "privacyPolicyConfigs": {
             "visibleOnFooter": true

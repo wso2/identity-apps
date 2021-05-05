@@ -312,7 +312,7 @@
         "i18nConfigs": {
             "showLanguageSwitcher": false
         },
-        "isHeaderAvatarLabelAllowed": true,
+        "isCookieConsentBannerEnabled": false,
         "isGroupAndRoleSeparationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled" : false,
         "isClientSecretHashEnabled": false,
