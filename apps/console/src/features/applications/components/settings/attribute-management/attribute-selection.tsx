@@ -137,12 +137,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations?.claimMappings?.map((claim) => {
             if (
                 !filterSelectedExternalClaims.find(
-                    (selectedExternalClaim) => selectedExternalClaim.mappedLocalClaimURI === claim.localClaim.uri
+                    (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 )
             ) {
                 tempFilterSelectedExternalClaims.push(
                     availableExternalClaims.find(
-                        (availableClaim) => availableClaim.mappedLocalClaimURI === claim.localClaim.uri
+                        (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                     )
                 );
             }
@@ -430,18 +430,28 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     );
 
     const deleteAttribute = (claimURI: string): void => {
-        const removing = selectedExternalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
-        setSelectedExternalClaims(selectedExternalClaims.filter(claim => claim.mappedLocalClaimURI !== claimURI));
-        setFilterSelectedExternalClaims(filterSelectedExternalClaims
-            .filter(claim => claim.mappedLocalClaimURI !== claimURI));
-        const externalClaim = externalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
-        if (!externalClaim) {
-            setExternalClaims([ removing, ...externalClaims ]);
+        if (selectedDialect.localDialect) {
+            const removing = selectedClaims.find(claim => claim.claimURI === claimURI);
+            setSelectedClaims(selectedClaims.filter(claim => claim.claimURI !== claimURI));
+            const claim = claims.find(claim => claim.claimURI === claimURI);
+            if (!claim) {
+                setClaims([ removing, ...claims ]);
+            }
+        } else {
+            const removing = selectedExternalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+            setSelectedExternalClaims(selectedExternalClaims.filter(claim => claim.mappedLocalClaimURI !== claimURI));
+            setFilterSelectedExternalClaims(filterSelectedExternalClaims
+                .filter(claim => claim.mappedLocalClaimURI !== claimURI));
+            const externalClaim = externalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+            if (!externalClaim) {
+                setExternalClaims([ removing, ...externalClaims ]);
+            }
         }
     };
 
     const onDeleteAttribute = (claimURI: string): void => {
-        if (selectedSubjectValue === claimURI && defaultSubjectAttribute !== claimURI) {
+        if ((selectedSubjectValue === claimURI || claimConfigurations?.subject?.claim?.uri === claimURI)
+            && defaultSubjectAttribute !== claimURI) {
             setShowDeleteConfirmationModal(true);
         } else {
             deleteAttribute(claimURI);
@@ -589,7 +599,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             { claimMappingOn
                                                                 ? (
                                                                     <Table.Row>
-                                                                        <Table.HeaderCell width="6">
+                                                                        <Table.HeaderCell width="8">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -620,7 +630,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
-                                                                        <Table.HeaderCell>
+                                                                        <Table.HeaderCell width="4" textAlign="center">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -630,7 +640,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".mandatory")
                                                                                 }
                                                                             </strong>
-                                                                            <Hint icon="help circle" popup>
+                                                                            <Hint icon="info circle" popup>
                                                                                 {
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
@@ -639,12 +649,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
+                                                                        <Table.HeaderCell width="2"></Table.HeaderCell>
                                                                     </Table.Row>
                                                                 )
                                                                 :
                                                                 (
                                                                     <Table.Row>
-                                                                        <Table.HeaderCell>
+                                                                        <Table.HeaderCell width="10">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -655,7 +666,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </strong>
                                                                         </Table.HeaderCell>
-                                                                        <Table.HeaderCell textAlign="center">
+                                                                        <Table.HeaderCell width="8" textAlign="center">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -665,7 +676,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".mandatory")
                                                                                 }
                                                                             </strong>
-                                                                            <Hint icon="help circle" popup>
+                                                                            <Hint icon="info circle" popup>
                                                                                 {
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
@@ -674,6 +685,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
+                                                                        <Table.HeaderCell width="2"></Table.HeaderCell>
                                                                     </Table.Row>
                                                                 )
                                                             }
@@ -687,7 +699,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimURI={ claim.claimURI }
                                                                             displayName={ claim.displayName }
                                                                             mappedURI={ claim.claimURI }
-                                                                            localDialect={ true }
+                                                                            localDialect={ selectedDialect.localDialect }
                                                                             updateMapping={ updateClaimMapping }
                                                                             addToMapping={ addToClaimMapping }
                                                                             mapping={
@@ -698,8 +710,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             }
                                                                             initialMandatory={
                                                                                 (claimConfigurations?.subject?.
-                                                                                    claim?.uri
-                                                                                    === claim.claimURI)
+                                                                                    claim?.uri === claim.claimURI)
                                                                                     ? true
                                                                                     : claim.mandatory
                                                                             }
@@ -710,11 +721,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimMappingError={ claimMappingError }
                                                                             readOnly={
                                                                                 (claimConfigurations?.subject?.
-                                                                                    claim?.uri
-                                                                                    === claim.claimURI)
+                                                                                    claim?.uri === claim.claimURI)
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
+                                                                            subject={ claimConfigurations?.subject?.
+                                                                                claim?.uri === claim.claimURI }
+                                                                            deleteAttribute={
+                                                                            () => onDeleteAttribute(claim.claimURI)
+                                                                            }
+
                                                                             data-testid={ claim.claimURI }
                                                                         />
                                                                     );
@@ -776,7 +792,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimURI={ claim.claimURI }
                                                                             displayName={ claim.claimURI }
                                                                             mappedURI={ claim.mappedLocalClaimURI }
-                                                                            localDialect={ false }
+                                                                            localDialect={ selectedDialect.localDialect }
                                                                             initialMandatory={
                                                                                 (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI)

@@ -392,7 +392,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (selectedDialect.localDialect) {
             if (claimMappingOn) {
                 const claimMappingOption: DropdownOptionsInterface[] = [];
-                claimMapping.map((element: ExtendedClaimMappingInterface) => {
+                claimMapping.filter((element: ExtendedClaimMappingInterface) => {
                     let option: DropdownOptionsInterface;
                     if (!isEmpty(element.applicationClaim)) {
                         option = {
