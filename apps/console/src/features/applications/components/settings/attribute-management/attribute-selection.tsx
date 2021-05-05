@@ -630,7 +630,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 }
                                                                             </Hint>
                                                                         </Table.HeaderCell>
-                                                                        <Table.HeaderCell width="2" textAlign="center">
+                                                                        <Table.HeaderCell width="4" textAlign="center">
                                                                             <strong>
                                                                                 {
                                                                                     t("console:develop.features" +
@@ -640,7 +640,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".mandatory")
                                                                                 }
                                                                             </strong>
-                                                                            <Hint icon="help circle" popup>
+                                                                            <Hint icon="info circle" popup>
                                                                                 {
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
@@ -676,7 +676,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         ".mandatory")
                                                                                 }
                                                                             </strong>
-                                                                            <Hint icon="help circle" popup>
+                                                                            <Hint icon="info circle" popup>
                                                                                 {
                                                                                     t("console:develop.features" +
                                                                                         ".applications.edit.sections" +
