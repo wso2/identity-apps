@@ -450,7 +450,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const onDeleteAttribute = (claimURI: string): void => {
-        if ((selectedSubjectValue === claimURI || claimConfigurations?.subject?.claim?.uri === claimURI)
+        if ((selectedSubjectValue === claimURI)
             && defaultSubjectAttribute !== claimURI) {
             setShowDeleteConfirmationModal(true);
         } else {
@@ -709,8 +709,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 setIsDefaultMappingChanged
                                                                             }
                                                                             initialMandatory={
-                                                                                (claimConfigurations?.subject?.
-                                                                                    claim?.uri === claim.claimURI)
+                                                                                (selectedSubjectValue === claim.claimURI)
                                                                                     ? true
                                                                                     : claim.mandatory
                                                                             }
@@ -720,13 +719,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
                                                                             readOnly={
-                                                                                (claimConfigurations?.subject?.
-                                                                                    claim?.uri === claim.claimURI)
+                                                                                (selectedSubjectValue === claim.claimURI)
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
-                                                                            subject={ claimConfigurations?.subject?.
-                                                                                claim?.uri === claim.claimURI }
+                                                                            subject={ selectedSubjectValue === claim.claimURI }
                                                                             deleteAttribute={
                                                                             () => onDeleteAttribute(claim.claimURI)
                                                                             }
