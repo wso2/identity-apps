@@ -162,7 +162,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().myAccount,
                         name: t("console:common.header.appSwitch.myAccount.name"),
                         onClick: () => {
-                            window.open(accountAppURL,"_blank", "noopener");
+                            window.open(accountAppURL, "_blank", "noopener");
                         }
                     }
                 ] }
