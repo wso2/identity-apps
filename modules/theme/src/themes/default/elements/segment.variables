@@ -113,7 +113,7 @@
 --------------------------------*/
 
 @cookieConsentBannerPosition: fixed;
-@cookieConsentBannerLeft: 16px;
+@cookieConsentBannerHorizontalSpacing: 16px;
 @cookieConsentBannerBottom: 16px;
 @cookieConsentBannerMaxWidth: 400px;
 @cookieConsentBannerTop: auto;
@@ -121,6 +121,8 @@
 @cookieConsentBannerPadding: 2em;
 @cookieConsentBannerImageMargin: 0 0 1.5em 0;
 @cookieConsentBannerContentMargin: 0 0 1em 0;
+@cookieConsentBannerBorder: none;
+@cookieConsentBannerIconColor: @darkGray;
 
 // Light Mode
 @cookieConsentBannerColor: inherit;
@@ -130,3 +132,4 @@
 @cookieConsentBannerInvertedColor: @invertedTextColor;
 @cookieConsentBannerInvertedBackground: @invertedBackground;
 @cookieConsentBannerInvertedIconColor: @white;
+@cookieConsentBannerInvertedBorder: none;

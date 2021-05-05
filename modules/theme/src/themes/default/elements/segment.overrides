@@ -636,7 +636,6 @@
 
 .ui.segment {
     &.cookie-consent-banner {
-        left: @cookieConsentBannerLeft;
         position: @cookieConsentBannerPosition;
         bottom: @cookieConsentBannerBottom;
         max-width: @cookieConsentBannerMaxWidth;
@@ -645,21 +644,42 @@
         opacity: @cookieConsentBannerOpacity;
         color: @cookieConsentBannerColor;
         padding: @cookieConsentBannerPadding;
+        border: @cookieConsentBannerBorder;
         z-index: 999;
         
+        &.aligned {
+            &-left {
+                left: @cookieConsentBannerHorizontalSpacing;
+                right: auto;
+            }
+            &-right {
+                right: @cookieConsentBannerHorizontalSpacing;
+                left: auto;
+            }
+        }
+
         .banner-image {
             display: flex;
             margin: @cookieConsentBannerImageMargin;
+            
+            .cookie-icon {
+                svg {
+                    path {
+                        fill: @cookieConsentBannerIconColor;
+                    }
+                }
+            }
         }
-        
+
         .banner-content {
             margin: @cookieConsentBannerContentMargin;
         }
-        
+
         &.inverted {
             color: @cookieConsentBannerInvertedColor;
             background: @cookieConsentBannerInvertedBackground;
-          
+            border: @cookieConsentBannerInvertedBorder;
+
             .banner-image {
                 .cookie-icon {
                     svg {
