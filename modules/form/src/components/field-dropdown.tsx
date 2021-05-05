@@ -33,6 +33,10 @@ export interface FieldDropdownPropsInterface extends FormFieldPropsInterface {
      * Message to be displayed.
      */
     message?: FormFieldMessage;
+    /**
+     * Call back to trigger on input onChange.
+     */
+    listen?: (values) => void;
 }
 
 /**

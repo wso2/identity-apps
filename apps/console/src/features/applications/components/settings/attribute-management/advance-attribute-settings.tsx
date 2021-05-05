@@ -132,11 +132,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setSubmissionValues(settingValues);
     };
 
-    const subjectAttributeChangeListener = (tempForm: Map<string, FormValue>): void => {
-        if(tempForm?.has(SubjectAttributeFieldName)) {
-            setSelectedSubjectValue(tempForm.get(SubjectAttributeFieldName)?.toString());
+    const subjectAttributeChangeListener = (subjectAttributeFieldName: string): void => {
+        if(subjectAttributeFieldName) {
+            setSelectedSubjectValue(subjectAttributeFieldName?.toString());
         } else {
-            setSelectedSubjectValue(null);
+            setSelectedSubjectValue(subjectAttributeFieldName);
         }
     };
 
@@ -216,7 +216,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         children={ dropDownOptions }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
-                        onChange={ subjectAttributeChangeListener }
+                        listen={ subjectAttributeChangeListener }
                         enableReinitialize={ true }
                         hint={ resolveSubjectAttributeHint() }
                     />
@@ -280,11 +280,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             "sections.subject.fields.subjectUseMappedLocalSubject.hint")
                         }
                     />
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                        ".sections.role.heading") }
-                    </Heading>
-                    <Divider hidden/>
+                    {
+                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
+                            <>
+                                <Heading as="h4">
+                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.role.heading") }
+                                </Heading>
+                            </>
+                        )
+                    }
                     <Field.Dropdown
                         ariaLabel="Role attribute"
                         name="roleAttribute"

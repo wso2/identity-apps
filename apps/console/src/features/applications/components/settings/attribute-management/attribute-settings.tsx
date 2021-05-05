@@ -35,7 +35,7 @@ import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
@@ -752,7 +752,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     }
                                     data-testid={ `${ testId }-attribute-selection` }
                                 />
-                                <Divider hidden/>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
