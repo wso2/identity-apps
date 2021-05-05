@@ -16,14 +16,17 @@
  * under the License.
  */
 
-export * from "./adapters";
-export * from "./field";
-export * from "./field-button";
-export * from "./field-checkbox";
-export * from "./field-input";
-export * from "./field-textarea";
-export * from "./field-dropdown";
-export * from "./form";
-export * from "./wizard";
-export * from "./wizardPage";
-
+ import React, { ReactElement } from "react";
+ 
+ /**
+  * Implementation of the WizardPage component.
+  * @param props
+  */
+ export const WizardPage = (props): ReactElement => {
+ 
+     const { children, ...rest} = props;
+ 
+     return (
+         <>{children}</>
+     )
+ };

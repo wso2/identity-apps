@@ -45,6 +45,7 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetIDPListCallError
 } from "../utils";
+import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -96,6 +97,9 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    const [ wizStep, setWizStep ] = useState<number>(0);
+    const [ totalStep, setTotalStep ] = useState<number>(0);
 
     /**
      * Creates a new identity provider.
@@ -204,148 +208,6 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
         }
     };
 
-    const resolveStepContent = (): ReactElement => {
-        return (
-            <Forms
-                onSubmit={ (values): void => {
-                    const identityProvider: IdentityProviderInterface = template.idp;
-                    identityProvider.name = values.get("name").toString();
-                    identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
-                        {
-                            "key": "ClientId",
-                            "value": values.get("ClientId").toString()
-                        },
-                        {
-                            "key": "ClientSecret",
-                            "value": values.get("ClientSecret").toString()
-                        },
-                        {
-                            "key": "callbackUrl",
-                            "value": store.getState().config.deployment.serverHost + "/commonauth"
-                        },
-                        {
-                            "key": "AdditionalQueryParameters",
-                            "value": "scope=email openid profile"
-                        }
-                    ];
-
-                    // Allow to set empty client ID and client secret but make the authenticator disabled.
-                    identityProvider.federatedAuthenticators.authenticators[ 0 ].isEnabled =
-                        !(isEmpty(values.get("ClientId").toString())
-                            || isEmpty(values.get("ClientSecret").toString()));
-
-                    // TODO Need to make this dynamic
-                    if (AppConstants.getClientOrigin()) {
-                        if (AppConstants.getAppBasename()) {
-                            identityProvider.image = AppConstants.getClientOrigin() +
-                                "/" + AppConstants.getAppBasename() +
-                                "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-                        } else {
-                            identityProvider.image = AppConstants.getClientOrigin() +
-                                "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-                        }
-                    }
-                    handleWizardFormFinish(identityProvider);
-                } }
-                autoComplete="off"
-                submitState={ submitGeneralSettings }
-                data-testid={ testId }
-            >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                name="name"
-                                label={ t("console:develop.features.authenticationProvider.forms." +
-                                    "generalDetails.name.label") }
-                                required={ true }
-                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
-                                    "forms.common.requiredErrorMessage") }
-                                type="text"
-                                validation={ async (value: string, validation: Validation) => {
-                                    if (value.length > IDP_NAME_MAX_LENGTH) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("console:develop.features." +
-                                            "authenticationProvider.forms.generalDetails.name.validations." +
-                                            "maxLengthReached", { maxLength: IDP_NAME_MAX_LENGTH }));
-                                    } else {
-                                        try {
-                                            const idpList = await getIdentityProviderList(
-                                                null, null, "name eq " + value.toString());
-
-                                            if (idpList?.totalResults === 0) {
-                                                validation.isValid = true;
-                                            } else {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(t("console:develop.features." +
-                                                    "authenticationProvider.forms.generalDetails.name." +
-                                                    "validations.duplicate"));
-                                            }
-                                        } catch (error) {
-                                            handleGetIDPListCallError(error);
-                                        }
-                                    }
-                                } }
-                                displayErrorOn="blur"
-                                value={ template?.idp?.name }
-                                onKeyDown={ keyPressed }
-                                data-testid={ `${ testId }-idp-name` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                name="ClientId"
-                                label={ "Client ID" }
-                                required={ true }
-                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
-                                    "forms.common.requiredErrorMessage") }
-                                type="text"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (value.length > CLIENT_ID_MAX_LENGTH) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push("Client ID cannot exceed " +
-                                            CLIENT_ID_MAX_LENGTH + " characters.");
-                                    }
-                                } }
-                                autoComplete={ "" + Math.random() }
-                                displayErrorOn="submit"
-                                onKeyDown={ keyPressed }
-                                data-testid={ `${ testId }-idp-client-id` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                name="ClientSecret"
-                                label={ "Client secret" }
-                                required={ true }
-                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
-                                    "forms.common.requiredErrorMessage") }
-                                type="password"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (value.length > CLIENT_SECRET_MAX_LENGTH) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push("Client secret cannot exceed " +
-                                            CLIENT_SECRET_MAX_LENGTH + " characters.");
-                                    }
-                                } }
-                                hidePassword={ t("common:hide") }
-                                showPassword={ t("common:show") }
-                                autoComplete={ "" + Math.random() }
-                                displayErrorOn="submit"
-                                onKeyDown={ keyPressed }
-                                data-testid={ `${ testId }-idp-client-secret` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-        );
-    };
-
     /**
      * Gets the authenticator meta data.
      *
@@ -371,6 +233,60 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
         }
     }, [ availableAuthenticators ]);
 
+    /**
+     * Track wizard steps from wizard component.
+     */
+    useEffect(() => {
+        setCurrentWizardStep(wizStep + 1)
+    }, [ wizStep ]);
+
+    let submitAdvanceForm: () => void;
+
+    let triggerPreviousForm: () => void;
+
+
+    const onSubmitWizard = (values): void => {
+        const identityProvider: IdentityProviderInterface = template.idp;
+        identityProvider.name = values?.name.toString();
+        identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
+            {
+                "key": "ClientId",
+                "value":  values?.clientId.toString()
+            },
+            {
+                "key": "ClientSecret",
+                "value": values?.clientSecret.toString()
+            },
+            {
+                "key": "callbackUrl",
+                "value": store.getState().config.deployment.serverHost + "/commonauth"
+            },
+            {
+                "key": "AdditionalQueryParameters",
+                "value": "scope=email openid profile"
+            }
+        ];
+
+        // Allow to set empty client ID and client secret but make the authenticator disabled.
+        identityProvider.federatedAuthenticators.authenticators[ 0 ].isEnabled =
+            !(isEmpty(values?.clientId.toString())
+                || isEmpty(values?.clientSecret.toString()));
+
+        // TODO Need to make this dynamic
+        if (AppConstants.getClientOrigin()) {
+            if (AppConstants.getAppBasename()) {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/" + AppConstants.getAppBasename() +
+                    "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+            } else {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+            }
+        }
+        handleWizardFormFinish(identityProvider);
+    } 
+
+
     const resolveStepActions = (): ReactElement => {
 
         return (
@@ -383,21 +299,33 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                         </LinkButton>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        { currentWizardStep === 0 ? (
+                        { currentWizardStep !== totalStep ? (
                             <PrimaryButton floated="right" onClick={ () => {
-                                setCurrentWizardStep(1);
+                                submitAdvanceForm();
                             } }
                                 data-testid={ `${ testId }-modal-finish-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                             </PrimaryButton>
                         ) : (
                                 <>
-                                    <PrimaryButton floated="right" onClick={ setSubmitGeneralSettings }
+                                    <PrimaryButton floated="right" onClick={ () => {
+                                        // setCurrentWizardStep(1);
+                                        submitAdvanceForm();
+                                    } }
                                         data-testid={ `${ testId }-modal-finish-button` }>
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 </>
                             ) }
+                        {
+                            currentWizardStep > 1 && 
+                            <LinkButton floated="right" onClick={ ()=> {
+                                        triggerPreviousForm();
+                                    } }
+                                data-testid={ `${ testId }-modal-previous-button` }>
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                            </LinkButton>
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -478,7 +406,16 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content className="content-container" data-testid={ `${ testId }-modal-content-2` }>
                     { alert && alertComponent }
-                    { resolveStepContent() }
+                    <GoogleAuthenticationWizardFrom
+                        onSubmit={ onSubmitWizard }
+                        triggerSubmission={ (submitFunction: () => void) => {
+                            submitAdvanceForm = submitFunction; } }
+                        triggerPrevious={ (previousFunction: () => void) => {
+                            triggerPreviousForm = previousFunction; } }
+                        changePageNumber= { (step:number)=> setWizStep(step) }
+                        setTotalPage= { (pageNumber:number)=> setTotalStep(pageNumber) }
+                        template={ template }
+                    />
                 </ModalWithSidePanel.Content>
                 <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
                     { resolveStepActions() }

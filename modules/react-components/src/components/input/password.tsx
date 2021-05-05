@@ -16,13 +16,14 @@
  * under the License.
  */
 
+ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { useState } from "react";
 import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Password prop types
  */
-interface PasswordPropsInterface {
+interface PasswordPropsInterface extends TestableComponentInterface {
     label: string;
     value: string;
     error: false | { content: JSX.Element[] };
@@ -50,17 +51,36 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
 ): JSX.Element => {
     const [isShow, setIsShow] = useState(false);
 
+    const {
+        label,
+        value,
+        error,
+        width,
+        type,
+        placeholder,
+        name,
+        onBlur,
+        onChange,
+        showPassword,
+        hidePassword,
+        autoFocus,
+        readOnly,
+        disabled,
+        required,
+        [ "data-testid" ]: testId
+    } = props;
+
     return (
         <Form.Input
-            label={ props.label }
-            value={ props.value }
-            error={ props.error }
-            type={ isShow ? "text" : props.type }
-            placeholder={ props.placeholder }
-            name={ props.name }
-            width={ props.width }
-            onBlur={ props.onBlur }
-            onChange={ props.onChange }
+            label={ label }
+            value={ value }
+            error={ error }
+            type={ isShow ? "text" : type }
+            placeholder={ placeholder }
+            name={ name }
+            width={ width }
+            onBlur={ onBlur }
+            onChange={ onChange }
             icon={
                 (
                     <Popup
@@ -70,7 +90,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
                                     name={
                                         !isShow ? "eye" : "eye slash"
                                     }
-                                    disabled={ !props.value }
+                                    disabled={ !value }
                                     link
                                     onClick={ () => { setIsShow(!isShow); } }
                                 />
@@ -79,17 +99,18 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
                         position="top center"
                         content={
                             !isShow
-                                ? props.showPassword
-                                : props.hidePassword
+                                ? showPassword
+                                : hidePassword
                         }
                         inverted
                     />
                 )
             }
-            autoFocus={ props.autoFocus || false }
-            readOnly={ props.readOnly }
-            disabled={ props.disabled }
-            required={ props.required }
+            autoFocus={ autoFocus || false }
+            readOnly={ readOnly }
+            disabled={ disabled }
+            required={ required }
+            data-testid= { testId }
         />
     );
 };

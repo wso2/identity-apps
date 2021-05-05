@@ -81,5 +81,9 @@ export const getValidation = (
         });
     }
 
+    if (typeof(validation) === "function") {
+        return validation(value);
+    }
+
     return getDefaultValidation(field, fieldType, value);
 };
