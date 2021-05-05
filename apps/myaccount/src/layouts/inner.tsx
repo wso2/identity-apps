@@ -20,6 +20,7 @@ import { CommonUtils } from "@wso2is/core/utils";
 import { CookieConsentBanner, ErrorBoundary, LinkButton, PageLayout } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Responsive } from "semantic-ui-react";
 import {
     Alert,
@@ -30,6 +31,7 @@ import {
     SidePanelWrapper
 } from "../components";
 import { getEmptyPlaceholderIllustrations } from "../configs";
+import { AppState } from "../store";
 
 /**
  * Inner page layout component Prop types.
@@ -60,6 +62,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
 
     const { t } = useTranslation();
+
+    const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isCookieConsentBannerEnabled);
 
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
     const [ headerHeight, setHeaderHeight ] = useState(DEFAULT_HEADER_HEIGHT);
@@ -131,29 +136,33 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
             <Responsive minWidth={ 767 }>
                 <AppFooter/>
             </Responsive>
-            <CookieConsentBanner
-                inverted
-                title={ (
-                    <div className="title" data-testid="cookie-consent-banner-content-title">
-                        <Trans
-                            i18nKey={ t("myAccount:components.cookieConsent.content") }
-                        >
-                            We use cookies to ensure that you get the best overall experience.
-                            These cookies are used to maintain an uninterrupted continuous
-                            session whilst providing smooth and personalized services.
-                            To learn more about how we use cookies, refer our <a
-                            href="https://wso2.com/cookie-policy"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-testid="login-page-cookie-policy-link"
-                        >
-                            Cookie Policy
-                        </a>.
-                        </Trans>
-                    </div>
-                ) }
-                confirmButtonText={ t("myAccount:components.cookieConsent.confirmButton") }
-            />
+            {
+                isCookieConsentBannerEnabled && (
+                    <CookieConsentBanner
+                        inverted
+                        title={ (
+                            <div className="title" data-testid="cookie-consent-banner-content-title">
+                                <Trans
+                                    i18nKey={ t("myAccount:components.cookieConsent.content") }
+                                >
+                                    We use cookies to ensure that you get the best overall experience.
+                                    These cookies are used to maintain an uninterrupted continuous
+                                    session whilst providing smooth and personalized services.
+                                    To learn more about how we use cookies, refer our <a
+                                    href="https://wso2.com/cookie-policy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid="login-page-cookie-policy-link"
+                                >
+                                    Cookie Policy
+                                </a>.
+                                </Trans>
+                            </div>
+                        ) }
+                        confirmButtonText={ t("myAccount:components.cookieConsent.confirmButton") }
+                    />
+                )
+            }
         </>
     );
 };

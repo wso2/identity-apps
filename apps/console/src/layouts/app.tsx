@@ -27,8 +27,9 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { PreLoader } from "../features/core";
+import { AppState, PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
@@ -44,6 +45,8 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
     const { t } = useTranslation();
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppLayoutRoutes());
+    const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isCookieConsentBannerEnabled);
 
     /**
      * Listen for base name changes and updated the layout routes.
@@ -103,29 +106,33 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                         }
                     </Switch>
                 </Suspense>
-                <CookieConsentBanner
-                    inverted
-                    title={ (
-                        <div className="title" data-testid="cookie-consent-banner-content-title">
-                            <Trans
-                                i18nKey={ t("console:common.cookieConsent.content") }
-                            >
-                                We use cookies to ensure that you get the best overall experience.
-                                These cookies are used to maintain an uninterrupted continuous
-                                session whilst providing smooth and personalized services.
-                                To learn more about how we use cookies, refer our <a
-                                    href="https://wso2.com/cookie-policy"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    data-testid="login-page-cookie-policy-link"
-                                >
-                                    Cookie Policy
-                                </a>.
-                            </Trans>
-                        </div>
-                    ) }
-                    confirmButtonText={ t("console:common.cookieConsent.confirmButton") }
-                />
+                {
+                    isCookieConsentBannerEnabled && (
+                        <CookieConsentBanner
+                            inverted
+                            title={ (
+                                <div className="title" data-testid="cookie-consent-banner-content-title">
+                                    <Trans
+                                        i18nKey={ t("console:common.cookieConsent.content") }
+                                    >
+                                        We use cookies to ensure that you get the best overall experience.
+                                        These cookies are used to maintain an uninterrupted continuous
+                                        session whilst providing smooth and personalized services.
+                                        To learn more about how we use cookies, refer our <a
+                                        href="https://wso2.com/cookie-policy"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        data-testid="login-page-cookie-policy-link"
+                                    >
+                                        Cookie Policy
+                                    </a>.
+                                    </Trans>
+                                </div>
+                            ) }
+                            confirmButtonText={ t("console:common.cookieConsent.confirmButton") }
+                        />
+                    )
+                }
             </ErrorBoundary>
         </AppLayoutSkeleton>
     );
