@@ -16,7 +16,10 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./application";
-export * from "./identity-provider";
-export * from "./common";
+import { CommonConfig } from "./models";
+
+export const commonConfig: CommonConfig = {
+    AdvancedSearchWithBasicFilters: {
+        enableQuerySearch: true
+    }
+};

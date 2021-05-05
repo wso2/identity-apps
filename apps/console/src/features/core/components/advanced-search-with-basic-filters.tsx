@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../configs";
+import { commonConfig } from "../../../extensions";
 
 /**
  * Filter attribute field identifier.
@@ -103,6 +104,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Manually trigger query clear action from outside.
      */
     triggerClearQuery?: boolean;
+    /**
+     * Enable query search with shift and enter.
+     */
+    enableQuerySearch?: boolean;
 }
 
 /**
@@ -119,6 +124,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
+        enableQuerySearch,
         filterAttributeOptions,
         filterConditionOptions,
         filterConditionsPlaceholder,
@@ -230,6 +236,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
+            enableQuerySearch={ enableQuerySearch }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
@@ -361,5 +368,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
+    enableQuerySearch: commonConfig.AdvancedSearchWithBasicFilters.enableQuerySearch,
     showResetButton: false
 };
