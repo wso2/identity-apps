@@ -1,29 +1,3 @@
 /*******************************
          Nag Overrides
 *******************************/
-
-/*-------------------------------
-      Cookie Consent Banner
---------------------------------*/
-
-.ui.nag {
-    &.cookie-consent-banner {
-        padding: @cookieConsentBannerPadding;
-        border-radius: @cookieConsentBannerBorderRadius;
-        background: @cookieConsentBannerBackground;
-        opacity: @cookieConsentBannerOpacity;
-
-        .banner-content {
-            align-items: center;
-            display: flex;
-            justify-content: @cookieConsentBannerContentJustify;
-
-            .title {
-                max-width: @cookieConsentBannerTitleMaxWidth;
-                font-weight: 200;
-                margin-right: 3em;
-                text-align: left;
-            }
-        }
-    }
-}

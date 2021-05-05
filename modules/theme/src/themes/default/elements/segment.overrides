@@ -629,3 +629,46 @@
         }
     }
 }
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+.ui.segment {
+    &.cookie-consent-banner {
+        left: @cookieConsentBannerLeft;
+        position: @cookieConsentBannerPosition;
+        bottom: @cookieConsentBannerBottom;
+        max-width: @cookieConsentBannerMaxWidth;
+        top: @cookieConsentBannerTop;
+        background: @cookieConsentBannerBackground;
+        opacity: @cookieConsentBannerOpacity;
+        color: @cookieConsentBannerColor;
+        padding: @cookieConsentBannerPadding;
+        z-index: 999;
+        
+        .banner-image {
+            display: flex;
+            margin: @cookieConsentBannerImageMargin;
+        }
+        
+        .banner-content {
+            margin: @cookieConsentBannerContentMargin;
+        }
+        
+        &.inverted {
+            color: @cookieConsentBannerInvertedColor;
+            background: @cookieConsentBannerInvertedBackground;
+          
+            .banner-image {
+                .cookie-icon {
+                    svg {
+                        path {
+                            fill: @cookieConsentBannerInvertedIconColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
