@@ -187,12 +187,15 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
     const replaceOps = [];
 
     for (const key in rest) {
-        replaceOps.push({
-            "operation": "REPLACE",
-            "path": "/" + key,
-            "value": rest[key]
-        });
+        if(rest[key] !== undefined) {
+            replaceOps.push({
+                "operation": "REPLACE",
+                "path": "/" + key,
+                "value": rest[key]
+            });
+        } 
     }
+
 
     const requestConfig = {
         data: replaceOps,

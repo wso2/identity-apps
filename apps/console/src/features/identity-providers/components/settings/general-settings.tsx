@@ -19,17 +19,17 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
-import { deleteIdentityProvider, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
+import { deleteIdentityProvider, getIdentityProviderList, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
-import { ConnectedAppInterface, ConnectedAppsInterface, IdentityProviderInterface } from "../../models";
+import { ConnectedAppInterface, ConnectedAppsInterface, IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
 import { GeneralDetailsForm } from "../forms";
-import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
+import { handleGetIDPListCallError, handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -100,6 +100,31 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
+
+    const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+
+    /**
+     * Loads the identity provider authenticators on initial component load.
+     */
+    useEffect(() => {
+        getIDPlist();
+    }, []);
+
+    /**
+     * Get Idp List.
+     */
+    const getIDPlist=()=>{
+        setIdPListRequestLoading(true);
+        getIdentityProviderList(null, null,null)
+            .then((response)=> {
+                setIdPList(response)
+            }).catch((error) => {
+                handleGetIDPListCallError(error);
+            }).finally(() => {
+                setIdPListRequestLoading(false);
+            });
+    }
 
     const handleIdentityProviderDeleteAction = (): void => {
         setIsAppsLoading(true);
@@ -221,7 +246,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     };
 
     return (
-        !isLoading
+        !isLoading && !isIdPListRequestLoading
             ? (
                 <>
                     <GeneralDetailsForm
@@ -231,6 +256,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         onSubmit={ handleFormSubmit }
                         onUpdate={ onUpdate }
                         imageUrl={ imageUrl }
+                        idpList={ idpList }
                         data-testid={ `${ testId }-form` }
 
                     />
@@ -329,7 +355,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                         "deleteIDPWithConnectedApps.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning
-                                                           data-testid={ `${ testId }-delete-idp-confirmation` }>
+                                                        data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("console:develop.features.authenticationProvider.confirmations." +
                                         "deleteIDPWithConnectedApps.message") }
                                 </ConfirmationModal.Message>
