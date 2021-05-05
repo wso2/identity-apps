@@ -58,6 +58,12 @@ body {
                 background-color: @secondaryColor !important;
             }
         }
+        
+        &.absolute {
+            position: absolute;
+            top: @productVersionLabelAbsoluteTop;
+            right: @productVersionLabelAbsoluteRight;
+        }
     }
     .product-logo {
         width: @productLogoWidth;
@@ -1114,6 +1120,10 @@ body {
 
         &:hover {
             background: @iconHoverBgColor;
+            
+            &.inverted {
+                background: @defaultInvertedHoverBackground;
+            }
         }
         i {
             margin: 0 0.25em;

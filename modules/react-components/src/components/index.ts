@@ -27,6 +27,7 @@ export * from "./button";
 export * from "./card";
 export * from "./code-editor";
 export * from "./danger-zone";
+export * from "./dropdown";
 export * from "./error";
 export * from "./footer";
 export * from "./grid";

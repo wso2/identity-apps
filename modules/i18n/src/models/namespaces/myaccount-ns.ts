@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { DangerZone, ModalInterface, Notification, NotificationItem, Page, Placeholder } from "../common";
+import {
+    AppSwitchItemInterface,
+    DangerZone,
+    ModalInterface,
+    Notification,
+    NotificationItem,
+    Page,
+    Placeholder
+} from "../common";
 
 /**
  * Model for the user portal portal namespace
@@ -246,6 +254,13 @@ export interface MyAccountNS {
         footer: {
             copyright: string;
         };
+        header: {
+            appSwitch: {
+                console: AppSwitchItemInterface;
+                myAccount: AppSwitchItemInterface;
+                tooltip: string;
+            };
+        },
         linkedAccounts: {
             accountTypes: {
                 local: {

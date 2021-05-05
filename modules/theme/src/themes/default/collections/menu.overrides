@@ -61,15 +61,20 @@
             }
             &.right {
                 >.item {
-                    padding-left: @appHeaderExtensionItemPaddingLeft;
-    
                     &:not(:last-child) {
+                        padding-left: @appHeaderExtensionItemPaddingLeft;
                         padding-right: @appHeaderExtensionItemPaddingRight;
                     }
     
                     >.item {
-                        padding-left: @appHeaderExtensionInnerItemPaddingLeft;
-                        padding-right: @appHeaderExtensionInnerItemPaddingRight;
+                        padding: @appHeaderExtensionInnerItemPadding;
+                    }
+                    
+                    .theme-icon {
+                        i {
+                            width: 100%;
+                            height: 100%;
+                        }
                     }
                 }
             }
@@ -78,14 +83,52 @@
             display: flex;
             justify-content: space-between;
         }
-        .app-switch-dropdown {
-            .menu {
-                min-width: 230px;
-                min-height: 110px;
-                margin-top: 20px !important;
+        // Common styles for header drop-downs.
+        .header-dropdown {
+            .header-dropdown-menu {
+                padding: @userDropdownPadding;
+
+                .header-dropdown-item {
+                    border: none;
+                    margin: @userDropdownLinkMargin;
+                    padding: 1.2em 1em!important;
+                    border-radius: @defaultBorderRadius !important;
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                    
+                    .header-dropdown-item-inner {
+                        padding: 0;
+                        
+                        &.flex {
+                            display: flex !important;
+                        }
+                        
+                        .header {
+                            font-weight: 400;
+                        }
+                        .meta {
+                            color: @nobel;
+                        }
+                    }
+                }
+
+                // App switch dropdown overrides.
+                &.app-switch-dropdown {
+                    .header-dropdown-menu {
+                        .header-dropdown-item {
+                            &:first-child {
+                                margin-top: 0;
+                            }
+                        }
+                    }
+                }
             }
         }
         .user-dropdown {
+            padding-left: @userDropdownTriggerPaddingLeft;
+
             &:hover, &:active, &:focus {
                 background: transparent;
             }

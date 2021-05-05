@@ -97,6 +97,14 @@
 @defaultHoverBackgroundColor: @transparentBlack;
 
 /*-------------------
+       Inverted
+--------------------*/
+
+// inverted state colors are not defined site wide. Used the once that are in menu.variables etc.
+@defaultInvertedHoverBackground: @transparentWhite;
+@defaultInvertedActiveBackground: @strongTransparentWhite;
+
+/*-------------------
      Image Sizes
 --------------------*/
 

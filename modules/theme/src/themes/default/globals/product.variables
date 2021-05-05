@@ -149,7 +149,9 @@
 @productVersionLabelPadding: 3px 6px;
 @productVersionLabelFontSize: 0.6em;
 @productVersionLabelFontWeight: 600;
-
+@productVersionLabelAbsoluteTop: -5px;
+@productVersionLabelAbsoluteRight: 15px;
+            
 /*-----------------------------
       Empty Placeholder
 ------------------------------*/

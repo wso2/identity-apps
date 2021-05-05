@@ -31,6 +31,7 @@ import { ReactComponent as CertificateIcon } from "../../../themes/default/asset
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CloseIcon } from "../../../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
+import ConsoleIcon from "../../../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as CrossIcon } from "../../../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/images/icons/database-icon.svg";
@@ -40,6 +41,7 @@ import { ReactComponent as GearsIcon } from "../../../themes/default/assets/imag
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
+import MyAccountIcon from "../../../themes/default/assets/images/icons/myaccount-icon.svg";
 import {
     ReactComponent as AccountManagementOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
@@ -235,5 +237,13 @@ export const getMiscellaneousIcons = () => {
 
     return {
         tenantIcon: LDAPOutlineIcon
+    };
+};
+
+export const AppSwitcherIcons = (): Record<string, any> => {
+
+    return {
+        console: ConsoleIcon,
+        myAccount: MyAccountIcon
     };
 };

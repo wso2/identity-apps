@@ -198,3 +198,11 @@ export interface Popup {
     header: string;
     subHeader: string;
 }
+
+/**
+ * Interface for App Switch item.
+ */
+export interface AppSwitchItemInterface {
+    name: string;
+    description: string;
+}

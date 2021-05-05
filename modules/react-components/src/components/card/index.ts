@@ -22,4 +22,3 @@ export * from "./labeled-card";
 export * from "./selection-card";
 export * from "./stat-count-card";
 export * from "./technology-card";
-export * from "./app-switch-card";

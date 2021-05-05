@@ -21,6 +21,7 @@ import { AnnouncementBannerInterface, ProfileInfoInterface } from "@wso2is/core/
 import { CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import {
     Announcement,
+    AppSwitcher,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -39,6 +40,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Container, Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
+import { AppSwitcherIcons } from "../configs";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -82,6 +85,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
         state.config.ui.isHeaderAvatarLabelAllowed);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
+    const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
     const isDevelopAllowed: boolean = 
         useSelector((state: AppState) => state.accessControl.isDevelopAllowed);
@@ -89,9 +95,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         useSelector((state: AppState) => state.accessControl.isManageAllowed);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
-
-    const showAppSwitchButton: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showAppSwitchButton);   
 
     useEffect(() => {
         if (isEmpty(config)) {
@@ -125,6 +128,47 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         setAnnouncement(validAnnouncement);
     };
+
+    /**
+     * Renders the app switcher dropdown.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderAppSwitcher = (): ReactElement => (
+
+        <Menu.Item
+            className="app-switch-button-wrapper"
+            key="app-switch-trigger"
+            data-testid="app-switch-trigger"
+        >
+            <AppSwitcher
+                enabled={ showAppSwitchButton }
+                tooltip={ t("console:common.header.appSwitch.tooltip") }
+                apps={ [
+                    {
+                        "data-testid": "app-switch-console",
+                        description: t("console:common.header.appSwitch.console.description"),
+                        enabled: true,
+                        icon: AppSwitcherIcons().console,
+                        name: t("console:common.header.appSwitch.console.name"),
+                        onClick: () => {
+                            window.open(accountAppURL,"_self");
+                        }
+                    },
+                    {
+                        "data-testid": "app-switch-myaccount",
+                        description: t("console:common.header.appSwitch.myAccount.description"),
+                        enabled: true,
+                        icon: AppSwitcherIcons().myAccount,
+                        name: t("console:common.header.appSwitch.myAccount.name"),
+                        onClick: () => {
+                            window.open(consoleAppURL,"_blank", "noopener");
+                        }
+                    }
+                ] }
+            />
+        </Menu.Item>
+    );
 
     return (
         <ReusableHeader
@@ -162,6 +206,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     versionUISettings={ {
                         allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
                         labelColor: config.ui.productVersionConfig?.labelColor,
+                        labelPosition: "absolute",
                         textCase: config.ui.productVersionConfig?.textCase
                     } }
                 />
@@ -174,7 +219,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     floated: "right"
                 },
                 {
-                    component: <ComponentPlaceholder section="app-switch-button" type="component"/>,
+                    component: renderAppSwitcher(),
                     floated: "right"
                 },
                 {
