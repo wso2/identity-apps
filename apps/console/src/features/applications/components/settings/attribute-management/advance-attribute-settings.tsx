@@ -132,11 +132,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setSubmissionValues(settingValues);
     };
 
-    const subjectAttributeChangeListener = (tempForm): void => {
-        if(tempForm?.SubjectAttributeFieldName) {
-            setSelectedSubjectValue(tempForm.SubjectAttributeFieldName?.toString());
+    const subjectAttributeChangeListener = (subjectAttributeFieldName: string): void => {
+        if(subjectAttributeFieldName) {
+            setSelectedSubjectValue(subjectAttributeFieldName?.toString());
         } else {
-            setSelectedSubjectValue(null);
+            setSelectedSubjectValue(subjectAttributeFieldName);
         }
     };
 
