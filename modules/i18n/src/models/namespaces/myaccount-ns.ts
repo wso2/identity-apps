@@ -296,6 +296,10 @@ export interface MyAccountNS {
                 switchAccount: Notification;
             };
         };
+        cookieConsent: {
+            content: string;
+            confirmButton: string;
+        };
         federatedAssociations: {
             deleteConfirmation: string;
             notifications: {

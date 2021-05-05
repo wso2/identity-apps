@@ -375,6 +375,13 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        cookieConsent: {
+            confirmButton: "Entendi",
+            content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies " +
+                "são usados ​​para manter uma sessão contínua ininterrupta ao mesmo tempo em que oferece serviços " +
+                "personalizados e fluidos. Para saiba mais sobre como usamos cookies, consulte nossa " +
+                "<1>Política de Cookies</1>."
+        },
         federatedAssociations: {
             deleteConfirmation: "Isso removerá esse login externo da sua conta. Deseja continuar removendo?",
             notifications: {

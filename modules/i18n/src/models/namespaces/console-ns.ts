@@ -83,6 +83,10 @@ export interface ConsoleNS {
             };
             resultsIndicator: string;
         };
+        cookieConsent: {
+            content: string;
+            confirmButton: string;
+        };
         header: {
             appSwitch: {
                 console: AppSwitchItemInterface;

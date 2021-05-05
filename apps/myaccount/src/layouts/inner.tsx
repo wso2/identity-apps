@@ -17,9 +17,9 @@
  */
 
 import { CommonUtils } from "@wso2is/core/utils";
-import { ErrorBoundary, LinkButton, PageLayout } from "@wso2is/react-components";
+import { CookieConsentBanner, ErrorBoundary, LinkButton, PageLayout } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Responsive } from "semantic-ui-react";
 import {
     Alert,
@@ -131,6 +131,29 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
             <Responsive minWidth={ 767 }>
                 <AppFooter/>
             </Responsive>
+            <CookieConsentBanner
+                inverted
+                title={ (
+                    <div className="title" data-testid="cookie-consent-banner-content-title">
+                        <Trans
+                            i18nKey={ t("myAccount:components.cookieConsent.content") }
+                        >
+                            We use cookies to ensure that you get the best overall experience.
+                            These cookies are used to maintain an uninterrupted continuous
+                            session whilst providing smooth and personalized services.
+                            To learn more about how we use cookies, refer our <a
+                            href="https://wso2.com/cookie-policy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-testid="login-page-cookie-policy-link"
+                        >
+                            Cookie Policy
+                        </a>.
+                        </Trans>
+                    </div>
+                ) }
+                confirmButtonText={ t("myAccount:components.cookieConsent.confirmButton") }
+            />
         </>
     );
 };
