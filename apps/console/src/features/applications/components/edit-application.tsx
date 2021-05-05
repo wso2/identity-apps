@@ -48,6 +48,8 @@ import {
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import SAMLApplicationTemplate
+    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -184,12 +186,41 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             });
     }, [ isAllowedOriginsUpdated ]);
 
+    /**
+     * Called on `availableInboundProtocols` prop update.
+     */
+    useEffect(() => {
+        if (!isEmpty(availableInboundProtocols)) {
+            return;
+        }
+
+        setInboundProtocolsRequestLoading(true);
+
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
+            .finally(() => {
+                setInboundProtocolsRequestLoading(false);
+            });
+    }, [ availableInboundProtocols ]);
+
+    /**
+     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
+     */
+    useEffect(() => {
+        if (!application?.inboundProtocols || !application?.id) {
+            return;
+        }
+
+        findConfiguredInboundProtocol(application.id);
+    }, [ application?.inboundProtocols ]);
+
     useEffect(() => {
         if (samlConfigurations !== undefined) {
             return;
         }
-        ApplicationManagementUtils.getSAMLApplicationMeta();
-    }, [ samlConfigurations ]);
+        if (application?.templateId === SAMLApplicationTemplate.id) {
+            ApplicationManagementUtils.getSAMLApplicationMeta();
+        }
+    }, [ samlConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (tabPaneExtensions) {
@@ -235,33 +266,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         inboundProtocolConfig,
         isInboundProtocolConfigRequestLoading
     ]);
-
-    /**
-     * Called on `availableInboundProtocols` prop update.
-     */
-    useEffect(() => {
-        if (!isEmpty(availableInboundProtocols)) {
-            return;
-        }
-
-        setInboundProtocolsRequestLoading(true);
-
-        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
-            .finally(() => {
-                setInboundProtocolsRequestLoading(false);
-            });
-    }, [ availableInboundProtocols ]);
-
-    /**
-     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
-     */
-    useEffect(() => {
-        if (!application?.inboundProtocols || !application?.id) {
-            return;
-        }
-
-        findConfiguredInboundProtocol(application.id);
-    }, [ application?.inboundProtocols ]);
 
     useEffect(() => {
 
