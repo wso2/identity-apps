@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./cookie-consent-banner";
 export * from "./jumbotron";
