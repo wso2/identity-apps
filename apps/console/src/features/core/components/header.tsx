@@ -152,7 +152,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().console,
                         name: t("console:common.header.appSwitch.console.name"),
                         onClick: () => {
-                            window.open(consoleAppURL,"_self");
+                            window.open(consoleAppURL, "_self");
                         }
                     },
                     {
