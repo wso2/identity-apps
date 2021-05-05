@@ -19,4 +19,4 @@
 export * from "./attribute";
 export * from "./application";
 export * from "./identity-provider";
-export * from "./core";
+export * from "./common";

@@ -20,4 +20,4 @@ export * from "./attribute";
 export * from "./identity-providers";
 export * from "./application";
 export * from "./group";
-export * from "./core";
+export * from "./common";

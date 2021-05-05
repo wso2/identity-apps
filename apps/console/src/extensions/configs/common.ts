@@ -16,8 +16,10 @@
  * under the License.
  */
 
-export interface CoreConfig {
+import { CommonConfig } from "./models";
+
+export const commonConfig: CommonConfig = {
     AdvancedSearchWithBasicFilters: {
-        enableQuerySearch: boolean;
+        enableQuerySearch: true
     }
-}
+};
