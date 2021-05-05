@@ -19,7 +19,7 @@
 import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
-import { Checkbox, Form, Input } from "semantic-ui-react";
+import { Checkbox, Form, Input, Select } from "semantic-ui-react";
 import { FieldButtonTypes } from "../models";
 
 /**
@@ -176,19 +176,24 @@ export const SelectAdapter = (props): ReactElement => {
             label={ childFieldProps.label }
             name={ childFieldProps.name }
             options={ childFieldProps.children }
-            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
-            onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
-                input.onChange(value.toString(), childFieldProps.name);
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>, data) => {
+                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(data.value.toString());
+                }
+
+                input.onChange(data.value.toString());
             } }
             onBlur={ (event: React.KeyboardEvent) => input.onBlur(event) }
-            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
             autoFocus={ childFieldProps.autoFocus || false }
             disabled={ childFieldProps.disabled }
             required={ childFieldProps.required }
             onKeyPress={ (event: React.KeyboardEvent, data) => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
-            { ...omit(childFieldProps, ["value", "children"]) }
+            control={ Select }
+            { ...omit(childFieldProps, [ "value", "children" ]) }
+            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
         />
     );
 };
