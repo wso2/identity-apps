@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Code, ConfirmationModal, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -99,6 +99,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ authenticators, setAuthenticators ] = useState<GenericAuthenticatorInterface[][]>(undefined);
     const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingGoogleAuthenticatorModal, setShowMissingGoogleAuthenticatorModal ] = useState<boolean>(false);
+    const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(false);
     const [
         showDuplicateGoogleAuthenticatorSelectionModal,
         setShowDuplicateGoogleAuthenticatorSelectionModal
@@ -116,6 +117,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Loads federated authenticators and local authenticators on component load.
      */
     useEffect(() => {
+        
+        setIsAuthenticatorsFetchRequestLoading(true);
+
         IdentityProviderManagementUtils.getAllAuthenticators()
             .then((response: GenericAuthenticatorInterface[][]) => {
 
@@ -131,6 +135,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
                 setGoogleAuthenticators(google);
                 setAuthenticators(response);
+            })
+            .finally(() => {
+                setIsAuthenticatorsFetchRequestLoading(false);
             });
     }, []);
 
@@ -383,28 +390,30 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
-                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                    ? (
-                        <SignInMethodLanding
-                            isLoading={ isLoading }
-                            readOnly={ readOnly }
-                            onLoginFlowSelect={ handleLoginFlowSelect }
-                            data-testid={ `${ testId }-landing` }
-                        />
-                    )
-                    : (
-                        <>
-                            <SignInMethodCustomization
-                                appId={ appId }
-                                authenticators={ authenticators }
-                                authenticationSequence={ moderatedAuthenticationSequence }
-                                onUpdate={ onUpdate }
-                                onReset={ handleLoginFlowReset }
-                                data-testid={ testId }
+                (isLoading || isAuthenticatorsFetchRequestLoading)
+                    ? <ContentLoader />
+                    : (!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                        ? (
+                            <SignInMethodLanding
+                                isLoading={ isLoading }
                                 readOnly={ readOnly }
+                                onLoginFlowSelect={ handleLoginFlowSelect }
+                                data-testid={ `${ testId }-landing` }
                             />
-                        </>
-                    )
+                        )
+                        : (
+                            <>
+                                <SignInMethodCustomization
+                                    appId={ appId }
+                                    authenticators={ authenticators }
+                                    authenticationSequence={ moderatedAuthenticationSequence }
+                                    onUpdate={ onUpdate }
+                                    onReset={ handleLoginFlowReset }
+                                    data-testid={ testId }
+                                    readOnly={ readOnly }
+                                />
+                            </>
+                        )
             }
             { showMissingGoogleAuthenticatorModal && renderMissingGoogleAuthenticatorModal() }
             { showDuplicateGoogleAuthenticatorSelectionModal && renderDuplicateGoogleAuthenticatorSelectionModal() }
