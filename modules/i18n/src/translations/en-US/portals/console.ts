@@ -2480,8 +2480,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Click on the Add Authentication button",
-                            1: "add options to this step."
+                            0: "Click on the <1>Add Authentication</1> button to add options to this step."
                         },
                         title: null
                     },

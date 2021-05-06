@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
+import { Code, EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import {
     FederatedAuthenticatorInterface,
@@ -243,10 +243,15 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         : (
                             <EmptyPlaceholder
                                 subtitle={ [
-                                    t("console:develop.features.applications.placeholders" +
-                                        ".emptyAuthenticatorStep.subtitles.0"),
-                                    t("console:develop.features.applications.placeholders" +
-                                        ".emptyAuthenticatorStep.subtitles.1")
+                                    <Trans
+                                        key={ 0 }
+                                        i18nKey={
+                                            t("console:develop.features.applications.placeholders." +
+                                                "emptyAuthenticatorStep.subtitles.0")
+                                        }
+                                    >
+                                        Click on the <Code>Add Authentication</Code> button to add options to this step.
+                                    </Trans>
                                 ] }
                                 data-testid={ `${ testId }-empty-placeholder` }
                             />

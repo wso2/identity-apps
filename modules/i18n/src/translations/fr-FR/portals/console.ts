@@ -2502,8 +2502,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Faites glisser et déposez l'un des authentificateurs ci-dessus",
-                            1: "pour construire une séquence d'authentification."
+                            0: "Cliquez sur le bouton <1>Ajouter une authentification</1> pour ajouter des options " +
+                                "à cette étape"
                         },
                         title: null
                     },
