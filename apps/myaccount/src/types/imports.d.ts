@@ -32,3 +32,10 @@ declare module "*.png" {
     const content: string;
     export default content;
 }
+
+declare module "worker-loader!*" {
+    class TimerWorker extends Worker {
+        constructor();
+    }
+    export default TimerWorker;
+}

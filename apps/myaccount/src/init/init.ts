@@ -20,6 +20,7 @@ import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import TimerWorker from "@wso2is/core/src/workers/timer.worker";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
@@ -71,6 +72,53 @@ function sendPromptNoneRequest() {
     parsedAuthorizationEndpointURL.searchParams.append("code_challenge", getRandomPKCEChallenge());
 
     promptNoneIFrame.src = parsedAuthorizationEndpointURL.toString();
+}
+
+function handleTimeOut(_idleSecondsCounter : number, _sessionAgeCounter : number,
+                       SESSION_REFRESH_TIMEOUT : number, IDLE_TIMEOUT : number, IDLE_WARNING_TIMEOUT : number) : number {
+
+    if (_idleSecondsCounter >= IDLE_TIMEOUT || _idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
+        const warningSearchParamKey = "session_timeout_warning";
+        const currentURL = new URL(window.location.href);
+
+        // If the URL already has the timeout warning search para, delete it first.
+        if (
+            currentURL &&
+            currentURL.searchParams &&
+            currentURL.searchParams.get(warningSearchParamKey) !== null
+        ) {
+            currentURL.searchParams.delete(warningSearchParamKey);
+        }
+
+        const existingSearchParams = currentURL.search;
+
+        // NOTE: This variable is used for push state.
+        // If already other search params are available simply append using `&`,
+        // otherwise just add the param using `?`.
+        const searchParam =
+            existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
+
+        // Append the search param to the URL object.
+        currentURL.searchParams.append(warningSearchParamKey, "true");
+
+        const state = {
+            idleTimeout: IDLE_TIMEOUT,
+            idleWarningTimeout: IDLE_WARNING_TIMEOUT,
+            url: currentURL.href
+        };
+
+        window.history.pushState(state, null, searchParam);
+
+        dispatchEvent(new PopStateEvent("popstate", { state: state }));
+    }
+
+    // Keep user session intact if the user is active
+    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+        sendPromptNoneRequest();
+        _sessionAgeCounter = 0;
+    }
+
+    return _sessionAgeCounter;
 }
 
 const config = window["AppUtils"]?.getConfig();
@@ -138,51 +186,21 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         _idleSecondsCounter = 0;
     };
 
-    window.setInterval(() => {
-        {
+    // Run the timer in main thread if the browser is Internet Explorer, and using a web worker otherwise.
+    if (new UAParser().getBrowser().name === "IE") {
+        window.setInterval(() => {
             _idleSecondsCounter++;
             _sessionAgeCounter++;
-
-            if (_idleSecondsCounter >= IDLE_TIMEOUT || _idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
-                const warningSearchParamKey = "session_timeout_warning";
-                const currentURL = new URL(window.location.href);
-
-                // If the URL already has the timeout warning search para, delete it first.
-                if (
-                    currentURL &&
-                    currentURL.searchParams &&
-                    currentURL.searchParams.get(warningSearchParamKey) !== null
-                ) {
-                    currentURL.searchParams.delete(warningSearchParamKey);
-                }
-
-                const existingSearchParams = currentURL.search;
-
-                // NOTE: This variable is used for push state.
-                // If already other search params are available simply append using `&`,
-                // otherwise just add the param using `?`.
-                const searchParam =
-                    existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
-
-                // Append the search param to the URL object.
-                currentURL.searchParams.append(warningSearchParamKey, "true");
-
-                const state = {
-                    idleTimeout: IDLE_TIMEOUT,
-                    idleWarningTimeout: IDLE_WARNING_TIMEOUT,
-                    url: currentURL.href
-                };
-
-                window.history.pushState(state, null, searchParam);
-
-                dispatchEvent(new PopStateEvent("popstate", { state: state }));
-            }
-
-            // Keep user session intact if the user is active
-            if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-                sendPromptNoneRequest();
-                _sessionAgeCounter = 0;
-            }
-        }
-    }, 1000);
+            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
+                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
+        }, 1000);
+    } else {
+        const worker = new TimerWorker();
+        worker.onmessage = () => {
+            _idleSecondsCounter++;
+            _sessionAgeCounter++;
+            _sessionAgeCounter = handleTimeOut(_idleSecondsCounter, _sessionAgeCounter, SESSION_REFRESH_TIMEOUT,
+                IDLE_TIMEOUT, IDLE_WARNING_TIMEOUT);
+        };
+    }
 }
