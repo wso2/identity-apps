@@ -65,7 +65,7 @@ export const console: ConsoleNS = {
         cookieConsent: {
             confirmButton: "Got It",
             content: "We use cookies to ensure that you get the best overall experience. These cookies are used to " +
-                "maintain an uninterrupted continuous session whilst providing smooth and personalized services. To " +
+                "maintain an uninterrupted continuous session while providing smooth and personalized services. To " +
                 "learn more about how we use cookies, refer our <1>Cookie Policy</1>."
         },
         header: {
