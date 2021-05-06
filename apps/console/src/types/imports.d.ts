@@ -35,9 +35,3 @@ declare module "*.png" {
 
 declare module "*.md";
 
-declare module "worker-loader!*" {
-    class TimerWorker extends Worker {
-        constructor();
-    }
-    export default TimerWorker;
-}

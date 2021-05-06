@@ -74,8 +74,8 @@ function sendPromptNoneRequest() {
     promptNoneIFrame.src = parsedAuthorizationEndpointURL.toString();
 }
 
-function handleTimeOut(_idleSecondsCounter : number, _sessionAgeCounter : number,
-                SESSION_REFRESH_TIMEOUT : number, IDLE_TIMEOUT : number, IDLE_WARNING_TIMEOUT : number) : number {
+function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
+                SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
 
     if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT || _idleSecondsCounter >= IDLE_TIMEOUT) {
         const warningSearchParamKey = "session_timeout_warning";
