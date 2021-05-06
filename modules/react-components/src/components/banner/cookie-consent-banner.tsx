@@ -27,11 +27,10 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { Segment, SegmentProps, TransitionablePortal } from "semantic-ui-react";
+import { Segment, SegmentProps, TransitionProps, TransitionablePortal } from "semantic-ui-react";
 import { ReactComponent as CookieIcon } from "../../assets/images/icons/cookie-icon.svg";
 import { PrimaryButton } from "../button";
 import { GenericIcon } from "../icon";
-import { boolean } from "@storybook/addon-knobs";
 
 /**
  * Proptypes for the Cookie Consent Banner.
@@ -114,6 +113,8 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
     } = props;
 
     const [ show, setShow ] = useState<boolean>(false);
+    const [ transitionAnimation, setTransitionAnimation ] = useState<TransitionProps[ "animation" ]>(undefined);
+    const [ transitionDuration, setTransitionDuration ] = useState<number>(0);
 
     const classes = classNames(
         "cookie-consent-banner",
@@ -150,6 +151,8 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
     const handleConfirmButton = (): void => {
 
         persistConsent();
+        setTransitionAnimation("slide up");
+        setTransitionDuration(500);
         setShow(false);
         onConfirmButtonClick && typeof onConfirmButtonClick === "function" && onConfirmButtonClick();
     };
@@ -209,8 +212,8 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
             closeOnEscape={ false }
             closeOnDocumentClick={ false }
             transition={ {
-                animation: "slide up",
-                duration: 500
+                animation: transitionAnimation,
+                duration: transitionDuration
             } }
         >
             <Segment
