@@ -468,22 +468,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     const hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
 
-        let hasFirstFactors: boolean = false;
+        let isFound: boolean = false;
 
         for (const step of steps) {
             for (const option of step.options) {
                 if (factors.includes(option.authenticator)) {
-                    hasFirstFactors = true;
+                    isFound = true;
                     break;
                 }
             }
 
-            if (hasFirstFactors) {
+            if (isFound) {
                 break;
             }
         }
 
-        return hasFirstFactors;
+        return isFound;
     };
 
     /**
