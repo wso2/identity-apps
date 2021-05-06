@@ -1060,7 +1060,14 @@ export const myAccount: MyAccountNS = {
                             }
                         }
                     }
-                }
+                },
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: "Escolha o seu país"
+                        }
+                    }
+                },
             },
             messages: {
                 emailConfirmation: {

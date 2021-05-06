@@ -578,7 +578,7 @@ export const myAccount: MyAccountNS = {
                         reScanQuestion: "QR குறியீட்டினை மீண்டும் பதிவு செய்ய வேண்டுமா?",
                         requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
                     },
-                    toolTip: "பயன்பாடு இல்லையா? <3> App Store </ 3> அல்லது <3> Google Play </ 3> " + 
+                    toolTip: "பயன்பாடு இல்லையா? <3> App Store </ 3> அல்லது <3> Google Play </ 3> " +
                     "இலிருந்து Google Authenticator போன்ற அங்கீகார பயன்பாட்டைப் பதிவிறக்கவும்"
                 },
                 notifications: {
@@ -1107,7 +1107,14 @@ export const myAccount: MyAccountNS = {
                             }
                         }
                     }
-                }
+                },
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: "உங்கள் நாட்டை தேர்ந்தெடுங்கள்"
+                        }
+                    }
+                },
             },
             messages: {
                 emailConfirmation: {

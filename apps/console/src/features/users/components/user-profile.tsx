@@ -713,7 +713,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     label={ fieldName }
                     required={ schema.required }
                     requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Enter your" + " " + fieldName }
+                    placeholder={ "Select your" + " " + fieldName }
                     type="dropdown"
                     value={ profileInfo.get(schema.name) }
                     children={ countryList ? countryList.map(list => {

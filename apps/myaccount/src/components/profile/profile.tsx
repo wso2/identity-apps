@@ -544,10 +544,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 autoFocus={ true }
                                                 label=""
                                                 name={ schema.name }
-                                                placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
-                                                    "placeholder", {
-                                                    fieldName
-                                                }) }
+                                                placeholder={ t("myAccount:components.profile.forms." +
+                                                    "countryChangeForm.inputs.country.placeholder") }
                                                 required={ schema.required }
                                                 requiredErrorMessage={ t(
                                                     "myAccount:components.profile.forms.generic.inputs.validations.empty",
