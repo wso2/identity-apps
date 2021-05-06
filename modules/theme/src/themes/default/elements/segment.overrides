@@ -692,3 +692,13 @@
         }
     }
 }
+
+@media only screen and (max-width: 485px) {
+    .ui.segment {
+        &.cookie-consent-banner {
+            left: auto !important;
+            right: auto !important;
+            margin: 10px;
+        }
+    }
+}
