@@ -957,7 +957,9 @@ export const console: ConsoleNS = {
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can only be used " +
-                                                "if the <1>basic</1> authenticator has been added in a previous step."
+                                                "if <1>Username & Password</1> or any other handlers such as <3>" +
+                                                "Identifier First</3> that can handler these factors are present in " +
+                                                "a previous step."
                                         }
                                     }
                                 },
@@ -2141,6 +2143,21 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Successfully deleted the application.",
                             message: "Application deleted"
+                        }
+                    },
+                    deleteOptionErrorDueToSecondFactorsOnRight: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Cannot delete this authenticator"
+                        },
+                        genericError: {
+                            description: "There are second factor authenticators in other steps that depends on " +
+                                "this authenticator.",
+                            message: "Cannot delete this authenticator"
+                        },
+                        success: {
+                            description: "Successfully deleted the authenticator from step {{stepNo}}.",
+                            message: "Delete successful"
                         }
                     },
                     deleteProtocolConfig: {

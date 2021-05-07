@@ -956,8 +956,9 @@ export const console: ConsoleNS = {
                                             heading: "පියවර පදනම් කරගත් වින්‍යාසය",
                                             hint: "දේශීය / ෆෙඩරල් සත්‍යාපනය කරන්නන් අදාළ පියවර වෙත ඇදගෙන " +
                                                 "යාමෙන් සත්‍යාපන පියවර සාදන්න.",
-                                            secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ මූලික " +
-                                                "සත්‍යාපකය පෙර පියවරක් තුළ එකතු කර ඇත්නම් පමණි."
+                                            secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ <1>පරිශීලක නාමය " +
+                                                "සහ මුරපදය</1> හෝ මෙම සාධක හැසිරවිය හැකි <3>Identifier First</3> වැනි " +
+                                                "වෙනත් ඕනෑම හසුරුවන්නන් පෙර පියවරක් තුළ තිබේ නම් පමණි."
                                         }
                                     }
                                 },
@@ -2124,6 +2125,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "යෙදුම සාර්ථකව මකා දැමීය.",
                             message: "ඉවත් කිරීම සාර්ථකයි"
+                        }
+                    },
+                    deleteOptionErrorDueToSecondFactorsOnRight: {
+                        error: {
+                            description: "{{description}}",
+                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
+                        },
+                        genericError: {
+                            description: "මෙම සත්‍යාපකය මත රඳා පවතින වෙනත් සාධක වල දෙවන සාධක සත්‍යාපකයන් ඇත.",
+                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
+                        },
+                        success: {
+                            description: "{{StepNo} step පියවරෙන් සත්‍යාපකය සාර්ථකව මකා දමන ලදි.",
+                            message: "සාර්ථකව මකන්න"
                         }
                     },
                     deleteProtocolConfig: {
