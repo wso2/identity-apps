@@ -36,6 +36,7 @@ export class FieldConstants {
     public static INVALID_EMAIL_ERROR = "Please enter a valid email";
     public static INVALID_URL_ERROR = "Please enter a valid URL";
     public static INVALID_NAME_ERROR = "Please enter a valid name";
+    public static INVALID_RESOURCE_ERROR = "Please enter a valid input";
     public static INVALID_PHONE_NUMBER_ERROR = "Please enter a valid phone number";
     public static FIELD_REQUIRED_ERROR = "This field cannot be empty";
 }

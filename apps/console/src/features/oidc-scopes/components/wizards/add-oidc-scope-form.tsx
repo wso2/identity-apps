@@ -21,7 +21,6 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import { useTranslation } from "react-i18next";
 
-
 const SCOPE_NAME_MAX_LENGTH: number = 40;
 const SCOPE_DISPLAY_NAME_MAX_LENGTH: number = 40;
 const SCOPE_DESCRIPTION_MAX_LENGTH: number = 300;
@@ -86,10 +85,10 @@ let triggerPreviousForm: () => void;
         validate={(values): any => {
             const errors:any = {}
             if (!values.scopeName && !initialValues?.scopeName) {
-            errors.scopeName = 'Required'
+                errors.scopeName = 'Required'
             }
             if (!values.displayName && !initialValues?.displayName) {
-            errors.displayName = 'Required'
+                errors.displayName = 'Required'
             }
             return errors
         }}
