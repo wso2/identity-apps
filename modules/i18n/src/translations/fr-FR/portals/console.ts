@@ -62,6 +62,13 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
         },
+        cookieConsent: {
+            confirmButton: "J'ai compris",
+            content: "Nous utilisons des cookies pour vous garantir la meilleure expérience globale. Ces cookies " +
+                "sont utilisés pour maintenir une session continue ininterrompue tout en offrant des services " +
+                "fluides et personnalisés. Pour En savoir plus sur la façon dont nous utilisons les cookies, " +
+                "reportez-vous à notre <1>Politique relative aux cookies</1>."
+        },
         header: {
             appSwitch: {
                 console: {

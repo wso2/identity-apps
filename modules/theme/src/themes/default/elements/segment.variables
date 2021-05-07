@@ -107,3 +107,29 @@
 ------------------------------*/
 
 @clickableSegmentHover: @defaultHoverBackgroundColor;
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+@cookieConsentBannerPosition: fixed;
+@cookieConsentBannerHorizontalSpacing: 16px;
+@cookieConsentBannerBottom: 16px;
+@cookieConsentBannerMaxWidth: 400px;
+@cookieConsentBannerTop: auto;
+@cookieConsentBannerOpacity: 0.95;
+@cookieConsentBannerPadding: 2em;
+@cookieConsentBannerImageMargin: 0 0 1.5em 0;
+@cookieConsentBannerContentMargin: 0 0 1em 0;
+@cookieConsentBannerBorder: none;
+@cookieConsentBannerIconColor: @darkGray;
+
+// Light Mode
+@cookieConsentBannerColor: inherit;
+@cookieConsentBannerBackground: @background;
+
+// Inverted Mode
+@cookieConsentBannerInvertedColor: @invertedTextColor;
+@cookieConsentBannerInvertedBackground: @invertedBackground;
+@cookieConsentBannerInvertedIconColor: @white;
+@cookieConsentBannerInvertedBorder: none;

@@ -165,6 +165,10 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     i18nConfigs: I18nConfigsInterface;
     /**
+     * Should show cookie consent banner;
+     */
+    isCookieConsentBannerEnabled: boolean;
+    /**
      * Should show/hide the avatar label in app header.
      */
     isHeaderAvatarLabelAllowed: boolean;

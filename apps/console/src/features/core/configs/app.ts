@@ -163,6 +163,7 @@ export class Config {
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             hiddenAuthenticators: window["AppUtils"].getConfig().ui.hiddenAuthenticators,
             i18nConfigs: window["AppUtils"].getConfig().ui.i18nConfigs,
+            isCookieConsentBannerEnabled: window["AppUtils"].getConfig().ui.isCookieConsentBannerEnabled,
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isDefaultDialectEditingEnabled: window["AppUtils"].getConfig().ui.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window["AppUtils"].getConfig().ui.isDialectAddingEnabled,

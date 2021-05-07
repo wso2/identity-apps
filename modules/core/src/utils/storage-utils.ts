@@ -101,3 +101,43 @@ export class SessionStorageUtils {
         return sessionStorage.getItem(key);
     }
 }
+
+/**
+ * Utility class for cookie storage operations.
+ */
+export class CookieStorageUtils {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
+
+    /**
+     * Set a cookie.
+     *
+     * @param {string} cookieString - Cookie to set.
+     */
+    public static setItem(cookieString: string): void {
+
+        document.cookie = cookieString;
+    }
+
+    /**
+     * Get the value of a specific cookie.
+     *
+     * @param {string} name - Name of the cookie to be retrieved.
+     */
+    public static getItem(name: string): string {
+
+        const match: RegExpMatchArray = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+
+        if (match) {
+            return match[2];
+        }
+
+        return undefined;
+    }
+}

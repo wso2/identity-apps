@@ -629,3 +629,76 @@
         }
     }
 }
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+.ui.segment {
+    &.cookie-consent-banner {
+        position: @cookieConsentBannerPosition;
+        bottom: @cookieConsentBannerBottom;
+        max-width: @cookieConsentBannerMaxWidth;
+        top: @cookieConsentBannerTop;
+        background: @cookieConsentBannerBackground;
+        opacity: @cookieConsentBannerOpacity;
+        color: @cookieConsentBannerColor;
+        padding: @cookieConsentBannerPadding;
+        border: @cookieConsentBannerBorder;
+        z-index: 999;
+        
+        &.aligned {
+            &-left {
+                left: @cookieConsentBannerHorizontalSpacing;
+                right: auto;
+            }
+            &-right {
+                right: @cookieConsentBannerHorizontalSpacing;
+                left: auto;
+            }
+        }
+
+        .banner-image {
+            display: flex;
+            margin: @cookieConsentBannerImageMargin;
+            
+            .cookie-icon {
+                svg {
+                    path {
+                        fill: @cookieConsentBannerIconColor;
+                    }
+                }
+            }
+        }
+
+        .banner-content {
+            margin: @cookieConsentBannerContentMargin;
+        }
+
+        &.inverted {
+            color: @cookieConsentBannerInvertedColor;
+            background: @cookieConsentBannerInvertedBackground;
+            border: @cookieConsentBannerInvertedBorder;
+
+            .banner-image {
+                .cookie-icon {
+                    svg {
+                        path {
+                            fill: @cookieConsentBannerInvertedIconColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 485px) {
+    .ui.segment {
+        &.cookie-consent-banner {
+            left: auto !important;
+            right: auto !important;
+            margin: 10px;
+        }
+    }
+}
