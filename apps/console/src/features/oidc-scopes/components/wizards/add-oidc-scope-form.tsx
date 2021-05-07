@@ -17,16 +17,22 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { Field, Wizard, WizardPage } from "@wso2is/form";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+
+
+const SCOPE_NAME_MAX_LENGTH: number = 40;
+const SCOPE_DISPLAY_NAME_MAX_LENGTH: number = 40;
+const SCOPE_DESCRIPTION_MAX_LENGTH: number = 300;
+const FIELD_WIDTH: number = 10;
 
 /**
  * Proptypes for add OIDC scope form component.
  */
 interface AddOIDCScopeFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
+    triggerSubmission: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
 }
@@ -45,87 +51,101 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
     const {
         initialValues,
         triggerSubmit,
+        triggerSubmission,
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const getFormValues = (values: Map<string, FormValue>) => {
+    const getFormValues = (values: any) => {
         return {
-            description: values.get("description").toString(),
-            displayName: values.get("displayName").toString(),
-            scopeName: values.get("scopeName").toString()
+            description: values?.description?.toString(),
+            displayName: values?.displayName?.toString(),
+            scopeName: values?.scopeName?.toString()
         };
     };
 
+let triggerPreviousForm: () => void;
+
     return (
-        <Forms
-            onSubmit={ (values) => onSubmit(getFormValues(values)) }
-            submitState={ triggerSubmit && triggerSubmit }
+    <Wizard
+        initialValues={{
+            scopeName: initialValues?.scopeName,
+            displayName: initialValues?.displayName,
+            description: initialValues?.description
+        }}
+        onSubmit={ (values) => {
+            onSubmit(getFormValues(values)) 
+        }}
+        triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
+        triggerPrevious={ (previousFunction: () => void) => {
+            triggerPreviousForm = previousFunction; } }
+    >
+        <WizardPage
+        validate={(values): any => {
+            const errors:any = {}
+            if (!values.scopeName && !initialValues?.scopeName) {
+            errors.scopeName = 'Required'
+            }
+            if (!values.displayName && !initialValues?.displayName) {
+            errors.displayName = 'Required'
+            }
+            return errors
+        }}
         >
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                            name="scopeName"
-                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                "scopeName.validations.empty") }
-                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                "scopeName.placeholder") }
-                            type="text"
-                            value={ initialValues?.scopeName }
-                            validation={ (value: FormValue, validation: Validation) => {
-                                if (!value.toString().match(/^[\w.-]+$/)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.oidcScopes." +
-                                        "forms.addScopeForm.inputs." +
-                                        "scopeName.validations.invalid"));
-                                }
-                            } }
-                            maxLength={ 40 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                            name="displayName"
-                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
-                                "inputs.displayName.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                "displayName.validations.empty") }
-                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                "displayName.placeholder") }
-                            type="text"
-                            value={ initialValues?.displayName }
-                            maxLength = { 40 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                            name="description"
-                            label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
-                                "inputs.description.label") }
-                            required={ false }
-                            requiredErrorMessage={ "Description is optional" }
-                            placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
-                                "description.placeholder") }
-                            type="text"
-                            value={ initialValues?.description }
-                            maxLength={ 300 }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
+            <Field.Input
+                data-testid={ `${ testId }-oidc-scope-form-name-input` }
+                ariaLabel= "scopeName" 
+                inputType= "name" 
+                name="scopeName"
+                label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
+                required={ true }
+                requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    "scopeName.validations.empty") }
+                placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    "scopeName.placeholder") }
+                validation={ (value: string) => {
+                    if (!value.toString().match(/^[\w.-]+$/)) {
+                        return t("console:manage.features.oidcScopes. forms.addScopeForm.inputs." +
+                            "scopeName.validations.invalid");
+                    }
+                } }
+                maxLength={ SCOPE_NAME_MAX_LENGTH }
+                minLength={ 3 }
+                width= { FIELD_WIDTH }
+            />
+            <Field.Input
+                ariaLabel= "displayName"
+                inputType= "resourceName" 
+                data-testid={ `${ testId }-oidc-scope-form-name-input` }
+                name="displayName"
+                label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                    "inputs.displayName.label") }
+                required={ true }
+                message={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    "displayName.validations.empty") }
+                placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    "displayName.placeholder") }
+                maxLength = { SCOPE_DISPLAY_NAME_MAX_LENGTH }
+                minLength={ 3 }
+                width= { FIELD_WIDTH }
+            />
+            <Field.Input
+                data-testid={ `${ testId }-oidc-scope-form-name-input` }
+                ariaLabel= "description"
+                inputType= "resourceName" 
+                name="description"
+                label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                    "inputs.description.label") }
+                required={ false }
+                placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    "description.placeholder") }
+                maxLength={ SCOPE_DESCRIPTION_MAX_LENGTH }
+                minLength={ 3 }
+                width= { FIELD_WIDTH }
+            />
+        </WizardPage>
+    </Wizard>
     );
 };

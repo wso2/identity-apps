@@ -180,6 +180,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         switch (currentWizardStep) {
             case 0:
                 setSubmitGeneralDetails();
+                submitScopeForm();
                 break;
             case 1:
                 setFinishSubmit();
@@ -261,12 +262,16 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             });
     };
 
+    let submitScopeForm: () => void;
+
     const STEPS = [
         {
             content: (
                 <AddOIDCScopeForm
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     triggerSubmit={ submitGeneralDetails }
+                    triggerSubmission={ (submitFunction: () => void) => {
+                        submitScopeForm = submitFunction; } }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                     data-testid={ `${ testId }-form` }
                 />
