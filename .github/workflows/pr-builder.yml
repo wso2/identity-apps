@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        maven-version: [3.5.2]
+        maven-version: [3.6.x]
 
     steps:
     - name: Checkout
