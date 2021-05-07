@@ -31,6 +31,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4
+      id: mvn-setup
+      with:
         maven-version: ${{ matrix.maven-version }}
     - name: Get npm cache directory
       id: cache-npm-modules
