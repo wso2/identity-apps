@@ -210,7 +210,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                 ".issuer.placeholder")
                                         }
                                         value={ issuer }
-                                        enableReinitialize={ true }
                                         data-testid={ `${ testId }-issuer-input` }
                                     />
                                     { !hideFieldHints && (
