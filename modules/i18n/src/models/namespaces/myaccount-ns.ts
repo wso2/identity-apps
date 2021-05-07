@@ -679,6 +679,13 @@ export interface MyAccountNS {
                         };
                     };
                 };
+                countryChangeForm: {
+                    inputs: {
+                        country: {
+                            placeholder: string;
+                        };
+                    };
+                },
             };
             messages: {
                 emailConfirmation: {
