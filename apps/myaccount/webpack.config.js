@@ -191,10 +191,6 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    test: /\.worker\.(ts|js)$/,
-                    use: { loader: "worker-loader" },
-                },
-                {
                     exclude: {
                         and: [
                             /\.(spec|test).(ts|js)x?$/,
