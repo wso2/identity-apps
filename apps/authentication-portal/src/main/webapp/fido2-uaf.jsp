@@ -132,6 +132,7 @@
                     url: "/api/users/v1/me/webauthn/start-authentication?username=admin&" +
                         "tenantDomain=carbon.super&storeDomain=PRIMARY&appId=https://localhost:9443&" +
                         "sessionDataKey="+getParameterByName("sessionDataKey"),
+                    xhrFields: { withCredentials: true },
                     success: function (data) {
                         if (data) {
                             console.log(data);

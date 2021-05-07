@@ -47,6 +47,7 @@ function requestTOTPToken() {
 		url: endpointURL,
 		type: "GET",
 		data: "&sessionDataKey=" + document.getElementById("sessionDataKey").value + "&sendToken=true",
+		xhrFields: { withCredentials: true },
 		success: function(response) {
 			if (response == "") {
 				alert("Verification is code sent to your email address");
