@@ -104,14 +104,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const updateConfigurations = (values) => {
         onSubmit({
-            accessUrl: values.accessUrl ? values.accessUrl?.toString() : "",
+            accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: !!values.discoverableByEndUsers
+                discoverableByEndUsers: values.discoverableByEndUsers
             },
-            description: values.description ? values.description?.toString() : "",
+            description: values.description?.toString(),
             id: appId,
             name: values.name?.toString(),
-            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl ? values.imageUrl.toString() : "" }
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
         });
     };
 
@@ -188,6 +188,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".fields.imageUrl.hint")
                     }
                     width={ 16 }
+                    hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
             <Field.Checkbox

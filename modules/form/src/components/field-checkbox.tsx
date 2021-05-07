@@ -17,7 +17,7 @@
  */
 
 import { Hint, MessageWithIcon } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import { ToggleAdapter } from "./adapters";
 import { FormFieldPropsInterface } from "./field";
@@ -46,6 +46,8 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
 
     const { [ "data-testid" ]: testId, ...rest } = props;
 
+    const [ checkboxValue, setCheckboxValue ] = useState<boolean>(!(props?.childFieldProps?.value?.length == 0));
+
     const resolveInputFieldMessage = () => {
         switch (props.message.type) {
             case "info":
@@ -64,9 +66,11 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
             <FinalFormField
                 { ...rest }
                 key={ testId }
-                parse={ value => value }
+                parse={ value => value === undefined
+                    ? setCheckboxValue(!(props?.childFieldProps?.value?.length == 0)) : setCheckboxValue(value) }
                 type="checkbox"
                 name={ props.name }
+                defaultValue={ checkboxValue }
                 component={ ToggleAdapter }
             />
             {
