@@ -144,6 +144,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 value={ config?.enableAuthorization ? ["enableAuthorization"] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-enable-authorization-checkbox` }
+                hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             <Field.Button
