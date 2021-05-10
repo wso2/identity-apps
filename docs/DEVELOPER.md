@@ -120,49 +120,6 @@ npm run build:dev
 The portals i.e. Console & My Account are configurable using the `deployment.toml` when they are hosted inside the Identity Server.
 Read through our [configurations guidelines](./CONFIGURATION.md) to learn about the configuration process.
 
-## Running Tests
-
-### Unit Tests
-
-Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-and you can run the unit test suites using the following commands.
-
-#### Run Tests for all modules
-
-```bash
-npm run test
-```
-
-#### Run Tests for individual module
-
-```bash
-npx lerna run test --scope @wso2is/forms
-```
-
-### Integration Tests
-
-Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
-
-#### Headless mode
-
-```bash
-npm run test:integration
-```
-
-#### Interactive mode
-
-```bash
-npm run test:integration:interactive
-```
-
-#### Only Smoke Tests
-
-```bash
-npm run test:integration:smoke
-```
-
-For more information regarding the test module, checkout the [README](../tests/README.md) in the `tests` module.
-
 ## Writing Code
 
 ### Formatting
@@ -331,6 +288,50 @@ When adding new assets, always check the existing once in the theme and only pro
 ##### Adding Images
 
 When adding images, always try to add SVGs which are optimized for web.
+
+
+## Running Tests
+
+### Unit Tests
+
+Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+and you can run the unit test suites using the following commands.
+
+#### Run Tests for all modules
+
+```bash
+npm run test
+```
+
+#### Run Tests for individual module
+
+```bash
+npx lerna run test --scope @wso2is/forms
+```
+
+### Integration Tests
+
+Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
+
+#### Headless mode
+
+```bash
+npm run test:integration
+```
+
+#### Interactive mode
+
+```bash
+npm run test:integration:interactive
+```
+
+#### Only Smoke Tests
+
+```bash
+npm run test:integration:smoke
+```
+
+For more information regarding the test module, checkout the [README](../tests/README.md) in the `tests` module.
 
 ## Troubleshoot
 
