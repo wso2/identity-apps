@@ -913,6 +913,7 @@ export interface ConsoleNS {
                     authenticationStepMin: Notification;
                     authenticationStepDeleteErrorDueToSecondFactors: Notification;
                     deleteApplication: Notification;
+                    deleteOptionErrorDueToSecondFactorsOnRight: Notification;
                     deleteProtocolConfig: Notification;
                     duplicateAuthenticationStep: Notification;
                     emptyAuthenticationStep: Notification;

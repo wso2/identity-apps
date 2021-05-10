@@ -367,7 +367,63 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {number} optionIndex - Index of the option.
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
-        const steps = [ ...authenticationSteps ];
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const [
+            leftSideSteps,
+            rightSideSteps
+        ]: AuthenticationStepInterface[][] = getLeftAndRightSideSteps(stepIndex, steps);
+
+        const containSecondFactorOnRight: boolean = hasSpecificFactorsInSteps(
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+        
+        // If there are second factor authenticators on the right, evaluate further.
+        if (containSecondFactorOnRight) {
+            const deletingOption = steps[ stepIndex ].options[ optionIndex ];
+            const isDeletingOptionFirstFactor = ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+                .includes(deletingOption.authenticator);
+            
+            // If the deleting step is a first factor, we have to check if there are other handlers that 
+            // could handle the second factors on the right.
+            if (isDeletingOptionFirstFactor) {
+                let firstFactorsInTheStep = 0;
+                
+                steps[ stepIndex ].options.filter((option: AuthenticatorInterface) => {
+                    if (ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+                        .includes(option.authenticator)) {
+                        firstFactorsInTheStep++;
+                    }
+                });
+                
+                // If the step that the deleting authenticator has no other first factors,
+                // start evaluation other options.
+                if (firstFactorsInTheStep <= 1) {
+                    const containFirstFactorOnLeft: boolean = hasSpecificFactorsInSteps(
+                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+                    
+                    // There are no possible authenticators left to handle the second factor authenticators. ABORT....
+                    if (!containFirstFactorOnLeft) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "console:develop.features.applications.notifications." +
+                                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
+                                ),
+                                level: AlertLevels.WARNING,
+                                message: t(
+                                    "console:develop.features.applications.notifications." +
+                                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+                }
+            }
+        }
+
         steps[ stepIndex ].options.splice(optionIndex, 1);
         setAuthenticationSteps(steps);
     };
@@ -417,12 +473,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
-        const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
-            ? steps.slice(0, stepIndex)
-            : [];
-        const rightSideSteps: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
-            ? steps.slice(stepIndex + 1)
-            : [];
+        const [
+            leftSideSteps,
+            rightSideSteps
+        ]: AuthenticationStepInterface[][] = getLeftAndRightSideSteps(stepIndex, steps);
 
         const containSecondFactorOnRight: boolean = hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
@@ -460,6 +514,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
+     * Splits the steps to two parts based on the passed in index.
+     *
+     * @param {number} stepIndex - Index to split.
+     * @param {AuthenticationStepInterface[]} steps - All steps.
+     *
+     * @return {AuthenticationStepInterface[][]}
+     */
+    const getLeftAndRightSideSteps = (stepIndex: number,
+                                      steps: AuthenticationStepInterface[]): AuthenticationStepInterface[][] => {
+
+        const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
+            ? steps.slice(0, stepIndex)
+            : [];
+
+        const rightSideSteps: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
+            ? steps.slice(stepIndex + 1)
+            : [];
+        
+        return [ leftSideSteps, rightSideSteps ];
+    };
+
+    /**
      * Checks if certain factors are available in the passed in steps.
      *
      * @param {string[]} factors - Set of factors to check.
@@ -468,22 +544,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     const hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
 
-        let hasFirstFactors: boolean = false;
+        let isFound: boolean = false;
 
         for (const step of steps) {
             for (const option of step.options) {
                 if (factors.includes(option.authenticator)) {
-                    hasFirstFactors = true;
+                    isFound = true;
                     break;
                 }
             }
 
-            if (hasFirstFactors) {
+            if (isFound) {
                 break;
             }
         }
 
-        return hasFirstFactors;
+        return isFound;
     };
 
     /**

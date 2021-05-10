@@ -973,9 +973,10 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les authentificateurs " +
                                                 "locaux/fédérés vers les étapes correspondantes.",
-                                            secondFactorDisabled: "Les authentificateurs de second facteur ne peuvent " +
-                                                "être utilisés que si l'authentificateur de base a été ajouté à une" +
-                                                " étape précédente."
+                                            secondFactorDisabled: "Les authentificateurs de second facteur ne " +
+                                                "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
+                                                "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
+                                                "</3>qui peut gérer ces facteurs est présent dans une étape précédente."
                                         }
                                     }
                                 },
@@ -2172,6 +2173,21 @@ export const console: ConsoleNS = {
                             message: "Application supprimée"
                         }
                     },
+                    deleteOptionErrorDueToSecondFactorsOnRight: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Impossible de supprimer cet authentificateur"
+                        },
+                        genericError: {
+                            description: "Il existe des authentificateurs de second facteur dans d'autres étapes " +
+                                "qui dépendent de cet authentificateur.",
+                            message: "Impossible de supprimer cet authentificateur"
+                        },
+                        success: {
+                            description: "Suppression réussie de l'authentificateur de l'étape {{stepNo}}.",
+                            message: "Suppression réussie"
+                        }
+                    },
                     deleteProtocolConfig: {
                         error: {
                             description: "{{description}}",
@@ -2509,8 +2525,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Faites glisser et déposez l'un des authentificateurs ci-dessus",
-                            1: "pour construire une séquence d'authentification."
+                            0: "Cliquez sur le bouton <1>Ajouter une authentification</1> pour ajouter des options " +
+                                "à cette étape"
                         },
                         title: null
                     },

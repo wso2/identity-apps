@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { Header } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 import classNames from "classnames";
@@ -45,7 +45,7 @@ export interface PlaceholderProps extends TestableComponentInterface {
     /**
      * Placeholder subtitle.
      */
-    subtitle: string | string[];
+    subtitle: ReactNode | ReactNode[];
     /**
      * Placeholder title.
      */
@@ -95,8 +95,8 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
             }
             { title && <Header as="h4" className="title" data-testid={ `${ testId }-header` }>{ title }</Header> }
             {
-                (subtitle && subtitle.length && subtitle.length > 0)
-                    ? typeof subtitle !== "string" && subtitle.map((line, index) => (
+                subtitle
+                    ? Array.isArray(subtitle) && (subtitle.length > 0) && subtitle.map((line, index) => (
                         <div
                             key={ index }
                             className="subtitle"

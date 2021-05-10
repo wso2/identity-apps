@@ -113,14 +113,14 @@
                         }
                     }
                 }
+            }
 
-                // App switch dropdown overrides.
-                &.app-switch-dropdown {
-                    .header-dropdown-menu {
-                        .header-dropdown-item {
-                            &:first-child {
-                                margin-top: 0;
-                            }
+            // App switch dropdown overrides.
+            &.app-switch-dropdown {
+                .header-dropdown-menu {
+                    .header-dropdown-item {
+                        &:first-child {
+                            margin-top: 0 !important;
                         }
                     }
                 }
