@@ -136,7 +136,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         authenticator has been added in a previous step.
                         The second-factor authenticators can only be used if <Code withBackground>Username & Password
                         </Code> or any other handlers such as <Code withBackground> Identifier First</Code> 
-                        that can handler these factors are present in a previous step.
+                        that can handle these factors are present in a previous step.
                     </Trans>
                 </Text>
             );
