@@ -140,6 +140,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                 isCookieConsentBannerEnabled && (
                     <CookieConsentBanner
                         inverted
+                        domainCookie
                         title={ (
                             <div className="title" data-testid="cookie-consent-banner-content-title">
                                 <Trans
