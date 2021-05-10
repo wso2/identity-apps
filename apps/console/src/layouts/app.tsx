@@ -110,6 +110,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                     isCookieConsentBannerEnabled && (
                         <CookieConsentBanner
                             inverted
+                            domainCookie
                             title={ (
                                 <div className="title" data-testid="cookie-consent-banner-content-title">
                                     <Trans
