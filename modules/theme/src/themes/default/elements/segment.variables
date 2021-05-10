@@ -123,7 +123,7 @@
 @cookieConsentBannerContentMargin: 0 0 1em 0;
 @cookieConsentBannerBorder: none;
 @cookieConsentBannerIconColor: @darkGray;
-@cookieConsentBannerZIndex: 9999;
+@cookieConsentBannerZIndex: 999;
 
 // Light Mode
 @cookieConsentBannerColor: inherit;
