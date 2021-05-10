@@ -958,7 +958,7 @@ export const console: ConsoleNS = {
                                                 "relevant steps.",
                                             secondFactorDisabled: "The second-factor authenticators can only be used " +
                                                 "if <1>Username & Password</1> or any other handlers such as <3>" +
-                                                "Identifier First</3> that can handler these factors are present in " +
+                                                "Identifier First</3> that can handle these factors are present in " +
                                                 "a previous step."
                                         }
                                     }
