@@ -2151,7 +2151,7 @@ export const console: ConsoleNS = {
                             message: "Cannot delete this authenticator"
                         },
                         genericError: {
-                            description: "There are second factor authenticators in other steps that depends on " +
+                            description: "There are second-factor authenticators in other steps that depend on " +
                                 "this authenticator.",
                             message: "Cannot delete this authenticator"
                         },
