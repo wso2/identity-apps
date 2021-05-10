@@ -12,8 +12,8 @@ submitting PRs.
 * [Building the project](#building-the-project)
 * [Configuration Guide](#configuration-guide)
 * [Writing Code](#writing-code)
-    * [Formatting](#formatting) - WIP
-    * [Writing performant code](#writing-performant-code)
+    * [Formatting](#formatting)
+    * [Ensuring performance](#ensuring-performance)
 * [Running Tests](#running-tests)
     * [Unit Tests](#unit-tests)
     * [Integration Tests](#integration-tests)
@@ -30,7 +30,7 @@ Before you can build and write code, make sure you have the following set of too
 
 * [Node.js](https://nodejs.org/en/download/) - JavaScript runtime with node package manager ([npm](https://www.npmjs.com/)).
 
-* [Maven]https://maven.apache.org/download.cgi) - Build automation tool for Java projects. * For Maven 3.8 and up, please check the [Troubleshoot section](#build-failures).
+* [Maven](https://maven.apache.org/download.cgi) - Build automation tool for Java projects. * For Maven 3.8 and up, please check the [Troubleshoot section](#build-failures).
 
 * [Java Development Kit 1.8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Development environment for building applications using the Java programming language.
 
@@ -197,23 +197,21 @@ foo > bar ? value1
     : value1
 ```
 
-### Writing performant code
+### Ensuring performance
 
-We care alot about maintaining the performance of our applications. Hence, it is your duty to make sure that the code you 
+We care a lot about maintaining the performance of our applications. Hence, it is your duty to make sure that the code you 
 write follows the standards and does not diminish the existing performance levels.
 
 In-order to ensure this, please follow the following steps while making your contributions.
 
-#### When writing code
-
-##### Use code splitting
+#### Use code splitting
 
 Webpack and React supports code splitting out of the box. Try to always leverage these features to reduce bundle size and performance.
 
 - Read more about Webpack Code Splitting [here](https://webpack.js.org/guides/code-splitting/).
 - Read more about React Code Splitting [here](https://reactjs.org/docs/code-splitting.html).
 
-##### Take advantage of tree shaking
+#### Take advantage of tree shaking
 
 Webpack's treeshaking is a really awesome feature to get rid of dead code. Always try to take advantage of that.
 
@@ -229,13 +227,13 @@ import get from "lodash-es";
 import * as _ from "lodash-es";
 ```
 
-##### Don't write redundant code
+#### Don't write redundant code
 
 Unnecessary code will bulk up the bundle without you even realizing. Always try to avoid scenarios like the following.
 
-###### Redundant optional chain
+##### Redundant optional chain
 
-Let's consider the following code block.
+:x: Don't
 
 ```typescript
 if (user?.email && user?.email?.home) {
@@ -252,24 +250,24 @@ if ((user === null || user === void 0 ? void 0 : user.email) && ((_a = user === 
 
 Notice that the first null check is redundant. It can be re-written as follows.
 
+:white_check_mark: Do
+
 ```typescript
 if (user?.email?.home) {
     ...
 }
 ```
 
-Following is the transpiled version of the above code block.
+Following is the transpiled version of the above code block. The footprint is significantly less.
 
 ```javascript
 if ((_a = user === null || user === void 0 ? void 0 : user.email) === null || _a === void 0 ? void 0 : _a.home) {
 }
 ```
 
-The footprint is significantly less.
-
 :bulb: Always remember, more characters means more bytes.
 
-#### When adding new dependencies
+#### Carefully adding new dependencies
 
 Dependencies carry a heavy wait and contribute in a significant amount for the overall bundle size. So, when adding a new 
 library to the project try to answer the following questions.
@@ -306,7 +304,7 @@ We have added a script to analyze the bundle sizes of our react applications usi
 
 Use the following command to examine the footprint introduced by the prospective library.
 
-###### Analyze for Console
+##### Analyze for Console
 
 :bulb: The analyzer will open in http://localhost:8889
 
@@ -314,7 +312,7 @@ Use the following command to examine the footprint introduced by the prospective
 npx lerna run build:analyze --scope @wso2is/console
 ```
 
-###### Analyze for My Account
+##### Analyze for My Account
 
 :bulb: The analyzer will open in http://localhost:8888
 
@@ -326,9 +324,9 @@ Once you execute the above command, the resulting view will look something like 
 
 ![webpack-analyzer-sample](./assets/webpack-analyzer-sample.jpg)
 
-#### When adding new assets
+#### Optimize static assets
 
-When adding new assets, always check the existing list in the theme and only proceed if the desired asset is not available.
+When adding new assets, always check the existing once in the theme and only proceed if the desired asset is not available.
 
 ##### Adding Images
 
