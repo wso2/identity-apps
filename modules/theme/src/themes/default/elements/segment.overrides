@@ -645,7 +645,7 @@
         color: @cookieConsentBannerColor;
         padding: @cookieConsentBannerPadding;
         border: @cookieConsentBannerBorder;
-        z-index: 999;
+        z-index: @cookieConsentBannerZIndex;
         
         &.aligned {
             &-left {
