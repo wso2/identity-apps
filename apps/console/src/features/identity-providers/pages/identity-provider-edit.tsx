@@ -48,11 +48,12 @@ import {
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
+    SupportedQuickStartTemplateTypes,
     emptyIdentityProvider
 } from "../models";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
@@ -397,7 +398,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     isLoading={ isIdentityProviderRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
+                    isGoogle={ identityProviderTemplate?.name === SupportedQuickStartTemplateTypes.GOOGLE }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
