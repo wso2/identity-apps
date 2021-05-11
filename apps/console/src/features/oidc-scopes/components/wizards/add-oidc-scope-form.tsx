@@ -82,21 +82,21 @@ let triggerPreviousForm: () => void;
             triggerPreviousForm = previousFunction; } }
     >
         <WizardPage
-        validate={(values): any => {
-            const errors:any = {}
-            if (!values.scopeName && !initialValues?.scopeName) {
-                errors.scopeName = 'Required'
-            }
-            if (!values.displayName && !initialValues?.displayName) {
-                errors.displayName = 'Required'
-            }
-            return errors
-        }}
+            validate={(values): any => {
+                const errors:any = {}
+                if (!values.scopeName && !initialValues?.scopeName) {
+                    errors.scopeName="Required"
+                }
+                if (!values.displayName && !initialValues?.displayName) {
+                    errors.displayName="Required"
+                }
+                return errors
+            }}
         >
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                ariaLabel= "scopeName" 
-                inputType= "name" 
+                ariaLabel="scopeName" 
+                inputType="name" 
                 name="scopeName"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
                 required={ true }
@@ -112,11 +112,11 @@ let triggerPreviousForm: () => void;
                 } }
                 maxLength={ SCOPE_NAME_MAX_LENGTH }
                 minLength={ 3 }
-                width= { FIELD_WIDTH }
+                width={ FIELD_WIDTH }
             />
             <Field.Input
-                ariaLabel= "displayName"
-                inputType= "resourceName" 
+                ariaLabel="displayName"
+                inputType="resourceName" 
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
                 name="displayName"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -126,14 +126,14 @@ let triggerPreviousForm: () => void;
                     "displayName.validations.empty") }
                 placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                     "displayName.placeholder") }
-                maxLength = { SCOPE_DISPLAY_NAME_MAX_LENGTH }
+                maxLength={ SCOPE_DISPLAY_NAME_MAX_LENGTH }
                 minLength={ 3 }
-                width= { FIELD_WIDTH }
+                width={ FIELD_WIDTH }
             />
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                ariaLabel= "description"
-                inputType= "resourceName" 
+                ariaLabel="description"
+                inputType="resourceName" 
                 name="description"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
                     "inputs.description.label") }
@@ -142,7 +142,7 @@ let triggerPreviousForm: () => void;
                     "description.placeholder") }
                 maxLength={ SCOPE_DESCRIPTION_MAX_LENGTH }
                 minLength={ 3 }
-                width= { FIELD_WIDTH }
+                width={ FIELD_WIDTH }
             />
         </WizardPage>
     </Wizard>

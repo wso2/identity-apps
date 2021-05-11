@@ -337,7 +337,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             setTempSelectedAttributes(selectedAttributes);
         };
 
-        const onSubmit= (values: any): void  => {
+        const onSubmit = (values: any): void  => {
             updateOIDCScopeDetails(scope.name, {
                 claims: scope.claims,
                 description: values?.description !== undefined ?  values?.description?.toString() : scope.description,
@@ -418,8 +418,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                         data-testid={ testId } 
                                     >
                                         <Field.Input
-                                            ariaLabel= "displayName" 
-                                            inputType= "name" 
+                                            ariaLabel="displayName" 
+                                            inputType="name" 
                                             name="displayName"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -440,8 +440,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             minLength={ 3 }
                                         />
                                         <Field.Input
-                                            ariaLabel= "description" 
-                                            inputType= "resourceName" 
+                                            ariaLabel="description" 
+                                            inputType="resourceName" 
                                             name="description"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -458,11 +458,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             minLength={ 3 }
                                         />
                                         <Field.Button
-                                            ariaLabel= "submit"
+                                            ariaLabel="submit"
                                             size="small"
                                             buttonType="primary_btn"
                                             label={ t("common:update") }
-                                            name= "submit"
+                                            name="submit"
                                         />
                                     </Form>
                                 ) : (
