@@ -52,17 +52,13 @@ import {
     getIdentityProviderList,
     getIdentityProviderTemplate
 } from "../api";
-import {
-    GoogleAuthenticationProviderCreateWizard,
-    IdentityProviderCreateWizard,
-    handleGetIDPTemplateAPICallError
-} from "../components";
+import { handleGetIDPTemplateAPICallError, AuthenticatorCreateWizardFactory } from "../components";
 import {
     getHelpPanelIcons,
     getIdPIcons,
     getIdPTemplateDocsIcons
 } from "../configs";
-import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
@@ -542,41 +538,17 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <Divider hidden/>
                 {
                     showWizard && (
-                        (selectedTemplateWithUniqueName.name === GOOGLE_IDP_NAME)
-                            ? (
-                                <GoogleAuthenticationProviderCreateWizard
-                                    title={ selectedTemplateWithUniqueName?.name }
-                                    subTitle={ selectedTemplateWithUniqueName?.description }
-                                    closeWizard={ () => {
+                        <AuthenticatorCreateWizardFactory
+                            type={ selectedTemplateWithUniqueName.name }
+                            title={ selectedTemplateWithUniqueName?.name }
+                            subTitle={ selectedTemplateWithUniqueName?.description }
+                            closeWizard={ () => {
                                         setSelectedTemplateWithUniqueName(undefined);
                                         setSelectedTemplate(undefined);
                                         setShowWizard(false);
                                     } }
-                                    template={ selectedTemplateWithUniqueName }
-                                />
-                            )
-                            : (
-                                <EnterpriseIDPCreateWizard
-                                    title="Standard Based Authentication"
-                                    subTitle="Configure a new Identity Provider with advanced enterprise protocols."
-                                    closeWizard={ () => {
-                                        setSelectedTemplateWithUniqueName(undefined);
-                                        setSelectedTemplate(undefined);
-                                        setShowWizard(false);
-                                    } }
-                                    template={ selectedTemplateWithUniqueName }
-                                />
-                                // <IdentityProviderCreateWizard
-                                //     title={ selectedTemplateWithUniqueName?.name }
-                                //     subTitle={ selectedTemplateWithUniqueName?.description }
-                                //     closeWizard={ () => {
-                                //         setSelectedTemplateWithUniqueName(undefined);
-                                //         setSelectedTemplate(undefined);
-                                //         setShowWizard(false);
-                                //     } }
-                                //     template={ selectedTemplateWithUniqueName }
-                                // />
-                            )
+                            template={ selectedTemplateWithUniqueName }
+                        />
                     )
                 }
             </PageLayout>
