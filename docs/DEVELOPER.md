@@ -229,33 +229,33 @@ if ((_a = user === null || user === void 0 ? void 0 : user.email) === null || _a
 Dependencies carry a heavy wait and contribute in a significant amount for the overall bundle size. So, when adding a new 
 library to the project try to answer the following questions.
 
-**Is the library absolutely required?**
+Q1. Is the library absolutely required?
 
 In some cases, you will be able to manually write the code rather than using a library. But keep in mind not to re-invent the wheel as well.
 
-**Is the library actively maintained?**
+Q2. Is the library actively maintained?
 
 Go to the NPM registry and GitHub repository of the prospective library and check for stats like downloads, stars, last published dates,
 issues etc. This will give you an understanding on the state of the library.
 
 :bulb: Never add a dependency that is not actively maintained.
 
-**Have you considered other libraries?**
+Q3. Have you considered other libraries?
 
 Do a benchmark and test other related libraries.
 
-**What is the size of the library?**
+Q4. What is the size of the library?
 
 You can easily check the size of the library by using an online tool like [Bundlephobia](https://bundlephobia.com/).
 
 ![bundlephobia-sample](./assets/bundlephobia-sample.jpg)
 
-**What are the dependencies used inside the library?**
+Q5. What are the dependencies used inside the library?
 
 Some library developers include relatively large dependencies like [`lodash`](https://lodash.com/), [`moment`](https://momentjs.com/) etc. in their libraries as dependencies.
 Adding these will result in increase bundle sizes. Check in the `package.json` for the dependencies used inside the library.
 
-**What is the footprint introduced by the newly added library?**
+Q6. What is the footprint introduced by the newly added library?
 
 We have added a script to analyze the bundle sizes of our react applications using [Webpack Bundle Analyzer Plugin](https://www.npmjs.com/package/webpack-bundle-analyzer).
 
