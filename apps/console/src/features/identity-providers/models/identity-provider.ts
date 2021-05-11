@@ -571,3 +571,11 @@ export interface ConnectedAppInterface {
     appId?: string;
     self?: string;
 }
+
+export interface GenericIdentityProviderCreateWizardPropsInterface {
+    currentStep?: number;
+    title: string;
+    closeWizard: () => void;
+    template: IdentityProviderTemplateInterface;
+    subTitle?: string;
+}
