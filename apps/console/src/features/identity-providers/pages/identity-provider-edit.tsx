@@ -57,6 +57,7 @@ import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
+    SupportedQuickStartTemplateTypes,
     emptyIdentityProvider
 } from "../models";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";

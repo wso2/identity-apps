@@ -287,13 +287,8 @@ export enum IdentityProviderTemplateLoadingStrategies {
  * @readonly
  * @enum {string}
  */
-export enum SupportedQuickStartTemplates {
-    FACEBOOK = "facebook",
-    GOOGLE = "google",
-    TWITTER = "twitter",
-    OIDC = "oidc",
-    SAML = "saml",
-    EXPERT = "expert"
+export enum SupportedQuickStartTemplateTypes {
+    GOOGLE = "Google"
 }
 
 /**
