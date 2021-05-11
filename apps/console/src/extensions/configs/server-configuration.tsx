@@ -17,10 +17,8 @@
  */
 
 export const serverConfigurationConfig = {
-    accountManagement: {
-        accountDisable: false,
-        passwordReset: false,
-        showIdleAccountSuspend: false
-    },
+    connectorsToShow: [
+        "account-recovery",
+    ],
     showGovernanceConnectorCategories: false
 };

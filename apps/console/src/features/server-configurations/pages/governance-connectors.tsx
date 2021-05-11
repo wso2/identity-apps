@@ -25,6 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
+import { serverConfigurationConfig } from "../../../extensions/configs";
 import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
@@ -149,71 +150,81 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                         <Grid.Column width={ 12 }>
                             {
                                 (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
-                                        <EmphasizedSegment key={ index } padded="very">
-                                            <div ref={ connector.ref }>
-                                                <DynamicGovernanceConnector
-                                                    connector={ connector }
-                                                    data-testid={ `${ testId }-` + connector?.id }
-                                                    onUpdate={ () => loadCategoryConnectors() }
-                                                />
-                                            </div>
-                                        </EmphasizedSegment>
-                                    ))
+                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
+                                        console.log(connector);
+                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)) {
+                                            return (
+                                                <EmphasizedSegment key={ index } padded="very">
+                                                    <div ref={ connector.ref }>
+                                                        <DynamicGovernanceConnector
+                                                            connector={ connector }
+                                                            data-testid={ `${ testId }-` + connector?.id }
+                                                            onUpdate={ () => loadCategoryConnectors() }
+                                                        />
+                                                    </div>
+                                                </EmphasizedSegment>
+                                            );
+                                        }
+                                    })
                                     : null
                             }
-
-                            <Rail
-                                className="non-emphasized"
-                                position="right"
-                                close="very"
-                            >
-                                <Sticky
-                                    context={ pageContextRef }
-                                    offset={ ScrollTopPosition }
-                                    bottomOffset={ footerHeight }
+                            { serverConfigurationConfig.showGovernanceConnectorCategories &&
+                                <Rail
+                                    className="non-emphasized"
+                                    position="right"
+                                    close="very"
                                 >
-                                    {
-                                        (connectors && Array.isArray(connectors) && connectors.length > 0) && (
-                                            <>
-                                                <h5>
-                                                    { 
-                                                        t("console:manage.features.governanceConnectors.categories") 
-                                                    }
-                                                </h5>
-                                                <Menu secondary vertical className="governance-connector-categories">
-                                                    {
-                                                        connectors.map((
-                                                            connector: GovernanceConnectorWithRef,
-                                                            index: number) => (
+                                    <Sticky
+                                        context={ pageContextRef }
+                                        offset={ ScrollTopPosition }
+                                        bottomOffset={ footerHeight }
+                                    >
+                                        {
+                                            (connectors && Array.isArray(connectors) && connectors.length > 0) && (
+                                                <>
+                                                    <h5>
+                                                        {
+                                                            t("console:manage.features.governanceConnectors.categories")
+                                                        }
+                                                    </h5>
+                                                    <Menu
+                                                        secondary
+                                                        vertical
+                                                        className="governance-connector-categories">
+                                                        {
+                                                            connectors.map((
+                                                                connector: GovernanceConnectorWithRef,
+                                                                index: number) => (
 
-                                                            <Menu.Item
-                                                                as="a"
-                                                                key={ index }
-                                                                className={
-                                                                    selectedConnector?.id === connector?.id
-                                                                        ? "active"
-                                                                        : ""
-                                                                }
-                                                                onClick={ () => {
-                                                                    // Scroll to the selected connector.
-                                                                    CommonUtils.scrollToTarget(
-                                                                        connector?.ref?.current, ScrollTopPosition
-                                                                    );
+                                                                    <Menu.Item
+                                                                        as="a"
+                                                                        key={ index }
+                                                                        className={
+                                                                            selectedConnector?.id === connector?.id
+                                                                                ? "active"
+                                                                                : ""
+                                                                        }
+                                                                        onClick={ () => {
+                                                                            // Scroll to the selected connector.
+                                                                            CommonUtils.scrollToTarget(
+                                                                                connector?.ref?.current,
+                                                                                ScrollTopPosition
+                                                                            );
 
-                                                                    setSelectorConnector(connector);
-                                                                } }
-                                                            >
-                                                                { connector.friendlyName }
-                                                            </Menu.Item>
-                                                        ))
-                                                    }
-                                                </Menu>
-                                            </>
-                                        )
-                                    }
-                                </Sticky>
-                            </Rail>
+                                                                            setSelectorConnector(connector);
+                                                                        } }
+                                                                    >
+                                                                        { connector.friendlyName }
+                                                                    </Menu.Item>
+                                                                ))
+                                                        }
+                                                    </Menu>
+                                                </>
+                                            )
+                                        }
+                                    </Sticky>
+                                </Rail>
+                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
