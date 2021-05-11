@@ -624,6 +624,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
         }
 
+        // Remove disabled grant types from the sorted list.
+        if (applicationConfig.inboundOIDCForm.disabledGrantTypes &&
+            applicationConfig.inboundOIDCForm.disabledGrantTypes.length > 0) {
+            const filteredGrantList = allowedList.filter(function( item ) {
+                return (!applicationConfig.inboundOIDCForm.disabledGrantTypes.includes(item.value));
+            });
+            return filteredGrantList;
+        }
+
         return allowedList;
     };
 
@@ -1684,7 +1693,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) &&
+                (!isSPAApplication && applicationConfig.inboundOIDCForm.showIdTokenEncryption) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -1877,7 +1886,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                (!isSPAApplication) &&
+                (!isSPAApplication && applicationConfig.inboundOIDCForm.showBackChannelLogout) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1966,7 +1975,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Row> }
             { /*Request Object Signature*/ }
             {
-                (!isSPAApplication) &&
+                (!isSPAApplication && applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation) &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2055,7 +2064,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Certificates */ }
             {
-                (!isSPAApplication) &&
+                (!isSPAApplication && applicationConfig.inboundOIDCForm.showCertificates) &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>

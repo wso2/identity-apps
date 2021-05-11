@@ -57,6 +57,12 @@ export interface ApplicationConfig {
         showFrontChannelLogout: boolean;
         showScopeValidators: boolean;
         showNativeClientSecretMessage: boolean;
+        showIdTokenEncryption: boolean;
+        showBackChannelLogout: boolean;
+        showRequestObjectSignatureValidation: boolean;
+        showCertificates: boolean;
+        showReturnAuthenticatedIdPList: boolean;
+        disabledGrantTypes: string[];
     };
     templates: {
         android: boolean;
