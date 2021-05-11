@@ -542,11 +542,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             type={ selectedTemplateWithUniqueName.name }
                             title={ selectedTemplateWithUniqueName?.name }
                             subTitle={ selectedTemplateWithUniqueName?.description }
-                            closeWizard={ () => {
-                                        setSelectedTemplateWithUniqueName(undefined);
-                                        setSelectedTemplate(undefined);
-                                        setShowWizard(false);
-                                    } }
+                            onWizardClose={ () => {
+                                setSelectedTemplateWithUniqueName(undefined);
+                                setSelectedTemplate(undefined);
+                                setShowWizard(false);
+                            } }
                             template={ selectedTemplateWithUniqueName }
                         />
                     )
