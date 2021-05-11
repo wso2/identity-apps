@@ -575,7 +575,7 @@ export interface ConnectedAppInterface {
 export interface GenericIdentityProviderCreateWizardPropsInterface {
     currentStep?: number;
     title: string;
-    closeWizard: () => void;
+    onWizardClose: () => void;
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
 }

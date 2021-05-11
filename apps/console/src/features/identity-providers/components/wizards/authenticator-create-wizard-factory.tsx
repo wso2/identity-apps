@@ -20,8 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { IdentityProviderCreateWizard } from "./identity-provider-create-wizard";
-import { SupportedQuickStartTemplateTypes } from "../../models";
-import { GenericIdentityProviderCreateWizardPropsInterface } from "../../models/identity-provider";
+import { GenericIdentityProviderCreateWizardPropsInterface, SupportedQuickStartTemplateTypes } from "../../models";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -47,6 +46,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 ): ReactElement => {
 
     const {
+        onWizardClose,
         type,
         ...rest
     } = props;
@@ -55,12 +55,16 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         case SupportedQuickStartTemplateTypes.GOOGLE:
             return (
                 <GoogleAuthenticationProviderCreateWizard
+                    // Remove once `GoogleAuthenticationProviderCreateWizard` uses the generic interface.
+                    closeWizard={ onWizardClose }
                     { ...rest }
                 />
             );
         default:
             return (
                 <IdentityProviderCreateWizard
+                    // Remove once `IdentityProviderCreateWizard` uses the generic interface.
+                    closeWizard={ onWizardClose }
                     { ...rest }
                 />
             );
