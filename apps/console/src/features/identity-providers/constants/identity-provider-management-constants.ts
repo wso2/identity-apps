@@ -81,7 +81,7 @@ export class IdentityProviderManagementConstants {
      * Set of IDP template Ids.
      * @type {Record<string, unknown>}
      */
-    public static readonly IDP_TEMPLATE_IDS: Record<string, unknown> = {
+    public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
     };
 
