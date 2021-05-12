@@ -20,8 +20,10 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { IdentityProviderCreateWizard } from "./identity-provider-create-wizard";
+import { getIdentityProviderList } from "../../api";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderListResponseInterface,
     IdentityProviderTemplateInterface,
     SupportedQuickStartTemplateTypes
 } from "../../models";
@@ -31,10 +33,6 @@ import {
  */
 interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInterface {
 
-    /**
-     * Set of duplicate IDPs in the system.
-     */
-    duplicateIDPs: string[];
     /**
      * Show/Hide the wizard
      */
@@ -66,25 +64,39 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
     const {
         open,
-        duplicateIDPs,
         onWizardClose,
         template,
         type,
         ...rest
     } = props;
 
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ possibleListOfDuplicateIDPs, setPossibleListOfDuplicateIDPs ] = useState<string[]>(undefined);
+    const [ showWizard, setShowWizard ] = useState<boolean>(open);
     const [
         selectedTemplateWithUniqueName,
         setSelectedTemplateWithUniqueName
     ] = useState<IdentityProviderTemplateInterface>(template);
 
     /**
-     * Called when possibleListOfDuplicateIdps is changed.
+     * Called when template is selected.
      */
     useEffect(() => {
-        
-        if (!open) {
+
+        if (!template || !template?.idp?.name) {
+            return;
+        }
+
+        getPossibleListOfDuplicateIDPs(template.idp.name);
+
+        setShowWizard(true);
+    }, [ template ]);
+
+    /**
+     * Called when there are duplicate IDPs and a unique name should be added to the newly created one.
+     */
+    useEffect(() => {
+
+        if (!showWizard) {
             return;
         }
 
@@ -92,7 +104,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return;
         }
 
-        if (!duplicateIDPs) {
+        if (!possibleListOfDuplicateIDPs) {
             return;
         }
 
@@ -100,12 +112,28 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             ...template,
             idp: {
                 ...template.idp,
-                name: generateUniqueIDPName(template.idp.name, duplicateIDPs)
+                name: generateUniqueIDPName(template.idp.name, possibleListOfDuplicateIDPs)
             }
         });
-        
+
         setShowWizard(true);
-    }, [ duplicateIDPs, template, open ]);
+    }, [ possibleListOfDuplicateIDPs, template, showWizard ]);
+
+    /**
+     * Get the possible duplicate IDPs.
+     *
+     * @param {string} idpName - Name of the IDP.
+     */
+    const getPossibleListOfDuplicateIDPs = (idpName: string): void => {
+
+        getIdentityProviderList(null, null, "name sw " + idpName)
+            .then((response: IdentityProviderListResponseInterface) => {
+                setPossibleListOfDuplicateIDPs(response?.totalResults
+                    ? response?.identityProviders?.map(eachIdp => eachIdp.name)
+                    : []
+                );
+            });
+    };
 
     /**
      * Generate the next unique name by appending 1-based index number to the provided initial value.
