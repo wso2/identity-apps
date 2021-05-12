@@ -37,6 +37,7 @@ import { getAuthenticatorIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
+    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface, IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
@@ -50,13 +51,8 @@ import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-p
 /**
  * Proptypes for the identity provider creation wizard component.
  */
-interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface {
-    currentStep?: number;
-    title: string;
-    closeWizard: () => void;
-    template: IdentityProviderTemplateInterface;
-    subTitle?: string;
-}
+interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
+    GenericIdentityProviderCreateWizardPropsInterface { }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
 const CLIENT_ID_MAX_LENGTH: number = 100;
@@ -73,7 +69,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
 ): ReactElement => {
 
     const {
-        closeWizard,
+        onWizardClose,
         currentStep,
         title,
         subTitle,
@@ -194,7 +190,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
         setDefaultAuthenticatorMetadata(undefined);
 
         // Trigger the close method from props.
-        closeWizard();
+        onWizardClose();
     };
 
     /**
