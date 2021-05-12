@@ -157,6 +157,9 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                             >
                                                                 <Item className="header-dropdown-item-inner flex">
                                                                     <GenericIcon
+                                                                        data-testid={
+                                                                            `${ appRest[ "data-testid" ] }-icon`
+                                                                        }
                                                                         inline
                                                                         transparent
                                                                         icon={ icon }
@@ -164,10 +167,19 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                                         spaced="right"
                                                                     />
                                                                     <Item.Content verticalAlign="middle">
-                                                                        <Item.Header>
+                                                                        <Item.Header
+                                                                            data-testid={
+                                                                                `${ appRest[ "data-testid" ] }-name`
+                                                                            }
+                                                                        >
                                                                             { name }
                                                                         </Item.Header>
-                                                                        <Item.Meta>
+                                                                        <Item.Meta
+                                                                            data-testid={ `${
+                                                                                    appRest[ "data-testid" ]
+                                                                                }-description`
+                                                                            }
+                                                                        >
                                                                             { description }
                                                                         </Item.Meta>
                                                                     </Item.Content>
