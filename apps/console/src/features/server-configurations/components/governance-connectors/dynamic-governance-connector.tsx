@@ -25,8 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
+import { serverConfigurationConfig } from "../../../../extensions";
 import { updateGovernanceConnector } from "../../api";
 import { getGovernanceConnectorIllustrations } from "../../configs";
+import { ServerConfigurationsConstants } from "../../constants";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -155,7 +157,10 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const connectorForm: ReactElement = (
         <DynamicConnectorForm
             onSubmit={ handleSubmit }
-            props={ { properties: connector.properties } }
+            props={ { properties: connector.properties.filter(
+                (property=>serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
+                    || serverConfigurationConfig.connectorPropertiesToShow
+                        .includes(ServerConfigurationsConstants.ALL))) } }
             form={ kebabCase(connector.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
             data-testid={ `${ testId }-${ connector.name }-form` }
