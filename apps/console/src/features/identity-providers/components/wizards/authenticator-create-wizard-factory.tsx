@@ -213,8 +213,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     <GoogleAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
-                        // Remove once `GoogleAuthenticationProviderCreateWizard` uses the generic interface.
-                        closeWizard={ () => {
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             onWizardClose();
                             setShowWizard(false);
@@ -230,8 +229,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     <IdentityProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
-                        // Remove once `IdentityProviderCreateWizard` uses the generic interface.
-                        closeWizard={ () => {
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             onWizardClose();
                             setShowWizard(false);

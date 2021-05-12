@@ -39,7 +39,7 @@ import { IdentityProviderManagementConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
-    FederatedAuthenticatorMetaInterface,
+    FederatedAuthenticatorMetaInterface, GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
@@ -55,13 +55,8 @@ import {
 /**
  * Proptypes for the identity provider creation wizard component.
  */
-interface IdentityProviderCreateWizardPropsInterface extends TestableComponentInterface {
-    currentStep?: number;
-    title: string;
-    closeWizard: () => void;
-    template: IdentityProviderTemplateInterface;
-    subTitle?: string;
-}
+interface IdentityProviderCreateWizardPropsInterface extends TestableComponentInterface,
+    GenericIdentityProviderCreateWizardPropsInterface { }
 
 /**
  * Enum for wizard.
@@ -113,7 +108,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 ): ReactElement => {
 
     const {
-        closeWizard,
+        onWizardClose,
         currentStep,
         title,
         subTitle,
@@ -303,7 +298,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         setDefaultAuthenticatorMetadata(undefined);
 
         // Trigger the close method from props.
-        closeWizard();
+        onWizardClose();
     };
 
     /**
