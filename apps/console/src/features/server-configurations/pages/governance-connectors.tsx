@@ -29,6 +29,7 @@ import { serverConfigurationConfig } from "../../../extensions/configs";
 import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
+import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
 
 /**
@@ -151,8 +152,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                             {
                                 (connectors && Array.isArray(connectors) && connectors.length > 0)
                                     ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
-                                        console.log(connector);
-                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)) {
+                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
+                                            || serverConfigurationConfig.connectorsToShow.includes(
+                                                ServerConfigurationsConstants.ALL) ) {
                                             return (
                                                 <EmphasizedSegment key={ index } padded="very">
                                                     <div ref={ connector.ref }>
