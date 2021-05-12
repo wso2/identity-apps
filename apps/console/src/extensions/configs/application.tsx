@@ -27,7 +27,8 @@ import {
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
-        showSaaS: true
+        showSaaS: true,
+        showReturnAuthenticatedIdPs: true
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -66,7 +67,13 @@ export const applicationConfig: ApplicationConfig = {
         showClientSecretMessage: true,
         showFrontChannelLogout: true,
         showNativeClientSecretMessage: true,
-        showScopeValidators: true
+        showScopeValidators: true,
+        showIdTokenEncryption: true,
+        showBackChannelLogout: true,
+        showRequestObjectSignatureValidation: true,
+        showCertificates: true,
+        showReturnAuthenticatedIdPList: true,
+        disabledGrantTypes: []
     },
     templates: {
         android: true,

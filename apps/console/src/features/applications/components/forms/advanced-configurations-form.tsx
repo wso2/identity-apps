@@ -71,9 +71,11 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 skipLogoutConsent: !!values.skipConsentLogout
             }
         };
-        applicationConfig.advancedConfigurations.showSaaS && delete data.advancedConfigurations.saas;
-        applicationConfig.advancedConfigurations.showEnableAuthorization &&
+        !applicationConfig.advancedConfigurations.showSaaS && delete data.advancedConfigurations.saas;
+        !applicationConfig.advancedConfigurations.showEnableAuthorization &&
             delete data.advancedConfigurations.enableAuthorization;
+        !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs &&
+            delete data.advancedConfigurations.returnAuthenticatedIdpList;
 
         onSubmit(data);
     };
@@ -130,6 +132,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 value={ config?.returnAuthenticatedIdpList ? ["returnAuthenticatedIdpList"] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-return-authenticated-idp-list-checkbox` }
+                hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields" +
                     ".returnAuthenticatedIdpList.hint"
                 ) }
