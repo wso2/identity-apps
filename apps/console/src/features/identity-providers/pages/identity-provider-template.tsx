@@ -48,6 +48,16 @@ import {
     getHelpPanelActionIcons,
     history
 } from "../../core";
+import {
+    getIdentityProviderList,
+    getIdentityProviderTemplate
+} from "../api";
+import {
+    GoogleAuthenticationProviderCreateWizard,
+    OidcAuthenticationProviderCreateWizard,
+    IdentityProviderCreateWizard,
+    handleGetIDPTemplateAPICallError
+} from "../components";
 import { AuthenticatorCreateWizardFactory } from "../components";
 import {
     getHelpPanelIcons,
@@ -63,7 +73,6 @@ import {
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
-import { EnterpriseIDPCreateWizard } from "../components/wizards/enterprise-idp-create-wizard";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -382,7 +391,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),
                 search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
             });
-            
+
             return;
         }
 

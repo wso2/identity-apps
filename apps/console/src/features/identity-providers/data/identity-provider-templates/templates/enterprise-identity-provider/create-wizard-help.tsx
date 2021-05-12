@@ -17,8 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import {Divider, Icon, Message} from "semantic-ui-react";
+import { store } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -41,9 +43,34 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
 
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the enterprise authentication provider so that it can be easily identified.</p>
-            <p>E.g., MyEnterpriseAuthProvider.</p>
+            <Message info>
+                <Heading as="h5" className="mb-3">Prerequisite</Heading>
+                <p>Before you begin, register an application in the Identity Provider, and obtain a
+                    <strong> client ID & secret</strong>. Use the following URL as the <strong>
+                    Authorized Redirect URL</strong>.
+                    <br />
+                    <br />
+                    <CopyInputField
+                        className="copy-input-dark"
+                        value={ store.getState().config.deployment.serverHost + "/commonauth" }
+                    />
+                    <br />
+                    <Icon name="info circle" />
+                    The URL to which the authorization code is sent upon authentication and where the
+                    user is redirected to upon logout.
+                </p>
+            </Message>
+            <Heading as="h5">Client ID</Heading>
+            <p>Provide the client ID obtained from the identity provider.</p>
+            <Divider />
+            <Heading as="h5">Client Secret</Heading>
+            <p>Provide the Client Secret obtained from the identity provider.</p>
+            <Divider />
+            <Heading as="h5">Authentication Endpoint URL</Heading>
+            <p>Provide the standard Authentication Endpoint URL obtained from the identity provider.</p>
+            <Divider />
+            <Heading as="h5">Token Endpoint URL</Heading>
+            <p>Provide the standard Token Endpoint URL obtained from the identity provider.</p>
         </div>
     );
 };
