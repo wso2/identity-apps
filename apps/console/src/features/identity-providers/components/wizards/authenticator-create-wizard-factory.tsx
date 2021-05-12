@@ -17,16 +17,23 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { IdentityProviderCreateWizard } from "./identity-provider-create-wizard";
-import { getIdentityProviderList } from "../../api";
+import { ConfigReducerStateInterface } from "../../../core/models";
+import { AppState } from "../../../core/store";
+import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateInterface,
-    SupportedQuickStartTemplateTypes
+    IdentityProviderTemplateLoadingStrategies
 } from "../../models";
+import { IdentityProviderTemplateManagementUtils } from "../../utils/identity-provider-template-management-utils";
+import { handleGetIDPTemplateAPICallError } from "../utils";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -42,13 +49,9 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
      */
     onWizardClose: GenericIdentityProviderCreateWizardPropsInterface[ "onWizardClose" ];
     /**
-     * Selected Template
-     */
-    template: GenericIdentityProviderCreateWizardPropsInterface[ "template" ];
-    /**
      * Type of the wizard.
      */
-    type: SupportedQuickStartTemplateTypes | string;
+    type: string;
 }
 
 /**
@@ -65,31 +68,45 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     const {
         open,
         onWizardClose,
-        template,
         type,
         ...rest
     } = props;
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     const [ possibleListOfDuplicateIDPs, setPossibleListOfDuplicateIDPs ] = useState<string[]>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(open);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
     const [
         selectedTemplateWithUniqueName,
         setSelectedTemplateWithUniqueName
-    ] = useState<IdentityProviderTemplateInterface>(template);
+    ] = useState<IdentityProviderTemplateInterface>(undefined);
+
+    /**
+     * Load the template based on the passed in template type.
+     */
+    useEffect(() => {
+
+        if (!type) {
+            return;
+        }
+
+        getTemplate(type);
+    }, [ type ]);
 
     /**
      * Called when template is selected.
      */
     useEffect(() => {
 
-        if (!template || !template?.idp?.name) {
+        if (!selectedTemplate || !selectedTemplate?.idp?.name) {
             return;
         }
 
-        getPossibleListOfDuplicateIDPs(template.idp.name);
+        getPossibleListOfDuplicateIDPs(selectedTemplate.idp.name);
 
         setShowWizard(true);
-    }, [ template ]);
+    }, [ selectedTemplate ]);
 
     /**
      * Called when there are duplicate IDPs and a unique name should be added to the newly created one.
@@ -100,7 +117,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return;
         }
 
-        if (!template?.idp?.name) {
+        if (!selectedTemplate?.idp?.name) {
             return;
         }
 
@@ -109,15 +126,48 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         }
 
         setSelectedTemplateWithUniqueName({
-            ...template,
+            ...selectedTemplate,
             idp: {
-                ...template.idp,
-                name: generateUniqueIDPName(template.idp.name, possibleListOfDuplicateIDPs)
+                ...selectedTemplate.idp,
+                name: generateUniqueIDPName(selectedTemplate.idp.name, possibleListOfDuplicateIDPs)
             }
         });
 
         setShowWizard(true);
-    }, [ possibleListOfDuplicateIDPs, template, showWizard ]);
+    }, [ possibleListOfDuplicateIDPs, selectedTemplate, showWizard ]);
+
+    /**
+     * Retrieve Identity Provider template.
+     */
+    const getTemplate = (templateId: string): void => {
+
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE
+            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY
+                === IdentityProviderTemplateLoadingStrategies.REMOTE);
+
+        if (useAPI) {
+            getIdentityProviderTemplate(templateId)
+                .then((response) => {
+                    if (!response.disabled) {
+                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
+                    }
+                })
+                .catch((error) => {
+                    handleGetIDPTemplateAPICallError(error);
+                });
+        } else {
+            IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
+                .then((response) => {
+                    if (!response.disabled) {
+                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
+                    }
+                })
+                .catch((error) => {
+                    handleGetIDPTemplateAPICallError(error);
+                });
+        }
+    };
 
     /**
      * Get the possible duplicate IDPs.
@@ -157,8 +207,8 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     };
 
     switch (type) {
-        case SupportedQuickStartTemplateTypes.GOOGLE:
-            return showWizard
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <GoogleAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
@@ -175,7 +225,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                 )
                 : null;
         default:
-            return showWizard
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <IdentityProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
