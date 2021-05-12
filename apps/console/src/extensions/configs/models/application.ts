@@ -27,6 +27,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showSaaS: boolean;
+        showReturnAuthenticatedIdPs: boolean;
     };
     attributeSettings: {
         advancedAttributeSettings: {
