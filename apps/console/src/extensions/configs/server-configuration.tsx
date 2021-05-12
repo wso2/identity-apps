@@ -17,8 +17,15 @@
  */
 
 export const serverConfigurationConfig = {
+    connectorPropertiesToShow: [
+        "Recovery.ReCaptcha.Password.Enable",
+        "Recovery.Notification.InternallyManage",
+        "Recovery.NotifySuccess",
+        "Recovery.ExpiryTime",
+        "Recovery.CallbackRegex"
+    ],
     connectorsToShow: [
-        "account-recovery",
+        "account-recovery"
     ],
     showGovernanceConnectorCategories: false
 };
