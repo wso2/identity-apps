@@ -17,17 +17,36 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { IdentityProviderCreateWizard } from "./identity-provider-create-wizard";
-import { GenericIdentityProviderCreateWizardPropsInterface, SupportedQuickStartTemplateTypes } from "../../models";
+import {
+    GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderTemplateInterface,
+    SupportedQuickStartTemplateTypes
+} from "../../models";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
  */
-interface AuthenticatorCreateWizardFactoryInterface extends GenericIdentityProviderCreateWizardPropsInterface,
-    TestableComponentInterface {
+interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInterface {
 
+    /**
+     * Set of duplicate IDPs in the system.
+     */
+    duplicateIDPs: string[];
+    /**
+     * Show/Hide the wizard
+     */
+    open: boolean;
+    /**
+     * Callback to be triggered on wizard close.
+     */
+    onWizardClose: GenericIdentityProviderCreateWizardPropsInterface[ "onWizardClose" ];
+    /**
+     * Selected Template
+     */
+    template: GenericIdentityProviderCreateWizardPropsInterface[ "template" ];
     /**
      * Type of the wizard.
      */
@@ -46,28 +65,104 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 ): ReactElement => {
 
     const {
+        open,
+        duplicateIDPs,
         onWizardClose,
+        template,
         type,
         ...rest
     } = props;
 
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [
+        selectedTemplateWithUniqueName,
+        setSelectedTemplateWithUniqueName
+    ] = useState<IdentityProviderTemplateInterface>(template);
+
+    /**
+     * Called when possibleListOfDuplicateIdps is changed.
+     */
+    useEffect(() => {
+        
+        if (!open) {
+            return;
+        }
+
+        if (!template?.idp?.name) {
+            return;
+        }
+
+        if (!duplicateIDPs) {
+            return;
+        }
+
+        setSelectedTemplateWithUniqueName({
+            ...template,
+            idp: {
+                ...template.idp,
+                name: generateUniqueIDPName(template.idp.name, duplicateIDPs)
+            }
+        });
+        
+        setShowWizard(true);
+    }, [ duplicateIDPs, template, open ]);
+
+    /**
+     * Generate the next unique name by appending 1-based index number to the provided initial value.
+     *
+     * @param initialIdpName Initial value for the IdP name.
+     * @param idpList The list of available IdPs names.
+     * @return A unique name from the provided list of names.
+     */
+    const generateUniqueIDPName = (initialIdpName: string, idpList: string[]): string => {
+
+        let idpName: string = initialIdpName;
+
+        for (let i = 2; ; i++) {
+            if (!idpList?.includes(idpName)) {
+                break;
+            }
+            idpName = initialIdpName + i;
+        }
+
+        return idpName;
+    };
+
     switch (type) {
         case SupportedQuickStartTemplateTypes.GOOGLE:
-            return (
-                <GoogleAuthenticationProviderCreateWizard
-                    // Remove once `GoogleAuthenticationProviderCreateWizard` uses the generic interface.
-                    closeWizard={ onWizardClose }
-                    { ...rest }
-                />
-            );
+            return showWizard
+                ? (
+                    <GoogleAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        // Remove once `GoogleAuthenticationProviderCreateWizard` uses the generic interface.
+                        closeWizard={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            onWizardClose();
+                            setShowWizard(false);
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
         default:
-            return (
-                <IdentityProviderCreateWizard
-                    // Remove once `IdentityProviderCreateWizard` uses the generic interface.
-                    closeWizard={ onWizardClose }
-                    { ...rest }
-                />
-            );
+            return showWizard
+                ? (
+                    <IdentityProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        // Remove once `IdentityProviderCreateWizard` uses the generic interface.
+                        closeWizard={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            onWizardClose();
+                            setShowWizard(false);
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
     }
 };
 

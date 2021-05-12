@@ -52,7 +52,7 @@ import {
     getIdentityProviderList,
     getIdentityProviderTemplate
 } from "../api";
-import { handleGetIDPTemplateAPICallError, AuthenticatorCreateWizardFactory } from "../components";
+import { AuthenticatorCreateWizardFactory, handleGetIDPTemplateAPICallError } from "../components";
 import {
     getHelpPanelIcons,
     getIdPIcons,
@@ -102,8 +102,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
-    const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
-        useState<IdentityProviderTemplateInterface>(undefined);
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
@@ -297,44 +295,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             return;
         }
         getPossibleListOfDuplicateIdps(selectedTemplate?.idp?.name);
-    }, [selectedTemplate]);
-
-    /**
-     * Generate the next unique name by appending 1-based index number to the provided initial value.
-     *
-     * @param initialIdpName Initial value for the IdP name.
-     * @param idpList The list of available IdPs names.
-     * @return A unique name from the provided list of names.
-     */
-    const generateUniqueIdpName = (initialIdpName: string, idpList: string[]): string => {
-        let idpName = initialIdpName;
-        for (let i = 2; ; i++) {
-            if (!idpList?.includes(idpName)) {
-                break;
-            }
-            idpName = initialIdpName + i;
-        }
-        return idpName;
-    };
-
-    /**
-     * Called when possibleListOfDuplicateIdps is changed.
-     */
-    useEffect(() => {
-        if (!possibleListOfDuplicateIdps) {
-            return;
-        }
-
-        setSelectedTemplateWithUniqueName({
-            ...selectedTemplate,
-            idp: {
-                ...selectedTemplate?.idp,
-                name: generateUniqueIdpName(selectedTemplate?.idp?.name, possibleListOfDuplicateIdps)
-            }
-        });
-
         setShowWizard(true);
-    }, [ possibleListOfDuplicateIdps ]);
+    }, [selectedTemplate]);
 
     /**
      * Handles help panel template doc change event.
@@ -535,21 +497,16 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         : <ContentLoader dimmer/>
                 }
                 <Divider hidden/>
-                {
-                    showWizard && (
-                        <AuthenticatorCreateWizardFactory
-                            type={ selectedTemplateWithUniqueName.name }
-                            title={ selectedTemplateWithUniqueName?.name }
-                            subTitle={ selectedTemplateWithUniqueName?.description }
-                            onWizardClose={ () => {
-                                setSelectedTemplateWithUniqueName(undefined);
-                                setSelectedTemplate(undefined);
-                                setShowWizard(false);
-                            } }
-                            template={ selectedTemplateWithUniqueName }
-                        />
-                    )
-                }
+                <AuthenticatorCreateWizardFactory
+                    open={ showWizard }
+                    type={ selectedTemplate?.name }
+                    duplicateIDPs={ possibleListOfDuplicateIdps }
+                    onWizardClose={ () => {
+                        setSelectedTemplate(undefined);
+                        setShowWizard(false);
+                    } }
+                    template={ selectedTemplate }
+                />
             </PageLayout>
         </HelpPanelLayout>
     );
