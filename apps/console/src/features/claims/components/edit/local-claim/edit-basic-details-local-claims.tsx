@@ -26,7 +26,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/form";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -39,7 +39,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import { Divider, Form as SemanticForm , Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
@@ -191,26 +191,46 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             });
     };
 
-    /**
-     * Scrolls to the first field that throws an error.
-     *
-     * @param {string} field The name of the field.
-     */
-    const scrollToInValidField = (field: string): void => {
-        const options: ScrollIntoViewOptions = {
-            behavior: "smooth",
-            block: "center"
+    const onSubmit = (values) => {
+        const data: Claim = {
+            attributeMapping: claim.attributeMapping,
+            claimURI: claim.claimURI,
+            description: values?.description !== undefined ? values.description?.toString() : claim?.description,
+            displayName: values?.name !== undefined ? values.name?.toString() : claim?.displayName,
+            displayOrder: attributeConfig.editAttributes.getDisplayOrder(
+                claim.displayOrder, values.displayOrder?.toString()),
+            properties: claim.properties,
+            readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
+            regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
+            required: values?.required !== undefined ? !!values.required : claim?.required,
+            supportedByDefault: values?.supportedByDefault !== undefined ? !!values.supportedByDefault : claim?.supportedByDefault
         };
-
-        switch (field) {
-            case "name":
-                nameField.current.scrollIntoView(options);
-                break;
-            case "description":
-                descriptionField.current.scrollIntoView(options);
-                break;
-        }
-    };
+        updateAClaim(claim.id, data).then(() => {
+            dispatch(addAlert(
+                {
+                    description: t("console:manage.features.claims.local.notifications." +
+                        "updateClaim.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:manage.features.claims.local.notifications." +
+                        "updateClaim.success.message")
+                }
+            ));
+            update();
+            fetchUpdatedSchemaList();
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description
+                        || t("console:manage.features.claims.local.notifications.updateClaim." +
+                            "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("console:manage.features.claims.local.notifications." +
+                            "updateClaim.genericError.description")
+                }
+            ));
+        });
+    }
 
     return (
         <>
@@ -219,211 +239,148 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                            <Form>
-                                <Form.Field
+                            <SemanticForm>
+                                <SemanticForm.Field
                                     data-testid={ `${ testId }-form-attribute-uri-readonly-input` }
                                 >
                                     <label>{ t("console:manage.features.claims.local.attributes.attributeURI") }</label>
                                     <CopyInputField value={ claim ? claim.claimURI : "" } />
                                     <Hint>Unique identifier of the attribute.</Hint>
-                                </Form.Field>
-                            </Form>
+                                </SemanticForm.Field>
+                            </SemanticForm>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <Forms
-                    onSubmit={ (values) => {
-                        const data: Claim = {
-                            attributeMapping: claim.attributeMapping,
-                            claimURI: claim.claimURI,
-                            description: values.get("description").toString(),
-                            displayName: values.get("name").toString(),
-                            displayOrder: attributeConfig.editAttributes.getDisplayOrder(
-                                claim.displayOrder, values.get("displayOrder")?.toString()),
-                            properties: claim.properties,
-                            readOnly: values.get("readOnly").length > 0,
-                            regEx: values.get("regularExpression").toString(),
-                            required: values.has("required") ? (values.get("required").length > 0) : claim.required,
-                            supportedByDefault: values.get("supportedByDefault").length > 0
-
-                        };
-                        updateAClaim(claim.id, data).then(() => {
-                            dispatch(addAlert(
-                                {
-                                    description: t("console:manage.features.claims.local.notifications." +
-                                        "updateClaim.success.description"),
-                                    level: AlertLevels.SUCCESS,
-                                    message: t("console:manage.features.claims.local.notifications." +
-                                        "updateClaim.success.message")
-                                }
-                            ));
-                            update();
-                            fetchUpdatedSchemaList();
-                        }).catch(error => {
-                            dispatch(addAlert(
-                                {
-                                    description: error?.description
-                                        || t("console:manage.features.claims.local.notifications.updateClaim." +
-                                            "genericError.description"),
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message
-                                        || t("console:manage.features.claims.local.notifications." +
-                                            "updateClaim.genericError.description")
-                                }
-                            ));
-                        });
-                    } }
-                    onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
-                        const iterator = requiredFields.entries();
-                        let result = iterator.next();
-
-                        while (!result.done) {
-                            if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
-                                scrollToInValidField(result.value[ 0 ]);
-                                break;
-                            } else {
-                                result = iterator.next();
-                            }
-                        }
-                    } }
+                <Form
+                    onSubmit={ (values): void => {
+                        onSubmit(values);
+                    }}
+                    data-testid={ testId }
                 >
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                                <Field
-                                    type="text"
-                                    name="name"
-                                    label={ t("console:manage.features.claims.local.forms.name.label") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
-                                        "name.requiredErrorMessage") }
-                                    placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
-                                    value={ claim?.displayName }
-                                    ref={ nameField }
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!value.toString().match(/^[A-za-z0-9#+._\-\s]{1,30}$/)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(t("console:manage.features.claims.local" +
-                                                ".forms.name.validationErrorMessages.invalidName"));
-                                        }
-                                    } }
-                                    data-testid={ `${ testId }-form-name-input` }
-                                />
-                                <Hint> { t("console:manage.features.claims.local.forms.nameHint") }</Hint>
-                                <Divider hidden />
-                                <Field
-                                    type="textarea"
-                                    name="description"
-                                    label={ t("console:manage.features.claims.local.forms.description.label") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms.description." +
-                                        "requiredErrorMessage") }
-                                    placeholder={
-                                        t("console:manage.features.claims.local.forms.description.placeholder")
-                                    }
-                                    ref={ descriptionField }
-                                    value={ claim?.description }
-                                    data-testid={ `${ testId }-form-description-input` }
-                                />
-                                <Hint>{ t("console:manage.features.claims.local.forms.descriptionHint") }</Hint>
-                                <Divider hidden />
-                                <Field
-                                    type="text"
-                                    name="regularExpression"
-                                    label={ t("console:manage.features.claims.local.forms.regEx.label") }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
-                                    value={ claim?.regEx }
-                                    ref={ regExField }
-                                    data-testid={ `${ testId }-form-regex-input` }
-                                />
-                                <Hint>{ t("console:manage.features.claims.local.forms.regExHint") }</Hint>
-                                <Divider hidden />
-                                <Field
-                                    type="checkbox"
-                                    name="supportedByDefault"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    children={ [ {
-                                        label: t("console:manage.features.claims.local.forms.supportedByDefault.label"),
-                                        value: "Support"
-                                    } ] }
-                                    value={ claim?.supportedByDefault ? [ "Support" ] : [] }
-                                    listen={ (values: Map<string, FormValue>) => {
-                                        setIsShowDisplayOrder(values?.get("supportedByDefault")?.length > 0);
-                                    } }
-                                    data-testid={ `${ testId }-form-supported-by-default-input` }
-                                />
-                                {
-                                    attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
-                                    && (
-                                        <>
-                                            <Field
-                                                type="number"
-                                                min="0"
-                                                name="displayOrder"
-                                                label={ t("console:manage.features.claims.local.forms.displayOrder" +
-                                                    ".label") }
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                placeholder={ t("console:manage.features.claims.local.forms." +
-                                                    "displayOrder.placeholder") }
-                                                value={ claim?.displayOrder.toString() }
-                                                ref={ displayOrderField }
-                                                data-testid={ `${ testId }-form-display-order-input` }
-                                            />
-                                            <Hint>
-                                                { t("console:manage.features.claims.local.forms.displayOrderHint") }
-                                            </Hint>
-                                        </>
-                                    )
-                                }
-                                {
-                                    attributeConfig.editAttributes.showRequiredCheckBox &&
-                                    <>
-                                        <Divider hidden />
-                                        <Field
-                                            type="checkbox"
-                                            name="required"
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            children={ [ {
-                                                label: t("console:manage.features.claims.local.forms.required.label"),
-                                                value: "Required"
-                                            } ] }
-                                            value={ claim?.required ? [ "Required" ] : [] }
-                                            data-testid={ `${ testId }-form-required-checkbox` }
-                                        />
-                                    </>
-                                }
-                                <Divider hidden />
-                                <Field
-                                    type="checkbox"
-                                    name="readOnly"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    children={ [ {
-                                        label: t("console:manage.features.claims.local.forms.readOnly.label"),
-                                        value: "ReadOnly"
-                                    } ] }
-                                    value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
-                                    data-testid={ `${ testId }-form-readonly-checkbox` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 6 }>
-                                <PrimaryButton
-                                    type="submit"
-                                    data-testid={ `${ testId }-form-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Forms>
+                    <Field.Input
+                        ariaLabel="name"
+                        inputType="name"
+                        name="name"
+                        label={ t("console:manage.features.claims.local.forms.name.label") }
+                        required={ true }
+                        message={ t("console:manage.features.claims.local.forms." +
+                            "name.requiredErrorMessage") }
+                        placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
+                        value={ claim?.displayName }
+                        ref={ nameField }
+                        validation={ (value: string) => {
+                            if (!value.toString().match(/^[A-za-z0-9#+._\-\s]{1,30}$/)) {
+                                return t("console:manage.features.claims.local" +
+                                    ".forms.name.validationErrorMessages.invalidName");
+                            }
+                        } }
+                        data-testid={ `${ testId }-form-name-input` }
+                        maxLength={ 30 }
+                        minLength={ 1 }
+                        hint={t("console:manage.features.claims.local.forms.nameHint")}
+                    />
+                    <Field.Textarea
+                        ariaLabel="description"
+                        inputType="resourceName"
+                        name="description"
+                        label={ t("console:manage.features.claims.local.forms.description.label") }
+                        required={ true }
+                        message={ t("console:manage.features.claims.local.forms.description." +
+                            "requiredErrorMessage") }
+                        placeholder={
+                            t("console:manage.features.claims.local.forms.description.placeholder")
+                        }
+                        ref={ descriptionField }
+                        value={ claim?.description }
+                        maxLength={ 300 }
+                        minLength={ 3 }
+                        data-testid={ `${ testId }-form-description-input` }
+                        hint={ t("console:manage.features.claims.local.forms.descriptionHint") }
+                    />
+                    <Field.Input
+                        ariaLabel="regularExpression"
+                        inputType="resourceName"
+                        name="regularExpression"
+                        label={ t("console:manage.features.claims.local.forms.regEx.label") }
+                        required={ false }
+                        requiredErrorMessage=""
+                        placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
+                        value={ claim?.regEx }
+                        ref={ regExField }
+                        data-testid={ `${ testId }-form-regex-input` }
+                        maxLength={ 50 }
+                        minLength={ 3 }
+                        hint={ t("console:manage.features.claims.local.forms.regExHint") }
+                    />
+                    {
+                        claim &&
+                        <Field.Checkbox
+                            ariaLabel="supportedByDefault"
+                            name="supportedByDefault"
+                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label")} 
+                            required={false}
+                            value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
+                            listen={(values) => {
+                                setIsShowDisplayOrder(!!values?.supportedByDefault);
+                            }}
+                            data-testid={`${testId}-form-supported-by-default-input`}
+                        />
+                    }
+                    {
+                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
+                        && (
+                            <Field.Input
+                                ariaLabel="displayOrder"
+                                inputType="default"
+                                name="displayOrder"
+                                type="number"
+                                min="0"
+                                label={ t("console:manage.features.claims.local.forms.displayOrder" +
+                                    ".label") }
+                                required={ false }
+                                placeholder={ t("console:manage.features.claims.local.forms." +
+                                    "displayOrder.placeholder") }
+                                value={ claim?.displayOrder.toString() || 0 }
+                                maxLength={ 50 }
+                                minLength={ 1 }
+                                ref={ displayOrderField }
+                                data-testid={ `${ testId }-form-display-order-input` }
+                                hint={t("console:manage.features.claims.local.forms.displayOrderHint")}
+                            />
+                        )
+                    }
+                    {
+                        claim && attributeConfig.editAttributes.showRequiredCheckBox &&
+                            <Field.Checkbox
+                                ariaLabel="required"
+                                name="required"
+                                required={ false }
+                                requiredErrorMessage=""
+                                label={ t("console:manage.features.claims.local.forms.required.label") }
+                                value={ claim?.required ? [ "required" ] : [] }
+                                data-testid={ `${ testId }-form-required-checkbox` }
+                            />
+                    }
+                    {
+                        claim &&
+                        <Field.Checkbox
+                            ariaLabel="readOnly"
+                            name="readOnly"
+                            required={ false }
+                            label={ t("console:manage.features.claims.local.forms.readOnly.label") }
+                            requiredErrorMessage=""
+                            value={ claim?.readOnly ? [ "readOnly" ] : [] }
+                            data-testid={ `${ testId }-form-readonly-checkbox` }
+                        />
+                    }
+                    <Field.Button
+                        ariaLabel="submit"
+                        size="small"
+                        buttonType="primary_btn"
+                        label={ t("common:update") }
+                        name="submit"
+                    />
+                </Form>
             </EmphasizedSegment>
             <Divider hidden />
             {

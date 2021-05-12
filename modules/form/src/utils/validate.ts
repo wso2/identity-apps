@@ -37,7 +37,7 @@ export const getDefaultValidation = (field: string, fieldType: string, value: an
                 break;
             case "resourceName":
                 if (!FormValidation.resourceName(value)) {
-                    return FieldConstants.INVALID_NAME_ERROR;
+                    return FieldConstants.INVALID_RESOURCE_ERROR;
                 }
                 break;
             case "email":

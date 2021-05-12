@@ -20,7 +20,8 @@ import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/form";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -336,6 +337,52 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             setTempSelectedAttributes(selectedAttributes);
         };
 
+        const onSubmit = (values: any): void  => {
+            updateOIDCScopeDetails(scope.name, {
+                claims: scope.claims,
+                description: values?.description !== undefined ?  values?.description?.toString() : scope.description,
+                displayName: values?.displayName !== undefined ? values?.displayName?.toString() : scope.displayName
+            })
+                .then(() => {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.oidcScopes.notifications." +
+                                "updateOIDCScope.success.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "console:manage.features.oidcScopes." +
+                                "notifications.updateOIDCScope.success.message"
+                            )
+                        })
+                    );
+                    getScope(scopeName);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    dispatch(
+                        addAlert({
+                            description:
+                                error?.response?.data?.description ??
+                                t(
+                                    "console:manage.features.oidcScopes." +
+                                    "notifications.updateOIDCScope.genericError." +
+                                    "description"
+                                ),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error?.response?.data?.message ??
+                                t(
+                                    "console:manage.features.oidcScopes." +
+                                    "notifications.updateOIDCScope.genericError." +
+                                    "message"
+                                )
+                        })
+                    );
+                });
+        } 
+
+        
         return (
             <PageLayout
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
@@ -364,54 +411,15 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 6 }>
                                 { !isScopeRequestLoading && !isAttributeRequestLoading ? (
-                                    <Forms
-                                        onSubmit={ (values: Map<string, FormValue>) => {
-                                            updateOIDCScopeDetails(scope.name, {
-                                                claims: scope.claims,
-                                                description: values.get("description").toString(),
-                                                displayName: values.get("displayName").toString()
-                                            })
-                                                .then(() => {
-                                                    dispatch(
-                                                        addAlert({
-                                                            description: t(
-                                                                "console:manage.features.oidcScopes.notifications." +
-                                                                "updateOIDCScope.success.description"
-                                                            ),
-                                                            level: AlertLevels.SUCCESS,
-                                                            message: t(
-                                                                "console:manage.features.oidcScopes." +
-                                                                "notifications.updateOIDCScope.success.message"
-                                                            )
-                                                        })
-                                                    );
-                                                    getScope(scopeName);
-                                                })
-                                                .catch((error: IdentityAppsApiException) => {
-                                                    dispatch(
-                                                        addAlert({
-                                                            description:
-                                                                error?.response?.data?.description ??
-                                                                t(
-                                                                    "console:manage.features.oidcScopes." +
-                                                                    "notifications.updateOIDCScope.genericError." +
-                                                                    "description"
-                                                                ),
-                                                            level: AlertLevels.ERROR,
-                                                            message:
-                                                                error?.response?.data?.message ??
-                                                                t(
-                                                                    "console:manage.features.oidcScopes." +
-                                                                    "notifications.updateOIDCScope.genericError." +
-                                                                    "message"
-                                                                )
-                                                        })
-                                                    );
-                                                });
-                                        } }
+                                    <Form
+                                        onSubmit={ (values): void => {
+                                            onSubmit(values);
+                                        }}
+                                        data-testid={ testId } 
                                     >
-                                        <Field
-                                            type="text"
+                                        <Field.Input
+                                            ariaLabel="displayName" 
+                                            inputType="name" 
                                             name="displayName"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -424,14 +432,16 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             ) }
                                             value={ scope.displayName }
                                             required={ true }
-                                            requiredErrorMessage={ t(
+                                            message={ t(
                                                 "console:manage.features.oidcScopes.forms." +
                                                 "addScopeForm.inputs.displayName.validations.empty"
                                             ) }
                                             maxLength={ 40 }
+                                            minLength={ 3 }
                                         />
-                                        <Field
-                                            type="text"
+                                        <Field.Input
+                                            ariaLabel="description" 
+                                            inputType="resourceName" 
                                             name="description"
                                             label={ t(
                                                 "console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -444,11 +454,17 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                             ) }
                                             value={ scope.description }
                                             required={ false }
-                                            requiredErrorMessage=""
                                             maxLength={ 300 }
+                                            minLength={ 3 }
                                         />
-                                        <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
-                                    </Forms>
+                                        <Field.Button
+                                            ariaLabel="submit"
+                                            size="small"
+                                            buttonType="primary_btn"
+                                            label={ t("common:update") }
+                                            name="submit"
+                                        />
+                                    </Form>
                                 ) : (
                                         <Placeholder>
                                             <Placeholder.Line length="medium" />
