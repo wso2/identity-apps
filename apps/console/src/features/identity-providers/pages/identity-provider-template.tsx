@@ -48,8 +48,7 @@ import {
     getHelpPanelActionIcons,
     history
 } from "../../core";
-import { getIdentityProviderTemplate } from "../api";
-import { AuthenticatorCreateWizardFactory, handleGetIDPTemplateAPICallError } from "../components";
+import { AuthenticatorCreateWizardFactory } from "../components";
 import {
     getHelpPanelIcons,
     getIdPIcons,
@@ -98,7 +97,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         (state: AppState) => state.helpPanel.docStructure);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
+    const [ templateType, setTemplateType ] = useState<string>(undefined);
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
@@ -224,38 +223,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
 
     /**
-     * Retrieve Identity Provider template.
-     */
-    const getTemplate = (templateId: string): void => {
-
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
-            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.
-                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
-        if (useAPI) {
-            getIdentityProviderTemplate(templateId)
-                .then((response) => {
-                    if (!response.disabled) {
-                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
-                    }
-                })
-                .catch((error) => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        } else {
-            IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
-                .then((response) => {
-                    if (!response.disabled) {
-                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
-                    }
-                })
-                .catch((error) => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        }
-    };
-
-    /**
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
@@ -272,7 +239,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-            getTemplate(id);
+        setTemplateType(id);
     };
 
     /**
@@ -476,12 +443,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <Divider hidden/>
                 <AuthenticatorCreateWizardFactory
                     open={ showWizard }
-                    type={ selectedTemplate?.name }
+                    type={ templateType }
                     onWizardClose={ () => {
-                        setSelectedTemplate(undefined);
+                        setTemplateType(undefined);
                         setShowWizard(false);
                     } }
-                    template={ selectedTemplate }
                 />
             </PageLayout>
         </HelpPanelLayout>
