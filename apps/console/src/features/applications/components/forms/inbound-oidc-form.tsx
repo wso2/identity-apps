@@ -733,16 +733,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             publicClient: values.get("supportPublicClients").length > 0,
             refreshToken: {
                 expiryInSeconds: parseInt(values.get("expiryInSeconds"), 10),
-                renewRefreshToken: values.get("RefreshToken").length > 0
+                renewRefreshToken: values.get("RefreshToken")?.length > 0
             },
             scopeValidators: values.get("scopeValidator"),
-            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 0
+            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation")?.length > 0
         };
 
         !applicationConfig.inboundOIDCForm.showFrontChannelLogout
             && delete inboundConfigFormValues.logout.frontChannelLogoutUrl;
         !applicationConfig.inboundOIDCForm.showScopeValidators
             && delete inboundConfigFormValues.scopeValidators;
+        !applicationConfig.inboundOIDCForm.showIdTokenEncryption
+        && delete inboundConfigFormValues.idToken.encryption;
+        !applicationConfig.inboundOIDCForm.showBackChannelLogout
+        && delete inboundConfigFormValues.logout.backChannelLogoutUrl;
+        !applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
+        && delete inboundConfigFormValues.validateRequestObjectSignature;
 
         // Add the `allowedOrigins` & `callbackURLs` only if the grant types
         // `authorization_code` and `implicit` are selected.
@@ -785,7 +791,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             return inboundConfigFormValues;
         }
 
-        return {
+        const finalConfiguration: any = {
             general: {
                 advancedConfigurations: {
                     certificate: {
@@ -800,6 +806,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 clientSecret: initialValues?.clientSecret
             }
         };
+
+        !applicationConfig.inboundOIDCForm.showCertificates
+        && delete finalConfiguration.general.advancedConfigurations.certificate;
+
+        return finalConfiguration;
     };
 
     /**
