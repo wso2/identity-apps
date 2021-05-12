@@ -48,10 +48,7 @@ import {
     getHelpPanelActionIcons,
     history
 } from "../../core";
-import {
-    getIdentityProviderList,
-    getIdentityProviderTemplate
-} from "../api";
+import { getIdentityProviderTemplate } from "../api";
 import { AuthenticatorCreateWizardFactory, handleGetIDPTemplateAPICallError } from "../components";
 import {
     getHelpPanelIcons,
@@ -60,7 +57,6 @@ import {
 } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
-    IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies
@@ -106,7 +102,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
-    const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
     const [
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
@@ -279,25 +274,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
             getTemplate(id);
     };
-
-    const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name sw " + idpName).then(
-            (response: IdentityProviderListResponseInterface) => {
-            setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
-                eachIdp => eachIdp.name) : []);
-        });
-    };
-
-    /**
-     * Called when template is selected.
-     */
-    useEffect(() => {
-        if (!selectedTemplate || !selectedTemplate?.idp?.name) {
-            return;
-        }
-        getPossibleListOfDuplicateIdps(selectedTemplate?.idp?.name);
-        setShowWizard(true);
-    }, [selectedTemplate]);
 
     /**
      * Handles help panel template doc change event.
@@ -501,7 +477,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <AuthenticatorCreateWizardFactory
                     open={ showWizard }
                     type={ selectedTemplate?.name }
-                    duplicateIDPs={ possibleListOfDuplicateIdps }
                     onWizardClose={ () => {
                         setSelectedTemplate(undefined);
                         setShowWizard(false);
