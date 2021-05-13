@@ -576,6 +576,10 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
     currentStep?: number;
     title: string;
     onWizardClose: () => void;
+    /**
+     * Callback to be triggered on successful IDP create.
+     */
+    onIDPCreate: (id?: string) => void;
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
 }
