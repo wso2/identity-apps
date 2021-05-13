@@ -16,16 +16,54 @@
  * under the License.
  */
 
+import React, { ReactElement } from "react";
+import { Divider, Grid, Header } from "semantic-ui-react";
+import { GovernanceConnectorInterface } from "../../features/server-configurations";
+
 export const serverConfigurationConfig = {
+    autoEnableConnectorToggleProperty: false,
     connectorPropertiesToShow: [
-        "Recovery.ReCaptcha.Password.Enable",
-        "Recovery.Notification.InternallyManage",
-        "Recovery.NotifySuccess",
-        "Recovery.ExpiryTime",
-        "Recovery.CallbackRegex"
+        "all"
     ],
+    connectorToggleName: {},
     connectorsToShow: [
-        "account-recovery"
+        "all"
     ],
-    showGovernanceConnectorCategories: false
+    renderConnector: (connector: GovernanceConnectorInterface,
+                      connectorForm: ReactElement,
+                      connectorIllustration: string,
+                      connectorSubHeading: string): ReactElement => {
+        return(
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column>
+                        <Grid padded>
+                            <Grid.Row>
+                                <Grid.Column width={ 16 }>
+                                    <div
+                                        className="connector-section-with-image-bg"
+                                        style={ {
+                                            background: `url(${ connectorIllustration })`
+                                        } }
+                                    >
+                                        <Header>
+                                            { connector?.friendlyName }
+                                            <Header.Subheader>
+                                                { connectorSubHeading }
+                                            </Header.Subheader>
+                                        </Header>
+                                    </div>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Divider />
+                        { connectorForm }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    },
+    renderConnectorWithinEmphasizedSegment: true,
+    showGovernanceConnectorCategories: true,
+    showPageHeading: true
 };
