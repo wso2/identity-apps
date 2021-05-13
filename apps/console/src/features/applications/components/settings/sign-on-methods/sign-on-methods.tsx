@@ -36,7 +36,11 @@ import {
     FeatureConfigInterface,
     history
 } from "../../../../core";
-import { GenericAuthenticatorInterface, IdentityProviderManagementUtils } from "../../../../identity-providers";
+import {
+    AuthenticatorCreateWizardFactory,
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementUtils
+} from "../../../../identity-providers";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { ApplicationManagementConstants } from "../../../constants";
 import { AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
@@ -113,12 +117,26 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         moderatedAuthenticationSequence,
         setModeratedAuthenticationSequence
     ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ idpTemplateTypeToTrigger, setIDPTemplateTypeToTrigger ] = useState<string>(undefined);
+    const [ showIDPCreateWizard, setShowIDPCreateWizard ] = useState<boolean>(false);
 
     /**
      * Loads federated authenticators and local authenticators on component load.
      */
     useEffect(() => {
         
+        fetchAndCategorizeAuthenticators();
+    }, []);
+
+    /**
+     * Fetches the list of Authenticators and categorize them.
+     *
+     * @param {(all: GenericAuthenticatorInterface[][],
+     *     google: GenericAuthenticatorInterface[]) => void} onSuccess - On Success callback.
+     */
+    const fetchAndCategorizeAuthenticators = (onSuccess?: (all: GenericAuthenticatorInterface[][],
+                                                           google: GenericAuthenticatorInterface[]) => void): void => {
+
         setIsAuthenticatorsFetchRequestLoading(true);
 
         IdentityProviderManagementUtils.getAllAuthenticators()
@@ -136,11 +154,12 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
                 setGoogleAuthenticators(google);
                 setAuthenticators(response);
+                onSuccess && onSuccess(response, google);
             })
             .finally(() => {
                 setIsAuthenticatorsFetchRequestLoading(false);
             });
-    }, []);
+    };
 
     /**
      * Check if the sequence is default.
@@ -167,8 +186,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Handles the login flow select action.
      *
      * @param {LoginFlowTypes} loginFlow - Selected login flow.
+     * @param {GenericAuthenticatorInterface[]} googleAuthenticators -  Set of Google Authenticators.
      */
-    const handleLoginFlowSelect = (loginFlow: LoginFlowTypes): void => {
+    const handleLoginFlowSelect = (loginFlow: LoginFlowTypes,
+                                   googleAuthenticators: GenericAuthenticatorInterface[]): void => {
 
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
@@ -220,7 +241,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const updateGoogleLoginSequenceWithIDPName = (idp: string): AuthenticationSequenceInterface => {
 
         const modifiedGoogleLoginSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
-        modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = googleAuthenticators[0].idp;
         modifiedGoogleLoginSequenceTemplate.steps[0].options.forEach((option) => {
             if (option.authenticator === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME) {
                 option.idp = idp;
@@ -250,13 +270,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
             onSecondaryActionClick={ () => setShowMissingGoogleAuthenticatorModal(false) }
             onPrimaryActionClick={ (): void => {
-                history.push({
-                    pathname: AppConstants.getPaths().get("IDP_TEMPLATES"),
-                    search: `?${
-                        IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY }=${
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE
-                        }`
-                });
+                setIDPTemplateTypeToTrigger(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+                setShowMissingGoogleAuthenticatorModal(false);
+                setShowIDPCreateWizard(true);
             } }
             data-testid={ `${ testId }-add-missing-authenticator-modal` }
             closeOnDimmerClick={ false }
@@ -388,6 +404,36 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setModeratedAuthenticationSequence(authenticationSequence);
     };
 
+    /**
+     * Renders the IDP create wizard.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderIDPCreateWizard = (): ReactElement => {
+
+        if (!idpTemplateTypeToTrigger) {
+            return;
+        }
+
+        return (
+            <AuthenticatorCreateWizardFactory
+                open={ showIDPCreateWizard }
+                type={ idpTemplateTypeToTrigger }
+                onIDPCreate={ () => {
+                    fetchAndCategorizeAuthenticators((all, google) => {
+                        setIDPTemplateTypeToTrigger(undefined);
+                        setShowIDPCreateWizard(false);
+                        handleLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN, google);
+                    });
+                } }
+                onWizardClose={ () => {
+                    setIDPTemplateTypeToTrigger(undefined);
+                    setShowIDPCreateWizard(false);
+                } }
+            />
+        );
+    };
+
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
@@ -396,7 +442,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         <SignInMethodLanding
                             isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
                             readOnly={ readOnly }
-                            onLoginFlowSelect={ handleLoginFlowSelect }
+                            onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                                handleLoginFlowSelect(type, googleAuthenticators);
+                            } }
                             data-testid={ `${ testId }-landing` }
                         />
                     )
@@ -415,6 +463,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         </>
                     )
             }
+            { showIDPCreateWizard && renderIDPCreateWizard() }
             { showMissingGoogleAuthenticatorModal && renderMissingGoogleAuthenticatorModal() }
             { showDuplicateGoogleAuthenticatorSelectionModal && renderDuplicateGoogleAuthenticatorSelectionModal() }
         </EmphasizedSegment>
