@@ -20,14 +20,15 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
     EmptyPlaceholder,
-    Heading, Hint,
+    Heading,
+    Hint,
+    InfoCard,
     LinkButton,
     PrimaryButton
 } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
-    Fragment,
     FunctionComponent,
     MouseEvent,
     ReactElement,
@@ -37,18 +38,20 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    Divider,
+    Card,
     DropdownItemProps,
     DropdownProps,
     Form,
     Grid,
+    Icon,
+    Input,
     Modal,
     ModalProps
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { AppConstants, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { getGeneralIcons } from "../../../../configs";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -59,9 +62,9 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      */
     allowSocialLoginAddition: boolean;
     /**
-     * Set of authenticator groups.
+     * Set of authenticators.
      */
-    authenticatorGroups: AuthenticatorGroupInterface[];
+    authenticators: GenericAuthenticatorInterface[];
     /**
      * Callback for modal submit.
      */
@@ -80,25 +83,6 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
     stepCount: number;
 }
 
-export interface AuthenticatorGroupInterface {
-    /**
-     * Group category.
-     */
-    category: string;
-    /**
-     * Group description.
-     */
-    description?: string;
-    /**
-     * Heading for the group.
-     */
-    heading?: string;
-    /**
-     * Set of authenticators.
-     */
-    authenticators: GenericAuthenticatorInterface[];
-}
-
 /**
  * Authenticator side panel component.
  *
@@ -112,7 +96,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const {
         allowSocialLoginAddition,
-        authenticatorGroups,
+        authenticators,
         className,
         header,
         onClose,
@@ -135,7 +119,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [
         selectedAuthenticators,
         setSelectedAuthenticators
-    ] = useState<{ [ key: string ]: GenericAuthenticatorInterface[] }>(null);
+    ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(stepCount);
 
     const classes = classNames(
@@ -195,68 +179,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     );
 
     /**
-     * Render authenticator group.
-     *
-     * @param {AuthenticatorGroupInterface} authenticatorGroup - Authenticator group.
-     * @param {number} index - Index.
-     * @return {React.ReactElement}
-     */
-    const renderAuthenticatorGroup = (authenticatorGroup: AuthenticatorGroupInterface, index: number): ReactElement => (
-
-        <Fragment key={ index }>
-            {
-                authenticatorGroup.heading && (
-                    <>
-                        <Heading
-                            as="h6"
-                            className={
-                                (index > 0 && authenticatorGroup.description !== undefined) ? "mb-2 mt-3" : "mb-2"
-                            }
-                        >
-                            { authenticatorGroup.heading }
-                        </Heading>
-                        {
-                            authenticatorGroup.description && (
-                                <Hint className="mb-3">{ authenticatorGroup.description }</Hint>
-                            )
-                        }
-                    </>
-                )
-            }
-            <Authenticators
-                allowSocialLoginAddition={ allowSocialLoginAddition }
-                authenticators={ authenticatorGroup.authenticators }
-                category={ authenticatorGroup.category }
-                emptyPlaceholder={ (
-                    <EmptyPlaceholder
-                        subtitle={
-                            [
-                                t("console:develop.features" +
-                                    ".applications.placehold" +
-                                    "ers.emptyAuthenticators" +
-                                    "List.subtitles", {
-                                    type: authenticatorGroup.heading
-                                })
-                            ]
-                        }
-                    />
-                ) }
-                isSocialLogin={
-                    authenticatorGroup.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL
-                }
-                handleSocialLoginAdd={ handleSocialLoginAdd }
-                onAuthenticatorSelect={ (authenticators) => {
-                    setSelectedAuthenticators({
-                        ...selectedAuthenticators,
-                        [ authenticatorGroup.category ]: authenticators
-                    });
-                } }
-                data-testid={ `${ testId }-authenticators` }
-            />
-        </Fragment>
-    );
-
-    /**
      * Generates the options for the step selector dropdown.
      *
      * @return {DropdownItemProps[]}
@@ -292,14 +214,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      */
     const handleModalSubmit = (): void => {
 
-        let selected: GenericAuthenticatorInterface[] = [];
-
-        // Bring the selected authenticators to a flat level.
-        for (const values of Object.values(selectedAuthenticators)) {
-            selected = [ ...selected, ...values ];
-        }
-
-        onModalSubmit(selected, authenticatorAddStep);
+        onModalSubmit(selectedAuthenticators, authenticatorAddStep);
     };
 
     return (
@@ -311,8 +226,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 { ...rest }
             >
                 <Modal.Header>{ header }</Modal.Header>
-                <Modal.Content scrolling>
-                    { showStepSelector && (
+                { showStepSelector && (
+                    <Modal.Content className="step-selection-dropdown-container">
                         <>
                             <Heading as="h5">
                                 {
@@ -344,34 +259,49 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     />
                                 </Form.Field>
                             </Form>
-                            <Divider className="x2" />
                         </>
-                    ) }
+                    </Modal.Content>
+                ) }
+                <Modal.Content scrolling>
                     { message }
                     {
-                        authenticatorGroups
-                        && authenticatorGroups instanceof Array
-                        && authenticatorGroups.length > 0 && (
-                            <div className="authenticators-section">
+                        authenticators
+                        && authenticators instanceof Array
+                        && authenticators.length > 0 && (
+                            <Card.Group
+                                itemsPerRow={ 3 }
+                                className="authenticator-container"
+                            >
+                                <Authenticators
+                                    authenticators={ authenticators }
+                                    emptyPlaceholder={ (
+                                        <EmptyPlaceholder
+                                            subtitle={
+                                                [
+                                                    t("console:develop.features" +
+                                                        ".applications.placehold" +
+                                                        "ers.emptyAuthenticators" +
+                                                        "List.subtitles")
+                                                ]
+                                            }
+                                        />
+                                    ) }
+                                    onAuthenticatorSelect={ (authenticators) => {
+                                        setSelectedAuthenticators(authenticators);
+                                    } }
+                                    data-testid={ `${ testId }-authenticators` }
+                                />
                                 {
-                                    authenticatorGroups.map((authenticator, index: number) => {
-                                        
-                                        const shouldAllowSocialAddition: boolean = (authenticator.category
-                                            === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL)
-                                            && allowSocialLoginAddition;
-
-                                        return (
-                                            (authenticator?.authenticators
-                                            && authenticator.authenticators instanceof Array
-                                            && authenticator.authenticators.length > 0)
-                                                ? renderAuthenticatorGroup(authenticator, index)
-                                                : shouldAllowSocialAddition
-                                                    ? renderAuthenticatorGroup(authenticator, index)
-                                                    : null
-                                        );
-                                    })
+                                    allowSocialLoginAddition && (
+                                        <InfoCard
+                                            header={ t("common:add") }
+                                            subHeader=""
+                                            description="Add a custom Authenticator"
+                                            image={ getGeneralIcons()?.addCircleOutline }
+                                        />
+                                    )
                                 }
-                            </div>
+                            </Card.Group>
                         )
                     }
                 </Modal.Content>
