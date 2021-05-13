@@ -513,10 +513,23 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
  * Generic interface for authenticators local/federated.
  */
 export interface GenericAuthenticatorInterface extends StrictGenericAuthenticatorInterface {
+
+    /**
+     * Group category.
+     */
+    category?: string;
+    /**
+     * Displayname of the category.
+     */
+    categoryDisplayName?: string;
     /**
      * Identity provider name. ex: LOCAL, Facebook etc.
      */
     idp: string;
+    /**
+     * Description for the authenticator.
+     */
+    description?: string;
     /**
      * Display name of the authenticator.
      */
