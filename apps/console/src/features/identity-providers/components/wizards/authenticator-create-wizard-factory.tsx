@@ -49,6 +49,10 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
      */
     onWizardClose: GenericIdentityProviderCreateWizardPropsInterface[ "onWizardClose" ];
     /**
+     * Callback to be triggered on successful IDP create.
+     */
+    onIDPCreate: GenericIdentityProviderCreateWizardPropsInterface[ "onIDPCreate" ];
+    /**
      * Type of the wizard.
      */
     type: string;

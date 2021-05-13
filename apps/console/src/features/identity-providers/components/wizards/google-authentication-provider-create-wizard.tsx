@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms";
 import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
@@ -31,22 +31,18 @@ import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-p
 import { AppConstants, AppState, ModalWithSidePanel, history, store } from "../../../../features/core";
 import {
     createIdentityProvider,
-    getFederatedAuthenticatorMetadata,
-    getIdentityProviderList
+    getFederatedAuthenticatorMetadata
 } from "../../api";
 import { getAuthenticatorIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
     GenericIdentityProviderCreateWizardPropsInterface,
-    IdentityProviderInterface, IdentityProviderTemplateInterface,
+    IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../models";
-import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPListCallError
-} from "../utils";
+import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -64,12 +60,15 @@ const CLIENT_SECRET_MAX_LENGTH: number = 100;
  * @param { MinimalAuthenticationProviderCreateWizardPropsInterface } props - Props injected to the component.
  * @return { React.ReactElement }
  */
-export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<MinimalAuthenticationProviderCreateWizardPropsInterface> = (
-    props: MinimalAuthenticationProviderCreateWizardPropsInterface
+export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
+    MinimalAuthenticationProviderCreateWizardPropsInterface
+    > = (
+        props: MinimalAuthenticationProviderCreateWizardPropsInterface
 ): ReactElement => {
 
     const {
         onWizardClose,
+        onIDPCreate,
         currentStep,
         title,
         subTitle,
@@ -121,16 +120,13 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push({
-                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
-                    });
+                    onIDPCreate(createdIdpID);
 
                     return;
                 }
 
-                // Fallback to identity providers page, if the location header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                // Since the location header is not present, trigger callback without the id.
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

@@ -369,6 +369,27 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         );
     };
 
+    /**
+     * On successful IDP creation, navigates to the IDP views.
+     *
+     * @param {string} id - ID of the created IDP.
+     */
+    const handleSuccessfulIDPCreation = (id: string) => {
+
+        // If ID is present, navigate to the edit page of the created IDP.
+        if (id) {
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),
+                search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
+            });
+            
+            return;
+        }
+
+        // Fallback to identity providers page, if id is not present.
+        history.push(AppConstants.getPaths().get("IDP"));
+    };
+
     return (
         <HelpPanelLayout
             enabled={ false }
@@ -444,6 +465,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <AuthenticatorCreateWizardFactory
                     open={ showWizard }
                     type={ templateType }
+                    onIDPCreate={ handleSuccessfulIDPCreation }
                     onWizardClose={ () => {
                         setTemplateType(undefined);
                         setShowWizard(false);
