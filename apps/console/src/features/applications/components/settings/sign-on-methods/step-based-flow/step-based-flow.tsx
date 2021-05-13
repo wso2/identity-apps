@@ -635,9 +635,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * the array of authenticators defined to be hidden in the config.
      *
      * @param {GenericAuthenticatorInterface[]} authenticators - Authenticators to be filtered.
+     * @param {string} category - Authenticator category.
+     * @param {string} categoryDisplayName - Authenticator category display name.
+     * @param {string} description - Authenticator description.
+     *
      * @return {GenericAuthenticatorInterface[]}
      */
-    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[]) => {
+    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
+                                    category: string,
+                                    categoryDisplayName: string,
+                                    description: string) => {
 
         if (isEmpty(authenticators)) {
             return [];
@@ -651,10 +658,18 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return authenticators;
         }
 
-        return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-            return !config.ui.hiddenAuthenticators
-                .some((hiddenAuthenticator: string) => hiddenAuthenticator === authenticator.name);
-        });
+        return authenticators
+            .filter((authenticator: GenericAuthenticatorInterface) => {
+                return !config.ui.hiddenAuthenticators.includes(authenticator.name);
+            })
+            .map((authenticator: GenericAuthenticatorInterface) => {
+                return {
+                    ...authenticator,
+                    category,
+                    description,
+                    categoryDisplayName
+                };
+            });
     };
 
     /**
@@ -714,47 +729,39 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
                     "sections.stepBased.addAuthenticatorModal.heading")
             }
-            authenticatorGroups={ [
-                {
-                    authenticators: moderateAuthenticators(localAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+            authenticators={ [
+                ...moderateAuthenticators(localAuthenticators,
+                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.description", { productName: config.ui.productName }),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "basic.heading"),
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(socialAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "basic.description", { productName: config.ui.productName })),
+                ...moderateAuthenticators(socialAuthenticators,
+                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "social.heading"),
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(secondFactorAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "social.description")),
+                ...moderateAuthenticators(secondFactorAuthenticators,
+                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "mfa.heading"),
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(enterpriseAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "mfa.description")),
+                ...moderateAuthenticators(enterpriseAuthenticators,
+                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "enterprise.heading"),
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                         "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.heading")
-                }
+                        "enterprise.description"))
             ] }
             showStepSelector={ authenticationSteps.length > 1 }
             stepCount={ authenticationSteps.length }
