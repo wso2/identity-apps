@@ -227,7 +227,6 @@ export const initializeAuthentication = () => (dispatch) => {
                 ?? responseModeFallback,
             scope: window["AppUtils"].getConfig().idpConfigs?.scope
                 ?? [ TokenConstants.SYSTEM_SCOPE ],
-            sendCookiesInRequests: true,
             serverOrigin: window["AppUtils"].getConfig().idpConfigs?.serverOrigin
                 ?? window["AppUtils"].getConfig().idpConfigs.serverOrigin,
             sessionState: response?.data?.sessionState,
