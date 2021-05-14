@@ -49,10 +49,6 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     defaultName?: string;
     /**
-     * Empty placeholder.
-     */
-    emptyPlaceholder?: ReactNode;
-    /**
      * Heading for the authenticators section.
      */
     heading?: string;
@@ -80,7 +76,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         authenticators,
         className,
         defaultName,
-        emptyPlaceholder,
         heading,
         onAuthenticatorSelect,
         [ "data-testid" ]: testId
@@ -155,51 +150,50 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         setSelectedAuthenticators([ ...selectedAuthenticators, selectedAuthenticator ]);
     };
 
-    return authenticators && authenticators instanceof Array
-        ? (
-            <Fragment data-testid={ testId }>
-                { heading && <Heading as="h6">{ heading }</Heading> }
-                {
-                    authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
-                        <Popup
-                            key={ index }
-                            on="hover"
-                            disabled={ !isAuthenticatorDisabled(authenticator) }
-                            content={ (
-                                <>
-                                    <Label attached="top">
-                                        <Icon name="info circle"/> Info
-                                    </Label>
-                                    { resolvePopupContent(authenticator) }
-                                </>
-                            ) }
-                            trigger={ (
-                                <InfoCard
-                                    header={
-                                        ApplicationManagementConstants
-                                            .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
-                                        || authenticator.displayName
-                                        || defaultName
-                                    }
-                                    disabled={ isAuthenticatorDisabled(authenticator) }
-                                    selected={
-                                        selectedAuthenticators.some((evalAuthenticator) => {
-                                            return evalAuthenticator.id === authenticator.id
-                                        })
-                                    }
-                                    subHeader={ authenticator.categoryDisplayName }
-                                    description="Official javascript wrapper form WSO2 Identity Server Auth APIs."
-                                    image={ authenticator.image }
-                                    tags={ [ authenticator.category ] }
-                                    onClick={ () => handleAuthenticatorSelect(authenticator) }
-                                />
-                            ) }
-                        />
-                    ))
-                }
-            </Fragment>
-        )
-        : <>{ emptyPlaceholder }</>;
+    return (
+        <Fragment data-testid={ testId }>
+            { heading && <Heading as="h6">{ heading }</Heading> }
+            {
+                authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
+                    <Popup
+                        key={ index }
+                        on="hover"
+                        disabled={ !isAuthenticatorDisabled(authenticator) }
+                        content={ (
+                            <>
+                                <Label attached="top">
+                                    <Icon name="info circle"/> Info
+                                </Label>
+                                { resolvePopupContent(authenticator) }
+                            </>
+                        ) }
+                        trigger={ (
+                            <InfoCard
+                                className="authenticator"
+                                header={
+                                    ApplicationManagementConstants
+                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                                    || authenticator.displayName
+                                    || defaultName
+                                }
+                                disabled={ isAuthenticatorDisabled(authenticator) }
+                                selected={
+                                    selectedAuthenticators.some((evalAuthenticator) => {
+                                        return evalAuthenticator.id === authenticator.id
+                                    })
+                                }
+                                subHeader={ authenticator.categoryDisplayName }
+                                description={ authenticator.description }
+                                image={ authenticator.image }
+                                tags={ [ authenticator.category ] }
+                                onClick={ () => handleAuthenticatorSelect(authenticator) }
+                            />
+                        ) }
+                    />
+                ))
+            }
+        </Fragment>
+    );
 };
 
 /**

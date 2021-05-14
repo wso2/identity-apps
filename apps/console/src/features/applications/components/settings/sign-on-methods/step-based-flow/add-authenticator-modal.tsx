@@ -19,10 +19,10 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
-    EmptyPlaceholder,
+    EmptyPlaceholder, GenericIcon,
     Heading,
     Hint,
-    InfoCard,
+    Text,
     LinkButton,
     PrimaryButton
 } from "@wso2is/react-components";
@@ -52,6 +52,7 @@ import { Authenticators } from "./authenticators";
 import { AppConstants, history } from "../../../../../core";
 import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
+import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -120,6 +121,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         selectedAuthenticators,
         setSelectedAuthenticators
     ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [
+        filteredAuthenticators,
+        setFilteredAuthenticators
+    ] = useState<GenericAuthenticatorInterface[]>(authenticators);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(stepCount);
 
     const classes = classNames(
@@ -216,6 +221,25 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         onModalSubmit(selectedAuthenticators, authenticatorAddStep);
     };
+    
+    const handleAuthenticatorSearch = (e, { value }) => {
+        
+        const searchQuery: string = value.toLocaleLowerCase();
+
+        setFilteredAuthenticators(
+            authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+                const name = (ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                    || authenticator.displayName).toLocaleLowerCase();
+
+                if (name.includes(searchQuery)
+                    || authenticator.category.toLocaleLowerCase().includes(searchQuery)
+                    || authenticator.categoryDisplayName.toLocaleLowerCase().includes(searchQuery)) {
+
+                    return true;
+                }
+            })
+        );
+    };
 
     return (
         <>
@@ -262,47 +286,82 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         </>
                     </Modal.Content>
                 ) }
-                <Modal.Content scrolling>
+                <Modal.Content className="authenticator-search-container">
+                    <Input
+                        loading={ false }
+                        icon={ <Icon name="search"/> }
+                        iconPosition="left"
+                        fluid
+                        onChange={ handleAuthenticatorSearch }
+                        placeholder={ "Search for Authenticators" }
+                    />
+                </Modal.Content>
+                <Modal.Content
+                    scrolling
+                    className="authenticator-container"
+                >
                     { message }
                     {
-                        authenticators
-                        && authenticators instanceof Array
-                        && authenticators.length > 0 && (
-                            <Card.Group
-                                itemsPerRow={ 3 }
-                                className="authenticator-container"
-                            >
-                                <Authenticators
-                                    authenticators={ authenticators }
-                                    emptyPlaceholder={ (
-                                        <EmptyPlaceholder
-                                            subtitle={
-                                                [
-                                                    t("console:develop.features" +
-                                                        ".applications.placehold" +
-                                                        "ers.emptyAuthenticators" +
-                                                        "List.subtitles")
-                                                ]
-                                            }
-                                        />
-                                    ) }
-                                    onAuthenticatorSelect={ (authenticators) => {
-                                        setSelectedAuthenticators(authenticators);
-                                    } }
-                                    data-testid={ `${ testId }-authenticators` }
-                                />
-                                {
-                                    allowSocialLoginAddition && (
-                                        <InfoCard
-                                            header={ t("common:add") }
-                                            subHeader=""
-                                            description="Add a custom Authenticator"
-                                            image={ getGeneralIcons()?.addCircleOutline }
-                                        />
-                                    )
-                                }
-                            </Card.Group>
-                        )
+                        (filteredAuthenticators
+                            && Array.isArray(filteredAuthenticators)
+                            && filteredAuthenticators.length > 0)
+                            ? (
+                                <Card.Group itemsPerRow={ 3 }>
+                                    <Authenticators
+                                        authenticators={ filteredAuthenticators }
+                                        onAuthenticatorSelect={ (authenticators) => {
+                                            setSelectedAuthenticators(authenticators);
+                                        } }
+                                        data-testid={ `${ testId }-authenticators` }
+                                    />
+                                    {
+                                        allowSocialLoginAddition && (
+                                            <Card className="basic-card authenticator add-custom-authenticator-card">
+                                                <Card.Content textAlign="center">
+                                                    <GenericIcon
+                                                        transparent
+                                                        className="mb-3"
+                                                        size="mini"
+                                                        icon={ getGeneralIcons().addCircleOutline }
+                                                    />
+                                                    <Text weight="500">Add New</Text>
+                                                </Card.Content>
+                                            </Card>
+                                        )
+                                    }
+                                </Card.Group>
+                            )
+                            : (
+                                <div>
+                                    <EmptyPlaceholder
+                                        subtitle={
+                                            [
+                                                t("console:develop.features.applications.placeholders" +
+                                                    ".emptyAuthenticatorsList.subtitles")
+                                            ]
+                                        }
+                                    />
+                                    {
+                                        allowSocialLoginAddition && (
+                                            <Card.Group centered>
+                                                <Card
+                                                    className="basic-card authenticator add-custom-authenticator-card"
+                                                >
+                                                    <Card.Content textAlign="center">
+                                                        <GenericIcon
+                                                            transparent
+                                                            className="mb-3"
+                                                            size="mini"
+                                                            icon={ getGeneralIcons().addCircleOutline }
+                                                        />
+                                                        <Text weight="500">Add New</Text>
+                                                    </Card.Content>
+                                                </Card>
+                                            </Card.Group>
+                                        )
+                                    }
+                                </div>
+                            )
                     }
                 </Modal.Content>
                 <Modal.Actions>
