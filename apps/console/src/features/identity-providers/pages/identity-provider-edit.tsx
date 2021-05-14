@@ -48,15 +48,14 @@ import {
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import { IdentityProviderManagementConstants } from "../constants";
+import { GOOGLE_IDP_NAME, OIDC_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
-    SupportedQuickStartTemplateTypes,
     emptyIdentityProvider
 } from "../models";
-import { IdentityProviderTemplateManagementUtils } from "../utils";
+import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -173,8 +172,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE.toString();
             } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE.toString();
-             }
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC.toString();
+            } else if (authenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML.toString();
+            }
         }
 
         const template = identityProviderTemplates.find((template) => template.id === identityProvider.templateId);
@@ -408,14 +409,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     isLoading={ isIdentityProviderRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={ identityProviderTemplate?.name === SupportedQuickStartTemplateTypes.GOOGLE }
-                    isSaml={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId 
-                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) }
-                    isOidc={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
-                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
-                    }
+                    isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
+                    isOidc={ OIDC_IDP_NAME === identityProviderTemplate?.name }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
