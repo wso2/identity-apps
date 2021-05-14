@@ -29,6 +29,7 @@ export const serverConfigurationConfig = {
     connectorsToShow: [
         "all"
     ],
+    intendSettings: true,
     renderConnector: (connector: GovernanceConnectorInterface,
                       connectorForm: ReactElement,
                       connectorIllustration: string,
