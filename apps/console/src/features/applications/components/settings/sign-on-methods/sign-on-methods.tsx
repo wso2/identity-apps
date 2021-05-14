@@ -390,30 +390,29 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
             {
-                (isLoading || isAuthenticatorsFetchRequestLoading)
-                    ? <ContentLoader />
-                    : (!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                        ? (
-                            <SignInMethodLanding
-                                isLoading={ isLoading }
+                (!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                    ? (
+                        <SignInMethodLanding
+                            isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
+                            readOnly={ readOnly }
+                            onLoginFlowSelect={ handleLoginFlowSelect }
+                            data-testid={ `${ testId }-landing` }
+                        />
+                    )
+                    : (
+                        <>
+                            <SignInMethodCustomization
+                                appId={ appId }
+                                isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
+                                authenticators={ authenticators }
+                                authenticationSequence={ moderatedAuthenticationSequence }
+                                onUpdate={ onUpdate }
+                                onReset={ handleLoginFlowReset }
+                                data-testid={ testId }
                                 readOnly={ readOnly }
-                                onLoginFlowSelect={ handleLoginFlowSelect }
-                                data-testid={ `${ testId }-landing` }
                             />
-                        )
-                        : (
-                            <>
-                                <SignInMethodCustomization
-                                    appId={ appId }
-                                    authenticators={ authenticators }
-                                    authenticationSequence={ moderatedAuthenticationSequence }
-                                    onUpdate={ onUpdate }
-                                    onReset={ handleLoginFlowReset }
-                                    data-testid={ testId }
-                                    readOnly={ readOnly }
-                                />
-                            </>
-                        )
+                        </>
+                    )
             }
             { showMissingGoogleAuthenticatorModal && renderMissingGoogleAuthenticatorModal() }
             { showDuplicateGoogleAuthenticatorSelectionModal && renderDuplicateGoogleAuthenticatorSelectionModal() }
