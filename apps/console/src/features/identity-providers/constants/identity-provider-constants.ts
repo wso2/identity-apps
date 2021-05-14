@@ -56,3 +56,7 @@ export class IdentityProviderConstants {
         META: "configs/identity-provider-mgt.meta.json"
     };
 }
+
+export const GOOGLE_IDP_NAME = "Google";
+export const OIDC_IDP_NAME = "OpenID Connect";
+
