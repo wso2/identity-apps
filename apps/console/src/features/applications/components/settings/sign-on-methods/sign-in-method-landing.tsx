@@ -55,6 +55,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 ): ReactElement => {
 
     const {
+        isLoading,
         onLoginFlowSelect,
         [ "data-testid" ]: testId
     } = props;
@@ -64,6 +65,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     return (
         <Segment
             basic
+            loading={ isLoading }
             data-testid={ testId }
             className="sign-in-method-landing"
         >
