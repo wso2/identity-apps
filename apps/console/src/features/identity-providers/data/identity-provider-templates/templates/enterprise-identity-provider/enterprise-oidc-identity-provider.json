@@ -1,8 +1,8 @@
 {
     "category": "DEFAULT",
-    "description": "Configure a new identity provider with advanced enteprise protocols",
+    "description": "Configure a new identity provider with OpenID Connect",
     "displayOrder": 1,
-    "id": "enterprise-idp",
+    "id": "oidc-idp",
     "idp": {
         "certificate": {},
         "claims": {
@@ -88,8 +88,8 @@
             "outboundProvisioningRoles": []
         }
     },
-    "image": "enterprise",
-    "name": "Authentication",
+    "image": "oidc",
+    "name": "OpenID Connect",
     "services": [],
     "disabled": false
 }

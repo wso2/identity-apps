@@ -61,16 +61,13 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     onUpdate: (id: string) => void;
     /**
- * Check if IDP is Google
- */
+     * Check if IDP is Google
+    */
     isGoogle: boolean;
     /**
-     * Check if the requesting IDP is enterprise
-     * with SAML and OIDC protocols.
+     * Check if IDP is OIDC
      */
-    isEnterprise?: boolean;
     isOidc: boolean;
-    isSaml: boolean;
     /**
      * IDP template.
      */
@@ -99,8 +96,6 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isGoogle,
-        isEnterprise,
-        isSaml,
         isOidc,
         onDelete,
         onUpdate,
