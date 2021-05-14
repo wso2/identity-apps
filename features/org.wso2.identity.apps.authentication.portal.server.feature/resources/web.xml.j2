@@ -52,10 +52,12 @@
     <!-- *************** End of Global configurations ********************** -->
 
     <!-- *************** Account Recovery Endpoint Context URL Configuration ********************** -->
-    <!--context-param>
+    {% if authenticationendpoint.account_recovery_endpoint_url is defined %}
+    <context-param>
        <param-name>IdentityManagementEndpointContextURL</param-name>
-       <param-value>https://localhost:9443/accountrecoveryendpoint</param-value>
-   </context-param-->
+       <param-value>{{ authenticationendpoint.account_recovery_endpoint_url }}</param-value>
+   </context-param>
+   {% endif %}
     <context-param>
        <param-name>AccountRecoveryRESTEndpointURL</param-name>
        <param-value>/t/tenant-domain/api/identity/user/v1.0/</param-value>
@@ -78,10 +80,12 @@
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
-    <!--context-param>
+    {% if authenticationendpoint.identity_server_endpoint_url is defined %}
+    <context-param>
         <param-name>IdentityServerEndpointContextURL</param-name>
-        <param-value>https://localhost:9443</param-value>
-    </context-param-->
+        <param-value>{{ authenticationendpoint.identity_server_endpoint_url }}</param-value>
+    </context-param>
+    {% endif %}
     <!-- *************** End of Identity Server Endpoint URL Configuration ********************** -->
     <!--context-param>
         <param-name>EnableAuthenticationWithAuthenticationRESTAPI</param-name>
@@ -150,7 +154,7 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>    
+        <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <filter-class>
            org.wso2.carbon.ui.filters.cache.ContentTypeBasedCachePreventionFilter
         </filter-class>

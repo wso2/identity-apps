@@ -66,6 +66,7 @@
             $.ajax({
                 type: "GET",
                 url: "<%=loginContextRequestUrl%>",
+                xhrFields: { withCredentials: true },
                 success: function (data) {
                     if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
                         window.location.href = data.redirectUrl;
