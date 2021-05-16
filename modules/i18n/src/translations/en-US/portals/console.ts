@@ -984,7 +984,7 @@ export const console: ConsoleNS = {
                                             1: "Select one of the options available on the right side to begin " +
                                                 "customizing."
                                         },
-                                        heading: "Application configured with Username & Password Login"
+                                        heading: "This application is configured with Username & Password Login"
                                     },
                                     flowBuilder: {
                                         addMissingGoogleAuthenticatorModal: {
