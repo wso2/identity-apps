@@ -46,7 +46,8 @@ import {
     Icon,
     Input,
     Modal,
-    ModalProps
+    ModalProps,
+    SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { AppConstants, history } from "../../../../../core";
@@ -86,9 +87,9 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
 
 /**
  * Number of cards per row.
- * @type {number}
+ * @type {SemanticWIDTHS}
  */
-const CARDS_PER_ROW: number = 3;
+const CARDS_PER_ROW: SemanticWIDTHS = 3;
 
 /**
  * Authenticator side panel component.
