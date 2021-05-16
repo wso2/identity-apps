@@ -273,6 +273,34 @@
     }
 }
 
+/*-------------------------------
+         Sign-in methods
+     Add Authenticator Modal
+--------------------------------*/
+
+.add-authenticator-modal {
+    .step-selection-dropdown-container {
+        background: @pageBackground !important;
+        border-bottom: 1px solid @defaultBorderColor;
+    }
+    .authenticator-container {
+        height: 400px;
+        
+        .authenticator {
+            min-height: 160px;
+            
+            &.add-custom-authenticator-card {
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-content: space-around;
+                }
+            }
+        }
+    }
+}
+
 .authenticator-card {
     font-size: @signOnMethodsAuthCardFontSize;
 }
