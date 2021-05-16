@@ -661,7 +661,7 @@
             box-shadow: @infoCardHoverBoxShadow;
         }
         &.selected {
-            border-color: @labeledCardSelectedBorder;
+            border-color: @infoCardSelectedBorder;
         }
         &.disabled {
             cursor: not-allowed;
@@ -677,6 +677,10 @@
             .card-header {
                 font-weight: 600;
             }
+        }
+        .card-subheader {
+            font-size: @infoCardSubHeaderFontSize;
+            color: @lightFontColor;
         }
         .card-description-container {
             padding-top: 0.5em;
