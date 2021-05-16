@@ -85,6 +85,12 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
 }
 
 /**
+ * Number of cards per row.
+ * @type {number}
+ */
+const CARDS_PER_ROW: number = 3;
+
+/**
  * Authenticator side panel component.
  *
  * @param {AddAuthenticatorModalPropsInterface} props - Props injected to the component.
@@ -306,7 +312,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             && Array.isArray(filteredAuthenticators)
                             && filteredAuthenticators.length > 0)
                             ? (
-                                <Card.Group itemsPerRow={ 3 }>
+                                <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                                     <Authenticators
                                         authenticators={ filteredAuthenticators }
                                         onAuthenticatorSelect={ (authenticators) => {
@@ -343,7 +349,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     />
                                     {
                                         allowSocialLoginAddition && (
-                                            <Card.Group centered>
+                                            <Card.Group centered itemsPerRow={ CARDS_PER_ROW }>
                                                 <Card
                                                     className="basic-card authenticator add-custom-authenticator-card"
                                                 >
