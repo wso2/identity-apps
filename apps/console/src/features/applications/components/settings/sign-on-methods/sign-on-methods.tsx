@@ -43,13 +43,18 @@ import {
 } from "../../../../identity-providers";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { ApplicationManagementConstants } from "../../../constants";
-import { AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
+import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
 /**
  * Proptypes for the sign on methods component.
  */
 interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+
+    /**
+     * Editing application.
+     */
+    application: ApplicationInterface;
     /**
      * ID of the application.
      */
