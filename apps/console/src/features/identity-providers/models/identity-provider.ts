@@ -186,7 +186,12 @@ export interface IdentityProviderTemplateItemInterface {
     displayOrder: number;
     idp: IdentityProviderInterface;
     disabled?: boolean;
-    provisioning?: ProvisioningInterface
+    provisioning?: ProvisioningInterface;
+    /**
+     * IDP Type.
+     * ex: Social Login, Enterprise etc.
+     */
+    type?: string;
 }
 
 /**

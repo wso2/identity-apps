@@ -33,5 +33,6 @@
     "image": "enterprise",
     "name": "Enterprise",
     "services": [],
-    "disabled": false
+    "disabled": false,
+    "type": "ENTERPRISE"
 }
