@@ -59,4 +59,5 @@ export class IdentityProviderConstants {
 
 export const GOOGLE_IDP_NAME = "Google";
 export const OIDC_IDP_NAME = "OpenID Connect";
+export const ENTERPRISE_IDP_NAME = ""
 
