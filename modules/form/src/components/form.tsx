@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { ReactElement, cloneElement } from "react";
+import React, { cloneElement, forwardRef, ReactElement, useImperativeHandle, useRef } from "react";
 import { Form as FinalForm, FormProps } from "react-final-form";
-import { Grid, Form as SemanticForm } from "semantic-ui-react";
+import { Form as SemanticForm, Grid } from "semantic-ui-react";
 
 export interface FormPropsInterface extends FormProps {
     /**
@@ -35,12 +35,13 @@ export interface FormPropsInterface extends FormProps {
  * Implementation of the Form component.
  * @param props
  */
-export const Form = (props: FormProps): ReactElement => {
+export const Form = forwardRef((props: FormProps, ref): ReactElement => {
 
     // eslint-disable-next-line prefer-const
     let { triggerSubmit, ...other } = props;
     const { children, onSubmit, uncontrolledForm, ...rest } = other;
 
+    const formRef = useRef(null);
     const childNodes = React.Children.toArray(children);
 
     const skipFinalTypes = (type :String): boolean => {
@@ -53,6 +54,39 @@ export const Form = (props: FormProps): ReactElement => {
         
         return skip
     }
+
+    useImperativeHandle(ref, () => ({
+        triggerSubmit: () => {
+            /**
+             * What is this?
+             *
+             * Below this line we have the logic to trigger the native
+             * form's submit event. Currently we don't maintain UI for
+             * submit button, neither previous buttons.
+             *
+             * The wizard is only responsible for changing it's wizard
+             * pages based on the current index. To facilitate external
+             * submit handling we expose a imperative handler that uses
+             * a react ref to trigger the onSubmit manually. This is
+             * because, inherently react-final-form uses its form submission
+             * to properly keep track of the redux state.
+             *
+             * We should be able to synthetically tell react final form
+             * that a page has been changed and please trigger {@link handleSubmit}
+             * to make sure values are saved.
+             *
+             * {@see onSubmit}
+             * {@link https://final-form.org/docs/react-final-form/faq}
+             */
+            if (formRef) {
+                const submission = new Event('submit', {
+                    cancelable: true,
+                    bubbles: true
+                });
+                formRef.current?.dispatchEvent(submission);
+            }
+        }
+    }));
 
     const addPropsToChild =(childNodes,form, handleSubmit, pristine, submitting, values) => {
         return childNodes.map((child: any, index: number) => {
@@ -129,6 +163,7 @@ export const Form = (props: FormProps): ReactElement => {
                 return (
                     <form
                         onSubmit={ handleSubmit }
+                        ref={ formRef }
                     >
                         <SemanticForm>
                             <Grid className="form-container with-max-width">
@@ -141,7 +176,7 @@ export const Form = (props: FormProps): ReactElement => {
             { ...rest }
         />
     );
-};
+});
 
 /**
  * Default props for the component.
