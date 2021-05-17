@@ -21,6 +21,8 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
+import EnterpriseOIDCIdentityProviderTemplate
+    from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
 import EnterpriseIdentityProviderTemplate
     from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import FacebookIDPTemplate from "./templates/facebook/facebook.json";
@@ -111,6 +113,16 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() =>
                                     import("./templates/enterprise-identity-provider/create-wizard-help")
+                                )
+                            },
+                            enabled: identityProviderConfig.templates.enterprise,
+                            id: EnterpriseIdentityProviderTemplateExtended.id,
+                            resource: EnterpriseIdentityProviderTemplateExtended
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() =>
+                                    import("./templates/oidc-identity-provider/create-wizard-help")
                                 )
                             },
                             enabled: identityProviderConfig.templates.enterprise,

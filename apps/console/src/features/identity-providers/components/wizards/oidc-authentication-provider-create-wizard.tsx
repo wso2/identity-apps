@@ -231,7 +231,6 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
 
 
     const onSubmitWizard = (values): void => {
-        debugger;
         const identityProvider: IdentityProviderInterface = template.idp;
         identityProvider.name = values?.name?.toString();
         identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
