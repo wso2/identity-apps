@@ -922,7 +922,7 @@ export const console: ConsoleNS = {
                                                         },
                                                         enterprise: {
                                                             description: "Enterprise login via standard protocols.",
-                                                            heading: "Enterprise Login"
+                                                            heading: "Enterprise login"
                                                         },
                                                         mfa: {
                                                             description: "Add additional layer of security to your " +
@@ -1012,7 +1012,7 @@ export const console: ConsoleNS = {
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
-                                        heading: "Start building your login flow",
+                                        heading: "Start customizing your sign-in method",
                                         types: {
                                             defaultConfig: {
                                                 description: "Build your login flow starting with Username & " +

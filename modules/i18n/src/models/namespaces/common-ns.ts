@@ -35,6 +35,7 @@ export interface CommonNS {
     authenticator: string;
     authentication: string;
     authenticator_plural: string;
+    back: string;
     browser: string;
     cancel: string;
     close: string;
