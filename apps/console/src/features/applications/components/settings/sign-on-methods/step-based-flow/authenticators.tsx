@@ -23,7 +23,7 @@ import React, {
     Fragment,
     FunctionComponent,
     ReactElement,
-    ReactNode,
+    useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -60,6 +60,10 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Callback triggered when authenticators are selected.
      */
     onAuthenticatorSelect: (selectedAuthenticators: GenericAuthenticatorInterface[]) => void;
+    /**
+     * Already selected set of authenticators.
+     */
+    selected: GenericAuthenticatorInterface[];
 }
 
 /**
@@ -78,14 +82,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         defaultName,
         heading,
         onAuthenticatorSelect,
+        selected,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
     const classes = classNames("authenticators", className);
+
+    /**
+     * Updates the internal selected authenticators state when the prop changes.
+     */
+    useEffect(() => {
+        
+        if (!selected) {
+            return;
+        }
+        
+        setSelectedAuthenticators(selected);
+    }, [ selected ]);
 
     const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface) => {
         if (authenticator.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
@@ -178,8 +195,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 disabled={ isAuthenticatorDisabled(authenticator) }
                                 selected={
-                                    selectedAuthenticators.some((evalAuthenticator) => {
-                                        return evalAuthenticator.id === authenticator.id
+                                    Array.isArray(selectedAuthenticators)
+                                    && selectedAuthenticators.some((evalAuthenticator) => {
+                                        return evalAuthenticator.id === authenticator.id;
                                     })
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
