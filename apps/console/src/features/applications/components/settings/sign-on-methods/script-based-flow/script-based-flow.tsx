@@ -25,8 +25,6 @@ import {
     CodeEditor,
     ConfirmationModal,
     Heading,
-    LinkButton,
-    PrimaryButton,
     SegmentedAccordion,
     Text
 } from "@wso2is/react-components";
@@ -37,8 +35,8 @@ import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch } from "react-redux";
-import Tour, { ReactourStep } from "reactour";
 import { Checkbox, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
@@ -137,8 +135,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
-    const [ isConditionalAuthToggled, setIsConditionalAuthToggled ] = useState<boolean>(false);
-    const [ conditionalAuthTourCurrentStep, setConditionalAuthTourCurrentStep ] = useState<number>(undefined);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -340,7 +336,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         setShowConditionalAuthContent(true);
-        setIsConditionalAuthToggled(true);
     };
 
     /**
@@ -348,10 +343,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      *
      * @type {ReactourStep[]}
      */
-    const conditionalAuthTourSteps: ReactourStep[] = [
+    const conditionalAuthTourSteps: Array<Step> = [
         {
             content: (
-                <>
+                <div className="tour-step">
                     <Heading bold as="h6">
                         {
                             t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
@@ -374,13 +369,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             Click on the <Code>Next</Code> button to learn about the process.
                         </Trans>
                     </Text>
-                </>
+                </div>
             ),
-            selector: "[data-tourid=\"conditional-auth\"]"
+            disableBeacon: true,
+            placement: "top",
+            target: "[data-tourid=\"conditional-auth\"]"
         },
         {
             content: (
-                <>
+                <div className="tour-step">
                     <Heading bold as="h6">
                         {
                             t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
@@ -393,13 +390,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.content.0")
                         }
                     </Text>
-                </>
+                </div>
             ),
-            selector: "[data-tourid=\"add-authentication-options-button\"]"
+            disableBeacon: true,
+            placement: "right",
+            target: "[data-tourid=\"add-authentication-options-button\"]"
         },
         {
             content: (
-                <>
+                <div className="tour-step">
                     <Heading bold as="h6">
                         {
                             t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
@@ -417,9 +416,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Code>executeStep(STEP_NUMBER);</Code> will appear on the script editor.
                         </Trans>
                     </Text>
-                </>
+                </div>
             ),
-            selector: "[data-tourid=\"add-new-step-button\"]"
+            disableBeacon: true,
+            placement: "right",
+            target: "[data-tourid=\"add-new-step-button\"]"
         }
     ];
 
@@ -430,7 +431,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const shouldConditionalAuthTourOpen = (): boolean => {
 
-        if (!isConditionalAuthToggled) {
+        if (!showConditionalAuthContent) {
             return false;
         }
 
@@ -443,50 +444,33 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @return {React.ReactElement}
      */
     const renderConditionalAuthTour = (): ReactElement => (
-        <Tour
-            rounded={ 3 }
-            steps={ conditionalAuthTourSteps }
-            isOpen={ shouldConditionalAuthTourOpen() }
-            className="basic-tour"
-            showNumber={ false }
-            showCloseButton={ false }
-            showNavigationNumber={ false }
-            showNavigation={ conditionalAuthTourCurrentStep !== (conditionalAuthTourSteps.length - 1) }
-            startAt={ 0 }
-            onRequestClose={ () => {
-                setIsConditionalAuthToggled(false);
-                setConditionalAuthTourCurrentStep(undefined);
+        <Joyride
+            continuous
+            disableOverlay
+            showSkipButton
+            callback={ (data: CallBackProps) => {
+                // If the tour is `done` or `skipped`, set the viewed state in storage.
+                if ((data.status === STATUS.FINISHED) || (data.status === STATUS.SKIPPED)) {
+                    persistConditionalAuthTourViewedStatus();
+                }
             } }
-            nextButton={ (
-                <PrimaryButton>{ t("common:next") }</PrimaryButton>
-            ) }
-            lastStepNextButton={ (
-                <PrimaryButton
-                    onClick={ () => {
-                        setIsConditionalAuthToggled(false);
-                        setConditionalAuthTourCurrentStep(undefined);
-                        persistConditionalAuthTourViewedStatus();
-                    } }
-                >
-                    { t("common:done") }
-                </PrimaryButton>
-            ) }
-            prevButton={
-                (conditionalAuthTourCurrentStep === (conditionalAuthTourSteps.length - 1))
-                    ? <></>
-                    : (
-                        <LinkButton
-                            onClick={ () => {
-                                setIsConditionalAuthToggled(false);
-                                setConditionalAuthTourCurrentStep(undefined);
-                                persistConditionalAuthTourViewedStatus();
-                            } }
-                        >
-                            { t("common:skip") }
-                        </LinkButton>
-                    )
-            }
-            getCurrentStep={ (step: number) => setConditionalAuthTourCurrentStep(step) }
+            run={ shouldConditionalAuthTourOpen() }
+            steps={ conditionalAuthTourSteps }
+            styles={ {
+                buttonClose: {
+                    display: "none"
+                },
+                tooltipContent: {
+                    paddingBottom: 1
+                }
+            } }
+            locale={ {
+                back: t("common:back"),
+                close: t("common:close"),
+                last: t("common:done"),
+                next: t("common:next"),
+                skip: t("common:skip")
+            } }
         />
     );
 
@@ -536,7 +520,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     className="conditional-auth-accordion"
                 >
                     <SegmentedAccordion.Title
-                        data-tourid="conditional-auth"
                         data-testid={ `${ testId }-accordion-title` }
                         active={ showConditionalAuthContent }
                         content={ (
@@ -546,6 +529,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         !readOnly && (
                                             <Checkbox
                                                 toggle
+                                                data-tourid="conditional-auth"
                                                 onChange={ handleConditionalAuthToggleChange }
                                                 checked={ showConditionalAuthContent }
                                                 className="conditional-auth-accordion-toggle"

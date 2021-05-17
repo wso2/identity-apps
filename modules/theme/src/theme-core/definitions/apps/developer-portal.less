@@ -822,20 +822,72 @@
    Basic Feature Tour Styles
 --------------------------------*/
 
-.basic-tour {
-    [data-tour-elem="controls"] {
-        justify-content: center;
+.react-joyride__tooltip {
+    [data-action="primary"] {
+        min-height: 1em;
+        outline: none;
+        border: none !important;
+        vertical-align: baseline;
+        background: @primaryColor !important;
+        color: @white !important;
+        font-family: inherit;
+        font-size: 1rem !important;
+        margin: 0 .25em 0 0;
+        padding: .78571429em 1.5em .78571429em !important;
+        text-transform: none;
+        text-shadow: none;
+        font-weight: 500;
+        line-height: 1em !important;
+        font-style: normal;
+        text-align: center;
+        text-decoration: none;
+        border-radius: @defaultBorderRadius !important;
+    }
 
-        [data-tour-elem="navigation"] {
-            margin: 0 35px;
-        }
+    [data-action="back"] {
+        min-height: 1em;
+        outline: none;
+        border: none !important;
+        vertical-align: baseline;
+        background: transparent !important;
+        color: @primaryColor !important;
+        font-family: inherit;
+        font-size: 1rem !important;
+        margin: 0 .25em 0 0;
+        padding: .78571429em 1.5em .78571429em !important;
+        text-transform: none;
+        text-shadow: none;
+        font-weight: 500;
+        line-height: 1em !important;
+        font-style: normal;
+        text-align: center;
+        text-decoration: none;
+        border-radius: @defaultBorderRadius !important;
+    }
 
-        [data-tour-elem="right-arrow"] {
-            margin-left: 0;
-        }
-
-        [data-tour-elem="left-arrow"] {
-            margin-right: 0;
-        }
+    [data-action="skip"] {
+        min-height: 1em;
+        outline: none;
+        border: none !important;
+        vertical-align: baseline;
+        background: transparent !important;
+        color: @nobel !important;
+        font-family: inherit;
+        font-size: 1rem !important;
+        margin: 0 .25em 0 0;
+        padding: 0.785714em 1.5em 0.78571429em 0.7em !important;
+        text-transform: none;
+        text-shadow: none;
+        font-weight: 500;
+        line-height: 1em !important;
+        font-style: normal;
+        text-align: center;
+        text-decoration: none;
+        border-radius: @defaultBorderRadius !important;
+    }
+    
+    .tour-step {
+        text-align: left;
+        padding-bottom: 0;
     }
 }
