@@ -146,11 +146,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+    const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
     const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
     const [
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
+
+    /**
+     * Called when an application updates.
+     *
+     * @param {string} id - Application id.
+     */
+    const handleApplicationUpdate = (id: string): void => {
+        setIsApplicationUpdated(true);
+        onUpdate(id);
+    };
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -223,7 +234,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [ samlConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
-        if (tabPaneExtensions) {
+
+        if (tabPaneExtensions && !isApplicationUpdated) {
             return;
         }
 
@@ -258,6 +270,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         setTabPaneExtensions(extensions);
+        setIsApplicationUpdated(false);
     }, [
         tabPaneExtensions,
         template,
@@ -375,6 +388,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
 
+                    setIsApplicationUpdated(true);
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
                     setIsInboundProtocolConfigRequestLoading(false);
@@ -419,7 +433,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 name={ application.name }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly }
@@ -438,7 +452,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
@@ -461,7 +475,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     inboundProtocolList.length === 1 && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-attribute-settings` }
             />
@@ -475,7 +489,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-sign-on-methods` }
@@ -488,7 +502,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AdvancedSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-advanced-settings` }
@@ -502,7 +516,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <ProvisioningSettings
                     application={ application }
                     provisioningConfigurations={ application.provisioningConfigurations }
-                    onUpdate={ onUpdate }
+                    onUpdate={ handleApplicationUpdate }
                     featureConfig={ featureConfig }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-provisioning-settings` }
