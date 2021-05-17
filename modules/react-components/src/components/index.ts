@@ -48,6 +48,7 @@ export * from "./route";
 export * from "./section";
 export * from "./side-panel";
 export * from "./step";
+export * from "./switcher";
 export * from "./tab";
 export * from "./table";
 export * from "./typography";
