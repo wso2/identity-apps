@@ -18,6 +18,7 @@
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -174,12 +175,12 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
-                ...DefaultFlowConfigurationSequenceTemplate
+                ...cloneDeep(DefaultFlowConfigurationSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
-                ...SecondFactorTOTPSequenceTemplate
+                ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             // If there are no IDP's with google authenticator, show missing authenticator modal.
@@ -218,7 +219,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      */
     const updateGoogleLoginSequenceWithIDPName = (idp: string): AuthenticationSequenceInterface => {
 
-        const modifiedGoogleLoginSequenceTemplate = { ...GoogleLoginSequenceTemplate };
+        const modifiedGoogleLoginSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
         modifiedGoogleLoginSequenceTemplate.steps[0].options[0].idp = googleAuthenticators[0].idp;
         modifiedGoogleLoginSequenceTemplate.steps[0].options.forEach((option) => {
             if (option.authenticator === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME) {
