@@ -17,14 +17,16 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     EmptyPlaceholder, GenericIcon,
     Heading,
     Hint,
-    Text,
+    InfoCard,
     LinkButton,
-    PrimaryButton
+    PrimaryButton,
+    Text
 } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
@@ -34,6 +36,7 @@ import React, {
     ReactElement,
     ReactNode,
     SyntheticEvent,
+    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,7 +54,11 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { AppConstants, history } from "../../../../../core";
-import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
+import {
+    GenericAuthenticatorInterface,
+    IdentityProviderTemplateCategoryInterface,
+    getIdPIcons
+} from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
 import { ApplicationManagementConstants } from "../../../../constants";
 
@@ -67,6 +74,18 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      * Set of authenticators.
      */
     authenticators: GenericAuthenticatorInterface[];
+    /**
+     * Categorized IDP templates.
+     */
+    categorizedIDPTemplates: IdentityProviderTemplateCategoryInterface[];
+    /**
+     * Callback to be triggered when add new button is clicked.
+     */
+    onAddNewClick: () => void;
+    /**
+     * Callback to trigger IDP create wizard.
+     */
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
     /**
      * Callback for modal submit.
      */
@@ -105,10 +124,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const {
         allowSocialLoginAddition,
         authenticators,
+        categorizedIDPTemplates,
         className,
         header,
         onClose,
         open,
+        onAddNewClick,
+        onIDPCreateWizardTrigger,
         onModalSubmit,
         message,
         showStepSelector,
@@ -131,8 +153,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [
         filteredAuthenticators,
         setFilteredAuthenticators
-    ] = useState<GenericAuthenticatorInterface[]>(authenticators);
+    ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(stepCount);
+    const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
 
     const classes = classNames(
         "add-authenticator-modal",
@@ -140,12 +163,15 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     );
 
     /**
-     * Handles the addition of new social login.
+     * Update the internal filtered authenticators state when the prop changes.
      */
-    const handleSocialLoginAdd = (): void => {
-        setIsModalOpen(false);
-        setAddSocialLoginRedirectionConfirmationModal(true);
-    };
+    useEffect(() => {
+        if (!authenticators) {
+            return;
+        }
+
+        setFilteredAuthenticators(authenticators);
+    }, [ authenticators ]);
 
     const closeAddSocialLoginConfirmation = (): void => {
         setIsModalOpen(true);
@@ -247,83 +273,190 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             })
         );
     };
+    
+    const renderAddNewAuthenticatorContent = () => {
 
-    return (
-        <>
-            <Modal
-                className={ classes }
-                data-testid={ testId }
-                open={ isModalOpen }
-                { ...rest }
-            >
-                <Modal.Header>{ header }</Modal.Header>
-                { showStepSelector && (
-                    <Modal.Content className="step-selection-dropdown-container">
-                        <>
-                            <Heading as="h5">
-                                {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                        "stepSelectDropdown.label")
-                                }
-                            </Heading>
-                            <Hint>
-                                {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                        "stepSelectDropdown.hint")
-                                }
-                            </Hint>
-                            <Form>
-                                <Form.Field inline>
-                                    <Form.Select
-                                        scrolling
-                                        placeholder={
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased." +
-                                                "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
-                                        }
-                                        options={ generateStepSelectorOptions() }
-                                        onChange={ handleAddStepChange }
-                                        value={ authenticatorAddStep }
-                                        data-testid={ `${ testId }-step-select` }
-                                    />
-                                </Form.Field>
-                            </Form>
-                        </>
-                    </Modal.Content>
-                ) }
-                <Modal.Content className="authenticator-search-container">
-                    <Input
-                        loading={ false }
-                        icon={ <Icon name="search"/> }
-                        iconPosition="left"
-                        fluid
-                        onChange={ handleAuthenticatorSearch }
-                        placeholder={ "Search for Authenticators" }
-                    />
-                </Modal.Content>
+        /**
+         * Checks if the template image URL is a valid image URL and if not checks if it's
+         * available in the passed in icon set.
+         *
+         * @param image Input image.
+         *
+         * @return Predefined image if available. If not, return input parameter.
+         */
+        const resolveTemplateImage = (image: any) => {
+            
+            const templateIcons =  getIdPIcons();
+
+            if (image) {
+                if (typeof image !== "string") {
+                    return image;
+                }
+
+                if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
+                    return image;
+                }
+
+                if (URLUtils.isDataUrl(image)) {
+                    return image;
+                }
+
+                if (!templateIcons) {
+                    return image;
+                }
+            }
+            const match = Object.keys(templateIcons).find(key => key.toString() === image);
+
+            return match ? templateIcons[ match ] : templateIcons[ "default" ] ?? image;
+        };
+
+        return (
+            <>
+                <Modal.Header>Create New Authenticator</Modal.Header>
                 <Modal.Content
                     scrolling
                     className="authenticator-container"
                 >
-                    { message }
-                    {
-                        (filteredAuthenticators
-                            && Array.isArray(filteredAuthenticators)
-                            && filteredAuthenticators.length > 0)
-                            ? (
-                                <Card.Group itemsPerRow={ CARDS_PER_ROW }>
-                                    <Authenticators
-                                        authenticators={ filteredAuthenticators }
-                                        onAuthenticatorSelect={ (authenticators) => {
-                                            setSelectedAuthenticators(authenticators);
+                    {/*<Heading as="h5">
+                        Select Identity Provider
+                    </Heading>
+                    <Hint>
+                        Choose one of the following identity providers.
+                    </Hint>
+                    <Divider hidden />*/}
+                    <Card.Group itemsPerRow={ CARDS_PER_ROW }>
+                        {
+                            categorizedIDPTemplates.map((category) => {
+                                return category.templates.map((template, index: number) => (
+                                    <InfoCard
+                                        key={ index }
+                                        className="authenticator"
+                                        header={ template.name }
+                                        disabled={ template.disabled }
+                                        subHeader={ template.name }
+                                        description={ template.description }
+                                        image={ resolveTemplateImage(template.image) }
+                                        tags={ [ template.category ] }
+                                        onClick={ () => {
+                                            onIDPCreateWizardTrigger(template.id, () => {
+                                                debugger;
+                                               setShowAddNewAuthenticatorView(false); 
+                                            });
                                         } }
-                                        data-testid={ `${ testId }-authenticators` }
                                     />
-                                    {
-                                        allowSocialLoginAddition && (
-                                            <Card className="basic-card authenticator add-custom-authenticator-card">
+                                ));
+                            })
+                        }
+                    </Card.Group>
+                </Modal.Content>
+            </>
+        );
+    };
+
+    const renderAuthenticatorSelectionContent = () => (
+        <>
+            <Modal.Header>{ header }</Modal.Header>
+            { showStepSelector && (
+                <Modal.Content className="step-selection-dropdown-container">
+                    <>
+                        <Heading as="h5">
+                            {
+                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                    "stepSelectDropdown.label")
+                            }
+                        </Heading>
+                        <Hint>
+                            {
+                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                    "stepSelectDropdown.hint")
+                            }
+                        </Hint>
+                        <Form>
+                            <Form.Field inline>
+                                <Form.Select
+                                    scrolling
+                                    placeholder={
+                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.authenticationFlow.sections.stepBased." +
+                                            "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
+                                    }
+                                    options={ generateStepSelectorOptions() }
+                                    onChange={ handleAddStepChange }
+                                    value={ authenticatorAddStep }
+                                    data-testid={ `${ testId }-step-select` }
+                                />
+                            </Form.Field>
+                        </Form>
+                    </>
+                </Modal.Content>
+            ) }
+            <Modal.Content className="authenticator-search-container">
+                <Input
+                    loading={ false }
+                    icon={ <Icon name="search"/> }
+                    iconPosition="left"
+                    fluid
+                    onChange={ handleAuthenticatorSearch }
+                    placeholder={ "Search for Authenticators" }
+                />
+            </Modal.Content>
+            <Modal.Content
+                scrolling
+                className="authenticator-container"
+            >
+                { message }
+                {
+                    (filteredAuthenticators
+                        && Array.isArray(filteredAuthenticators)
+                        && filteredAuthenticators.length > 0)
+                        ? (
+                            <Card.Group itemsPerRow={ CARDS_PER_ROW }>
+                                <Authenticators
+                                    authenticators={ filteredAuthenticators }
+                                    onAuthenticatorSelect={ (authenticators) => {
+                                        setSelectedAuthenticators(authenticators);
+                                    } }
+                                    selected={ selectedAuthenticators }
+                                    data-testid={ `${ testId }-authenticators` }
+                                />
+                                {
+                                    allowSocialLoginAddition && (
+                                        <Card
+                                            className="basic-card authenticator add-custom-authenticator-card"
+                                            onClick={ handleNewAuthenticatorAddClick }
+                                        >
+                                            <Card.Content textAlign="center">
+                                                <GenericIcon
+                                                    transparent
+                                                    className="mb-3"
+                                                    size="mini"
+                                                    icon={ getGeneralIcons().addCircleOutline }
+                                                />
+                                                <Text weight="500">Add New</Text>
+                                            </Card.Content>
+                                        </Card>
+                                    )
+                                }
+                            </Card.Group>
+                        )
+                        : (
+                            <div>
+                                <EmptyPlaceholder
+                                    subtitle={
+                                        [
+                                            t("console:develop.features.applications.placeholders" +
+                                                ".emptyAuthenticatorsList.subtitles")
+                                        ]
+                                    }
+                                />
+                                {
+                                    allowSocialLoginAddition && (
+                                        <Card.Group centered itemsPerRow={ CARDS_PER_ROW }>
+                                            <Card
+                                                className="basic-card authenticator add-custom-authenticator-card"
+                                            >
                                                 <Card.Content textAlign="center">
                                                     <GenericIcon
                                                         transparent
@@ -334,43 +467,35 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                     <Text weight="500">Add New</Text>
                                                 </Card.Content>
                                             </Card>
-                                        )
-                                    }
-                                </Card.Group>
-                            )
-                            : (
-                                <div>
-                                    <EmptyPlaceholder
-                                        subtitle={
-                                            [
-                                                t("console:develop.features.applications.placeholders" +
-                                                    ".emptyAuthenticatorsList.subtitles")
-                                            ]
-                                        }
-                                    />
-                                    {
-                                        allowSocialLoginAddition && (
-                                            <Card.Group centered itemsPerRow={ CARDS_PER_ROW }>
-                                                <Card
-                                                    className="basic-card authenticator add-custom-authenticator-card"
-                                                >
-                                                    <Card.Content textAlign="center">
-                                                        <GenericIcon
-                                                            transparent
-                                                            className="mb-3"
-                                                            size="mini"
-                                                            icon={ getGeneralIcons().addCircleOutline }
-                                                        />
-                                                        <Text weight="500">Add New</Text>
-                                                    </Card.Content>
-                                                </Card>
-                                            </Card.Group>
-                                        )
-                                    }
-                                </div>
-                            )
-                    }
-                </Modal.Content>
+                                        </Card.Group>
+                                    )
+                                }
+                            </div>
+                        )
+                }
+            </Modal.Content>
+        </>
+    );
+    
+    const handleNewAuthenticatorAddClick = () => {
+        
+        onAddNewClick();
+        setShowAddNewAuthenticatorView(true);
+    };
+
+    return (
+        <>
+            <Modal
+                className={ classes }
+                data-testid={ testId }
+                open={ isModalOpen }
+                { ...rest }
+            >
+                {
+                    showAddNewAuthenticatorView && categorizedIDPTemplates
+                        ? renderAddNewAuthenticatorContent()
+                        : renderAuthenticatorSelectionContent()
+                }
                 <Modal.Actions>
                     <Grid>
                         <Grid.Row column={ 1 }>
@@ -382,16 +507,20 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     { t("common:cancel") }
                                 </LinkButton>
                             </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ handleModalSubmit }
-                                    disabled={ isEmpty(selectedAuthenticators) }
-                                    data-testid={ `${ testId }-next-button` }
-                                >
-                                    { t("common:add") }
-                                </PrimaryButton>
-                            </Grid.Column>
+                            {
+                                !showAddNewAuthenticatorView && (
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ handleModalSubmit }
+                                            disabled={ isEmpty(selectedAuthenticators) }
+                                            data-testid={ `${ testId }-next-button` }
+                                        >
+                                            { t("common:add") }
+                                        </PrimaryButton>
+                                    </Grid.Column>
+                                )
+                            }
                         </Grid.Row>
                     </Grid>
                 </Modal.Actions>
