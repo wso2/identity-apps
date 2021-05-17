@@ -350,14 +350,29 @@ export class ApplicationManagementConstants {
     };
     
     public static readonly AUTHENTICATOR_CATEGORIES = {
-        ENTERPRISE: "enterprise-authenticators",
-        LOCAL: "local-authenticators",
-        SECOND_FACTOR: "second-factor-authenticators",
-        SOCIAL: "social-authenticators"
+        ENTERPRISE: "ENTERPRISE",
+        LOCAL: "LOCAL",
+        SECOND_FACTOR: "SECOND_FACTOR",
+        SOCIAL: "SOCIAL"
     };
 
     public static readonly AUTHENTICATOR_DISPLAY_NAMES: Map<string, string> = new Map<string, string>()
         .set("BasicAuthenticator", "Username & Password");
+
+    public static readonly AUTHENTICATOR_TYPE_DISPLAY_NAMES: Record<string, string> = {
+        [ ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE ]: "console:develop.features." +
+        "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+        "addAuthenticatorModal.content.authenticatorGroups.enterprise.heading",
+        [ ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL ]: "console:develop.features." +
+        "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+        "addAuthenticatorModal.content.authenticatorGroups.basic.heading",
+        [ ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR ]: "console:develop.features." +
+        "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+        "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
+        [ ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL ]: "console:develop.features." +
+        "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+        "addAuthenticatorModal.content.authenticatorGroups.social.heading"
+    };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
 }

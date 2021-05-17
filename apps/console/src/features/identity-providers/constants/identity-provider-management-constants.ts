@@ -17,7 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderTemplateLoadingStrategies } from "../models";
+import { AuthenticatorLabels, IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing identity provider management constants.
@@ -141,7 +141,35 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
+    public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
+    public static readonly SAML_SSO_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
     
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
+
+    public static readonly AUTHENTICATOR_CLASSIFIERS = {
+        [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: [ AuthenticatorLabels.FIRST_FACTOR ],
+        [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ]: [ AuthenticatorLabels.HANDLERS ],
+        [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR ]: [
+            AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS
+        ],
+        [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ]: [
+            AuthenticatorLabels.SECOND_FACTOR
+        ],
+        [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
+            AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+        ],
+        [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
+            AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+        ],
+        [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
+            AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+        ],
+        [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
+            AuthenticatorLabels.OIDC
+        ],
+        [ IdentityProviderManagementConstants.SAML_SSO_AUTHENTICATOR_ID ]: [
+            AuthenticatorLabels.SAML
+        ]
+    };
 }

@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import {
-    ConfirmationModal,
-    EmptyPlaceholder, GenericIcon,
+    EmptyPlaceholder,
+    GenericIcon,
     Heading,
     Hint,
     InfoCard,
@@ -29,7 +29,9 @@ import {
     Text
 } from "@wso2is/react-components";
 import classNames from "classnames";
+import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import startCase from "lodash-es/startCase";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -42,20 +44,22 @@ import React, {
 import { useTranslation } from "react-i18next";
 import {
     Card,
+    Divider,
     DropdownItemProps,
     DropdownProps,
     Form,
     Grid,
     Icon,
     Input,
+    Label,
     Modal,
     ModalProps,
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { AppConstants, history } from "../../../../../core";
 import {
     GenericAuthenticatorInterface,
+    IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
     getIdPIcons
 } from "../../../../../identity-providers";
@@ -143,10 +147,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const [ isModalOpen, setIsModalOpen ] = useState<boolean>(open);
     const [
-        addSocialLoginRedirectionConfirmationModal,
-        setAddSocialLoginRedirectionConfirmationModal
-    ] = useState<boolean>(false);
-    const [
         selectedAuthenticators,
         setSelectedAuthenticators
     ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -156,6 +156,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(stepCount);
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
+    const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
+    const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
 
     const classes = classNames(
         "add-authenticator-modal",
@@ -171,50 +173,24 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         }
 
         setFilteredAuthenticators(authenticators);
+        
+        extractAuthenticatorLabels(authenticators);
     }, [ authenticators ]);
+    
+    const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]) => {
+        
+        const labels: string[] = [];
 
-    const closeAddSocialLoginConfirmation = (): void => {
-        setIsModalOpen(true);
-        setAddSocialLoginRedirectionConfirmationModal(false);
+        authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator).filter((label: string) => {
+                if (!labels.includes(label)) {
+                    labels.push(label);
+                }
+            });
+        });
+        
+        setFilterLabels(labels);
     };
-
-    /**
-     * Shows the aAdd social login confirmation modal
-     * @return {ReactElement}
-     */
-    const renderAddSocialLoginRedirectionConfirmationModal = (): ReactElement => (
-        <ConfirmationModal
-            onClose={ closeAddSocialLoginConfirmation }
-            type="warning"
-            open={ addSocialLoginRedirectionConfirmationModal }
-            primaryAction={ t("common:confirm") }
-            secondaryAction={ t("common:cancel") }
-            onSecondaryActionClick={ closeAddSocialLoginConfirmation }
-            onPrimaryActionClick={ (): void => {
-                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-            } }
-            data-testid={ `${ testId }-add-social-login-confirmation-modal` }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
-            >
-                { t("console:develop.features.applications.confirmations.addSocialLogin.header") }
-            </ConfirmationModal.Header>
-            <ConfirmationModal.Message
-                attached
-                warning
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
-            >
-                { t("console:develop.features.applications.confirmations.addSocialLogin.subHeader") }
-            </ConfirmationModal.Message>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
-            >
-                { t("console:develop.features.applications.confirmations.addSocialLogin.content") }
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
-    );
 
     /**
      * Generates the options for the step selector dropdown.
@@ -261,10 +237,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         setFilteredAuthenticators(
             authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-                const name = (ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                const name: string = (ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
                     || authenticator.displayName).toLocaleLowerCase();
 
                 if (name.includes(searchQuery)
+                    || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+                        .some((tag) => tag.toLocaleLowerCase().includes(searchQuery)
+                            || startCase(tag).toLocaleLowerCase().includes(searchQuery))
                     || authenticator.category.toLocaleLowerCase().includes(searchQuery)
                     || authenticator.categoryDisplayName.toLocaleLowerCase().includes(searchQuery)) {
 
@@ -274,6 +253,30 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         );
     };
     
+    const handleAuthenticatorFilter = (label: string) => {
+
+        let selected: string[] = [];
+
+        if (selectedFilterLabels.includes(label)) {
+            selected = selectedFilterLabels.filter((selectedLabel: string) => selectedLabel !== label);
+        } else {
+            selected = [ ...selectedFilterLabels, label ];
+        }
+
+        setSelectedFilterLabels(selected);
+        
+        if (!isEmpty(selected)) {
+            setFilteredAuthenticators(authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+                const labels: string[] = IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator);
+                return selected.some((selectedLabel) => labels.includes(selectedLabel));
+            }));
+            
+            return;
+        }
+        
+        setFilteredAuthenticators(authenticators);
+    };
+
     const renderAddNewAuthenticatorContent = () => {
 
         /**
@@ -312,34 +315,37 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         return (
             <>
-                <Modal.Header>Create New Authenticator</Modal.Header>
                 <Modal.Content
                     scrolling
                     className="authenticator-container"
                 >
-                    {/*<Heading as="h5">
-                        Select Identity Provider
-                    </Heading>
-                    <Hint>
-                        Choose one of the following identity providers.
-                    </Hint>
-                    <Divider hidden />*/}
+                    <div className="page-header-wrapper">
+                        <div
+                            className="back-button mb-0"
+                            onClick={ () => setShowAddNewAuthenticatorView(false) }
+                        >
+                            <Icon name="arrow left"/>
+                            Go back to selection
+                        </div>
+                    </div>
+                    <Divider hidden />
                     <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                         {
                             categorizedIDPTemplates.map((category) => {
                                 return category.templates.map((template, index: number) => (
                                     <InfoCard
                                         key={ index }
-                                        className="authenticator"
                                         header={ template.name }
                                         disabled={ template.disabled }
-                                        subHeader={ template.name }
+                                        subHeader={
+                                            get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES, template.type)
+                                                ? t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES, template.type))
+                                                : template.type
+                                        }
                                         description={ template.description }
                                         image={ resolveTemplateImage(template.image) }
-                                        tags={ [ template.category ] }
                                         onClick={ () => {
                                             onIDPCreateWizardTrigger(template.id, () => {
-                                                debugger;
                                                setShowAddNewAuthenticatorView(false); 
                                             });
                                         } }
@@ -355,52 +361,40 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const renderAuthenticatorSelectionContent = () => (
         <>
-            <Modal.Header>{ header }</Modal.Header>
-            { showStepSelector && (
-                <Modal.Content className="step-selection-dropdown-container">
-                    <>
-                        <Heading as="h5">
-                            {
-                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                    "stepSelectDropdown.label")
-                            }
-                        </Heading>
-                        <Hint>
-                            {
-                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                    "stepSelectDropdown.hint")
-                            }
-                        </Hint>
-                        <Form>
-                            <Form.Field inline>
-                                <Form.Select
-                                    scrolling
-                                    placeholder={
-                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                            "sections.authenticationFlow.sections.stepBased." +
-                                            "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
-                                    }
-                                    options={ generateStepSelectorOptions() }
-                                    onChange={ handleAddStepChange }
-                                    value={ authenticatorAddStep }
-                                    data-testid={ `${ testId }-step-select` }
-                                />
-                            </Form.Field>
-                        </Form>
-                    </>
-                </Modal.Content>
-            ) }
             <Modal.Content className="authenticator-search-container">
                 <Input
                     loading={ false }
+                    className="mb-3"
                     icon={ <Icon name="search"/> }
                     iconPosition="left"
                     fluid
                     onChange={ handleAuthenticatorSearch }
                     placeholder={ "Search for Authenticators" }
                 />
+                {
+                    (filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
+                        <Label.Group>
+                            {
+                                filterLabels.map((label, index: number) => {
+                                    const isSelected: boolean = selectedFilterLabels.includes(label);
+
+                                    return (
+                                        <Label
+                                            basic
+                                            key={ index }
+                                            as="a"
+                                            className={ `filter-label ${ isSelected ? "active" : "" }` }
+                                            onClick={ () => handleAuthenticatorFilter(label) }
+                                        >
+                                            { IdentityProviderManagementUtils.getAuthenticatorLabelDisplayName(label) }
+                                            { isSelected && <Icon name="check"/> }
+                                        </Label>
+                                    );
+                                })
+                            }
+                        </Label.Group>
+                    )
+                }
             </Modal.Content>
             <Modal.Content
                 scrolling
@@ -456,6 +450,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         <Card.Group centered itemsPerRow={ CARDS_PER_ROW }>
                                             <Card
                                                 className="basic-card authenticator add-custom-authenticator-card"
+                                                onClick={ handleNewAuthenticatorAddClick }
                                             >
                                                 <Card.Content textAlign="center">
                                                     <GenericIcon
@@ -491,6 +486,43 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 open={ isModalOpen }
                 { ...rest }
             >
+                <Modal.Header>{ header }</Modal.Header>
+                { showStepSelector && (
+                    <Modal.Content className="step-selection-dropdown-container">
+                        <>
+                            <Heading as="h5">
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                        "stepSelectDropdown.label")
+                                }
+                            </Heading>
+                            <Hint>
+                                {
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                        "stepSelectDropdown.hint")
+                                }
+                            </Hint>
+                            <Form>
+                                <Form.Field inline>
+                                    <Form.Select
+                                        scrolling
+                                        placeholder={
+                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                "sections.authenticationFlow.sections.stepBased." +
+                                                "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
+                                        }
+                                        options={ generateStepSelectorOptions() }
+                                        onChange={ handleAddStepChange }
+                                        value={ authenticatorAddStep }
+                                        data-testid={ `${ testId }-step-select` }
+                                    />
+                                </Form.Field>
+                            </Form>
+                        </>
+                    </Modal.Content>
+                ) }
                 {
                     showAddNewAuthenticatorView && categorizedIDPTemplates
                         ? renderAddNewAuthenticatorContent()
@@ -525,7 +557,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     </Grid>
                 </Modal.Actions>
             </Modal>
-            { addSocialLoginRedirectionConfirmationModal && renderAddSocialLoginRedirectionConfirmationModal() }
         </>
     );
 };

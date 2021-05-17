@@ -23,7 +23,9 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
+import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import startCase from "lodash-es/startCase";
 import { identityProviderConfig } from "../../../extensions";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
@@ -256,4 +258,32 @@ export class IdentityProviderManagementUtils {
 
         return templates;
     };
+
+    /**
+     * Get the labels for a particular authenticator.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {string[]}
+     */
+    public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
+
+        return (get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
+            authenticator.defaultAuthenticator.name)
+            || get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
+                authenticator.defaultAuthenticator.authenticatorId))
+            ?? [];
+    }
+
+    /**
+     * Get the Authenticator label display name.
+     *
+     * @param {string} name - Raw name.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorLabelDisplayName(name: string): string {
+
+        return startCase(name);
+    }
 }

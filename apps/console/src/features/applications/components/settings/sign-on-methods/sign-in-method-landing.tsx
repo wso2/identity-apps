@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
+import { Code, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Responsive, Segment } from "semantic-ui-react";
@@ -87,11 +87,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             <Divider hidden />
                             
                             <div className="default-config-description">
-                                <Heading as="h3">
-                                    {
+                                <Heading as="h4">
+                                    {/*{
                                         t("console:develop.features.applications.edit.sections.signOnMethod." +
                                             "sections.landing.defaultConfig.heading")
-                                    }
+                                    }*/}
+                                    This application is configured with <Code>Username & Password</Code> Login
                                 </Heading>
                                 <div className="default-config-description-content">
                                     <Text subHeading muted>

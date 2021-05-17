@@ -19,6 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
+import get from "lodash-es/get";
+import startCase  from "lodash-es/startCase";
 import React, {
     Fragment,
     FunctionComponent,
@@ -28,7 +30,11 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
-import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
+import {
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants
+} from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
@@ -166,6 +172,24 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         onAuthenticatorSelect([ ...selectedAuthenticators, selectedAuthenticator ]);
         setSelectedAuthenticators([ ...selectedAuthenticators, selectedAuthenticator ]);
     };
+    
+    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface) => {
+
+        if (!authenticator) {
+            return [];
+        }
+
+        const labels: string[] = get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
+            authenticator.name)
+                ?? get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
+                    authenticator.authenticatorId);
+        
+        if (!labels) {
+            return [];
+        }
+
+        return labels.map((label: string) => startCase(label));
+    };
 
     return (
         <Fragment data-testid={ testId }>
@@ -203,7 +227,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
                                 image={ authenticator.image }
-                                tags={ [ authenticator.category ] }
+                                tags={ resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
                                 onClick={ () => handleAuthenticatorSelect(authenticator) }
                             />
                         ) }

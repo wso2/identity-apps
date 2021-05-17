@@ -17,3 +17,4 @@
  */
 
 export * from "./identity-provider-management-utils";
+export * from "./identity-provider-template-management-utils";

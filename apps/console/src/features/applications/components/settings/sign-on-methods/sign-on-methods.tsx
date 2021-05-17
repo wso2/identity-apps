@@ -17,7 +17,7 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, ConfirmationModal, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -77,6 +77,8 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
     readOnly?: boolean;
 }
 
+let broadcastIDPCreateSuccessMessage: () => void = null;
+
 /**
  * Configure the different sign on strategies for an application.
  *
@@ -124,6 +126,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ idpTemplateTypeToTrigger, setIDPTemplateTypeToTrigger ] = useState<string>(undefined);
     const [ showIDPCreateWizard, setShowIDPCreateWizard ] = useState<boolean>(false);
+    const [
+        idpCreateWizardTriggerOrigin,
+        setIDPCreateWizardTriggerOrigin
+    ] = useState<"INTERNAL"|"EXTERNAL">(undefined);
 
     /**
      * Loads federated authenticators and local authenticators on component load.
@@ -278,6 +284,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 setIDPTemplateTypeToTrigger(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
                 setShowMissingGoogleAuthenticatorModal(false);
                 setShowIDPCreateWizard(true);
+                setIDPCreateWizardTriggerOrigin("INTERNAL");
             } }
             data-testid={ `${ testId }-add-missing-authenticator-modal` }
             closeOnDimmerClick={ false }
@@ -407,6 +414,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         setShowDuplicateGoogleAuthenticatorSelectionModal(false);
         setSelectedGoogleAuthenticator(undefined);
         setModeratedAuthenticationSequence(authenticationSequence);
+        setIDPTemplateTypeToTrigger(undefined);
+        setIDPCreateWizardTriggerOrigin(undefined);
+        setShowIDPCreateWizard(false);
     };
 
     /**
@@ -428,11 +438,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     fetchAndCategorizeAuthenticators((all, google) => {
                         setIDPTemplateTypeToTrigger(undefined);
                         setShowIDPCreateWizard(false);
-                        handleLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN, google);
+                        broadcastIDPCreateSuccessMessage();
+                        if (idpCreateWizardTriggerOrigin === "INTERNAL") {
+                            handleLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN, google);
+                        }
                     });
                 } }
                 onWizardClose={ () => {
                     setIDPTemplateTypeToTrigger(undefined);
+                    setIDPCreateWizardTriggerOrigin(undefined);
                     setShowIDPCreateWizard(false);
                 } }
             />
@@ -460,6 +474,12 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
                                 authenticators={ authenticators }
                                 authenticationSequence={ moderatedAuthenticationSequence }
+                                onIDPCreateWizardTrigger={ (type: string, cb: () => void) => {
+                                    setIDPTemplateTypeToTrigger(type);
+                                    setShowMissingGoogleAuthenticatorModal(false);
+                                    setShowIDPCreateWizard(true);
+                                    broadcastIDPCreateSuccessMessage = cb;
+                                } }
                                 onUpdate={ onUpdate }
                                 onReset={ handleLoginFlowReset }
                                 data-testid={ testId }

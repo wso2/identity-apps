@@ -46,7 +46,13 @@ import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
+    IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateInterface,
+    IdentityProviderTemplateItemInterface,
+    IdentityProviderTemplateLoadingStrategies,
+    IdentityProviderTemplateManagementUtils
 } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -55,6 +61,7 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../../models";
+import get from "lodash-es/get";
 
 /**
  * Proptypes for the applications settings component.
@@ -72,6 +79,10 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Callback to trigger IDP create wizard.
+     */
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
     /**
      * Callback to update the application details.
      * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
@@ -105,6 +116,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const {
         authenticators,
         authenticationSequence,
+        onIDPCreateWizardTrigger,
         onUpdate,
         readOnly,
         triggerUpdate,
@@ -117,6 +129,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider.templates);
 
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -127,6 +141,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
+    const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+    const [
+        isIDPTemplateRequestLoading,
+        setIDPTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
@@ -671,6 +690,40 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 };
             });
     };
+    
+    const handleAddNewAuthenticatorClick = () => {
+        
+        const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
+
+            IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+                .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+                    setCategorizedTemplates(response);
+                })
+                .catch(() => {
+                    setCategorizedTemplates([]);
+                });
+        };
+
+        if (identityProviderTemplates !== undefined) {
+            persistCategorizedTemplates(identityProviderTemplates);
+            return;
+        }
+
+        setIDPTemplateRequestLoadingStatus(true);
+
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? (config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE)
+            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY
+                === IdentityProviderTemplateLoadingStrategies.REMOTE);
+
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
+            .then((response: IdentityProviderTemplateInterface[]) => {
+                persistCategorizedTemplates(response);
+            })
+            .finally(() => {
+                setIDPTemplateRequestLoadingStatus(false);
+            });
+    };
 
     /**
      * Shows a disclaimer to users when a handler is added.
@@ -712,61 +765,62 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      *
      * @return {React.ReactElement}
      */
-    const renderAuthenticatorAddModal = (): ReactElement => (
+    const renderAuthenticatorAddModal = (): ReactElement => {
 
-        <AddAuthenticatorModal
-            allowSocialLoginAddition={ true }
-            open={ showAuthenticatorAddModal }
-            onModalSubmit={ (authenticators, stepToAdd: number) => {
-                authenticators.map((authenticator) => {
-                    updateAuthenticationStep(stepToAdd - 1, authenticator.id);
-                });
+        return (
+            <AddAuthenticatorModal
+                allowSocialLoginAddition={ true }
+                open={ showAuthenticatorAddModal }
+                onModalSubmit={ (authenticators, stepToAdd: number) => {
+                    authenticators.map((authenticator) => {
+                        updateAuthenticationStep(stepToAdd - 1, authenticator.id);
+                    });
 
-                setShowAuthenticatorAddModal(false);
-            } }
-            onClose={ () => setShowAuthenticatorAddModal(false) }
-            header={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
-                    "sections.stepBased.addAuthenticatorModal.heading")
-            }
-            authenticators={ [
-                ...moderateAuthenticators(localAuthenticators,
-                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.heading"),
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.description", { productName: config.ui.productName })),
-                ...moderateAuthenticators(socialAuthenticators,
-                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.heading"),
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.description")),
-                ...moderateAuthenticators(secondFactorAuthenticators,
-                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.heading"),
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.description")),
-                ...moderateAuthenticators(enterpriseAuthenticators,
-                    ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.heading"),
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.description"))
-            ] }
-            showStepSelector={ authenticationSteps.length > 1 }
-            stepCount={ authenticationSteps.length }
-        />
-    );
+                    setShowAuthenticatorAddModal(false);
+                } }
+                onClose={ () => setShowAuthenticatorAddModal(false) }
+                header={
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.stepBased.addAuthenticatorModal.heading")
+                }
+                authenticators={ [
+                    ...moderateAuthenticators(localAuthenticators,
+                        ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
+                        t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES,
+                            ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL)),
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                            "basic.description", { productName: config.ui.productName })),
+                    ...moderateAuthenticators(socialAuthenticators,
+                        ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
+                        t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES,
+                            ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL)),
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                            "social.description")),
+                    ...moderateAuthenticators(secondFactorAuthenticators,
+                        ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
+                        t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES,
+                            ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR)),
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                            "mfa.description")),
+                    ...moderateAuthenticators(enterpriseAuthenticators,
+                        ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
+                        t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES,
+                            ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE)),
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
+                            "enterprise.description"))
+                ] }
+                showStepSelector={ authenticationSteps.length > 1 }
+                stepCount={ authenticationSteps.length }
+                onAddNewClick={ handleAddNewAuthenticatorClick }
+                onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                categorizedIDPTemplates={ categorizedTemplates }
+            />
+        );
+    };
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>

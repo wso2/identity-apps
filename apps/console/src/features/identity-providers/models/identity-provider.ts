@@ -601,3 +601,18 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
 }
+
+/**
+ * Authenticator Labels.
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthenticatorLabels {
+    SOCIAL = "SOCIAL",
+    FIRST_FACTOR = "FIRST_FACTOR",
+    SECOND_FACTOR = "SECOND_FACTOR",
+    OIDC = "OIDC",
+    SAML = "SAML",
+    PASSWORDLESS = "PASSWORDLESS",
+    HANDLERS = "HANDLERS"
+}
