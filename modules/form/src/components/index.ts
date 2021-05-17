@@ -25,5 +25,6 @@ export * from "./field-textarea";
 export * from "./field-dropdown";
 export * from "./form";
 export * from "./wizard";
+export * from "./wizard2";
 export * from "./wizardPage";
 
