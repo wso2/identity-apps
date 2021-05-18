@@ -73,10 +73,10 @@ export class AuthenticatorMeta {
         return get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS
+                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR
+                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC

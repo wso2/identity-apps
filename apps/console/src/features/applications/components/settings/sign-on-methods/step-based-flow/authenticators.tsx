@@ -212,13 +212,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return [];
         }
 
-        const labels: string[] = AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId);
-        
-        if (!labels) {
-            return [];
-        }
-
-        return labels.map((label: string) => startCase(label));
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId) ?? [];
     };
 
     return (

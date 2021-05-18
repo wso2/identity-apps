@@ -611,6 +611,7 @@ export enum AuthenticatorLabels {
     SOCIAL = "Social",
     FIRST_FACTOR = "First Factor",
     SECOND_FACTOR = "2FA",
+    MULTI_FACTOR = "MFA",
     OIDC = "OIDC",
     SAML = "SAML",
     PASSWORDLESS = "Passwordless",
