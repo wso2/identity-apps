@@ -252,19 +252,40 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         const query: string = value.toLocaleLowerCase();
 
         setSearchQuery(query);
-        setFilteredAuthenticators(getSearchResults(query));
+        setFilteredAuthenticators(getSearchResults(query, selectedFilterLabels));
     };
 
     /**
      * Get search results.
      *
      * @param {string} query - Search query.
+     * @param {string[]} filterLabels - Filter labels.
      *
      * @return {GenericAuthenticatorInterface[]}
      */
-    const getSearchResults = (query: string) => {
+    const getSearchResults = (query: string, filterLabels: string[]) => {
+
+        /**
+         * Checks if any of the filters are matching.
+         * @param {GenericAuthenticatorInterface} authenticator - Authenticator object.
+         * @return {boolean}
+         */
+        const isFiltersMatched = (authenticator: GenericAuthenticatorInterface): boolean => {
+
+            if (isEmpty(filterLabels)) {
+                return true;
+            }
+
+            return IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+                .some((selectedLabel) => filterLabels.includes(selectedLabel));
+        };
 
         return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            
+            if (!query) {
+                return isFiltersMatched(authenticator);
+            }
+
             const name: string = (AuthenticatorMeta.getAuthenticatorDisplayName(
                 authenticator.defaultAuthenticator.authenticatorId)
                 || authenticator.displayName).toLocaleLowerCase();
@@ -276,7 +297,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 || authenticator.category.toLocaleLowerCase().includes(query)
                 || authenticator.categoryDisplayName.toLocaleLowerCase().includes(query)) {
 
-                return true;
+                return isFiltersMatched(authenticator);
             }
         });
     };
@@ -298,17 +319,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         setSelectedFilterLabels(selected);
 
-        if (!isEmpty(selected)) {
-            setFilteredAuthenticators(authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-                const labels: string[] = IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator);
-                return selected.some((selectedLabel) => labels.includes(selectedLabel));
-            }));
-
-            return;
-        }
-
-        setSearchQuery(null);
-        setFilteredAuthenticators(authenticators);
+        setFilteredAuthenticators(getSearchResults(searchQuery, selected));
     };
 
     /**
