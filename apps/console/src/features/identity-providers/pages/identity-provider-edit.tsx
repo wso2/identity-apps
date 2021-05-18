@@ -48,7 +48,11 @@ import {
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
+import {
+    GOOGLE_IDP_NAME,
+    ENTERPRISE_NAME,
+    IdentityProviderManagementConstants
+} from "../constants";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
@@ -163,8 +167,18 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             return;
         }
 
-        // TODO: Hard coding template ID to Google. Should be removed once templateId is supported.
-        identityProvider.templateId = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
+        // TODO: Creating internal mapping to resolve the IDP template.
+        // TODO: Should be removed once template id is supported
+        const authenticatorId = identityProvider.federatedAuthenticators?.defaultAuthenticatorId;
+
+        // FIXME: Need to revisit OIDC_AUTHENTICATOR_ID and SAML_AUTHENTICATOR_ID
+        if (authenticatorId) {
+            if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE.toString();
+            } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE.toString();
+             }
+        }
 
         const template = identityProviderTemplates.find((template) => template.id === identityProvider.templateId);
 
@@ -398,6 +412,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
                     isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
+                    isSaml={ identityProvider.federatedAuthenticators.authenticators[0] ===
+                        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID }
+                    isOidc={ identityProvider.federatedAuthenticators.authenticators[0] ===
+                        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }

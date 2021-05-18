@@ -72,6 +72,7 @@ import {
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { EnterpriseIDPCreateWizard } from "../components/wizards/enterprise-idp-create-wizard";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -224,7 +225,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
             return;
         }
-        
+
         if (urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
@@ -555,9 +556,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 />
                             )
                             : (
-                                <IdentityProviderCreateWizard
-                                    title={ selectedTemplateWithUniqueName?.name }
-                                    subTitle={ selectedTemplateWithUniqueName?.description }
+                                <EnterpriseIDPCreateWizard
+                                    title="Standard Based Authentication"
+                                    subTitle="Configure a new Identity Provider with advanced enterprise protocols."
                                     closeWizard={ () => {
                                         setSelectedTemplateWithUniqueName(undefined);
                                         setSelectedTemplate(undefined);
@@ -565,6 +566,16 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                     } }
                                     template={ selectedTemplateWithUniqueName }
                                 />
+                                // <IdentityProviderCreateWizard
+                                //     title={ selectedTemplateWithUniqueName?.name }
+                                //     subTitle={ selectedTemplateWithUniqueName?.description }
+                                //     closeWizard={ () => {
+                                //         setSelectedTemplateWithUniqueName(undefined);
+                                //         setSelectedTemplate(undefined);
+                                //         setShowWizard(false);
+                                //     } }
+                                //     template={ selectedTemplateWithUniqueName }
+                                // />
                             )
                     )
                 }
