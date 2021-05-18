@@ -210,7 +210,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         data-testid={ `${ testId }-image` }
                                         transparent
                                     />
-                                    <span>
+                                    <span data-testid={ `${ testId }-option-name` }>
                                     {
                                         AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
                                         || authenticator.displayName

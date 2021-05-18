@@ -254,6 +254,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 image={ authenticator.image }
                                 tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
                                 onClick={ () => handleAuthenticatorSelect(authenticator) }
+                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
                             />
                         ) }
                     />
