@@ -616,3 +616,15 @@ export enum AuthenticatorLabels {
     PASSWORDLESS = "PASSWORDLESS",
     HANDLERS = "HANDLERS"
 }
+
+/**
+ * Authenticator Categories.
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthenticatorCategories {
+    ENTERPRISE = "ENTERPRISE",
+    LOCAL = "LOCAL",
+    SECOND_FACTOR = "SECOND_FACTOR",
+    SOCIAL = "SOCIAL"
+}

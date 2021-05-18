@@ -17,7 +17,6 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import {
     EmptyPlaceholder,
     GenericIcon,
@@ -29,10 +28,10 @@ import {
     Text
 } from "@wso2is/react-components";
 import classNames from "classnames";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import startCase from "lodash-es/startCase";
 import React, {
+    ChangeEvent,
     FunctionComponent,
     MouseEvent,
     ReactElement,
@@ -46,7 +45,6 @@ import {
     Card,
     Divider,
     DropdownItemProps,
-    DropdownProps,
     Form,
     Grid,
     Icon,
@@ -58,13 +56,14 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import {
+    AuthenticatorCategories,
+    AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
     getIdPIcons
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
-import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -106,6 +105,10 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      * Currently available step count.
      */
     stepCount: number;
+    /**
+     * Show/Hide authenticator labels in UI.
+     */
+    showLabels?: boolean;
 }
 
 /**
@@ -139,6 +142,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         message,
         showStepSelector,
         stepCount,
+        showLabels,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -155,6 +159,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         setFilteredAuthenticators
     ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(stepCount);
+    const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
@@ -176,7 +181,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         
         extractAuthenticatorLabels(authenticators);
     }, [ authenticators ]);
-    
+
+    /**
+     * Extract Authenticator labels.
+     *
+     * @param {GenericAuthenticatorInterface[]} authenticators - Set of authenticators.
+     */
     const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]) => {
         
         const labels: string[] = [];
@@ -216,11 +226,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Handles the authenticator add step onchange event.
      *
      * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
-     * @param data - Dropdown data.
+     * @param {string} value - Value of the step. 
      */
-    const handleAddStepChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        const { value } = data;
-        setAuthenticatorAddStep(value as number);
+    const handleAddStepChange = (event: SyntheticEvent<HTMLElement>, { value }: { value: string }): void => {
+
+        setAuthenticatorAddStep(parseInt(value, 10));
     };
 
     /**
@@ -230,30 +240,53 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         onModalSubmit(selectedAuthenticators, authenticatorAddStep);
     };
-    
-    const handleAuthenticatorSearch = (e, { value }) => {
-        
-        const searchQuery: string = value.toLocaleLowerCase();
 
-        setFilteredAuthenticators(
-            authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-                const name: string = (ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
-                    || authenticator.displayName).toLocaleLowerCase();
+    /**
+     * Handles the Authenticator Search input onchange.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - Change event.
+     * @param {string} value - Input value.
+     */
+    const handleAuthenticatorSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
 
-                if (name.includes(searchQuery)
-                    || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
-                        .some((tag) => tag.toLocaleLowerCase().includes(searchQuery)
-                            || startCase(tag).toLocaleLowerCase().includes(searchQuery))
-                    || authenticator.category.toLocaleLowerCase().includes(searchQuery)
-                    || authenticator.categoryDisplayName.toLocaleLowerCase().includes(searchQuery)) {
+        const query: string = value.toLocaleLowerCase();
 
-                    return true;
-                }
-            })
-        );
+        setSearchQuery(query);
+        setFilteredAuthenticators(getSearchResults(query));
     };
-    
-    const handleAuthenticatorFilter = (label: string) => {
+
+    /**
+     * Get search results.
+     *
+     * @param {string} query - Search query.
+     *
+     * @return {GenericAuthenticatorInterface[]}
+     */
+    const getSearchResults = (query: string) => {
+
+        return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            const name: string = (AuthenticatorMeta.getAuthenticatorDisplayName(
+                authenticator.defaultAuthenticator.authenticatorId)
+                || authenticator.displayName).toLocaleLowerCase();
+
+            if (name.includes(query)
+                || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+                    .some((tag) => tag.toLocaleLowerCase().includes(query)
+                        || startCase(tag).toLocaleLowerCase().includes(query))
+                || authenticator.category.toLocaleLowerCase().includes(query)
+                || authenticator.categoryDisplayName.toLocaleLowerCase().includes(query)) {
+
+                return true;
+            }
+        });
+    };
+
+    /**
+     * Handles Authenticator filter.
+     *
+     * @param {string} label - Selected label.
+     */
+    const handleAuthenticatorFilter = (label: string): void => {
 
         let selected: string[] = [];
 
@@ -264,54 +297,25 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         }
 
         setSelectedFilterLabels(selected);
-        
+
         if (!isEmpty(selected)) {
             setFilteredAuthenticators(authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 const labels: string[] = IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator);
                 return selected.some((selectedLabel) => labels.includes(selectedLabel));
             }));
-            
+
             return;
         }
-        
+
+        setSearchQuery(null);
         setFilteredAuthenticators(authenticators);
     };
 
-    const renderAddNewAuthenticatorContent = () => {
-
-        /**
-         * Checks if the template image URL is a valid image URL and if not checks if it's
-         * available in the passed in icon set.
-         *
-         * @param image Input image.
-         *
-         * @return Predefined image if available. If not, return input parameter.
-         */
-        const resolveTemplateImage = (image: any) => {
-            
-            const templateIcons =  getIdPIcons();
-
-            if (image) {
-                if (typeof image !== "string") {
-                    return image;
-                }
-
-                if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
-                    return image;
-                }
-
-                if (URLUtils.isDataUrl(image)) {
-                    return image;
-                }
-
-                if (!templateIcons) {
-                    return image;
-                }
-            }
-            const match = Object.keys(templateIcons).find(key => key.toString() === image);
-
-            return match ? templateIcons[ match ] : templateIcons[ "default" ] ?? image;
-        };
+    /**
+     * Renders add new authenticator content inside modal.
+     * @return {React.ReactElement}
+     */
+    const renderAddNewAuthenticatorContent = (): ReactElement => {
 
         return (
             <>
@@ -325,7 +329,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             onClick={ () => setShowAddNewAuthenticatorView(false) }
                         >
                             <Icon name="arrow left"/>
-                            Go back to selection
+                            {
+                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.goBackButton")
+                            }
                         </div>
                     </div>
                     <Divider hidden />
@@ -338,12 +345,17 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         header={ template.name }
                                         disabled={ template.disabled }
                                         subHeader={
-                                            get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES, template.type)
-                                                ? t(get(ApplicationManagementConstants.AUTHENTICATOR_TYPE_DISPLAY_NAMES, template.type))
+                                            AuthenticatorMeta.getAuthenticatorTypeDisplayName(template.type as
+                                                    AuthenticatorCategories)
+                                                ? t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(template.type as
+                                                    AuthenticatorCategories))
                                                 : template.type
                                         }
                                         description={ template.description }
-                                        image={ resolveTemplateImage(template.image) }
+                                        image={
+                                            IdentityProviderManagementUtils
+                                                .resolveTemplateImage(template.image, getIdPIcons())
+                                        }
                                         onClick={ () => {
                                             onIDPCreateWizardTrigger(template.id, () => {
                                                setShowAddNewAuthenticatorView(false); 
@@ -359,17 +371,26 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         );
     };
 
-    const renderAuthenticatorSelectionContent = () => (
+    /**
+     * Render Authenticator selection content inside modal.
+     * @return {React.ReactElement}
+     */
+    const renderAuthenticatorSelectionContent = (): ReactElement => (
+
         <>
             <Modal.Content className="authenticator-search-container">
                 <Input
                     loading={ false }
                     className="mb-3"
                     icon={ <Icon name="search"/> }
+                    value={ searchQuery }
                     iconPosition="left"
                     fluid
                     onChange={ handleAuthenticatorSearch }
-                    placeholder={ "Search for Authenticators" }
+                    placeholder={
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.search.placeholder")
+                    }
                 />
                 {
                     (filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
@@ -413,12 +434,18 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         setSelectedAuthenticators(authenticators);
                                     } }
                                     selected={ selectedAuthenticators }
+                                    showLabels={ showLabels }
                                     data-testid={ `${ testId }-authenticators` }
                                 />
                                 {
                                     allowSocialLoginAddition && (
                                         <Card
-                                            className="basic-card authenticator add-custom-authenticator-card"
+                                            as="div"
+                                            className={
+                                                `basic-card authenticator add-custom-authenticator-card ${
+                                                    showLabels ? "with-labels" : ""
+                                                }`
+                                            }
                                             onClick={ handleNewAuthenticatorAddClick }
                                         >
                                             <Card.Content textAlign="center">
@@ -428,7 +455,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                     size="mini"
                                                     icon={ getGeneralIcons().addCircleOutline }
                                                 />
-                                                <Text weight="500">Add New</Text>
+                                                <Text weight="500">
+                                                    {
+                                                        t("console:develop.features.applications.edit.sections." +
+                                                            "signOnMethod.sections.authenticationFlow.sections." +
+                                                            "stepBased.addAuthenticatorModal.content." +
+                                                            "addNewAuthenticatorCard.title")
+                                                    }
+                                                </Text>
                                             </Card.Content>
                                         </Card>
                                     )
@@ -449,7 +483,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     allowSocialLoginAddition && (
                                         <Card.Group centered itemsPerRow={ CARDS_PER_ROW }>
                                             <Card
-                                                className="basic-card authenticator add-custom-authenticator-card"
+                                                as="div"
+                                                className={
+                                                    `basic-card authenticator add-custom-authenticator-card ${
+                                                        showLabels ? "with-labels" : ""
+                                                        }`
+                                                }
                                                 onClick={ handleNewAuthenticatorAddClick }
                                             >
                                                 <Card.Content textAlign="center">
@@ -459,7 +498,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                         size="mini"
                                                         icon={ getGeneralIcons().addCircleOutline }
                                                     />
-                                                    <Text weight="500">Add New</Text>
+                                                    <Text weight="500">
+                                                        {
+                                                            t("console:develop.features.applications.edit.sections." +
+                                                                "signOnMethod.sections.authenticationFlow.sections." +
+                                                                "stepBased.addAuthenticatorModal.content." +
+                                                                "addNewAuthenticatorCard.title")
+                                                        }
+                                                    </Text>
                                                 </Card.Content>
                                             </Card>
                                         </Card.Group>
@@ -471,9 +517,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             </Modal.Content>
         </>
     );
-    
-    const handleNewAuthenticatorAddClick = () => {
-        
+
+    /**
+     * Authenticator add click.
+     */
+    const handleNewAuthenticatorAddClick = (): void => {
+
         onAddNewClick();
         setShowAddNewAuthenticatorView(true);
     };
@@ -566,5 +615,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
  */
 AddAuthenticatorModal.defaultProps = {
     "data-testid": "add-authenticator-modal",
+    showLabels: true,
     size: "small"
 };

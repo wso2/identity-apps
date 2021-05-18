@@ -247,3 +247,10 @@ export const AppSwitcherIcons = (): Record<string, any> => {
         myAccount: MyAccountIcon
     };
 };
+
+export const getGeneralIcons = (): Record<string, any> => {
+
+    return {
+        crossIcon: CrossIcon
+    };
+};

@@ -412,8 +412,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.content.0"
                             }
                         >
-                            Click here if you need to add more steps to the flow. Once you add a new step, 
-                            <Code>executeStep(STEP_NUMBER);</Code> will appear on the script editor.
+                            Click here if you need to add more steps to the flow.
+                            Once you add a new step,<Code>executeStep(STEP_NUMBER);</Code> will appear on 
+                            the script editor.
                         </Trans>
                     </Text>
                 </div>

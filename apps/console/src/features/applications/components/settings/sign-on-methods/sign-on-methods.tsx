@@ -22,7 +22,6 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
 import { SignInMethodLanding } from "./sign-in-method-landing";
@@ -31,18 +30,16 @@ import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json"
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import {
     AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
     FeatureConfigInterface,
     history
 } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory,
+    AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils
 } from "../../../../identity-providers";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
-import { ApplicationManagementConstants } from "../../../constants";
 import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
 
@@ -93,7 +90,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const {
         appId,
         authenticationSequence,
-        featureConfig,
         isLoading,
         onUpdate,
         readOnly,
@@ -101,11 +97,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
     const [ authenticators, setAuthenticators ] = useState<GenericAuthenticatorInterface[][]>(undefined);
@@ -267,6 +258,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * @return {ReactElement}
      */
     const renderMissingGoogleAuthenticatorModal = (): ReactElement => (
+
         <ConfirmationModal
             type="info"
             onClose={ () => setShowMissingGoogleAuthenticatorModal(false) }
@@ -327,6 +319,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * @return {ReactElement}
      */
     const renderDuplicateGoogleAuthenticatorSelectionModal = (): ReactElement => (
+
         <ConfirmationModal
             type="warning"
             onClose={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
@@ -388,8 +381,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 selected={ selectedGoogleAuthenticator?.id === authenticator.id }
                                 image={ authenticator.image }
                                 label={
-                                    ApplicationManagementConstants
-                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                                    AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
                                     || authenticator.displayName
                                 }
                                 labelEllipsis={ true }
@@ -438,7 +430,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     fetchAndCategorizeAuthenticators((all, google) => {
                         setIDPTemplateTypeToTrigger(undefined);
                         setShowIDPCreateWizard(false);
-                        broadcastIDPCreateSuccessMessage();
+                        broadcastIDPCreateSuccessMessage && broadcastIDPCreateSuccessMessage();
+
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
                             handleLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN, google);
                         }
@@ -475,6 +468,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 authenticators={ authenticators }
                                 authenticationSequence={ moderatedAuthenticationSequence }
                                 onIDPCreateWizardTrigger={ (type: string, cb: () => void) => {
+                                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
                                     setIDPTemplateTypeToTrigger(type);
                                     setShowMissingGoogleAuthenticatorModal(false);
                                     setShowIDPCreateWizard(true);

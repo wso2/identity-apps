@@ -20,10 +20,10 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import startCase from "lodash-es/startCase";
 import { identityProviderConfig } from "../../../extensions";
@@ -32,6 +32,7 @@ import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthen
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
 import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
+import { AuthenticatorMeta } from "../meta";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderListResponseInterface,
@@ -268,11 +269,9 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return (get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
-            authenticator.defaultAuthenticator.name)
-            || get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
-                authenticator.defaultAuthenticator.authenticatorId))
-            ?? [];
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+            : [];
     }
 
     /**
@@ -285,5 +284,37 @@ export class IdentityProviderManagementUtils {
     public static getAuthenticatorLabelDisplayName(name: string): string {
 
         return startCase(name);
+    }
+
+    /**
+     * Checks if the template image URL is a valid image URL and if not checks if it's
+     * available in the passed in icon set.
+     *
+     * @param image Input image.
+     *
+     * @return Predefined image if available. If not, return input parameter.
+     */
+    public static resolveTemplateImage(image: string | any, icons: Record<string, any>): string | any {
+
+        if (image) {
+            if (typeof image !== "string") {
+                return image;
+            }
+
+            if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
+                return image;
+            }
+
+            if (URLUtils.isDataUrl(image)) {
+                return image;
+            }
+
+            if (!icons) {
+                return image;
+            }
+        }
+        const match = Object.keys(icons).find(key => key.toString() === image);
+
+        return match ? icons[ match ] : icons[ "default" ] ?? image;
     }
 }

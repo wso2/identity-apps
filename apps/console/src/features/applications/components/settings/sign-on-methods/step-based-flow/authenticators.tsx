@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
-import get from "lodash-es/get";
 import startCase  from "lodash-es/startCase";
 import React, {
     Fragment,
@@ -31,11 +30,11 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
 import {
+    AuthenticatorCategories,
+    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants
+    GenericAuthenticatorInterface
 } from "../../../../../identity-providers";
-import { ApplicationManagementConstants } from "../../../../constants";
 
 /**
  * Proptypes for the authenticators component.
@@ -70,6 +69,10 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Already selected set of authenticators.
      */
     selected: GenericAuthenticatorInterface[];
+    /**
+     * Show/Hide authenticator labels in UI.
+     */
+    showLabels?: boolean;
 }
 
 /**
@@ -89,6 +92,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         heading,
         onAuthenticatorSelect,
         selected,
+        showLabels,
         [ "data-testid" ]: testId
     } = props;
 
@@ -97,6 +101,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
     const classes = classNames("authenticators", className);
+    const authenticatorCardClasses = classNames("authenticator", {
+        "with-labels": showLabels
+    });
 
     /**
      * Updates the internal selected authenticators state when the prop changes.
@@ -110,19 +117,33 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         setSelectedAuthenticators(selected);
     }, [ selected ]);
 
+    /**
+     * Check if Authenticator is disabled.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     * @return {boolean}
+     */
     const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface) => {
-        if (authenticator.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
+        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return !(authenticator?.isEnabled);
         }
-        if (authenticator.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
+        if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return !(authenticator
                 && authenticator.authenticators[ 0 ]
                 && authenticator.authenticators[ 0 ].isEnabled);
         }
     };
 
-    const resolvePopupContent = (authenticator: GenericAuthenticatorInterface) => {
-        if (authenticator.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
+    /**
+     * Resolve popup content.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
+
+        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return (
                 <Text>
                     <Trans
@@ -139,7 +160,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Trans>
                 </Text>
             );
-        } else if (authenticator.category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
+        } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
                 <Text>
                     {
@@ -151,7 +172,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
     };
 
-    const handleAuthenticatorSelect = (selectedAuthenticator): void => {
+    /**
+     * Handles authenticator select.
+     *
+     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator. 
+     */
+    const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
 
         if (isAuthenticatorDisabled(selectedAuthenticator)) {
             return;
@@ -172,17 +198,21 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         onAuthenticatorSelect([ ...selectedAuthenticators, selectedAuthenticator ]);
         setSelectedAuthenticators([ ...selectedAuthenticators, selectedAuthenticator ]);
     };
-    
+
+    /**
+     * Resolve Authenticator labels.
+     *
+     * @param {FederatedAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {any[] | string[]}
+     */
     const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface) => {
 
         if (!authenticator) {
             return [];
         }
 
-        const labels: string[] = get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
-            authenticator.name)
-                ?? get(IdentityProviderManagementConstants.AUTHENTICATOR_CLASSIFIERS,
-                    authenticator.authenticatorId);
+        const labels: string[] = AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId);
         
         if (!labels) {
             return [];
@@ -210,10 +240,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         ) }
                         trigger={ (
                             <InfoCard
-                                className="authenticator"
+                                className={ authenticatorCardClasses }
                                 header={
-                                    ApplicationManagementConstants
-                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
+                                    AuthenticatorMeta.getAuthenticatorDisplayName(
+                                        authenticator.defaultAuthenticator.authenticatorId)
                                     || authenticator.displayName
                                     || defaultName
                                 }
@@ -225,9 +255,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     })
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
-                                description={ authenticator.description }
+                                description={
+                                    AuthenticatorMeta.getAuthenticatorDescription(
+                                        authenticator.defaultAuthenticator.authenticatorId)
+                                }
                                 image={ authenticator.image }
-                                tags={ resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
+                                tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
                                 onClick={ () => handleAuthenticatorSelect(authenticator) }
                             />
                         ) }
@@ -243,5 +276,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
  */
 Authenticators.defaultProps = {
     "data-testid": "authenticators",
-    defaultName: "Unknown"
+    defaultName: "Unknown",
+    showLabels: true
 };

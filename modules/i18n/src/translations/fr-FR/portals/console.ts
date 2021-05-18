@@ -943,6 +943,13 @@ export const console: ConsoleNS = {
                                                             heading: "Connexion sociale"
                                                         }
                                                     },
+                                                    addNewAuthenticatorCard: {
+                                                        title: "Configurer un nouveau fournisseur d'identité"
+                                                    },
+                                                    goBackButton: "Revenir à la sélection",
+                                                    search: {
+                                                        placeholder: "Rechercher des authentificateurs"
+                                                    },
                                                     stepSelectDropdown: {
                                                         hint: "Sélectionnez l'étape à laquelle vous souhaitez " +
                                                             "ajouter des authentificateurs.",

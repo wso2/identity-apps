@@ -914,6 +914,9 @@ export const console: ConsoleNS = {
                                             },
                                             addAuthenticatorModal: {
                                                 content: {
+                                                    addNewAuthenticatorCard: {
+                                                        title: "Configure New Identity Provider"
+                                                    },
                                                     authenticatorGroups: {
                                                         basic: {
                                                             description: "Set of basic authenticators supported by " +
@@ -933,6 +936,10 @@ export const console: ConsoleNS = {
                                                             description: "Use existing social login account.",
                                                             heading: "Social login"
                                                         }
+                                                    },
+                                                    goBackButton: "Go back to selection",
+                                                    search: {
+                                                        placeholder: "Search for Authenticators"
                                                     },
                                                     stepSelectDropdown: {
                                                         hint: "Select the step that you want to add authenticators to.",
@@ -2503,7 +2510,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Click on the <1>Add Authentication</1> button to add options to this step."
+                            0: "Click on the above button to add options to this step."
                         },
                         title: null
                     },

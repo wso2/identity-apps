@@ -429,7 +429,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 updateSteps={ updateSteps }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
             />
-            <Divider hidden/>
+            <Divider className="x2"/>
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
