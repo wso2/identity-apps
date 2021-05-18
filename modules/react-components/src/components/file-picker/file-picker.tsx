@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
 import {
-    Button,
+    Button, Form,
     Icon,
     Message,
     Segment,
@@ -304,20 +304,22 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         menuItem: "Paste",
         render: () => {
             return (
-                <TextArea
-                    rows={ 10 }
-                    placeholder={ "Paste data in this area..." }
-                    value={ pastedContent }
-                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                        if (event) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        addPastedDataToState(event.target.value ?? EMPTY_STRING);
-                    } }
-                    spellCheck={ false }
-                    className={ `certificate-editor ${ dark ? "dark" : "light" }` }
-                />
+                <Form>
+                    <TextArea
+                        rows={ 10 }
+                        placeholder={ "Paste data in this area..." }
+                        value={ pastedContent }
+                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                            if (event) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            addPastedDataToState(event.target.value ?? EMPTY_STRING);
+                        } }
+                        spellCheck={ false }
+                        className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+                    />
+                </Form>
             );
         }
     };
