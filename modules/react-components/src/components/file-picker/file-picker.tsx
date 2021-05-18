@@ -452,9 +452,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
                 reader.readAsText(data, XMLFileStrategy.ENCODING);
                 reader.onload = () => {
                     this.parseXML(reader.result).then((rawXML) => {
-                        resolve(btoa(
-                            unescape(encodeURIComponent(rawXML))
-                        ));
+                        resolve(btoa(rawXML));
                     }).catch((error) => {
                         reject({
                             valid: false,
@@ -464,9 +462,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
                 };
             } else {
                 this.parseXML(data).then((rawXML) => {
-                    resolve(btoa(
-                        unescape(encodeURIComponent(rawXML))
-                    ));
+                    resolve(btoa(rawXML));
                 }).catch((error) => {
                     reject({
                         valid: false,
@@ -483,7 +479,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
             if (data instanceof File) {
                 const expected = XMLFileStrategy.MAX_FILE_SIZE * XMLFileStrategy.MEGABYTE;
                 if ((data as File).size > expected) {
-                    return reject({
+                    reject({
                         valid: false,
                         errorMessage: `File exceeds max size of ${ XMLFileStrategy.MAX_FILE_SIZE } MB`
                     });
@@ -559,11 +555,11 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
     async serialize(data: File | string): Promise<CertificateDecodeResult> {
         return new Promise<CertificateDecodeResult>((resolve, reject) => {
             if (data instanceof File) {
-                return this.convertFromFile(data)
+                this.convertFromFile(data)
                     .then(resolve)
                     .catch(({ errorMessage }) => reject(errorMessage));
             } else {
-                return this.convertFromString(data)
+                this.convertFromString(data)
                     .then(resolve)
                     .catch(({ errorMessage }) => reject(errorMessage));
             }
@@ -600,7 +596,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
         return new Promise<CertificateDecodeResult>((resolve, reject) => {
             try {
                 const certificateForge = new X509().readCertFromPEM(text);
-                return resolve({
+                resolve({
                     forgeObject: certificateForge,
                     pemStripped: CertificateManagementUtils.stripPem(text),
                     pem: text
@@ -612,7 +608,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     const pem = forge.pki.certificateToPem(certificate);
                     const certificateForge = new X509();
                     certificateForge.readCertPEM(pem);
-                    return resolve({
+                    resolve({
                         forgeObject: certificateForge,
                         pemStripped: CertificateManagementUtils.stripPem(text),
                         pem: text
@@ -637,7 +633,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                     const pem = certificate.getPEM();
                     const pemStripped = CertificateManagementUtils.stripPem(pem);
-                    return resolve({
+                    resolve({
                         forgeObject: cert,
                         pem: pem,
                         pemStripped: pemStripped
@@ -651,7 +647,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                         const cert = new X509();
                         cert.readCertPEM(pem);
                         const pemStripped = CertificateManagementUtils.stripPem(pem);
-                        return resolve({
+                        resolve({
                             forgeObject: cert,
                             pem: pem,
                             pemStripped: pemStripped
@@ -663,7 +659,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                             const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
                             const pem = certificate.getPEM();
                             const pemStripped = CertificateManagementUtils.stripPem(pem);
-                            return resolve({
+                            resolve({
                                 forgeObject: cert,
                                 pem: pem,
                                 pemStripped: pemStripped
@@ -674,7 +670,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                             const cert = new X509();
                             cert.readCertPEM(pem);
                             const pemStripped = CertificateManagementUtils.stripPem(pem);
-                            return resolve({
+                            resolve({
                                 forgeObject: cert,
                                 pem: pem,
                                 pemStripped: pemStripped
@@ -682,9 +678,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                         }
                     }
                 }
-            }).catch((error) => {
-                reject("Failed to decode certificate data");
-            });
+            })
         });
     }
 

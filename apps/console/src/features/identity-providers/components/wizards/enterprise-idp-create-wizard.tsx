@@ -417,6 +417,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 )
                 : (
                     <FilePicker
+                        key={ 1 }
                         fileStrategy={ new XMLFileStrategy() }
                         onChange={ (result) => {
                             // meta_data_saml
@@ -542,6 +543,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             ) }
             { (selectedCertInputType === "pem") && (
                 <FilePicker
+                    key={ 2 }
                     fileStrategy={ new CertFileStrategy() }
                     onChange={ (result) => {
                         if (result?.serialized) {
