@@ -865,8 +865,8 @@ export const console: ConsoleNS = {
                                                 steps: {
                                                     0: {
                                                         content: {
-                                                            0: "Configure the login flow to adapt to the situation " +
-                                                                "or the user during the authentication process.",
+                                                            0: "Define a script to dynamically modify the login " +
+                                                                "flow based on the context",
                                                             1: "Click on the <1>Next</1> button to learn about the " +
                                                                 "process."
                                                         },
