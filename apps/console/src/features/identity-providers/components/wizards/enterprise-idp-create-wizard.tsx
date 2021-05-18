@@ -425,20 +425,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <WizardPage>
                 <Field.Input
-                    ariaLabel="name"
-                    inputType="name"
-                    name="name"
-                    label={ t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.name.label") }
-                    required={ true }
-                    maxLength={ 50 }
-                    minLength={ 3 }
-                    // TODO: checkon key press usecase
-                    // onKeyDown={ keyPressed }
-                    data-testid={ `${ testId }-idp-name` }
-                    width={ 13 }
-                />
-                <Field.Input
                     ariaLabel="clientId"
                     inputType="identifier"
                     name="clientId"
