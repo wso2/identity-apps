@@ -662,7 +662,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "The client identifier value of the identity provider.";
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "ClientSecret") {
-                        prop.displayName = "Client secret";
+                        prop.displayName = "Client Secret";
                         prop.description = "The client secret value of the identity provider.";
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "callbackUrl") {
@@ -682,7 +682,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.maxLength = URL_MAX_LENGTH;
                         prop.displayOrder = 7;
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "User ID found in claims"
+                        prop.displayName = "User ID found in Claims"
                         prop.description = "The location to find the user identifier in the " +
                             "ID token assertion.";
                         prop.displayOrder = 6;
@@ -698,6 +698,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // Remove meta data if the authenticator is SAML
             if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
                 // Remove additional query params
+
+                authenticator.meta.properties.map(prop => {
+                    if (prop.key === "NameIDType") {
+                        prop.displayName = "NameID Format";
+                    }
+                });
+
                 removeElementFromProps(authenticator.data.properties, "isAssertionSigned");
                 removeElementFromProps(authenticator.meta.properties, "isAssertionSigned");
                 removeElementFromProps(authenticator.data.properties, "ACSUrl");
@@ -724,6 +731,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 removeElementFromProps(authenticator.meta.properties, "IsAssertionEncrypted");
                 removeElementFromProps(authenticator.data.properties, "IncludeCert");
                 removeElementFromProps(authenticator.meta.properties, "IncludeCert");
+                removeElementFromProps(authenticator.data.properties, "selectMode");
+                removeElementFromProps(authenticator.meta.properties, "selectMode");
+                removeElementFromProps(authenticator.data.properties, "meta_data_saml");
+                removeElementFromProps(authenticator.meta.properties, "meta_data_saml");
             }
 
             return (
