@@ -608,13 +608,13 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
  * @enum {string}
  */
 export enum AuthenticatorLabels {
-    SOCIAL = "SOCIAL",
-    FIRST_FACTOR = "FIRST_FACTOR",
-    SECOND_FACTOR = "SECOND_FACTOR",
+    SOCIAL = "Social",
+    FIRST_FACTOR = "First Factor",
+    SECOND_FACTOR = "2FA",
     OIDC = "OIDC",
     SAML = "SAML",
-    PASSWORDLESS = "PASSWORDLESS",
-    HANDLERS = "HANDLERS"
+    PASSWORDLESS = "Passwordless",
+    HANDLERS = "Handlers"
 }
 
 /**

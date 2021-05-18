@@ -25,7 +25,6 @@ import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import startCase from "lodash-es/startCase";
 import { identityProviderConfig } from "../../../extensions";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
@@ -295,7 +294,7 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabelDisplayName(name: string): string {
 
-        return startCase(name);
+        return name;
     }
 
     /**

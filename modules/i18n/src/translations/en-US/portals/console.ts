@@ -930,7 +930,7 @@ export const console: ConsoleNS = {
                                                         mfa: {
                                                             description: "Add additional layer of security to your " +
                                                                 "login flow.",
-                                                            heading: "Multi-factor options"
+                                                            heading: "Multi-factor"
                                                         },
                                                         social: {
                                                             description: "Use existing social login account.",
@@ -1019,7 +1019,7 @@ export const console: ConsoleNS = {
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
-                                        heading: "Start customizing your sign-in method",
+                                        heading: "Build your own login flow",
                                         types: {
                                             defaultConfig: {
                                                 description: "Build your login flow starting with Username & " +

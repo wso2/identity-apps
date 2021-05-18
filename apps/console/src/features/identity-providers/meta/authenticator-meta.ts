@@ -71,7 +71,6 @@ export class AuthenticatorMeta {
     public static getAuthenticatorLabels(authenticatorId: string): string[] {
         
         return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.FIRST_FACTOR ],
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.PASSWORDLESS
