@@ -207,7 +207,10 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
      * interface consumer. However, if the default value is not present
      * then below operation will result in undefined.
      */
-    const specifiedDefaultOption: SwitcherOptionProps | undefined = findTheDefaultOption(options, defaultOptionValue);
+    const specifiedDefaultOption: SwitcherOptionProps | undefined = findTheDefaultOption(
+        options,
+        defaultOptionValue
+    );
     /**
      * As a UI/UX practice always sort the default option
      * to be the first element in a group of elements.
@@ -252,6 +255,10 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
      * @param data {ButtonProps} passed props for the button element.
      */
     const onSwitchOptionButtonClick = (event: OptionMouseEventAlias, data: SwitcherOptionProps) => {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
         if (onChange) {
             onChange(data);
         } else {
