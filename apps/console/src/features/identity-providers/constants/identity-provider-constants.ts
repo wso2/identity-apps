@@ -56,5 +56,3 @@ export class IdentityProviderConstants {
         META: "configs/identity-provider-mgt.meta.json"
     };
 }
-
-export const ENTERPRISE_NAME = "Advanced";
