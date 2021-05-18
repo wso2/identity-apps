@@ -1,7 +1,6 @@
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
 import {
     Button,
-    Form,
     Icon,
     Message,
     Segment,
@@ -12,6 +11,24 @@ import {
     TextArea
 } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
+import { CertificateManagementUtils } from "@wso2is/core/dist/src/utils";
+import { KJUR, X509 } from "jsrsasign";
+import * as forge from "node-forge";
+
+// This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
+if ("File" in self) File.prototype.arrayBuffer = File.prototype.arrayBuffer || poly;
+Blob.prototype.arrayBuffer = Blob.prototype.arrayBuffer || poly;
+
+function poly() {
+    // this: File or Blob
+    return new Promise<ArrayBuffer>((resolve) => {
+        const fr = new FileReader();
+        fr.onload = () => {
+            resolve(fr.result as ArrayBuffer);
+        };
+        fr.readAsArrayBuffer(this);
+    });
+}
 
 // Developer facing interfaces
 
@@ -20,7 +37,7 @@ export interface FilePickerProps {
      * The target strategy of this file picker. This
      * can take many forms depending on the use-case.
      */
-    fileStrategy: PickerStrategy;
+    fileStrategy: PickerStrategy<any>;
     /**
      * The delegated event handler for the parent
      * component. This is called when each time file
@@ -60,7 +77,7 @@ export interface FilePickerProps {
 export interface PickerResult {
     file?: File;
     pastedContent?: string;
-    serialized?: string;
+    serialized?: any;
     valid?: boolean;
 }
 
@@ -101,7 +118,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     // Behavioural State
     const [ file, setFile ] = useState<File>(null);
     const [ pastedContent, setPastedContent ] = useState<string>(null);
-    const [ serializedData, setSerializedData ] = useState<string>(EMPTY_STRING);
+    const [ serializedData, setSerializedData ] = useState<any>(null);
     const [ hasError, setHasError ] = useState<boolean>(false);
     const [ errorMessage, setErrorMessage ] = useState<string>(null);
 
@@ -287,22 +304,20 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         menuItem: "Paste",
         render: () => {
             return (
-                <Form>
-                    <TextArea
-                        rows={ 10 }
-                        placeholder={ "Paste data in this area..." }
-                        value={ pastedContent }
-                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            if (event) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            addPastedDataToState(event.target.value ?? EMPTY_STRING);
-                        } }
-                        spellCheck={ false }
-                        className={ `certificate-editor ${ dark ? "dark" : "light" }` }
-                    />
-                </Form>
+                <TextArea
+                    rows={ 10 }
+                    placeholder={ "Paste data in this area..." }
+                    value={ pastedContent }
+                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        if (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        addPastedDataToState(event.target.value ?? EMPTY_STRING);
+                    } }
+                    spellCheck={ false }
+                    className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+                />
             );
         }
     };
@@ -348,7 +363,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 // dynamic on handling the file specific logic. You can implement different
 // strategies for each use-case or use the available ones.
 
-interface PickerStrategy {
+interface PickerStrategy<T> {
     /**
      * Should contain the logic to validate a attached file or
      * the pasted text into the text area. For example, you can
@@ -379,7 +394,7 @@ interface PickerStrategy {
      *
      * @param data {File | string} uploaded file or pasted text.
      */
-    serialize: (data: File | string) => Promise<string>;
+    serialize: (data: File | string) => Promise<T>;
 }
 
 interface ValidationResult {
@@ -389,7 +404,7 @@ interface ValidationResult {
 
 // Concrete strategies
 
-export class DefaultFileStrategy implements PickerStrategy {
+export class DefaultFileStrategy implements PickerStrategy<string> {
 
     mimeTypes: string[];
 
@@ -407,7 +422,7 @@ export class DefaultFileStrategy implements PickerStrategy {
 
 }
 
-export class XMLFileStrategy implements PickerStrategy {
+export class XMLFileStrategy implements PickerStrategy<string> {
 
     static readonly ENCODING: string = "UTF-8";
     static readonly DEFAULT_MIMES: string[] = [
@@ -514,6 +529,161 @@ export class XMLFileStrategy implements PickerStrategy {
             throw "Error while parsing XML file";
         }
         return xml;
+    }
+
+}
+
+interface CertificateDecodeResult {
+    forgeObject: any;
+    pem: string;
+    pemStripped: string;
+}
+
+export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult> {
+
+    static readonly DEFAULT_MIMES: string[] = [
+        ".pem", ".cer", ".crt", ".cert"
+    ];
+
+    mimeTypes: string[];
+
+    constructor(mimeTypes?: string[]) {
+        if (!mimeTypes || mimeTypes.length === 0)
+            this.mimeTypes = CertFileStrategy.DEFAULT_MIMES;
+        else
+            this.mimeTypes = mimeTypes;
+    }
+
+    async serialize(data: File | string): Promise<CertificateDecodeResult> {
+        return new Promise<CertificateDecodeResult>((resolve, reject) => {
+            if (data instanceof File) {
+                return this.convertFromFile(data)
+                    .then(resolve)
+                    .catch(({ errorMessage }) => reject(errorMessage));
+            } else {
+                return this.convertFromString(data)
+                    .then(resolve)
+                    .catch(({ errorMessage }) => reject(errorMessage));
+            }
+        });
+    }
+
+    async validate(data: File | string): Promise<ValidationResult> {
+        return new Promise((resolve, reject) => {
+            if (data instanceof File) {
+                this.convertFromFile(data).then((res) => {
+                    resolve({ valid: true });
+                }).catch(() => {
+                    reject({
+                        valid: false,
+                        errorMessage: "Invalid certificate file. " +
+                            "Please use one of the following formats " +
+                            this.mimeTypes.join(",")
+                    });
+                });
+            } else {
+                this.convertFromString(data).then((res) => {
+                    resolve({ valid: true });
+                }).catch(() => {
+                    reject({
+                        valid: false,
+                        errorMessage: "Invalid certificate pem string."
+                    });
+                });
+            }
+        });
+    }
+
+    async convertFromString(text: string): Promise<CertificateDecodeResult> {
+        return new Promise<CertificateDecodeResult>((resolve, reject) => {
+            try {
+                const certificateForge = new X509().readCertFromPEM(text);
+                return resolve({
+                    forgeObject: certificateForge,
+                    pemStripped: CertificateManagementUtils.stripPem(text),
+                    pem: text
+                });
+            } catch {
+                try {
+                    const pemValue = CertificateManagementUtils.enclosePem(text);
+                    const certificate = forge.pki.certificateFromPem(pemValue);
+                    const pem = forge.pki.certificateToPem(certificate);
+                    const certificateForge = new X509();
+                    certificateForge.readCertPEM(pem);
+                    return resolve({
+                        forgeObject: certificateForge,
+                        pemStripped: CertificateManagementUtils.stripPem(text),
+                        pem: text
+                    });
+                } catch (error) {
+                    reject("Failed to decode pem certificate data.");
+                }
+            }
+        });
+    }
+
+    async convertFromFile(file: File): Promise<CertificateDecodeResult> {
+        return new Promise((resolve, reject) => {
+            file.arrayBuffer().then((buf: ArrayBuffer) => {
+                try {
+                    const hex = Array.prototype.map.call(
+                        new Uint8Array(buf),
+                        (x) => ("00" + x.toString(16)).slice(-2)
+                    ).join("");
+                    const cert = new X509();
+                    cert.readCertHex(hex);
+                    const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+                    const pem = certificate.getPEM();
+                    const pemStripped = CertificateManagementUtils.stripPem(pem);
+                    return resolve({
+                        forgeObject: cert,
+                        pem: pem,
+                        pemStripped: pemStripped
+                    });
+                } catch {
+                    const byteString = forge.util.createBuffer(buf);
+                    try {
+                        const asn1 = forge.asn1.fromDer(byteString);
+                        const certificate = forge.pki.certificateFromAsn1(asn1);
+                        const pem = forge.pki.certificateToPem(certificate);
+                        const cert = new X509();
+                        cert.readCertPEM(pem);
+                        const pemStripped = CertificateManagementUtils.stripPem(pem);
+                        return resolve({
+                            forgeObject: cert,
+                            pem: pem,
+                            pemStripped: pemStripped
+                        });
+                    } catch {
+                        try {
+                            const cert = new X509();
+                            cert.readCertPEM(byteString.data);
+                            const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+                            const pem = certificate.getPEM();
+                            const pemStripped = CertificateManagementUtils.stripPem(pem);
+                            return resolve({
+                                forgeObject: cert,
+                                pem: pem,
+                                pemStripped: pemStripped
+                            });
+                        } catch {
+                            const certificate = forge.pki.certificateFromPem(byteString.data);
+                            const pem = forge.pki.certificateToPem(certificate);
+                            const cert = new X509();
+                            cert.readCertPEM(pem);
+                            const pemStripped = CertificateManagementUtils.stripPem(pem);
+                            return resolve({
+                                forgeObject: cert,
+                                pem: pem,
+                                pemStripped: pemStripped
+                            });
+                        }
+                    }
+                }
+            }).catch((error) => {
+                reject("Failed to decode certificate data");
+            });
+        });
     }
 
 }
