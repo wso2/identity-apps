@@ -127,8 +127,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 )
                             },
                             enabled: identityProviderConfig.templates.enterprise,
-                            id: EnterpriseIdentityProviderTemplateExtension.id,
-                            resource: EnterpriseIdentityProviderTemplateExtension
+                            id: EnterpriseIdentityProviderTemplateExtended.id,
+                            resource: EnterpriseIdentityProviderTemplateExtended
                         }
                     ],
                     "id"
