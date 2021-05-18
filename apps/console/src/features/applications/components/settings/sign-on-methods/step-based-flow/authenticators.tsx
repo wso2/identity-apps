@@ -227,6 +227,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             {
                 authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
                     <Popup
+                        position="top center"
                         key={ index }
                         on="hover"
                         disabled={ !isAuthenticatorDisabled(authenticator) }
