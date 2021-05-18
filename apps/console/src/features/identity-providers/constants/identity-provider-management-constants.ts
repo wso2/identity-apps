@@ -82,7 +82,8 @@ export class IdentityProviderManagementConstants {
      * @type {Record<string, unknown>}
      */
     public static readonly IDP_TEMPLATE_IDS: Record<string, unknown> = {
-        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
+        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+        ENTERPRISE: "enterprise-idp",
     };
 
     /**
@@ -131,7 +132,11 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR = "IdentifierExecutor";
-    
+
+    // Known Enterprise authenticator IDs
+    public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
+    public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+
     // Known Social authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
