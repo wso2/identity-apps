@@ -114,7 +114,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     useEffect(() => {
         setWizardSteps(getWizardSteps());
-        console.log("THIS IS THE TEMPLATE", template);
         setInitWizard(false);
     }, [ initWizard ]);
 
@@ -218,7 +217,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             identityProvider.name = values?.name?.toString();
 
             if (selectedSamlConfigMode === "manual") {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ]["properties"] = [
+                identityProvider.federatedAuthenticators.authenticators[ 1 ][ "properties" ] = [
                     { key: "IdPEntityId", value: values.IdPEntityId },
                     { key: "NameIDType", value: values.NameIDType },
                     { key: "RequestMethod", value: values.RequestMethod },
@@ -367,26 +366,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 validate={ (value) => value.startsWith("s") && "Cant start with s" }
                 placeholder="Enter a Service Provider Entity ID"
             />
-            {/*<Grid>*/}
-            {/*    <Grid.Row columns={ 1 }>*/}
-            {/*        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>*/}
-            {/*            <p><b>Mode of Configuration</b></p>*/}
-            {/*            <Switcher*/}
-            {/*                className={ "mt-1" }*/}
-            {/*                defaultOptionValue="file"*/}
-            {/*                onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }*/}
-            {/*                options={ [ {*/}
-            {/*                    value: "manual",*/}
-            {/*                    label: "Manual Configuration",*/}
-            {/*                }, {*/}
-            {/*                    value: "file",*/}
-            {/*                    label: "File Based Configuration",*/}
-            {/*                } ] }*/}
-            {/*            />*/}
-            {/*        </Grid.Column>*/}
-            {/*    </Grid.Row>*/}
-            {/*</Grid>*/}
-            <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
                     <React.Fragment>
                         <Field.Dropdown
@@ -395,7 +374,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             label="Name ID Format"
                             required={ true }
                             width={ 15 }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
                             children={ getAvailableNameIDFormats() }
                             placeholder="Select an available name identifier"
                         />
@@ -426,7 +404,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="RequestMethod"
                             label="SAML Protocol Binding"
                             required={ true }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
                             children={ getAvailableProtocolBindingTypes() }
                             width={ 15 }
                             placeholder={ "Select mode of protocol binding" }
