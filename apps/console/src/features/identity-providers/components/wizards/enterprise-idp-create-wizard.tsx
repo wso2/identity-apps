@@ -218,7 +218,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             identityProvider.name = values?.name?.toString();
 
             if (selectedSamlConfigMode === "manual") {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
+                identityProvider.federatedAuthenticators.authenticators[ 1 ]["properties"] = [
                     { key: "IdPEntityId", value: values.IdPEntityId },
                     { key: "NameIDType", value: values.NameIDType },
                     { key: "RequestMethod", value: values.RequestMethod },
@@ -650,7 +650,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     data-testid={ `${ testId }-modal-header` }>
                     <div className="display-flex">
                         <GenericIcon
-                            icon={ getIdPTemplateDocsIcons().manualsetup }
+                            icon={ getIdPIcons().enterprise }
                             size="x50"
                             transparent
                             spaced={ "right" }
