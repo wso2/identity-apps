@@ -101,7 +101,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ selectedProtocol, setSelectedProtocol ] = useState<"oidc" | "saml">("oidc");
     const [ selectedNameIdValue, setSelectedNameIdValue ] = useState<string>();
-    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<"file" | "manual">();
+    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<"file" | "manual">("manual");
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
 
     const [ selectedCertInputType, setSelectedCertInputType ] = useState<"jwks" | "pem">("jwks");
@@ -367,25 +367,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 validate={ (value) => value.startsWith("s") && "Cant start with s" }
                 placeholder="Enter a Service Provider Entity ID"
             />
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <p><b>Mode of Configuration</b></p>
-                        <Switcher
-                            className={ "mt-1" }
-                            defaultOptionValue="file"
-                            onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
-                            options={ [ {
-                                value: "manual",
-                                label: "Manual Configuration",
-                            }, {
-                                value: "file",
-                                label: "File Based Configuration",
-                            } ] }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            {/*<Grid>*/}
+            {/*    <Grid.Row columns={ 1 }>*/}
+            {/*        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>*/}
+            {/*            <p><b>Mode of Configuration</b></p>*/}
+            {/*            <Switcher*/}
+            {/*                className={ "mt-1" }*/}
+            {/*                defaultOptionValue="file"*/}
+            {/*                onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }*/}
+            {/*                options={ [ {*/}
+            {/*                    value: "manual",*/}
+            {/*                    label: "Manual Configuration",*/}
+            {/*                }, {*/}
+            {/*                    value: "file",*/}
+            {/*                    label: "File Based Configuration",*/}
+            {/*                } ] }*/}
+            {/*            />*/}
+            {/*        </Grid.Column>*/}
+            {/*    </Grid.Row>*/}
+            {/*</Grid>*/}
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
                     <React.Fragment>
