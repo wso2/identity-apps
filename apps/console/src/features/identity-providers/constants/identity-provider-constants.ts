@@ -58,3 +58,4 @@ export class IdentityProviderConstants {
 }
 
 export const GOOGLE_IDP_NAME = "Google";
+export const ENTERPRISE_NAME = "Advanced";

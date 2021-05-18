@@ -65,6 +65,13 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
  */
     isGoogle: boolean;
     /**
+     * Check if the requesting IDP is enterprise
+     * with SAML and OIDC protocols.
+     */
+    isEnterprise?: boolean;
+    isOidc: boolean;
+    isSaml: boolean;
+    /**
      * IDP template.
      */
     template: IdentityProviderTemplateInterface;
@@ -92,6 +99,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isGoogle,
+        isEnterprise,
+        isSaml,
+        isOidc,
         onDelete,
         onUpdate,
         template,
@@ -231,7 +241,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: AuthenticatorSettingsTabPane
         });
 
-        if (!isGoogle) {
+        if (!isGoogle && !isOidc) {
             panes.push({
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
