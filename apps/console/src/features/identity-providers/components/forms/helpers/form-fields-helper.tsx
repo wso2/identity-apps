@@ -18,7 +18,7 @@
 
 import {
     Field,
-    FormValue,
+    FormValue, RadioChild, StrictRadioChild,
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
@@ -121,6 +121,77 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 }
                 listen={ (values: Map<string, FormValue>) => {
                     listen(propertyMetadata.key, values);
+                } }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
+export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
+                                                propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                                testId?: string): ReactElement => {
+    return (
+        <>
+            <Field
+                label={ propertyMetadata?.displayName }
+                name={ propertyMetadata?.key }
+                key={ propertyMetadata?.key }
+                type="radio"
+                required={ propertyMetadata?.isMandatory }
+                default ={ propertyMetadata?.defaultValue }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                    "requiredErrorMessage") }
+                children={
+                    propertyMetadata?.subProperties?.map(function(val, index): StrictRadioChild {
+                        return {
+                            label: val.displayName,
+                            value: val.defaultValue
+                        }
+                    })
+                }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
+export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+                                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                             listen: (key: string, values: Map<string, FormValue>) => void,
+                                             testId?: string): ReactElement => {
+    return (
+        <>
+            <Field
+                label={ propertyMetadata?.displayName }
+                name={ propertyMetadata?.key }
+                key={ propertyMetadata?.key }
+                type="radio"
+                required={ propertyMetadata?.isMandatory }
+                value={ propertyMetadata?.defaultValue }
+                default ={ propertyMetadata?.defaultValue }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                    "requiredErrorMessage") }
+                children={
+                    propertyMetadata?.subProperties?.map(function(val, index): StrictRadioChild {
+                       return {
+                            label: val.displayName,
+                            value: val.defaultValue
+                        }
+                    })
+                }
+                listen={ (values: Map<string, FormValue>) => {
+                    listen(propertyMetadata?.key, values);
                 } }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
@@ -363,7 +434,8 @@ export enum FieldType {
     CONFIDENTIAL = "Confidential",
     URL = "URL",
     QUERY_PARAMS = "QueryParameters",
-    DROP_DOWN = "DropDown"
+    DROP_DOWN = "DropDown",
+    RADIO = "Radio"
 }
 
 /**
@@ -373,7 +445,8 @@ export enum CommonConstants {
     BOOLEAN = "BOOLEAN",
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
-    SCOPE_KEY = "scopes"
+    SCOPE_KEY = "scopes",
+    RADIO = "RADIO"
 }
 
 /**
@@ -382,7 +455,6 @@ export enum CommonConstants {
  * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
  */
 export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): FieldType => {
-
     if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
     } else if (propertyMetadata?.isConfidential) {
@@ -398,6 +470,8 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
         return FieldType.QUERY_PARAMS;
     } else if (propertyMetadata?.options?.length > 0) {
         return FieldType.DROP_DOWN;
+    } else if (propertyMetadata.type?.toUpperCase() === CommonConstants.RADIO) {
+        return FieldType.RADIO;
     }
     return FieldType.TEXT;
 };
@@ -423,6 +497,12 @@ export const getPropertyField = (property: CommonPluggableComponentPropertyInter
                 return getCheckboxFieldWithListener(property, propertyMetadata, listen, testId);
             }
             return getCheckboxField(property, propertyMetadata, testId);
+        }
+        case FieldType.RADIO : {
+            if (listen) {
+                return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);
+            }
+            return getRadioButtonField(property, propertyMetadata, testId);
         }
         case FieldType.CONFIDENTIAL : {
             return getConfidentialField(property, propertyMetadata, testId);
