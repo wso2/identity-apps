@@ -83,11 +83,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ selectedProtocol, setSelectedProtocol ] = useState<"oidc" | "saml">("oidc");
     const [ selectedNameIdValue, setSelectedNameIdValue ] = useState<string>();
-    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<string>();
+    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<"file" | "manual">();
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
 
     const [ selectedCertInputType, setSelectedCertInputType ] = useState<"jwks" | "pem">("jwks");
     const [ pemString, setPemString ] = useState<string>("");
+
+    // const [ disableFinishButton, setDisableFinishButton ] = useState<boolean>(true);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -196,13 +198,22 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             // Populate user entered values
             identityProvider = template.idp;
             identityProvider.name = values?.name?.toString();
-            identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
-                { key: "IdPEntityId", value: values.IdPEntityId },
-                { key: "NameIDType", value: values.NameIDType },
-                { key: "RequestMethod", value: values.RequestMethod },
-                { key: "SPEntityId", value: values.SPEntityId },
-                { key: "SSOUrl", value: values.SSOUrl }
-            ];
+
+            if (selectedSamlConfigMode === "manual") {
+                identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
+                    { key: "IdPEntityId", value: values.IdPEntityId },
+                    { key: "NameIDType", value: values.NameIDType },
+                    { key: "RequestMethod", value: values.RequestMethod },
+                    { key: "SPEntityId", value: values.SPEntityId },
+                    { key: "SSOUrl", value: values.SSOUrl },
+                    { key: "selectMode", value: "Manual Configuration" }
+                ];
+            } else {
+                identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
+                    { key: "meta_data_saml", value: xmlBase64String ?? "" },
+                    { key: "selectMode", value: "Metadata File Configuration" }
+                ];
+            }
 
             // Certificate
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? "" ];
@@ -264,9 +275,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const wizardCommonFirstPage = () => (
         <WizardPage validate={ (values: any) => {
             const errors: { [ key: string ]: string } = {};
-            if (!values.name) {
-                errors.name = 'Required'
-            }
+            if (!values.name) errors.name = 'Required';
             return errors;
         } }>
             <Field.Input
@@ -321,9 +330,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const samlConfigurationPage = () => (
         <WizardPage validate={ (values): any => {
             const errors: { [ key: string ]: string } = {};
-            if (!values.SPEntityId) {
-                errors.name = 'Required';
-            }
+            if (!values.SPEntityId) errors.SPEntityId = 'Required';
+            if (!values.NameIDType) errors.NameIDType = 'Required';
+            if (!values.SSOUrl) errors.SSOUrl = 'Required';
+            if (!values.IdPEntityId) errors.IdPEntityId = 'Required';
+            if (!values.RequestMethod) errors.RequestMethod = 'Required';
             return errors;
         } }>
             <Field.Input
@@ -345,7 +356,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         <Switcher
                             className={ "mt-1" }
                             defaultOptionValue="file"
-                            onChange={ ({ value }) => setSelectedSamlConfigMode(value) }
+                            onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
                                 value: "manual",
                                 label: "Manual Configuration",
@@ -423,7 +434,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const oidcConfigurationPage = () => {
         return (
-            <WizardPage>
+            <WizardPage validate={ (values) => {
+                const errors: { [ key: string ]: string } = {};
+                if (!values.clientId) errors.clientId = 'Required';
+                if (!values.clientSecret) errors.clientSecret = 'Required';
+                if (!values.authorizationEndpointUrl) errors.authorizationEndpointUrl = 'Required';
+                if (!values.tokenEndpointUrl) errors.tokenEndpointUrl = 'Required';
+                return errors;
+            } }>
                 <Field.Input
                     ariaLabel="clientId"
                     inputType="identifier"
@@ -433,8 +451,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    // TODO: checkon key press usecase
-                    // onKeyDown={ keyPressed }
                     data-testid={ `${ testId }-idp-client-id` }
                     width={ 13 }
                 />
@@ -450,8 +466,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     maxLength={ 100 }
                     minLength={ 3 }
                     type="password"
-                    // TODO: checkon key press usecase
-                    // onKeyDown={ keyPressed }
                     data-testid={ `${ testId }-idp-client-secret` }
                     width={ 13 }
                 />
@@ -486,7 +500,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     };
 
     const certificatesPage = () => (
-        <WizardPage>
+        <WizardPage validate={ (values) => {
+            const errors: { [ key: string ]: string } = {};
+            return errors;
+        } }>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -685,7 +702,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                     <PrimaryButton
                                         floated="right" onClick={ () => {
                                         wizardRef.current.gotoNextPage();
-                                        console.log("next page....");
                                     } }
                                         data-testid={ `${ testId }-modal-next-button` }>
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
@@ -695,7 +711,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 {/*Check whether its the last step*/ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     // Note that we use the same logic as the next button
-                                    // element. This is because when we pass a callback to
+                                    // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
                                         floated="right" onClick={ () => {

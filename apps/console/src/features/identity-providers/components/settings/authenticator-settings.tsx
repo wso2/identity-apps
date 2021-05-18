@@ -70,6 +70,7 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
+import { IdentityProviderManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -654,7 +655,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
-            if (authenticator.id === "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I") {
+            if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
                 authenticator.meta.properties.map(prop => {
                     if (prop.key === "ClientId") {
                         prop.displayName = "Client ID";
@@ -665,7 +666,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "The client secret value of the identity provider.";
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "callbackUrl") {
-                        prop.readOnly = true;
                         prop.description = "The URL to which the authorization code is sent upon " +
                             "authentication, and where the user is redirected to upon logout.";
                         prop.displayName = "Authorized Redirect URL";
@@ -693,6 +693,37 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Remove additional query params
                 removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
                 removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
+            }
+
+            // Remove meta data if the authenticator is SAML
+            if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                // Remove additional query params
+                removeElementFromProps(authenticator.data.properties, "isAssertionSigned");
+                removeElementFromProps(authenticator.meta.properties, "isAssertionSigned");
+                removeElementFromProps(authenticator.data.properties, "ACSUrl");
+                removeElementFromProps(authenticator.meta.properties, "ACSUrl");
+                removeElementFromProps(authenticator.data.properties, "ForceAuthentication");
+                removeElementFromProps(authenticator.meta.properties, "ForceAuthentication");
+                removeElementFromProps(authenticator.data.properties, "IncludeAuthnContext");
+                removeElementFromProps(authenticator.meta.properties, "IncludeAuthnContext");
+                removeElementFromProps(authenticator.data.properties, "AuthnContextClassRef");
+                removeElementFromProps(authenticator.meta.properties, "AuthnContextClassRef");
+                removeElementFromProps(authenticator.data.properties, "AttributeConsumingServiceIndex");
+                removeElementFromProps(authenticator.meta.properties, "AttributeConsumingServiceIndex");
+                removeElementFromProps(authenticator.data.properties, "IncludeNameIDPolicy");
+                removeElementFromProps(authenticator.meta.properties, "IncludeNameIDPolicy");
+                removeElementFromProps(authenticator.data.properties, "ResponseAuthnContextClassRef");
+                removeElementFromProps(authenticator.meta.properties, "ResponseAuthnContextClassRef");
+                removeElementFromProps(authenticator.data.properties, "CustomAuthnContextClassRef");
+                removeElementFromProps(authenticator.meta.properties, "CustomAuthnContextClassRef");
+                removeElementFromProps(authenticator.data.properties, "ISArtifactBindingEnabled");
+                removeElementFromProps(authenticator.meta.properties, "ISArtifactBindingEnabled");
+                removeElementFromProps(authenticator.data.properties, "SignatureAlgorithmPost");
+                removeElementFromProps(authenticator.meta.properties, "SignatureAlgorithmPost");
+                removeElementFromProps(authenticator.data.properties, "IsAssertionEncrypted");
+                removeElementFromProps(authenticator.meta.properties, "IsAssertionEncrypted");
+                removeElementFromProps(authenticator.data.properties, "IncludeCert");
+                removeElementFromProps(authenticator.meta.properties, "IncludeCert");
             }
 
             return (

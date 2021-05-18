@@ -412,10 +412,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
                     isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
-                    isSaml={ identityProvider.federatedAuthenticators.authenticators[0] ===
-                        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID }
-                    isOidc={ identityProvider.federatedAuthenticators.authenticators[0] ===
-                        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID }
+                    isSaml={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID }
+                    isOidc={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
