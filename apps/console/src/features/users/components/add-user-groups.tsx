@@ -120,7 +120,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
         handleTempListChange(checkedGroups);
         handleInitialTempListChange(checkedGroups);
-        setIsSelectUnassignedAllGroupsChecked(initialValues?.groupList?.length === checkedGroups.length)
+        setIsSelectUnassignedAllGroupsChecked(initialValues?.groupList?.length === checkedGroups.length);
     };
 
     /**

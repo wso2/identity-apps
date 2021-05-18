@@ -18,14 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Forms, FormValue } from "@wso2is/forms";
-import { Heading, Hint, Code } from "@wso2is/react-components";
+import { FormValue, Forms } from "@wso2is/forms";
+import { Code, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation, Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { RoleConfigInterface, SubjectConfigInterface, InboundProtocolListItemInterface } from "../../../models";
 import { applicationConfig } from "../../../../../extensions";
+import { InboundProtocolListItemInterface, RoleConfigInterface, SubjectConfigInterface } from "../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;

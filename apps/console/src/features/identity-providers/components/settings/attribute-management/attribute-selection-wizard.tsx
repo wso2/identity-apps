@@ -25,14 +25,14 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import find from "lodash-es/find";
+import isEmpty from "lodash-es/isEmpty";
+import sortBy from "lodash-es/sortBy";
+import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
-import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
-import find from "lodash-es/find";
-import isEmpty from "lodash-es/isEmpty";
 
 interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
     attributesList: IdentityProviderClaimInterface[];

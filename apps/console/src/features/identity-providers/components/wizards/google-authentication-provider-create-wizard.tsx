@@ -27,6 +27,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
+import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
 import { AppConstants, AppState, ModalWithSidePanel, history, store } from "../../../../features/core";
 import {
     createIdentityProvider,
@@ -45,7 +46,6 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetIDPListCallError
 } from "../utils";
-import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -237,7 +237,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
      * Track wizard steps from wizard component.
      */
     useEffect(() => {
-        setCurrentWizardStep(wizStep + 1)
+        setCurrentWizardStep(wizStep + 1);
     }, [ wizStep ]);
 
     let submitAdvanceForm: () => void;
@@ -284,7 +284,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<Minimal
             }
         }
         handleWizardFormFinish(identityProvider);
-    } 
+    }; 
 
 
     const resolveStepActions = (): ReactElement => {

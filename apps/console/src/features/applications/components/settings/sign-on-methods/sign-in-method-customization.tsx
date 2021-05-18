@@ -19,7 +19,7 @@
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint, LinkButton, PrimaryButton} from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

@@ -205,7 +205,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                 disabled={ isAuthenticatorDisabled(authenticator) }
                                                 selected={
                                                     selectedAuthenticators.some((evalAuthenticator) => {
-                                                        return evalAuthenticator.id === authenticator.id
+                                                        return evalAuthenticator.id === authenticator.id;
                                                     })
                                                 }
                                                 image={ authenticator.image }

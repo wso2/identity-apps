@@ -373,7 +373,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 { t("common:featureAvailable" ) }
             </Dimmer>
         );
-    }
+    };
 
     const scrollToNotification = () => {
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });

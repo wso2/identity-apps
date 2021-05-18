@@ -122,7 +122,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         if (nameExist) {
             return t("console:develop.features." +
             "authenticationProvider.forms.generalDetails.name." +
-            "validations.duplicate")
+            "validations.duplicate");
         }
     }; 
 
@@ -172,7 +172,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 <Form
                     onSubmit={ (values): void => {
                         updateConfigurations(values);
-                    }}
+                    } }
                     data-testid={ testId }           
                 >  
                     <Field.Input
@@ -185,13 +185,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         message={ t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.empty") }
                         placeholder={ name }
-                        validation ={(value)=>idpNameValidation(value) }
+                        validation ={ (value)=>idpNameValidation(value) }
                         value={ name }
                         maxLength={ IDP_NAME_MAX_LENGTH }
                         minLength={ 3 }
                         data-testid={ `${ testId }-idp-name` }
-                        hint={t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.name.hint")}
+                        hint={ t("console:develop.features.authenticationProvider.forms." +
+                        "generalDetails.name.hint") }
                     />
                     <Field.Textarea
                         name="description"
@@ -223,8 +223,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         data-testid={ `${ testId }-idp-image` }
                         maxLength={ IDP_IMAGE_URL_MAX_LENGTH }
                         minLength={ 3 }
-                        hint={t("console:develop.features.authenticationProvider.forms." +
-                        "generalDetails.image.hint")}
+                        hint={ t("console:develop.features.authenticationProvider.forms." +
+                        "generalDetails.image.hint") }
                     />
                     <Field.Button
                         ariaLabel= "submit"

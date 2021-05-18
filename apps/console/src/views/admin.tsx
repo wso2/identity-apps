@@ -19,7 +19,7 @@
 import { hasRequiredScopes, hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils, AuthenticateUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -47,7 +47,6 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { setManageVisibility } from "../features/core/store/actions/acess-control";
 import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
@@ -66,6 +65,7 @@ import {
     history,
     useUIElementSizes
 } from "../features/core";
+import { setManageVisibility } from "../features/core/store/actions/acess-control";
 import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils,

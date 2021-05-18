@@ -17,8 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const SCOPE_NAME_MAX_LENGTH: number = 40;
@@ -69,29 +69,29 @@ let triggerPreviousForm: () => void;
 
     return (
     <Wizard
-        initialValues={{
+        initialValues={ {
             scopeName: initialValues?.scopeName,
             displayName: initialValues?.displayName,
             description: initialValues?.description
-        }}
+        } }
         onSubmit={ (values) => {
-            onSubmit(getFormValues(values)) 
-        }}
+            onSubmit(getFormValues(values)); 
+        } }
         triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
         triggerPrevious={ (previousFunction: () => void) => {
             triggerPreviousForm = previousFunction; } }
     >
         <WizardPage
-            validate={(values): any => {
-                const errors:any = {}
+            validate={ (values): any => {
+                const errors:any = {};
                 if (!values.scopeName && !initialValues?.scopeName) {
-                    errors.scopeName="Required"
+                    errors.scopeName="Required";
                 }
                 if (!values.displayName && !initialValues?.displayName) {
-                    errors.displayName="Required"
+                    errors.displayName="Required";
                 }
-                return errors
-            }}
+                return errors;
+            } }
         >
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }

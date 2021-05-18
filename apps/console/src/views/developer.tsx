@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core//helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils, AuthenticateUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,

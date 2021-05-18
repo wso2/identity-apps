@@ -27,10 +27,10 @@ import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
 import {
+    CONSUMER_USERSTORE_TYPE,
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
-    USER_STORE_TYPE_DESCRIPTIONS,
-    CONSUMER_USERSTORE_TYPE
+    USER_STORE_TYPE_DESCRIPTIONS
 } from "../constants";
 import { TypeResponse, UserstoreType } from "../models";
 

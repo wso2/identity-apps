@@ -47,7 +47,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, UIConstants } from "../../core";
+import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,
@@ -256,7 +256,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 assertionHint={
                     <p>
                         <Trans i18nKey="console:manage.features.certificates.keystore.confirmation.hint">
-                           Please type <strong>{{ id:deleteID }}</strong> to confirm.
+                           Please type <strong>{ { id:deleteID } }</strong> to confirm.
                         </Trans>
                     </p>
                 }

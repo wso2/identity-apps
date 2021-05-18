@@ -437,7 +437,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                                 <Button basic primary onClick={ () => {
                                     fileUpload.current.click();
                                 } }>
-                                    {t("console:manage.features.certificates.keystore.wizard.dropZone.action")}
+                                    { t("console:manage.features.certificates.keystore.wizard.dropZone.action") }
                                 </Button>
                             </Segment>
                         </div >

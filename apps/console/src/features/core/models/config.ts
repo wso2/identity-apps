@@ -28,7 +28,7 @@ import { ApplicationTemplateLoadingStrategies, ApplicationsResourceEndpointsInte
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";
-import { IdentityProviderTemplateLoadingStrategies, IDPResourceEndpointsInterface } from "../../identity-providers";
+import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
