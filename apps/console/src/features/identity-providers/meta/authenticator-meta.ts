@@ -56,7 +56,7 @@ export class AuthenticatorMeta {
             "existing Twitter accounts.",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Enterprise login via OpenID " +
             "Connect protocol.",
-            [ IdentityProviderManagementConstants.SAML_SSO_AUTHENTICATOR_ID ]: "Enterprise login via SAML " +
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Enterprise login via SAML " +
             "protocol."
         }, authenticatorId);
     }
@@ -90,7 +90,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.OIDC
             ],
-            [ IdentityProviderManagementConstants.SAML_SSO_AUTHENTICATOR_ID ]: [
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
             ]
         }, authenticatorId);
