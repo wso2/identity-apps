@@ -34,6 +34,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
@@ -315,6 +316,9 @@
                                     </label>
                                     <input type="email" name="http://wso2.org/claims/emailaddress" class="form-control"
                                            data-validate="email"
+                                       <% if (MultitenantUtils.isEmailUserName()) { %>
+                                           value="<%= user.getUsername()%>" readonly
+                                       <% } %>
                                         <% if (emailNamePII.getValidationRegex() != null) {
                                                 String pattern = Encode.forHtmlContent(emailNamePII.getValidationRegex());
                                                 String[] patterns = pattern.split("\\\\@");
