@@ -60,7 +60,7 @@
 
 <%!
     /**
-     * Parses the give attribute to a String.
+     * Parses the given attribute to a String.
      *
      * @param attribute {@link Object} request attribute
      * @param defaultValue {@link String} default value substitution for attribute
