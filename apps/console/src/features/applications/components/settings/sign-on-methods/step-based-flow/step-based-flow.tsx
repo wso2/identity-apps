@@ -658,8 +658,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
                                     category: string,
-                                    categoryDisplayName: string,
-                                    description: string) => {
+                                    categoryDisplayName: string) => {
 
         if (isEmpty(authenticators)) {
             return [];
@@ -681,7 +680,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 return {
                     ...authenticator,
                     category,
-                    description,
                     categoryDisplayName
                 };
             });
@@ -782,28 +780,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 authenticators={ [
                     ...moderateAuthenticators(localAuthenticators,
                         AuthenticatorCategories.LOCAL,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.LOCAL)),
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                            "basic.description", { productName: config.ui.productName })),
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.LOCAL))),
                     ...moderateAuthenticators(socialAuthenticators,
                         AuthenticatorCategories.SOCIAL,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SOCIAL)),
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                            "social.description")),
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SOCIAL))),
                     ...moderateAuthenticators(secondFactorAuthenticators,
                         AuthenticatorCategories.SECOND_FACTOR,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR)),
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                            "mfa.description")),
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
                     ...moderateAuthenticators(enterpriseAuthenticators,
                         AuthenticatorCategories.ENTERPRISE,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE)),
-                        t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                            "enterprise.description"))
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE)))
                 ] }
                 showStepSelector={ false }
                 stepCount={ authenticationSteps.length }

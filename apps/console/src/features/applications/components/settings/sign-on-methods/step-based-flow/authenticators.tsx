@@ -256,10 +256,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     })
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
-                                description={
-                                    AuthenticatorMeta.getAuthenticatorDescription(
-                                        authenticator.defaultAuthenticator.authenticatorId)
-                                }
+                                description={ authenticator.description }
                                 image={ authenticator.image }
                                 tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
                                 onClick={ () => handleAuthenticatorSelect(authenticator) }

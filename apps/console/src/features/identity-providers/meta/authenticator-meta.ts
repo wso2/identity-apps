@@ -44,7 +44,7 @@ export class AuthenticatorMeta {
             "name and password credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
             "control the authentication flow.",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provides secure and fast passworless " +
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provides secure and fast passwordless " +
             "login experience.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Authenticate users using Time-Based One " +
             "Time Password.",

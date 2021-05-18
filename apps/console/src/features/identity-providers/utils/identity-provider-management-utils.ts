@@ -34,6 +34,7 @@ import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
+    FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
@@ -146,6 +147,7 @@ export class IdentityProviderManagementUtils {
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name
                         },
+                        description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
                         id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
@@ -170,11 +172,21 @@ export class IdentityProviderManagementUtils {
                             return;
                         }
 
+                        const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator
+                            .federatedAuthenticators
+                            .authenticators
+                            .find((item) => {
+                                return (item.authenticatorId === 
+                                    authenticator.federatedAuthenticators.defaultAuthenticatorId);
+                            });
+
                         federatedAuthenticators.push({
                             authenticators: authenticator.federatedAuthenticators.authenticators,
-                            defaultAuthenticator: authenticator.federatedAuthenticators.authenticators
-                                .find((item) => item.authenticatorId ===
-                                    authenticator.federatedAuthenticators.defaultAuthenticatorId),
+                            defaultAuthenticator: defaultAuthenticator,
+                            description: !isEmpty(authenticator.description)
+                                ? authenticator.description
+                                : AuthenticatorMeta.getAuthenticatorDescription(
+                                    defaultAuthenticator?.authenticatorId),
                             displayName: authenticator.name,
                             id: authenticator.id,
                             idp: authenticator.name,
