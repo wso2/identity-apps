@@ -20,8 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
-import { IdentityProviderCreateWizard } from "./identity-provider-create-wizard";
 import { ConfigReducerStateInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
@@ -32,7 +32,7 @@ import {
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateLoadingStrategies
 } from "../../models";
-import { IdentityProviderTemplateManagementUtils } from "../../utils/identity-provider-template-management-utils";
+import { IdentityProviderTemplateManagementUtils } from "../../utils";
 import { handleGetIDPTemplateAPICallError } from "../utils";
 
 /**
@@ -230,16 +230,15 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         default:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
-                    <IdentityProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
-                        subTitle={ selectedTemplateWithUniqueName?.description }
-                        onWizardClose={ () => {
+                    <EnterpriseIDPCreateWizard
+                        title="Standard Based Authentication"
+                        subTitle="Configure a new Identity Provider with advanced enterprise protocols."
+                        closeWizard={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
-                            onWizardClose();
+                            setSelectedTemplate(undefined);
                             setShowWizard(false);
                         } }
                         template={ selectedTemplateWithUniqueName }
-                        { ...rest }
                     />
                 )
                 : null;
