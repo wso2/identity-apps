@@ -116,6 +116,19 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             enabled: identityProviderConfig.templates.enterprise,
                             id: EnterpriseIdentityProviderTemplateExtended.id,
                             resource: EnterpriseIdentityProviderTemplateExtended
+                        },
+                        {
+                            content: {
+                                oidcHelp: lazy(() =>
+                                    import("./templates/oidc-identity-provider/oidc-idp-wizard-help")
+                                ),
+                                samlHelp: lazy(() =>
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
+                                )
+                            },
+                            enabled: identityProviderConfig.templates.enterprise,
+                            id: EnterpriseIdentityProviderTemplateExtension.id,
+                            resource: EnterpriseIdentityProviderTemplateExtension
                         }
                     ],
                     "id"
