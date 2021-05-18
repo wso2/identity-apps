@@ -56,7 +56,7 @@ import {
     SupportedQuickStartTemplateTypes,
     emptyIdentityProvider
 } from "../models";
-import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { IdentityProviderTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -409,8 +409,13 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
                     isGoogle={ identityProviderTemplate?.name === SupportedQuickStartTemplateTypes.GOOGLE }
-                    isSaml={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID }
-                    isOidc={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID }
+                    isSaml={
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId 
+                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) }
+                    isOidc={
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                    }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
