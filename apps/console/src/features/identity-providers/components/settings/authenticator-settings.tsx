@@ -686,19 +686,64 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.maxLength = URL_MAX_LENGTH;
                         prop.displayOrder = 7;
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "User ID found in claims"
+                        prop.displayName = "User ID location"
                         prop.description = "The location to find the user identifier in the " +
                             "ID token assertion.";
                         prop.displayOrder = 6;
+                        prop.type = "RADIO";
+                        prop.defaultValue = "subAttribute";
+                        const userIdSubAttribute: CommonPluggableComponentMetaPropertyInterface = {
+                            defaultValue: "subAttribute",
+                            displayName: "User ID found in 'sub' attribute",
+                            displayOrder: 1,
+                            isConfidential: false,
+                            isMandatory: false,
+                            key: "UserIdSubAttribute  ",
+                            options: [],
+                            type: "RADIO",
+                            subProperties: []
+                        };
+                        const userIdClaims: CommonPluggableComponentMetaPropertyInterface = {
+                            defaultValue: "claims",
+                            displayName: "User ID found in claims",
+                            displayOrder: 2,
+                            isConfidential: false,
+                            isMandatory: false,
+                            key: "UserIdClaims",
+                            options: [],
+                            type: "RADIO",
+                            subProperties: []
+
+                        };
+                        prop.subProperties.push(userIdSubAttribute);
+                        prop.subProperties.push(userIdClaims);
                     } else if (prop.key === "commonAuthQueryParams") {
                         prop.displayName = "Additional query parameters"
                     }
-
                 });
 
                 // Remove additional query params
                 removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
                 removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
+
+                // Inject logout url
+                const logoutUrlData = {
+                    key: "LogoutUrl"
+                };
+                authenticator.data.properties.push(logoutUrlData);
+                const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
+                    description: "The URL to communicate directly with a client to invalidate " +
+                        "a user session.",
+                    displayName: "Logout URL",
+                    displayOrder: 7,
+                    isConfidential: false,
+                    isMandatory: false,
+                    key: "LogoutUrl",
+                    options: [],
+                    subProperties: [],
+                    type: "URL"
+                };
+                authenticator.meta.properties.push(logoutUrlMeta);
             }
 
             return (

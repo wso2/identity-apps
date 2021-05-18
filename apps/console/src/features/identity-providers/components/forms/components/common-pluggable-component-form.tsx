@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import {Field, Forms, FormValue} from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
+import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {Button, Grid} from "semantic-ui-react";
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
-import { getPropertyMetadata } from "../../utils";
-import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
+import {getPropertyMetadata} from "../../utils";
+import {CommonConstants, FieldType, getFieldType, getPropertyField} from "../helpers";
 
 /**
  * Common pluggable connector configurations form.
@@ -56,9 +56,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
-
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
+                return value?.includes(key);
+            }
+            case CommonConstants.RADIO: {
                 return value?.includes(key);
             }
             default: {
@@ -74,7 +76,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @return {any} Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
-
         const properties = [];
 
         values?.forEach((value, key) => {
@@ -119,8 +120,16 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @param propertyMetadata Metadata of the property.
      */
     const isCheckboxWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
-
         return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.CHECKBOX;
+    };
+
+    /**
+     * Check whether provided property is a radiobutton and contain sub-properties.
+     *
+     * @param propertyMetadata Metadata of the property.
+     */
+    const isRadioButtonWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
+        return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.RADIO;
     };
 
     const getField = (property: CommonPluggableComponentPropertyInterface,
@@ -165,13 +174,21 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             if (!isEmpty(metaProperty?.displayName)) {
                 const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(
                     property => property.key === metaProperty.key);
-
                 let field: ReactElement;
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, isSub, `${ testId }-form`);
+                    field = getField(property, metaProperty, isSub, `${testId}-form`);
+                } else if (isRadioButtonWithSubProperties(metaProperty)) {
+                    field =
+                        <React.Fragment key={ metaProperty?.key }>
+                            {
+                                // Render parent property.
+                                getField(property, metaProperty, isSub, `${ testId }-form`,
+                                    handleParentPropertyChange)
+                            }
+                        </React.Fragment>;
                 } else {
                     field =
-                        <React.Fragment key={ metaProperty?.displayOrder }>
+                        <React.Fragment key={ metaProperty?.key }>
                             {
                                 // Render parent property.
                                 getField(property, metaProperty, isSub, `${ testId }-form`,
@@ -191,6 +208,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
+        console.log(values);
         setDynamicValues({
             ...dynamicValues,
             properties: dynamicValues?.properties ? dynamicValues?.properties?.map(
@@ -221,6 +239,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     useEffect(() => {
+        debugger;
         setDynamicValues(initialValues);
     }, []);
 
@@ -231,7 +250,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         if (!dynamicValues) {
             return;
         }
-
         const values: string[] = [];
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
