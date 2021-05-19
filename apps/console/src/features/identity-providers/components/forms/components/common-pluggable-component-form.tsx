@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import {Field, Forms, FormValue} from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {Button, Grid} from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Grid } from "semantic-ui-react";
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
-import {getPropertyMetadata} from "../../utils";
-import {CommonConstants, FieldType, getFieldType, getPropertyField} from "../helpers";
+import { getPropertyMetadata } from "../../utils";
+import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 
 /**
  * Common pluggable connector configurations form.
