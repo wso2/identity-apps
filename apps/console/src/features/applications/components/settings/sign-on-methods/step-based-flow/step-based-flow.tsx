@@ -684,8 +684,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 };
             });
     };
-    
-    const handleAddNewAuthenticatorClick = () => {
+
+    /**
+     * Handles the clock event of add new authenticator button.
+     */
+    const handleAddNewAuthenticatorClick = (): void => {
         
         const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
 
@@ -724,6 +727,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @return {ReactElement}
      */
     const renderHandlerDisclaimerModal = (): ReactElement => (
+
         <ConfirmationModal
             onClose={ () => setShowHandlerDisclaimerModal(false) }
             type="warning"

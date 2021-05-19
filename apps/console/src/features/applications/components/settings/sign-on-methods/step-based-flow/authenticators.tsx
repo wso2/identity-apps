@@ -123,7 +123,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
      * @return {boolean}
      */
-    const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface) => {
+    const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface): boolean => {
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return !(authenticator?.isEnabled);
         }
@@ -206,7 +206,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      *
      * @return {any[] | string[]}
      */
-    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface) => {
+    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
 
         if (!authenticator) {
             return [];

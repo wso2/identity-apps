@@ -74,6 +74,11 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
     readOnly?: boolean;
 }
 
+/**
+ * Closure to broadcast the IDP create success to the child component.
+ * If this is placed inside the component, it will not initialize properly.
+ * @type {null}
+ */
 let broadcastIDPCreateSuccessMessage: () => void = null;
 
 /**

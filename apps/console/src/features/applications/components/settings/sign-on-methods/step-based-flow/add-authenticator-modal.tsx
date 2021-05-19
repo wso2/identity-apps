@@ -187,7 +187,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      *
      * @param {GenericAuthenticatorInterface[]} authenticators - Set of authenticators.
      */
-    const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]) => {
+    const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]): void => {
         
         const labels: string[] = [];
 
@@ -247,7 +247,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * @param {React.ChangeEvent<HTMLInputElement>} e - Change event.
      * @param {string} value - Input value.
      */
-    const handleAuthenticatorSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
+    const handleAuthenticatorSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
 
         const query: string = value.toLocaleLowerCase();
 
@@ -263,7 +263,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      *
      * @return {GenericAuthenticatorInterface[]}
      */
-    const getSearchResults = (query: string, filterLabels: string[]) => {
+    const getSearchResults = (query: string, filterLabels: string[]): GenericAuthenticatorInterface[] => {
 
         /**
          * Checks if any of the filters are matching.

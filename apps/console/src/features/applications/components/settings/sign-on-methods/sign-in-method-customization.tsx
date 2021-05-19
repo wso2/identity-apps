@@ -159,7 +159,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      *
      * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
      */
-    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
+    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface): void => {
         if (!template) {
             return;
         }
