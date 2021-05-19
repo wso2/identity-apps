@@ -1,6 +1,7 @@
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
 import {
-    Button, Form,
+    Button,
+    Form,
     Icon,
     Message,
     Segment,
@@ -72,6 +73,18 @@ export interface FilePickerProps {
      */
     icon?: SemanticICONS | Icon | SVGElement | string | any;
     placeholderIcon?: SemanticICONS | Icon | SVGElement | string | any;
+    /*
+     * FIXME ASAP
+     *
+     * {initialFile:}
+     * Add a prop that accepts a file by default. This file will
+     * be the initial state for the picker.
+     *
+     * {initialPastedContent:}
+     * Add a prop that accepts a raw string by default. The raw value
+     * should be bind to the form and the api consumer can specify
+     * whether to fire the initial values via a callback.
+     */
 }
 
 export interface PickerResult {
