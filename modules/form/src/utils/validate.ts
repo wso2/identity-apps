@@ -63,10 +63,6 @@ export const getValidation = (
     value: any, meta: any, field: string, required: boolean, fieldType?: string, validation?: any
 ) => {
 
-    if (required && !value) {
-        return FieldConstants.FIELD_REQUIRED_ERROR;
-    }
-
     if (!meta.modified) {
         return;
     }
