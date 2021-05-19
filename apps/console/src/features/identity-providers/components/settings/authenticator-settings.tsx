@@ -607,7 +607,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "callbackUrl") {
                         prop.readOnly = true;
                         prop.description = "The authorized redirect URL used to obtain Google credentials.";
-                        prop.displayName = "Authorized Redirect URL";
+                        prop.displayName = "Authorized redirect URL";
                     }
                 });
 
@@ -662,30 +662,35 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "The client identifier value of the identity provider.";
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "ClientSecret") {
-                        prop.displayName = "Client Secret";
+                        prop.displayName = "Client secret";
                         prop.description = "The client secret value of the identity provider.";
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "callbackUrl") {
+                        prop.displayName = "Authorized redirect URL";
                         prop.description = "The URL to which the authorization code is sent upon " +
                             "authentication, and where the user is redirected to upon logout.";
-                        prop.displayName = "Authorized Redirect URL";
                     } else if (prop.key === "OAuth2AuthzEPUrl") {
+                        prop.displayName = "Authorization endpoint URL"
                         prop.description = "The standard authorization endpoint URL obtained from " +
                             "the identity provider.";
                         prop.maxLength = URL_MAX_LENGTH;
                     } else if (prop.key === "OAuth2TokenEPUrl") {
+                        prop.displayName = "Token endpoint URL"
                         prop.description = "The standard token endpoint URL obtained from " +
                             "the identity provider.";
                         prop.maxLength = URL_MAX_LENGTH;
                     } else if (prop.key === "UserInfoUrl") {
+                        prop.displayName = "User info endpoint URL"
                         prop.description = "The URL corresponding to the userinfo endpoint.";
                         prop.maxLength = URL_MAX_LENGTH;
                         prop.displayOrder = 7;
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "User ID found in Claims"
+                        prop.displayName = "User ID found in claims"
                         prop.description = "The location to find the user identifier in the " +
                             "ID token assertion.";
                         prop.displayOrder = 6;
+                    } else if (prop.key === "commonAuthQueryParams") {
+                        prop.displayName = "Additional query parameters"
                     }
 
                 });
@@ -698,10 +703,38 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // Remove meta data if the authenticator is SAML
             if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
                 // Remove additional query params
-
+                debugger;
                 authenticator.meta.properties.map(prop => {
-                    if (prop.key === "NameIDType") {
-                        prop.displayName = "NameID Format";
+                    if (prop.key === "SPEntityId") {
+                        prop.displayName = "Service provider entity ID"
+                    } else if (prop.key === "IdPEntityId") {
+                        prop.displayName = "Identity provider entity ID"
+                    } else if (prop.key === "ISAuthnReqSigned") {
+                        prop.displayName = "Enable authentication request signing"
+                    } else if (prop.key === "IsLogoutEnabled") {
+                        prop.displayName = "Enable logout"
+                    } else if (prop.key === "IsSLORequestAccepted") {
+                        prop.displayName = "Enable logout request accepting"
+                    } else if (prop.key === "LogoutReqUrl") {
+                        prop.displayName = "Logout URL"
+                    } else if (prop.key === "IsLogoutReqSigned") {
+                        prop.displayName = "Enable logout request signing"
+                    } else if (prop.key === "IsAuthnRespSigned") {
+                        prop.displayName = "Enable authentication response signing"
+                    } else if (prop.key === "SignatureAlgorithm") {
+                        prop.displayName = "Signature algorithm"
+                    } else if (prop.key === "DigestAlgorithm") {
+                        prop.displayName = "Digest algorithm"
+                    } else if (prop.key === "IncludeProtocolBinding") {
+                        prop.displayName = "Include protocol binding"
+                    } else if (prop.key === "AuthnContextComparisonLevel") {
+                        prop.displayName = "Authentication context comparison level"
+                    } else if (prop.key === "IsUserIdInClaims") {
+                        prop.displayName = "SAML2 Web SSO user ID location"
+                    } else if (prop.key === "RequestMethod") {
+                        prop.displayName = "HTTP binding"
+                    } else if (prop.key === "commonAuthQueryParams") {
+                        prop.displayName = "Additional query parameters"
                     }
                 });
 
