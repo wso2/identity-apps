@@ -1591,10 +1591,10 @@ export const console: ConsoleNS = {
                     inboundSAML: {
                         fields: {
                             assertionURLs: {
-                                hint: "This specifies the assertion Consumer URLs that the browser " +
-                                    "should be redirected to after the authentication is successful. " +
+                                hint: "The assertion consumer URL directs the IdP where to send its SAML " +
+                                    "response after the authentication is successful. " +
                                     "This is the Assertion Consumer Service (ACS) URL of the Application.",
-                                label: "Assertion response URLs",
+                                label: "Assertion Consumer URLs",
                                 placeholder: "https://myapp.io/login",
                                 validations: {
                                     empty: "This is a required field.",
@@ -1604,7 +1604,7 @@ export const console: ConsoleNS = {
                                         "this field can be ignored."
                                 },
                                 info: "Don’t have an app? Try out a sample app using {{assertionURLFromTemplate}} " +
-                                    "as the assertion Response URL. (You can download and run a sample at a later" +
+                                    "as the assertion consumer URL. (You can download and run a sample at a later" +
                                     " step.)"
                             },
                             defaultAssertionURL: {
