@@ -17,7 +17,6 @@
  */
 
 import { ConsoleNS } from "../../../models";
-import { Code } from "../../../../../react-components/dist/typings/components/typography";
 
 export const console: ConsoleNS = {
     common: {
