@@ -42,12 +42,14 @@ import {
     AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
-    HelpPanelUtils,
-    PortalDocumentationStructureInterface,
     getEmptyPlaceholderIllustrations,
     getHelpPanelActionIcons,
-    history
+    HelpPanelUtils,
+    history,
+    PortalDocumentationStructureInterface
 } from "../../core";
+import { getHelpPanelIcons, getIdPIcons, getIdPTemplateDocsIcons } from "../configs";
+import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_ID} from "../constants";
 import {
     getIdentityProviderList,
     getIdentityProviderTemplate
@@ -67,7 +69,8 @@ import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OID
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies
+    IdentityProviderTemplateItemInterface,
+    IdentityProviderTemplateLoadingStrategies
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
