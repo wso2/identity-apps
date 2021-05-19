@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
+import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import { ConfigReducerStateInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
@@ -220,6 +221,22 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             onWizardClose();
+                            setShowWizard(false);
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <OidcAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        closeWizard={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
                             setShowWizard(false);
                         } }
                         template={ selectedTemplateWithUniqueName }

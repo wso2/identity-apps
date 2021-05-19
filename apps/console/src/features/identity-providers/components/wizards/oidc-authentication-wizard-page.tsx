@@ -67,21 +67,23 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
             <WizardPage
                 // TODO: Need to refactor once wizard can handle validation properly. 
                 validate={ (values): any => {
-                    const errors:any = {};
+   
+                    const errors: any = {};
+
                     if (!values.name) {
-                        errors.name = "Required";
+                        errors.name = "This is a required field.";
                     }
                     if (!values.clientId) {
-                        errors.clientId = "Required";
+                        errors.clientId = "This is a required field.";
                     }
                     if (!values.clientSecret) {
-                        errors.clientSecret = "Required";
+                        errors.clientSecret = "This is a required field.";
                     }
                     if (!values.authorizationEndpointUrl) {
-                        errors.authorizationEndpointUrl = "Required";
+                        errors.authorizationEndpointUrl = "This is a required field.";
                     }
-                    if (!values.tokenEndpointURL) {
-                        errors.tokenEndpointUrl = "Required";
+                    if (!values.tokenEndpointUrl) {
+                        errors.tokenEndpointUrl = "This is a required field.";
                     }
                     return errors;
                 } }

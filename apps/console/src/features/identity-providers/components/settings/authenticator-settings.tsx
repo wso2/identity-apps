@@ -51,6 +51,7 @@ import {
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -70,7 +71,6 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import {IdentityProviderManagementConstants} from "../../constants";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -671,54 +671,27 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "The URL to which the authorization code is sent upon " +
                             "authentication, and where the user is redirected to upon logout.";
                     } else if (prop.key === "OAuth2AuthzEPUrl") {
-                        prop.displayName = "Authorization endpoint URL"
+                        prop.displayName = "Authorization endpoint URL";
                         prop.description = "The standard authorization endpoint URL obtained from " +
                             "the identity provider.";
                         prop.maxLength = URL_MAX_LENGTH;
                     } else if (prop.key === "OAuth2TokenEPUrl") {
-                        prop.displayName = "Token endpoint URL"
+                        prop.displayName = "Token endpoint URL";
                         prop.description = "The standard token endpoint URL obtained from " +
                             "the identity provider.";
                         prop.maxLength = URL_MAX_LENGTH;
                     } else if (prop.key === "UserInfoUrl") {
-                        prop.displayName = "User info endpoint URL"
+                        prop.displayName = "User info endpoint URL";
                         prop.description = "The URL corresponding to the userinfo endpoint.";
                         prop.maxLength = URL_MAX_LENGTH;
                         prop.displayOrder = 7;
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "User ID location"
+                        prop.displayName = "User ID found in claims";
                         prop.description = "The location to find the user identifier in the " +
                             "ID token assertion.";
                         prop.displayOrder = 6;
-                        prop.type = "RADIO";
-                        prop.defaultValue = "subAttribute";
-                        const userIdSubAttribute: CommonPluggableComponentMetaPropertyInterface = {
-                            defaultValue: "subAttribute",
-                            displayName: "User ID found in 'sub' attribute",
-                            displayOrder: 1,
-                            isConfidential: false,
-                            isMandatory: false,
-                            key: "UserIdSubAttribute  ",
-                            options: [],
-                            type: "RADIO",
-                            subProperties: []
-                        };
-                        const userIdClaims: CommonPluggableComponentMetaPropertyInterface = {
-                            defaultValue: "claims",
-                            displayName: "User ID found in claims",
-                            displayOrder: 2,
-                            isConfidential: false,
-                            isMandatory: false,
-                            key: "UserIdClaims",
-                            options: [],
-                            type: "RADIO",
-                            subProperties: []
-
-                        };
-                        prop.subProperties.push(userIdSubAttribute);
-                        prop.subProperties.push(userIdClaims);
                     } else if (prop.key === "commonAuthQueryParams") {
-                        prop.displayName = "Additional query parameters"
+                        prop.displayName = "Additional query parameters";
                     }
                 });
 
