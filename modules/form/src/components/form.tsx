@@ -44,15 +44,13 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
     const formRef = useRef(null);
     const childNodes = React.Children.toArray(children);
 
-    const skipFinalTypes = (type :String): boolean => {
+    const skipFinalTypes = (type: String): boolean => {
         let skip = false
-        const typeToBeSkipped = ["Heading","FieldDropdown"]
-
-        skip = typeToBeSkipped.some((skipType) =>{
+        const typeToBeSkipped = [ "Heading", "FieldDropdown" ]
+        skip = typeToBeSkipped.some((skipType) => {
             return type === skipType
-        })
-        
-        return skip
+        });
+        return skip;
     }
 
     useImperativeHandle(ref, () => ({
@@ -64,7 +62,7 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
              * form's submit event. Currently we don't maintain UI for
              * submit button, neither previous buttons.
              *
-             * The wizard is only responsible for changing it's wizard
+             * The parent wizard is only responsible for changing it's wizard
              * pages based on the current index. To facilitate external
              * submit handling we expose a imperative handler that uses
              * a react ref to trigger the onSubmit manually. This is
@@ -88,48 +86,46 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
         }
     }));
 
-    const addPropsToChild =(childNodes,form, handleSubmit, pristine, submitting, values) => {
+    const addPropsToChild = (childNodes, form, handleSubmit, pristine, submitting, values) => {
         return childNodes.map((child: any, index: number) => {
-            if (!child) {
-                return null;
-            }
 
-            if (!child.type) {
-                return child;
-            }
+            if (!child) return null;
+            if (!child.type) return child;
 
             const parentFormProps = { form, handleSubmit, pristine, submitting, values };
-            const childFieldProps= child.props;
-        
+            const childFieldProps = child.props;
 
-            const childProps:any = {
-                childFieldProps,
-                parentFormProps
-            };
+            const childProps: any = { childFieldProps, parentFormProps };
+            const allProps: any = { ...props, childProps }
 
-            const allProps: any ={
-                ...props,
-                childProps
-            }
-            
-             if (uncontrolledForm) {
-                if (child.props?.children &&  React.Children.count(child) > 0 && !skipFinalTypes(child.type.name)) {
-                 
-                        return React.createElement(child.type, {
-                            ...allProps,
-                            children: addPropsToChild(React.Children.toArray(child.props?.children), 
-                                                        form, handleSubmit, pristine, submitting, values)
-                        });
-                       
+            const hasChildrenAndIsValid = Array.isArray(child.props?.children) &&
+                child.props?.children.every(React.isValidElement) &&
+                child.props.children.length > 0;
+
+            // If the react element has only 1 child, the react top level
+            // API parses the children as a single object insted of type
+            // array.
+            const hasOnlyOneChild = (typeof child.props?.children === "object");
+
+            if (uncontrolledForm) {
+                if ((hasChildrenAndIsValid || hasOnlyOneChild) && !skipFinalTypes(child.type.name)) {
+                    return React.createElement(child.type, {
+                        ...allProps,
+                        children: addPropsToChild(
+                            React.Children.toArray(child.props?.children),
+                            form, handleSubmit, pristine, submitting, values
+                        )
+                    });
                 }
-            } 
-            return cloneElement(child, childProps)
+            }
 
-        })
+            return cloneElement(child, childProps);
+
+        });
     }
 
-    const renderComponents =(childNodes,form, handleSubmit, pristine, submitting, values) => { 
-        let modifiedChildNodes = addPropsToChild(childNodes,form, handleSubmit, pristine, submitting, values);
+    const renderComponents = (childNodes, form, handleSubmit, pristine, submitting, values) => {
+        let modifiedChildNodes = addPropsToChild(childNodes, form, handleSubmit, pristine, submitting, values);
 
         return modifiedChildNodes.map((child: any, index: number) => {
             if (!child) {
@@ -167,7 +163,7 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
                     >
                         <SemanticForm>
                             <Grid className="form-container with-max-width">
-                                    { renderComponents(childNodes,form, handleSubmit, pristine, submitting, values) }  
+                                { renderComponents(childNodes, form, handleSubmit, pristine, submitting, values) }
                             </Grid>
                         </SemanticForm>
                     </form>
@@ -181,6 +177,6 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
 /**
  * Default props for the component.
  */
- Form.defaultProps = {
+Form.defaultProps = {
     uncontrolledForm: false
 };
