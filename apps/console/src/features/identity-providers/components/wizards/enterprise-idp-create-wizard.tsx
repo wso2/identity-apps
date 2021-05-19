@@ -463,7 +463,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             } }>
                 <Field.Input
                     ariaLabel="clientId"
-                    inputType="identifier"
+                    inputType="resourceName"
                     name="clientId"
                     label={ "Client ID" }
                     required={ true }
