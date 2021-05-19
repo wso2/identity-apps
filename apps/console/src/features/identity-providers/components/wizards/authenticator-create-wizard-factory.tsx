@@ -238,6 +238,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             setShowWizard(false);
+                            onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
                         { ...rest }
@@ -254,6 +255,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             setShowWizard(false);
+                            onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
                     />
