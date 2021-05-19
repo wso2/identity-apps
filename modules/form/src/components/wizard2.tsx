@@ -25,6 +25,7 @@ interface ImperativeWizardProps extends FormProps {
     children: any;
     pageChanged?: (currentPageIndex: number) => void;
     setTotalPages?: (pageCount: number) => void;
+    uncontrollable?: boolean;
 }
 
 const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
@@ -36,6 +37,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
         pageChanged,
         getController,
         initialValues,
+        uncontrollable,
         ...rest
     } = props;
 
@@ -103,7 +105,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
             validate={ validate }
             onSubmit={ handleSubmit }
             keepDirtyOnReinitialize={ true }
-            uncontrolledForm={ true }
+            uncontrolledForm={ uncontrollable ?? false }
             { ...rest }>
             { React.Children.toArray(children)[ currentPageIndex ] }
         </Form>
