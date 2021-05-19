@@ -64,8 +64,29 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
             setTotalPage= {(step:number)=> setTotalPage(step)}
             data-testid={ testId }
         >
-                <WizardPage>
-                    <Field.Input
+            <WizardPage
+                // TODO: Need to refactor once wizard can handle validation properly. 
+                validate={ (values): any => {
+                    const errors:any = {};
+                    if (!values.name) {
+                        errors.name = "Required";
+                    }
+                    if (!values.clientId) {
+                        errors.clientId = "Required";
+                    }
+                    if (!values.clientSecret) {
+                        errors.clientSecret = "Required";
+                    }
+                    if (!values.authorizationEndpointUrl) {
+                        errors.authorizationEndpointUrl = "Required";
+                    }
+                    if (!values.tokenEndpointURL) {
+                        errors.tokenEndpointUrl = "Required";
+                    }
+                    return errors;
+                } }
+            >
+            <Field.Input
                         ariaLabel= "name"
                         inputType= "name"
                         name="name"
