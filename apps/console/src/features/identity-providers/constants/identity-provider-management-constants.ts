@@ -17,7 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderTemplateLoadingStrategies } from "../models";
+import { AuthenticatorLabels, IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing identity provider management constants.
@@ -81,9 +81,9 @@ export class IdentityProviderManagementConstants {
      * Set of IDP template Ids.
      * @type {Record<string, unknown>}
      */
-    public static readonly IDP_TEMPLATE_IDS: Record<string, unknown> = {
-        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+    public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         ENTERPRISE: "enterprise-idp",
+        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
     };
 
     /**
@@ -136,6 +136,17 @@ export class IdentityProviderManagementConstants {
     // Known Enterprise authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
+
+    // Known Local Authenticator IDS.
+    public static readonly BASIC_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoZW50aWNhdG9y";
+    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string = "SWRlbnRpZmllckV4ZWN1dG9y";
+    public static readonly JWT_BASIC_AUTHENTICATOR_ID: string = "SldUQmFzaWNBdXRoZW50aWNhdG9y";
+    public static readonly FIDO_AUTHENTICATOR_ID: string = "RklET0F1dGhlbnRpY2F0b3I";
+    public static readonly TOTP_AUTHENTICATOR_ID: string = "dG90cA";
+    public static readonly ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID: string = "U2Vzc2lvbkV4ZWN1dG9y";
+    public static readonly X509_CERTIFICATE_AUTHENTICATOR_ID: string = "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg";
+    public static readonly BASIC_AUTH_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoUmVxdWVzdFBhdGhBdXRoZW50aWNhdG9y";
+    public static readonly OAUTH_BEARER_AUTHENTICATOR_ID: string = "T0F1dGhSZXF1ZXN0UGF0aEF1dGhlbnRpY2F0b3I";
 
     // Known Social authenticator IDs.
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";

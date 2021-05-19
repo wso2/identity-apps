@@ -17,28 +17,30 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
+import startCase  from "lodash-es/startCase";
 import React, {
+    Fragment,
     FunctionComponent,
     ReactElement,
-    ReactNode,
+    useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Popup } from "semantic-ui-react";
-import { GenericAuthenticatorInterface } from "../../../../../identity-providers";
-import { getGeneralIcons } from "../../../../configs";
-import { ApplicationManagementConstants } from "../../../../constants";
+import {
+    AuthenticatorCategories,
+    AuthenticatorMeta,
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface
+} from "../../../../../identity-providers";
 
 /**
  * Proptypes for the authenticators component.
  */
 interface AuthenticatorsPropsInterface extends TestableComponentInterface {
-    /**
-     * Allow social login addition.
-     */
-    allowSocialLoginAddition: boolean;
+
     /**
      * List of authenticators.
      */
@@ -48,17 +50,9 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     className?: string;
     /**
-     * Authenticators category.
-     */
-    category: string;
-    /**
      * Default name for authenticators with no name.
      */
     defaultName?: string;
-    /**
-     * Empty placeholder.
-     */
-    emptyPlaceholder?: ReactNode;
     /**
      * Heading for the authenticators section.
      */
@@ -68,17 +62,17 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     isLoading?: boolean;
     /**
-     * Denotes whether the authenticator is a social login.
-     */
-    isSocialLogin?: boolean;
-    /**
-     * Handles on click of social login add.
-     */
-    handleSocialLoginAdd?: any;
-    /**
      * Callback triggered when authenticators are selected.
      */
     onAuthenticatorSelect: (selectedAuthenticators: GenericAuthenticatorInterface[]) => void;
+    /**
+     * Already selected set of authenticators.
+     */
+    selected: GenericAuthenticatorInterface[];
+    /**
+     * Show/Hide authenticator labels in UI.
+     */
+    showLabels?: boolean;
 }
 
 /**
@@ -92,38 +86,64 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 ): ReactElement => {
 
     const {
-        allowSocialLoginAddition,
         authenticators,
         className,
-        category,
         defaultName,
-        emptyPlaceholder,
         heading,
-        isSocialLogin,
-        handleSocialLoginAdd,
         onAuthenticatorSelect,
+        selected,
+        showLabels,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
     const classes = classNames("authenticators", className);
+    const authenticatorCardClasses = classNames("authenticator", {
+        "with-labels": showLabels
+    });
 
-    const isAuthenticatorDisabled = (authenticator) => {
-        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
+    /**
+     * Updates the internal selected authenticators state when the prop changes.
+     */
+    useEffect(() => {
+        
+        if (!selected) {
+            return;
+        }
+        
+        setSelectedAuthenticators(selected);
+    }, [ selected ]);
+
+    /**
+     * Check if Authenticator is disabled.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     * @return {boolean}
+     */
+    const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface): boolean => {
+        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return !(authenticator?.isEnabled);
         }
-        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
+        if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return !(authenticator
                 && authenticator.authenticators[ 0 ]
                 && authenticator.authenticators[ 0 ].isEnabled);
         }
     };
 
-    const resolvePopupContent = () => {
-        if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR) {
+    /**
+     * Resolve popup content.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {React.ReactElement}
+     */
+    const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
+
+        if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return (
                 <Text>
                     <Trans
@@ -135,12 +155,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         The second-factor authenticators can only be used if the <Code withBackground>basic</Code>
                         authenticator has been added in a previous step.
                         The second-factor authenticators can only be used if <Code withBackground>Username & Password
-                        </Code> or any other handlers such as <Code withBackground> Identifier First</Code> 
+                    </Code> or any other handlers such as <Code withBackground> Identifier First</Code>
                         that can handle these factors are present in a previous step.
                     </Trans>
                 </Text>
             );
-        } else if (category === ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL) {
+        } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
                 <Text>
                     {
@@ -151,22 +171,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
     };
-    
-    const handleAuthenticatorSelect = (selectedAuthenticator): void => {
-        
+
+    /**
+     * Handles authenticator select.
+     *
+     * @param {GenericAuthenticatorInterface} selectedAuthenticator - Selected Authenticator. 
+     */
+    const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
+
         if (isAuthenticatorDisabled(selectedAuthenticator)) {
             return;
         }
-         
+
         if (selectedAuthenticators.some((authenticator) => authenticator.id === selectedAuthenticator.id)) {
-            
+
             const filtered = selectedAuthenticators.filter((authenticator) => {
                 return authenticator.id !== selectedAuthenticator.id;
             });
 
             onAuthenticatorSelect(filtered);
             setSelectedAuthenticators(filtered);
-            
+
             return;
         }
 
@@ -174,88 +199,69 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         setSelectedAuthenticators([ ...selectedAuthenticators, selectedAuthenticator ]);
     };
 
-    return authenticators && authenticators instanceof Array
-        ? (
-            <>
-                { heading && <Heading as="h6">{ heading }</Heading> }
-                <div
-                    className={ classes }
-                    data-testid={ testId }
-                >
-                    {
-                        authenticators.map((authenticator, index) => (
-                            <div key={ index } className="inline">
-                                <Popup
-                                    on="hover"
-                                    disabled={ !isAuthenticatorDisabled(authenticator) }
-                                    content={ (
-                                        <>
-                                            <Label attached="top">
-                                                <Icon name="info circle"/> Info
-                                            </Label>
-                                            { resolvePopupContent() }
-                                        </>
-                                    ) }
-                                    trigger={ (
-                                        <div>
-                                            <LabeledCard
-                                                multilineLabel
-                                                className="authenticator-card"
-                                                size="tiny"
-                                                disabled={ isAuthenticatorDisabled(authenticator) }
-                                                selected={
-                                                    selectedAuthenticators.some((evalAuthenticator) => {
-                                                        return evalAuthenticator.id === authenticator.id;
-                                                    })
-                                                }
-                                                image={ authenticator.image }
-                                                label={
-                                                    ApplicationManagementConstants
-                                                        .AUTHENTICATOR_DISPLAY_NAMES.get(authenticator.name)
-                                                    || authenticator.displayName
-                                                    || defaultName
-                                                }
-                                                labelEllipsis={ true }
-                                                data-testid={
-                                                    `${ testId }-authenticator-${ authenticator.name }`
-                                                }
-                                                onClick={ () => handleAuthenticatorSelect(authenticator) }
-                                            />
-                                        </div>
-                                    ) }
-                                />
-                            </div>
-                        ))
-                    }
-                    {
-                        isSocialLogin && allowSocialLoginAddition && (
-                            <div className="inline">
-                                <div>
-                                    <LabeledCard
-                                        multilineLabel
-                                        className="authenticator-card"
-                                        size="tiny"
-                                        image={ getGeneralIcons()?.addCircleOutline }
-                                        label={ t("common:add") }
-                                        labelEllipsis={ true }
-                                        data-testid={
-                                            `${ testId }-authenticator-add`
-                                        }
-                                        imageOptions={ {
-                                            as: "data-url"
-                                        } }
-                                        onClick={ handleSocialLoginAdd }
-                                    />
-                                </div>
-                            </div>
-                        )
-                    }
-                </div>
-            </>
-        )
-        : (
-            <>{ emptyPlaceholder }</>
-        );
+    /**
+     * Resolve Authenticator labels.
+     *
+     * @param {FederatedAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {any[] | string[]}
+     */
+    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
+
+        if (!authenticator) {
+            return [];
+        }
+
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId) ?? [];
+    };
+
+    return (
+        <Fragment data-testid={ testId }>
+            { heading && <Heading as="h6">{ heading }</Heading> }
+            {
+                authenticators.map((authenticator: GenericAuthenticatorInterface, index) => (
+                    <Popup
+                        position="top center"
+                        key={ index }
+                        on="hover"
+                        disabled={ !isAuthenticatorDisabled(authenticator) }
+                        content={ (
+                            <>
+                                <Label attached="top">
+                                    <Icon name="info circle"/> Info
+                                </Label>
+                                { resolvePopupContent(authenticator) }
+                            </>
+                        ) }
+                        trigger={ (
+                            <InfoCard
+                                className={ authenticatorCardClasses }
+                                header={
+                                    AuthenticatorMeta.getAuthenticatorDisplayName(
+                                        authenticator.defaultAuthenticator.authenticatorId)
+                                    || authenticator.displayName
+                                    || defaultName
+                                }
+                                disabled={ isAuthenticatorDisabled(authenticator) }
+                                selected={
+                                    Array.isArray(selectedAuthenticators)
+                                    && selectedAuthenticators.some((evalAuthenticator) => {
+                                        return evalAuthenticator.id === authenticator.id;
+                                    })
+                                }
+                                subHeader={ authenticator.categoryDisplayName }
+                                description={ authenticator.description }
+                                image={ authenticator.image }
+                                tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
+                                onClick={ () => handleAuthenticatorSelect(authenticator) }
+                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                            />
+                        ) }
+                    />
+                ))
+            }
+        </Fragment>
+    );
 };
 
 /**
@@ -264,5 +270,5 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 Authenticators.defaultProps = {
     "data-testid": "authenticators",
     defaultName: "Unknown",
-    isSocialLogin: false
+    showLabels: true
 };

@@ -17,17 +17,18 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
+import { EmptyPlaceholder, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Card, Checkbox, Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
+import { getGeneralIcons } from "../../../../../core";
 import {
+    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers";
-import { ApplicationManagementConstants } from "../../../../constants";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
 /**
@@ -42,6 +43,10 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Callback to trigger when the add authentication button is clicked.
+     */
+    onAddAuthenticationClick: () => void;
     /**
      * Callback for the step delete.
      */
@@ -61,6 +66,14 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      */
     onStepOptionDelete: (stepIndex: number, optionIndex: number) => void;
     /**
+     * On Change callback for the attribute step checkbox.
+     */
+    onAttributeCheckboxChange: (stepIndex: number) => void;
+    /**
+     * On Change callback for the subject step checkbox.
+     */
+    onSubjectCheckboxChange: (stepIndex: number) => void;
+    /**
      * Should show step delete action
      */
     showStepDeleteAction?: boolean;
@@ -76,6 +89,14 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      * Index of the current step.
      */
     stepIndex: number;
+    /**
+     * Step to pick the Subject.
+     */
+    subjectStepId: number;
+    /**
+     * Step to pick the Attributes.
+     */
+    attributeStepId: number;
     /**
      * Make the form read only.
      */
@@ -97,6 +118,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         authenticators,
         className,
         onStepDelete,
+        onAddAuthenticationClick,
         onStepOptionAuthenticatorChange,
         onStepOptionDelete,
         readOnly,
@@ -104,6 +126,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         showStepMeta,
         step,
         stepIndex,
+        subjectStepId,
+        attributeStepId,
+        onSubjectCheckboxChange,
+        onAttributeCheckboxChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -151,24 +177,47 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             && authenticator.authenticators.length > 1)
                     }
                     trigger={ (
-                        <div className="inline" data-testid={ `${ testId }-option` }>
-                            <LabeledCard
-                                multilineLabel
-                                className="authenticator-card"
-                                image={ authenticator.image }
-                                label={
-                                    ApplicationManagementConstants.AUTHENTICATOR_DISPLAY_NAMES.get(option.authenticator)
-                                    || authenticator.displayName
-                                }
-                                labelEllipsis={ true }
-                                bottomMargin={ false }
-                                size="tiny"
-                                onCloseClick={
-                                    !readOnly && (
-                                        (): void => onStepOptionDelete(stepIndex, optionIndex)
-                                    )
-                                }
-                            />
+                        <div className="authenticator-item-wrapper" data-testid={ `${ testId }-option` }>
+                            <Card fluid className="basic-card authenticator-card">
+                                <Card.Content >
+                                    <Label
+                                        basic
+                                        floating
+                                        circular
+                                        className="close-button"
+                                        size="mini"
+                                        onClick={
+                                            !readOnly && (
+                                                (): void => onStepOptionDelete(stepIndex, optionIndex)
+                                            )
+                                        }
+                                        data-testid={ `${ testId }-close-button` }
+                                    >
+                                        <GenericIcon
+                                            transparent
+                                            size="nano"
+                                            icon={ getGeneralIcons().crossIcon }
+                                        />
+                                    </Label>
+                                    <GenericIcon
+                                        square
+                                        inline
+                                        className="card-image"
+                                        size="micro"
+                                        spaced="right"
+                                        floated="left"
+                                        icon={ authenticator.image }
+                                        data-testid={ `${ testId }-image` }
+                                        transparent
+                                    />
+                                    <span data-testid={ `${ testId }-option-name` }>
+                                    {
+                                        AuthenticatorMeta.getAuthenticatorDisplayName(option.authenticator)
+                                        || authenticator.displayName
+                                    }
+                                    </span>
+                                </Card.Content>
+                            </Card>
                         </div>
                     ) }
                     content={
@@ -218,6 +267,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     <>
                         <Heading
                             className="step-header"
+                            bold={ "500" }
                             as="h6"
                         >
                             { t("common:step") }{ " " }{ step.id }
@@ -235,29 +285,87 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     </>
                 )
             }
-            <div className="authentication-step">
+            <div
+                className={ `authentication-step with-extension ${
+                    !(step.options && step.options instanceof Array && step.options.length > 0)
+                        ? "empty-placeholder-container"
+                        : ""
+                }` }
+            >
                 {
                     (step.options && step.options instanceof Array && step.options.length > 0)
-                        ? step.options.map((option, optionIndex) =>
-                            resolveStepOption(option, stepIndex, optionIndex))
+                        ? (
+                            <>
+                                {
+                                    step.options.map((option, optionIndex) => (
+                                        resolveStepOption(option, stepIndex, optionIndex)
+                                    ))
+                                }
+                                <LinkButton
+                                    data-tourid="add-authentication-options-button"
+                                    className="authenticator-item-wrapper"
+                                    onClick={ onAddAuthenticationClick }
+                                >
+                                    <Icon name="plus"/>
+                                    {
+                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.authenticationFlow.sections.stepBased.actions." +
+                                            "addAuthentication")
+                                    }
+                                </LinkButton>
+                            </>
+                        )
                         : (
-                            <EmptyPlaceholder
-                                subtitle={ [
-                                    <Trans
-                                        key={ 0 }
-                                        i18nKey={
-                                            t("console:develop.features.applications.placeholders." +
-                                                "emptyAuthenticatorStep.subtitles.0")
-                                        }
-                                    >
-                                        Click on the <Code>Add Authentication</Code> button to add options to this step.
-                                    </Trans>
-                                ] }
-                                data-testid={ `${ testId }-empty-placeholder` }
-                            />
+                            <>
+                                <LinkButton
+                                    fluid
+                                    data-tourid="add-authentication-options-button"
+                                    onClick={ onAddAuthenticationClick }
+                                >
+                                    <Icon name="plus"/>
+                                    {
+                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.authenticationFlow.sections.stepBased.actions." +
+                                            "addAuthentication")
+                                    }
+                                </LinkButton>
+                                <EmptyPlaceholder
+                                    subtitle={ [
+                                        t("console:develop.features.applications.placeholders." +
+                                            "emptyAuthenticatorStep.subtitles.0")
+                                    ] }
+                                    data-testid={ `${ testId }-empty-placeholder` }
+                                />
+                            </>
                         )
                 }
             </div>
+            {
+                (!readOnly
+                    && showStepMeta
+                    && (step.options && step.options instanceof Array && step.options.length > 0)) && (
+                    <div className="checkboxes-extension">
+                        <Checkbox
+                            label={ t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                ".stepBased.forms.fields.subjectIdentifierFrom.label"
+                            ) }
+                            checked={ subjectStepId === (stepIndex + 1) }
+                            onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                        />
+                        <Checkbox
+                            label={ t(
+                                "console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                ".stepBased.forms.fields.attributesFrom.label"
+                            ) }
+                            checked={ attributeStepId === (stepIndex + 1) }
+                            onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                        />
+                    </div>
+                )
+            }
         </div>
     );
 };

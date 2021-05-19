@@ -472,6 +472,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const SignOnMethodsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <SignOnMethods
+                application={ application }
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }

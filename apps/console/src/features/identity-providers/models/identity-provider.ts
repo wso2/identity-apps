@@ -186,7 +186,12 @@ export interface IdentityProviderTemplateItemInterface {
     displayOrder: number;
     idp: IdentityProviderInterface;
     disabled?: boolean;
-    provisioning?: ProvisioningInterface
+    provisioning?: ProvisioningInterface;
+    /**
+     * IDP Type.
+     * ex: Social Login, Enterprise etc.
+     */
+    type?: string;
 }
 
 /**
@@ -287,13 +292,8 @@ export enum IdentityProviderTemplateLoadingStrategies {
  * @readonly
  * @enum {string}
  */
-export enum SupportedQuickStartTemplates {
-    FACEBOOK = "facebook",
-    GOOGLE = "google",
-    TWITTER = "twitter",
-    OIDC = "oidc",
-    SAML = "saml",
-    EXPERT = "expert"
+export enum SupportedQuickStartTemplateTypes {
+    GOOGLE = "Google"
 }
 
 /**
@@ -518,10 +518,23 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
  * Generic interface for authenticators local/federated.
  */
 export interface GenericAuthenticatorInterface extends StrictGenericAuthenticatorInterface {
+
+    /**
+     * Group category.
+     */
+    category?: string;
+    /**
+     * Displayname of the category.
+     */
+    categoryDisplayName?: string;
     /**
      * Identity provider name. ex: LOCAL, Facebook etc.
      */
     idp: string;
+    /**
+     * Description for the authenticator.
+     */
+    description?: string;
     /**
      * Display name of the authenticator.
      */
@@ -575,4 +588,59 @@ export interface ConnectedAppsInterface {
 export interface ConnectedAppInterface {
     appId?: string;
     self?: string;
+}
+
+export interface GenericIdentityProviderCreateWizardPropsInterface {
+    /**
+     * Current wizard step.
+     */
+    currentStep?: number;
+    /**
+     * Wizard title.
+     */
+    title: string;
+    /**
+     * Wizard close callback.
+     */
+    onWizardClose: () => void;
+    /**
+     * Callback to be triggered on successful IDP create.
+     */
+    onIDPCreate: (id?: string) => void;
+    /**
+     * Template object.
+     */
+    template: IdentityProviderTemplateInterface;
+    /**
+     * Subtile of the wizard.
+     */
+    subTitle?: string;
+}
+
+/**
+ * Authenticator Labels.
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthenticatorLabels {
+    SOCIAL = "Social",
+    FIRST_FACTOR = "First Factor",
+    SECOND_FACTOR = "2FA",
+    MULTI_FACTOR = "MFA",
+    OIDC = "OIDC",
+    SAML = "SAML",
+    PASSWORDLESS = "Passwordless",
+    HANDLERS = "Handlers"
+}
+
+/**
+ * Authenticator Categories.
+ * @readonly
+ * @enum {string}
+ */
+export enum AuthenticatorCategories {
+    ENTERPRISE = "ENTERPRISE",
+    LOCAL = "LOCAL",
+    SECOND_FACTOR = "SECOND_FACTOR",
+    SOCIAL = "SOCIAL"
 }

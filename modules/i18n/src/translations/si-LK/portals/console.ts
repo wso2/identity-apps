@@ -934,6 +934,13 @@ export const console: ConsoleNS = {
                                                             heading: "සමාජ පිවිසුම"
                                                         }
                                                     },
+                                                    addNewAuthenticatorCard: {
+                                                        title: "නව අනන්‍යතා සැපයුම්කරු වින්‍යාස කරන්න"
+                                                    },
+                                                    goBackButton: "නැවත තේරීමට යන්න",
+                                                    search: {
+                                                        placeholder: "Authenticators සොයන්න"
+                                                    },
                                                     stepSelectDropdown: {
                                                         hint: "ඔබට සත්‍යාපකයන් එකතු කිරීමට අවශ්‍ය පියවර තෝරන්න.",
                                                         label:  "පියවර තෝරන්න",

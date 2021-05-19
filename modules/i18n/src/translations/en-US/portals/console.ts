@@ -865,8 +865,8 @@ export const console: ConsoleNS = {
                                                 steps: {
                                                     0: {
                                                         content: {
-                                                            0: "Configure the login flow to adapt to the situation " +
-                                                                "or the user during the authentication process.",
+                                                            0: "Define a script to dynamically modify the login " +
+                                                                "flow based on the context",
                                                             1: "Click on the <1>Next</1> button to learn about the " +
                                                                 "process."
                                                         },
@@ -914,6 +914,9 @@ export const console: ConsoleNS = {
                                             },
                                             addAuthenticatorModal: {
                                                 content: {
+                                                    addNewAuthenticatorCard: {
+                                                        title: "Configure New Identity Provider"
+                                                    },
                                                     authenticatorGroups: {
                                                         basic: {
                                                             description: "Set of basic authenticators supported by " +
@@ -922,17 +925,21 @@ export const console: ConsoleNS = {
                                                         },
                                                         enterprise: {
                                                             description: "Enterprise login via standard protocols.",
-                                                            heading: "Enterprise Login"
+                                                            heading: "Enterprise login"
                                                         },
                                                         mfa: {
                                                             description: "Add additional layer of security to your " +
                                                                 "login flow.",
-                                                            heading: "Multi-factor options"
+                                                            heading: "Multi-factor"
                                                         },
                                                         social: {
                                                             description: "Use existing social login account.",
                                                             heading: "Social login"
                                                         }
+                                                    },
+                                                    goBackButton: "Go back to selection",
+                                                    search: {
+                                                        placeholder: "Search for Authenticators"
                                                     },
                                                     stepSelectDropdown: {
                                                         hint: "Select the step that you want to add authenticators to.",
@@ -979,12 +986,11 @@ export const console: ConsoleNS = {
                                 landing: {
                                     defaultConfig: {
                                         description: {
-                                            0: "Your application is already configured to work with username and " +
-                                                "password authentication.",
+                                            0: "This application is configured with <1>Username & Password</1> Login",
                                             1: "Select one of the options available on the right side to begin " +
                                                 "customizing."
                                         },
-                                        heading: "Application configured with Username & Password Login"
+                                        heading: "This application is configured with Username & Password Login"
                                     },
                                     flowBuilder: {
                                         addMissingGoogleAuthenticatorModal: {
@@ -1012,7 +1018,7 @@ export const console: ConsoleNS = {
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
-                                        heading: "Start building your login flow",
+                                        heading: "Build your own login flow",
                                         types: {
                                             defaultConfig: {
                                                 description: "Build your login flow starting with Username & " +
@@ -2503,7 +2509,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticatorStep: {
                         subtitles: {
-                            0: "Click on the <1>Add Authentication</1> button to add options to this step."
+                            0: "Click on the above button to add options to this step."
                         },
                         title: null
                     },

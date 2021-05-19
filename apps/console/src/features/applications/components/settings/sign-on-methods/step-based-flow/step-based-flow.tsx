@@ -20,7 +20,6 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
-    Hint,
     LinkButton
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -28,25 +27,27 @@ import React, {
     Fragment,
     FunctionComponent,
     ReactElement,
-    SyntheticEvent,
     useEffect,
     useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    Divider,
-    DropdownProps,
-    Form,
-    Grid,
-    Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
+    AuthenticatorCategories,
+    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface
+    GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
+    IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateInterface,
+    IdentityProviderTemplateItemInterface,
+    IdentityProviderTemplateLoadingStrategies,
+    IdentityProviderTemplateManagementUtils
 } from "../../../../../identity-providers";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -60,6 +61,7 @@ import {
  * Proptypes for the applications settings component.
  */
 interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
+
     /**
      * All authenticators in the system.
      */
@@ -72,6 +74,10 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Callback to trigger IDP create wizard.
+     */
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
     /**
      * Callback to update the application details.
      * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
@@ -105,6 +111,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const {
         authenticators,
         authenticationSequence,
+        onIDPCreateWizardTrigger,
         onUpdate,
         readOnly,
         triggerUpdate,
@@ -117,6 +124,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider.templates);
 
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -126,7 +135,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
+    const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
+    const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+    const [
+        isIDPTemplateRequestLoading,
+        setIDPTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
@@ -213,13 +228,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
     }, [ triggerUpdate ]);
 
+    /**
+     * Set second factor authenticators.
+     */
     useEffect(() => {
         
         if (isEmpty(secondFactorAuthenticators)) {
             return;
         }
 
-        let shouldEnable = hasSpecificFactorsInSteps(
+        let shouldEnable: boolean = hasSpecificFactorsInSteps(
             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ]);
 
         if (authenticationSteps.length === 1) {
@@ -580,23 +598,21 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     /**
      * Handles the subject identifier value onchange event.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
-     * @param data - Dropdown data.
+     * @param {number} stepIndex - Step index.
      */
-    const handleSubjectRetrievalStepChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        const { value } = data;
-        setSubjectStepId(value as number);
+    const handleSubjectRetrievalStepChange = (stepIndex: number): void => {
+
+        setSubjectStepId(stepIndex);
     };
 
     /**
      * Handles the attribute identifier value onchange event.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
-     * @param data - Dropdown data.
+     * @param {number} stepIndex - Step index.
      */
-    const handleAttributeRetrievalStepChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        const { value } = data;
-        setAttributeStepId(value as number);
+    const handleAttributeRetrievalStepChange = (stepIndex: number): void => {
+
+        setAttributeStepId(stepIndex);
     };
 
     /**
@@ -635,9 +651,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * the array of authenticators defined to be hidden in the config.
      *
      * @param {GenericAuthenticatorInterface[]} authenticators - Authenticators to be filtered.
+     * @param {string} category - Authenticator category.
+     * @param {string} categoryDisplayName - Authenticator category display name.
+     * @param {string} description - Authenticator description.
+     *
      * @return {GenericAuthenticatorInterface[]}
      */
-    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[]) => {
+    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
+                                    category: string,
+                                    categoryDisplayName: string) => {
 
         if (isEmpty(authenticators)) {
             return [];
@@ -651,10 +673,54 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return authenticators;
         }
 
-        return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-            return !config.ui.hiddenAuthenticators
-                .some((hiddenAuthenticator: string) => hiddenAuthenticator === authenticator.name);
-        });
+        return authenticators
+            .filter((authenticator: GenericAuthenticatorInterface) => {
+                return !config.ui.hiddenAuthenticators.includes(authenticator.name);
+            })
+            .map((authenticator: GenericAuthenticatorInterface) => {
+                return {
+                    ...authenticator,
+                    category,
+                    categoryDisplayName
+                };
+            });
+    };
+
+    /**
+     * Handles the clock event of add new authenticator button.
+     */
+    const handleAddNewAuthenticatorClick = (): void => {
+        
+        const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
+
+            IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+                .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+                    setCategorizedTemplates(response);
+                })
+                .catch(() => {
+                    setCategorizedTemplates([]);
+                });
+        };
+
+        if (identityProviderTemplates !== undefined) {
+            persistCategorizedTemplates(identityProviderTemplates);
+            return;
+        }
+
+        setIDPTemplateRequestLoadingStatus(true);
+
+        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
+            ? (config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE)
+            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY
+                === IdentityProviderTemplateLoadingStrategies.REMOTE);
+
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
+            .then((response: IdentityProviderTemplateInterface[]) => {
+                persistCategorizedTemplates(response);
+            })
+            .finally(() => {
+                setIDPTemplateRequestLoadingStatus(false);
+            });
     };
 
     /**
@@ -662,6 +728,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @return {ReactElement}
      */
     const renderHandlerDisclaimerModal = (): ReactElement => (
+
         <ConfirmationModal
             onClose={ () => setShowHandlerDisclaimerModal(false) }
             type="warning"
@@ -697,69 +764,46 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      *
      * @return {React.ReactElement}
      */
-    const renderAuthenticatorAddModal = (): ReactElement => (
+    const renderAuthenticatorAddModal = (): ReactElement => {
 
-        <AddAuthenticatorModal
-            allowSocialLoginAddition={ true }
-            open={ showAuthenticatorAddModal }
-            onModalSubmit={ (authenticators, stepToAdd: number) => {
-                authenticators.map((authenticator) => {
-                    updateAuthenticationStep(stepToAdd - 1, authenticator.id);
-                });
+        return (
+            <AddAuthenticatorModal
+                allowSocialLoginAddition={ true }
+                open={ showAuthenticatorAddModal }
+                onModalSubmit={ (authenticators) => {
+                    authenticators.map((authenticator) => {
+                        updateAuthenticationStep(authenticatorAddStep, authenticator.id);
+                    });
 
-                setShowAuthenticatorAddModal(false);
-            } }
-            onClose={ () => setShowAuthenticatorAddModal(false) }
-            header={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
-                    "sections.stepBased.addAuthenticatorModal.heading")
-            }
-            authenticatorGroups={ [
-                {
-                    authenticators: moderateAuthenticators(localAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.LOCAL,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.description", { productName: config.ui.productName }),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "basic.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(socialAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SOCIAL,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "social.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(secondFactorAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.SECOND_FACTOR,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "mfa.heading")
-                },
-                {
-                    authenticators: moderateAuthenticators(enterpriseAuthenticators),
-                    category: ApplicationManagementConstants.AUTHENTICATOR_CATEGORIES.ENTERPRISE,
-                    description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.description"),
-                    heading: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content.authenticatorGroups." +
-                        "enterprise.heading")
+                    setShowAuthenticatorAddModal(false);
+                } }
+                onClose={ () => setShowAuthenticatorAddModal(false) }
+                header={
+                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
+                        "sections.stepBased.addAuthenticatorModal.heading")
                 }
-            ] }
-            showStepSelector={ authenticationSteps.length > 1 }
-            stepCount={ authenticationSteps.length }
-        />
-    );
+                authenticators={ [
+                    ...moderateAuthenticators(localAuthenticators,
+                        AuthenticatorCategories.LOCAL,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.LOCAL))),
+                    ...moderateAuthenticators(socialAuthenticators,
+                        AuthenticatorCategories.SOCIAL,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SOCIAL))),
+                    ...moderateAuthenticators(secondFactorAuthenticators,
+                        AuthenticatorCategories.SECOND_FACTOR,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
+                    ...moderateAuthenticators(enterpriseAuthenticators,
+                        AuthenticatorCategories.ENTERPRISE,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE)))
+                ] }
+                showStepSelector={ false }
+                stepCount={ authenticationSteps.length }
+                onAddNewClick={ handleAddNewAuthenticatorClick }
+                onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                categorizedIDPTemplates={ categorizedTemplates }
+            />
+        );
+    };
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
@@ -782,21 +826,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         onStepOptionAuthenticatorChange={
                                             handleStepOptionAuthenticatorChange
                                         }
+                                        onAddAuthenticationClick={ () => {
+                                            setShowAuthenticatorAddModal(true);
+                                            setAuthenticatorAddStep(stepIndex);
+                                        } }
                                         onStepOptionDelete={ handleStepOptionDelete }
                                         showStepMeta={ authenticationSteps.length > 1 }
                                         showStepDeleteAction={ authenticationSteps.length > 1 }
                                         step={ step }
                                         stepIndex={ stepIndex }
                                         readOnly={ readOnly }
+                                        subjectStepId={ subjectStepId }
+                                        attributeStepId={ attributeStepId }
+                                        onAttributeCheckboxChange={ handleAttributeRetrievalStepChange }
+                                        onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
                                         data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
                                     />
-                                    {
-                                        (stepIndex < (authenticationSteps.length - 1)) && (
-                                            <div
-                                                className="flow-button-container with-trail with-margin start"
-                                            ></div>
-                                        )
-                                    }
                                 </Fragment>
                             ))
                             : null
@@ -807,23 +852,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 <div className="action-button-group">
                                     <LinkButton
                                         fluid
-                                        data-tourid="add-authentication-options-button"
-                                        className="text-left"
-                                        onClick={ () => {
-                                            setShowAuthenticatorAddModal(true);
-                                        } }
-                                    >
-                                        <Icon name="plus"/>
-                                        {
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased.actions." +
-                                                "addAuthentication")
-                                        }
-                                    </LinkButton>
-                                    <LinkButton
-                                        fluid
                                         data-tourid="add-new-step-button"
-                                        className="text-left"
+                                        className="text-left pl-0"
                                         onClick={ handleAuthenticationStepAdd }
                                     >
                                         <Icon name="plus"/>
@@ -838,90 +868,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     }
                 </div>
             </div>
-            { !readOnly && authenticationSteps.length > 1 && (
-                <>
-                    <Divider hidden/>
-                    <Form>
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column computer={ 4 } tablet={ 6 } mobile={ 16 }>
-                                    <Form.Select
-                                        scrolling
-                                        label={ t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".stepBased.forms.fields.subjectIdentifierFrom.label"
-                                        ) }
-                                        placeholder={ t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".stepBased.forms.fields.subjectIdentifierFrom" +
-                                            ".placeholder"
-                                        ) }
-                                        options={
-                                            authenticationSteps &&
-                                            authenticationSteps instanceof Array &&
-                                            authenticationSteps.length > 0
-                                                ? authenticationSteps.map((step, index) => {
-                                                    return {
-                                                        key: step.id,
-                                                        text: `${ t("common:step") } ${ index + 1 }`,
-                                                        value: index + 1
-                                                    };
-                                                })
-                                                : []
-                                        }
-                                        onChange={ handleSubjectRetrievalStepChange }
-                                        value={ subjectStepId }
-                                        data-testid={ `${ testId }-use-subject-identifier-from-step-select` }
-                                    />
-                                    <Hint>
-                                        Select from which step the user&apos;s subject identifier is taken.
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column computer={ 4 } tablet={ 6 } mobile={ 16 }>
-                                    <Form.Select
-                                        scrolling
-                                        label={ t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".stepBased.forms.fields.attributesFrom.label"
-                                        ) }
-                                        placeholder={ t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".stepBased.forms.fields.attributesFrom.placeholder"
-                                        ) }
-                                        options={
-                                            authenticationSteps &&
-                                            authenticationSteps instanceof Array &&
-                                            authenticationSteps.length > 0
-                                                ? authenticationSteps.map((step, index) => {
-                                                    return {
-                                                        key: step.id,
-                                                        text: `${ t("common:step") } ${ index + 1 }`,
-                                                        value: index + 1
-                                                    };
-                                                })
-                                                : []
-                                        }
-                                        onChange={ handleAttributeRetrievalStepChange }
-                                        value={ attributeStepId }
-                                        data-testid={ `${ testId }-use-attributes-from-step-select` }
-                                    />
-                                    <Hint>
-                                        Select from which step the user&apos;s attributes(other than subject identifier)
-                                        are taken.
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Form>
-                </>
-            ) }
-
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }
             { showHandlerDisclaimerModal && renderHandlerDisclaimerModal() }
         </div>

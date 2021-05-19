@@ -140,6 +140,8 @@ Recent Application Card
 @infoCardTransition: @defaultCardTransition;
 @infoCardBorder: @defaultCardBorder;
 @infoCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@infoCardSubHeaderFontSize: 0.9em;
+@infoCardSelectedBorder: @primaryColor;
 
 /*-------------------------------
          Stat Count Card

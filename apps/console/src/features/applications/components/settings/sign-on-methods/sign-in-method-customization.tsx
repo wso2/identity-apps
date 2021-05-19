@@ -60,6 +60,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      */
     isLoading?: boolean;
     /**
+     * Callback to trigger IDP create wizard.
+     */
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
+    /**
      * Callback for sequence reset.
      */
     onReset: () => void;
@@ -89,6 +93,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         authenticators,
         authenticationSequence,
         isLoading,
+        onIDPCreateWizardTrigger,
         onReset,
         onUpdate,
         readOnly,
@@ -154,7 +159,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      *
      * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
      */
-    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
+    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface): void => {
         if (!template) {
             return;
         }
@@ -422,8 +427,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
+                onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
             />
-            <Divider hidden/>
+            <Divider className="x2"/>
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

@@ -660,23 +660,30 @@
             cursor: pointer;
             box-shadow: @infoCardHoverBoxShadow;
         }
+        &.selected {
+            border-color: @infoCardSelectedBorder;
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
         .content {
             border: none;
         }
         .card-image {
-            margin-right: 0.3em;
+            margin-right: 0.7em;
         }
         .card-header-section {
             .card-header {
                 font-weight: 600;
             }
-            .card-subheader {
-                font-weight: 600;
-            }
+        }
+        .card-subheader {
+            font-size: @infoCardSubHeaderFontSize;
+            color: @lightFontColor;
         }
         .card-description-container {
             padding-top: 0.5em;
-            padding-bottom: 0.5em;
         }
         .card-description {
             font-size: 0.9em;

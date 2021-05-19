@@ -40,8 +40,8 @@ import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
+    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface,
-    IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
@@ -55,13 +55,8 @@ import {
 /**
  * Proptypes for the identity provider creation wizard component.
  */
-interface IdentityProviderCreateWizardPropsInterface extends TestableComponentInterface {
-    currentStep?: number;
-    title: string;
-    closeWizard: () => void;
-    template: IdentityProviderTemplateInterface;
-    subTitle?: string;
-}
+interface IdentityProviderCreateWizardPropsInterface extends TestableComponentInterface,
+    GenericIdentityProviderCreateWizardPropsInterface { }
 
 /**
  * Enum for wizard.
@@ -113,7 +108,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 ): ReactElement => {
 
     const {
-        closeWizard,
+        onWizardClose,
+        onIDPCreate,
         currentStep,
         title,
         subTitle,
@@ -170,16 +166,13 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push({
-                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
-                    });
+                    onIDPCreate(createdIdpID);
 
                     return;
                 }
 
-                // Fallback to identity providers page, if the location header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                // Since the location header is not present, trigger callback without the id.
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -303,7 +296,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         setDefaultAuthenticatorMetadata(undefined);
 
         // Trigger the close method from props.
-        closeWizard();
+        onWizardClose();
     };
 
     /**

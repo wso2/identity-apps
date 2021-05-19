@@ -20,6 +20,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
@@ -30,7 +31,9 @@ import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthen
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
 import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
+import { AuthenticatorMeta } from "../meta";
 import {
+    FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
@@ -143,6 +146,7 @@ export class IdentityProviderManagementUtils {
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name
                         },
+                        description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
                         id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
@@ -167,11 +171,21 @@ export class IdentityProviderManagementUtils {
                             return;
                         }
 
+                        const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator
+                            .federatedAuthenticators
+                            .authenticators
+                            .find((item) => {
+                                return (item.authenticatorId === 
+                                    authenticator.federatedAuthenticators.defaultAuthenticatorId);
+                            });
+
                         federatedAuthenticators.push({
                             authenticators: authenticator.federatedAuthenticators.authenticators,
-                            defaultAuthenticator: authenticator.federatedAuthenticators.authenticators
-                                .find((item) => item.authenticatorId ===
-                                    authenticator.federatedAuthenticators.defaultAuthenticatorId),
+                            defaultAuthenticator: defaultAuthenticator,
+                            description: !isEmpty(authenticator.description)
+                                ? authenticator.description
+                                : AuthenticatorMeta.getAuthenticatorDescription(
+                                    defaultAuthenticator?.authenticatorId),
                             displayName: authenticator.name,
                             id: authenticator.id,
                             idp: authenticator.name,
@@ -256,4 +270,62 @@ export class IdentityProviderManagementUtils {
 
         return templates;
     };
+
+    /**
+     * Get the labels for a particular authenticator.
+     *
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
+     *
+     * @return {string[]}
+     */
+    public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
+
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+            : [];
+    }
+
+    /**
+     * Get the Authenticator label display name.
+     *
+     * @param {string} name - Raw name.
+     *
+     * @return {string}
+     */
+    public static getAuthenticatorLabelDisplayName(name: string): string {
+
+        return name;
+    }
+
+    /**
+     * Checks if the template image URL is a valid image URL and if not checks if it's
+     * available in the passed in icon set.
+     *
+     * @param image Input image.
+     *
+     * @return Predefined image if available. If not, return input parameter.
+     */
+    public static resolveTemplateImage(image: string | any, icons: Record<string, any>): string | any {
+
+        if (image) {
+            if (typeof image !== "string") {
+                return image;
+            }
+
+            if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
+                return image;
+            }
+
+            if (URLUtils.isDataUrl(image)) {
+                return image;
+            }
+
+            if (!icons) {
+                return image;
+            }
+        }
+        const match = Object.keys(icons).find(key => key.toString() === image);
+
+        return match ? icons[ match ] : icons[ "default" ] ?? image;
+    }
 }

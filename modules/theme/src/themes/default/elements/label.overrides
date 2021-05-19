@@ -23,16 +23,21 @@
 
 .ui.basic.label {
     &.filter-label {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
+        padding-left: @filterLabelHorizontalPadding;
+        padding-right: @filterLabelHorizontalPadding;
+        border-radius: @filterLabelBorderRadius;
 
+        i {
+            margin: 0 0 0 6px;
+        }
         &:hover {
             color: @filterLabelHoverTextColor;
-            background: @filterLabelHoverBackgroundColor;
-            border-color: @filterLabelBorderColor;
+            border-color: @filterLabelHoverBorderColor;
         }
         &.active {
-            border-color: @filterLabelBorderColor;
+            background: @filterLabelActiveBackgroundColor;
+            border-color: @filterLabelActiveBorderColor;
+            color: @filterLabelActiveTextColor;
         }
     }
 }

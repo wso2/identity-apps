@@ -48,18 +48,15 @@ import {
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import {
-    GOOGLE_IDP_NAME,
-    ENTERPRISE_NAME,
-    IdentityProviderManagementConstants
-} from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
+    SupportedQuickStartTemplateTypes,
     emptyIdentityProvider
 } from "../models";
-import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { IdentityProviderTemplateManagementUtils } from "../utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -411,9 +408,14 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     isLoading={ isIdentityProviderRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
-                    isSaml={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID }
-                    isOidc={ identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID }
+                    isGoogle={ identityProviderTemplate?.name === SupportedQuickStartTemplateTypes.GOOGLE }
+                    isSaml={
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId 
+                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) }
+                    isOidc={
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                            === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
+                    }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
