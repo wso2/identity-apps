@@ -23,8 +23,8 @@ import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { getAdvancedSearchIcons } from "../configs";
 import { commonConfig } from "../../../extensions";
+import { getAdvancedSearchIcons } from "../configs";
 
 /**
  * Filter attribute field identifier.
@@ -280,7 +280,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
-                            <Form.Group widths='equal'>
+                            <Form.Group widths="equal">
                                 <Field
                                     children={
                                         filterConditionOptions

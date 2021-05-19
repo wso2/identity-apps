@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Form, Field } from "@wso2is/form";
+import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";

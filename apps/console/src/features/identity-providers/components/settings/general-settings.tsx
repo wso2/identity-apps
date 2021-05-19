@@ -25,9 +25,19 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
-import { deleteIdentityProvider, getIdentityProviderList, getIDPConnectedApps, updateIdentityProviderDetails } from "../../api";
+import { 
+    deleteIdentityProvider, 
+    getIDPConnectedApps, 
+    getIdentityProviderList, 
+    updateIdentityProviderDetails 
+} from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
-import { ConnectedAppInterface, ConnectedAppsInterface, IdentityProviderInterface, IdentityProviderListResponseInterface } from "../../models";
+import { 
+    ConnectedAppInterface, 
+    ConnectedAppsInterface, 
+    IdentityProviderInterface, 
+    IdentityProviderListResponseInterface 
+} from "../../models";
 import { GeneralDetailsForm } from "../forms";
 import { handleGetIDPListCallError, handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 
@@ -118,13 +128,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         setIdPListRequestLoading(true);
         getIdentityProviderList(null, null,null)
             .then((response)=> {
-                setIdPList(response)
+                setIdPList(response);
             }).catch((error) => {
                 handleGetIDPListCallError(error);
             }).finally(() => {
                 setIdPListRequestLoading(false);
             });
-    }
+    };
 
     const handleIdentityProviderDeleteAction = (): void => {
         setIsAppsLoading(true);

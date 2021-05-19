@@ -172,8 +172,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         />
                         { errorInClaimMapping && (
                             <Label
-                                basic color='red'
-                                pointing='left'
+                                basic color="red"
+                                pointing="left"
                             >
                                 { t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.fields.claim.label") }

@@ -21,10 +21,10 @@ import {
     SetAvailableAuthenticatorsMetaInterface,
     SetAvailableIDPTemplateInterface
 } from "./types";
-import { FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface } from "../../models";
 import {
     SetApplicationTemplatesActionInterface
 } from "../../../applications/store/actions/types";
+import { FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemInterface } from "../../models";
 
 /**
  * Redux action to set the list of available authenticators.
@@ -46,7 +46,7 @@ export const setAvailableAuthenticatorsMeta = (
  * @return {SetApplicationTemplatesActionInterface}
  */
 export const setIdentityProviderTemplates = (
-    templates: IdentityProviderTemplateItemInterface[],
+    templates: IdentityProviderTemplateItemInterface[]
 ): SetAvailableIDPTemplateInterface => ({
     payload: templates,
     type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES

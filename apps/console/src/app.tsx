@@ -197,7 +197,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                 loginAgainButtonText: I18n.instance.t("console:common:modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"),
                                                 sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
+                                                    ".sessionTimeoutModal.sessionTimedOutDescription")
                                             } }
                                         >
                                             <>

@@ -32,12 +32,12 @@ import {
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
+import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
-import { updateIDPCertificate } from "../../../api";
-import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the IDP certificate list component.

@@ -69,7 +69,9 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{ t("console:manage.features.certificates.keystore.summary.validFrom")}</div>
+                    <div className="label">
+                        { t("console:manage.features.certificates.keystore.summary.validFrom") }
+                    </div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -88,7 +90,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("console:manage.features.certificates.keystore.summary.validTill")}</div>
+                    <div className="label">{ t("console:manage.features.certificates.keystore.summary.validTill") }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -107,7 +109,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("console:manage.features.certificates.keystore.summary.issuerDN")}</div>
+                    <div className="label">{ t("console:manage.features.certificates.keystore.summary.issuerDN") }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.issuerDN.map((attribute: DistinguishedName) => {
@@ -118,7 +120,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("console:manage.features.certificates.keystore.summary.subjectDN")}</div>
+                    <div className="label">{ t("console:manage.features.certificates.keystore.summary.subjectDN") }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.subjectDN.map((attribute: DistinguishedName) => {
@@ -129,7 +131,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("console:manage.features.certificates.keystore.summary.version")}</div>
+                    <div className="label">{ t("console:manage.features.certificates.keystore.summary.version") }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">

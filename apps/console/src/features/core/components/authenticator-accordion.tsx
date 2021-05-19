@@ -28,7 +28,7 @@ import sortBy from "lodash-es/sortBy";
 import React, {
     Fragment,
     FunctionComponent,
-    ReactElement,
+    ReactElement
 } from "react";
 
 /**

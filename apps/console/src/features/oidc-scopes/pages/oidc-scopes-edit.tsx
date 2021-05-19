@@ -20,8 +20,8 @@ import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import { Field, Form } from "@wso2is/form";
+import { useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
@@ -380,7 +380,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         })
                     );
                 });
-        } 
+        }; 
 
         
         return (
@@ -414,7 +414,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     <Form
                                         onSubmit={ (values): void => {
                                             onSubmit(values);
-                                        }}
+                                        } }
                                         data-testid={ testId } 
                                     >
                                         <Field.Input

@@ -39,6 +39,8 @@ import { ComponentExtensionPlaceholder, applicationConfig } from "../../../exten
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import SAMLApplicationTemplate
+    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
@@ -48,8 +50,6 @@ import {
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import SAMLApplicationTemplate
-    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 
 /**
  * Proptypes for the applications edit component.

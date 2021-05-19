@@ -17,7 +17,7 @@
  */
 
 import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
-import React, { ReactElement, Suspense, lazy, useState, useEffect } from "react";
+import React, { ReactElement, Suspense, lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";

@@ -24,6 +24,7 @@ import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
+import { identityProviderConfig } from "../../../extensions";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
@@ -37,7 +38,6 @@ import {
     StrictIdentityProviderInterface
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions";
-import { identityProviderConfig } from "../../../extensions";
 
 /**
  * Utility class for identity provider operations.

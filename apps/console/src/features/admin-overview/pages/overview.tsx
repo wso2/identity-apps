@@ -36,7 +36,7 @@ import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
 import { GroupList } from "../../groups/components";
 import { GroupsInterface } from "../../groups/models";
-import { getServerConfigs, RealmConfigInterface } from "../../server-configurations";
+import { RealmConfigInterface, getServerConfigs } from "../../server-configurations";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
 import { getOverviewPageIllustrations } from "../configs";

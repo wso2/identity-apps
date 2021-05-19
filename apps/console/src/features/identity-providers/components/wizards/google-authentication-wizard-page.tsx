@@ -17,10 +17,10 @@
  */
 
  import { TestableComponentInterface } from "@wso2is/core/models";
-import { getIdentityProviderList } from "../../api";
-import React, { ReactElement, cloneElement, useState, useEffect } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import React, { ReactElement, cloneElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getIdentityProviderList } from "../../api";
 import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
 
@@ -71,13 +71,13 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
         setIdPListRequestLoading(true);
         getIdentityProviderList(null, null,null)
             .then((response)=> {
-                setIdPList(response)
+                setIdPList(response);
             }).catch((error) => {
                 handleGetIDPListCallError(error);
             }).finally(() => {
                 setIdPListRequestLoading(false);
             });
-    }
+    };
 
     /**
      * Check whether IDP name is already exist or not.
@@ -92,41 +92,41 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                  nameExist = true;
                 
                }
-           }) 
+           }); 
         }
         if (nameExist){
             return t("console:develop.features." +
             "authenticationProvider.forms.generalDetails.name." +
-            "validations.duplicate")
+            "validations.duplicate");
         }
-    } 
+    }; 
 
     return (
         <>
         { !isIdPListRequestLoading && 
         <Wizard
-            initialValues={{ name: template?.idp?.name }}
-            onSubmit={(values)=>onSubmit(values)}
+            initialValues={ { name: template?.idp?.name } }
+            onSubmit={ (values)=>onSubmit(values) }
             triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
             triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
-            changePage= {(step:number)=> changePageNumber(step)}
-            setTotalPage= {(step:number)=> setTotalPage(step)}
+            changePage= { (step:number)=> changePageNumber(step) }
+            setTotalPage= { (step:number)=> setTotalPage(step) }
             data-testid={ testId }
         >
                 <WizardPage
                    validate={ (values): any => {
-                    const errors:any = {}
+                    const errors:any = {};
                     if (!values.name) {
-                      errors.name = 'Required'
+                      errors.name = "Required";
                     }
                     if (!values.clientId) {
-                        errors.clientId = 'Required'
+                        errors.clientId = "Required";
                     }
                     if (!values.clientSecret) {
-                        errors.clientSecret = 'Required'
+                        errors.clientSecret = "Required";
                     }
-                    return errors
-                  }}
+                    return errors;
+                  } }
                 >
                 <Field.Input
                         ariaLabel= "name" 
@@ -136,7 +136,7 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                             "generalDetails.name.label") }
                         required={ true }
                         maxLength={ IDP_NAME_MAX_LENGTH }
-                        validation ={(value)=>idpNameValidation(value) }
+                        validation ={ (value)=>idpNameValidation(value) }
                         minLength={ 3 }
                         // TODO: checkon key press usecase
                         // onKeyDown={ keyPressed }
@@ -183,8 +183,8 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
             </Wizard>
             }
             </>
-    )
-}
+    );
+};
 
 /**
  * Default props for the google creation wizard.

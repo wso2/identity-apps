@@ -160,7 +160,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             setSelectedUserList(selectedUsers);
             updateGroupUsersList(selectedUsers);
         }
-    }
+    };
 
     const handleOpenAddNewGroupModal = () => {
         setAddModalUserList(originalUserList);
