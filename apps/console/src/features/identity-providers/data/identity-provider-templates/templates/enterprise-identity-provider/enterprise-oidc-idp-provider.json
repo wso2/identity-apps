@@ -1,7 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Configure a new identity provider with OpenID Connect",
-    "displayOrder": 1,
+    "displayOrder": 2,
     "id": "oidc-idp",
     "idp": {
         "certificate": {},

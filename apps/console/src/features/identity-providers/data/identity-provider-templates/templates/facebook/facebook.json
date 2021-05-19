@@ -1,7 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Login with Facebook",
-    "displayOrder": 1,
+    "displayOrder": 4,
     "id": "facebook-idp",
     "idp": {
         "certificate": {},
