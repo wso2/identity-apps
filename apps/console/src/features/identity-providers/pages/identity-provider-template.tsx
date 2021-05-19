@@ -374,7 +374,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      *
      * @param {string} id - ID of the created IDP.
      */
-    const handleSuccessfulIDPCreation = (id: string) => {
+    const handleSuccessfulIDPCreation = (id: string): void => {
 
         // If ID is present, navigate to the edit page of the created IDP.
         if (id) {

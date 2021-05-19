@@ -591,14 +591,29 @@ export interface ConnectedAppInterface {
 }
 
 export interface GenericIdentityProviderCreateWizardPropsInterface {
+    /**
+     * Current wizard step.
+     */
     currentStep?: number;
+    /**
+     * Wizard title.
+     */
     title: string;
+    /**
+     * Wizard close callback.
+     */
     onWizardClose: () => void;
     /**
      * Callback to be triggered on successful IDP create.
      */
     onIDPCreate: (id?: string) => void;
+    /**
+     * Template object.
+     */
     template: IdentityProviderTemplateInterface;
+    /**
+     * Subtile of the wizard.
+     */
     subTitle?: string;
 }
 

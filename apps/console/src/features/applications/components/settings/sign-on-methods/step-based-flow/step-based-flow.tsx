@@ -38,7 +38,8 @@ import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
-    AuthenticatorCategories, AuthenticatorMeta,
+    AuthenticatorCategories,
+    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     IdentityProviderManagementConstants,

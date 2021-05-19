@@ -134,12 +134,6 @@
     }
 
     .authentication-steps-section {
-        // display: @signOnMethodsAuthStepSectionDisplay;
-        // overflow: @signOnMethodsAuthStepSectionOverflow;
-        // max-height: @signOnMethodsAuthStepSectionMaxHeight;
-        // border: @signOnMethodsAuthStepSectionBorder;
-        // padding: @signOnMethodsAuthStepSectionPadding;
-        // max-width: @signOnMethodsAuthStepSectionMaxWidth;
 
         .authentication-step-container {
             margin-bottom: 2em;
@@ -159,27 +153,16 @@
             }
             .authentication-step {
                 background-color: @whiteSmoke;
-                padding: 15px;
+                padding: @signOnMethodsAuthStepPadding;
                 border-radius: @defaultBorderRadius;
-                // display: @signOnMethodsAuthStepDisplay;
-                // width: @signOnMethodsAuthStepWidth;
+                display: @signOnMethodsAuthStepDisplay;
                 overflow: @signOnMethodsAuthStepOverflow;
-                // flex-direction: @signOnMethodsAuthStepFlexDirection;
-                // min-height: @signOnMethodsAuthStepMinHeight;
-                // max-height: @signOnMethodsAuthStepMinHeight;
-                // flex-wrap: wrap;
-
-                display: flex;
-                flex-direction: row;
+                flex-direction: @signOnMethodsAuthStepFlexDirection;
                 flex-wrap: wrap;
                 align-content: flex-start;
                 justify-content: flex-start;
                 align-items: center;
 
-                &.with-extension {
-                    //border-bottom-right-radius: 0;
-                    //border-bottom-left-radius: 0;
-                }
                 &.empty-placeholder-container {
                     align-content: center;
                     justify-content: center;
@@ -193,7 +176,6 @@
             .checkboxes-extension {
                 margin: 0 0 15px 0;
                 padding: 10px 10px 10px 0;
-                // border: @defaultBorderWidth solid @lightBorderColor;
                 border-bottom-right-radius: @defaultBorderRadius;
                 border-bottom-left-radius: @defaultBorderRadius;
 
@@ -206,8 +188,6 @@
         }
         
         .step-actions-container {
-            // display: flex;
-            // margin-left: 25px;
 
             .action-button-group {
                 margin: auto 0;
