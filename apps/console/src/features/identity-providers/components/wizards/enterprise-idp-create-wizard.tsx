@@ -35,7 +35,7 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { IdentityProviderInterface, IdentityProviderTemplateInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
-import { getIdentityProviderWizardStepIcons, getIdPIcons, getIdPTemplateDocsIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
 import { Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -43,6 +43,7 @@ import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import { createIdentityProvider } from "../../api";
 import isEmpty from "lodash-es/isEmpty";
 import { IdentityProviderManagementConstants } from "../../constants";
+import cloneDeep from "lodash-es/cloneDeep";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -77,10 +78,27 @@ interface WizardStepInterface {
     name: WizardSteps;
 }
 
-// Oidc form constants.
+type AvailableProtocols = "oidc" | "saml";
+type SamlConfigurationMode = "file" | "manual";
+type CertificateInputType = "jwks" | "pem";
+type MinMax = { min: number; max: number };
+type FormErrors = { [ key: string ]: string };
+
+// OIDC form constants.
 const CLIENT_ID_MAX_LENGTH: number = 100;
 const CLIENT_SECRET_MAX_LENGTH: number = 100;
 const URL_MAX_LENGTH: number = 2048;
+
+// SAML form constants.
+const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
+const SERVICE_PROVIDER_ENTITY_ID_LENGTH: MinMax = { max: 240, min: 3 };
+const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+const IDP_ENTITY_ID_LENGTH: MinMax = { max: 2048, min: 5 };
+const JWKS_ENDPOINT_LENGTH: MinMax = { max: 2048, min: 10 };
+
+// General constants
+const EMPTY_STRING = "";
+const FIELD_REQUIRED_MESSAGE = "This field is required";
 
 export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     props: PropsWithChildren<EnterpriseIDPCreateWizardProps>
@@ -99,22 +117,18 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const [ selectedProtocol, setSelectedProtocol ] = useState<"oidc" | "saml">("oidc");
-    const [ selectedNameIdValue, setSelectedNameIdValue ] = useState<string>();
-    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<"file" | "manual">("manual");
+    const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
+    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("manual");
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
 
-    const [ selectedCertInputType, setSelectedCertInputType ] = useState<"jwks" | "pem">("jwks");
-    const [ pemString, setPemString ] = useState<string>("");
-
-    // const [ disableFinishButton, setDisableFinishButton ] = useState<boolean>(true);
+    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
+    const [ pemString, setPemString ] = useState<string>(EMPTY_STRING);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     useEffect(() => {
         setWizardSteps(getWizardSteps());
-        console.log("THIS IS THE TEMPLATE", template);
         setInitWizard(false);
     }, [ initWizard ]);
 
@@ -175,12 +189,15 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const handleFormSubmit = (values, form, callback) => {
 
-        let identityProvider: IdentityProviderInterface;
+        // Deep clone the original template. Since we have both saml and
+        // oidc protocol's authenticators in the same template we need to
+        // have the logic to remove the other option before sending the
+        // resource create requests.
+        const identityProvider: IdentityProviderInterface = cloneDeep(template.idp);
 
         if (selectedProtocol === "oidc") {
 
             // Populate user entered values
-            identityProvider = template.idp;
             identityProvider.name = values?.name?.toString();
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 { "key": "ClientId", "value": values?.clientId?.toString() },
@@ -191,8 +208,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             ];
 
             // Certificates: bind the JWKS URL if exists otherwise pem
-            identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? "";
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? "" ];
+            identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
 
             // Identity provider placeholder image.
             if (AppConstants.getClientOrigin()) {
@@ -214,11 +231,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         } else {
 
             // Populate user entered values
-            identityProvider = template.idp;
             identityProvider.name = values?.name?.toString();
 
             if (selectedSamlConfigMode === "manual") {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ]["properties"] = [
+                identityProvider.federatedAuthenticators.authenticators[ 1 ][ "properties" ] = [
                     { key: "IdPEntityId", value: values.IdPEntityId },
                     { key: "NameIDType", value: values.NameIDType },
                     { key: "RequestMethod", value: values.RequestMethod },
@@ -292,8 +308,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const wizardCommonFirstPage = () => (
         <WizardPage validate={ (values: any) => {
-            const errors: { [ key: string ]: string } = {};
-            if (!values.name) errors.name = 'Required';
+            const errors: FormErrors = {};
+            if (!values.name) errors.name = FIELD_REQUIRED_MESSAGE;
             return errors;
         } }>
             <Field.Input
@@ -303,8 +319,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
-                maxLength={ 20 }
-                minLength={ 3 }
+                maxLength={ IDP_NAME_LENGTH.max }
+                minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 10 }
             />
@@ -347,12 +363,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const samlConfigurationPage = () => (
         <WizardPage validate={ (values): any => {
-            const errors: { [ key: string ]: string } = {};
-            if (!values.SPEntityId) errors.SPEntityId = 'Required';
-            if (!values.NameIDType) errors.NameIDType = 'Required';
-            if (!values.SSOUrl) errors.SSOUrl = 'Required';
-            if (!values.IdPEntityId) errors.IdPEntityId = 'Required';
-            if (!values.RequestMethod) errors.RequestMethod = 'Required';
+            const errors: FormErrors = {};
+            if (!values.SPEntityId) errors.SPEntityId = FIELD_REQUIRED_MESSAGE;
+            if (!values.NameIDType) errors.NameIDType = FIELD_REQUIRED_MESSAGE;
+            if (!values.SSOUrl) errors.SSOUrl = FIELD_REQUIRED_MESSAGE;
+            if (!values.IdPEntityId) errors.IdPEntityId = FIELD_REQUIRED_MESSAGE;
+            if (!values.RequestMethod) errors.RequestMethod = FIELD_REQUIRED_MESSAGE;
             return errors;
         } }>
             <Field.Input
@@ -361,10 +377,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 name="SPEntityId"
                 label="Service Provider Entity ID"
                 required={ true }
-                maxLength={ 100 }
-                minLength={ 3 }
+                maxLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.max }
+                minLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.min }
                 width={ 15 }
-                validate={ (value) => value.startsWith("s") && "Cant start with s" }
                 placeholder="Enter a Service Provider Entity ID"
             />
             {/*<Grid>*/}
@@ -405,8 +420,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="SSOUrl"
                             label="SSO URL"
                             required={ true }
-                            maxLength={ 1000 }
-                            minLength={ 0 }
+                            maxLength={ SSO_URL_LENGTH.max }
+                            minLength={ SSO_URL_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 redirect SSO url" }
                         />
@@ -416,8 +431,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="IdPEntityId"
                             label="Identity Provider Entity ID"
                             required={ true }
-                            maxLength={ 1000 }
-                            minLength={ 0 }
+                            maxLength={ IDP_ENTITY_ID_LENGTH.max }
+                            minLength={ IDP_ENTITY_ID_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                         />
@@ -454,7 +469,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const oidcConfigurationPage = () => {
         return (
             <WizardPage validate={ (values) => {
-                const errors: { [ key: string ]: string } = {};
+                const errors: FormErrors = {};
                 if (!values.clientId) errors.clientId = 'Required';
                 if (!values.clientSecret) errors.clientSecret = 'Required';
                 if (!values.authorizationEndpointUrl) errors.authorizationEndpointUrl = 'Required';
@@ -520,7 +535,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const certificatesPage = () => (
         <WizardPage validate={ (values) => {
-            const errors: { [ key: string ]: string } = {};
+            const errors: FormErrors = {};
             return errors;
         } }>
             <Grid>
@@ -553,8 +568,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     name="jwks_endpoint"
                     label="JWKS Endpoint URL"
                     required={ true }
-                    maxLength={ 100 }
-                    minLength={ 3 }
+                    maxLength={ JWKS_ENDPOINT_LENGTH.max }
+                    minLength={ JWKS_ENDPOINT_LENGTH.min }
                     width={ 15 }
                     placeholder="Enter JWKS Endpoint URL"
                 />
@@ -599,11 +614,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const resolveHelpPanel = () => {
 
+        const SECOND_STEP_WIZARD_PAGE_INDEX: number = 1;
+
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
         if (!template?.content?.samlHelp
             || !template?.content?.oidcHelp
-            || currentWizardStep !== 1) {
+            || currentWizardStep !== SECOND_STEP_WIZARD_PAGE_INDEX) {
             return null;
         }
 
@@ -697,6 +714,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             ref={ wizardRef }
                             initialValues={ resolveWizardInitialValues() }
                             onSubmit={ handleFormSubmit }
+                            uncontrollable={ true }
                             pageChanged={ (index: number) => setCurrentWizardStep(index) }
                             data-testid={ testId }>
                             { resolveWizardPages() }
