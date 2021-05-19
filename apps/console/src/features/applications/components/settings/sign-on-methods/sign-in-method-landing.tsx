@@ -19,7 +19,7 @@
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Code, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Divider, Grid, Responsive, Segment } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
 import { getAuthenticatorIcons, getSignInMethodIllustrations } from "../../../configs";
@@ -88,11 +88,14 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             
                             <div className="default-config-description">
                                 <Heading as="h4">
-                                    {/*{
-                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                            "sections.landing.defaultConfig.heading")
-                                    }*/}
-                                    This application is configured with <Code>Username & Password</Code> Login
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.landing.defaultConfig.heading"
+                                        }
+                                    >
+                                        This application is configured with <Code>Username & Password</Code> Login
+                                    </Trans>
                                 </Heading>
                                 <div className="default-config-description-content">
                                     <Text subHeading muted>

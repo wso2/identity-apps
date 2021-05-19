@@ -341,7 +341,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     /**
      * Steps for the conditional authentication toggle tour.
      *
-     * @type {ReactourStep[]}
+     * @type {Array<Step>}
      */
     const conditionalAuthTourSteps: Array<Step> = [
         {

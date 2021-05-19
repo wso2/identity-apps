@@ -17,6 +17,7 @@
  */
 
 import { ConsoleNS } from "../../../models";
+import { Code } from "../../../../../react-components/dist/typings/components/typography";
 
 export const console: ConsoleNS = {
     common: {
@@ -986,8 +987,7 @@ export const console: ConsoleNS = {
                                 landing: {
                                     defaultConfig: {
                                         description: {
-                                            0: "Your application is already configured to work with username and " +
-                                                "password authentication.",
+                                            0: "This application is configured with <1>Username & Password</1> Login",
                                             1: "Select one of the options available on the right side to begin " +
                                                 "customizing."
                                         },
