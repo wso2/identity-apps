@@ -48,7 +48,7 @@ import {
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { getHelpPanelIcons } from "../configs";
-import { GOOGLE_IDP_NAME, OIDC_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
+import { GOOGLE_IDP_NAME, OIDC_IDP_ID, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateItemInterface,
@@ -410,7 +410,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
                     isGoogle={ GOOGLE_IDP_NAME === identityProviderTemplate?.name }
-                    isOidc={ OIDC_IDP_NAME === identityProviderTemplate?.name }
+                    isOidc={ OIDC_IDP_ID === identityProviderTemplate?.name }
                     data-testid={ testId }
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }

@@ -64,7 +64,7 @@ import {
     getIdPIcons,
     getIdPTemplateDocsIcons
 } from "../configs";
-import {GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_NAME} from "../constants";
+import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_ID} from "../constants";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
