@@ -254,6 +254,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         closeWizard={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
+                            onWizardClose();
                             setShowWizard(false);
                             onWizardClose();
                         } }
