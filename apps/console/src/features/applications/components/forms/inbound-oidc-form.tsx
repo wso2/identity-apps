@@ -369,6 +369,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (isHideRefreshTokenGrantType(selectedGrantTypes)) {
             grants = grants.filter(grant => grant != "refresh_token");
         }
+        initialValues.grantTypes = grants;
         setSelectedGrantTypes(grants);
         setGrantChanged(!isGrantChanged);
     };
