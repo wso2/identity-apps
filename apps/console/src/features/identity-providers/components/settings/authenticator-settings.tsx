@@ -70,7 +70,7 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import { IdentityProviderManagementConstants } from "../../constants";
+import {IdentityProviderManagementConstants} from "../../constants";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -699,75 +699,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Remove additional query params
                 removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
                 removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
-            }
-
-            // Remove meta data if the authenticator is SAML
-            if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
-                // Remove additional query params
-                authenticator.meta.properties.map(prop => {
-                    if (prop.key === "SPEntityId") {
-                        prop.displayName = "Service provider entity ID"
-                    } else if (prop.key === "IdPEntityId") {
-                        prop.displayName = "Identity provider entity ID"
-                    } else if (prop.key === "ISAuthnReqSigned") {
-                        prop.displayName = "Enable authentication request signing"
-                    } else if (prop.key === "IsLogoutEnabled") {
-                        prop.displayName = "Enable logout"
-                    } else if (prop.key === "IsSLORequestAccepted") {
-                        prop.displayName = "Enable logout request accepting"
-                    } else if (prop.key === "LogoutReqUrl") {
-                        prop.displayName = "Logout URL"
-                    } else if (prop.key === "IsLogoutReqSigned") {
-                        prop.displayName = "Enable logout request signing"
-                    } else if (prop.key === "IsAuthnRespSigned") {
-                        prop.displayName = "Enable authentication response signing"
-                    } else if (prop.key === "SignatureAlgorithm") {
-                        prop.displayName = "Signature algorithm"
-                    } else if (prop.key === "DigestAlgorithm") {
-                        prop.displayName = "Digest algorithm"
-                    } else if (prop.key === "IncludeProtocolBinding") {
-                        prop.displayName = "Include protocol binding"
-                    } else if (prop.key === "AuthnContextComparisonLevel") {
-                        prop.displayName = "Authentication context comparison level"
-                    } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "SAML2 Web SSO user ID location"
-                    } else if (prop.key === "RequestMethod") {
-                        prop.displayName = "HTTP binding"
-                    } else if (prop.key === "commonAuthQueryParams") {
-                        prop.displayName = "Additional query parameters"
-                    }
-                });
-
-                removeElementFromProps(authenticator.data.properties, "isAssertionSigned");
-                removeElementFromProps(authenticator.meta.properties, "isAssertionSigned");
-                removeElementFromProps(authenticator.data.properties, "ACSUrl");
-                removeElementFromProps(authenticator.meta.properties, "ACSUrl");
-                removeElementFromProps(authenticator.data.properties, "ForceAuthentication");
-                removeElementFromProps(authenticator.meta.properties, "ForceAuthentication");
-                removeElementFromProps(authenticator.data.properties, "IncludeAuthnContext");
-                removeElementFromProps(authenticator.meta.properties, "IncludeAuthnContext");
-                removeElementFromProps(authenticator.data.properties, "AuthnContextClassRef");
-                removeElementFromProps(authenticator.meta.properties, "AuthnContextClassRef");
-                removeElementFromProps(authenticator.data.properties, "AttributeConsumingServiceIndex");
-                removeElementFromProps(authenticator.meta.properties, "AttributeConsumingServiceIndex");
-                removeElementFromProps(authenticator.data.properties, "IncludeNameIDPolicy");
-                removeElementFromProps(authenticator.meta.properties, "IncludeNameIDPolicy");
-                removeElementFromProps(authenticator.data.properties, "ResponseAuthnContextClassRef");
-                removeElementFromProps(authenticator.meta.properties, "ResponseAuthnContextClassRef");
-                removeElementFromProps(authenticator.data.properties, "CustomAuthnContextClassRef");
-                removeElementFromProps(authenticator.meta.properties, "CustomAuthnContextClassRef");
-                removeElementFromProps(authenticator.data.properties, "ISArtifactBindingEnabled");
-                removeElementFromProps(authenticator.meta.properties, "ISArtifactBindingEnabled");
-                removeElementFromProps(authenticator.data.properties, "SignatureAlgorithmPost");
-                removeElementFromProps(authenticator.meta.properties, "SignatureAlgorithmPost");
-                removeElementFromProps(authenticator.data.properties, "IsAssertionEncrypted");
-                removeElementFromProps(authenticator.meta.properties, "IsAssertionEncrypted");
-                removeElementFromProps(authenticator.data.properties, "IncludeCert");
-                removeElementFromProps(authenticator.meta.properties, "IncludeCert");
-                removeElementFromProps(authenticator.data.properties, "selectMode");
-                removeElementFromProps(authenticator.meta.properties, "selectMode");
-                removeElementFromProps(authenticator.data.properties, "meta_data_saml");
-                removeElementFromProps(authenticator.meta.properties, "meta_data_saml");
             }
 
             return (
