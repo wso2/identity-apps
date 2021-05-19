@@ -19,16 +19,27 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Icon, Message } from "semantic-ui-react";
+import {Divider, Icon, Message } from "semantic-ui-react";
 import { store } from "../../../../../core";
 
-type OidcIdpWizardHelp = TestableComponentInterface
+/**
+ * Prop types of the component.
+ */
+type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
 
-const OidcIdpWizardHelp: FunctionComponent<OidcIdpWizardHelp> = (
-    props: OidcIdpWizardHelp
+/**
+ * Help content for the custom IDP template creation wizard.
+ *
+ * @param {CustomIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
+ * @return {React.ReactElement}
+ */
+const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface> = (
+    props: CustomIdentityProviderCreateWizardHelpPropsInterface
 ): ReactElement => {
 
-    const { [ "data-testid" ]: testId } = props;
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
         <div data-testid={ testId }>
@@ -36,36 +47,44 @@ const OidcIdpWizardHelp: FunctionComponent<OidcIdpWizardHelp> = (
                 <Heading as="h5" className="mb-3">Prerequisite</Heading>
                 <p>Before you begin, register an application in the Identity Provider, and obtain a
                     <strong> client ID & secret</strong>. Use the following URL as the <strong>
-                        Authorized Redirect URL</strong>.
-                    <br/>
-                    <br/>
+                    Authorized Redirect URL</strong>.
+                    <br />
+                    <br />
                     <CopyInputField
                         className="copy-input-dark"
                         value={ store.getState().config.deployment.serverHost + "/commonauth" }
                     />
-                    <br/>
-                    <Icon name="info circle"/>
+                    <br />
+                    <Icon name="info circle" />
                     The URL to which the authorization code is sent upon authentication and where the
                     user is redirected to upon logout.
                 </p>
             </Message>
             <Heading as="h5">Client ID</Heading>
             <p>Provide the client ID obtained from the identity provider.</p>
-            <Divider/>
+            <Divider />
             <Heading as="h5">Client Secret</Heading>
             <p>Provide the Client Secret obtained from the identity provider.</p>
-            <Divider/>
+            <Divider />
             <Heading as="h5">Authentication Endpoint URL</Heading>
             <p>Provide the standard Authentication Endpoint URL obtained from the identity provider.</p>
-            <Divider/>
+            <Divider />
             <Heading as="h5">Token Endpoint URL</Heading>
             <p>Provide the standard Token Endpoint URL obtained from the identity provider.</p>
         </div>
     );
 };
 
-OidcIdpWizardHelp.defaultProps = {
-    "data-testid": "oidc-idp-wizard-help"
+/**
+ * Default props for the component
+ */
+CustomIdentityProviderCreateWizardHelp.defaultProps = {
+    "data-testid": "custom-app-create-wizard-help"
 };
 
-export default OidcIdpWizardHelp;
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default CustomIdentityProviderCreateWizardHelp;

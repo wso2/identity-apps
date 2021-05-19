@@ -17,7 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
-import { AuthenticatorLabels, IdentityProviderTemplateLoadingStrategies } from "../models";
+import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing identity provider management constants.
@@ -83,7 +83,9 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         ENTERPRISE: "enterprise-idp",
-        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
+        GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+        OIDC: "oidc-idp",
+        SAML: "saml-idp"
     };
 
     /**

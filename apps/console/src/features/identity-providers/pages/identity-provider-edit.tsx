@@ -173,7 +173,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE.toString();
             } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.ENTERPRISE.toString();
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC.toString();
              }
         }
 
