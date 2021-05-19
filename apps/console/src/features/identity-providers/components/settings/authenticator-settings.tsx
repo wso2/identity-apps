@@ -703,7 +703,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // Remove meta data if the authenticator is SAML
             if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
                 // Remove additional query params
-                debugger;
                 authenticator.meta.properties.map(prop => {
                     if (prop.key === "SPEntityId") {
                         prop.displayName = "Service provider entity ID"
