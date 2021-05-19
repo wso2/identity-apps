@@ -408,12 +408,21 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     isLoading={ isIdentityProviderRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleIdentityProviderUpdate }
-                    isGoogle={ identityProviderTemplate?.name === SupportedQuickStartTemplateTypes.GOOGLE }
+                    isGoogle={
+                        (identityProviderTemplate?.name === undefined)
+                            ? undefined
+                            : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                    }
                     isSaml={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId 
-                            === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) }
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                            ? undefined
+                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                                === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID)
+                    }
                     isOidc={
-                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+                        (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                            ? undefined
+                            :(identityProvider.federatedAuthenticators.defaultAuthenticatorId
                             === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID)
                     }
                     data-testid={ testId }
