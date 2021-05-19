@@ -25,9 +25,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
+import { serverConfigurationConfig } from "../../../extensions";
 import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
+import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
 
 /**
@@ -133,15 +135,16 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
     return (
         <PageLayout
-            title={ connectorCategory?.name }
+            title={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
             description={
-                connectorCategory?.description
+                serverConfigurationConfig.showPageHeading && (connectorCategory?.description
                     ? connectorCategory.description
-                    : connectorCategory?.name && t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                    : connectorCategory?.name
+                    && t("console:manage.features.governanceConnectors.connectorSubHeading", {
                         name: connectorCategory.name
-                    })
+                    }))
             }
-            data-testid={ `${ testId }-page-layout` }
+            data-testid={ `${testId}-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid>
@@ -149,20 +152,33 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                         <Grid.Column width={ 12 }>
                             {
                                 (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
-                                        <EmphasizedSegment key={ index } padded="very">
-                                            <div ref={ connector.ref }>
-                                                <DynamicGovernanceConnector
-                                                    connector={ connector }
-                                                    data-testid={ `${ testId }-` + connector?.id }
-                                                    onUpdate={ () => loadCategoryConnectors() }
-                                                />
-                                            </div>
-                                        </EmphasizedSegment>
-                                    ))
+                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
+                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
+                                            || serverConfigurationConfig.connectorsToShow.includes(
+                                                ServerConfigurationsConstants.ALL) ) {
+                                            const connectorElement = (
+                                                <div ref={ connector.ref }>
+                                                    <DynamicGovernanceConnector
+                                                        connector={ connector }
+                                                        data-testid={ `${testId}-` + connector?.id }
+                                                        onUpdate={ () => loadCategoryConnectors() }
+                                                    />
+                                                </div>
+                                            );
+
+                                            return (
+                                                serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
+                                                    ?
+                                                    <EmphasizedSegment key={ index } padded="very">
+                                                        { connectorElement }
+                                                    </EmphasizedSegment>
+                                                    : connectorElement
+                                            );
+                                        }
+                                    })
                                     : null
                             }
-
+                            { serverConfigurationConfig.showGovernanceConnectorCategories &&
                             <Rail
                                 className="non-emphasized"
                                 position="right"
@@ -177,11 +193,14 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
                                                 <h5>
-                                                    { 
-                                                        t("console:manage.features.governanceConnectors.categories") 
+                                                    {
+                                                        t("console:manage.features.governanceConnectors.categories")
                                                     }
                                                 </h5>
-                                                <Menu secondary vertical className="governance-connector-categories">
+                                                <Menu
+                                                    secondary
+                                                    vertical
+                                                    className="governance-connector-categories">
                                                     {
                                                         connectors.map((
                                                             connector: GovernanceConnectorWithRef,
@@ -198,7 +217,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                                                 onClick={ () => {
                                                                     // Scroll to the selected connector.
                                                                     CommonUtils.scrollToTarget(
-                                                                        connector?.ref?.current, ScrollTopPosition
+                                                                        connector?.ref?.current,
+                                                                        ScrollTopPosition
                                                                     );
 
                                                                     setSelectorConnector(connector);
@@ -214,6 +234,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     }
                                 </Sticky>
                             </Rail>
+                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

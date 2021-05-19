@@ -27,6 +27,7 @@ import { AppState } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
+import { serverConfigurationConfig } from "../../../../extensions";
 
 /**
  * Determine the matching Form component based on the property attributes.
@@ -80,8 +81,17 @@ const DynamicConnectorForm = (props) => {
             { <Grid padded={ true }>
                 { properties?.map((property, index) => {
                     return (
-                        <Grid.Row columns={ 2 } className="pl-3" key={ index }>
-                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                        <Grid.Row
+                            columns={ 2 }
+                            className={ serverConfigurationConfig.intendSettings && "pl-3" }
+                            key={ index }
+                        >
+                            <Grid.Column
+                                mobile={ 12 }
+                                tablet={ 12 }
+                                computer={ 10 }
+                                className={ !serverConfigurationConfig.intendSettings && "pl-0" }
+                            >
                                 { !isToggle(property) ? (
                                     <Field
                                         name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
@@ -101,7 +111,12 @@ const DynamicConnectorForm = (props) => {
                                     ) }
                                 { property.description !== "" && <Hint>{ property.description }</Hint> }
                             </Grid.Column>
-                            <Grid.Column mobile={ 4 } tablet={ 4 } computer={ 6 }>
+                            <Grid.Column
+                                mobile={ 4 }
+                                tablet={ 4 }
+                                computer={ 6 }
+                                className={ !serverConfigurationConfig.intendSettings && "pl-0" }
+                            >
                                 { isToggle(property) && (
                                     <Field
                                         name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
@@ -153,8 +168,13 @@ const DynamicConnectorForm = (props) => {
                         </Grid.Row>
                     );
                 }) }
-                <Grid.Row columns={ 1 } className="pl-3">
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                <Grid.Row columns={ 1 } className={ serverConfigurationConfig.intendSettings && "pl-3" }>
+                    <Grid.Column
+                        mobile={ 16 }
+                        tablet={ 16 }
+                        computer={ 14 }
+                        className={ !serverConfigurationConfig.intendSettings && "pl-0" }
+                    >
                         <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
