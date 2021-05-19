@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Configure a new identity provider with OpenID Connect",
+    "description": "Configure a new Enterprise identity provider with OpenID Connect",
     "displayOrder": 1,
     "id": "oidc-idp",
     "idp": {
@@ -88,8 +88,8 @@
             "outboundProvisioningRoles": []
         }
     },
-    "image": "oidc",
-    "name": "OpenID Connect",
+    "image": "enterprise",
+    "name": "Enterprise",
     "services": [],
     "disabled": false
 }
