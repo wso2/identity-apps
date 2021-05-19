@@ -194,6 +194,28 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         onKeyPress={ (event: React.KeyboardEvent) => {
                             event.key === ENTER_KEY && handleBlur(event, inputField.name);
                         } }
+                        onKeyDown={ inputField.type === "number" ?
+                            ((event: React.KeyboardEvent) => {
+                                const isNumber = /^[0-9]$/i.test(event.key);
+                                const isAllowed = ((event.key === "a" || event.key === "v" ||
+                                    event.key === "c" || event.key === "x")
+                                    && (event.ctrlKey === true || event.metaKey === true)) ||
+                                    (event.key === "ArrowRight" || event.key == "ArrowLeft") ||
+                                    (event.key === "Delete" || event.key === "Backspace");
+                                !isNumber && !isAllowed && event.preventDefault();
+                            }) : (): void => {
+                                return;
+                            }
+                        }
+                        onPaste={ inputField.type === "number" ?
+                            ((event: React.ClipboardEvent) => {
+                                const data = event.clipboardData.getData("Text") ;
+                                const isNumber = /^[0-9]+$/i.test(data);
+                                !isNumber && event.preventDefault();
+                            }) : (): void => {
+                                return;
+                            }
+                        }
                     />
                 );
             }
