@@ -57,6 +57,9 @@
     {% if console.help_center_path is defined %}
     "helpCenterUrl": "{{ console.help_center_path }}",
     {% endif %}
+    {% if console.doc_site_path is defined %}
+    "docSiteUrl": "{{ console.doc_site_path }}",
+    {% endif %}
     {% if console.idp_configs is defined %}
     "idpConfigs": {
         {% if console.idp_configs.items() is defined %}
@@ -586,7 +589,7 @@
                 {% for value in console.system_apps_identifiers %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
-            {% endif %} 
+            {% endif %}
         ],
         "theme": {
             "name": "{{ console.theme }}"
