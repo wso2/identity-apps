@@ -112,7 +112,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         [ "data-testid" ]: testId
     } = props;
 
-    console.log(identityProvider);
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
