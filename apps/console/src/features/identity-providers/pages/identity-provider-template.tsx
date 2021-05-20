@@ -58,7 +58,6 @@ import {
     IdentityProviderCreateWizard,
     handleGetIDPTemplateAPICallError
 } from "../components";
-import { AuthenticatorCreateWizardFactory } from "../components";
 import {
     getHelpPanelIcons,
     getIdPIcons,
@@ -73,6 +72,7 @@ import {
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 
 /**
  * Proptypes for the IDP template selection page component.

@@ -34,7 +34,6 @@ import {
     history
 } from "../../../../core";
 import {
-    AuthenticatorCreateWizardFactory,
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils
@@ -42,7 +41,7 @@ import {
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
-
+import { AuthenticatorCreateWizardFactory } from "../../../../identity-providers/components/wizards";
 /**
  * Proptypes for the sign on methods component.
  */
