@@ -1,7 +1,6 @@
 import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from "react";
 import {
     Button,
-    Form,
     Icon,
     Message,
     Segment,
@@ -12,9 +11,11 @@ import {
     TextArea
 } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import { CertificateManagementUtils } from "@wso2is/core/dist/src/utils";
+import { CertificateManagementUtils } from "@wso2is/core";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
+
+// TODO: Move polyfills to a generalized module.
 
 // This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
 if ("File" in self) File.prototype.arrayBuffer = File.prototype.arrayBuffer || poly;
@@ -48,7 +49,7 @@ export interface FilePickerProps {
      *
      * @param result {PickerResult} data.
      */
-    onChange: (result: PickerResult) => void;
+    onChange: (result: PickerResult<any>) => void;
     /**
      * In the dropzone we can explain what types of file
      * and some descriptive info about the required file.
@@ -73,25 +74,17 @@ export interface FilePickerProps {
      */
     icon?: SemanticICONS | Icon | SVGElement | string | any;
     placeholderIcon?: SemanticICONS | Icon | SVGElement | string | any;
-    /*
-     * FIXME ASAP
-     *
-     * {initialFile:}
-     * Add a prop that accepts a file by default. This file will
+    /**
+     * A prop that accepts a file by default. This file will
      * be the initial state for the picker.
-     *
-     * {initialPastedContent:}
+     */
+    file?: File | null;
+    /**
      * Add a prop that accepts a raw string by default. The raw value
      * should be bind to the form and the api consumer can specify
      * whether to fire the initial values via a callback.
      */
-}
-
-export interface PickerResult {
-    file?: File;
-    pastedContent?: string;
-    serialized?: any;
-    valid?: boolean;
+    pastedContent?: string | null;
 }
 
 // Internal workings interfaces, type defs, and aliases.
@@ -107,6 +100,7 @@ type FilePickerPropsAlias = PropsWithChildren<FilePickerProps>;
 // Component constants
 
 const FIRST_FILE_INDEX = 0;
+const FIRST_TAB_INDEX = 0;
 const EMPTY_STRING = "";
 
 export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): ReactElement => {
@@ -117,7 +111,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         dropzoneText,
         uploadButtonText,
         icon,
-        placeholderIcon
+        placeholderIcon,
+        file: initialFile,
+        pastedContent: initialPastedContent
     } = props;
 
     // Document queries
@@ -125,17 +121,31 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
     // Functional State
     const [ dark, setDark ] = useState(false);
-    const [ activeIndex, setActiveIndex ] = useState(0);
+    const [ activeIndex, setActiveIndex ] = useState(FIRST_TAB_INDEX);
     const [ dragOver, setDragOver ] = useState(false);
 
     // Behavioural State
-    const [ file, setFile ] = useState<File>(null);
-    const [ pastedContent, setPastedContent ] = useState<string>(null);
+    const [ file, setFile ] = useState<File>(initialFile);
+    const [ pastedContent, setPastedContent ] = useState<string>(initialPastedContent);
     const [ serializedData, setSerializedData ] = useState<any>(null);
+
     const [ hasError, setHasError ] = useState<boolean>(false);
     const [ errorMessage, setErrorMessage ] = useState<string>(null);
+    const [ pasteFieldTouched, setPasteFieldTouched ] = useState<boolean>(false);
+    const [ fileFieldTouched, setFileFieldTouched ] = useState<boolean>(false);
 
     // Hooks
+
+    useEffect(() => {
+        if (initialFile) {
+            addFileToState(initialFile);
+            return;
+        }
+        if (initialPastedContent) {
+            addPastedDataToState(initialPastedContent);
+            return;
+        }
+    }, []);
 
     useEffect(() => {
         // Query the preferred color scheme.
@@ -167,23 +177,42 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 valid: !hasError
             });
         }
-    }, [ file, pastedContent ]);
+    }, [ serializedData, errorMessage, file, pastedContent ]);
 
     // Functional logic that used by event handlers to
     // update the state of the picker.
 
     const validate = async (data: File | string): Promise<boolean> => {
         try {
-            await fileStrategy.validate(data); // Anonymous result
+            await fileStrategy.validate(data);
             setHasError(false);
             setErrorMessage(null);
             return true;
-        } catch ({ errorMessage }) {
-            setHasError(true);
-            setErrorMessage(errorMessage);
+        } catch (error) {
+            // Ideally the validation result must be type
+            // ValidationResult. However, if for some reason
+            // developer overrides it and just send a string
+            // or a Error object we need to gracefully handle
+            // the result.
+            readDynamicErrorAndSetToState(error);
             return false;
         }
     };
+
+    const readDynamicErrorAndSetToState = (error: any): void => {
+        setHasError(true);
+        if (error) {
+            if (typeof error === "string") {
+                setErrorMessage(error);
+            } else if (error instanceof Error) {
+                setErrorMessage(error?.message);
+            } else if (isTypeValidationResult(error)) {
+                setErrorMessage(error.errorMessage ?? EMPTY_STRING);
+            } else {
+                setErrorMessage("Your input has unknown errors.");
+            }
+        }
+    }
 
     // TODO: As a improvement implement the context component (this)
     //       to support multiple file upload/attach strategy. If attaching
@@ -194,24 +223,27 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     //       to the state only if its a new change.
 
     const addFileToState = async (file: File): Promise<void> => {
-        await validate(file);
-        setFile(file);
-        try {
-            setSerializedData(await fileStrategy.serialize(file));
-        } catch ({ errorMessage }) {
-            setHasError(true);
-            setErrorMessage(errorMessage);
+        if (await validate(file)) {
+            setFile(file);
+            // Then do serialize the raw data.
+            try {
+                const serialized = await fileStrategy.serialize(file);
+                setSerializedData(serialized);
+            } catch (error) {
+                readDynamicErrorAndSetToState(error);
+            }
         }
     };
 
     const addPastedDataToState = async (text: string): Promise<void> => {
-        await validate(text);
-        setPastedContent(text);
-        try {
-            setSerializedData(await fileStrategy.serialize(text));
-        } catch ({ errorMessage }) {
-            setHasError(true);
-            setErrorMessage(errorMessage);
+        if (await validate(text)) {
+            setPastedContent(text);
+            // Then do serialize the raw data.
+            try {
+                setSerializedData(await fileStrategy.serialize(text));
+            } catch (error) {
+                readDynamicErrorAndSetToState(error);
+            }
         }
     };
 
@@ -228,6 +260,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             const file = event.dataTransfer.files[ FIRST_FILE_INDEX ];
             if (file) {
                 addFileToState(file);
+                setFileFieldTouched(true);
+                setPasteFieldTouched(false)
             }
         }
     }
@@ -255,6 +289,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         const file: File = event.target.files[ FIRST_FILE_INDEX ];
         event.target.value = null;
         addFileToState(file);
+        setFileFieldTouched(true);
+        setPasteFieldTouched(false);
     };
 
     const handleOnUploadButtonClick = (event: React.MouseEvent): void => {
@@ -271,7 +307,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         menuItem: "Upload",
         render: () => {
             const previewPlaceholder = (
-                <Segment placeholder>
+                <Segment placeholder color="green">
                     <Segment textAlign="center" basic>
                         <GenericIcon
                             inline
@@ -279,14 +315,20 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                             size="auto"
                             icon={ placeholderIcon }
                         />
-                        <p className="file-name">{ file?.name }</p>
-                        <Icon name="trash alternate" link onClick={ () => {
-                            // Reset the data and errors back to defaults.
-                            setFile(null);
-                            setSerializedData(null);
-                            setErrorMessage(null);
-                            setHasError(false);
-                        } }/>
+                        <p>You have selected <em className="file-name">{ file?.name }</em> file</p>
+                        <p>Not this file?</p>
+                        <Button
+                            inverted
+                            color="red"
+                            onClick={ () => {
+                                setFile(null);
+                                setSerializedData(null);
+                                setErrorMessage(null);
+                                setHasError(false);
+                                setFileFieldTouched(false);
+                            } }>
+                            <Icon name='trash alternate'/> Remove
+                        </Button>
                     </Segment>
                 </Segment>
             );
@@ -317,22 +359,21 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         menuItem: "Paste",
         render: () => {
             return (
-                <Form>
-                    <TextArea
-                        rows={ 10 }
-                        placeholder={ "Paste data in this area..." }
-                        value={ pastedContent }
-                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            if (event) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            addPastedDataToState(event.target.value ?? EMPTY_STRING);
-                        } }
-                        spellCheck={ false }
-                        className={ `certificate-editor ${ dark ? "dark" : "light" }` }
-                    />
-                </Form>
+                <TextArea
+                    rows={ 10 }
+                    placeholder={ "Paste data in this area..." }
+                    value={ pastedContent }
+                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        if (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        addPastedDataToState(event.target.value ?? EMPTY_STRING);
+                        setPasteFieldTouched(true);
+                    } }
+                    spellCheck={ false }
+                    className={ `certificate-editor ${ dark ? "dark" : "light" }` }
+                />
             );
         }
     };
@@ -354,15 +395,20 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 panes={ [ dragOption, pasteOption ] }
                 activeIndex={ activeIndex }
                 onTabChange={ (event, { activeIndex }) => {
-                    setActiveIndex(parseInt(activeIndex.toString()));
+                    const index = parseInt(activeIndex.toString());
+                    setActiveIndex(index);
+                    if (index === 0 && fileFieldTouched && !pastedContent) {
+                        validate(file);
+                    } else if (index === 1 && pasteFieldTouched && !file) {
+                        validate(pastedContent);
+                    }
                 } }
             />
             {
                 <Message
                     error
                     visible={ hasError }
-                    attached="bottom"
-                    data-testid={ `X-error-message` }
+                    data-testid={ `file-picker-error-message` }
                 >
                     <Icon name='file'/>
                     { errorMessage }
@@ -373,12 +419,21 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
 };
 
-// Re-usable and pluggable file strategies for the component. The context of these
-// different strategies is the FilePicker component itself. It makes the FilePicker
-// dynamic on handling the file specific logic. You can implement different
-// strategies for each use-case or use the available ones.
+/**
+ * Re-usable and pluggable file strategies for the component. The context of these
+ * different strategies is the FilePicker component itself. It makes the FilePicker
+ * dynamic on handling the file specific logic. You can implement different
+ * strategies for each use-case or use the available ones.
+ */
 
-interface PickerStrategy<T> {
+export interface PickerResult<T> {
+    file?: File;
+    pastedContent?: string;
+    serialized?: T | any;
+    valid?: boolean;
+}
+
+export interface PickerStrategy<T> {
     /**
      * Should contain the logic to validate a attached file or
      * the pasted text into the text area. For example, you can
@@ -412,12 +467,18 @@ interface PickerStrategy<T> {
     serialize: (data: File | string) => Promise<T>;
 }
 
+// Validation stuff.
+
 interface ValidationResult {
     valid: boolean;
     errorMessage?: string;
 }
 
-// Concrete strategies
+function isTypeValidationResult(obj: any): boolean {
+    return obj && ('valid' in obj || 'errorMessage' in obj);
+}
+
+// Concrete strategies implementations.
 
 export class DefaultFileStrategy implements PickerStrategy<string> {
 
@@ -544,7 +605,7 @@ export class XMLFileStrategy implements PickerStrategy<string> {
 
 }
 
-interface CertificateDecodeResult {
+export interface CertificateDecodeResult {
     forgeObject: any;
     pem: string;
     pemStripped: string;
@@ -565,24 +626,18 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
             this.mimeTypes = mimeTypes;
     }
 
-    async serialize(data: File | string): Promise<CertificateDecodeResult> {
-        return new Promise<CertificateDecodeResult>((resolve, reject) => {
-            if (data instanceof File) {
-                this.convertFromFile(data)
-                    .then(resolve)
-                    .catch(({ errorMessage }) => reject(errorMessage));
-            } else {
-                this.convertFromString(data)
-                    .then(resolve)
-                    .catch(({ errorMessage }) => reject(errorMessage));
-            }
-        });
+    serialize(data: File | string): Promise<CertificateDecodeResult> {
+        if (data instanceof File) {
+            return this.convertFromFile(data);
+        } else {
+            return this.convertFromString(data);
+        }
     }
 
-    async validate(data: File | string): Promise<ValidationResult> {
+    validate(data: File | string): Promise<ValidationResult> {
         return new Promise((resolve, reject) => {
             if (data instanceof File) {
-                this.convertFromFile(data).then((res) => {
+                this.convertFromFile(data).then(() => {
                     resolve({ valid: true });
                 }).catch(() => {
                     reject({
@@ -593,7 +648,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                     });
                 });
             } else {
-                this.convertFromString(data).then((res) => {
+                this.convertFromString(data).then(() => {
                     resolve({ valid: true });
                 }).catch(() => {
                     reject({
@@ -605,7 +660,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
         });
     }
 
-    async convertFromString(text: string): Promise<CertificateDecodeResult> {
+    convertFromString(text: string): Promise<CertificateDecodeResult> {
         return new Promise<CertificateDecodeResult>((resolve, reject) => {
             try {
                 const certificateForge = new X509().readCertFromPEM(text);
@@ -633,7 +688,7 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
         });
     }
 
-    async convertFromFile(file: File): Promise<CertificateDecodeResult> {
+    convertFromFile(file: File): Promise<CertificateDecodeResult> {
         return new Promise((resolve, reject) => {
             file.arrayBuffer().then((buf: ArrayBuffer) => {
                 try {
@@ -678,20 +733,29 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
                                 pemStripped: pemStripped
                             });
                         } catch {
-                            const certificate = forge.pki.certificateFromPem(byteString.data);
-                            const pem = forge.pki.certificateToPem(certificate);
-                            const cert = new X509();
-                            cert.readCertPEM(pem);
-                            const pemStripped = CertificateManagementUtils.stripPem(pem);
-                            resolve({
-                                forgeObject: cert,
-                                pem: pem,
-                                pemStripped: pemStripped
-                            });
+                            try {
+                                const certificate = forge.pki.certificateFromPem(byteString.data);
+                                const pem = forge.pki.certificateToPem(certificate);
+                                const cert = new X509();
+                                cert.readCertPEM(pem);
+                                const pemStripped = CertificateManagementUtils.stripPem(pem);
+                                resolve({
+                                    forgeObject: cert,
+                                    pem: pem,
+                                    pemStripped: pemStripped
+                                });
+                            } catch {
+                                reject({
+                                    valid: false,
+                                    errorMessage: "Certificate file has errors."
+                                });
+                            }
                         }
                     }
                 }
-            })
+            }).catch((error) => {
+                reject(error);
+            });
         });
     }
 
