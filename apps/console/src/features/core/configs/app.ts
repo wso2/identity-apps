@@ -66,7 +66,8 @@ export class Config {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
-            developerApp: window["AppUtils"].getConfig().developerApp,
+            developerApp: window[ "AppUtils" ].getConfig().developerApp,
+            docSiteURL: window["AppUtils"].getConfig().docSiteUrl,
             documentation: {
                 baseURL: window["AppUtils"].getConfig().documentation?.baseURL
                     ?? DocumentationConstants.GITHUB_API_BASE_URL,
