@@ -198,6 +198,7 @@ export const AppUtils = (function() {
                     displayName: _config.developerApp.displayName,
                     path: this.constructAppPaths(_config.developerApp.path)
                 },
+                docSiteUrl: _config.docSiteUrl,
                 documentation: _config.documentation,
                 extensions: _config.extensions,
                 helpCenterUrl: _config.helpCenterUrl,
