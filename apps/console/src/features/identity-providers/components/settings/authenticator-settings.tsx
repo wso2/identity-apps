@@ -112,6 +112,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         [ "data-testid" ]: testId
     } = props;
 
+    console.log(identityProvider);
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -139,7 +140,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface): void => {
 
         setIsPageLoading(true);
-
         // Special checks on Google IDP
         if (values.authenticatorId === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
             // Enable/disable the Google authenticator based on client id and secret
@@ -268,10 +268,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
+                const authenticator = res[ 0 ].data;
+                authenticator.isEnabled = true;
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
-                    const authenticator = res[ 0 ].data;
                     authenticator.isDefault = true;
                     handleAuthenticatorConfigFormSubmit(authenticator);
                 }
