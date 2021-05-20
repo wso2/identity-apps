@@ -76,7 +76,6 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
         if (inputType == FieldInputTypes.INPUT_PASSWORD) {
             return (
                 <FinalFormField
-                    { ...rest }
                     key={ testId }
                     type="password"
                     name={ props.name }
@@ -85,12 +84,12 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     validate={ (value, allValues, meta) =>
                         getValidation(value, meta, "password", props.required, inputType, validation)
                     }
+                    { ...rest }
                 />
             );
         } else if (inputType == FieldInputTypes.INPUT_COPY) {
             return (
                 <FinalFormField
-                    { ...rest }
                     key={ testId }
                     type="text"
                     name={ props.name }
@@ -99,12 +98,12 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     validate={ (value, allValues, meta) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }
+                    { ...rest }
                 />
             );
         } else {
             return (
                 <FinalFormField
-                    { ...props }
                     key={ testId }
                     type="text"
                     name={ props.name }
@@ -113,6 +112,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     validate={ (value, allValues, meta) =>
                         getValidation(value, meta, "text", props.required, inputType, validation)
                     }
+                    { ...props }
                 />
             );
         }
