@@ -108,7 +108,6 @@ export interface FeatureConfigInterface {
  * Portal Deployment config interface inheriting the common configs from core module.
  */
 export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseMode, Storage> {
-
     /**
      * Configs of the Admin app.
      */
