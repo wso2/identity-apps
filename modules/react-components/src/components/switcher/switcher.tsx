@@ -41,6 +41,12 @@ interface StrictSwitcher {
      * option that passed to this.
      */
     defaultOptionValue?: string;
+    /**
+     * The initial selected value. This is different from default option
+     * value. Where default option specify the sort order and the selected
+     * value describes the initial selected value.
+     */
+    selectedValue?: string;
 }
 
 interface StrictSwitcherOption {
@@ -197,6 +203,7 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
 
     const {
         defaultOptionValue,
+        selectedValue,
         options,
         onChange,
         ...rest
@@ -226,24 +233,24 @@ export const Switcher: FC<SwitcherProps> = (props: SwitcherProps): ReactElement 
     }
     /**
      * As described in the interface docs. The first element will be
-     * selected by default to ensure we have a value to trigger the
+     * selected by default if selectedto ensure we have a value to trigger the
      * initial event.
      */
     const [ selectedOption, setSelectedOption ] = useState<SwitcherOptionProps>(
+        options.find(({ value }) => value === selectedValue) ??
+        specifiedDefaultOption ??
         options[ FIRST_ELEMENT_INDEX ]
     );
 
     useEffect(() => {
-        if (specifiedDefaultOption) {
-            setSelectedOption(specifiedDefaultOption);
-        }
         /**
          * Trigger the initial event. This makes sure parent gets notified
          * initially when the component renders successfully and allow the
          * parent to know the initial value.
          */
-        if (onChange) onChange(selectedOption);
-    }, []);
+        if (onChange)
+            onChange(selectedOption);
+    });
 
     /**
      * On {@link SwitcherOptionProps} button click this function will
