@@ -253,7 +253,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("console:develop.features..authenticationProvider.forms." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms." +
                     "common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 validation={ (value, validation) => {

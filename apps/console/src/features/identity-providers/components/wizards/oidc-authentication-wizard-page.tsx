@@ -53,6 +53,16 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
 
     const { t } = useTranslation();
 
+    /**
+     * Check client id regex validation
+     */
+    const clientIdRegexValidation= (value) => {
+        const regex = new RegExp(".*")
+        if (!regex.test(value)) {
+            return "Please enter a valid input."
+        }
+    };
+
     return (
         <>
         <Wizard
@@ -111,6 +121,7 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
                         autoComplete={ "" + Math.random() }
                         maxLength={ CLIENT_ID_MAX_LENGTH }
                         minLength={ 3 }
+                        validation ={ (value)=>clientIdRegexValidation(value) }
                         // TODO: checkon key press usecase
                         // onKeyDown={ keyPressed }
                         data-testid={ `${ testId }-idp-client-id` }
