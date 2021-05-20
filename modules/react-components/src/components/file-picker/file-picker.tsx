@@ -11,9 +11,9 @@ import {
     TextArea
 } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
-import { CertificateManagementUtils } from "@wso2is/core";
 import { KJUR, X509 } from "jsrsasign";
 import * as forge from "node-forge";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 
 // TODO: Move polyfills to a generalized module.
 
