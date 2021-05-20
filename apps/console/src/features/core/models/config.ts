@@ -124,6 +124,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * URL of the help center.
      */
     helpCenterURL?: string;
+    /**
+     * URL of the doc site.
+     */
+    docSiteURL?: string;
 }
 
 /**
