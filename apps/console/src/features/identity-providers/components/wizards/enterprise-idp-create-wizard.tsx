@@ -32,7 +32,7 @@ import {
 } from "@wso2is/react-components";
 import { addAlert } from "@wso2is/core/store";
 
-import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useRef, useState } from "react";
+import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { IdentityProviderInterface, IdentityProviderTemplateInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
@@ -44,6 +44,7 @@ import { createIdentityProvider } from "../../api";
 import isEmpty from "lodash-es/isEmpty";
 import { IdentityProviderManagementConstants } from "../../constants";
 import cloneDeep from "lodash-es/cloneDeep";
+import { FormValidation } from "@wso2is/validation";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -84,22 +85,6 @@ type CertificateInputType = "jwks" | "pem";
 type MinMax = { min: number; max: number };
 type FormErrors = { [ key: string ]: string };
 
-// OIDC form constants.
-const CLIENT_ID_MAX_LENGTH: number = 100;
-const CLIENT_SECRET_MAX_LENGTH: number = 100;
-const URL_MAX_LENGTH: number = 2048;
-
-// SAML form constants.
-const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
-const SERVICE_PROVIDER_ENTITY_ID_LENGTH: MinMax = { max: 240, min: 3 };
-const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
-const IDP_ENTITY_ID_LENGTH: MinMax = { max: 2048, min: 5 };
-const JWKS_ENDPOINT_LENGTH: MinMax = { max: 2048, min: 10 };
-
-// General constants
-const EMPTY_STRING = "";
-const FIELD_REQUIRED_MESSAGE = "This field is required";
-
 export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     props: PropsWithChildren<EnterpriseIDPCreateWizardProps>
 ): ReactElement => {
@@ -113,28 +98,41 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     } = props;
 
     const wizardRef = useRef(null);
+
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
-    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("manual");
-    const [ xmlBase64String, setXmlBase64String ] = useState<string>();
-
-    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
     const [ pemString, setPemString ] = useState<string>(EMPTY_STRING);
+    const [ xmlBase64String, setXmlBase64String ] = useState<string>();
+    const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
+    const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
+    const [ selectedCertificateFile, setSelectedCertificateFile ] = useState<File>(null);
+    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
+    const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
+    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
+    const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
+
+    const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     useEffect(() => {
-        setWizardSteps(getWizardSteps());
-        setInitWizard(false);
+        if (!initWizard) {
+            setWizardSteps(getWizardSteps());
+            setInitWizard(true);
+        }
     }, [ initWizard ]);
 
     useEffect(() => {
         setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem")
-    }, [ selectedProtocol ])
+    }, [ selectedProtocol ]);
+
+    const initialValues = useMemo(() => ({
+        RequestMethod: "post",
+        NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+    }), []);
 
     // Utils
 
@@ -309,7 +307,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const wizardCommonFirstPage = () => (
         <WizardPage validate={ (values: any) => {
             const errors: FormErrors = {};
-            if (!values.name) errors.name = FIELD_REQUIRED_MESSAGE;
+            errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
         } }>
             <Field.Input
@@ -322,7 +321,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 maxLength={ IDP_NAME_LENGTH.max }
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
-                width={ 10 }
+                width={ 15 }
             />
             <Grid>
                 <Grid.Row>
@@ -362,13 +361,18 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     );
 
     const samlConfigurationPage = () => (
-        <WizardPage validate={ (values): any => {
+        <WizardPage validate={ (values) => {
             const errors: FormErrors = {};
-            if (!values.SPEntityId) errors.SPEntityId = FIELD_REQUIRED_MESSAGE;
-            if (!values.NameIDType) errors.NameIDType = FIELD_REQUIRED_MESSAGE;
-            if (!values.SSOUrl) errors.SSOUrl = FIELD_REQUIRED_MESSAGE;
-            if (!values.IdPEntityId) errors.IdPEntityId = FIELD_REQUIRED_MESSAGE;
-            if (!values.RequestMethod) errors.RequestMethod = FIELD_REQUIRED_MESSAGE;
+            errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
+            errors.NameIDType = composeValidators(required)(values.NameIDType);
+            errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
+            errors.IdPEntityId = composeValidators(required, length(IDP_EID_LENGTH))(values.IdPEntityId);
+            errors.RequestMethod = composeValidators(required)(values.RequestMethod);
+            if (selectedSamlConfigMode === "file") {
+                setNextShouldBeDisabled(!xmlBase64String);
+            } else {
+                setNextShouldBeDisabled(ifFieldsHave(errors));
+            }
             return errors;
         } }>
             <Field.Input
@@ -377,30 +381,31 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 name="SPEntityId"
                 label="Service Provider Entity ID"
                 required={ true }
-                maxLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.max }
-                minLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.min }
+                maxLength={ SP_EID_LENGTH.max }
+                minLength={ SP_EID_LENGTH.min }
                 width={ 15 }
                 placeholder="Enter a Service Provider Entity ID"
             />
-            {/*<Grid>*/}
-            {/*    <Grid.Row columns={ 1 }>*/}
-            {/*        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>*/}
-            {/*            <p><b>Mode of Configuration</b></p>*/}
-            {/*            <Switcher*/}
-            {/*                className={ "mt-1" }*/}
-            {/*                defaultOptionValue="file"*/}
-            {/*                onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }*/}
-            {/*                options={ [ {*/}
-            {/*                    value: "manual",*/}
-            {/*                    label: "Manual Configuration",*/}
-            {/*                }, {*/}
-            {/*                    value: "file",*/}
-            {/*                    label: "File Based Configuration",*/}
-            {/*                } ] }*/}
-            {/*            />*/}
-            {/*        </Grid.Column>*/}
-            {/*    </Grid.Row>*/}
-            {/*</Grid>*/}
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <p><b>Mode of Configuration</b></p>
+                        <Switcher
+                            className={ "mt-1" }
+                            defaultOptionValue="file"
+                            selectedValue={ selectedSamlConfigMode }
+                            onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
+                            options={ [ {
+                                value: "manual",
+                                label: "Manual Configuration",
+                            }, {
+                                value: "file",
+                                label: "File Based Configuration",
+                            } ] }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
                     <React.Fragment>
@@ -410,8 +415,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             label="Name ID Format"
                             required={ true }
                             width={ 15 }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
                             children={ getAvailableNameIDFormats() }
+                            value={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
                             placeholder="Select an available name identifier"
                         />
                         <Field.Input
@@ -431,8 +436,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="IdPEntityId"
                             label="Identity Provider Entity ID"
                             required={ true }
-                            maxLength={ IDP_ENTITY_ID_LENGTH.max }
-                            minLength={ IDP_ENTITY_ID_LENGTH.min }
+                            maxLength={ IDP_EID_LENGTH.max }
+                            minLength={ IDP_EID_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                         />
@@ -441,9 +446,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="RequestMethod"
                             label="SAML Protocol Binding"
                             required={ true }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
                             children={ getAvailableProtocolBindingTypes() }
                             width={ 15 }
+                            value={ "post" }
                             placeholder={ "Select mode of protocol binding" }
                         />
                     </React.Fragment>
@@ -451,15 +456,18 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 : (
                     <FilePicker
                         key={ 1 }
-                        fileStrategy={ new XMLFileStrategy() }
+                        fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                        file={ selectedMetadataFile }
+                        pastedContent={ pastedMetadataContent }
                         onChange={ (result) => {
-                            // meta_data_saml
+                            setSelectedMetadataFile(result.file);
+                            setPastedMetadataContent(result.pastedContent);
                             setXmlBase64String(result.serialized as string);
                         } }
                         uploadButtonText="Upload Metadata File"
                         dropzoneText="Drag and drop a XML file here."
                         icon={ getCertificateIllustrations().uploadPlaceholder }
-                        placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                        placeholderIcon={ <Icon name="file code" size="huge"/> }
                     />
                 )
             }
@@ -470,10 +478,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <WizardPage validate={ (values) => {
                 const errors: FormErrors = {};
-                if (!values.clientId) errors.clientId = 'Required';
-                if (!values.clientSecret) errors.clientSecret = 'Required';
-                if (!values.authorizationEndpointUrl) errors.authorizationEndpointUrl = 'Required';
-                if (!values.tokenEndpointUrl) errors.tokenEndpointUrl = 'Required';
+                errors.clientId = composeValidators(required, length(IDP_NAME_LENGTH))(values.clientId);
+                errors.clientSecret = composeValidators(required, length(IDP_NAME_LENGTH))(values.clientSecret);
+                errors.authorizationEndpointUrl = composeValidators(required, length(IDP_NAME_LENGTH))(values.authorizationEndpointUrl);
+                errors.tokenEndpointUrl = composeValidators(required, length(IDP_NAME_LENGTH))(values.tokenEndpointUrl);
+                setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
             } }>
                 <Field.Input
@@ -530,13 +539,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     width={ 13 }
                 />
             </WizardPage>
-        )
+        );
     };
 
     const certificatesPage = () => (
-        <WizardPage validate={ (values) => {
-            const errors: FormErrors = {};
-            return errors;
+        <WizardPage validate={ () => {
+            setNextShouldBeDisabled(!pemString);
+            return {};
         } }>
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -547,6 +556,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 compact
                                 className={ "mt-1" }
                                 defaultOptionValue="jwks"
+                                selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
                                     value: "jwks",
@@ -568,8 +578,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     name="jwks_endpoint"
                     label="JWKS Endpoint URL"
                     required={ true }
-                    maxLength={ JWKS_ENDPOINT_LENGTH.max }
-                    minLength={ JWKS_ENDPOINT_LENGTH.min }
+                    maxLength={ JWKS_URL_LENGTH.max }
+                    minLength={ JWKS_URL_LENGTH.min }
                     width={ 15 }
                     placeholder="Enter JWKS Endpoint URL"
                 />
@@ -577,9 +587,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             { (selectedCertInputType === "pem") && (
                 <FilePicker
                     key={ 2 }
-                    fileStrategy={ new CertFileStrategy() }
+                    file={ selectedCertificateFile }
+                    pastedContent={ pastedPEMContent }
+                    fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                     onChange={ (result) => {
                         if (result?.serialized) {
+                            setPastedPEMContent(result?.pastedContent);
+                            setSelectedCertificateFile(result?.file);
                             setPemString(result.serialized.pemStripped);
                         }
                     } }
@@ -609,8 +623,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             ];
         }
     };
-
-    const resolveWizardInitialValues = () => ({});
 
     const resolveHelpPanel = () => {
 
@@ -660,7 +672,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             closeOnEscape
             data-testid={ `${ testId }-modal` }>
             <ModalWithSidePanel.MainPanel>
-
                 { /*Modal header*/ }
                 <ModalWithSidePanel.Header
                     className="page-header-inner with-image"
@@ -689,7 +700,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         </Header>
                     </div>
                 </ModalWithSidePanel.Header>
-
                 { /*Modal body content*/ }
                 <React.Fragment>
                     <ModalWithSidePanel.Content
@@ -712,16 +722,15 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         { alert && alertComponent }
                         <Wizard2
                             ref={ wizardRef }
-                            initialValues={ resolveWizardInitialValues() }
+                            initialValues={ initialValues }
                             onSubmit={ handleFormSubmit }
-                            uncontrollable={ true }
+                            uncontrolledForm={ true }
                             pageChanged={ (index: number) => setCurrentWizardStep(index) }
                             data-testid={ testId }>
                             { resolveWizardPages() }
                         </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
-
                 { /*Modal actions*/ }
                 <ModalWithSidePanel.Actions
                     data-testid={ `${ testId }-modal-actions` }>
@@ -738,6 +747,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 {/*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
+                                        disabled={ nextShouldBeDisabled }
                                         floated="right" onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
@@ -752,6 +762,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                     // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
+                                        disabled={ nextShouldBeDisabled }
+                                        type="submit"
                                         floated="right" onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
@@ -761,6 +773,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 ) }
                                 { currentWizardStep > 0 && (
                                     <LinkButton
+                                        type="submit"
                                         floated="right" onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
@@ -771,11 +784,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         </Grid.Row>
                     </Grid>
                 </ModalWithSidePanel.Actions>
-
             </ModalWithSidePanel.MainPanel>
-
             { resolveHelpPanel() }
-
         </ModalWithSidePanel>
     );
 
@@ -788,4 +798,55 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 EnterpriseIDPCreateWizard.defaultProps = {
     currentStep: 0,
     "data-testid": "idp-edit-idp-create-wizard"
+};
+
+// OIDC form constants.
+const OIDC_CLIENT_ID_MAX_LENGTH: MinMax = { max: 100, min: 1 };
+const OIDC_CLIENT_SECRET_MAX_LENGTH: MinMax = { max: 100, min: 1 };
+const OIDC_URL_MAX_LENGTH: MinMax = { max: 2048, min: 10 };
+
+// SAML form constants.
+const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
+const SP_EID_LENGTH: MinMax = { max: 240, min: 3 };
+const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
+const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+
+// General constants
+const EMPTY_STRING = "";
+const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+
+// Validation Functions
+
+const composeValidators = (...validators) => (value) => {
+    return validators.reduce(
+        (error, validator) => error || validator(value),
+        undefined
+    );
+};
+
+const ifFieldsHave = (errors: FormErrors): boolean => {
+    return !Object.keys(errors).every((k) => !errors[ k ]);
+};
+
+const required = (value: any) => {
+    if (!value) {
+        return `This is a required field`;
+    }
+    return undefined;
+};
+
+const length = (minMax: MinMax) => (value) => {
+    if (value.length > minMax.max) {
+        return `Cannot exceed more than ${ minMax.max } characters.`;
+    }
+    if (value.length < minMax.min) {
+        return `Should have at least ${ minMax.min } characters.`;
+    }
+    return undefined;
+};
+
+const isUrl = (value) => {
+    return FormValidation.url(value) ? undefined : "This value is invalid."
 };
