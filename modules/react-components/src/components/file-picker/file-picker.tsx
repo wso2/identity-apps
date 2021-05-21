@@ -76,15 +76,37 @@ export interface FilePickerProps {
     placeholderIcon?: SemanticICONS | Icon | SVGElement | string | any;
     /**
      * A prop that accepts a file by default. This file will
-     * be the initial state for the picker.
+     * be the initial state for the picker. Behaviour is same
+     * as {@link pastedContent}.
      */
     file?: File | null;
     /**
-     * Add a prop that accepts a raw string by default. The raw value
+     * A prop that accepts a raw string by default. The raw value
      * should be bind to the form and the api consumer can specify
-     * whether to fire the initial values via a callback.
+     * whether to fire the initial values via {@link onChange}
+     * callback.
      */
     pastedContent?: string | null;
+    /**
+     * By enabling this you can always guarantee that a field value
+     * remove operation (either file or pasted content) will provide
+     * the subsequent serialized value of the next available value
+     * or none at all.
+     *
+     * Say for example: A user can upload a certificate or paste the PEM
+     * string in the textarea. First, user will switch to "Paste" tab
+     * and paste the value. Now component will propagate the change
+     * to parent with {@link PickerResult}. However, then the user switch
+     * to "Upload" tab and uploads a different file. Once again component
+     * will propagate those change to parent. However, if the user remove
+     * a certain input value we need a way to show what input is being
+     * used in the form.
+     *
+     * This property ensures the value that gets saved to the state,
+     * propagate, and also visually represent in the form which input
+     * is being used.
+     */
+    normalizeStateOnRemoveOperations?: boolean;
 }
 
 // Internal workings interfaces, type defs, and aliases.
@@ -101,6 +123,7 @@ type FilePickerPropsAlias = PropsWithChildren<FilePickerProps>;
 
 const FIRST_FILE_INDEX = 0;
 const FIRST_TAB_INDEX = 0;
+const SECOND_TAB_INDEX = 1;
 const EMPTY_STRING = "";
 
 export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): ReactElement => {
@@ -113,7 +136,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         icon,
         placeholderIcon,
         file: initialFile,
-        pastedContent: initialPastedContent
+        pastedContent: initialPastedContent,
+        normalizeStateOnRemoveOperations
     } = props;
 
     // Document queries
@@ -139,13 +163,15 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     useEffect(() => {
         if (initialFile) {
             addFileToState(initialFile);
+            setActiveIndex(FIRST_TAB_INDEX);
             return;
         }
         if (initialPastedContent) {
             addPastedDataToState(initialPastedContent);
+            setActiveIndex(SECOND_TAB_INDEX);
             return;
         }
-    }, []);
+    }, [ initialFile, initialPastedContent ]);
 
     useEffect(() => {
         // Query the preferred color scheme.
@@ -174,7 +200,12 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 file: file,
                 pastedContent: pastedContent,
                 serialized: serializedData,
-                valid: !hasError
+                /**
+                 * In order result to be valid. Form should not contain errors,
+                 * there should be some serialized content, and one of the used
+                 * input methods. !! is equivalent to val !== null or Boolean(val)
+                 */
+                valid: !hasError && !!serializedData && (!!file || !!pastedContent)
             });
         }
     }, [ serializedData, errorMessage, file, pastedContent ]);
@@ -214,6 +245,11 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         }
     }
 
+    // TODO: As a improvement add multiple tabs option. The implementation
+    //       of that is a little tricky. We can achieve the behaviour using
+    //       the same strategy pattern but it MUST not complex the concrete
+    //       implementation.
+
     // TODO: As a improvement implement the context component (this)
     //       to support multiple file upload/attach strategy. If attaching
     //       multiple then tabs Paste option should be removed dynamically.
@@ -225,10 +261,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     const addFileToState = async (file: File): Promise<void> => {
         if (await validate(file)) {
             setFile(file);
-            // Then do serialize the raw data.
             try {
-                const serialized = await fileStrategy.serialize(file);
-                setSerializedData(serialized);
+                setSerializedData(await fileStrategy.serialize(file));
             } catch (error) {
                 readDynamicErrorAndSetToState(error);
             }
@@ -238,7 +272,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
     const addPastedDataToState = async (text: string): Promise<void> => {
         if (await validate(text)) {
             setPastedContent(text);
-            // Then do serialize the raw data.
             try {
                 setSerializedData(await fileStrategy.serialize(text));
             } catch (error) {
@@ -261,7 +294,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             if (file) {
                 addFileToState(file);
                 setFileFieldTouched(true);
-                setPasteFieldTouched(false)
+                setPasteFieldTouched(false);
+            } else {
+                setFile(null);
             }
         }
     }
@@ -301,6 +336,38 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         hiddenFileUploadInput.current.click();
     };
 
+    /**
+     * Once the selected file gets removed. We need to re-evaluate
+     * the pasted content properly to send the serialized value to
+     * the parent component. This is because the values can differ
+     * in both the inputs and can lead to data inconsistencies if
+     * not handled properly.
+     */
+    const normalizeSerializationOnFileRemoval = (): void => {
+        if (pastedContent) {
+            addPastedDataToState(pastedContent);
+            setActiveIndex(SECOND_TAB_INDEX);
+        } else {
+            setSerializedData(null);
+        }
+    };
+
+    /**
+     * This should be used when the user removed the entire string
+     * from the textarea. Same as above {@link normalizeSerializationOnFileRemoval}
+     * scenario we need to re-evaluate the selected file properly and set
+     * the serialized value to the parent component since two inputs can
+     * have different values simultaneously.
+     */
+    const normalizeSerializationOnPastedTextClear = (): void => {
+        if (file) {
+            addFileToState(file);
+            setActiveIndex(FIRST_TAB_INDEX);
+        } else {
+            setSerializedData(null);
+        }
+    };
+
     // UI elements and render()
 
     const dragOption: PaneItem = {
@@ -322,10 +389,12 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                             color="red"
                             onClick={ () => {
                                 setFile(null);
-                                setSerializedData(null);
+                                setFileFieldTouched(false);
                                 setErrorMessage(null);
                                 setHasError(false);
-                                setFileFieldTouched(false);
+                                if (normalizeStateOnRemoveOperations) {
+                                    normalizeSerializationOnFileRemoval();
+                                }
                             } }>
                             <Icon name='trash alternate'/> Remove
                         </Button>
@@ -361,15 +430,26 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             return (
                 <TextArea
                     rows={ 10 }
-                    placeholder={ "Paste data in this area..." }
+                    placeholder={ "Paste your content in this area..." }
                     value={ pastedContent }
                     onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                         if (event) {
                             event.preventDefault();
                             event.stopPropagation();
                         }
-                        addPastedDataToState(event.target.value ?? EMPTY_STRING);
+                        if (event?.target?.value) {
+                            addPastedDataToState(event.target.value);
+                        } else {
+                            // CLEAR OPERATION:
+                            // This block executes when the user have cleared all the content
+                            // from the textarea and we will evaluate it as a empty string.
+                            setPastedContent(EMPTY_STRING);
+                            if (normalizeStateOnRemoveOperations) {
+                                normalizeSerializationOnPastedTextClear();
+                            }
+                        }
                         setPasteFieldTouched(true);
+                        setFileFieldTouched(false);
                     } }
                     spellCheck={ false }
                     className={ `certificate-editor ${ dark ? "dark" : "light" }` }
@@ -387,6 +467,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 accept={ fileStrategy.mimeTypes.join(",") }
                 onChange={ handleOnFileInputChange }
             />
+            { /*TODO: Improvement*/ }
             { /*A dynamic input should be placed here so that we can*/ }
             { /*take a preferred file name for the picked file. */ }
             <Tab
@@ -471,7 +552,7 @@ export interface PickerStrategy<T> {
 
 interface ValidationResult {
     valid: boolean;
-    errorMessage?: string;
+    errorMessage?: string | undefined | null;
 }
 
 function isTypeValidationResult(obj: any): boolean {
@@ -518,9 +599,11 @@ export class XMLFileStrategy implements PickerStrategy<string> {
     }
 
     async serialize(data: File | string): Promise<string> {
-
         return new Promise<string>((resolve, reject) => {
-
+            if (!data) {
+                reject({ valid: false });
+                return;
+            }
             if (data instanceof File) {
                 const reader = new FileReader();
                 reader.readAsText(data, XMLFileStrategy.ENCODING);
@@ -545,7 +628,6 @@ export class XMLFileStrategy implements PickerStrategy<string> {
                 });
             }
         });
-
     }
 
     async validate(data: File | string): Promise<ValidationResult> {
