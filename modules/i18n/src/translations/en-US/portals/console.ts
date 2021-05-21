@@ -7469,7 +7469,7 @@ export const console: ConsoleNS = {
                         sessionDetails: {
                             actions: {
                                 terminateAllSessions: "Terminate All",
-                                terminateSession: "TerminateSession"
+                                terminateSession: "Terminate Session"
                             },
                             labels: {
                                 browser: "Browser",

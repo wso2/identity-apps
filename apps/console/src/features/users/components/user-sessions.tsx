@@ -49,6 +49,7 @@ import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { getUserSessionAccordionIcons } from "../configs";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
+import { CONSUMER_USERSTORE } from "../../userstores";
 
 /**
  * Proptypes for the user sessions component.
@@ -289,6 +290,21 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     };
 
     /**
+     * Returns username without the "CONSUMER" domain reference.
+     *
+     * @param userName
+     * @return userName without CONSUMER domain name
+     */
+    const getUserNameWithoutDomain = (userName: string): string => {
+
+        const splitComponents = userName.split("/");
+        if (splitComponents.length > 1 && splitComponents[0] === CONSUMER_USERSTORE) {
+            return splitComponents[1];
+        }
+        return userName;
+    };
+
+    /**
      * Renders user session details.
      *
      * @param {UserSessionInterface} session - User session object.
@@ -424,11 +440,14 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 }
                                                                 tOptions={ {
                                                                     app: application.appName,
-                                                                    user: application.subject.split("@").length > 1 
-                                                                        ? application.subject.split("@")[ 0 ]
-                                                                        .concat("@")
-                                                                        .concat(application.subject.split("@")[ 1 ])
-                                                                        : application.subject.split("@")[ 0 ]
+                                                                    user: getUserNameWithoutDomain(application.subject).
+                                                                    split("@").length > 1
+                                                                        ? getUserNameWithoutDomain(application.subject).
+                                                                        split("@")[ 0 ].concat("@")
+                                                                        .concat(getUserNameWithoutDomain(application.subject).
+                                                                        split("@")[ 1 ])
+                                                                        : getUserNameWithoutDomain(application.subject)
+                                                                            .split("@")[ 0 ]
                                                                 } }
                                                             >
                                                                 { "Logged in on " }
@@ -672,10 +691,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     onClose={ (): void => {
                                         if (showSessionTerminateConfirmationModal) {
                                             setShowSessionTerminateConfirmationModal(false);
-    
+
                                             return;
                                         }
-    
+
                                         setShowAllSessionsTerminateConfirmationModal(false);
                                     } }
                                     type="warning"
@@ -683,7 +702,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         showSessionTerminateConfirmationModal
                                         || showAllSessionsTerminateConfirmationModal
                                     }
-                                    assertion={ user.userName }
+                                    assertion={ getUserNameWithoutDomain(user.userName) }
                                     assertionHint={ (
                                         <p>
                                             <Trans
@@ -694,9 +713,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                         : "console:manage.features.users.confirmations." +
                                                         "terminateAllSessions.assertionHint"
                                                 }
-                                                tOptions={ { name: user.userName } }
+                                                tOptions={ { name: getUserNameWithoutDomain(user.userName) } }
                                             >
-                                                Please type <strong>{ user.userName }</strong> to confirm.
+                                                Please type <strong>{ getUserNameWithoutDomain(user.userName) }</strong> to confirm.
                                             </Trans>
                                         </p>
                                     ) }
@@ -706,20 +725,20 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     onSecondaryActionClick={ (): void => {
                                         if (showSessionTerminateConfirmationModal) {
                                             setShowSessionTerminateConfirmationModal(false);
-    
+
                                             return;
                                         }
-    
+
                                         setShowAllSessionsTerminateConfirmationModal(false);
                                     } }
                                     onPrimaryActionClick={ (): void => {
                                         if (showSessionTerminateConfirmationModal) {
                                             handleSessionTerminate(terminatingSession.id);
                                             setShowSessionTerminateConfirmationModal(false);
-    
+
                                             return;
                                         }
-    
+
                                         handleAllSessionsTerminate();
                                         setShowAllSessionsTerminateConfirmationModal(false);
                                     } }
