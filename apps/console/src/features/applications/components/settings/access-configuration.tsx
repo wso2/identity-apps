@@ -211,6 +211,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
 
                 onAllowedOriginsUpdate();
+                onUpdate(appId);
             })
             .catch((error) => {
                 if (error?.response?.data?.description) {
@@ -244,8 +245,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         updateApplicationDetails({ id: appId, ...values.general })
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
-
-                onUpdate(appId);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
