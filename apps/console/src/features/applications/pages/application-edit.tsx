@@ -458,10 +458,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
             setDefaultActiveIndex(0);
 
-            if (helpPanelVisibilityGlobalState) {
-                dispatch(toggleHelpPanelVisibility(false));
-            }
-
             return;
         }
 
