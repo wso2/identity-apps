@@ -113,6 +113,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
 
+    // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const dispatch = useDispatch();
@@ -379,7 +380,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 ariaLabel="Service provider entity id"
                 inputType="default"
                 name="SPEntityId"
-                label="Service Provider Entity ID"
+                label="Service provider entity ID"
                 required={ true }
                 maxLength={ SP_EID_LENGTH.max }
                 minLength={ SP_EID_LENGTH.min }
@@ -408,22 +409,22 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             </Grid>
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
-                    <React.Fragment>
+                    <div>
                         <Field.Dropdown
-                            ariaLabel="Name id format"
+                            ariaLabel="Name ID format"
                             name="NameIDType"
-                            label="Name ID Format"
+                            label="Name ID format"
                             required={ true }
                             width={ 15 }
                             children={ getAvailableNameIDFormats() }
-                            value={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
+                            value={ initialValues.NameIDType }
                             placeholder="Select an available name identifier"
                         />
                         <Field.Input
                             inputType="url"
-                            ariaLabel="SSO Url"
+                            ariaLabel="Single sign on URL"
                             name="SSOUrl"
-                            label="SSO URL"
+                            label="Single sign on URL"
                             required={ true }
                             maxLength={ SSO_URL_LENGTH.max }
                             minLength={ SSO_URL_LENGTH.min }
@@ -432,9 +433,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         />
                         <Field.Input
                             inputType="default"
-                            ariaLabel="Identity provider entity id"
+                            ariaLabel="Identity provider entity ID"
                             name="IdPEntityId"
-                            label="Identity Provider Entity ID"
+                            label="Identity provider entity ID"
                             required={ true }
                             maxLength={ IDP_EID_LENGTH.max }
                             minLength={ IDP_EID_LENGTH.min }
@@ -442,16 +443,16 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                         />
                         <Field.Dropdown
-                            ariaLabel="SAML Protocol Binding"
+                            ariaLabel="SAML 2.0 protocol binding"
                             name="RequestMethod"
-                            label="SAML Protocol Binding"
+                            label="SAML 2.0 protocol binding"
                             required={ true }
                             children={ getAvailableProtocolBindingTypes() }
                             width={ 15 }
-                            value={ "post" }
+                            value={ initialValues.RequestMethod }
                             placeholder={ "Select mode of protocol binding" }
                         />
-                    </React.Fragment>
+                    </div>
                 )
                 : (
                     <FilePicker
@@ -468,6 +469,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         dropzoneText="Drag and drop a XML file here."
                         icon={ getCertificateIllustrations().uploadPlaceholder }
                         placeholderIcon={ <Icon name="file code" size="huge"/> }
+                        normalizeStateOnRemoveOperations={ true }
                     />
                 )
             }
@@ -491,9 +493,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     name="clientId"
                     label={ "Client ID" }
                     required={ true }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
+                    placeholder={ "Enter client id" }
                     data-testid={ `${ testId }-idp-client-id` }
                     width={ 13 }
                 />
@@ -505,10 +507,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     required={ true }
                     hidePassword={ t("common:hide") }
                     showPassword={ t("common:show") }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
                     type="password"
+                    placeholder={ "Enter client secret" }
                     data-testid={ `${ testId }-idp-client-secret` }
                     width={ 13 }
                 />
@@ -601,6 +603,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     dropzoneText="Drag and drop a certificate file here."
                     icon={ getCertificateIllustrations().uploadPlaceholder }
                     placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                    normalizeStateOnRemoveOperations={ true }
                 />
             ) }
         </WizardPage>
@@ -797,7 +800,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
  */
 EnterpriseIDPCreateWizard.defaultProps = {
     currentStep: 0,
-    "data-testid": "idp-edit-idp-create-wizard"
+    "data-testid": "enterprise-idp-create-wizard"
 };
 
 // OIDC form constants.
@@ -817,7 +820,9 @@ const EMPTY_STRING = "";
 const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
 const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
 
-// Validation Functions
+// Validation Functions.
+// FIXME: These will be removed in the future when
+//        form module validation gets to a stable state.
 
 const composeValidators = (...validators) => (value) => {
     return validators.reduce(
