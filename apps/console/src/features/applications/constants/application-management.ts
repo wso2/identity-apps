@@ -327,8 +327,17 @@ export class ApplicationManagementConstants {
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS = [
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
+    ];
+
+    // Authenticators that can handle TOTP.
+    public static readonly TOTP_HANDLERS = [
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+        ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
     /**
