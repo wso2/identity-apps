@@ -58,7 +58,7 @@ export class SignInMethodUtils {
     };
 
     /**
-     * Checks if certain factors are available in the passed in steps.
+     * Checks if at least on the passed in factors are available in the in steps.
      *
      * @param {string[]} factors - Set of factors to check.
      * @param {[]} steps - Authentication steps.
@@ -83,6 +83,60 @@ export class SignInMethodUtils {
         }
 
         return isFound;
+    };
+
+    /**
+     * Returns the number of the immediate step having at least one of the passed in factors.
+     *
+     * @param {string[]} factors - Set of factors to check.
+     * @param {[]} steps - Authentication steps.
+     *
+     * @return {number}
+     */
+    public static getImmediateStepHavingSpecificFactors = (factors: string[],
+                                                           steps: AuthenticationStepInterface[]): number => {
+
+        let isFound: boolean = false;
+        let foundInStep: number = -1;
+
+        for (const [ index, step ] of steps.entries()) {
+            for (const option of step.options) {
+                if (factors.includes(option.authenticator)) {
+                    isFound = true;
+                    foundInStep = index;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                break;
+            }
+        }
+
+        return foundInStep;
+    };
+
+    /**
+     * Counts the occurrence of a specific factors in the passed in steps.
+     *
+     * @param {string[]} factors - Set of factors to check.
+     * @param {[]} steps - Authentication steps.
+     *
+     * @return {number}
+     */
+    public static countSpecificFactorInSteps = (factors: string[], steps: AuthenticationStepInterface[]): number => {
+
+        let count: number = 0;
+
+        for (const step of steps) {
+            for (const option of step.options) {
+                if (factors.includes(option.authenticator)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     };
 
     /**
