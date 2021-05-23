@@ -503,55 +503,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Splits the steps to two parts based on the passed in index.
-     *
-     * @param {number} stepIndex - Index to split.
-     * @param {AuthenticationStepInterface[]} steps - All steps.
-     *
-     * @return {AuthenticationStepInterface[][]}
-     */
-    const getLeftAndRightSideSteps = (stepIndex: number,
-                                      steps: AuthenticationStepInterface[]): AuthenticationStepInterface[][] => {
-
-        const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
-            ? steps.slice(0, stepIndex)
-            : [];
-
-        const rightSideSteps: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
-            ? steps.slice(stepIndex + 1)
-            : [];
-        
-        return [ leftSideSteps, rightSideSteps ];
-    };
-
-    /**
-     * Checks if certain factors are available in the passed in steps.
-     *
-     * @param {string[]} factors - Set of factors to check.
-     * @param {[]} steps - Authentication steps.
-     * @return {boolean}
-     */
-    const hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
-
-        let isFound: boolean = false;
-
-        for (const step of steps) {
-            for (const option of step.options) {
-                if (factors.includes(option.authenticator)) {
-                    isFound = true;
-                    break;
-                }
-            }
-
-            if (isFound) {
-                break;
-            }
-        }
-
-        return isFound;
-    };
-
-    /**
      * Handles the addition of new authentication step.
      */
     const handleAuthenticationStepAdd = (): void => {
