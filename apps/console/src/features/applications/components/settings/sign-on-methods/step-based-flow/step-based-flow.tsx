@@ -164,12 +164,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
-                const newAuthenticator: GenericAuthenticatorInterface = {
-                    ...authenticator,
-                    isEnabled: hasSpecificFactorsInSteps(
-                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ])
-                };
-                secondFactorAuth.push(newAuthenticator);
+                secondFactorAuth.push(authenticator);
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
             }
@@ -227,30 +222,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             type: AuthenticationSequenceType.USER_DEFINED
         });
     }, [ triggerUpdate ]);
-
-    /**
-     * Set second factor authenticators.
-     */
-    useEffect(() => {
-        
-        if (isEmpty(secondFactorAuthenticators)) {
-            return;
-        }
-
-        let shouldEnable: boolean = hasSpecificFactorsInSteps(
-            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ]);
-
-        if (authenticationSteps.length === 1) {
-            shouldEnable = false;
-        }
-
-        setSecondFactorAuthenticators(
-            [ ...secondFactorAuthenticators ].map((authenticator) => {
-                authenticator.isEnabled = shouldEnable;
-                return authenticator;
-            })
-        );
-    }, [ authenticationSteps ]);
 
     /**
      * Try to scroll to the end when a new step is added.
