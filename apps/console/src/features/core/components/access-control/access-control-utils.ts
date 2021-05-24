@@ -50,7 +50,7 @@ export class AccessControlUtils {
                     authenticatedRoutes.push(route);
             }
 
-            if (feature) {
+            if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
                 for (const [ key, value ] of Object.entries(feature?.scopes)) {
                     if (value && value instanceof Array) {
