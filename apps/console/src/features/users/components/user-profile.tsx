@@ -348,7 +348,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             op: "replace",
             value: {}
         };
-        let addressExistsInValue = false;
+        let addressExistsInValue: boolean = false;
 
         profileSchema.forEach((schema: ProfileSchemaInterface) => {
 
