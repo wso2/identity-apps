@@ -47,7 +47,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         ...rest
     } = props;
 
-	const show = hasPermission(when, { resource });
+    const show = hasPermission(when, { resource });
     let hideOn = false;
 
     if (notWhen && notWhen.length > 0) {

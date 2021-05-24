@@ -65,6 +65,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:applications"
+                    ],
                     "create": [
                         "internal_application_mgt_create"
                     ],
@@ -101,6 +104,9 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
+                    "feature": [
+                        "console:attributes"
+                    ],
                     "create": [
                         "internal_claim_meta_create"
                     ],
@@ -169,6 +175,9 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
+                    "feature": [
+                        "console:groups"
+                    ],
                     "create": [
                         "internal_role_mgt_create"
                     ],
@@ -187,6 +196,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:idps"
+                    ],
                     "create": [
                         "internal_idp_create"
                     ],
@@ -205,6 +217,9 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
+                    "feature": [
+                        "console:scopes"
+                    ],
                     "create": [
                         "internal_application_mgt_create"
                     ],
@@ -253,6 +268,9 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
+                    "feature": [
+                        "console:roles"
+                    ],
                     "create": [
                         "internal_role_mgt_create"
                     ],
@@ -289,6 +307,9 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
+                    "feature": [
+                        "console:users"
+                    ],
                     "create": [
                         "internal_user_mgt_create"
                     ],
