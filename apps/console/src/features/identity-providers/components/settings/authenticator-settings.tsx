@@ -51,6 +51,7 @@ import {
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -90,6 +91,9 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 }
 
 const GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH = 100;
+const OIDC_CLIENT_ID_SECRET_MAX_LENGTH = 100;
+const URL_MAX_LENGTH: number = 2048;
+
 
 /**
  *  Identity Provider and advance settings component.
@@ -135,7 +139,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleAuthenticatorConfigFormSubmit = (values: FederatedAuthenticatorListItemInterface): void => {
 
         setIsPageLoading(true);
-
         // Special checks on Google IDP
         if (values.authenticatorId === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
             // Enable/disable the Google authenticator based on client id and secret
@@ -264,10 +267,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
+                const authenticator = res[ 0 ].data;
+                authenticator.isEnabled = true;
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
-                    const authenticator = res[ 0 ].data;
                     authenticator.isDefault = true;
                     handleAuthenticatorConfigFormSubmit(authenticator);
                 }
@@ -604,7 +608,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "callbackUrl") {
                         prop.readOnly = true;
                         prop.description = "The authorized redirect URL used to obtain Google credentials.";
-                        prop.displayName = "Authorized Redirect URL";
+                        prop.displayName = "Authorized redirect URL";
                     }
                 });
 
@@ -648,6 +652,71 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     type: "STRING"
                 };
                 authenticator.meta.properties.push(scopesMeta);
+            }
+
+            // TODO: Need to update below values in the OIDC authenticator metadata API
+            // Set additional meta data if the authenticator is OIDC
+            if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
+                authenticator.meta.properties.map(prop => {
+                    if (prop.key === "ClientId") {
+                        prop.displayName = "Client ID";
+                        prop.description = "The client identifier value of the identity provider.";
+                        prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
+                    } else if (prop.key === "ClientSecret") {
+                        prop.displayName = "Client secret";
+                        prop.description = "The client secret value of the identity provider.";
+                        prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
+                    } else if (prop.key === "callbackUrl") {
+                        prop.displayName = "Authorized redirect URL";
+                        prop.description = "The URL to which the authorization code is sent upon " +
+                            "authentication, and where the user is redirected to upon logout.";
+                    } else if (prop.key === "OAuth2AuthzEPUrl") {
+                        prop.displayName = "Authorization endpoint URL";
+                        prop.description = "The standard authorization endpoint URL obtained from " +
+                            "the identity provider.";
+                        prop.maxLength = URL_MAX_LENGTH;
+                    } else if (prop.key === "OAuth2TokenEPUrl") {
+                        prop.displayName = "Token endpoint URL";
+                        prop.description = "The standard token endpoint URL obtained from " +
+                            "the identity provider.";
+                        prop.maxLength = URL_MAX_LENGTH;
+                    } else if (prop.key === "UserInfoUrl") {
+                        prop.displayName = "User info endpoint URL";
+                        prop.description = "The URL corresponding to the userinfo endpoint.";
+                        prop.maxLength = URL_MAX_LENGTH;
+                        prop.displayOrder = 7;
+                    } else if (prop.key === "IsUserIdInClaims") {
+                        prop.displayName = "User ID found in claims";
+                        prop.description = "The location to find the user identifier in the " +
+                            "ID token assertion.";
+                        prop.displayOrder = 6;
+                    } else if (prop.key === "commonAuthQueryParams") {
+                        prop.displayName = "Additional query parameters";
+                    }
+                });
+
+                // Remove additional query params
+                removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
+                removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
+
+                // Inject logout url
+                const logoutUrlData = {
+                    key: "LogoutUrl"
+                };
+                authenticator.data.properties.push(logoutUrlData);
+                const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
+                    description: "The URL to communicate directly with a client to invalidate " +
+                        "a user session.",
+                    displayName: "Logout URL",
+                    displayOrder: 7,
+                    isConfidential: false,
+                    isMandatory: false,
+                    key: "LogoutUrl",
+                    options: [],
+                    subProperties: [],
+                    type: "URL"
+                };
+                authenticator.meta.properties.push(logoutUrlMeta);
             }
 
             return (

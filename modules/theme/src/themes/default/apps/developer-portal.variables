@@ -54,7 +54,7 @@
 @signOnMethodsAuthStepSectionMaxWidth: 75vw;
 @signOnMethodsAuthStepBorder: 1px dashed rgba(34,36,38,.15);
 @signOnMethodsAuthStepButtonMarginRight: 10px;
-@signOnMethodsAuthCardFontSize: 0.8em;
+@signOnMethodsAuthCardFontSize: 0.9em;
 
 @signOnMethodsAuthStepContainerMarginRight: 68px;
 
@@ -63,6 +63,7 @@
 @signOnMethodsAuthStepOverflow: auto;
 @signOnMethodsAuthStepFlexDirection: row;
 @signOnMethodsAuthStepMinHeight: 220px;
+@signOnMethodsAuthStepPadding: 15px;
 
 /*-------------------------------
       IDP Template Grid

@@ -118,12 +118,12 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                             image={ identityProvider?.image }
                             size="tiny"
                         />
-                        {identityProvider?.name && (
+                        { identityProvider?.name && (
                             <Heading size="small" className="name">{ identityProvider.name }</Heading>
-                        )}
-                        {identityProvider?.description && (
+                        ) }
+                        { identityProvider?.description && (
                             <div className="description">{ identityProvider.description }</div>
-                        )}
+                        ) }
                     </div>
                 </Grid.Column>
             </Grid.Row>

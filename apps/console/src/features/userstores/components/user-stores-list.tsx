@@ -48,8 +48,8 @@ import {
 } from "../../core";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
-import { UserStoreListItem } from "../models";
 import { CONSUMER_USERSTORE_ID } from "../constants";
+import { UserStoreListItem } from "../models";
 
 /**
  * Prop types of the `UserStoresList` component

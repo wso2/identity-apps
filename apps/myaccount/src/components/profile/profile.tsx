@@ -220,7 +220,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         const schemaNames = formName.split(".");
 
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-            schemaNames[0] === "phoneNumbers") {
+            schemaNames[0] === "phoneNumbers" || schemaNames[0] === "addresses") {
             const attributeValues = [];
 
             if (schemaNames.length === 1) {
@@ -250,6 +250,37 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
+                    };
+                }
+            } else if (schemaNames[0] === "addresses") {
+                const attributeValues = [];
+                // List of sub attributes.
+                const subValues = profileDetails.profileInfo[schemaNames[0]]
+                    && profileDetails.profileInfo[schemaNames[0]]
+                        .filter((subAttribute) => typeof subAttribute ===  "object");
+
+                if (subValues && subValues.length > 0) {
+                    subValues.map((value) => {
+                        if (value.type !== schemaNames[1]) {
+                            const subAttributeEntry = {
+                                type: value.type,
+                                formatted: value.value
+                            };
+                            attributeValues.push(subAttributeEntry);
+                        }
+                    });
+                }
+                // This is required as the api doesn't support
+                // patching the address attributes at the sub attribute level.
+                if (schemaNames[0] === "addresses") {
+                    value = {
+                        [schemaNames[0]]: [
+                            ...attributeValues,
+                            {
+                                type: schemaNames[1],
+                                formatted: values.get(formName)
+                            }
+                        ]
                     };
                 }
             } else {

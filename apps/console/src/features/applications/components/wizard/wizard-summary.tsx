@@ -153,7 +153,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div className="label">
                                     { t("console:develop.features.applications.addWizard.steps.summary.sections" +
-                                        ".grantType.heading")}
+                                        ".grantType.heading") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">

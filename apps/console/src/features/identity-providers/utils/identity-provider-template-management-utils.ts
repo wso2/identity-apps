@@ -58,8 +58,10 @@ export class IdentityProviderTemplateManagementUtils {
      * @param {boolean} sort - Should the returning templates be sorted.
      * @return {Promise<void>}
      */
-    public static getIdentityProviderTemplates = (useAPI: boolean = false, skipGrouping: boolean = false,
-                                             sort: boolean = true): Promise<void> => {
+    public static getIdentityProviderTemplates = (useAPI: boolean = false,
+                                                  skipGrouping: boolean = false,
+                                                  sort: boolean = true
+    ): Promise<void | IdentityProviderTemplateInterface[]> => {
 
         if (!useAPI) {
             return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
@@ -79,7 +81,7 @@ export class IdentityProviderTemplateManagementUtils {
 
                     store.dispatch(setIdentityProviderTemplates(templatesWithServices));
 
-                    return Promise.resolve();
+                    return Promise.resolve(templatesWithServices);
                 });
         }
 
@@ -97,7 +99,7 @@ export class IdentityProviderTemplateManagementUtils {
                 availableTemplates.unshift(ExpertModeTemplate);
 
                 store.dispatch(setIdentityProviderTemplates(availableTemplates));
-                return Promise.resolve();
+                return Promise.resolve(availableTemplates);
             })
             .catch((error) => {
                 handleGetIDPTemplateListError(error);

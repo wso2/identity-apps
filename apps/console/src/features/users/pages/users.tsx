@@ -574,7 +574,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     />
                                 }
                                 position="bottom left"
-                                on='click'
+                                on="click"
                                 pinned
                                 trigger={
                                     <Button

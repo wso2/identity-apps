@@ -246,7 +246,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.certificates.keystore.wizard.header")}
+                { t("console:manage.features.certificates.keystore.wizard.header") }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
@@ -276,7 +276,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>{t("common:cancel")}</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>{ t("common:cancel") }</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (

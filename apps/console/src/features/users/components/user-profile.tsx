@@ -348,6 +348,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             op: "replace",
             value: {}
         };
+        let addressExistsInValue: boolean = false;
 
         profileSchema.forEach((schema: ProfileSchemaInterface) => {
 
@@ -363,12 +364,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
 
                     if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-                        schemaNames[0] === "phoneNumbers") {
+                        schemaNames[0] === "phoneNumbers" || schemaNames[0] === "addresses") {
 
                         const attributeValues = [];
                         const attValues: Map<string, string | string []> = new Map();
 
-                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile"
+                            || (schemaNames[0] === "addresses" && !addressExistsInValue)) {
 
                             // Extract the sub attributes from the form values.
                             for (const value of values.keys()) {
@@ -386,10 +388,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     if (attribute.length === 1) {
                                         attributeValues.push(value);
                                     } else {
-                                        attributeValues.push({
-                                            type: attribute[1],
-                                            value: value
-                                        });
+                                        if (schemaNames[0] === "addresses") {
+                                            attributeValues.push({
+                                                type: attribute[1],
+                                                formatted: value
+                                            });
+                                            addressExistsInValue = true;
+                                        } else {
+                                            attributeValues.push({
+                                                type: attribute[1],
+                                                value: value
+                                            });
+                                        }
                                     }
                                 }
                             }

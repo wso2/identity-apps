@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core//helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils, AuthenticateUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -127,29 +127,31 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             const feature = featureConfig[route.id];
             if (feature) {
                 let shouldShowRoute: boolean = false;
-                for (const [ key, value ] of Object.entries(feature?.scopes)) {
-                    if (value && value instanceof Array) {
-                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                            shouldShowRoute = true;
+                if (feature?.enabled) {
+                    for (const [key, value] of Object.entries(feature?.scopes)) {
+                        if (value && value instanceof Array) {
+                            if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
+                                shouldShowRoute = true;
+                            }
                         }
                     }
                 }
-    
+
                 if (route.showOnSidePanel && shouldShowRoute) {
                     controlledRoutes.push(route);
                 }
             } else {
                 controlledRoutes.push(route);
             }
-            
+
         });
 
         if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
-            setAccessControlledRoutes(controlledRoutes); 
+            setAccessControlledRoutes(controlledRoutes);
         } else {
             dispatch(setDeveloperVisibility(false));
         }
-        
+
     }, [ allowedScopes ]);
 
     /**
@@ -178,19 +180,19 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
         // TODO : Temporary fix for access control module
         if (routes.length === 3) {
-            if (routes.filter(route => route.id === "developer-getting-started").length > 0 
-                && routes.filter(route => route.id === "identityProviders").length > 0 
+            if (routes.filter(route => route.id === "developer-getting-started").length > 0
+                && routes.filter(route => route.id === "identityProviders").length > 0
                 && routes.filter(route => route.id === "404").length > 0) {
-                    if (hasRequiredScopes(featureConfig?.identityProviders, 
-                            featureConfig?.identityProviders?.scopes?.read, allowedScopes) 
-                            && !hasRequiredScopes(featureConfig?.applications, 
+                    if (hasRequiredScopes(featureConfig?.identityProviders,
+                            featureConfig?.identityProviders?.scopes?.read, allowedScopes)
+                            && !hasRequiredScopes(featureConfig?.applications,
                                 featureConfig?.applications?.scopes?.read,  allowedScopes)) {
                         routes = routes.filter(route => route.id === "404");
                         dispatch(setDeveloperVisibility(false));
-                    } 
+                    }
             }
-        } else if (routes.length === 2 
-            && routes.filter(route => route.id === "developer-getting-started").length > 0 
+        } else if (routes.length === 2
+            && routes.filter(route => route.id === "developer-getting-started").length > 0
                 && routes.filter(route => route.id === "404").length > 0) {
             routes = routes.filter(route => route.id === "404");
             dispatch(setDeveloperVisibility(false));

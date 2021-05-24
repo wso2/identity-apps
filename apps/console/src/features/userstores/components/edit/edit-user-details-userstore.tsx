@@ -26,8 +26,8 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore } from "../../api";
-import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
 import { CONSUMER_USERSTORE_ID } from "../../constants";
+import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
 
 /**
  * Prop types of `EditUserDetails` component

@@ -54,6 +54,7 @@ import {
 } from "../api";
 import {
     GoogleAuthenticationProviderCreateWizard,
+    OidcAuthenticationProviderCreateWizard,
     IdentityProviderCreateWizard,
     handleGetIDPTemplateAPICallError
 } from "../components";
@@ -62,9 +63,8 @@ import {
     getIdPIcons,
     getIdPTemplateDocsIcons
 } from "../configs";
-import { GOOGLE_IDP_NAME, IdentityProviderManagementConstants } from "../constants";
+import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_ID} from "../constants";
 import {
-    IdentityProviderListResponseInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface, IdentityProviderTemplateLoadingStrategies
@@ -72,6 +72,7 @@ import {
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
 import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -105,13 +106,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         (state: AppState) => state.helpPanel.docStructure);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
-    const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
-        useState<IdentityProviderTemplateInterface>(undefined);
+    const [ templateType, setTemplateType ] = useState<string>(undefined);
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state?.identityProvider?.templates);
-    const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
     const [
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
@@ -224,7 +222,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
             return;
         }
-        
+
         if (urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
             === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
 
@@ -232,38 +230,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             return;
         }
     }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
-
-    /**
-     * Retrieve Identity Provider template.
-     */
-    const getTemplate = (templateId: string): void => {
-
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
-            config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.
-                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
-        if (useAPI) {
-            getIdentityProviderTemplate(templateId)
-                .then((response) => {
-                    if (!response.disabled) {
-                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
-                    }
-                })
-                .catch((error) => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        } else {
-            IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
-                .then((response) => {
-                    if (!response.disabled) {
-                        setSelectedTemplate(response as IdentityProviderTemplateInterface);
-                    }
-                })
-                .catch((error) => {
-                    handleGetIDPTemplateAPICallError(error);
-                });
-        }
-    };
 
     /**
      * Handles back button click.
@@ -282,63 +248,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-            getTemplate(id);
+        setTemplateType(id);
     };
-
-    const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name sw " + idpName).then(
-            (response: IdentityProviderListResponseInterface) => {
-            setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
-                eachIdp => eachIdp.name) : []);
-        });
-    };
-
-    /**
-     * Called when template is selected.
-     */
-    useEffect(() => {
-        if (!selectedTemplate || !selectedTemplate?.idp?.name) {
-            return;
-        }
-        getPossibleListOfDuplicateIdps(selectedTemplate?.idp?.name);
-    }, [selectedTemplate]);
-
-    /**
-     * Generate the next unique name by appending 1-based index number to the provided initial value.
-     *
-     * @param initialIdpName Initial value for the IdP name.
-     * @param idpList The list of available IdPs names.
-     * @return A unique name from the provided list of names.
-     */
-    const generateUniqueIdpName = (initialIdpName: string, idpList: string[]): string => {
-        let idpName = initialIdpName;
-        for (let i = 2; ; i++) {
-            if (!idpList?.includes(idpName)) {
-                break;
-            }
-            idpName = initialIdpName + i;
-        }
-        return idpName;
-    };
-
-    /**
-     * Called when possibleListOfDuplicateIdps is changed.
-     */
-    useEffect(() => {
-        if (!possibleListOfDuplicateIdps) {
-            return;
-        }
-
-        setSelectedTemplateWithUniqueName({
-            ...selectedTemplate,
-            idp: {
-                ...selectedTemplate?.idp,
-                name: generateUniqueIdpName(selectedTemplate?.idp?.name, possibleListOfDuplicateIdps)
-            }
-        });
-
-        setShowWizard(true);
-    }, [ possibleListOfDuplicateIdps ]);
 
     /**
      * Handles help panel template doc change event.
@@ -467,6 +378,27 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         );
     };
 
+    /**
+     * On successful IDP creation, navigates to the IDP views.
+     *
+     * @param {string} id - ID of the created IDP.
+     */
+    const handleSuccessfulIDPCreation = (id: string): void => {
+
+        // If ID is present, navigate to the edit page of the created IDP.
+        if (id) {
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),
+                search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
+            });
+
+            return;
+        }
+
+        // Fallback to identity providers page, if id is not present.
+        history.push(AppConstants.getPaths().get("IDP"));
+    };
+
     return (
         <HelpPanelLayout
             enabled={ false }
@@ -539,35 +471,15 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         : <ContentLoader dimmer/>
                 }
                 <Divider hidden/>
-                {
-                    showWizard && (
-                        (selectedTemplateWithUniqueName.name === GOOGLE_IDP_NAME)
-                            ? (
-                                <GoogleAuthenticationProviderCreateWizard
-                                    title={ selectedTemplateWithUniqueName?.name }
-                                    subTitle={ selectedTemplateWithUniqueName?.description }
-                                    closeWizard={ () => {
-                                        setSelectedTemplateWithUniqueName(undefined);
-                                        setSelectedTemplate(undefined);
-                                        setShowWizard(false);
-                                    } }
-                                    template={ selectedTemplateWithUniqueName }
-                                />
-                            )
-                            : (
-                                <IdentityProviderCreateWizard
-                                    title={ selectedTemplateWithUniqueName?.name }
-                                    subTitle={ selectedTemplateWithUniqueName?.description }
-                                    closeWizard={ () => {
-                                        setSelectedTemplateWithUniqueName(undefined);
-                                        setSelectedTemplate(undefined);
-                                        setShowWizard(false);
-                                    } }
-                                    template={ selectedTemplateWithUniqueName }
-                                />
-                            )
-                    )
-                }
+                <AuthenticatorCreateWizardFactory
+                    open={ showWizard }
+                    type={ templateType }
+                    onIDPCreate={ handleSuccessfulIDPCreation }
+                    onWizardClose={ () => {
+                        setTemplateType(undefined);
+                        setShowWizard(false);
+                    } }
+                />
             </PageLayout>
         </HelpPanelLayout>
     );

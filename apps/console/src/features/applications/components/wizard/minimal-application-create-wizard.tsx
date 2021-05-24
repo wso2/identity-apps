@@ -237,6 +237,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
                     }
 
+                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                        searchParams = `${ searchParams }&${
+                            ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY }=true`;
+                    }
+
                     history.push({
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT")
                             .replace(":id", createdAppID),
@@ -373,7 +378,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 { t("common:featureAvailable" ) }
             </Dimmer>
         );
-    }
+    };
 
     const scrollToNotification = () => {
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });

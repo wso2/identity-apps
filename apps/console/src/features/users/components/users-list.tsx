@@ -18,7 +18,12 @@
 
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { LoadableComponentInterface, SBACInterface, TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
+import { 
+    AlertLevels, 
+    LoadableComponentInterface, 
+    SBACInterface, 
+    TestableComponentInterface 
+} from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -44,9 +49,9 @@ import {
     history
 } from "../../core";
 import { RealmConfigInterface } from "../../server-configurations";
+import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
-import { deleteUser } from "../api";
 
 /**
  * Prop types for the liked accounts component.

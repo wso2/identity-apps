@@ -23,10 +23,12 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Header } from "semantic-ui-react";
+import { Checkbox, Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
+import { serverConfigurationConfig } from "../../../../extensions";
 import { updateGovernanceConnector } from "../../api";
 import { getGovernanceConnectorIllustrations } from "../../configs";
+import { ServerConfigurationsConstants } from "../../constants";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -54,7 +56,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const { t } = useTranslation();
 
-    const [ connectorIllustration, setConnectorIllustration ]  = useState<string>(undefined);
+    const [ connectorIllustration, setConnectorIllustration ] = useState<string>(undefined);
 
     /**
      * Set the connector illustration.
@@ -64,7 +66,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return;
         }
 
-        const illustration: string  = get(getGovernanceConnectorIllustrations(), connector.id,
+        const illustration: string = get(getGovernanceConnectorIllustrations(), connector.id,
             getGovernanceConnectorIllustrations()?.default);
 
         setConnectorIllustration(illustration);
@@ -114,6 +116,16 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 value: values[ key ]
             });
         }
+
+        if (serverConfigurationConfig.connectorToggleName[ connector?.name ]
+            && serverConfigurationConfig.autoEnableConnectorToggleProperty) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ]),
+                value: "true"
+            });
+        }
+
         updateGovernanceConnector(data, connector.categoryId, connector.id)
             .then(() => {
                 dispatch(
@@ -155,43 +167,27 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const connectorForm: ReactElement = (
         <DynamicConnectorForm
             onSubmit={ handleSubmit }
-            props={ { properties: connector.properties } }
+            props={ {
+                properties: connector.properties.filter(
+                    (property => serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
+                        || serverConfigurationConfig.connectorPropertiesToShow
+                            .includes(ServerConfigurationsConstants.ALL)))
+            } }
             form={ kebabCase(connector.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
             data-testid={ `${ testId }-${ connector.name }-form` }
         />
     );
 
-    return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <Grid padded>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <div
-                                    className="connector-section-with-image-bg"
-                                    style={ {
-                                        background: `url(${ connectorIllustration })`
-                                    } }
-                                >
-                                    <Header>
-                                        { connector?.friendlyName }
-                                        <Header.Subheader>
-                                            { t("console:manage.features.governanceConnectors.connectorSubHeading", {
-                                                name: connector?.friendlyName
-                                            }) }
-                                        </Header.Subheader>
-                                    </Header>
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                    <Divider />
-                    { connectorForm }
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+
+    return serverConfigurationConfig.renderConnector(
+        connector,
+        connectorForm,
+        connectorIllustration,
+        t("console:manage.features.governanceConnectors.connectorSubHeading",
+            {
+                name: connector?.friendlyName
+            })
     );
 };
 

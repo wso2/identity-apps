@@ -19,7 +19,7 @@
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint, LinkButton, PrimaryButton} from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,6 +60,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      */
     isLoading?: boolean;
     /**
+     * Callback to trigger IDP create wizard.
+     */
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
+    /**
      * Callback for sequence reset.
      */
     onReset: () => void;
@@ -89,6 +93,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         authenticators,
         authenticationSequence,
         isLoading,
+        onIDPCreateWizardTrigger,
         onReset,
         onUpdate,
         readOnly,
@@ -154,7 +159,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      *
      * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
      */
-    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
+    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface): void => {
         if (!template) {
             return;
         }
@@ -422,8 +427,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
+                onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
             />
-            <Divider hidden/>
+            <Divider className="x2"/>
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

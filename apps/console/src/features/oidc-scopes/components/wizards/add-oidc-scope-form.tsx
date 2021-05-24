@@ -17,8 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const SCOPE_NAME_MAX_LENGTH: number = 40;
@@ -69,34 +69,34 @@ let triggerPreviousForm: () => void;
 
     return (
     <Wizard
-        initialValues={{
+        initialValues={ {
             scopeName: initialValues?.scopeName,
             displayName: initialValues?.displayName,
             description: initialValues?.description
-        }}
+        } }
         onSubmit={ (values) => {
-            onSubmit(getFormValues(values)) 
-        }}
+            onSubmit(getFormValues(values));
+        } }
         triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
         triggerPrevious={ (previousFunction: () => void) => {
             triggerPreviousForm = previousFunction; } }
     >
         <WizardPage
-            validate={(values): any => {
-                const errors:any = {}
+            validate={ (values): any => {
+                const errors:any = {};
                 if (!values.scopeName && !initialValues?.scopeName) {
-                    errors.scopeName="Required"
+                    errors.scopeName="Required";
                 }
                 if (!values.displayName && !initialValues?.displayName) {
-                    errors.displayName="Required"
+                    errors.displayName="Required";
                 }
-                return errors
-            }}
+                return errors;
+            } }
         >
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
-                ariaLabel="scopeName" 
-                inputType="name" 
+                ariaLabel="scopeName"
+                inputType="name"
                 name="scopeName"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
                 required={ true }
@@ -106,7 +106,7 @@ let triggerPreviousForm: () => void;
                     "scopeName.placeholder") }
                 validation={ (value: string) => {
                     if (!value.toString().match(/^[\w.-]+$/)) {
-                        return t("console:manage.features.oidcScopes. forms.addScopeForm.inputs." +
+                        return t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                             "scopeName.validations.invalid");
                     }
                 } }
@@ -116,7 +116,7 @@ let triggerPreviousForm: () => void;
             />
             <Field.Input
                 ariaLabel="displayName"
-                inputType="resourceName" 
+                inputType="resourceName"
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
                 name="displayName"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
@@ -133,7 +133,7 @@ let triggerPreviousForm: () => void;
             <Field.Input
                 data-testid={ `${ testId }-oidc-scope-form-name-input` }
                 ariaLabel="description"
-                inputType="resourceName" 
+                inputType="resourceName"
                 name="description"
                 label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
                     "inputs.description.label") }

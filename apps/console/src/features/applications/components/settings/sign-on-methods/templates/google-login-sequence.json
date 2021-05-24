@@ -6,10 +6,6 @@
                 {
                     "authenticator": "GoogleOIDCAuthenticator",
                     "idp": "<GOOGLE_IDP>"
-                },
-                {
-                    "authenticator": "BasicAuthenticator",
-                    "idp": "LOCAL"
                 }
             ]
         }

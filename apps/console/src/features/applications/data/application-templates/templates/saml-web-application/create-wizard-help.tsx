@@ -19,8 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider } from "semantic-ui-react";
 import { Trans, useTranslation } from "react-i18next";
+import { Divider } from "semantic-ui-react";
 
 /**
  * Prop types of the component.

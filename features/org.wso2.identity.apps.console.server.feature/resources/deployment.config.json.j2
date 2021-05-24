@@ -27,6 +27,9 @@
     {% if console.app_base_name_for_history_api is defined %}
         "appBaseNameForHistoryAPI": "{{ console.app_base_name_for_history_api }}",
     {% endif %}
+    {% if console.allow_multiple_app_protocols is defined %}
+        "allowMultipleAppProtocols": {{ console.allow_multiple_app_protocols }},
+    {% endif %}
     "clientID": "{{ console.client_id }}",
     "debug": {{ console.debug.enable }},
     "developerApp": {

@@ -39,7 +39,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form as SemanticForm , Grid } from "semantic-ui-react";
+import { Divider, Grid , Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
@@ -230,7 +230,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 }
             ));
         });
-    }
+    };
 
     return (
         <>
@@ -254,7 +254,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 <Form
                     onSubmit={ (values): void => {
                         onSubmit(values);
-                    }}
+                    } }
                     data-testid={ testId }
                 >
                     <Field.Input
@@ -277,7 +277,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         data-testid={ `${ testId }-form-name-input` }
                         maxLength={ 30 }
                         minLength={ 1 }
-                        hint={t("console:manage.features.claims.local.forms.nameHint")}
+                        hint={ t("console:manage.features.claims.local.forms.nameHint") }
                     />
                     <Field.Textarea
                         ariaLabel="description"
@@ -317,13 +317,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         <Field.Checkbox
                             ariaLabel="supportedByDefault"
                             name="supportedByDefault"
-                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label")} 
-                            required={false}
+                            label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") } 
+                            required={ false }
                             value={ claim?.supportedByDefault ? ["supportedByDefault"] : [] }
-                            listen={(values) => {
+                            listen={ (values) => {
                                 setIsShowDisplayOrder(!!values?.supportedByDefault);
-                            }}
-                            data-testid={`${testId}-form-supported-by-default-input`}
+                            } }
+                            data-testid={ `${testId}-form-supported-by-default-input` }
                         />
                     }
                     {
@@ -345,7 +345,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 minLength={ 1 }
                                 ref={ displayOrderField }
                                 data-testid={ `${ testId }-form-display-order-input` }
-                                hint={t("console:manage.features.claims.local.forms.displayOrderHint")}
+                                hint={ t("console:manage.features.claims.local.forms.displayOrderHint") }
                             />
                         )
                     }

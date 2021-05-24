@@ -1,7 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Login with Github",
-    "displayOrder": 1,
+    "displayOrder": 5,
     "id": "github-idp",
     "idp": {
         "certificate": {},
@@ -33,5 +33,6 @@
     "image": "github",
     "name": "GitHub",
     "services": [],
-    "disabled": true
+    "disabled": true,
+    "type": "SOCIAL"
 }

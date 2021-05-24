@@ -103,61 +103,64 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
             {
                 !isOIDCConfigsLoading ? (
                     <Grid>
-                        {/*  {
-                    applicationType && applicationType == ApplicationManagementConstants.SPA
-                        ? (
-                            <Grid.Row textAlign="center">
-                                <Grid.Column width={ 16 }>
-                                    <Heading as="h5">
-                                        <strong>
-                                            { t("console:develop.features.applications.helpPanel.tabs.start." +
-                                                "content.trySample.title") }
-                                        </strong>
-                                    </Heading>
-                                    <Header.Subheader>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start." +
-                                            "content.trySample.subTitle") }
-                                    </Header.Subheader>
-                                    <Divider hidden/>
-                                    <PrimaryButton onClick={ () => { handleTabChange(2) } }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start." +
-                                            "content.trySample.btn") }
-                                    </PrimaryButton>
-                                    <Divider hidden/>
-                                    <Divider horizontal>Or</Divider>
-                                    <Heading ellipsis as="h5">
-                                        <strong>
-                                            { t("console:develop.features.applications.helpPanel.tabs." +
-                                                "start.content.useSDK.title") }
-                                        </strong>
-                                    </Heading>
-                                    <Header.Subheader>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "useSDK.subTitle") }
-                                    </Header.Subheader>
-                                    <Divider hidden/>
-                                    <Button.Group>
-                                        <SecondaryButton onClick={ () => { handleTabChange(3) } }>
-                                            { t("console:develop.features.applications.helpPanel.tabs.start." +
-                                                "content.useSDK.btns.withSDK") }
-                                        </SecondaryButton>
-                                    </Button.Group>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                        : null
-                }*/}
+                        { 
+                            /* 
+                                TODO : Check and remove the following if unnecssary
+                                applicationType && applicationType == ApplicationManagementConstants.SPA
+                                    ? (
+                                        <Grid.Row textAlign="center">
+                                            <Grid.Column width={ 16 }>
+                                                <Heading as="h5">
+                                                    <strong>
+                                                        { t("console:develop.features.applications." + 
+                                                            "helpPanel.tabs.start.content.trySample.title") }
+                                                    </strong>
+                                                </Heading>
+                                                <Header.Subheader>
+                                                    { t("console:develop.features.applications.helpPanel.tabs.start." +
+                                                        "content.trySample.subTitle") }
+                                                </Header.Subheader>
+                                                <Divider hidden/>
+                                                <PrimaryButton onClick={ () => { handleTabChange(2) } }>
+                                                    { t("console:develop.features.applications.helpPanel.tabs.start." +
+                                                        "content.trySample.btn") }
+                                                </PrimaryButton>
+                                                <Divider hidden/>
+                                                <Divider horizontal>Or</Divider>
+                                                <Heading ellipsis as="h5">
+                                                    <strong>
+                                                        { t("console:develop.features.applications.helpPanel.tabs." +
+                                                            "start.content.useSDK.title") }
+                                                    </strong>
+                                                </Heading>
+                                                <Header.Subheader>
+                                                    { t("console:develop.features.applications.helpPanel." +
+                                                        "tabs.start.content.useSDK.subTitle") }
+                                                </Header.Subheader>
+                                                <Divider hidden/>
+                                                <Button.Group>
+                                                    <SecondaryButton onClick={ () => { handleTabChange(3) } }>
+                                                        { t("console:develop.features.applications." + 
+                                                            "helpPanel.tabs.start.content.useSDK.btns.withSDK") }
+                                                    </SecondaryButton>
+                                                </Button.Group>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                    : null
+                            */ 
+                        }
                         <Grid.Row>
                             <Grid.Column>
                                 <Heading ellipsis as="h5">
                                     <strong>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                            "title") }
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content" +
+                                            ".endpoints.title") }
                                     </strong>
                                 </Heading>
                                 <Hint>
-                                    { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                        "subTitle") }
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content" +
+                                        ".endpoints.subTitle") }
                                 </Hint>
                                 <Divider hidden/>
                                 {

@@ -103,6 +103,13 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
 
     /**
+     * Value for sign on authentication param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_PROTOCOL_PARAM_KEY = "isProtocol";
+
+    /**
      * Key for the URL search param for application readonly state.
      * @constant
      * @type {string}
@@ -224,6 +231,13 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
+        ["custom-application"] : [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     };
 
@@ -243,6 +257,13 @@ export class ApplicationManagementConstants {
             [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ]),
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
+            [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
+            [ ApplicationManagementConstants.PASSWORD, 2 ],
+            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 3 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ]
+        ]),
+        [ "custom-application" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
             [ ApplicationManagementConstants.PASSWORD, 2 ],
@@ -348,16 +369,6 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
     };
-    
-    public static readonly AUTHENTICATOR_CATEGORIES = {
-        ENTERPRISE: "enterprise-authenticators",
-        LOCAL: "local-authenticators",
-        SECOND_FACTOR: "second-factor-authenticators",
-        SOCIAL: "social-authenticators"
-    };
-
-    public static readonly AUTHENTICATOR_DISPLAY_NAMES: Map<string, string> = new Map<string, string>()
-        .set("BasicAuthenticator", "Username & Password");
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
 }

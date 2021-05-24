@@ -86,7 +86,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
             const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
                 item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             const uriFilterClaims = tempAvailableClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1)
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
             if (selectedClaims.length > 0) {

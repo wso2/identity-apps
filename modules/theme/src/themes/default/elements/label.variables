@@ -21,9 +21,14 @@
          Filter Label
 *******************************/
 
-@filterLabelBorderColor: @primaryColor;
+@filterLabelHorizontalPadding: 15px;
+@filterLabelBorderRadius: 15px;
+@filterLabelHoverBorderColor: @primaryColor;
 @filterLabelHoverTextColor: @textColor;
-@filterLabelHoverBackgroundColor: @labelHoverBackgroundColor;
+@filterLabelHoverBackgroundColor: transparent;
+@filterLabelActiveBackgroundColor: @primaryColor;
+@filterLabelActiveBorderColor: @primaryColor;
+@filterLabelActiveTextColor: @white;
 
 /*******************************
          Circular Label
