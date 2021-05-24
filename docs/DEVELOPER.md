@@ -139,7 +139,7 @@ command before making a commit to make sure that you don't violate the rules.
 
 ```bash
 # Run this from the root.
-npm run lint:stage
+npm run lint:staged
 ```
 
 ### Formatting
