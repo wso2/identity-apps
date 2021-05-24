@@ -63,7 +63,7 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
      * this must be well tested because it might be a breaking change. For more context
      * please refer {@link IdentityProviderTemplateSelectPage}
      *
-     * FIXME: As a part of #git.issue
+     * FIXME: As a part of https://github.com/wso2-enterprise/asgardeo-product/issues/3878
      */
     selectedTemplate?: IdentityProviderTemplateInterface;
 }
@@ -90,7 +90,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
          * grouping logic implemented and is in place {@link getTemplate} method
          * keeps failing to set the correct grouped template to this state.
          *
-         * FIXME: As a part of #git.issue
+         * FIXME: As a part of https://github.com/wso2-enterprise/asgardeo-product/issues/3878
          */
         selectedTemplate: parentSel,
         ...rest
@@ -211,7 +211,8 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                          * then set the template that got passed from {@link props}. This
                          * case executes when a grouped template is trying to load.
                          *
-                         * FIXME: Re-evaluate this change as a part of #git.issue
+                         * FIXME: Re-evaluate this change as a part of
+                         *        https://github.com/wso2-enterprise/asgardeo-product/issues/3878
                          */
                         if (parentSel && !parentSel.disabled) {
                             setSelectedTemplate(parentSel);
