@@ -35,6 +35,7 @@ import {
     ProvisioningSettings,
     SignOnMethods
 } from "./settings";
+import { ConnectionDetails } from "./settings/connection-details";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
@@ -42,9 +43,8 @@ import { ApplicationManagementConstants } from "../constants";
 import SAMLApplicationTemplate
     from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
-    ApplicationInterface,
-    ApplicationTemplateInterface,
-    AuthProtocolMetaListItemInterface,
+    ApplicationInterface, ApplicationTemplateInterface,
+    AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
@@ -134,6 +134,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
@@ -151,6 +153,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
+    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
+    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -217,10 +221,28 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (samlConfigurations !== undefined) {
             return;
         }
+        setSAMLConfigsLoading(true);
+
         if (application?.templateId === SAMLApplicationTemplate.id) {
-            ApplicationManagementUtils.getSAMLApplicationMeta();
+            ApplicationManagementUtils.getSAMLApplicationMeta()
+                .finally(() => {
+                    setSAMLConfigsLoading(false);
+            });
         }
     }, [ samlConfigurations, inboundProtocolConfig ]);
+
+    useEffect(() => {
+        if (oidcConfigurations !== undefined) {
+            return;
+        }
+        setOIDCConfigsLoading(true);
+
+        ApplicationManagementUtils.getOIDCApplicationMeta()
+            .finally(() => {
+                setOIDCConfigsLoading(false);
+            });
+
+    }, [oidcConfigurations, inboundProtocolConfig]);
 
     useEffect(() => {
         if (tabPaneExtensions) {
@@ -512,6 +534,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             : null
     );
 
+    const ConnectionDetailsTabPane = () : ReactElement => (
+
+        <ResourceTab.Pane controlledSegmentation>
+            <ConnectionDetails
+                inboundProtocols={ application?.inboundProtocols }
+                isOIDCConfigLoading={ isOIDCConfigsLoading }
+                isSAMLConfigLoading={ isSAMLConfigsLoading }
+            />
+        </ResourceTab.Pane>
+    );
+
     /**
      * Resolves the tab panes based on the application config.
      *
@@ -579,6 +612,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     render: AdvancedSettingsTabPane
                 });
             }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_CONNECTION_DETAILS_SETTINGS"))) {
+
+                panes.push({
+                    menuItem: t("console:develop.features.applications.edit.sections.connectionDetails.tabName"),
+                    render: ConnectionDetailsTabPane
+                });
+            }
+
 
             return panes;
         }
@@ -607,6 +649,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             {
                 menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
+            },
+            {
+                menuItem: t("console:develop.features.applications.edit.sections.connectionDetails.tabName"),
+                render: ConnectionDetailsTabPane
             }
         ];
     };

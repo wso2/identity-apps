@@ -887,7 +887,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <HelpPanelLayout
-            activeIndex={ tabsActiveIndex }
+            enabled={ false }
+            visible={ false }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
@@ -902,7 +903,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
             unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
-            visible={ helpPanelVisibilityGlobalState }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }

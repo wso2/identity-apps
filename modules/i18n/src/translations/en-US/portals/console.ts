@@ -818,6 +818,9 @@ export const console: ConsoleNS = {
                             },
                             tabName: "User Attributes"
                         },
+                        connectionDetails: {
+                            tabName: "Connection Details"
+                        },
                         general: {
                             tabName: "General"
                         },
