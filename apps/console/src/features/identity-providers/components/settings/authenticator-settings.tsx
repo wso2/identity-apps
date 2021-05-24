@@ -768,7 +768,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         <Heading as="h4">Authentication Settings</Heading>
                                     </Grid.Column>
                                 </Grid.Row>
-                                <EmphasizedSegment>
+                                <EmphasizedSegment padded="very">
                                     { showAuthenticator() }
                                 </EmphasizedSegment>
                             </Grid.Column>
