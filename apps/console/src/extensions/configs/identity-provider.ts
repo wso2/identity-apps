@@ -32,7 +32,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
         enterprise: true,
         facebook: false,
         github: false,
-        google: true
+        google: true,
+        saml: true,
+        oidc: true,
     },
     utils: {
         isAuthenticatorAllowed: (name: string): boolean => {

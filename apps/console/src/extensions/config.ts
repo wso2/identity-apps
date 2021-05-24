@@ -38,6 +38,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
         },
         identityProviders: {
             categories: [],
+            groups: [],
             templates: []
         }
     }

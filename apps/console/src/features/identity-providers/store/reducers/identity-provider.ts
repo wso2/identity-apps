@@ -17,13 +17,14 @@
  */
 
 import { IdentityProviderReducerStateInterface } from "../../models";
-import { IdentityProviderActionTypes, IdentityProviderActions } from "../actions/types";
+import { IdentityProviderActions, IdentityProviderActionTypes } from "../actions/types";
 
 /**
  * Common profile reducer initial state.
  */
 const initialState: IdentityProviderReducerStateInterface = {
     templates: undefined,
+    groupedTemplates: undefined,
     meta: {
         authenticators: []
     }
@@ -53,6 +54,8 @@ export const identityProviderReducer = (state: IdentityProviderReducerStateInter
                 ...state,
                 templates: action.payload
             };
+        case IdentityProviderActionTypes.SET_GROUPED_IDP_TEMPLATES:
+            return { ...state, groupedTemplates: action.payload };
         default:
             return state;
     }

@@ -57,6 +57,15 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
      * Type of the wizard.
      */
     type: string;
+    /**
+     * Selected template. Added this since this {@link AuthenticatorCreateWizardFactory}
+     * does not support template grouping. If we are introducing the functionality
+     * this must be well tested because it might be a breaking change. For more context
+     * please refer {@link IdentityProviderTemplateSelectPage}
+     *
+     * FIXME: As a part of #git.issue
+     */
+    selectedTemplate?: IdentityProviderTemplateInterface;
 }
 
 /**
@@ -74,6 +83,16 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         open,
         onWizardClose,
         type,
+        /**
+         * Added this because {@link IdentityProviderTemplateSelectPage} currently
+         * unable to handle grouped templates properly. {@link selectedTemplate}
+         * will be a grouped identity provider with sub templates. Even though, the
+         * grouping logic implemented and is in place {@link getTemplate} method
+         * keeps failing to set the correct grouped template to this state.
+         *
+         * FIXME: As a part of #git.issue
+         */
+        selectedTemplate: parentSel,
         ...rest
     } = props;
 
@@ -100,16 +119,14 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     }, [ type ]);
 
     /**
-     * Called when template is selected.
+     * Called when template is selected. If the selected template
+     * is not present it won't show the wizard.
      */
     useEffect(() => {
-
-        if (!selectedTemplate || !selectedTemplate?.idp?.name) {
-            return;
-        }
-
-        getPossibleListOfDuplicateIDPs(selectedTemplate.idp.name);
-
+        if (!selectedTemplate) return;
+        getPossibleListOfDuplicateIDPs(
+            selectedTemplate.idp?.name || selectedTemplate.name
+        );
         setShowWizard(true);
     }, [ selectedTemplate ]);
 
@@ -118,27 +135,43 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
      */
     useEffect(() => {
 
-        if (!showWizard) {
-            return;
-        }
+        if (!showWizard) return;
+        if (!possibleListOfDuplicateIDPs) return;
 
-        if (!selectedTemplate?.idp?.name) {
-            return;
+        if (selectedTemplate.idp?.name) {
+            /**
+             * If the selected template has a idp associated to
+             * it we can assure that it is a standalone template
+             * and proceed to re-populate the state with a unique
+             * name for the authenticator.
+             */
+            setSelectedTemplateWithUniqueName({
+                ...selectedTemplate,
+                idp: {
+                    ...selectedTemplate.idp,
+                    name: generateUniqueIDPName(
+                        selectedTemplate.idp.name,
+                        possibleListOfDuplicateIDPs
+                    )
+                }
+            });
+        } else {
+            /**
+             * If the selected template doesn't have any idp associated to it
+             * we can "assume" that it's a grouped template that contains
+             * multiple {@link IdentityProviderTemplateInterface.subTemplates}.
+             */
+            setSelectedTemplateWithUniqueName({
+                ...selectedTemplate,
+                name: generateUniqueIDPName(
+                    selectedTemplate?.name,
+                    possibleListOfDuplicateIDPs
+                )
+            });
         }
-
-        if (!possibleListOfDuplicateIDPs) {
-            return;
-        }
-
-        setSelectedTemplateWithUniqueName({
-            ...selectedTemplate,
-            idp: {
-                ...selectedTemplate.idp,
-                name: generateUniqueIDPName(selectedTemplate.idp.name, possibleListOfDuplicateIDPs)
-            }
-        });
 
         setShowWizard(true);
+
     }, [ possibleListOfDuplicateIDPs, selectedTemplate, showWizard ]);
 
     /**
@@ -164,8 +197,25 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         } else {
             IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
                 .then((response) => {
-                    if (!response.disabled) {
+                    /**
+                     * If for some reason we can't find the given template by id
+                     * and the template is disabled from file level, we can assure
+                     * the {@link type} (templateId) is a grouped type.
+                     */
+                    if (response !== undefined && response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
+                    } else {
+                        /**
+                         * If the {@link getIdentityProviderTemplate} method failed to
+                         * retrieve the matching template via the {@link type} (templateId)
+                         * then set the template that got passed from {@link props}. This
+                         * case executes when a grouped template is trying to load.
+                         *
+                         * FIXME: Re-evaluate this change as a part of #git.issue
+                         */
+                        if (parentSel && !parentSel.disabled) {
+                            setSelectedTemplate(parentSel);
+                        }
                     }
                 })
                 .catch((error) => {

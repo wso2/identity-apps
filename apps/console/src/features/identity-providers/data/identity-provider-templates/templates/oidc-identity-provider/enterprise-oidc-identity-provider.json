@@ -1,4 +1,5 @@
 {
+    "templateGroup": "enterprise-protocols",
     "category": "DEFAULT",
     "description": "Configure a new Enterprise identity provider with OpenID Connect",
     "displayOrder": 1,
