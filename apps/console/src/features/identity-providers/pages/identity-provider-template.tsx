@@ -48,8 +48,6 @@ import {
     history,
     PortalDocumentationStructureInterface
 } from "../../core";
-import { getHelpPanelIcons, getIdPIcons, getIdPTemplateDocsIcons } from "../configs";
-import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_ID} from "../constants";
 import {
     getIdentityProviderList,
     getIdentityProviderTemplate
@@ -111,8 +109,17 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
+
+    /**
+     * Since we have grouped templates for identity providers,
+     * we pick the {@link groupedTemplates}. If you want to see
+     * where the state is populated check dispatch events in
+     * {@link getIdentityProviderTemplates} method.
+     */
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state?.identityProvider?.templates);
+        (state: AppState) => state.identityProvider?.groupedTemplates
+    );
+
     const [
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
@@ -125,6 +132,16 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
     ] = useState<boolean>(false);
+
+    /**
+     * We use this state to track which template is currently
+     * selected. This value will get populated once the user clicks
+     * on a selection card. With this new piece of state we pass
+     * down both {@link type} (which is the templateId) and
+     * template object itself to {@link AuthenticatorCreateWizardFactory}.
+     * Also, see {@link handleTemplateSelection} to set states.
+     */
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
 
     /**
      * Called when the template doc is changed in the template section.
@@ -189,12 +206,18 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
             config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.
-                DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
-            .finally(() => {
-                setIDPTemplateRequestLoadingStatus(false);
-            });
+            IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+
+        /**
+         * With {@link skipGrouping} being {@code false} we say
+         * we need to group the existing templates based on their
+         * template-group.
+         */
+        const skipGrouping = false, sortTemplates = true;
+        IdentityProviderTemplateManagementUtils
+            .getIdentityProviderTemplates(useAPI, skipGrouping, sortTemplates)
+            .finally(() => setIDPTemplateRequestLoadingStatus(false));
+
     }, [ identityProviderTemplates ]);
 
     /**
@@ -251,6 +274,16 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+        /**
+         * Find the matching template for the selected card.
+         * if found then set the template to state.
+         */
+        const selectedTemplate = identityProviderTemplates.find(
+            ({ id: templateId }) => (templateId === id)
+        );
+        if (selectedTemplate) {
+            setSelectedTemplate(selectedTemplate);
+        }
         setTemplateType(id);
     };
 
@@ -352,7 +385,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 templatesOverrides?: IdentityProviderTemplateInterface[]): ReactElement => {
 
         return (
-            <TemplateGrid<IdentityProviderTemplateItemInterface>
+            <TemplateGrid<any>
                 className="idp-template-grid"
                 type="idp"
                 templates={
@@ -478,6 +511,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     open={ showWizard }
                     type={ templateType }
                     showAsStandaloneIdentityProvider={ false }
+                    selectedTemplate={ selectedTemplate }
                     onIDPCreate={ handleSuccessfulIDPCreation }
                     onWizardClose={ () => {
                         setTemplateType(undefined);

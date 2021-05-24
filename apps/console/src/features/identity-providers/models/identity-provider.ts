@@ -19,6 +19,16 @@
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
 
+export interface IdentityProviderTemplateGroupInterface {
+    category?: string;
+    description?: string;
+    id?: string;
+    image?: string;
+    name?: string;
+    subTemplates?: IdentityProviderInterface[];
+    subTemplatesSectionTitle?: string;
+}
+
 /**
  * Available Identity Provider list.
  */
@@ -175,16 +185,18 @@ export interface IdentityProviderTemplateListResponseInterface {
 }
 
 /**
- *  Identity provider template item interface.
+ *  Identity provider template item interface. Updated the interface
+ *  to support grouped templates. You can see that {@link templateGroup},
+ *  {@link subTemplates} and etc., are part of this interface.
  */
 export interface IdentityProviderTemplateItemInterface {
-    id: string;
-    name: string;
-    description: string;
-    image: any;
-    category: string;
-    displayOrder: number;
-    idp: IdentityProviderInterface;
+    id?: string;
+    name?: string;
+    description?: string;
+    image?: any;
+    category?: string;
+    displayOrder?: number;
+    idp?: IdentityProviderInterface;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     /**
@@ -192,6 +204,9 @@ export interface IdentityProviderTemplateItemInterface {
      * ex: Social Login, Enterprise etc.
      */
     type?: string;
+    templateGroup?: string;
+    subTemplates?: IdentityProviderTemplateItemInterface[];
+    subTemplatesSectionTitle?: string;
 }
 
 /**
@@ -474,10 +489,12 @@ export const emptyIdentityProvider = (): StrictIdentityProviderInterface => ({
 });
 
 /**
- * Interface for the identity provider reducer state.
+ * Interface for the identity provider reducer state. With {@link groupedTemplates}
+ * we add support for grouped templates for identity providers.
  */
 export interface IdentityProviderReducerStateInterface {
     templates: IdentityProviderTemplateItemInterface[];
+    groupedTemplates: IdentityProviderTemplateItemInterface[];
     meta: IdentityProviderMetaInterface;
 }
 
