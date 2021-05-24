@@ -31,7 +31,7 @@ import {
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
 
 /**
- * Proptypes for the connection details settings component.
+ * Proptypes for the connection details component.
  */
 interface ConnectionDetailsPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     inboundProtocols: InboundProtocolListItemInterface[];
