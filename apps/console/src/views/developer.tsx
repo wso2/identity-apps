@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core//helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { AuthenticateUtils, RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -48,6 +47,8 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import {
+    AccessControlProvider,
+    AccessControlUtils,
     AppConstants,
     AppState,
     AppUtils,
@@ -58,13 +59,14 @@ import {
     ProtectedRoute,
     RouteUtils,
     UIConstants,
+    getAdminViewRoutes,
     getDeveloperViewRoutes,
     getEmptyPlaceholderIllustrations,
     getSidePanelMiscIcons,
     history,
     useUIElementSizes
 } from "../features/core";
-import { setDeveloperVisibility } from "../features/core/store/actions/acess-control";
+import { setDeveloperVisibility, setManageVisibility } from "../features/core/store/actions/acess-control";
 
 /**
  * Developer View Prop types.
@@ -104,7 +106,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-
+    const [ manageRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
     const [
         selectedRoute,
@@ -112,47 +114,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-    const [ isDevelopViewAllowed, setIsDevelopViewAllowed ] = useState<boolean>(false);
-    const [ accessControlledRoutes, setAccessControlledRoutes ] = useState<RouteInterface[]>([]);
-
-    useEffect(() => {
-        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
-        if (isEmpty(allowedScopes)) {
-            return;
-        }
-
-        const routes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes));
-        const controlledRoutes = [];
-        routes.forEach((route: RouteInterface) => {
-            const feature = featureConfig[route.id];
-            if (feature) {
-                let shouldShowRoute: boolean = false;
-                if (feature?.enabled) {
-                    for (const [key, value] of Object.entries(feature?.scopes)) {
-                        if (value && value instanceof Array) {
-                            if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                                shouldShowRoute = true;
-                            }
-                        }
-                    }
-                }
-
-                if (route.showOnSidePanel && shouldShowRoute) {
-                    controlledRoutes.push(route);
-                }
-            } else {
-                controlledRoutes.push(route);
-            }
-
-        });
-
-        if (controlledRoutes.length !== 1 && controlledRoutes[0].id !== "developer-getting-started") {
-            setAccessControlledRoutes(controlledRoutes);
-        } else {
-            dispatch(setDeveloperVisibility(false));
-        }
-
-    }, [ allowedScopes ]);
 
     /**
      * Listen to location changes and set the active route accordingly.
@@ -178,23 +139,21 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             featureConfig,
             allowedScopes);
 
-        // TODO : Temporary fix for access control module
-        if (routes.length === 3) {
-            if (routes.filter(route => route.id === "developer-getting-started").length > 0
-                && routes.filter(route => route.id === "identityProviders").length > 0
+        if (routes.length === 2 
+            && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0 
                 && routes.filter(route => route.id === "404").length > 0) {
-                    if (hasRequiredScopes(featureConfig?.identityProviders,
-                            featureConfig?.identityProviders?.scopes?.read, allowedScopes)
-                            && !hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.read,  allowedScopes)) {
-                        routes = routes.filter(route => route.id === "404");
-                        dispatch(setDeveloperVisibility(false));
-                    }
-            }
-        } else if (routes.length === 2
-            && routes.filter(route => route.id === "developer-getting-started").length > 0
-                && routes.filter(route => route.id === "404").length > 0) {
-            routes = routes.filter(route => route.id === "404");
+                    routes = routes.filter(route => route.id === "404");
+        }
+
+        const controlledRoutes = AccessControlUtils.getAuthenticatedRoutes(routes, allowedScopes, featureConfig);
+        const sanitizedManageRoutes: RouteInterface[] = CommonRouteUtils.sanitizeForUI(cloneDeep(manageRoutes));
+
+        const tab: string = AccessControlUtils.getDisabledTab(
+            sanitizedManageRoutes, filteredRoutes, allowedScopes, featureConfig);
+
+        if (tab === "MANAGE") {
+            dispatch(setManageVisibility(false));
+        } else if (tab === "DEVELOP") {
             dispatch(setDeveloperVisibility(false));
         }
 
@@ -202,7 +161,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
 
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(routes);
+        setFilteredRoutes(controlledRoutes);
 
         if (!isEmpty(profileInfo)) {
             return;
@@ -210,22 +169,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
         dispatch(getProfileInformation());
     }, [ featureConfig, getDeveloperViewRoutes, allowedScopes ]);
-
-    useEffect(() => {
-
-        if (!featureConfig) {
-            return;
-        }
-
-        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
-        if (isEmpty(allowedScopes)) {
-            return;
-        }
-
-        // Check if the users has the relevant scopes to access the manage section.
-        setIsDevelopViewAllowed(accessControlledRoutes.length > 0);
-
-    }, [ allowedScopes, featureConfig, accessControlledRoutes ]);
 
     /**
      * Handles side panel toggle click.
@@ -348,81 +291,83 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     };
 
     return (
-        <DashboardLayoutSkeleton
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
-            topLoadingBar={ (
-                <TopLoadingBar
-                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ isAJAXTopLoaderVisible }
-                />
-            ) }
-            onLayoutOnUpdate={ handleLayoutOnUpdate }
-            header={ (
-                <Header
-                    activeView="DEVELOPER"
-                    fluid={ !isMobileViewport ? fluid : false }
-                    onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
-            ) }
-            sidePanel={ (
-                <SidePanel
-                    ordered
-                    categorized={ config?.ui?.isLeftNavigationCategorized ?? true }
-                    caretIcon={ getSidePanelMiscIcons().caretRight }
-                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                    fluid={ !isMobileViewport ? fluid : false }
-                    footerHeight={ footerHeight }
-                    headerHeight={ headerHeight }
-                    hoverType="background"
-                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                    onSidePanelItemClick={ handleSidePanelItemClick }
-                    onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
-                    selected={ selectedRoute }
-                    translationHook={ t }
-                    allowedScopes={ allowedScopes }
-                />
-            ) }
-            footer={ (
-                <Footer
-                    fluid={ !isMobileViewport ? fluid : false }
-                />
-            ) }
-        >
-            <ErrorBoundary
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
+        <AccessControlProvider>
+            <DashboardLayoutSkeleton
+                alert={ (
+                    <Alert
+                        dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                        alertsPosition="br"
+                        alertSystem={ alertSystem }
+                        alert={ alert }
+                        onAlertSystemInitialize={ handleAlertSystemInitialize }
+                        withIcon={ true }
+                    />
+                ) }
+                topLoadingBar={ (
+                    <TopLoadingBar
+                        height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                        visibility={ isAJAXTopLoaderVisible }
+                    />
+                ) }
+                onLayoutOnUpdate={ handleLayoutOnUpdate }
+                header={ (
+                    <Header
+                        activeView="DEVELOPER"
+                        fluid={ !isMobileViewport ? fluid : false }
+                        onSidePanelToggleClick={ handleSidePanelToggleClick }
+                    />
+                ) }
+                sidePanel={ (
+                    <SidePanel
+                        ordered
+                        categorized={ config?.ui?.isLeftNavigationCategorized ?? true }
+                        caretIcon={ getSidePanelMiscIcons().caretRight }
+                        desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+                        fluid={ !isMobileViewport ? fluid : false }
+                        footerHeight={ footerHeight }
+                        headerHeight={ headerHeight }
+                        hoverType="background"
+                        mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                        onSidePanelItemClick={ handleSidePanelItemClick }
+                        onSidePanelPusherClick={ handleSidePanelPusherClick }
+                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
+                        selected={ selectedRoute }
+                        translationHook={ t }
+                        allowedScopes={ allowedScopes }
+                    />
+                ) }
+                footer={ (
+                    <Footer
+                        fluid={ !isMobileViewport ? fluid : false }
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader dimmer/> }>
-                    <Switch>
-                        { resolveRoutes() }
-                    </Switch>
-                </Suspense>
-            </ErrorBoundary>
-        </DashboardLayoutSkeleton>
+                <ErrorBoundary
+                    fallback={ (
+                        <EmptyPlaceholder
+                            action={ (
+                                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                    { t("console:common.placeholders.brokenPage.action") }
+                                </LinkButton>
+                            ) }
+                            image={ getEmptyPlaceholderIllustrations().brokenPage }
+                            imageSize="tiny"
+                            subtitle={ [
+                                t("console:common.placeholders.brokenPage.subtitles.0"),
+                                t("console:common.placeholders.brokenPage.subtitles.1")
+                            ] }
+                            title={ t("console:common.placeholders.brokenPage.title") }
+                        />
+                    ) }
+                >
+                    <Suspense fallback={ <ContentLoader dimmer/> }>
+                        <Switch>
+                            { resolveRoutes() }
+                        </Switch>
+                    </Suspense>
+                </ErrorBoundary>
+            </DashboardLayoutSkeleton>
+        </AccessControlProvider>
     );
 };
 
