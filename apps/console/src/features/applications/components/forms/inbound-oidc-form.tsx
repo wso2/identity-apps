@@ -44,6 +44,8 @@ import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
@@ -177,6 +179,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
     const scopeValidator = useRef<HTMLElement>();
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
+    const [ isCustomApplication, setCustomApplication ] = useState<boolean>(false);
 
     /**
      * Reset the encryption field initial values if its
@@ -787,9 +790,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
         }
 
-        // If the app is newly created do not add `clientId` & `clientSecret`.
-        if (!initialValues?.clientId || !initialValues?.clientSecret) {
-            return inboundConfigFormValues;
+        // If the app is not a newly created, add `clientId` & `clientSecret`.
+        if (initialValues?.clientId && initialValues?.clientSecret) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                clientId: initialValues?.clientId,
+                clientSecret: initialValues?.clientSecret
+            };
         }
 
         const finalConfiguration: any = {
@@ -802,9 +809,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
             },
             inbound: {
-                ...inboundConfigFormValues,
-                clientId: initialValues?.clientId,
-                clientSecret: initialValues?.clientSecret
+                ...inboundConfigFormValues
             }
         };
 
@@ -1543,103 +1548,110 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /*</Grid.Row>*/ }
 
             { /* Refresh Token */ }
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".refreshToken.heading") }
-                    </Heading>
-                    <Divider hidden />
-                    <Field
-                        ref={ refreshToken }
-                        name="RefreshToken"
-                        label=""
-                        required={ false }
-                        requiredErrorMessage={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.renew.validations.empty")
-                        }
-                        type="checkbox"
-                        value={
-                            initialValues?.refreshToken?.renewRefreshToken
-                                ? [ "refreshToken" ]
-                                : []
-                        }
-                        children={ [
-                            {
-                                label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                    ".sections.refreshToken.fields.renew.label"),
-                                value: "refreshToken"
-                            }
-                        ] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-renew-refresh-token-checkbox` }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.renew.hint"
-                            }
-                        >
-                            Select to issue a new <Code withBackground>refresh_token</Code>
-                            each time a <Code withBackground>refresh_token</Code> is
-                            exchanged. The existing token will be invalidated.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ expiryInSeconds }
-                        name="expiryInSeconds"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.expiry.label")
-                        }
-                        required={ true }
-                        requiredErrorMessage={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.expiry.validations.empty")
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.expiry.placeholder")
-                        }
-                        validation={ async (value: FormValue, validation: Validation) => {
-                            if (!isValidExpiryTime(value.toString())) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".refreshToken.fields.expiry.validations.invalid")
-                                );
-                            }
-                        } }
-                        value={ initialValues?.refreshToken
-                            ? initialValues.refreshToken.expiryInSeconds.toString()
-                            : metadata.defaultRefreshTokenExpiryTime }
-                        type="number"
-                        readOnly={ readOnly }
-                        min={ 1 }
-                        data-testid={ `${ testId }-refresh-token-expiry-time-input` }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".refreshToken.fields.expiry.hint"
-                            }
-                        >
-                            Specify the validity period of the <Code withBackground>refresh_token</Code> in seconds.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+            { selectedGrantTypes?.includes("refresh_token") &&
+                (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">
+                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".refreshToken.heading") }
+                                </Heading>
+                                <Divider hidden />
+                                <Field
+                                    ref={ refreshToken }
+                                    name="RefreshToken"
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.renew.validations.empty")
+                                    }
+                                    type="checkbox"
+                                    value={
+                                        initialValues?.refreshToken?.renewRefreshToken
+                                            ? [ "refreshToken" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms.inboundOIDC" +
+                                                ".sections.refreshToken.fields.renew.label"),
+                                            value: "refreshToken"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-renew-refresh-token-checkbox` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.renew.hint"
+                                        }
+                                    >
+                                        Select to issue a new <Code withBackground>refresh_token</Code>
+                                        each time a <Code withBackground>refresh_token</Code> is
+                                        exchanged. The existing token will be invalidated.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    ref={ expiryInSeconds }
+                                    name="expiryInSeconds"
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.label")
+                                    }
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.placeholder")
+                                    }
+                                    validation={ async (value: FormValue, validation: Validation) => {
+                                        if (!isValidExpiryTime(value.toString())) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                    ".refreshToken.fields.expiry.validations.invalid")
+                                            );
+                                        }
+                                    } }
+                                    value={ initialValues?.refreshToken
+                                        ? initialValues.refreshToken.expiryInSeconds.toString()
+                                        : metadata.defaultRefreshTokenExpiryTime }
+                                    type="number"
+                                    readOnly={ readOnly }
+                                    min={ 1 }
+                                    data-testid={ `${ testId }-refresh-token-expiry-time-input` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.hint"
+                                        }
+                                    >
+                                        Specify the validity period of the <Code withBackground>refresh_token</Code>
+                                        in seconds.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
 
             { /* ID Token */ }
             <Grid.Row columns={ 2 }>
@@ -1705,7 +1717,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication && applicationConfig.inboundOIDCForm.showIdTokenEncryption) &&
+                CustomApplicationTemplate?.id === template?.id
+                    && applicationConfig.inboundOIDCForm.showIdTokenEncryption &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>

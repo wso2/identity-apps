@@ -314,3 +314,16 @@
         margin: 0.5rem;
     }
 }
+
+.ui.button {
+    &.protocol-button {
+           width: 220px;
+          .protocol-button-icon {
+              float:right;
+          }
+          .protocol-change-title {
+                float: left;
+                fontSize: medium;
+          }
+    }
+}

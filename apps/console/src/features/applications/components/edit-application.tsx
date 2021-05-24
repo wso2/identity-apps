@@ -39,8 +39,6 @@ import { ComponentExtensionPlaceholder, applicationConfig } from "../../../exten
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
-import SAMLApplicationTemplate
-    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
@@ -50,6 +48,10 @@ import {
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import SAMLApplicationTemplate
+    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -391,6 +393,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
+     * Called when an application updates.
+     *
+     * @param {string} id - Application id.
+     */
+    const handleProtocolUpdate = (): void => {
+        if (!application?.id) {
+            return;
+        }
+
+        findConfiguredInboundProtocol(application.id);
+    };
+
+    /**
      * Handles application secret regenerate.
      * @param {OIDCDataInterface} config - Config response.
      */
@@ -437,8 +452,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }
                 appName={ application.name }
+                extendedAccessConfig={ tabPaneExtensions !== undefined }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                onProtocolUpdate = { handleProtocolUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
@@ -520,11 +537,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
+        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
             return [];
         }
 
-        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+        if (tabPaneExtensions && tabPaneExtensions.length > 0
+            && application?.templateId !== CustomApplicationTemplate.id ) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -727,13 +745,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs)
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs )
             ? (
                 <>
                     <ResourceTab
                         data-testid={ `${ testId }-resource-tabs` }
                         panes={ resolveTabPanes() }
-                        defaultActiveIndex={ defaultActiveIndex }
+                        defaultActiveIndex={
+                            application?.templateId === CustomApplicationTemplate.id ?
+                                (defaultActiveIndex - 1) : defaultActiveIndex }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
