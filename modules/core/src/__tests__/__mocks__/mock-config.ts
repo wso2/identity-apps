@@ -21,7 +21,7 @@ export const configMock = {
     features: {
         applications: {
             scopes: {
-                feature: [],
+                feature: [ "console:applications" ],
                 create: [],
                 read: [ "internal_application_mgt_view" ],
                 update: [ "internal_application_mgt_update" ],
@@ -30,7 +30,7 @@ export const configMock = {
         },
         identityProviders: {
             scopes: {
-                feature: [],
+                feature: [ "console:idps" ],
                 create: [ "internal_idp_create" ],
                 read: [ "internal_idp_view" ],
                 update: [ "internal_idp_update" ],
@@ -40,7 +40,7 @@ export const configMock = {
         },
         users: {
             scopes: {
-                feature: [],
+                feature: [ "console:users" ],
                 create: [ "internal_user_mgt_create" ],
                 read: [ "internal_user_mgt_list" ],
                 update: [ "internal_user_mgt_update" ],
@@ -50,7 +50,7 @@ export const configMock = {
         },
         groups: {
             scopes: {
-                feature: [],
+                feature: [ "console:groups" ],
                 create: [ "internal_role_mgt_create" ],
                 read: [ "internal_role_mgt_view" ],
                 update: [ "internal_role_mgt_update" ],
@@ -60,7 +60,7 @@ export const configMock = {
         },
         roles: {
             scopes: {
-                feature: [],
+                feature: [ "console:roles" ],
                 create: [ "internal_role_mgt_create" ],
                 read: [ "internal_role_mgt_view" ],
                 update: [ "internal_role_mgt_update" ],
@@ -70,7 +70,7 @@ export const configMock = {
         },
         attributeDialects: {
             scopes: {
-                feature: [],
+                feature: [ "console:attributes" ],
                 create: [ "internal_claim_meta_create" ],
                 read: [ "internal_claim_meta_view" ],
                 update: [ "internal_claim_meta_update" ],
