@@ -241,7 +241,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setOIDCConfigsLoading(false);
             });
-
     }, [oidcConfigurations, inboundProtocolConfig]);
 
     useEffect(() => {
@@ -620,7 +619,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     render: ConnectionDetailsTabPane
                 });
             }
-
 
             return panes;
         }

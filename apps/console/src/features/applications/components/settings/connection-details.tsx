@@ -68,7 +68,6 @@ export const ConnectionDetails: FunctionComponent<ConnectionDetailsPropsInterfac
                 }
             });
         }
-
     }, [inboundProtocols]);
 
     return (
