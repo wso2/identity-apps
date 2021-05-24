@@ -20,9 +20,9 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Responsive, Segment, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
-import { getAuthenticatorIcons, getInboundProtocolLogos, getSignInMethodIllustrations } from "../../../configs";
+import { getInboundProtocolLogos } from "../../../configs";
 import { SupportedAuthProtocolTypes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils";
 
@@ -115,24 +115,23 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
         const protocolContentList: ProtocolContentInterface[] = resolveProtocols();
         return (
             <>
-                {/*{*/}
-                {/*    protocolContentList.length === 2 ?*/}
-                {/*        <Grid.Column*/}
-                {/*            computer={ 3 }*/}
-                {/*            tablet={ 16 }*/}
-                {/*            mobile={ 16 }*/}
-                {/*        /> :*/}
-                {/*        <div className={ "ml-5" }/>*/}
-                {/*}*/}
                 {
+                    protocolContentList.length === 2 ?
+                        <Grid.Column
+                            computer={ 3 }
+                            tablet={ 16 }
+                            mobile={ 16 }
+                        /> :
+                        <div className={ "ml-5" }/>
+                }
+                {
+
                     protocolContentList.map((protocol: ProtocolContentInterface, index) => (
                         <Grid.Column
                             computer={ 5 }
                             tablet={ 16 }
                             mobile={ 16 }
-                            // className="flow-options-column"
                             key={ index }
-                            textAlign="center"
                         >
                             <InfoCard
                                 fluid
@@ -172,7 +171,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                         className="default-config-column"
                         textAlign="center"
                     >
-                        <div style={ { "marginTop": "40px" } }>
+                        <div className={ "protocol-landing-title" }>
                             <GenericIcon
                                 transparent
                                 icon={ getInboundProtocolLogos().general }
@@ -182,15 +181,11 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
 
                             <div className="default-config-description">
                                 <Heading as="h3">
-                                    {
-                                        "Which protocol you are using?"
-                                    }
+                                    Which protocol you are using?
                                 </Heading>
                                 <div className="default-config-description-content">
                                     <Text subHeading muted>
-                                        {
-                                            "select the protocol for your applications to connect."
-                                        }
+                                        select the protocol for your applications to connect.
                                     </Text>
                                 </div>
                             </div>
@@ -201,7 +196,6 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                     computer={ 16 }
                     tablet={ 16 }
                     mobile={ 16 }
-                    textAlign="center"
                 >
                     { resolveContent() }
                 </Grid.Row>
