@@ -16,7 +16,7 @@
  * under the License.
 -->
 
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128" class="icon">
     <defs>
         <clipPath id="clip-path">
             <rect id="Rectangle_937" data-name="Rectangle 937" width="128" height="128" rx="4" transform="translate(701 312)" fill="#c1c1c1"/>
