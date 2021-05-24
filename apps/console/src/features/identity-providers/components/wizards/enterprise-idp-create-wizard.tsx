@@ -33,7 +33,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { IdentityProviderInterface, IdentityProviderTemplateInterface } from "../../models";
+import { IdentityProviderTemplateInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
 import { Divider, Grid, Header, Icon } from "semantic-ui-react";
@@ -131,6 +131,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, [ selectedProtocol ]);
 
     const initialValues = useMemo(() => ({
+        name: template?.name,
         RequestMethod: "post",
         NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
     }), []);
@@ -186,54 +187,49 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     // Wizard
 
-    const handleFormSubmit = (values, form, callback) => {
+    /**
+     * @param values {object} form values
+     * @param _ form {Form} form Instance
+     * @param __ callback
+     */
+    const handleFormSubmit = (values, _, __) => {
 
-        // Deep clone the original template. Since we have both saml and
-        // oidc protocol's authenticators in the same template we need to
-        // have the logic to remove the other option before sending the
-        // resource create requests.
-        const identityProvider: IdentityProviderInterface = cloneDeep(template.idp);
+        const FIRST_ENTRY = 0;
+
+        /**
+         * We use a grouped template to keep the sub templates of enterprise
+         * identity provider templates. So, before assigning the form values to the
+         * template first we need to find the correct sub template and deep
+         * clone that object to avoid mutation on file level configuration.
+         */
+        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
+            return id === (selectedProtocol === "saml" ?
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+            );
+        }));
 
         if (selectedProtocol === "oidc") {
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
-            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
+            identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
                 { "key": "ClientId", "value": values?.clientId?.toString() },
                 { "key": "ClientSecret", "value": values?.clientSecret?.toString() },
                 { "key": "OAuth2AuthzEPUrl", "value": values?.authorizationEndpointUrl?.toString() },
                 { "key": "OAuth2TokenEPUrl", "value": values?.tokenEndpointUrl?.toString() },
                 { "key": "callbackUrl", "value": store.getState().config.deployment.serverHost + "/commonauth" }
             ];
-
             // Certificates: bind the JWKS URL if exists otherwise pem
             identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
-
-            // Identity provider placeholder image.
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/" + AppConstants.getAppBasename() +
-                        "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-                }
-            }
-
-            // Remove the saml authenticator from the template.
-            identityProvider.federatedAuthenticators.authenticators.pop();
-            identityProvider.federatedAuthenticators.defaultAuthenticatorId =
-                identityProvider.federatedAuthenticators.authenticators[ 0 ].authenticatorId;
 
         } else {
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
-
             if (selectedSamlConfigMode === "manual") {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ][ "properties" ] = [
+                identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ][ "properties" ] = [
                     { key: "IdPEntityId", value: values.IdPEntityId },
                     { key: "NameIDType", value: values.NameIDType },
                     { key: "RequestMethod", value: values.RequestMethod },
@@ -242,20 +238,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "selectMode", value: "Manual Configuration" }
                 ];
             } else {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
-                    { key: "meta_data_saml", value: xmlBase64String ?? "" },
+                identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
+                    { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
                     { key: "selectMode", value: "Metadata File Configuration" }
                 ];
             }
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
 
-            // Certificate
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? "" ];
+        }
 
-            // Remove the oidc authenticator from the template.
-            identityProvider.federatedAuthenticators.authenticators.shift();
-            identityProvider.federatedAuthenticators.defaultAuthenticatorId =
-                identityProvider.federatedAuthenticators.authenticators[ 0 ].authenticatorId
-
+        // Identity provider placeholder image.
+        if (AppConstants.getClientOrigin()) {
+            if (AppConstants.getAppBasename()) {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/" + AppConstants.getAppBasename() +
+                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+            } else {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+            }
         }
 
         createIdentityProvider(identityProvider)
@@ -313,12 +314,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             return errors;
         } }>
             <Field.Input
-                data-testid={ `${ testId }-idp-name` }
+                data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
                 inputType="name"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
+                initialValue={ initialValues.name }
                 maxLength={ IDP_NAME_LENGTH.max }
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
@@ -340,7 +342,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 imageSize="mini"
                                 contentTopBorder={ false }
                                 showTooltips={ true }
-                                data-testid={ `${ testId }-oidc-card` }/>
+                                data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
+                            />
                             <SelectionCard
                                 inline
                                 image={ getIdPIcons().saml }
@@ -352,7 +355,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 imageSize="mini"
                                 contentTopBorder={ false }
                                 showTooltips={ true }
-                                data-testid={ `${ testId }-saml-card` }
+                                data-testid={ `${ testId }-form-wizard-saml-selection-card` }
                             />
                         </div>
                     </Grid.Column>
@@ -386,12 +389,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ SP_EID_LENGTH.min }
                 width={ 15 }
                 placeholder="Enter a Service Provider Entity ID"
+                data-testid={ `${ testId }-form-wizard-saml-entity-id` }
             />
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <p><b>Mode of Configuration</b></p>
                         <Switcher
+                            data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
                             defaultOptionValue="file"
                             selectedValue={ selectedSamlConfigMode }
@@ -419,6 +424,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             children={ getAvailableNameIDFormats() }
                             value={ initialValues.NameIDType }
                             placeholder="Select an available name identifier"
+                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
                         />
                         <Field.Input
                             inputType="url"
@@ -430,6 +436,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             minLength={ SSO_URL_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 redirect SSO url" }
+                            data-testid={ `${ testId }-form-wizard-saml-sso-url` }
                         />
                         <Field.Input
                             inputType="default"
@@ -441,6 +448,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             minLength={ IDP_EID_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
+                            data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
                         />
                         <Field.Dropdown
                             ariaLabel="SAML 2.0 protocol binding"
@@ -451,6 +459,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             width={ 15 }
                             value={ initialValues.RequestMethod }
                             placeholder={ "Select mode of protocol binding" }
+                            data-testid={ `${ testId }-form-wizard-saml-protocol-binding` }
                         />
                     </div>
                 )
@@ -467,6 +476,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         } }
                         uploadButtonText="Upload Metadata File"
                         dropzoneText="Drag and drop a XML file here."
+                        data-testid={ `${ testId }-form-wizard-saml-xml-config-file-picker` }
                         icon={ getCertificateIllustrations().uploadPlaceholder }
                         placeholderIcon={ <Icon name="file code" size="huge"/> }
                         normalizeStateOnRemoveOperations={ true }
@@ -480,10 +490,22 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <WizardPage validate={ (values) => {
                 const errors: FormErrors = {};
-                errors.clientId = composeValidators(required, length(IDP_NAME_LENGTH))(values.clientId);
-                errors.clientSecret = composeValidators(required, length(IDP_NAME_LENGTH))(values.clientSecret);
-                errors.authorizationEndpointUrl = composeValidators(required, length(IDP_NAME_LENGTH))(values.authorizationEndpointUrl);
-                errors.tokenEndpointUrl = composeValidators(required, length(IDP_NAME_LENGTH))(values.tokenEndpointUrl);
+                errors.clientId = composeValidators(
+                    required,
+                    length(OIDC_CLIENT_ID_MAX_LENGTH)
+                )(values.clientId);
+                errors.clientSecret = composeValidators(
+                    required,
+                    length(OIDC_CLIENT_SECRET_MAX_LENGTH)
+                )(values.clientSecret);
+                errors.authorizationEndpointUrl = composeValidators(
+                    required,
+                    length(OIDC_URL_MAX_LENGTH)
+                )(values.authorizationEndpointUrl);
+                errors.tokenEndpointUrl = composeValidators(
+                    required,
+                    length(OIDC_URL_MAX_LENGTH)
+                )(values.tokenEndpointUrl);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
             } }>
@@ -496,7 +518,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     maxLength={ 100 }
                     minLength={ 3 }
                     placeholder={ "Enter client id" }
-                    data-testid={ `${ testId }-idp-client-id` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-client-id` }
                     width={ 13 }
                 />
                 <Field.Input
@@ -511,7 +533,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     minLength={ 3 }
                     type="password"
                     placeholder={ "Enter client secret" }
-                    data-testid={ `${ testId }-idp-client-secret` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-client-secret` }
                     width={ 13 }
                 />
                 <Field.Input
@@ -521,10 +543,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     label={ "Authorization Endpoint URL" }
                     required={ true }
                     placeholder={ "https://localhost:9443/oauth2/authorize/" }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    data-testid={ `${ testId }-idp-authorization-endpoint-url` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-authorization-endpoint-url` }
                     width={ 13 }
                 />
                 <Field.Input
@@ -534,10 +555,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     label={ "Token Endpoint URL" }
                     required={ true }
                     placeholder={ "https://localhost:9443/oauth2/token/" }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    data-testid={ `${ testId }-idp-token-endpoint-url` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-token-endpoint-url` }
                     width={ 13 }
                 />
             </WizardPage>
@@ -545,9 +565,33 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     };
 
     const certificatesPage = () => (
-        <WizardPage validate={ () => {
-            setNextShouldBeDisabled(!pemString);
-            return {};
+        <WizardPage validate={ (values) => {
+            const errors: FormErrors = {};
+            /**
+             * If it's the saml protocol then we don't render
+             * a JWKS endpoint field. Instead we only require
+             * a pem string or a file.
+             */
+            if (selectedProtocol === "saml") {
+                setNextShouldBeDisabled(!pemString);
+            } else {
+                /**
+                 * Now when it comes to OIDC the user can input either
+                 * JWKS endpoint, pem string, or the cert file itself
+                 * (cert file value will be extracted as a pem).
+                 */
+                if (selectedCertInputType === "pem") {
+                    setNextShouldBeDisabled(!pemString);
+                } else {
+                    errors.jwks_endpoint = composeValidators(
+                        required,
+                        length(JWKS_URL_LENGTH),
+                        isUrl
+                    )(values.jwks_endpoint);
+                    setNextShouldBeDisabled(ifFieldsHave(errors));
+                }
+            }
+            return errors;
         } }>
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -583,7 +627,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     maxLength={ JWKS_URL_LENGTH.max }
                     minLength={ JWKS_URL_LENGTH.min }
                     width={ 15 }
+                    initialValue={ EMPTY_STRING }
                     placeholder="Enter JWKS Endpoint URL"
+                    data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                 />
             ) }
             { (selectedCertInputType === "pem") && (
@@ -602,7 +648,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     uploadButtonText="Upload Certificate File"
                     dropzoneText="Drag and drop a certificate file here."
                     icon={ getCertificateIllustrations().uploadPlaceholder }
-                    placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                    placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
+                    data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
                     normalizeStateOnRemoveOperations={ true }
                 />
             ) }
@@ -644,6 +691,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header
+                    data-testid={ `${ testId }-modal-side-panel-header` }
                     className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
                         Help
@@ -652,9 +700,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
                         { (selectedProtocol === "oidc") ? (
-                            <OidcHelp/>
+                            <OidcHelp
+                                data-testid={ `${ testId }-modal-side-panel-oidc-help-content` }
+                            />
                         ) : (
-                            <SamlHelp/>
+                            <SamlHelp
+                                data-testid={ `${ testId }-modal-side-panel-saml-help-content` }
+                            />
                         ) }
                     </Suspense>
                 </ModalWithSidePanel.Content>
@@ -831,6 +883,15 @@ const composeValidators = (...validators) => (value) => {
     );
 };
 
+/**
+ * Given a {@link FormErrors} object, it will check whether
+ * every key has a assigned truthy value. {@link Array.every}
+ * will return {@code true} if one of the object member has
+ * a truthy value. In other words, it will check a field has
+ * a error message attached to it or not.
+ *
+ * @param errors {FormErrors}
+ */
 const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k) => !errors[ k ]);
 };
@@ -843,10 +904,13 @@ const required = (value: any) => {
 };
 
 const length = (minMax: MinMax) => (value) => {
-    if (value.length > minMax.max) {
+    if (!value && minMax.min > 0) {
+        return `You cannot leave this blank`;
+    }
+    if (value?.length > minMax.max) {
         return `Cannot exceed more than ${ minMax.max } characters.`;
     }
-    if (value.length < minMax.min) {
+    if (value?.length < minMax.min) {
         return `Should have at least ${ minMax.min } characters.`;
     }
     return undefined;
