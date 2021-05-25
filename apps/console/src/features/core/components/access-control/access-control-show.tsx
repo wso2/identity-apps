@@ -16,25 +16,48 @@
  * under the License.
  */
 
-import {
-    Children, 
+
+import React, {
+    Children,
     FunctionComponent, 
     PropsWithChildren, 
+    ReactElement, 
     cloneElement, 
-    isValidElement 
+    isValidElement
 } from "react";
 import { useAccess } from "react-access-control";
 
+/**
+ * Interface for show component.
+ */
 export interface AccessControlShowInterface {
+    /**
+     * Permissions needed to render child elements
+     */
     when: string | string[];
+    /**
+     * Permissions which will hide the child elemements
+     */
     notWhen?: string |string[];
-    fallback?: any;
+    /**
+     * Fallback elements which will be rendered if permission is not matched.
+     */
+    fallback?: ReactElement;
+    /**
+     * Granular level resource permissions.
+     */
     resource?: Record<string, any>;
 }
 
+/**
+ * Show component which will render child elements based on the permissions recieved.
+ * 
+ * @param props props required for permissions based rendering.
+ * @returns permission matched child elements
+ */
 export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterface>> = (
     props: PropsWithChildren<AccessControlShowInterface>
-): any => {
+): ReactElement<any, any> | null => {
 
     const { hasPermission } = useAccess();
 
@@ -59,11 +82,14 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         if (hideOn) {
             return null;
         } else {
-            return Children.map(children, child => {
-                if (isValidElement(child)) {
-                    return cloneElement(child, rest);
-                }
-            });
+            return ( <> {
+                Children.map(children, child => {
+                    if (isValidElement(child)) {
+                        return cloneElement(child, rest);
+                    }
+                })
+            }
+            </>);
         }
         
     }

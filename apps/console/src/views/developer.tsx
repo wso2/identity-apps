@@ -139,6 +139,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             featureConfig,
             allowedScopes);
 
+        // TODO : Remove this logic once getting started pages are removed.
         if (routes.length === 2 
             && routes.filter(route => route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID).length > 0 
                 && routes.filter(route => route.id === "404").length > 0) {
