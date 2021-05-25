@@ -2,7 +2,7 @@
     "category": "DEFAULT",
     "description": "Enterprise connectors via standard protocols",
     "enabled": true,
-    "displayOrder": 6,
+    "displayOrder": 2,
     "id": "enterprise-protocols",
     "image": "enterprise",
     "name": "Enterprise",
