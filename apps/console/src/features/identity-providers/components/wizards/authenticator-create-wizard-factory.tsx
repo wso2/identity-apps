@@ -92,7 +92,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
          *
          * FIXME: As a part of https://github.com/wso2-enterprise/asgardeo-product/issues/3878
          */
-        selectedTemplate: parentSel,
+        selectedTemplate: parentSelectedTemplate,
         ...rest
     } = props;
 
@@ -214,8 +214,8 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                          * FIXME: Re-evaluate this change as a part of
                          *        https://github.com/wso2-enterprise/asgardeo-product/issues/3878
                          */
-                        if (parentSel && !parentSel.disabled) {
-                            setSelectedTemplate(parentSel);
+                        if (parentSelectedTemplate && !parentSelectedTemplate.disabled) {
+                            setSelectedTemplate(parentSelectedTemplate);
                         }
                     }
                 })
