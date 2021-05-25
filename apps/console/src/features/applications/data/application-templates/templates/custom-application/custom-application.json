@@ -1,7 +1,7 @@
 {
     "id": "custom-application",
     "name": "Custom Application",
-    "description": "Applications that uses manual configurations.",
+    "description": "Register your application manually.",
     "image": "customApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",
