@@ -734,10 +734,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
                 frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
             },
-            publicClient: values.get("supportPublicClients").length > 0,
+            publicClient: values.get("supportPublicClients")?.length > 0,
             refreshToken: {
-                expiryInSeconds: values.get("expiryInSeconds")?  parseInt(values.get("expiryInSeconds"), 10) :
-                    parseInt(metadata.defaultRefreshTokenExpiryTime, 10),
+                expiryInSeconds: values.get("expiryInSeconds")
+                    ? parseInt(values.get("expiryInSeconds"), 10)
+                    : Number(metadata.defaultRefreshTokenExpiryTime),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
             },
             scopeValidators: values.get("scopeValidator"),
@@ -845,9 +846,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             publicClient: true,
             refreshToken: {
-                expiryInSeconds: values.get("expiryInSeconds")?  parseInt(values.get("expiryInSeconds"), 10) :
-                    parseInt(metadata.defaultRefreshTokenExpiryTime, 10),
-                renewRefreshToken: values.get("RefreshToken").length > 0
+                expiryInSeconds: values.get("expiryInSeconds")
+                    ? parseInt(values.get("expiryInSeconds"), 10)
+                    : Number(metadata.defaultRefreshTokenExpiryTime),
+                renewRefreshToken: values.get("RefreshToken")?.length > 0
             }
         };
 
@@ -1087,7 +1089,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
             {
-                (!isSPAApplication) &&
+                !isSPAApplication && selectedGrantTypes?.includes("authorization_code") &&
                 (
                     <>
                         <Grid.Row columns={ 1 }>
