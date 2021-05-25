@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import { 
+import {
     Children, 
     FunctionComponent, 
     PropsWithChildren, 
@@ -29,7 +29,7 @@ export interface AccessControlShowInterface {
     when: string | string[];
     notWhen?: string |string[];
     fallback?: any;
-    resource?: any;
+    resource?: Record<string, any>;
 }
 
 export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterface>> = (

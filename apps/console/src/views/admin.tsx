@@ -53,6 +53,7 @@ import {
     AccessControlUtils,
     AppConstants,
     AppState,
+    AppUtils,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     Footer,
@@ -117,7 +118,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorsEvaluated, setGovernanceConnectorsEvaluated ] = useState<boolean>(false);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
-    const [ developRoutes, setDevelopRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
+    const [ developRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
     const [
         selectedRoute,
@@ -125,7 +126,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-    const [ isManageViewAllowed, setIsManageViewAllowed ] = useState<boolean>(false);
     const [ accessControlledRoutes, setAccessControlledRoutes ] = useState<RouteInterface[]>([]);
 
     useEffect(() => {
@@ -262,22 +262,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             setGovernanceConnectorsEvaluated(true);
         }
     }, [ allowedScopes, governanceConnectorCategories, featureConfig ]);
-
-    useEffect(() => {
-
-        if (!featureConfig) {
-            return;
-        }
-
-        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
-        if (isEmpty(allowedScopes)) {
-            return;
-        }
-
-        // Check if the users has the relevant scopes to access the manage section.
-        setIsManageViewAllowed(accessControlledRoutes.length > 0);
-
-    }, [ allowedScopes, featureConfig, accessControlledRoutes ]);
 
     /**
      * Handles side panel toggle click.
@@ -433,7 +417,8 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         mobileSidePanelVisibility={ mobileSidePanelVisibility }
                         onSidePanelItemClick={ handleSidePanelItemClick }
                         onSidePanelPusherClick={ handleSidePanelPusherClick }
-                        routes={ accessControlledRoutes }
+                        routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(accessControlledRoutes), 
+                            AppUtils.getHiddenRoutes()) }
                         selected={ selectedRoute }
                         translationHook={ t }
                         allowedScopes={ allowedScopes }
