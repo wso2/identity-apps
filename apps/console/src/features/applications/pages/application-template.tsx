@@ -17,7 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    EmptyPlaceholder,
+    PageLayout,
+    PageLayoutPropsInterface,
+    TemplateGrid
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -38,7 +44,8 @@ import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
-    ApplicationTemplateCategories, ApplicationTemplateCategoryInterface,
+    ApplicationTemplateCategories,
+    ApplicationTemplateCategoryInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
@@ -64,7 +71,7 @@ const SHOW_TEMPLATE_FILTER: boolean = false;
 /**
  * Props for the Applications templates page.
  */
-type ApplicationTemplateSelectPageInterface = TestableComponentInterface;
+interface ApplicationTemplateSelectPageInterface extends PageLayoutPropsInterface, TestableComponentInterface { }
 
 /**
  * Choose the application template from this page.
@@ -78,7 +85,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const { t } = useTranslation();
@@ -390,6 +398,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             bottomMargin={ false }
             showBottomDivider
             data-testid={ `${ testId }-page-layout` }
+            { ...rest }
         >
             {
                 (SHOW_TEMPLATE_SEARCH || SHOW_TEMPLATE_FILTER) && (
