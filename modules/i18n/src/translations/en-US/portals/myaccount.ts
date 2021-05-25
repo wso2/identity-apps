@@ -1078,7 +1078,7 @@ export const myAccount: MyAccountNS = {
                 countryChangeForm: {
                     inputs: {
                         country: {
-                            placeholder: "Select your Country"
+                            placeholder: "Select your country"
                         }
                     }
                 },
