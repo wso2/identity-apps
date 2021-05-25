@@ -136,7 +136,7 @@
         }
     },
     "image": "enterprise",
-    "name": "Enterprise",
+    "name": "SAML 2.0",
     "services": [],
     "disabled": false
 }
