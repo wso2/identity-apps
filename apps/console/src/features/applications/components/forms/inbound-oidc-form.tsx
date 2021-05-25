@@ -736,7 +736,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             publicClient: values.get("supportPublicClients").length > 0,
             refreshToken: {
-                expiryInSeconds: parseInt(values.get("expiryInSeconds"), 10),
+                expiryInSeconds: values.get("expiryInSeconds")?  parseInt(values.get("expiryInSeconds"), 10) :
+                    parseInt(metadata.defaultRefreshTokenExpiryTime, 10),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
             },
             scopeValidators: values.get("scopeValidator"),
@@ -844,7 +845,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             publicClient: true,
             refreshToken: {
-                expiryInSeconds: parseInt(values.get("expiryInSeconds"), 10),
+                expiryInSeconds: values.get("expiryInSeconds")?  parseInt(values.get("expiryInSeconds"), 10) :
+                    parseInt(metadata.defaultRefreshTokenExpiryTime, 10),
                 renewRefreshToken: values.get("RefreshToken").length > 0
             }
         };
