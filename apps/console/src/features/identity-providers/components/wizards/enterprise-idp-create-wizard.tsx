@@ -22,6 +22,7 @@ import {
     ContentLoader,
     FilePicker,
     GenericIcon,
+    Heading,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -36,7 +37,7 @@ import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMem
 import { IdentityProviderTemplateInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
-import { Divider, Grid, Header, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
@@ -330,7 +331,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                         <div>
-                            <div>Select Protocol</div>
+                            <p><b>Select protocol</b></p>
                             <SelectionCard
                                 inline
                                 image={ getIdPIcons().oidc }
@@ -394,7 +395,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <p><b>Mode of Configuration</b></p>
+                        <p><b>Mode of configuration</b></p>
                         <Switcher
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
@@ -500,10 +501,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 )(values.clientSecret);
                 errors.authorizationEndpointUrl = composeValidators(
                     required,
+                    isUrl,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.authorizationEndpointUrl);
                 errors.tokenEndpointUrl = composeValidators(
                     required,
+                    isUrl,
                     length(OIDC_URL_MAX_LENGTH)
                 )(values.tokenEndpointUrl);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -540,9 +543,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     ariaLabel="authorizationEndpointUrl"
                     inputType="url"
                     name="authorizationEndpointUrl"
-                    label={ "Authorization Endpoint URL" }
+                    label={ "Authorization endpoint URL" }
                     required={ true }
-                    placeholder={ "https://localhost:9443/oauth2/authorize/" }
+                    placeholder={ "https://myorg.io/authorize" }
                     maxLength={ 100 }
                     minLength={ 3 }
                     data-testid={ `${ testId }-form-wizard-oidc-idp-authorization-endpoint-url` }
@@ -552,9 +555,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     ariaLabel="tokenEndpointUrl"
                     inputType="url"
                     name="tokenEndpointUrl"
-                    label={ "Token Endpoint URL" }
+                    label={ "Token endpoint URL" }
                     required={ true }
-                    placeholder={ "https://localhost:9443/oauth2/token/" }
+                    placeholder={ "https://myorg.io/token" }
                     maxLength={ 100 }
                     minLength={ 3 }
                     data-testid={ `${ testId }-form-wizard-oidc-idp-token-endpoint-url` }
@@ -596,7 +599,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <p><b>Mode of Certificate Configuration</b></p>
+                        <p><b>Mode of certificate configuration</b></p>
                         { (selectedProtocol === "oidc") && (
                             <Switcher
                                 compact
@@ -606,10 +609,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
                                     value: "jwks",
-                                    label: "JWKS Endpoint",
+                                    label: "JWKS endpoint",
                                 }, {
                                     value: "pem",
-                                    label: "Use PEM Certificate",
+                                    label: "Use PEM certificate",
                                 } ] }
                             />
                         ) }
@@ -619,16 +622,16 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Divider hidden/>
             { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
                 <Field.Input
-                    ariaLabel="JWKS Endpoint URL"
+                    ariaLabel="JWKS endpoint URL"
                     inputType="url"
                     name="jwks_endpoint"
-                    label="JWKS Endpoint URL"
+                    label="JWKS endpoint URL"
                     required={ true }
                     maxLength={ JWKS_URL_LENGTH.max }
                     minLength={ JWKS_URL_LENGTH.min }
                     width={ 15 }
                     initialValue={ EMPTY_STRING }
-                    placeholder="Enter JWKS Endpoint URL"
+                    placeholder="Enter JWKS endpoint URL"
                     data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                 />
             ) }
@@ -680,13 +683,20 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
-        if (!template?.content?.samlHelp
-            || !template?.content?.oidcHelp
-            || currentWizardStep !== SECOND_STEP_WIZARD_PAGE_INDEX) {
+
+        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
+            return id === (selectedProtocol === "saml" ?
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+            );
+        }));
+
+        if (!subTemplate?.content?.wizardHelp ||
+            currentWizardStep !== SECOND_STEP_WIZARD_PAGE_INDEX) {
             return null;
         }
 
-        const { samlHelp: SamlHelp, oidcHelp: OidcHelp } = template?.content;
+        const { wizardHelp: WizardHelp } = subTemplate?.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
@@ -699,15 +709,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
-                        { (selectedProtocol === "oidc") ? (
-                            <OidcHelp
-                                data-testid={ `${ testId }-modal-side-panel-oidc-help-content` }
-                            />
-                        ) : (
-                            <SamlHelp
-                                data-testid={ `${ testId }-modal-side-panel-saml-help-content` }
-                            />
-                        ) }
+                        <WizardHelp data-testid={ `${ testId }-modal-side-panel-help-content` }/>
                     </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
@@ -729,30 +731,19 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <ModalWithSidePanel.MainPanel>
                 { /*Modal header*/ }
                 <ModalWithSidePanel.Header
-                    className="page-header-inner with-image"
+                    className="wizard-header"
                     data-testid={ `${ testId }-modal-header` }>
-                    <div className="display-flex">
+                    <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ getIdPIcons().enterprise }
-                            size="x50"
+                            size="x30"
                             transparent
                             spaced={ "right" }
                             data-testid={ `${ testId }-image` }/>
-                        <Header
-                            size={ "small" }
-                            textAlign={ "left" }
-                            className={ "m-0" }
-                            data-testid={ `${ testId }-text-wrapper` }>
-                            { title && (
-                                <span data-testid={ `${ testId }-title` }>{ title }</span>
-                            ) }
-                            { subTitle && (
-                                <Header.Subheader
-                                    data-testid={ `${ testId }-sub-title` }>
-                                    { subTitle }
-                                </Header.Subheader>
-                            ) }
-                        </Header>
+                        <div>
+                            { title }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                        </div>
                     </div>
                 </ModalWithSidePanel.Header>
                 { /*Modal body content*/ }
