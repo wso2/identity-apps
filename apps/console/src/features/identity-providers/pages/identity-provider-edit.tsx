@@ -174,7 +174,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE.toString();
             } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
                 identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC.toString();
-             }
+            } else if (authenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML.toString();
+            }
         }
 
         const template = identityProviderTemplates.find((template) => template.id === identityProvider.templateId);

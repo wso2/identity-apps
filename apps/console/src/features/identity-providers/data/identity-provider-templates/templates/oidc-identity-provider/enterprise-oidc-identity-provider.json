@@ -89,7 +89,7 @@
         }
     },
     "image": "enterprise",
-    "name": "Enterprise",
+    "name": "OpenID Connect",
     "services": [],
     "disabled": false
 }
