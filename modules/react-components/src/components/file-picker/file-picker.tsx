@@ -271,13 +271,13 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
 
     const addPastedDataToState = async (text: string): Promise<void> => {
         if (await validate(text)) {
-            setPastedContent(text);
             try {
                 setSerializedData(await fileStrategy.serialize(text));
             } catch (error) {
                 readDynamicErrorAndSetToState(error);
             }
         }
+        setPastedContent(text);
     };
 
     // Events that takes care of the drag drop input. User drops
@@ -440,10 +440,18 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                         if (event?.target?.value) {
                             addPastedDataToState(event.target.value);
                         } else {
-                            // CLEAR OPERATION:
-                            // This block executes when the user have cleared all the content
-                            // from the textarea and we will evaluate it as a empty string.
+                            /**
+                             * CLEAR OPERATION:
+                             * This block executes when the user have cleared all the content
+                             * from the textarea and we will evaluate it as a empty string.
+                             */
                             setPastedContent(EMPTY_STRING);
+                            /**
+                             * If the string is empty we can't show error messages below the
+                             * fields. Because, it's like the initial state.
+                             */
+                            setErrorMessage(null);
+                            setHasError(false);
                             if (normalizeStateOnRemoveOperations) {
                                 normalizeSerializationOnPastedTextClear();
                             }
@@ -478,9 +486,9 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 onTabChange={ (event, { activeIndex }) => {
                     const index = parseInt(activeIndex.toString());
                     setActiveIndex(index);
-                    if (index === 0 && fileFieldTouched && !pastedContent) {
+                    if (index === FIRST_TAB_INDEX && fileFieldTouched && !pastedContent) {
                         validate(file);
-                    } else if (index === 1 && pasteFieldTouched && !file) {
+                    } else if (index === SECOND_TAB_INDEX && pasteFieldTouched && !file) {
                         validate(pastedContent);
                     }
                 } }
