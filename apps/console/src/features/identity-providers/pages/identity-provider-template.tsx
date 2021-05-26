@@ -28,6 +28,7 @@ import {
     Markdown,
     PageHeader,
     PageLayout,
+    PageLayoutPropsInterface,
     SelectionCard,
     TemplateGrid
 } from "@wso2is/react-components";
@@ -78,7 +79,9 @@ import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 /**
  * Proptypes for the IDP template selection page component.
  */
-type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterface & RouteComponentProps;
+interface IdentityProviderTemplateSelectPagePropsInterface extends TestableComponentInterface,
+    RouteComponentProps,
+    PageLayoutPropsInterface { }
 
 /**
  * Choose the application template from this page.
@@ -93,10 +96,11 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     const {
         location,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
-    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location?.search);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -466,6 +470,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 bottomMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
                 showBottomDivider
+                { ...rest }
             >
                 {
                     (categorizedTemplates && !isIDPTemplateRequestLoading)
