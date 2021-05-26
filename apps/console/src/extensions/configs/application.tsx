@@ -27,8 +27,8 @@ import {
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
-        showSaaS: true,
-        showReturnAuthenticatedIdPs: true
+        showReturnAuthenticatedIdPs: true,
+        showSaaS: true
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -63,17 +63,17 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     inboundOIDCForm: {
+        disabledGrantTypes: [],
         shouldValidateCertificate: true,
+        showBackChannelLogout: true,
+        showCertificates: true,
         showClientSecretMessage: true,
         showFrontChannelLogout: true,
-        showNativeClientSecretMessage: true,
-        showScopeValidators: true,
         showIdTokenEncryption: true,
-        showBackChannelLogout: true,
+        showNativeClientSecretMessage: true,
         showRequestObjectSignatureValidation: true,
-        showCertificates: true,
         showReturnAuthenticatedIdPList: true,
-        disabledGrantTypes: []
+        showScopeValidators: true
     },
     infoSettings: {
         renderInfoTabExtension: () => null
