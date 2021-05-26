@@ -29,6 +29,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, use
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../extensions/configs";
+import { FeatureQuickstartProvider } from "../../../providers";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -208,68 +210,29 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     };
 
     return (
-        <PageLayout
-            action={
-                (isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0))
-                && (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-add-button` }
-                    >
-                        <Icon name="add" />{ t("console:develop.features.authenticationProvider.buttons.addIDP") }
-                    </PrimaryButton>
-                )
-            }
-            title={ t("console:develop.pages.authenticationProvider.title") }
-            description={ t("console:develop.pages.authenticationProvider.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
+        <FeatureQuickstartProvider
+            isLoading={ (!isIdPListRequestLoading && !searchQuery && idpList?.totalResults <= 0) }
+            quickstart={ identityProviderConfig.featureQuickStart.renderFeatureQuickStart() }
         >
-            <ListLayout
-                advancedSearch={
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleIdentityProviderFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterCondition.placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
-                                "filterValue.placeholder")
-                        }
-                        placeholder={ t("console:develop.features.authenticationProvider.advancedSearch.placeholder") }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-advance-search` }
-                    />
+            <PageLayout
+                action={
+                    (isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0))
+                    && (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-add-button` }
+                        >
+                            <Icon name="add" />{ t("console:develop.features.authenticationProvider.buttons.addIDP") }
+                        </PrimaryButton>
+                    )
                 }
-                currentListSize={ idpList.count }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ true }
-                showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
-                sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
-                totalListSize={ idpList.totalResults }
-                data-testid={ `${ testId }-list-layout` }
+                title={ t("console:develop.pages.authenticationProvider.title") }
+                description={ t("console:develop.pages.authenticationProvider.subTitle") }
+                data-testid={ `${ testId }-page-layout` }
             >
-                <IdentityProviderList
+                <ListLayout
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleIdentityProviderFilter }
@@ -281,40 +244,86 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterAttribute" +
-                                    ".placeholder")
+                                t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
+                                    "filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterCondition" +
-                                    ".placeholder")
+                                t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
+                                    "filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("console:develop.features.authenticationProvider.advancedSearch." +
-                                    "form.inputs.filterValue" +
-                                    ".placeholder")
+                                t("console:develop.features.authenticationProvider.advancedSearch.form.inputs." +
+                                    "filterValue.placeholder")
                             }
-                            placeholder={ t("console:develop.features.authenticationProvider." +
-                                "advancedSearch.placeholder") }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.advancedSearch.placeholder")
+                            }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-advance-search` }
                         />
                     }
-                    isLoading={ isIdPListRequestLoading }
-                    list={ idpList }
-                    onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
-                    }
-                    onIdentityProviderDelete={ handleIdentityProviderDelete }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid={ `${ testId }-list` }
-                />
-            </ListLayout>
-        </PageLayout>
+                    currentListSize={ idpList.count }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    showPagination={ true }
+                    showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
+                    sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
+                    sortStrategy={ listSortingStrategy }
+                    totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
+                    totalListSize={ idpList.totalResults }
+                    data-testid={ `${ testId }-list-layout` }
+                >
+                    <IdentityProviderList
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleIdentityProviderFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "name"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("console:develop.features.authenticationProvider.advancedSearch." +
+                                        "form.inputs.filterAttribute" +
+                                        ".placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("console:develop.features.authenticationProvider.advancedSearch." +
+                                        "form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("console:develop.features.authenticationProvider.advancedSearch." +
+                                        "form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("console:develop.features.authenticationProvider." +
+                                    "advancedSearch.placeholder") }
+                                defaultSearchAttribute="name"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-advance-search` }
+                            />
+                        }
+                        isLoading={ isIdPListRequestLoading }
+                        list={ idpList }
+                        onEmptyListPlaceholderActionClick={
+                            () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
+                        }
+                        onIdentityProviderDelete={ handleIdentityProviderDelete }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </ListLayout>
+            </PageLayout>
+        </FeatureQuickstartProvider>
     );
 };
 
