@@ -26,6 +26,7 @@
         "test:integration:smoke": "npx lerna run test:smoke --scope @wso2is/integration-tests",
         "test:integration:interactive": "npx lerna run test:interactive --scope @wso2is/integration-tests",
         "test:unit": "npm run test",
+        "test:unit:withcoverage": "npm run test -- -- -- --coverage --collect-coverage",
         "test:unit:apps": "npx lerna run test --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "test:unit:console": "npx lerna run test --stream --scope @wso2is/console",
         "test:unit:core": "npx lerna run test --stream --scope @wso2is/core",
