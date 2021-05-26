@@ -16,15 +16,18 @@
  * under the License.
  */
 
-import { LoadableComponentInterface } from "@wso2is/core/models";
 import React, { Fragment, FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-interface FeatureQuickstartProviderPropsInterface extends LoadableComponentInterface {
+interface FeatureQuickstartProviderPropsInterface {
 
     /**
-     * Should the quickstart wrapper should be skipped.
+     * Should the quickstart be skipped.
      */
     bypass?: boolean;
+    /**
+     * Should the quickstart be shown.
+     */
+    show: boolean;
     /**
      * Quickstart content.
      */
@@ -39,14 +42,14 @@ export const FeatureQuickstartProvider: FunctionComponent<PropsWithChildren<
     const {
         bypass,
         children,
-        isLoading,
+        show,
         quickstart
     } = prop;
     
     return (
         <Fragment>
             {
-                (isLoading && !bypass)
+                (show && !bypass)
                     ? quickstart
                     : children
             }

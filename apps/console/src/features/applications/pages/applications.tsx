@@ -240,7 +240,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <FeatureQuickstartProvider
             bypass={ applicationConfig.featureQuickStart.renderFeatureQuickStart() === null }
-            isLoading={ (!isApplicationListRequestLoading && !searchQuery && appList?.totalResults <= 0) }
+            show={ (!isApplicationListRequestLoading && !searchQuery && appList?.totalResults <= 0) }
             quickstart={ applicationConfig.featureQuickStart.renderFeatureQuickStart() }
         >
             <PageLayout

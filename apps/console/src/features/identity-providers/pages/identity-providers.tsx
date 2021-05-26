@@ -212,7 +212,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     return (
         <FeatureQuickstartProvider
             bypass={ identityProviderConfig.featureQuickStart.renderFeatureQuickStart() === null }
-            isLoading={ (!isIdPListRequestLoading && !searchQuery && idpList?.totalResults <= 0) }
+            show={ (!isIdPListRequestLoading && !searchQuery && idpList?.totalResults <= 0) }
             quickstart={ identityProviderConfig.featureQuickStart.renderFeatureQuickStart() }
         >
             <PageLayout
