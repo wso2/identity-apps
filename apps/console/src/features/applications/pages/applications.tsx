@@ -38,6 +38,8 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { applicationConfig } from "../../../extensions/configs";
+import { FeatureQuickstartProvider } from "../../../providers";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -236,72 +238,33 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     return (
-        <PageLayout
-            action={
-                (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
-                && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes))
-                && (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add"/>
-                        { t("console:develop.features.applications.list.actions.add") }
-                    </PrimaryButton>
-                )
-            }
-            title={ t("console:develop.pages.applications.title") }
-            description={ t("console:develop.pages.applications.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
+        <FeatureQuickstartProvider
+            isLoading={ (!isApplicationListRequestLoading && !searchQuery && appList?.totalResults <= 0) }
+            quickstart={ applicationConfig.featureQuickStart.renderFeatureQuickStart() }
         >
-            { renderRemoteFetchStatus() }
-            <ListLayout
-                advancedSearch={
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleApplicationFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form.inputs.filterAttribute" +
-                                ".placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form.inputs.filterCondition" +
-                                ".placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-list-advanced-search` }
-                    />
+            <PageLayout
+                action={
+                    (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
+                    && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
+                        allowedScopes))
+                    && (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("console:develop.features.applications.list.actions.add") }
+                        </PrimaryButton>
+                    )
                 }
-                currentListSize={ appList.count }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ appList?.totalResults !== 0 }
-                showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
-                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
-                totalListSize={ appList.totalResults }
-                data-testid={ `${ testId }-list-layout` }
+                title={ t("console:develop.pages.applications.title") }
+                description={ t("console:develop.pages.applications.subTitle") }
+                data-testid={ `${ testId }-page-layout` }
             >
-                <ApplicationList
+                { renderRemoteFetchStatus() }
+                <ListLayout
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleApplicationFilter }
@@ -331,19 +294,65 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             data-testid={ `${ testId }-list-advanced-search` }
                         />
                     }
-                    featureConfig={ featureConfig }
-                    isLoading={ isApplicationListRequestLoading }
-                    list={ appList }
-                    onApplicationDelete={ handleApplicationDelete }
-                    onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"))
+                    currentListSize={ appList.count }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    showPagination={ appList?.totalResults !== 0 }
+                    showTopActionPanel={
+                        isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0)
                     }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid={ `${ testId }-list` }
-                />
-            </ListLayout>
-        </PageLayout>
+                    sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                    sortStrategy={ listSortingStrategy }
+                    totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
+                    totalListSize={ appList.totalResults }
+                    data-testid={ `${ testId }-list-layout` }
+                >
+                    <ApplicationList
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleApplicationFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "name"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("console:develop.features.applications.advancedSearch.form.inputs." +
+                                        "filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("console:develop.features.applications.advancedSearch.form.inputs." +
+                                        "filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
+                                defaultSearchAttribute="name"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            />
+                        }
+                        featureConfig={ featureConfig }
+                        isLoading={ isApplicationListRequestLoading }
+                        list={ appList }
+                        onApplicationDelete={ handleApplicationDelete }
+                        onEmptyListPlaceholderActionClick={
+                            () => history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"))
+                        }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </ListLayout>
+            </PageLayout>
+        </FeatureQuickstartProvider>
     );
 };
 
