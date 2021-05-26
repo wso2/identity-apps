@@ -62,6 +62,9 @@ export const applicationConfig: ApplicationConfig = {
         },
         showProvisioningSettings: true
     },
+    featureQuickStart: {
+        renderFeatureQuickStart: () => null
+    },
     inboundOIDCForm: {
         disabledGrantTypes: [],
         shouldValidateCertificate: true,

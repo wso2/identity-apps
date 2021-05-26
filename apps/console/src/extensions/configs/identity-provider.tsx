@@ -25,6 +25,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
+    featureQuickStart: {
+        renderFeatureQuickStart: () => null
+    },
     generalDetailsForm: {
         showCertificate: true
     },
