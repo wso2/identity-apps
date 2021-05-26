@@ -23,7 +23,7 @@
         "start": "npx run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
         "start:default": "../../node_modules/.bin/webpack serve --mode development --inline --hot --open --env NODE_ENV=development",
-        "test": "npx jest --passWithNoTests",
+        "test": "npx jest -- -- --coverage --passWithNoTests",
         "compile:i18n": "npx run-script-os",
         "compile:i18n:default": "../../node_modules/.bin/tsc -p src/extensions/i18n",
         "compile:i18n:win32": "..\\..\\node_modules\\.bin\\tsc -p src\\extensions\\i18n",
