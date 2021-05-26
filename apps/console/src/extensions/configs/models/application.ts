@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -51,6 +51,9 @@ export interface ApplicationConfig {
         extendTabs: boolean; //should be true for cloud
         showProvisioningSettings: boolean;
         renderHelpPanelItems: () => ReactNode;
+    };
+    featureQuickStart: {
+        renderFeatureQuickStart: () => ReactElement;
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;

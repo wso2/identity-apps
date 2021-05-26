@@ -16,11 +16,16 @@
  * under the License.
  */
 
+import { ReactElement } from "react";
+
 export interface IdentityProviderConfig {
     editIdentityProvider: {
         showAdvancedSettings: boolean;
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
+    };
+    featureQuickStart: {
+        renderFeatureQuickStart: () => ReactElement;
     };
     generalDetailsForm: {
         showCertificate: boolean;
