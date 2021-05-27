@@ -394,6 +394,15 @@ From inside respective component.
 npm run test
 ```
 
+#### Code Coverage
+
+**Generate coverage report**
+
+```bash
+# From the root of the project.
+npm run test:unit:coverage
+```
+
 ### Integration Tests
 
 Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
