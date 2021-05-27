@@ -15,7 +15,7 @@ submitting PRs.
     * [Ensuring Code Quality](#ensuring-code-quality)
     * [Formatting](#formatting)
     * [Ensuring performance](#ensuring-performance)
-* [Running Tests](#running-tests)
+* [Writing Tests](#writing-tests)
     * [Unit Tests](#unit-tests)
     * [Integration Tests](#integration-tests)
 * [Troubleshoot](#troubleshoot)
@@ -310,23 +310,88 @@ When adding new assets, always check the existing once in the theme and only pro
 When adding images, always try to add SVGs which are optimized for web.
 
 
-## Running Tests
+## Writing Tests
 
 ### Unit Tests
 
-Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-and you can run the unit test suites using the following commands.
+Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro).
+Make sure to write unit tests when you are working on new or existing components.
 
-#### Run Tests for all modules
+#### Writing tests.
+
+Writing unit tests for every component that you develop is mandatory.
+Take a look at the following example test case where we test if the component that we are writing mounts and renders as expected.
+
+```tsx
+import React from "react";
+import "@testing-library/jest-dom/extend-expect";
+import { render } from "./../test-utils";
+import { ApplicationList } from "../../../components/applications";
+
+describe("Test if the Application List is working as expected", () => {
+    it("<ApplicationList /> renders without exploding", () => {
+        const component = render(<ApplicationList />);
+        expect(component.getByTestId("application-list")).toBeInTheDocument();
+    });
+});
+```
+
+Note that we use a custom `render` function here rather than from the `@testing-library/react` module. The reason for 
+this is that we need to wrap our components with providers like `Redux` etc. And doing this in every test case is a 
+tedious task. So we have written a custom renderer following the guide in 
+[official documentation][react-testing-library-custom-renderer].
+
+For further reference, checkout the official documentation of [React Testing Library][react-testing-library].
+
+#### Running the test suite.
+
+Following are few of the useful commands that you can use to run the existing unit tests for modules.
+
+**Run Tests for all modules**
 
 ```bash
+# From project root.
 npm run test
 ```
 
-#### Run Tests for individual module
+**Run Tests for all modules in watch mode**
 
 ```bash
+# From project root.
+npm run test:watch
+```
+
+**Run Tests for individual component**
+
+Using Lerna
+
+```bash
+# From anywhere inside the project.
 npx lerna run test --scope @wso2is/forms
+```
+
+From the project root.
+
+```bash
+# Run tests for modules.
+npm run test:unit:modules
+```
+
+```bash
+# Run tests for apps.
+npm run test:unit:apps
+```
+
+```bash
+# Run tests for specific module. (Replace <MODULE_NAME> with something like `@wso2is/core` or `@wso2is/myaccount`)
+npm run test:unit:<MODULE_NAME>
+```
+
+From inside respective component.
+
+```bash
+# From inside component ex: apps/console. Use `npm run test:watch for watch mode.
+npm run test
 ```
 
 ### Integration Tests
@@ -386,3 +451,6 @@ For more information regarding the test module, checkout the [README](../tests/R
     </mirrors>
 </settings>
 ```
+
+[react-testing-library]: https://testing-library.com/docs/
+[react-testing-library-custom-renderer]: https://testing-library.com/docs/react-testing-library/setup#custom-render
