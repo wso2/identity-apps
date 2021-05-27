@@ -18,6 +18,7 @@
     "exclude": [
         "node_modules", 
         "test-configs",
+        "test-utils",
         "**/tests/*",
         "**/__tests__/*",
         "**/__mocks__/*",
