@@ -35,11 +35,13 @@ import {
     ProvisioningSettings,
     SignOnMethods
 } from "./settings";
-import { ConnectionDetails } from "./settings/connection-details";
+import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 import SAMLApplicationTemplate
     from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
@@ -155,6 +157,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -241,7 +244,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setOIDCConfigsLoading(false);
             });
-    }, [oidcConfigurations, inboundProtocolConfig]);
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
         if (tabPaneExtensions) {
@@ -267,6 +270,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols: inboundProtocolList,
                 onApplicationUpdate: () => {
                     onUpdate(application?.id);
+                },
+                onTriggerTabUpdate: (type: string) => {
+                    setActiveTabIndex(6);
                 },
                 template: template
             },
@@ -533,10 +539,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             : null
     );
 
-    const ConnectionDetailsTabPane = () : ReactElement => (
-
+    const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <ConnectionDetails
+            <Info
                 inboundProtocols={ application?.inboundProtocols }
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }
@@ -612,11 +617,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_CONNECTION_DETAILS_SETTINGS"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
 
                 panes.push({
-                    menuItem: t("console:develop.features.applications.edit.sections.connectionDetails.tabName"),
-                    render: ConnectionDetailsTabPane
+                    menuItem: {
+                        content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                        icon: "info circle"
+                    },
+                    render: InfoTabPane
                 });
             }
 
@@ -649,8 +657,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 render: AdvancedSettingsTabPane
             },
             {
-                menuItem: t("console:develop.features.applications.edit.sections.connectionDetails.tabName"),
-                render: ConnectionDetailsTabPane
+                menuItem: {
+                    content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                    icon: "info circle"
+                },
+                render: InfoTabPane
             }
         ];
     };
@@ -775,9 +786,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 <>
                     <ResourceTab
-                        data-testid={ `${ testId }-resource-tabs` }
-                        panes={ resolveTabPanes() }
-                        defaultActiveIndex={ defaultActiveIndex }
+                        activeIndex= { activeTabIndex }
+                        data-testid= { `${testId}-resource-tabs` }
+                        defaultActiveIndex={
+                            application?.templateId === CustomApplicationTemplate.id ?
+                                (defaultActiveIndex - 1) : defaultActiveIndex }
+                        onTabChange={ (event, { activeIndex } ) => {
+                            setActiveTabIndex((parseInt(activeIndex.toString())));
+                        } }
+                        panes= { resolveTabPanes() }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>

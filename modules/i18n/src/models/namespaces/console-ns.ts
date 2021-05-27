@@ -498,7 +498,7 @@ export interface ConsoleNS {
                             };
                             tabName: string;
                         };
-                        connectionDetails: {
+                        info: {
                             tabName: string;
                         };
                         general: {

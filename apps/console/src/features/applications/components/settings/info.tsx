@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { TestableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
-import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ContentLoader, EmphasizedSegment, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
+import { AddUserStepContent } from "../../../../extensions/application-templates/shared/components";
 import { AppState } from "../../../core";
 import {
     InboundProtocolListItemInterface,
@@ -31,15 +32,15 @@ import {
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
 
 /**
- * Proptypes for the connection details component.
+ * Proptypes for the server endpoints details component.
  */
-interface ConnectionDetailsPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+interface InfoPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     inboundProtocols: InboundProtocolListItemInterface[];
     isSAMLConfigLoading: boolean;
     isOIDCConfigLoading: boolean;
 }
-export const ConnectionDetails: FunctionComponent<ConnectionDetailsPropsInterface> = (
-    props: ConnectionDetailsPropsInterface
+export const Info: FunctionComponent<InfoPropsInterface> = (
+    props: InfoPropsInterface
 ): ReactElement => {
 
     const { inboundProtocols, isOIDCConfigLoading, isSAMLConfigLoading  } = props;
@@ -71,39 +72,54 @@ export const ConnectionDetails: FunctionComponent<ConnectionDetailsPropsInterfac
     }, [inboundProtocols]);
 
     return (
-        <EmphasizedSegment loading={ isLoading } padded="very">
-        { !isLoading ? (
-            <Grid className="form-container with-max-width">
-                <Grid.Row>
-                    <Grid.Column>
-                        <Heading ellipsis as="h5">
-                            <strong>
-                                { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints."
-                                    + "title") }
-                            </strong>
-                        </Heading>
-                        <Hint>
+        !isLoading ? (
+            <EmphasizedSegment loading={ isLoading } padded="very">
+                <Grid className="form-container with-max-width">
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Heading ellipsis as="h4">
+                                <strong>
+                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                        "endpoints." + "title") }
+                                </strong>
+                            </Heading>
+
                             { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                        "subTitle") }
-                        </Hint>
-                        <Divider hidden/>
-                        { isOIDC && (
-                            <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                        ) }
-                        { isOIDC && isSAML ? (
-                            <>
-                                <Divider hidden/>
-                                <Divider/>
-                                <Divider hidden/>
-                            </>
-                        ) : null }
-                        { isSAML && (
-                            <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                        ) }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        ) : null }
-        </EmphasizedSegment>
+                                            "subTitle") }
+
+                            <Divider hidden/>
+                            { isOIDC && (
+                                <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                            ) }
+                            { isOIDC && isSAML ? (
+                                <>
+                                    <Divider hidden/>
+                                    <Divider/>
+                                    <Divider hidden/>
+                                </>
+                            ) : null }
+                            { isSAML && (
+                                <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                            ) }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                <Divider hidden/>
+                <Divider hidden/>
+                <Grid className="form-container with-max-width">
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Heading ellipsis as="h4">
+                                <strong>
+                                    Try out application
+                                </strong>
+                            </Heading>
+                            <AddUserStepContent/>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </EmphasizedSegment>
+        )
+        : <ContentLoader/>
     );
 };

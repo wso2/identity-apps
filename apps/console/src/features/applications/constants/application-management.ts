@@ -58,7 +58,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
-        .set("APPLICATION_CONNECTION_DETAILS_SETTINGS", "applications.edit.connectionDetails");
+        .set("APPLICATION_EDIT_INFO", "applications.edit.info");
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.

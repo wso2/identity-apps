@@ -819,8 +819,8 @@ export const console: ConsoleNS = {
                             },
                             tabName: "පරිශීලක ගුණාංග"
                         },
-                        connectionDetails: {
-                            tabName: "සම්බන්ධතා විස්තර"
+                        info: {
+                            tabName: "තොරතුරු"
                         },
                         general: {
                             tabName: "ජනරාල්"
