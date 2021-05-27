@@ -57,7 +57,7 @@ jobs:
       uses: artiomtr/jest-coverage-report-action@v1.3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        test_script: npm run bootstrap && npm run test
+        test_script: npm run test
     - name: Build
       id: build-with-maven
       run: mvn clean install -U -Dlint.exec.skip=false
