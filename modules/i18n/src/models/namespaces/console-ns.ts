@@ -385,6 +385,7 @@ export interface ConsoleNS {
                 };
                 confirmations: {
                     addSocialLogin: Popup;
+                    changeProtocol: Confirmation;
                     deleteApplication: Confirmation;
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;

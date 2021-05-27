@@ -498,8 +498,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         terminateAllUserSessions(user.id)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
-                        "success.description",
+                    description: t(
+                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "success.description"
+                    ),
                     level: AlertLevels.SUCCESS,
                     message: t(
                         "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
@@ -523,8 +525,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
-                        "genericError.description",
+                    description: t(
+                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +

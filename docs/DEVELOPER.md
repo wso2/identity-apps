@@ -12,6 +12,7 @@ submitting PRs.
 * [Building the project](#building-the-project)
 * [Configuration Guide](#configuration-guide)
 * [Writing Code](#writing-code)
+    * [Ensuring Code Quality](#ensuring-code-quality)
     * [Formatting](#formatting)
     * [Ensuring performance](#ensuring-performance)
 * [Running Tests](#running-tests)
@@ -121,6 +122,25 @@ The portals i.e. Console & My Account are configurable using the `deployment.tom
 Read through our [configurations guidelines](./CONFIGURATION.md) to learn about the configuration process.
 
 ## Writing Code
+
+### Ensuring Code Quality
+
+Make sure that you set up the required developer tools as mentioned [here](#setting-up-development-tools) before 
+starting off with the coding.
+
+#### ESLint
+
+We use [ESLint][eslint-official-site] as the primary code analysis tool and it's important that you adhere to the 
+defined ruleset in the configuration. Setup the ESLint plugin corresponding to the IDE/Code editor you are using. For more 
+information, follow the instructions [here](#setting-up-development-tools).
+
+Always keep an eye out for the inline warnings and errors given out by the plugin and also execute the following 
+command before making a commit to make sure that you don't violate the rules.
+
+```bash
+# Run this from the root.
+npm run lint:staged
+```
 
 ### Formatting
 

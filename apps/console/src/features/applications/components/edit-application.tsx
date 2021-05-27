@@ -40,10 +40,6 @@ import { ComponentExtensionPlaceholder, applicationConfig } from "../../../exten
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
-import SAMLApplicationTemplate
-    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
     ApplicationInterface, ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
@@ -52,6 +48,10 @@ import {
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import SAMLApplicationTemplate
+    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit component.
@@ -150,6 +150,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+    const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
     const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
     const [
         clientSecretHashDisclaimerModalInputs,
@@ -158,6 +159,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+
+    /**
+     * Called when an application updates.
+     *
+     * @param {string} id - Application id.
+     */
+    const handleApplicationUpdate = (id: string): void => {
+        setIsApplicationUpdated(true);
+        onUpdate(id);
+    };
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -247,7 +258,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [ oidcConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
-        if (tabPaneExtensions) {
+        if (tabPaneExtensions && !isApplicationUpdated) {
             return;
         }
 
@@ -285,6 +296,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         setTabPaneExtensions(extensions);
+        setIsApplicationUpdated(false);
     }, [
         tabPaneExtensions,
         template,
@@ -402,6 +414,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     // Mutate the saml: NameIDFormat property according to the specification.
                     normalizeSAMLNameIDFormat(protocolConfigs);
 
+                    setIsApplicationUpdated(true);
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
                     setIsInboundProtocolConfigRequestLoading(false);
@@ -415,6 +428,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             getConfiguredInboundProtocolsList([]);
             getConfiguredInboundProtocolConfigs({});
         }
+    };
+
+    /**
+     * Called when an application updates.
+     *
+     * @param {string} id - Application id.
+     */
+    const handleProtocolUpdate = (): void => {
+        if (!application?.id) {
+            return;
+        }
+
+        findConfiguredInboundProtocol(application.id);
     };
 
     /**
@@ -446,7 +472,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 name={ application.name }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
                 readOnly={ readOnly }
@@ -464,8 +490,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }
                 appName={ application.name }
+                extendedAccessConfig={ tabPaneExtensions !== undefined }
                 isLoading={ isLoading }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
+                onProtocolUpdate = { handleProtocolUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
@@ -488,7 +516,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     inboundProtocolList.length === 1 && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-attribute-settings` }
             />
@@ -503,7 +531,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-sign-on-methods` }
@@ -516,7 +544,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AdvancedSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
-                onUpdate={ onUpdate }
+                onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-advanced-settings` }
@@ -530,7 +558,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <ProvisioningSettings
                     application={ application }
                     provisioningConfigurations={ application.provisioningConfigurations }
-                    onUpdate={ onUpdate }
+                    onUpdate={ handleApplicationUpdate }
                     featureConfig={ featureConfig }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-provisioning-settings` }
@@ -557,11 +585,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
+        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
             return [];
         }
 
-        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+        if (tabPaneExtensions && tabPaneExtensions.length > 0
+            && application?.templateId !== CustomApplicationTemplate.id ) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -782,7 +811,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-            && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs)
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs )
             ? (
                 <>
                     <ResourceTab

@@ -157,4 +157,6 @@ export class IdentityProviderManagementConstants {
     
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
+    public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
+    public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
 }

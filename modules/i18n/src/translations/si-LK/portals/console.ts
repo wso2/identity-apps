@@ -578,6 +578,13 @@ export const console: ConsoleNS = {
                         header: "ඔයාට විශ්වාස ද?",
                         subHeader: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැක."
                     },
+                    changeProtocol: {
+                        assertionHint: "තහවුරු කිරීමට කරුණාකර <1>{{ name }}</1> ටයිප් කරන්න.",
+                        content: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර වත්මන් ප්‍රොටොකෝලය වින්‍යාසයන් ස්ථිරවම ඉවත් කරනු ඇත",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "ඔබ වෙනත් ප්‍රොටෝකෝලයකට වෙනස් කරන්නේ නම්, " +
+                            "{{name}} වින්‍යාසයන් ඉවත් කරනු ලැබේ. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {

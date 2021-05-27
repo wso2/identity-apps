@@ -399,42 +399,43 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         config.endpoints.documentationContent
     ]);
 
-    /**
-     * Remove template name if multiple protocols configured.
-     */
-    useEffect(() => {
-        if (applicationTemplate && (application?.inboundProtocols?.length > 1)) {
-            updateApplicationConfigurations(application.id, { templateId: "" })
-                .then(() => {
-                    handleApplicationUpdate(application.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.updateApplication" +
-                                ".error.message")
-                        }));
-
-                        return;
-                    }
-
-                    dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.updateApplication" +
-                            ".genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateApplication" +
-                            ".genericError.message")
-                    }));
-                });
-        }
-
-    }, [ applicationTemplate, application ]);
+    // TODO: Validate this scenario, We don't need this logic as only custom template can have more inboundProtocols.
+    // /**
+    //  * Remove template name if multiple protocols configured.
+    //  */
+    // useEffect(() => {
+    //     if (applicationTemplate && (application?.inboundProtocols?.length > 1)) {
+    //         updateApplicationConfigurations(application.id, { templateId: "" })
+    //             .then(() => {
+    //                 handleApplicationUpdate(application.id);
+    //             })
+    //             .catch((error) => {
+    //                 if (error?.response?.status === 404) {
+    //                     return;
+    //                 }
+    //
+    //                 if (error?.response && error?.response?.data && error?.response?.data?.description) {
+    //                     dispatch(addAlert({
+    //                         description: error.response?.data?.description,
+    //                         level: AlertLevels.ERROR,
+    //                         message: t("console:develop.features.applications.notifications.updateApplication" +
+    //                             ".error.message")
+    //                     }));
+    //
+    //                     return;
+    //                 }
+    //
+    //                 dispatch(addAlert({
+    //                     description: t("console:develop.features.applications.notifications.updateApplication" +
+    //                         ".genericError.description"),
+    //                     level: AlertLevels.ERROR,
+    //                     message: t("console:develop.features.applications.notifications.updateApplication" +
+    //                         ".genericError.message")
+    //                 }));
+    //             });
+    //     }
+    //
+    // }, [ applicationTemplate, application ]);
 
     /**
      * Triggered when the application state search param in the URL changes.
@@ -478,6 +479,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
     }, [
         urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY),
+        isExtensionsAvailable
+    ]);
+
+    useEffect(() => {
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(2);
+            }
+            return;
+        }
+    }, [
+        urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY),
         isExtensionsAvailable
     ]);
 

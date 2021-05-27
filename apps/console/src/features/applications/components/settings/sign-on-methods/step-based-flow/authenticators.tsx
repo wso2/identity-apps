@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
 import classNames from "classnames";
-import startCase  from "lodash-es/startCase";
 import React, {
     Fragment,
     FunctionComponent,
@@ -35,6 +34,8 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers";
+import { AuthenticationStepInterface } from "../../../../models";
+import { SignInMethodUtils } from "../../../../utils";
 
 /**
  * Proptypes for the authenticators component.
@@ -46,9 +47,17 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      */
     authenticators: GenericAuthenticatorInterface[];
     /**
+     * Configured authentication steps.
+     */
+    authenticationSteps: AuthenticationStepInterface[];
+    /**
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Current step.
+     */
+    currentStep: number;
     /**
      * Default name for authenticators with no name.
      */
@@ -87,7 +96,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const {
         authenticators,
+        authenticationSteps,
         className,
+        currentStep,
         defaultName,
         heading,
         onAuthenticatorSelect,
@@ -117,21 +128,20 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         setSelectedAuthenticators(selected);
     }, [ selected ]);
 
-    /**
-     * Check if Authenticator is disabled.
-     *
-     * @param {GenericAuthenticatorInterface} authenticator - Authenticator.
-     * @return {boolean}
-     */
-    const isAuthenticatorDisabled = (authenticator: GenericAuthenticatorInterface): boolean => {
+    const isFactorEnabled = (authenticator: GenericAuthenticatorInterface): boolean => {
+
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
-            return !(authenticator?.isEnabled);
+
+            // If there is only one step in the flow, second factor authenticators shouldn't be allowed.
+            if (currentStep === 0) {
+                return false;
+            }
+
+            return SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
+                currentStep, authenticationSteps);
         }
-        if (authenticator.category === AuthenticatorCategories.SOCIAL) {
-            return !(authenticator
-                && authenticator.authenticators[ 0 ]
-                && authenticator.authenticators[ 0 ].isEnabled);
-        }
+
+        return true;
     };
 
     /**
@@ -179,7 +189,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      */
     const handleAuthenticatorSelect = (selectedAuthenticator: GenericAuthenticatorInterface): void => {
 
-        if (isAuthenticatorDisabled(selectedAuthenticator)) {
+        if (!selectedAuthenticator.isEnabled) {
             return;
         }
 
@@ -224,7 +234,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         position="top center"
                         key={ index }
                         on="hover"
-                        disabled={ !isAuthenticatorDisabled(authenticator) }
+                        disabled={ isFactorEnabled(authenticator) }
                         content={ (
                             <>
                                 <Label attached="top">
@@ -242,7 +252,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     || authenticator.displayName
                                     || defaultName
                                 }
-                                disabled={ isAuthenticatorDisabled(authenticator) }
+                                disabled={ !isFactorEnabled(authenticator) }
                                 selected={
                                     Array.isArray(selectedAuthenticators)
                                     && selectedAuthenticators.some((evalAuthenticator) => {

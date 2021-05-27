@@ -104,6 +104,13 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
 
     /**
+     * Value for sign on authentication param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_PROTOCOL_PARAM_KEY = "isProtocol";
+
+    /**
      * Key for the URL search param for application readonly state.
      * @constant
      * @type {string}
@@ -225,6 +232,13 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
+        ["custom-application"] : [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     };
 
@@ -244,6 +258,13 @@ export class ApplicationManagementConstants {
             [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ]),
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
+            [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
+            [ ApplicationManagementConstants.PASSWORD, 2 ],
+            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 3 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ]
+        ]),
+        [ "custom-application" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
             [ ApplicationManagementConstants.PASSWORD, 2 ],
@@ -328,8 +349,17 @@ export class ApplicationManagementConstants {
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS = [
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
+    ];
+
+    // Authenticators that can handle TOTP.
+    public static readonly TOTP_HANDLERS = [
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+        ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
     ];
 
     /**

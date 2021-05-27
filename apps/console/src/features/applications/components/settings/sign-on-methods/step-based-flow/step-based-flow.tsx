@@ -56,6 +56,7 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../../models";
+import { SignInMethodUtils } from "../../../../utils";
 
 /**
  * Proptypes for the applications settings component.
@@ -164,12 +165,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.name)) {
-                const newAuthenticator: GenericAuthenticatorInterface = {
-                    ...authenticator,
-                    isEnabled: hasSpecificFactorsInSteps(
-                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ])
-                };
-                secondFactorAuth.push(newAuthenticator);
+                secondFactorAuth.push(authenticator);
             } else {
                 moderatedLocalAuthenticators.push(authenticator);
             }
@@ -227,30 +223,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             type: AuthenticationSequenceType.USER_DEFINED
         });
     }, [ triggerUpdate ]);
-
-    /**
-     * Set second factor authenticators.
-     */
-    useEffect(() => {
-        
-        if (isEmpty(secondFactorAuthenticators)) {
-            return;
-        }
-
-        let shouldEnable: boolean = hasSpecificFactorsInSteps(
-            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, [ ...authenticationSteps ]);
-
-        if (authenticationSteps.length === 1) {
-            shouldEnable = false;
-        }
-
-        setSecondFactorAuthenticators(
-            [ ...secondFactorAuthenticators ].map((authenticator) => {
-                authenticator.isEnabled = shouldEnable;
-                return authenticator;
-            })
-        );
-    }, [ authenticationSteps ]);
 
     /**
      * Try to scroll to the end when a new step is added.
@@ -345,8 +317,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         // first factor authenticators in previous steps, show a warning and stop adding the option.
         if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
             && (stepIndex === 0
-                || !hasSpecificFactorsInSteps(ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                    steps.slice(0, stepIndex)))) {
+                || !SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
+                    stepIndex, steps))) {
 
             dispatch(
                 addAlert({
@@ -391,52 +363,93 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const [
             leftSideSteps,
             rightSideSteps
-        ]: AuthenticationStepInterface[][] = getLeftAndRightSideSteps(stepIndex, steps);
+        ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
-        const containSecondFactorOnRight: boolean = hasSpecificFactorsInSteps(
+        const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
-        
+
         // If there are second factor authenticators on the right, evaluate further.
         if (containSecondFactorOnRight) {
-            const deletingOption = steps[ stepIndex ].options[ optionIndex ];
-            const isDeletingOptionFirstFactor = ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
+            const deletingOption: AuthenticatorInterface = steps[ stepIndex ].options[ optionIndex ];
+            const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+            const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+                [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
+            const onlyTOTPOnRight: boolean = noOfSecondFactorsOnRight === noOfTOTPOnRight;
+            const isDeletingOptionFirstFactor: boolean = ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
                 .includes(deletingOption.authenticator);
-            
+            const isDeletingOptionTOTPHandler: boolean = ApplicationManagementConstants.TOTP_HANDLERS
+                .includes(deletingOption.authenticator);
+            const immediateStepHavingSpecificFactors: number = SignInMethodUtils.getImmediateStepHavingSpecificFactors(
+                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, steps);
+
             // If the deleting step is a first factor, we have to check if there are other handlers that 
             // could handle the second factors on the right.
-            if (isDeletingOptionFirstFactor) {
+            if (isDeletingOptionFirstFactor || isDeletingOptionTOTPHandler) {
                 let firstFactorsInTheStep = 0;
+                let totpHandlersInTheStep = 0;
                 
                 steps[ stepIndex ].options.filter((option: AuthenticatorInterface) => {
                     if (ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
                         .includes(option.authenticator)) {
                         firstFactorsInTheStep++;
                     }
-                });
-                
-                // If the step that the deleting authenticator has no other first factors,
-                // start evaluation other options.
-                if (firstFactorsInTheStep <= 1) {
-                    const containFirstFactorOnLeft: boolean = hasSpecificFactorsInSteps(
-                        ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
-                    
-                    // There are no possible authenticators left to handle the second factor authenticators. ABORT....
-                    if (!containFirstFactorOnLeft) {
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "console:develop.features.applications.notifications." +
-                                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
-                                ),
-                                level: AlertLevels.WARNING,
-                                message: t(
-                                    "console:develop.features.applications.notifications." +
-                                    "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
-                                )
-                            })
-                        );
 
-                        return;
+                    if (ApplicationManagementConstants.TOTP_HANDLERS
+                        .includes(option.authenticator)) {
+                        totpHandlersInTheStep++;
+                    }
+                });
+
+                // If the step that the deleting authenticator has no other first factors or totp handlers,
+                // start evaluation other options.
+                if ((onlyTOTPOnRight && totpHandlersInTheStep <= 1)
+                    || (!onlyTOTPOnRight && firstFactorsInTheStep <= 1)) {
+
+                    // If there are is TOTP on the right, evaluate if the left side has TOTP handlers.
+                    // Else check if there are first factors on the left.
+                    const containProperHandlersOnLeft: boolean = onlyTOTPOnRight
+                        ? SignInMethodUtils.hasSpecificFactorsInSteps(
+                            ApplicationManagementConstants.TOTP_HANDLERS, leftSideSteps)
+                        : SignInMethodUtils.hasSpecificFactorsInSteps(
+                            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+
+                    // There are no possible authenticators on the left form the deleting option to handle the second 
+                    // factor authenticators. Evaluate....
+                    if (!containProperHandlersOnLeft) {
+
+                        const [
+                            leftSideStepsFromImmediateSecondFactor
+                        ]: AuthenticationStepInterface[][] = SignInMethodUtils
+                            .getLeftAndRightSideSteps(immediateStepHavingSpecificFactors, steps);
+
+                        // Try to find a proper handler in steps left of the immediate second factor.
+                        const noOfProperHandlersOnLeftFromImmediateSecondFactor: number = onlyTOTPOnRight
+                            ? SignInMethodUtils.countSpecificFactorInSteps(
+                                ApplicationManagementConstants.TOTP_HANDLERS,
+                                leftSideStepsFromImmediateSecondFactor)
+                            : SignInMethodUtils.countSpecificFactorInSteps(
+                                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
+                                leftSideStepsFromImmediateSecondFactor);
+
+                        // If there are no other handlers, Show a warning and abort option delete. 
+                        if (noOfProperHandlersOnLeftFromImmediateSecondFactor <= 1) {
+                            dispatch(
+                                addAlert({
+                                    description: t(
+                                        "console:develop.features.applications.notifications." +
+                                        "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
+                                    ),
+                                    level: AlertLevels.WARNING,
+                                    message: t(
+                                        "console:develop.features.applications.notifications." +
+                                        "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
+                                    )
+                                })
+                            );
+
+                            return;
+                        }
                     }
                 }
             }
@@ -494,18 +507,26 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const [
             leftSideSteps,
             rightSideSteps
-        ]: AuthenticationStepInterface[][] = getLeftAndRightSideSteps(stepIndex, steps);
+        ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
 
-        const containSecondFactorOnRight: boolean = hasSpecificFactorsInSteps(
+        const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+        const noOfSecondFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
+        const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
+        const onlyTOTPOnRight: boolean = noOfSecondFactorsOnRight === noOfTOTPOnRight;
 
         // If there are second factors in the right side from the step that is to be deleted,
         // Check if there are first factors on the left. If not, do not delete the step.
         if (containSecondFactorOnRight) {
-            const containFirstFactorOnLeft: boolean = hasSpecificFactorsInSteps(
-                ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
+            const containProperHandlersOnLeft: boolean = onlyTOTPOnRight
+                ? SignInMethodUtils.hasSpecificFactorsInSteps(
+                    ApplicationManagementConstants.TOTP_HANDLERS,leftSideSteps)
+                : SignInMethodUtils.hasSpecificFactorsInSteps(
+                    ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS, leftSideSteps);
 
-            if (!containFirstFactorOnLeft) {
+            if (!containProperHandlersOnLeft) {
                 dispatch(
                     addAlert({
                         description: t("console:develop.features.applications.notifications." +
@@ -529,55 +550,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         setAuthenticationSteps(steps);
         updateSteps(false);
-    };
-
-    /**
-     * Splits the steps to two parts based on the passed in index.
-     *
-     * @param {number} stepIndex - Index to split.
-     * @param {AuthenticationStepInterface[]} steps - All steps.
-     *
-     * @return {AuthenticationStepInterface[][]}
-     */
-    const getLeftAndRightSideSteps = (stepIndex: number,
-                                      steps: AuthenticationStepInterface[]): AuthenticationStepInterface[][] => {
-
-        const leftSideSteps: AuthenticationStepInterface[] = (stepIndex !== 0)
-            ? steps.slice(0, stepIndex)
-            : [];
-
-        const rightSideSteps: AuthenticationStepInterface[] = ((stepIndex + 1) in steps)
-            ? steps.slice(stepIndex + 1)
-            : [];
-        
-        return [ leftSideSteps, rightSideSteps ];
-    };
-
-    /**
-     * Checks if certain factors are available in the passed in steps.
-     *
-     * @param {string[]} factors - Set of factors to check.
-     * @param {[]} steps - Authentication steps.
-     * @return {boolean}
-     */
-    const hasSpecificFactorsInSteps = (factors: string[], steps: AuthenticationStepInterface[]): boolean => {
-
-        let isFound: boolean = false;
-
-        for (const step of steps) {
-            for (const option of step.options) {
-                if (factors.includes(option.authenticator)) {
-                    isFound = true;
-                    break;
-                }
-            }
-
-            if (isFound) {
-                break;
-            }
-        }
-
-        return isFound;
     };
 
     /**
@@ -653,7 +625,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {GenericAuthenticatorInterface[]} authenticators - Authenticators to be filtered.
      * @param {string} category - Authenticator category.
      * @param {string} categoryDisplayName - Authenticator category display name.
-     * @param {string} description - Authenticator description.
      *
      * @return {GenericAuthenticatorInterface[]}
      */
@@ -768,7 +739,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         return (
             <AddAuthenticatorModal
+                authenticationSteps={ authenticationSteps }
                 allowSocialLoginAddition={ true }
+                currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
                 onModalSubmit={ (authenticators) => {
                     authenticators.map((authenticator) => {
