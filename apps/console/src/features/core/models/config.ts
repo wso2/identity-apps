@@ -125,6 +125,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * URL of the help center.
      */
     helpCenterURL?: string;
+    /**
+     * Configs of multiple application protocol.
+     */
+    allowMultipleAppProtocols?: boolean;
 }
 
 /**

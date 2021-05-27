@@ -19,3 +19,4 @@
 export * from "./adaptive-script-utils";
 export * from "./application-management-utils";
 export * from "./application-template-management-utils";
+export * from "./sign-in-method-utils";

@@ -571,6 +571,14 @@ export const console: ConsoleNS = {
                         header: "Êtes-vous sûr?",
                         subHeader: "Cette action est irréversible."
                     },
+                    changeProtocol: {
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Cette action est irréversible et supprimera définitivement " +
+                            "les configurations de protocole actuelles",
+                        header: "Êtes-vous sûr?",
+                        message: "Si vous passez à un autre protocole, " +
+                            "les configurations {{name}} seront supprimées. Veuillez procéder avec prudence."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {
