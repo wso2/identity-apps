@@ -325,7 +325,7 @@ Take a look at the following example test case where we test if the component th
 ```tsx
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render } from "./../test-utils";
+import { render } from "./../test-configs";
 import { ApplicationList } from "../../../components/applications";
 
 describe("Test if the Application List is working as expected", () => {
