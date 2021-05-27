@@ -18,7 +18,6 @@
 
 export * from "./advanced-search-with-basic-filters";
 export * from "./authenticator-accordion";
-export * from "./access-control";
 export * from "./footer";
 export * from "./header";
 export * from "./modal-with-side-panel";

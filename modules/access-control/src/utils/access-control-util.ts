@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /**
  * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -18,7 +19,6 @@
 
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { FeatureConfigInterface } from "../../models";
 
 /**
  * A class to contain util functions related to access control
@@ -37,7 +37,9 @@ export class AccessControlUtils {
      * @returns filtered route array based on the user scopes
      */
     public static getAuthenticatedRoutes(
-        routeArray: RouteInterface[], allowedScopes: string, featureConfig: FeatureConfigInterface
+        routeArray: RouteInterface[], 
+        allowedScopes: string, 
+        featureConfig: any // TODO : Properly map FeatureConfigInterface type
     ): RouteInterface[] {
 
         const authenticatedRoutes: RouteInterface[] = new Array<RouteInterface>();
@@ -52,7 +54,7 @@ export class AccessControlUtils {
 
             if (feature && feature.enabled) {
                 let shouldShowRoute: boolean = false;
-                for (const [ key, value ] of Object.entries(feature?.scopes)) {
+                for (const [ , value ] of Object.entries(feature?.scopes)) {
                     if (value && value instanceof Array) {
                         if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
                             shouldShowRoute = true;
@@ -80,7 +82,7 @@ export class AccessControlUtils {
      */
     public static getDisabledTab(
         manageRoutes: RouteInterface[], developRoutes: RouteInterface[], 
-        allowedScopes: string, featureConfig: FeatureConfigInterface
+        allowedScopes: string, featureConfig: any // TODO : Properly map FeatureConfigInterface type
     ): string {
 
         let isManageTabDisabled = false;

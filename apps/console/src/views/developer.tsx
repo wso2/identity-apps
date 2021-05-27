@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlProvider, AccessControlUtils } from "@wso2is/access-control";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
@@ -47,8 +48,6 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import {
-    AccessControlProvider,
-    AccessControlUtils,
     AppConstants,
     AppState,
     AppUtils,
@@ -292,7 +291,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     };
 
     return (
-        <AccessControlProvider>
+        <AccessControlProvider allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
             <DashboardLayoutSkeleton
                 alert={ (
                     <Alert

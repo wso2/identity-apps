@@ -20,17 +20,34 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react
 import { AccessProvider } from "react-access-control";
 import { AccessControlContext } from "./access-control-context-provider";
 
-export const AccessControlProvider: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+/**
+ * Interface to store Access Control Provider props
+ */
+export interface AccessControlProviderInterface {
+    featureConfig: any; // TODO : Properly map FeatureConfigInterface type
+    allowedScopes: string;
+}
+
+/**
+ * This will wrap all children passed to it with access control provider
+ * with context generated using the scopes recieved.
+ * 
+ * @param props 
+ * @returns 
+ */
+export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlProviderInterface>> = (
+    props: PropsWithChildren<AccessControlProviderInterface>
 ): ReactElement => {
 
     const {
-        children
+        allowedScopes,
+        children,
+        featureConfig
     } = props;
 
     return (
         <AccessProvider>
-            <AccessControlContext>
+            <AccessControlContext allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
                 { children }
             </AccessControlContext>
         </AccessProvider>

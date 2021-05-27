@@ -18,23 +18,35 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import isEmpty from "lodash-es/isEmpty";
-import { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
 import { useAccess } from "react-access-control";
-import { useSelector } from "react-redux";
 import { AccessControlConstants } from "./access-control-constants";
-import { AppState, FeatureConfigInterface } from "../..";
 
-export const AccessControlContext: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+/**
+ * Interface to store Access Control Context props
+ */
+export interface AccessControlContextInterface {
+    featureConfig: any; // TODO : Properly map FeatureConfigInterface type
+    allowedScopes: string;
+}
+
+/**
+ * Component which will initialize the permission context
+ * according to the scopes recieved from the backend.
+ * 
+ * @param props 
+ * @returns 
+ */
+export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
+    props: PropsWithChildren<AccessControlContextInterface>
 ): ReactElement => {
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const { isLoaded, define } = useAccess();
 
     const {
-        children
+        allowedScopes,
+        children,
+        featureConfig
     } = props;
 
     useEffect(() => {
@@ -119,5 +131,5 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<any>> = (
 
     }, [ allowedScopes ]);
 
-    return children;
+    return (<> { children } </>);
 };

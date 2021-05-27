@@ -16,6 +16,11 @@
  * under the License.
  */
 
+/**
+ * This class will contain front end permissions which is required to 
+ * be passed on to the permission context and also while checking the 
+ * relvant permission is available when the show component is evaluvating.
+ */
 export class AccessControlConstants {
 
     /**

@@ -34,6 +34,7 @@
         "start:verbose": "npm run start -- --env LOG_LEVEL=verbose"
     },
     "dependencies": {
+        "@wso2is/access-control": "^1.0.0",
         "@wso2is/core": "^1.2.221",
         "@wso2is/form": "^1.2.221",
         "@wso2is/forms": "^1.2.221",
