@@ -341,6 +341,19 @@ this is that we need to wrap our components with providers like `Redux` etc. And
 tedious task. So we have written a custom renderer following the guide in 
 [official documentation][react-testing-library-custom-renderer].
 
+##### Snapshot Testing
+
+Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
+
+A typical snapshot test case renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
+
+```
+it("<ApplicationList /> matches snapshot", () => {
+    const component = render(<ApplicationList />);
+    expect(component.container).toMatchSnapshot();
+});
+```
+
 For further reference, checkout the official documentation of [React Testing Library][react-testing-library].
 
 #### Running the test suite.
