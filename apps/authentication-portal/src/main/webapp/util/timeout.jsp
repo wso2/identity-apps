@@ -30,19 +30,19 @@
 <%--Include the reusable modal component--%>
 <jsp:include page="modal.jsp">
     <jsp:param name="title" value="Heads Up!"/>
-    <jsp:param name="description"
-               value="You have been in idle for too long. You will be redirected to the signup page soon."/>
+    <jsp:param
+            name="description"
+            value="You have been idle in this page for too long. You need to try signing in again."/>
     <jsp:param name="action_button_text" value="Start Over"/>
     <jsp:param name="cancel_button_text" value="Dismiss"/>
 </jsp:include>
 
 <%!
-
     /**
      * Parses the given attribute to a number. If the value is empty or
      * null, then it will fallback to the default value.
      *
-     * @param attribute {ServletRequest} request attribute.
+     * @param attribute {@link Object} request attribute.
      * @param defaultValue default value.
      * @return parsed value or default value.
      */
@@ -56,12 +56,28 @@
         }
         return defaultValue;
     }
+%>
 
+<%!
+    /**
+     * Parses the given attribute to a String.
+     *
+     * @param attribute {@link Object} request attribute
+     * @param defaultValue {@link String} default value substitution for attribute
+     * @return parsed value or default value.
+     */
+    private String parseRequestAttributeToAString(Object attribute, String defaultValue) {
+        try {
+            return attribute.toString();
+        } catch (NumberFormatException | NullPointerException e) {
+            return defaultValue;
+        }
+    }
 %>
 
 <%
 
-    /*
+    /**
      * These variables are the ones that passed on this timeout.jsp component via
      * request attributes. If the values are not present then default values are initialized.
      *
@@ -73,18 +89,24 @@
      *  &lt;%
      *      request.setAttribute("totalTimeoutMinutes", 2);
      *      request.setAttribute("notifyOnMinute", 1);
+     *      request.setAttribute("pageName", "login");
      *  %&gt;
      *  &lt;%@ include file="utility/timeout.jsp" %&gt;
+     *
+     * Why "this" as a default value for {@code pageName} ?
+     * It's serves a default value for the description in the modal. Check the method
+     * {@code modal.changeDescriptionAsHTML} in script.
      */
     int totalTimeoutMinutes = parseRequestAttributeToANumber(request.getAttribute("totalTimeoutMinutes"), 10);
     int notifyOnMinute = parseRequestAttributeToANumber(request.getAttribute("notifyOnMinute"), 1);
+    String pageName = parseRequestAttributeToAString(request.getAttribute("pageName"), "this");
 
     /*
      * Once re-initialized via context URL it will contain the login URL back to the service provider
      * to start over. If the access url is not configured for a particular application we will try to
      * send the user to root /. We have to do this until we mandate the `accessUrl` for apps.
      */
-    String appAccessUrlEncoded = "/";
+    String appAccessUrlEncoded = "";
 
     try {
 
@@ -115,15 +137,23 @@
     const PROPS = {
         totalTimeoutMinutes: <%= totalTimeoutMinutes %>,
         notifyOnMinute: <%= notifyOnMinute %>,
-        appAccessUrlEncoded: "<%= appAccessUrlEncoded %>"
+        appAccessUrlEncoded: "<%= appAccessUrlEncoded %>",
+        pageName: "<%= pageName %>"
     };
 
     $(document).ready(function () {
 
+        const SPACE_CHAR = " ";
         const timeout = Countdown.minutes(PROPS.totalTimeoutMinutes);
         const countdown = new Countdown(timeout, onDone, onTick);
-        const modal = new ModalRef(function () {
-            countdown.stop();
+
+        const modal = new ModalRef(function (/*Modal onAction*/) {
+            // Once the modal action button clicked, the user will be redirected
+            // to the specified URL immediately. If the url is not available then
+            // it will not redirect or do anything.
+            if (PROPS.appAccessUrlEncoded) {
+                window.location = PROPS.appAccessUrlEncoded;
+            }
         });
 
         /**
@@ -134,8 +164,10 @@
         function onTick(time) {
             if (time.total < Countdown.minutes(PROPS.notifyOnMinute)) {
                 modal.changeDescriptionAsHTML(
-                    "You have been in idle for too long. You will be redirected to " +
-                    "the signup page <b>" + Countdown.timeToReadable(time) + "</b>.");
+                    "You have been idle in" + SPACE_CHAR + PROPS.pageName + SPACE_CHAR +
+                    "page for too long. You need to try signing in again" + SPACE_CHAR +
+                    "<b>" + Countdown.timeToReadable(time) + "</b>."
+                );
             }
             if (time.total === Countdown.minutes(PROPS.notifyOnMinute)) {
                 modal.show();
@@ -143,11 +175,12 @@
         }
 
         /**
-         * Once the timer is finished, this method will be invoked to execute the target
-         * action. It will redirect the user to the specified URL immediately.
+         * Once the timer is finished, this method will be
+         * invoked to execute the target action.
          */
         function onDone() {
-            window.location = PROPS.appAccessUrlEncoded;
+            modal.hideDismissButton();
+            modal.show();
         }
 
         countdown.start();
