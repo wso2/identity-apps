@@ -619,7 +619,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 ) }
                                                 type="text"
                                                 validation={ (value: string, validation: Validation) => {
-                                                    debugger;
                                                     if (!RegExp(schema.regEx).test(value)) {
                                                         validation.isValid = false;
                                                         if (checkSchemaType(schema.name, "emails")) {
