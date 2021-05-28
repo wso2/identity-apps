@@ -78,7 +78,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
     /**
      * Callback to trigger IDP create wizard.
      */
-    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
+    onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
     /**
      * Callback to update the application details.
      * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.

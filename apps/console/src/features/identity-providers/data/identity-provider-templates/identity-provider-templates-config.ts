@@ -19,7 +19,7 @@
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
-import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
+import { ComponentType, lazy, LazyExoticComponent, ReactElement } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
 import EnterpriseOIDCIdentityProviderTemplate
     from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
@@ -29,21 +29,28 @@ import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GihubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
-import { EnterpriseIdentityProviderTemplateExtension }
-    from "../../../../extensions/configs/identity-providers-templates";
-import {
-    IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateListItemInterface
-} from "../../models";
+import { EnterpriseIdentityProviderTemplateExtension } from "../../../../extensions/configs/identity-providers-templates";
+import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
+import EnterpriseSAMLIdentityProviderTemplate
+    from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
+import EnterpriseIdentityProviderTemplateGroup from "./groups/enterprise-idp-template-group.json";
 
+/**
+ * This is used to extend two configurations. Say for example,
+ * you override the template from extensions, this will merge
+ * the enterprise idp configuration with yours.
+ *
+ * @unused Keeping as a reference.
+ */
 const EnterpriseIdentityProviderTemplateExtended = {
-    ...EnterpriseIdentityProviderTemplate
-    , ...EnterpriseIdentityProviderTemplateExtension
+    ...EnterpriseIdentityProviderTemplate,
+    ...EnterpriseIdentityProviderTemplateExtension
 };
 
 export interface IdentityProviderTemplatesConfigInterface {
     categories: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>[];
-    templates: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>[];
+    groups?: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>[];
+    templates: TemplateConfigInterface<any>[];
 }
 
 export interface TemplateConfigInterface<T> {
@@ -81,6 +88,21 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                 keyBy(extensionsManager.getIdentityProviderTemplatesConfig().categories, "id")
             )
         ),
+        groups: values(
+            merge(
+                keyBy([
+                    {
+                        enabled: EnterpriseIdentityProviderTemplateGroup.enabled,
+                        id: EnterpriseIdentityProviderTemplateGroup.id,
+                        resource: EnterpriseIdentityProviderTemplateGroup
+                    }
+                ], "id"),
+                keyBy(
+                    extensionsManager.getIdentityProviderTemplatesConfig().groups,
+                    "id"
+                )
+            )
+        ),
         templates: values(
             merge(
                 keyBy(
@@ -112,23 +134,23 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         {
                             content: {
                                 wizardHelp: lazy(() =>
-                                    import("./templates/enterprise-identity-provider/create-wizard-help")
-                                )
-                            },
-                            enabled: identityProviderConfig.templates.enterprise,
-                            id: EnterpriseIdentityProviderTemplateExtended.id,
-                            resource: EnterpriseIdentityProviderTemplateExtended
-                        },
-                        {
-                            content: {
-                                wizardHelp: lazy(() =>
                                     import("./templates/oidc-identity-provider/create-wizard-help")
                                 )
                             },
-                            enabled: identityProviderConfig.templates.enterprise,
+                            enabled: identityProviderConfig.templates.oidc,
                             id: EnterpriseOIDCIdentityProviderTemplate.id,
                             resource: EnterpriseOIDCIdentityProviderTemplate
-                        }
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
+                                ))
+                            },
+                            enabled: identityProviderConfig.templates.saml,
+                            id: EnterpriseSAMLIdentityProviderTemplate.id,
+                            resource: EnterpriseSAMLIdentityProviderTemplate
+                        },
                     ],
                     "id"
                 ),

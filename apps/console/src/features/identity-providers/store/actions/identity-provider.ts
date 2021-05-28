@@ -43,11 +43,15 @@ export const setAvailableAuthenticatorsMeta = (
  * Redux action to set the IDP templates.
  *
  * @param {IdentityProviderTemplateItemInterface[]} templates - IDP templates list.
+ * @param {boolean} isGrouped - Specify whether templates are grouped or not. Default is false.
  * @return {SetApplicationTemplatesActionInterface}
  */
 export const setIdentityProviderTemplates = (
-    templates: IdentityProviderTemplateItemInterface[]
+    templates: IdentityProviderTemplateItemInterface[],
+    isGrouped: boolean = false
 ): SetAvailableIDPTemplateInterface => ({
     payload: templates,
-    type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES
+    type: isGrouped ?
+        IdentityProviderActionTypes.SET_GROUPED_IDP_TEMPLATES :
+        IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES
 });

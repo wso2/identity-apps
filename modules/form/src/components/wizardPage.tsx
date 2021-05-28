@@ -16,17 +16,18 @@
  * under the License.
  */
 
- import React, { ReactElement } from "react";
- 
- /**
-  * Implementation of the WizardPage component.
-  * @param props
-  */
- export const WizardPage = (props): ReactElement => {
- 
-     const { children, ...rest} = props;
- 
-     return (
-         <>{children}</>
-     )
- };
+import React, { ReactElement } from "react";
+
+/**
+ * Implementation of the WizardPage component.
+ * @param props
+ */
+export const WizardPage = (props): ReactElement => {
+
+    const { children } = props;
+
+    return (
+        <>{ children }</>
+    );
+
+};

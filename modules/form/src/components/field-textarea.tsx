@@ -75,7 +75,6 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
     return (
         <>
             <FinalFormField
-                { ...rest }
                 key={ testId }
                 type="textarea"
                 name={ props.name }
@@ -84,6 +83,7 @@ export const FieldTextarea = (props: FieldTextareaPropsInterface): ReactElement 
                 validate={ (value,allValues, meta) =>
                     getValidation(value, meta, props.type, props.required)
                 }
+                { ...rest }
             />
             {
                 props.hint && (

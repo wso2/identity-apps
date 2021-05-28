@@ -25,6 +25,7 @@ interface ImperativeWizardProps extends FormProps {
     children: any;
     pageChanged?: (currentPageIndex: number) => void;
     setTotalPages?: (pageCount: number) => void;
+    uncontrolledForm?: boolean;
 }
 
 const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
@@ -36,6 +37,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
         pageChanged,
         getController,
         initialValues,
+        uncontrolledForm,
         ...rest
     } = props;
 
@@ -47,12 +49,13 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
     const lastPageIndex: number = absoluteChildCount - 1;
 
     const [ currentPageIndex, setCurrentPageIndex ] = useState<number>(0);
-    const [ values, setValues ] = useState<any>(initialValues ?? {});
+    const [ values, setValues ] = useState<any>();
 
     useImperativeHandle(ref, () => ({
         gotoNextPage: gotoNextPage,
         gotoPreviousPage: gotoPreviousPage,
-        getCurrentPageNumber: getCurrentPageNumber
+        getCurrentPageNumber: getCurrentPageNumber,
+        getValues: getValues
     }));
 
     useEffect(() => {
@@ -65,6 +68,10 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
             setTotalPages(absoluteChildCount);
         }
     }, []);
+
+    const getValues = (): { [ key: string ]: any } => {
+        return values;
+    };
 
     const gotoNextPage = (): void => {
         const nextIndex = Math.min(currentPageIndex + 1, lastPageIndex);
@@ -88,7 +95,7 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
         }
     };
 
-    const validate = (values) => {
+    const validate = (values: { [ key: string ]: any }) => {
         const activePage: any = React.Children.toArray(children)[ currentPageIndex ];
         if (activePage?.props?.validate) {
             return activePage.props.validate(values);
@@ -99,11 +106,11 @@ const ImperativeWizard = (props: ImperativeWizardProps, ref): ReactElement => {
     return (
         <Form
             ref={ formRef }
-            initialValues={ values }
+            initialValues={ initialValues }
             validate={ validate }
             onSubmit={ handleSubmit }
             keepDirtyOnReinitialize={ true }
-            uncontrolledForm={ true }
+            uncontrolledForm={ uncontrolledForm ?? false }
             { ...rest }>
             { React.Children.toArray(children)[ currentPageIndex ] }
         </Form>

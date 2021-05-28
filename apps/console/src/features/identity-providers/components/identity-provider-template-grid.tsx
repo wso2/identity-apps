@@ -85,7 +85,7 @@ export const IdentityProviderTemplateGrid: FunctionComponent<IdentityProviderTem
                                 templatesOverrides?: IdentityProviderTemplateInterface[]): ReactElement => {
 
         return (
-            <TemplateGrid<IdentityProviderTemplateItemInterface>
+            <TemplateGrid<any>
                 className="idp-template-grid"
                 type="idp"
                 templates={

@@ -20,15 +20,13 @@
 import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { store } from "../../core";
-import {
-    getIdentityProviderTemplateList
-} from "../api";
-import { ExpertModeTemplate } from "../components/meta";
-import { handleGetIDPTemplateListError } from "../components/utils";
+import { getIdentityProviderTemplateList } from "../api";
+import { ExpertModeTemplate, handleGetIDPTemplateListError } from "../components";
 import { getIdPCapabilityIcons } from "../configs";
-import { TemplateConfigInterface, getIdentityProviderTemplatesConfig } from "../data/identity-provider-templates";
+import { getIdentityProviderTemplatesConfig, TemplateConfigInterface } from "../data/identity-provider-templates";
 import {
     IdentityProviderTemplateCategoryInterface,
+    IdentityProviderTemplateGroupInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface,
@@ -65,10 +63,32 @@ export class IdentityProviderTemplateManagementUtils {
 
         if (!useAPI) {
             return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
-                .then((response: IdentityProviderTemplateListItemInterface[]) => {
+                /**
+                 * TODO: check why type errors are appearing even if we pass down the
+                 *       correct mapping interfaces. These compilation type errors are
+                 *       identified during adding support for grouped idp templates.
+                 *       This is why some of the types marked as `any` type.
+                 */
+                .then((response: any): any => {
 
-                    const templates: IdentityProviderTemplateListItemInterface[]
+                    let templates: IdentityProviderTemplateInterface[]
                         = IdentityProviderTemplateManagementUtils.resolveHelpContent(response);
+
+                    if (!skipGrouping) {
+                        IdentityProviderTemplateManagementUtils.groupIdentityProviderTemplates(templates)
+                            .then((groups: IdentityProviderTemplateInterface[]) => {
+                                if (sort) {
+                                    templates = IdentityProviderTemplateManagementUtils
+                                        .sortIdentityProviderTemplates(templates);
+                                    groups = IdentityProviderTemplateManagementUtils
+                                        .sortIdentityProviderTemplates(groups);
+                                }
+                                store.dispatch(setIdentityProviderTemplates(templates));
+                                store.dispatch(setIdentityProviderTemplates(groups, true));
+                                return Promise.resolve();
+                            });
+                        return Promise.resolve();
+                    }
 
                     let templatesWithServices: IdentityProviderTemplateInterface[] =
                         IdentityProviderTemplateManagementUtils.interpretAvailableTemplates(templates);
@@ -118,12 +138,12 @@ export class IdentityProviderTemplateManagementUtils {
                                                  sort: boolean = true): Promise<IdentityProviderTemplateInterface> => {
 
         return IdentityProviderTemplateManagementUtils.loadLocalFileBasedTemplates()
-            .then((response: IdentityProviderTemplateListItemInterface[]) => {
+            .then((response: any): any => {
 
                 response = response.filter((template: IdentityProviderTemplateListItemInterface) => {
                     return template.id === templateId;
                 });
-                const templates: IdentityProviderTemplateListItemInterface[] = IdentityProviderTemplateManagementUtils
+                const templates: any = IdentityProviderTemplateManagementUtils
                     .resolveHelpContent(response);
 
                 let templatesWithServices: IdentityProviderTemplateInterface[] =
@@ -175,10 +195,10 @@ export class IdentityProviderTemplateManagementUtils {
      * @param templates List of response templates.
      * @return List of templates.
      */
-    public static interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemInterface[]):
+    public static interpretAvailableTemplates = (templates: any):
         IdentityProviderTemplateInterface[] => {
         return templates?.map(eachTemplate => {
-            if (eachTemplate?.services[0] === "") {
+            if (eachTemplate?.services[ 0 ] === "") {
                 return {
                     ...eachTemplate,
                     services: []
@@ -242,25 +262,101 @@ export class IdentityProviderTemplateManagementUtils {
     }
 
     /**
+     * Group the identity provider templates.
+     * @param templates
+     * @private
+     */
+    private static async groupIdentityProviderTemplates(
+        templates: IdentityProviderTemplateInterface[]
+    ): Promise<IdentityProviderTemplateInterface[]> {
+
+        const groupedTemplates: IdentityProviderTemplateInterface[] = [];
+
+        return IdentityProviderTemplateManagementUtils
+            .loadLocalFileBasedIdentityProviderTemplateGroups()
+            .then((response: IdentityProviderTemplateGroupInterface[]) => {
+                templates.forEach((template: IdentityProviderTemplateInterface) => {
+                    if (!template.templateGroup) {
+                        groupedTemplates.push(template);
+                        return;
+                    }
+                    const group = response
+                        .find((group: IdentityProviderTemplateGroupInterface) => {
+                            return group.id === template.templateGroup;
+                        });
+                    if (!group) {
+                        groupedTemplates.push(template);
+                        return;
+                    }
+                    if (groupedTemplates.some((groupedTemplate) =>
+                        groupedTemplate.id === template.templateGroup)) {
+                        groupedTemplates.forEach((editingTemplate: IdentityProviderTemplateInterface, index) => {
+                            if (editingTemplate.id === template.templateGroup) {
+                                groupedTemplates[ index ] = {
+                                    ...group,
+                                    subTemplates: [ ...editingTemplate.subTemplates, template ]
+                                };
+                                return;
+                            }
+                        });
+                        return;
+                    }
+                    groupedTemplates.push({
+                        ...group,
+                        subTemplates: [ template ]
+                    });
+                });
+                return groupedTemplates;
+            });
+
+    }
+
+    /**
+     * Once called it will return the available groups from the
+     * {@link getIdentityProviderTemplatesConfig}
+     * @private
+     */
+    private static async loadLocalFileBasedIdentityProviderTemplateGroups():
+        Promise<(IdentityProviderTemplateGroupInterface |
+            Promise<IdentityProviderTemplateGroupInterface>)[]> {
+
+        const groups: (IdentityProviderTemplateGroupInterface
+            | Promise<IdentityProviderTemplateGroupInterface>)[] = [];
+
+        getIdentityProviderTemplatesConfig().groups.forEach(
+            async (config: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>) => {
+                if (!config.enabled) return;
+                groups.push(
+                    config.resource as (IdentityProviderTemplateGroupInterface |
+                        Promise<IdentityProviderTemplateGroupInterface>)
+                );
+            }
+        );
+
+        return Promise.all([ ...groups ]);
+
+    }
+
+    /**
      * Loads local file based IDP templates.
      *
      * @return {Promise<(IdentityProviderTemplateInterface | Promise<IdentityProviderTemplateInterface>)[]>}
      */
-    private static async loadLocalFileBasedTemplates(): Promise<(IdentityProviderTemplateListItemInterface
-        | Promise<IdentityProviderTemplateListItemInterface>)[]> {
+    private static async loadLocalFileBasedTemplates(): Promise<(IdentityProviderTemplateInterface
+        | Promise<IdentityProviderTemplateInterface>)[]> {
 
-        const templates: (IdentityProviderTemplateListItemInterface
-            | Promise<IdentityProviderTemplateListItemInterface>)[] = [];
+        const templates: (IdentityProviderTemplateInterface
+            | Promise<IdentityProviderTemplateInterface>)[] = [];
 
         getIdentityProviderTemplatesConfig().templates
-            .map(async (config: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>) => {
+            .map(async (config: TemplateConfigInterface<IdentityProviderTemplateInterface>) => {
                 if (!config.enabled) {
                     return;
                 }
 
                 templates.push(
-                    config.resource as (IdentityProviderTemplateListItemInterface
-                        | Promise<IdentityProviderTemplateListItemInterface>)
+                    config.resource as (IdentityProviderTemplateInterface
+                        | Promise<IdentityProviderTemplateInterface>)
                 );
             });
 
@@ -301,12 +397,12 @@ export class IdentityProviderTemplateManagementUtils {
      * @param {IdentityProviderTemplateInterface[]} templates - Input templates.
      * @return {IdentityProviderTemplateInterface[]}
      */
-    private static resolveHelpContent(templates: IdentityProviderTemplateListItemInterface[]):
-        IdentityProviderTemplateListItemInterface[] {
+    private static resolveHelpContent(templates: any):
+        IdentityProviderTemplateInterface[] {
 
-        templates.map((template: IdentityProviderTemplateListItemInterface) => {
+        templates.map((template: IdentityProviderTemplateInterface) => {
             const config = getIdentityProviderTemplatesConfig().templates
-                .find((config: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>) => {
+                .find((config: TemplateConfigInterface<IdentityProviderTemplateInterface>) => {
                     return config.id === template.id;
                 });
 

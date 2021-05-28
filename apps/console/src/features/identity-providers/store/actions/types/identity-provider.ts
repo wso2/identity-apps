@@ -38,6 +38,11 @@ export enum IdentityProviderActionTypes {
      * @type {string}
      */
     SET_AVAILABLE_IDP_TEMPLATES = "SET_AVAILABLE_IDP_TEMPLATES",
+    /**
+     * Action type to set grouped identity provider templates.
+     * @type {string}
+     */
+    SET_GROUPED_IDP_TEMPLATES = "SET_GROUPED_IDP_TEMPLATES"
 }
 
 /**
@@ -60,7 +65,8 @@ export interface SetAvailableAuthenticatorsMetaInterface extends IdentityProvide
  */
 export interface SetAvailableIDPTemplateInterface extends IdentityProviderBaseActionInterface {
     payload: IdentityProviderTemplateItemInterface[];
-    type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES;
+    type: IdentityProviderActionTypes.SET_AVAILABLE_IDP_TEMPLATES |
+        IdentityProviderActionTypes.SET_GROUPED_IDP_TEMPLATES;
 }
 
 /**

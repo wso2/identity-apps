@@ -24,10 +24,7 @@ import {
     ExtensionsConfigInterface,
     IdentityProviderTemplateExtensionsConfigInterface
 } from "./models";
-import {
-    TemplateConfigInterface,
-    TemplateContentInterface
-} from "../features/applications/data/application-templates";
+import { TemplateConfigInterface, TemplateContentInterface } from "../features/applications/data/application-templates";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
@@ -35,7 +32,8 @@ import {
 } from "../features/applications/models";
 import {
     IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateInterface, IdentityProviderTemplateListItemInterface
+    IdentityProviderTemplateGroupInterface,
+    IdentityProviderTemplateListItemInterface
 } from "../features/identity-providers/models";
 
 /**
@@ -132,6 +130,7 @@ export class ExtensionsManager {
         if (!config) {
             return {
                 categories: [],
+                groups: [],
                 templates: []
             };
         }
@@ -142,6 +141,14 @@ export class ExtensionsManager {
                 .map((category: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>) => {
                     return ExtensionsManager
                         .lazyLoadTemplateResources<IdentityProviderTemplateCategoryInterface>(category);
+                });
+        }
+
+        // If groups exists, try to resolve the group config by lazy loading the resource etc.
+        if (config.groups && Array.isArray(config.groups) && config.groups.length > 0) {
+            config.groups = config.groups
+                .map((group: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>) => {
+                    return ExtensionsManager.lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(group);
                 });
         }
 
