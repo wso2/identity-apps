@@ -19,6 +19,7 @@
 import {
     CommonAuthenticateActionTypes,
     ResetAuthenticationActionInterface,
+    SetDefaultTenantActionInterface,
     SetInitializedActionInterface,
     SetSignInActionInterface,
     SetSignOutActionInterface
@@ -60,4 +61,14 @@ export const setInitialized = (flag: boolean): SetInitializedActionInterface => 
  */
 export const resetAuthentication = (): ResetAuthenticationActionInterface => ({
     type: CommonAuthenticateActionTypes.RESET_AUTHENTICATION
+});
+
+/**
+ * Redux action to set default tenant.
+ *
+ * @return {SetDefaultTenantActionInterface} An action of type `SET_DEFAULT_TENANT`.
+ */
+export const setDefaultTenant = (tenantName: string): SetDefaultTenantActionInterface => ({
+    payload: tenantName,
+    type: CommonAuthenticateActionTypes.SET_DEFAULT_TENANT
 });

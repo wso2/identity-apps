@@ -128,6 +128,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * URL of the doc site.
      */
     docSiteURL?: string;
+    /**
+     * Configs of multiple application protocol.
+     */
+    allowMultipleAppProtocols?: boolean;
 }
 
 /**

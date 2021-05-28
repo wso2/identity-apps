@@ -138,21 +138,23 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             const feature = featureConfig[route.id];
             if (feature) {
                 let shouldShowRoute: boolean = false;
-                for (const [ key, value ] of Object.entries(feature?.scopes)) {
-                    if (value && value instanceof Array) {
-                        if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
-                            shouldShowRoute = true;
+                if (feature?.enabled) {
+                    for (const [ key, value ] of Object.entries(feature?.scopes)) {
+                        if (value && value instanceof Array) {
+                            if (AuthenticateUtils.hasScopes(value, allowedScopes)) {
+                                shouldShowRoute = true;
+                            }
                         }
                     }
                 }
-    
+
                 if (route.showOnSidePanel && shouldShowRoute) {
                     controlledRoutes.push(route);
                 }
             } else {
                 controlledRoutes.push(route);
             }
-            
+
         });
 
         // TODO : Temporary fix for access controlled routes
@@ -180,7 +182,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-        
+
         if (governanceConnectorsEvaluated === true) {
             RouteUtils.gracefullyHandleRouting(filteredRoutes,
                 AppConstants.getAdminViewBasePath(),
@@ -230,7 +232,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
             GovernanceConnectorUtils.getGovernanceConnectors();
-            
+
             return;
         }
 

@@ -63,6 +63,7 @@ export class Config {
             appHomePath: window["AppUtils"].getConfig().routes.home,
             appLoginPath: window["AppUtils"].getConfig().routes.login,
             appLogoutPath: window["AppUtils"].getConfig().routes.logout,
+            allowMultipleAppProtocols: window["AppUtils"].getConfig().allowMultipleAppProtocols,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,

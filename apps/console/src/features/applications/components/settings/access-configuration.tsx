@@ -19,14 +19,15 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon, LinkButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Grid, Radio, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid, Header, Message, Popup, Button as SemButton } from "semantic-ui-react";
+import { ProtocolLanding } from "./protocols/protocol-landing";
 import { AppState, FeatureConfigInterface, store } from "../../../core";
 import {
     deleteProtocol,
@@ -66,6 +67,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     certificate: CertificateInterface;
     /**
+     * Access config to be Extended.
+     */
+    extendedAccessConfig: boolean;
+    /**
      * Protocol configurations.
      */
     inboundProtocolConfig: any;
@@ -81,6 +86,8 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+
+    onProtocolUpdate: () => void;
     /**
      *  Is inbound protocol config request is still loading.
      */
@@ -135,8 +142,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onAllowedOriginsUpdate,
         onApplicationSecretRegenerate,
         inboundProtocolsLoading,
+        isInboundProtocolConfigRequestLoading,
         readOnly,
         template,
+        onProtocolUpdate,
+        extendedAccessConfig,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,11 +157,20 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const tenantName = store.getState().config.deployment.tenant;
+    const allowMultipleProtocol: boolean = useSelector(
+        (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
+    const [ supportedProtocolList, setSupportedProtocolList ] = useState<string[]>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showProtocolSwitchModal, setShowProtocolSwitchModal ] = useState<boolean>(false);
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
+    const [ showLandingPage, setShowLandingPage ] = useState<boolean>(true);
+    const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
+
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     /**
      * Handles the inbound config delete action.
@@ -194,6 +213,42 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     };
 
     /**
+     * Handles the inbound config delete action.
+     *
+     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+     */
+    const handleInboundConfigSwitch = (protocol: string): void => {
+        setRequestLoading(true);
+        deleteProtocol(appId, protocol)
+            .then(() => {
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.notifications.deleteProtocolConfig.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.deleteProtocolConfig" +
+                        ".genericError.message")
+                }));
+            }).finally(() => {
+            setRequestLoading(false);
+            setSelectedProtocol(undefined);
+        });
+    };
+
+    /**
      * Handles the inbound config form submit action.
      *
      * @param values - Form values.
@@ -209,7 +264,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
                         ".success.message")
                 }));
-
                 onAllowedOriginsUpdate();
             })
             .catch((error) => {
@@ -231,7 +285,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateInboundProtocolConfig" +
                         ".genericError.message")
                 }));
-            });
+            }).finally(() => {
+            onUpdate(appId);
+            onProtocolUpdate();
+        });
     };
 
     /**
@@ -240,12 +297,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
-
+        setRequestLoading(true);
         updateApplicationDetails({ id: appId, ...values.general })
+            // .then(() => new Promise(resolve => setTimeout(resolve, 5000)))
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
-
-                onUpdate(appId);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -266,7 +322,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     message: t("console:develop.features.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
-            });
+            }).finally(() => {
+            setRequestLoading(false);
+        });
     };
 
     /**
@@ -341,12 +399,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             });
     };
 
-    /**
-     * Resolves the protocol selection cards.
-     * @return {React.ReactElement}
-     */
-    const resolveInboundProtocolSelection = (): ReactElement => {
-
+    const getSupportedProtocols = (filterProtocol?: string): string[] => {
         let supportedProtocols: string[] = template?.authenticationProtocol
             ? [ template.authenticationProtocol ]
             : Object.values(SupportedAuthProtocolTypes);
@@ -354,13 +407,35 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
             if (protocol === SupportedAuthProtocolTypes.WS_TRUST
-                || protocol === SupportedAuthProtocolTypes.CUSTOM) {
+                || protocol === SupportedAuthProtocolTypes.CUSTOM
+                || (extendedAccessConfig && protocol === SupportedAuthProtocolTypes.WS_FEDERATION)
+                || (extendedAccessConfig && protocol === SupportedAuthProtocolTypes.SAML)
+                || (filterProtocol && protocol === filterProtocol)) {
 
                 return false;
             }
 
             return protocol;
         });
+
+        return supportedProtocols;
+    };
+
+    /**
+     * Use effect hook to be before switching protocol.
+     */
+    useEffect(() => {
+        if (inboundProtocols.length > 0) {
+            setInboundProtocolList(inboundProtocols);
+        }
+    }, [ inboundProtocols ]);
+
+
+    /**
+     * Load supported protocols from api.
+     */
+    const loadSupportedProtocols = (): void => {
+        let supportedProtocols: string[] = getSupportedProtocols();
 
         // Sort the list of protocols.
         supportedProtocols = sortBy(supportedProtocols, (element) => {
@@ -388,68 +463,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             setSelectedProtocol(supportedProtocols[0]);
         }
 
-        // If only one protocol is available, skip the selection cards.
-        if (supportedProtocols.length === 1) {
-            return null;
+        if (!supportedProtocolList) {
+            setSupportedProtocolList(supportedProtocols);
         }
-
-        return (
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Card.Group
-                        itemsPerRow={ supportedProtocols.length as SemanticWIDTHS }
-                    >
-                        {
-                            supportedProtocols.map((protocol, index) => (
-                                <Card
-                                    key={ index }
-                                    className={
-                                        `selection-card radio-selection-card ${ (selectedProtocol === protocol)
-                                            ? "card-selected"
-                                            : ""
-                                            }`
-                                    }
-                                >
-                                    <Card.Content
-                                        onClick={ () => {
-                                            setSelectedProtocol(protocol);
-                                        } }
-                                        className="selection-card-content"
-                                    >
-                                        <div className="integrate-radio">
-                                            <Radio
-                                                checked={ selectedProtocol === protocol }
-                                            />
-                                        </div>
-                                        <div className="card-content">
-                                            <Card.Header>
-                                                <GenericIcon
-                                                    inline
-                                                    transparent
-                                                    icon={ getInboundProtocolLogos()[ protocol ] }
-                                                    size="micro"
-                                                    spaced="right"
-                                                />
-                                                {
-                                                    ApplicationManagementUtils.resolveProtocolDisplayName(
-                                                            protocol as SupportedAuthProtocolTypes)
-                                                }
-                                            </Card.Header>
-                                            <Card.Meta>
-                                                {
-                                                    ApplicationManagementUtils.resolveProtocolDescription(
-                                                        protocol as SupportedAuthProtocolTypes)
-                                                }
-                                            </Card.Meta>
-                                        </div>
-                                    </Card.Content>
-                                </Card>
-                            ))
-                        }
-                    </Card.Group>
-                </Grid.Column>
-            </Grid.Row>
-        );
     };
 
     /**
@@ -463,7 +479,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         return (
-            <EmphasizedSegment className="protocol-settings-section form-wrapper with-max-height" padded="very">
+            <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
+                { resolveProtocolBanner() }
                 {
                     Object.values(SupportedAuthProtocolTypes).includes(selectedProtocol as SupportedAuthProtocolTypes)
                         ? (
@@ -520,6 +537,104 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         );
     };
 
+    const resolveProtocolBanner =(): ReactElement => {
+
+        if (!supportedProtocolList) {
+            return null;
+        }
+        if (supportedProtocolList.length === 1 ) {
+            return null;
+        }
+
+        if (allowMultipleProtocol) {
+            return (
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        {
+                            supportedProtocolList.map((protocol, index) => (
+                                <>
+                                    <Popup
+                                        trigger={
+                                            <SemButton
+                                                basic
+                                                color={ selectedProtocol === protocol ? "red": "grey" }
+                                                content={ selectedProtocol === protocol ? "red": "grey" }
+                                                className={ "mr-3 protocol-button" }
+                                                onClick={ () => setSelectedProtocol(protocol) }
+                                            >
+                                                <GenericIcon
+                                                    fill={ selectedProtocol === protocol ? "primary" : "accent1" }
+                                                    inline
+                                                    transparent
+                                                    icon={ getInboundProtocolLogos()[protocol] }
+                                                    size="micro"
+                                                    spaced="left"
+                                                    verticalAlign="middle"
+                                                    className={ "protocol-button-icon" }
+                                                />
+                                                <div
+                                                    className={ "protocol-change-title" }
+                                                >
+                                                    {
+                                                        ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                            protocol as SupportedAuthProtocolTypes)
+                                                    }
+                                                </div>
+                                            </SemButton>
+                                        }
+                                        content={
+                                            ApplicationManagementUtils.resolveProtocolDescription(
+                                                protocol as SupportedAuthProtocolTypes)
+                                        }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
+                                    />
+
+                                </>
+                            ))
+                        }
+                        <Divider hidden/>
+                        <Divider/>
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+        return (
+            <>
+                <Message
+                    info
+                    content={
+                        <Header as="h4">
+                            <Header.Content>
+                                <GenericIcon
+                                    inline
+                                    transparent
+                                    icon={ getInboundProtocolLogos()[ selectedProtocol ] }
+                                    size="micro"
+                                    verticalAlign="middle"
+                                    className={ "pr-1" }
+                                />
+                                You have selected <strong> {
+                                ApplicationManagementUtils.resolveProtocolDisplayName(
+                                    selectedProtocol as SupportedAuthProtocolTypes)
+                            } </strong> as the protocol. If you want to change the technology,
+                                <LinkButton
+                                    className={ "pl-1" }
+                                    onClick={ () => setShowProtocolSwitchModal(true) }
+                                >
+                                    <Header as="h4" color="orange"> Change Protocol </Header>
+                                </LinkButton>
+                            </Header.Content>
+                        </Header>
+                    }
+                />
+                <Divider hidden />
+            </>
+        );
+    };
+
     /**
      * Use effect hook to be run when an inbound protocol is selected.
      */
@@ -568,11 +683,22 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         });
     }, [ inboundProtocols ]);
 
+    const selectInitialProtocol = (protocol: string): void =>{
+        setSelectedProtocol(protocol);
+        inboundProtocolList.push(protocol);
+    };
+
     return (
-        !isLoading
-            ? (
+        !isLoading && !requestLoading && !isInboundProtocolConfigRequestLoading
+            ? ( !selectedProtocol && inboundProtocols.length === 0 && !allowMultipleProtocol
+            && getSupportedProtocols().length !== 1 ) ?
+            <ProtocolLanding
+                setProtocol={ selectInitialProtocol }
+                availableProtocols={ getSupportedProtocols() }
+            />
+            : (
                 <Grid>
-                    { resolveInboundProtocolSelection() }
+                    { loadSupportedProtocols() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             { resolveInboundProtocolSettingsForm() }
@@ -652,6 +778,52 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             </ConfirmationModal>
                         )
                     }
+                    {
+                        showProtocolSwitchModal && (
+                            <ConfirmationModal
+                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                type="warning"
+                                open={ showProtocolSwitchModal }
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
+                                onSecondaryActionClick={
+                                    (): void => {
+                                        setShowProtocolSwitchModal(false);
+                                    }
+                                }
+                                onPrimaryActionClick={
+                                    (): void => {
+                                        handleInboundConfigSwitch(selectedProtocol);
+                                        setShowProtocolSwitchModal(false);
+                                    }
+                                }
+                                data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                closeOnDimmerClick={ false }
+                            >
+                                <ConfirmationModal.Header
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                >
+                                    { t("console:develop.features.applications.confirmations." +
+                                        "changeProtocol.header") }
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message
+                                    attached
+                                    warning
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                >
+                                    { t("console:develop.features.applications.confirmations" +
+                                        ".changeProtocol.message",
+                                        { name: selectedProtocol }) }
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                >
+                                    { t("console:develop.features.applications.confirmations." +
+                                        "changeProtocol.content") }
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                        )
+                    }
                 </Grid>
             )
             : <ContentLoader/>
@@ -662,5 +834,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
  * Default props for the application access configuration component.
  */
 AccessConfiguration.defaultProps = {
-    "data-testid": "application-access-configuration"
+    "data-testid": "application-access-configuration",
+    extendedAccessConfig: false
 };

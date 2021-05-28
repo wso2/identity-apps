@@ -221,6 +221,10 @@ The respective build artifacts could be found inside the build folder. (`apps/(m
   </settings>
   ```
 
+## Contributing
+
+Go through our [contributing guideline](./CONTRIBUTING.md) to get an understanding about our contribution process and other necessary instructions.
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/product-is/issues).

@@ -573,6 +573,14 @@ export const console: ConsoleNS = {
                         header: "Do you want to continue?",
                         subHeader: "You will lose any unsaved changes."
                     },
+                    changeProtocol: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "This action is irreversible and will permanently remove " +
+                            "the current protocol configurations",
+                        header: "Are you sure?",
+                        message: "If you change to a different protocol, {{ name }} configurations " +
+                            "will be removed. Please proceed with caution."
+                    },
                     clientSecretHashDisclaimer: {
                         forms: {
                             clientIdSecretForm: {
@@ -7469,7 +7477,7 @@ export const console: ConsoleNS = {
                         sessionDetails: {
                             actions: {
                                 terminateAllSessions: "Terminate All",
-                                terminateSession: "TerminateSession"
+                                terminateSession: "Terminate Session"
                             },
                             labels: {
                                 browser: "Browser",

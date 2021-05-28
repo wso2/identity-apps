@@ -64,6 +64,7 @@ import {
     getIdPIcons
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
+import { AuthenticationStepInterface } from "../../../../models";
 
 /**
  * Proptypes for the Add authenticator modal component.
@@ -78,9 +79,17 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      */
     authenticators: GenericAuthenticatorInterface[];
     /**
+     * Configured authentication steps.
+     */
+    authenticationSteps: AuthenticationStepInterface[];
+    /**
      * Categorized IDP templates.
      */
     categorizedIDPTemplates: IdentityProviderTemplateCategoryInterface[];
+    /**
+     * Current step.
+     */
+    currentStep: number;
     /**
      * Callback to be triggered when add new button is clicked.
      */
@@ -130,9 +139,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const {
         allowSocialLoginAddition,
+        authenticationSteps,
         authenticators,
         categorizedIDPTemplates,
         className,
+        currentStep,
         header,
         onClose,
         open,
@@ -441,12 +452,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                                 <Authenticators
                                     authenticators={ filteredAuthenticators }
+                                    authenticationSteps={ authenticationSteps }
                                     onAuthenticatorSelect={ (authenticators) => {
                                         setSelectedAuthenticators(authenticators);
                                     } }
                                     selected={ selectedAuthenticators }
                                     showLabels={ showLabels }
                                     data-testid={ `${ testId }-authenticators` }
+                                    currentStep={ currentStep }
                                 />
                                 {
                                     allowSocialLoginAddition && (

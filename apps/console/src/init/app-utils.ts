@@ -172,6 +172,11 @@ export const AppUtils = (function() {
                 commonPostLogoutUrl = true;
             }
 
+            let allowMultipleAppProtocol = false;
+            if (_config.allowMultipleAppProtocols) {
+                allowMultipleAppProtocol = true;
+            }
+
             return {
                 accountApp: {
                     path: skipTenant ?
@@ -187,6 +192,7 @@ export const AppUtils = (function() {
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenant(),
+                allowMultipleAppProtocols: allowMultipleAppProtocol,
                 clientID: (this.isSaas() || this.isSuperTenant())
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
