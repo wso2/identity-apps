@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/access-control",
-    "version": "1.2.228",
+    "version": "1.2.229",
     "description": "Access control module for WSO2 Identity Server front end applications",
     "main": "dist/src/index.js",
     "keywords": [
