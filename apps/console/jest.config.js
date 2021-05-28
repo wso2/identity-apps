@@ -17,40 +17,45 @@
  */
 
 module.exports = {
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
-    testEnvironment: "jest-environment-jsdom-global",
-    roots: [
-        "src"
-    ],
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
-    transform: {
-        "^.+\\.(ts|tsx)?$": "ts-jest",
-        "^.+\\.(js|jsx)?$": "babel-jest"
-    },
-    modulePaths: [
-        "<rootDir>"
-    ],
     globals: {
         "ts-jest": {
             tsConfig: "tsconfig.json"
         }
     },
-    transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)"
+    moduleDirectories: [
+        "node_modules",
+        "test-configs",
+        __dirname
     ],
-    testPathIgnorePatterns: [
-        "<rootDir>/(build|docs|node_modules)/"
-    ],
+    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
     moduleNameMapper: {
-        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$"
-            : "<rootDir>/test-configs/file-mock.js",
         "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+            "<rootDir>/test-configs/file-mock.js",
         "\\.svg": "<rootDir>/test-configs/svgrMock.js",
         "^lodash-es": "<rootDir>/../../node_modules/lodash",
         "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
+    modulePaths: [
+        "<rootDir>"
+    ],
+    roots: [
+        "src"
+    ],
     setupFilesAfterEnv: [
         "<rootDir>/test-configs/setup-test.js"
+    ],
+    testEnvironment: "jest-environment-jsdom-global",
+    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
+    testPathIgnorePatterns: [
+        "<rootDir>/(build|docs|node_modules)/"
+    ],
+    transform: {
+        "^.+\\.(js|jsx)?$": "babel-jest",
+        "^.+\\.(ts|tsx)?$": "ts-jest"
+    },
+    transformIgnorePatterns: [
+        "/node_modules/?(?!@wso2is)"
     ],
     verbose: true
 };

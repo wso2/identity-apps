@@ -26,6 +26,11 @@ module.exports = {
         LOGIN_CALLBACK_URL: "https://localhost:9000/myaccount/login",
         SERVER_HOST_DEFAULT: "https://localhost:9443"
     },
+    moduleDirectories: [
+        "node_modules",
+        "test-configs",
+        __dirname
+    ],
     moduleNameMapper: {
         "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
