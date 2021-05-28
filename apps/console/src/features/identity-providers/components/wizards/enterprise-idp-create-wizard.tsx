@@ -57,6 +57,7 @@ interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface {
     closeWizard: () => void;
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
+    showAsStandaloneIdentityProvider?: boolean;
 }
 
 /**
@@ -95,6 +96,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         title,
         subTitle,
         template,
+        showAsStandaloneIdentityProvider,
         [ "data-testid" ]: testId
     } = props;
 
@@ -121,6 +123,16 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const { t } = useTranslation();
 
     useEffect(() => {
+        if (showAsStandaloneIdentityProvider) {
+            if (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML === template.id) {
+                setSelectedProtocol("saml");
+            } else {
+                setSelectedProtocol("oidc");
+            }
+        }
+    });
+
+    useEffect(() => {
         if (!initWizard) {
             setWizardSteps(getWizardSteps());
             setInitWizard(true);
@@ -141,11 +153,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const getWizardSteps: () => WizardStepInterface[] = () => {
         return [
-            {
+            ...(!showAsStandaloneIdentityProvider ? [ {
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 title: "General Settings"
-            },
+            } ] : []),
             {
                 icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
@@ -203,12 +215,15 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * template first we need to find the correct sub template and deep
          * clone that object to avoid mutation on file level configuration.
          */
-        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml" ?
-                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
-                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
-            );
-        }));
+        const { idp: identityProvider } = showAsStandaloneIdentityProvider ?
+            template
+            :
+            cloneDeep(template.subTemplates.find(({ id }) => {
+                return id === (selectedProtocol === "saml" ?
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                );
+            }));
 
         if (selectedProtocol === "oidc") {
 
@@ -368,6 +383,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const samlConfigurationPage = () => (
         <WizardPage validate={ (values) => {
             const errors: FormErrors = {};
+            if (showAsStandaloneIdentityProvider) {
+                errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            }
             errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
             errors.NameIDType = composeValidators(required)(values.NameIDType);
             errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
@@ -380,6 +398,19 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
             return errors;
         } }>
+            { showAsStandaloneIdentityProvider ? (<Field.Input
+                data-testid={ `${ testId }-form-wizard-idp-name` }
+                ariaLabel="name"
+                inputType="name"
+                name="name"
+                placeholder="Enter a name for the identity provider"
+                label="Identity provider name"
+                initialValue={ initialValues.name }
+                maxLength={ IDP_NAME_LENGTH.max }
+                minLength={ IDP_NAME_LENGTH.min }
+                required={ true }
+                width={ 15 }
+            />) : (<></>) }
             <Field.Input
                 ariaLabel="Service provider entity id"
                 inputType="default"
@@ -491,6 +522,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <WizardPage validate={ (values) => {
                 const errors: FormErrors = {};
+                if (showAsStandaloneIdentityProvider) {
+                    errors.name = composeValidators(
+                        required,
+                        length(IDP_NAME_LENGTH)
+                    )(values.name);
+                }
                 errors.clientId = composeValidators(
                     required,
                     length(OIDC_CLIENT_ID_MAX_LENGTH)
@@ -512,6 +549,19 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
             } }>
+                { showAsStandaloneIdentityProvider ? (<Field.Input
+                    data-testid={ `${ testId }-form-wizard-idp-name` }
+                    ariaLabel="name"
+                    inputType="name"
+                    name="name"
+                    placeholder="Enter a name for the identity provider"
+                    label="Identity provider name"
+                    initialValue={ initialValues.name }
+                    maxLength={ IDP_NAME_LENGTH.max }
+                    minLength={ IDP_NAME_LENGTH.min }
+                    required={ true }
+                    width={ 13 }
+                />) : (<></>) }
                 <Field.Input
                     ariaLabel="clientId"
                     inputType="resourceName"
@@ -664,13 +714,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const resolveWizardPages = (): Array<ReactElement> => {
         if (selectedProtocol === "oidc") {
             return [
-                wizardCommonFirstPage(),
+                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
                 oidcConfigurationPage(),
                 certificatesPage()
             ];
         } else {
             return [
-                wizardCommonFirstPage(),
+                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
                 samlConfigurationPage(),
                 certificatesPage()
             ];
@@ -679,20 +729,22 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const resolveHelpPanel = () => {
 
-        const SECOND_STEP_WIZARD_PAGE_INDEX: number = 1;
+        if (showAsStandaloneIdentityProvider && currentWizardStep !== 0) return null;
+        if (!showAsStandaloneIdentityProvider && currentWizardStep !== 1) return null;
 
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml" ?
-                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
-                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
-            );
-        }));
+        const subTemplate: IdentityProviderTemplateInterface = showAsStandaloneIdentityProvider ?
+            template :
+            cloneDeep(template.subTemplates.find(({ id }) => {
+                return id === (selectedProtocol === "saml" ?
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                );
+            }));
 
-        if (!subTemplate?.content?.wizardHelp ||
-            currentWizardStep !== SECOND_STEP_WIZARD_PAGE_INDEX) {
+        if (!subTemplate?.content?.wizardHelp) {
             return null;
         }
 

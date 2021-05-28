@@ -57,6 +57,7 @@ interface AuthenticatorCreateWizardFactoryInterface extends TestableComponentInt
      * Type of the wizard.
      */
     type: string;
+    showAsStandaloneIdentityProvider: boolean;
 }
 
 /**
@@ -74,6 +75,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         open,
         onWizardClose,
         type,
+        showAsStandaloneIdentityProvider,
         ...rest
     } = props;
 
@@ -228,23 +230,23 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     />
                 )
                 : null;
-        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC:
-            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
-                ? (
-                    <OidcAuthenticationProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
-                        subTitle={ selectedTemplateWithUniqueName?.description }
-                        closeWizard={ () => {
-                            setSelectedTemplateWithUniqueName(undefined);
-                            setSelectedTemplate(undefined);
-                            setShowWizard(false);
-                            onWizardClose();
-                        } }
-                        template={ selectedTemplateWithUniqueName }
-                        { ...rest }
-                    />
-                )
-                : null;
+        // case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC:
+        //     return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+        //         ? (
+        //             <OidcAuthenticationProviderCreateWizard
+        //                 title={ selectedTemplateWithUniqueName?.name }
+        //                 subTitle={ selectedTemplateWithUniqueName?.description }
+        //                 closeWizard={ () => {
+        //                     setSelectedTemplateWithUniqueName(undefined);
+        //                     setSelectedTemplate(undefined);
+        //                     setShowWizard(false);
+        //                     onWizardClose();
+        //                 } }
+        //                 template={ selectedTemplateWithUniqueName }
+        //                 { ...rest }
+        //             />
+        //         )
+        //         : null;
         default:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
@@ -258,6 +260,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                             setShowWizard(false);
                             onWizardClose();
                         } }
+                        showAsStandaloneIdentityProvider={ showAsStandaloneIdentityProvider }
                         template={ selectedTemplateWithUniqueName }
                     />
                 )

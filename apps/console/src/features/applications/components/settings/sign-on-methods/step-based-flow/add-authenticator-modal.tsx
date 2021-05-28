@@ -97,7 +97,7 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
     /**
      * Callback to trigger IDP create wizard.
      */
-    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
+    onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
     /**
      * Callback for modal submit.
      */
@@ -189,7 +189,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         }
 
         setFilteredAuthenticators(authenticators);
-        
+
         extractAuthenticatorLabels(authenticators);
     }, [ authenticators ]);
 
@@ -199,7 +199,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * @param {GenericAuthenticatorInterface[]} authenticators - Set of authenticators.
      */
     const extractAuthenticatorLabels = (authenticators: GenericAuthenticatorInterface[]): void => {
-        
+
         const labels: string[] = [];
 
         authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
@@ -209,7 +209,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 }
             });
         });
-        
+
         setFilterLabels(labels);
     };
 
@@ -237,7 +237,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Handles the authenticator add step onchange event.
      *
      * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
-     * @param {string} value - Value of the step. 
+     * @param {string} value - Value of the step.
      */
     const handleAddStepChange = (event: SyntheticEvent<HTMLElement>, { value }: { value: string }): void => {
 
@@ -292,7 +292,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         };
 
         return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-            
+
             if (!query) {
                 return isFiltersMatched(authenticator);
             }
@@ -361,7 +361,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                         {
                             categorizedIDPTemplates.map((category) => {
-                                return category.templates.map((template, index: number) => (
+                                return category?.templates?.map((template, index: number) => (
                                     <InfoCard
                                         key={ index }
                                         header={ template.name }
@@ -380,8 +380,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         }
                                         onClick={ () => {
                                             onIDPCreateWizardTrigger(template.id, () => {
-                                               setShowAddNewAuthenticatorView(false); 
-                                            });
+                                               setShowAddNewAuthenticatorView(false);
+                                            }, template);
                                         } }
                                     />
                                 ));
