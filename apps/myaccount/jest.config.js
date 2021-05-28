@@ -28,7 +28,7 @@ module.exports = {
     },
     moduleDirectories: [
         "node_modules",
-        "test-utils",
+        "test-configs",
         __dirname
     ],
     moduleNameMapper: {

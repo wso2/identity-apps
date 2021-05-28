@@ -24,7 +24,7 @@ module.exports = {
     },
     moduleDirectories: [
         "node_modules",
-        "test-utils",
+        "test-configs",
         __dirname
     ],
     moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
