@@ -1015,7 +1015,17 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
-                                invalidFormat: "Please enter a valid email address"
+                                invalidFormat: "Please enter a valid email address. You can use alphanumeric characters," +
+                                    " underscores (_), dashes (-), periods (.), and an at sign (@)."
+                            }
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "Please enter a valid {{fieldName}} in the format YYYY-MM-DD."
                             }
                         }
                     }

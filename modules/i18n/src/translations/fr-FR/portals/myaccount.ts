@@ -1020,7 +1020,18 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Veuillez saisir votre adresse e-mail",
                             validations: {
                                 empty: "L'adresse e-mail est obligatoire",
-                                invalidFormat: "Format de l'adresse e-mail saisie invalide"
+                                invalidFormat: "Format de l'adresse e-mail saisie invalide. Vous pouvez utiliser des " +
+                                    "caractères alphanumériques, des traits de soulignement (_), des tirets (-), des " +
+                                    "points (.) Et un signe arobase (@)."
+                            }
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "Veuillez saisir un test valide au format YYYY-MM-DD."
                             }
                         }
                     }

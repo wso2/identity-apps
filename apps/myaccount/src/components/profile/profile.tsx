@@ -619,6 +619,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 ) }
                                                 type="text"
                                                 validation={ (value: string, validation: Validation) => {
+                                                    debugger;
                                                     if (!RegExp(schema.regEx).test(value)) {
                                                         validation.isValid = false;
                                                         if (checkSchemaType(schema.name, "emails")) {
@@ -630,6 +631,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                             validation.errorMessages.push(t(
                                                                 "myAccount:components.profile.forms.mobileChangeForm." +
                                                                 "inputs.mobile.validations.invalidFormat"
+                                                            ));
+                                                        } else if (checkSchemaType(schema.name, "dateOfBirth")) {
+                                                            validation.errorMessages.push(t(
+                                                                "myAccount:components.profile.forms.dateChangeForm." +
+                                                                "inputs.date.validations.invalidFormat", { fieldName }
                                                             ));
                                                         } else {
                                                             validation.errorMessages.push(
