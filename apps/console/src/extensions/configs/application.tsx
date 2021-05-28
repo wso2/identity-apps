@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { ApplicationConfig } from "./models";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
+import { Grid } from "semantic-ui-react";
+import { Heading } from "@wso2is/react-components";
+import {AddUserStepContent} from "../application-templates/shared/components";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -74,6 +77,24 @@ export const applicationConfig: ApplicationConfig = {
         showCertificates: true,
         showReturnAuthenticatedIdPList: true,
         disabledGrantTypes: []
+    },
+    infoSettings: {
+        renderInfoTabExtension: () => {
+            return (
+                <Grid className="form-container with-max-width">
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Heading ellipsis as="h4">
+                                <strong>
+                                    Try out application
+                                </strong>
+                            </Heading>
+                            <AddUserStepContent/>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            );
+        }
     },
     templates: {
         android: true,

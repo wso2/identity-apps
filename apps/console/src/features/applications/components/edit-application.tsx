@@ -282,7 +282,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationUpdate: () => {
                     onUpdate(application?.id);
                 },
-                onTriggerTabUpdate: (type: string) => {
+                onTriggerTabUpdate: (Type: string) => {
                     setActiveTabIndex(6);
                 },
                 template: template
@@ -696,6 +696,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
+     * Handles the tab change.
+     */
+    const handleTabChange = (e, { activeIndex }) => {
+        setActiveTabIndex(activeIndex);
+    };
+
+    /**
      * Renders the client secret hash disclaimer modal.
      * @return {React.ReactElement}
      */
@@ -820,9 +827,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         defaultActiveIndex={
                             application?.templateId === CustomApplicationTemplate.id ?
                                 (defaultActiveIndex - 1) : defaultActiveIndex }
-                        onTabChange={ (event, { activeIndex } ) => {
-                            setActiveTabIndex((parseInt(activeIndex.toString())));
-                        } }
+                        onTabChange={ handleTabChange }
                         panes= { resolveTabPanes() }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }

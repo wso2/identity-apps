@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AddUserStepContent } from "../../../../extensions/application-templates/shared/components";
+import { applicationConfig } from "../../../../extensions";
 import { AppState } from "../../../core";
 import {
     InboundProtocolListItemInterface,
@@ -106,18 +106,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                 </Grid>
                 <Divider hidden/>
                 <Divider hidden/>
-                <Grid className="form-container with-max-width">
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Heading ellipsis as="h4">
-                                <strong>
-                                    Try out application
-                                </strong>
-                            </Heading>
-                            <AddUserStepContent/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                { applicationConfig.infoSettings.renderInfoTabExtension() }
             </EmphasizedSegment>
         )
         : <ContentLoader/>
