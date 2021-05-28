@@ -16,10 +16,15 @@
   ~ under the License.
   --%>
 
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -36,6 +41,22 @@
         String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
         String authenticationFailed = "false";
 
+        String ske = request.getParameter("ske");
+        String qrCodeUrl = null;
+        if (ske != null) {
+            qrCodeUrl = new String(Base64.decodeBase64(ske));
+        }
+        long urlValidMaxTimeStamp = 0;
+        if (qrCodeUrl != null && qrCodeUrl.contains("expirytimestamp")) {
+            urlValidMaxTimeStamp = Long.parseLong(StringUtils.substringAfter(qrCodeUrl, "&expirytimestamp="));
+        }
+        long currentTimeStamp = new Date().getTime();
+        if (urlValidMaxTimeStamp > 0 && currentTimeStamp > urlValidMaxTimeStamp) {
+            String redirectURL = "error.do?" + STATUS + "=Link has expired&"
+                    + STATUS_MSG + "=Please request to send the email again to get the QR code";
+            response.sendRedirect(redirectURL);
+            return;
+        }
         if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
             authenticationFailed = "true";
 
