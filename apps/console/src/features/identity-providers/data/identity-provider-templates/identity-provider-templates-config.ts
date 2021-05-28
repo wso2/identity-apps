@@ -49,7 +49,7 @@ const EnterpriseIdentityProviderTemplateExtended = {
 
 export interface IdentityProviderTemplatesConfigInterface {
     categories: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>[];
-    groups: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>[];
+    groups?: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>[];
     templates: TemplateConfigInterface<any>[];
 }
 
