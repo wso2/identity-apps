@@ -17,4 +17,4 @@
  */
 
 export * from "./redux-store-mock";
-export * from "./render";
+export * from "./utils";
