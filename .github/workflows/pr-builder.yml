@@ -18,12 +18,11 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
         if: github.repository == 'wso2/identity-apps'
-      - name: Run Test
-        uses: mattallty/jest-github-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Comment with Test Coverage
+        uses: dkershner6/jest-coverage-commenter-action@v1
         with:
-          test-command: "npm run test:unit:ci"
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          test_command: "npm run test:unit:ci"
           
   build:
 
