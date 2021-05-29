@@ -55,9 +55,21 @@ jobs:
     - name: Build
       id: build-with-maven
       run: mvn clean install -U -Dlint.exec.skip=false
-    - name: Test
-      id: run-unit-tests
-      uses: artiomtr/jest-coverage-report-action@v1.3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        test_script: npm run test:unit:ci
+
+  coverage:
+
+    runs-on: ubuntu-latest
+
+    env:
+      CI_JOB_NUMBER: 1
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+      - name: Test
+        id: run-unit-tests
+        uses: artiomtr/jest-coverage-report-action@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          test_script: npm run test:unit:ci
