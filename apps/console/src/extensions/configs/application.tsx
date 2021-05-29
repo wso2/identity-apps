@@ -79,22 +79,7 @@ export const applicationConfig: ApplicationConfig = {
         disabledGrantTypes: []
     },
     infoSettings: {
-        renderInfoTabExtension: () => {
-            return (
-                <Grid className="form-container with-max-width">
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Heading ellipsis as="h4">
-                                <strong>
-                                    Try out application
-                                </strong>
-                            </Heading>
-                            <AddUserStepContent/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            );
-        }
+        renderInfoTabExtension: () => null
     },
     templates: {
         android: true,

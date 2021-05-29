@@ -171,6 +171,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
+     * Called when the defaultActiveIndex updates.
+     */
+    useEffect( () => {
+        setActiveTabIndex(defaultActiveIndex);
+
+    },[defaultActiveIndex]);
+
+    /**
      * Fetch the allowed origins list whenever there's an update.
      */
     useEffect(() => {
@@ -282,8 +290,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationUpdate: () => {
                     onUpdate(application?.id);
                 },
-                onTriggerTabUpdate: (Type: string) => {
-                    setActiveTabIndex(6);
+                onTriggerTabUpdate: (tabIndex: number) => {
+                    setActiveTabIndex(tabIndex);
                 },
                 template: template
             },
