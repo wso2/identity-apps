@@ -301,7 +301,9 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             }
             <Card.Content className="card-text-container" style={ textContainerStyles() }>
                 <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
-                <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
+                { description && (
+                    <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
+                ) }
                 {
                     (showTags && tags && tags instanceof Array && tags.length > 0)
                         ? (
