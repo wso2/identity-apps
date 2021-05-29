@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.3
         with:
-          token: ${{secrets.IAM_GITHUB_BOT_TOKEN}}
+          token: ${{secrets.GITHUB_TOKEN}}
         if: github.repository == 'wso2/identity-cypress-test-base'
       - name: Run Test
         uses: artiomtr/jest-coverage-report-action@v1.3
