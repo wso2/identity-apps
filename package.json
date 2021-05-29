@@ -16,7 +16,7 @@
         "build:dev": "npm run bootstrap && npm run build",
         "build": "npx lerna run build --stream",
         "build:apps": "npx lerna run build --stream --scope '{@wso2is/myaccount,@wso2is/console}'",
-        "build:modules": "npx lerna run build --stream --scope '{@wso2is/core,@wso2is/forms,@wso2is/form,@wso2is/i18n,@wso2is/react-components,@wso2is/theme,@wso2is/validation}'",
+        "build:modules": "npx lerna run build --stream --scope '{@wso2is/access-control,@wso2is/core,@wso2is/forms,@wso2is/form,@wso2is/i18n,@wso2is/react-components,@wso2is/theme,@wso2is/validation}'",
         "build:external": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "clean": "npx lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
