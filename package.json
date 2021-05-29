@@ -14,7 +14,7 @@
         "bootstrap": "npm install && npx lerna bootstrap",
         "bootstrap:hoist": "npm install && npx lerna bootstrap --hoist --no-ci",
         "build:dev": "npm run bootstrap && npm run build",
-        "build": "npx lerna run build --stream && npm run test",
+        "build": "npx lerna run build --stream && npm run test:unit:ci",
         "build:external": "npx lerna run build --stream --ignore '{@wso2is/console,@wso2is/myaccount}' && npx lerna run build:external --stream --scope '{@wso2is/console,@wso2is/myaccount}'",
         "clean": "npx lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
