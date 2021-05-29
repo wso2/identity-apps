@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { ApplicationConfig } from "./models";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
-import { Grid } from "semantic-ui-react";
-import { Heading } from "@wso2is/react-components";
-import {AddUserStepContent} from "../application-templates/shared/components";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
