@@ -18,46 +18,46 @@ jobs:
         maven-version: [3.6.3]
 
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v2.3.3
-      - name: Use Node.js ${{ matrix.node-version }}
-        id: node-setup
-        uses: actions/setup-node@v2.1.2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Set up JDK 1.8
-        id: jdk-setup
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4
-        id: mvn-setup
-        with:
-          maven-version: ${{ matrix.maven-version }}
-      - name: Get npm cache directory
-        id: cache-npm-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Cache local Maven repository
-        id: cache-maven-m2
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Build
-        id: build-with-maven
-        run: mvn clean install -U -Dlint.exec.skip=false
-      - name: Test
-        id: run-unit-tests
-        uses: artiomtr/jest-coverage-report-action@v1.3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          test_script: npm run test:unit:ci
+    - name: Checkout
+      id: checkout
+      uses: actions/checkout@v2.3.3
+    - name: Use Node.js ${{ matrix.node-version }}
+      id: node-setup
+      uses: actions/setup-node@v2.1.2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Set up JDK 1.8
+      id: jdk-setup
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4
+      id: mvn-setup
+      with:
+        maven-version: ${{ matrix.maven-version }}
+    - name: Get npm cache directory
+      id: cache-npm-modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Cache local Maven repository
+      id: cache-maven-m2
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Build
+      id: build-with-maven
+      run: mvn clean install -U -Dlint.exec.skip=false
+    - name: Test
+      id: run-unit-tests
+      uses: artiomtr/jest-coverage-report-action@v1.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        test_script: npm run test:unit:ci
