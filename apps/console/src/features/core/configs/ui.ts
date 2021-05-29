@@ -45,6 +45,7 @@ import MyAccountIcon from "../../../themes/default/assets/images/icons/myaccount
 import {
     ReactComponent as AccountManagementOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
+import PlusOutlineIcon from "../../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
 import {
     ReactComponent as ApplicationsOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
@@ -251,6 +252,7 @@ export const AppSwitcherIcons = (): Record<string, any> => {
 export const getGeneralIcons = (): Record<string, any> => {
 
     return {
-        crossIcon: CrossIcon
+        crossIcon: CrossIcon,
+        plusOutlineIcon: PlusOutlineIcon
     };
 };
