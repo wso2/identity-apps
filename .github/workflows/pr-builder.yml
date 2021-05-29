@@ -19,10 +19,10 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
         if: github.repository == 'wso2/identity-apps'
       - name: Run Test
-        uses: artiomtr/jest-coverage-report-action@v1.3
+        uses: ziishaned/jest-reporter-action@v0.0.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          test_script: npm run test:unit:ci
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          test-command: "npm run test:unit:ci"
   build:
 
     runs-on: ubuntu-latest
