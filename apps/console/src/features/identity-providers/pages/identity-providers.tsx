@@ -99,7 +99,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     /**
@@ -212,6 +212,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     return (
         <FeatureQuickstartProvider
             bypass={ identityProviderConfig.featureQuickStart.renderFeatureQuickStart() === null }
+            isLoading={
+                isIdPListRequestLoading === undefined || (isIdPListRequestLoading && !searchQuery)
+            }
             show={ (!isIdPListRequestLoading && !searchQuery && idpList?.totalResults <= 0) }
             quickstart={ identityProviderConfig.featureQuickStart.renderFeatureQuickStart() }
         >

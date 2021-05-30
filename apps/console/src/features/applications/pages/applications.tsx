@@ -110,7 +110,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     /**
@@ -240,6 +240,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <FeatureQuickstartProvider
             bypass={ applicationConfig.featureQuickStart.renderFeatureQuickStart() === null }
+            isLoading={
+                isApplicationListRequestLoading === undefined || (isApplicationListRequestLoading && !searchQuery)
+            }
             show={ (!isApplicationListRequestLoading && !searchQuery && appList?.totalResults <= 0) }
             quickstart={ applicationConfig.featureQuickStart.renderFeatureQuickStart() }
         >
