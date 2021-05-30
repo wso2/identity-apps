@@ -35,22 +35,44 @@ import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
  * Proptypes for the server endpoints details component.
  */
 interface InfoPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     *  Currently configured inbound protocols.
+     */
     inboundProtocols: InboundProtocolListItemInterface[];
+    /**
+     * Is the SAML configuration still loading.
+     */
     isSAMLConfigLoading: boolean;
+    /**
+     * Is the OIDC configuration still loading.
+     */
     isOIDCConfigLoading: boolean;
 }
+
+/**
+ * Component to include server endpoints details of the application.
+ *
+ * @param {InfoPropsInterface} props - Props injected to the component.
+ *
+ * @return {ReactElement}
+ */
 export const Info: FunctionComponent<InfoPropsInterface> = (
     props: InfoPropsInterface
 ): ReactElement => {
 
-    const { inboundProtocols, isOIDCConfigLoading, isSAMLConfigLoading  } = props;
+    const {
+        inboundProtocols,
+        isOIDCConfigLoading,
+        isSAMLConfigLoading,
+        [ "data-testid" ]: testId
+    } = props;
     const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
-    const [isOIDC, setIsOIDC] = useState<boolean>(false);
-    const [isSAML, setIsSAML] = useState<boolean>(false);
+    const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
+    const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -73,7 +95,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
 
     return (
         !isLoading ? (
-            <EmphasizedSegment loading={ isLoading } padded="very">
+            <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
                 <Grid className="form-container with-max-width">
                     <Grid.Row>
                         <Grid.Column>
@@ -93,9 +115,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                             ) }
                             { isOIDC && isSAML ? (
                                 <>
-                                    <Divider hidden/>
-                                    <Divider/>
-                                    <Divider hidden/>
+                                    <Divider className="x2" hidden/>
                                 </>
                             ) : null }
                             { isSAML && (
@@ -104,11 +124,17 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <Divider hidden/>
-                <Divider hidden/>
+                <Divider className="x2" hidden/>
                 { applicationConfig.infoSettings.renderInfoTabExtension() }
             </EmphasizedSegment>
         )
         : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the server endpoints details component.
+ */
+Info.defaultProps = {
+    "data-testid": "application-server-endpoints"
 };

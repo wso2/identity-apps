@@ -41,8 +41,10 @@ import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrig
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
-    ApplicationInterface, ApplicationTemplateInterface,
-    AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
+    ApplicationInterface,
+    ApplicationTemplateInterface,
+    AuthProtocolMetaListItemInterface,
+    OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
@@ -581,6 +583,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ application?.inboundProtocols }
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }
+                data-testid={ `${ testId }-server-endpoints` }
             />
         </ResourceTab.Pane>
     );
