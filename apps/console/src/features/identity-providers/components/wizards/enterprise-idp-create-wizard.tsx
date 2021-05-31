@@ -34,18 +34,19 @@ import {
 import { addAlert } from "@wso2is/core/store";
 
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { IdentityProviderTemplateInterface } from "../../models";
+import { IdentityProviderTemplateInterface, StrictIdentityProviderInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
-import { createIdentityProvider } from "../../api";
+import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import isEmpty from "lodash-es/isEmpty";
 import { IdentityProviderManagementConstants } from "../../constants";
 import cloneDeep from "lodash-es/cloneDeep";
 import { FormValidation } from "@wso2is/validation";
+import { handleGetIDPListCallError } from "../utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -118,9 +119,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
+    const [ idpList, setIdPList ] = useState<StrictIdentityProviderInterface[]>([]);
+    const [ isIDPListLoading, setIsIDPListLoading ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setIsIDPListLoading(true);
+        getIdentityProviderList(null, null, null)
+            .then((response) => {
+                setIdPList(response.identityProviders);
+            })
+            .catch((error) => {
+                handleGetIDPListCallError(error);
+            })
+            .finally(() => {
+                setIsIDPListLoading(false);
+            });
+    }, []);
 
     useEffect(() => {
         if (showAsStandaloneIdentityProvider) {
@@ -144,7 +161,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, [ selectedProtocol ]);
 
     const initialValues = useMemo(() => ({
-        name: template?.name,
+        name: EMPTY_STRING, // This must be filled by the user.
         RequestMethod: "post",
         NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
     }), []);
@@ -196,6 +213,15 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             { key: 2, text: "HTTP Post", value: "post" },
             { key: 3, text: "As Per Request", value: "as_request" }
         ]
+    };
+
+    const isIdpNameAlreadyTaken = (userInput: string): boolean => {
+        if (idpList?.length > 0) {
+            return idpList
+                .reduce((set, { name }) => set.add(name), new Set<string>())
+                .has(userInput);
+        }
+        return false;
     };
 
     // Wizard
@@ -326,6 +352,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         <WizardPage validate={ (values: any) => {
             const errors: FormErrors = {};
             errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            if (isIdpNameAlreadyTaken(values.name)) {
+                errors.name = t("console:develop.features.authenticationProvider." +
+                    "forms.generalDetails.name.validations.duplicate");
+            }
             setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
         } }>
@@ -385,6 +415,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             const errors: FormErrors = {};
             if (showAsStandaloneIdentityProvider) {
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+                if (isIdpNameAlreadyTaken(values.name)) {
+                    errors.name = t("console:develop.features.authenticationProvider." +
+                        "forms.generalDetails.name.validations.duplicate");
+                }
             }
             errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
             errors.NameIDType = composeValidators(required)(values.NameIDType);
@@ -527,6 +561,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         required,
                         length(IDP_NAME_LENGTH)
                     )(values.name);
+                    if (isIdpNameAlreadyTaken(values.name)) {
+                        errors.name = t("console:develop.features.authenticationProvider." +
+                            "forms.generalDetails.name.validations.duplicate");
+                    }
                 }
                 errors.clientId = composeValidators(
                     required,
@@ -814,15 +852,18 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         className="content-container"
                         data-testid={ `${ testId }-modal-content-2` }>
                         { alert && alertComponent }
-                        <Wizard2
-                            ref={ wizardRef }
-                            initialValues={ initialValues }
-                            onSubmit={ handleFormSubmit }
-                            uncontrolledForm={ true }
-                            pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                            data-testid={ testId }>
-                            { resolveWizardPages() }
-                        </Wizard2>
+                        { !isIDPListLoading
+                            ? <Wizard2
+                                ref={ wizardRef }
+                                initialValues={ initialValues }
+                                onSubmit={ handleFormSubmit }
+                                uncontrolledForm={ true }
+                                pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                                data-testid={ testId }>
+                                { resolveWizardPages() }
+                            </Wizard2>
+                            : <ContentLoader text="Loading identity providers"/>
+                        }
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
                 { /*Modal actions*/ }
