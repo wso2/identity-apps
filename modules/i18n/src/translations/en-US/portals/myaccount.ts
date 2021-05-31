@@ -1051,7 +1051,8 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Enter your mobile number",
                             validations: {
                                 empty: "Mobile number is a required field",
-                                invalidFormat: "Please enter a valid mobile number"
+                                invalidFormat: "Please enter a valid mobile number in the format [+][country code]"+
+                                    "[area code][local phone number]."
                             }
                         }
                     }

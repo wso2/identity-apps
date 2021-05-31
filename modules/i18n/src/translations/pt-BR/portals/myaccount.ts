@@ -1038,7 +1038,8 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Digite seu número de celular",
                             validations: {
                                 empty: "O número do celular é um campo obrigatório",
-                                invalidFormat: "O número do celular não está no formato correto"
+                                invalidFormat: "Insira um número de celular válido no formato [+][código do país]"+
+                                    "[código de área][número de telefone local]."
                             }
                         }
                     }
