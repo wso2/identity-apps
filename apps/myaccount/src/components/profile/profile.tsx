@@ -226,7 +226,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
         const schemaNames = formName.split(".");
 
-        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0])) {
+        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+            schemaNames[0] === "phoneNumbers") {
             const attributeValues = [];
 
             if (schemaNames.length === 1) {
