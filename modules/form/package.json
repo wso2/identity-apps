@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/form",
-    "version": "1.2.227",
+    "version": "1.2.234",
     "description": "Form library for WSO2 Identity Server front end applications.",
     "keywords": [
         "WSO2",
@@ -19,15 +19,16 @@
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project .",
-        "test": "npm run jest --passWithNoTests",
+        "test": "npm run jest -- -- --passWithNoTests",
+        "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest"
     },
     "dependencies": {
-        "@wso2is/core": "^1.2.227",
-        "@wso2is/react-components": "^1.2.227",
-        "@wso2is/validation": "^1.2.227",
+        "@wso2is/core": "^1.2.234",
+        "@wso2is/react-components": "^1.2.234",
+        "@wso2is/validation": "^1.2.234",
         "final-form": "^4.20.2",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",

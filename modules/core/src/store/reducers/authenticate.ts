@@ -61,6 +61,11 @@ export const commonAuthenticateReducer = <T, S>(
             return {
                 ...initialState
             };
+        case CommonAuthenticateActionTypes.SET_DEFAULT_TENANT:
+            return {
+                ...state,
+                defaultTenant: action.payload
+            };
         default:
             return state;
     }

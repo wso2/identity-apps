@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "1.2.227",
+    "version": "1.2.234",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -21,7 +21,8 @@
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "eslint --ext .js,.ts .",
-        "test": "npm run jest --passWithNoTests",
+        "test": "npm run jest -- -- --passWithNoTests",
+        "test:watch": "npm run test -- --watch",
         "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest"

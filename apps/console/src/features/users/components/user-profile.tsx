@@ -254,10 +254,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const subValue = userInfo[schemaNames[0]]
                                 && userInfo[schemaNames[0]]
                                     .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                            tempProfileInfo.set(
-                                schema.name,
-                                subValue ? subValue.value : ""
-                            );
+                            if (schemaNames[0] === "addresses") {
+                                tempProfileInfo.set(
+                                    schema.name,
+                                    subValue ? subValue.formatted : ""
+                                );
+                            } else {
+                                tempProfileInfo.set(
+                                    schema.name,
+                                    subValue ? subValue.value : ""
+                                );
+                            }
                         }
                     }
                 }
@@ -348,7 +355,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             op: "replace",
             value: {}
         };
-        let addressExistsInValue: boolean = false;
 
         profileSchema.forEach((schema: ProfileSchemaInterface) => {
 
@@ -364,13 +370,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
 
                     if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-                        schemaNames[0] === "phoneNumbers" || schemaNames[0] === "addresses") {
+                        schemaNames[0] === "phoneNumbers") {
 
                         const attributeValues = [];
                         const attValues: Map<string, string | string []> = new Map();
 
-                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile"
-                            || (schemaNames[0] === "addresses" && !addressExistsInValue)) {
+                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
 
                             // Extract the sub attributes from the form values.
                             for (const value of values.keys()) {
@@ -388,18 +393,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     if (attribute.length === 1) {
                                         attributeValues.push(value);
                                     } else {
-                                        if (schemaNames[0] === "addresses") {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                formatted: value
-                                            });
-                                            addressExistsInValue = true;
-                                        } else {
-                                            attributeValues.push({
+                                        attributeValues.push({
                                                 type: attribute[1],
                                                 value: value
-                                            });
-                                        }
+                                        });
                                     }
                                 }
                             }
@@ -442,7 +439,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     }
                                 );
                             } else {
-                                if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                if (schemaNames[0] === "addresses") {
+                                    opValue = {
+                                        [schemaNames[0]]: [
+                                            {
+                                                formatted: values.get(schema.name),
+                                                type: schemaNames[1]
+                                            }
+                                        ]
+                                    };
+                                } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
                                     opValue = {
                                         [schemaNames[0]]: [
                                             {
@@ -464,6 +470,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 op: "replace",
                 value: opValue
             };
+            // This is required as the api doesn't support patching the address attributes at the
+            // sub attribute level using 'replace' operation.
+            if (schemaNames[0] === "addresses") {
+                operation.op = "add";
+            }
             data.Operations.push(operation);
         });
 

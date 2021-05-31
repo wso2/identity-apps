@@ -22,6 +22,7 @@ import {
     ContentLoader,
     FilePicker,
     GenericIcon,
+    Heading,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -32,17 +33,19 @@ import {
 } from "@wso2is/react-components";
 import { addAlert } from "@wso2is/core/store";
 
-import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useRef, useState } from "react";
-import { IdentityProviderInterface, IdentityProviderTemplateInterface } from "../../models";
+import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { IdentityProviderTemplateInterface } from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
-import { getIdentityProviderWizardStepIcons, getIdPIcons, getIdPTemplateDocsIcons } from "../../configs";
-import { Divider, Grid, Header, Icon } from "semantic-ui-react";
+import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import { createIdentityProvider } from "../../api";
 import isEmpty from "lodash-es/isEmpty";
 import { IdentityProviderManagementConstants } from "../../constants";
+import cloneDeep from "lodash-es/cloneDeep";
+import { FormValidation } from "@wso2is/validation";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -54,6 +57,7 @@ interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface {
     closeWizard: () => void;
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
+    showAsStandaloneIdentityProvider?: boolean;
 }
 
 /**
@@ -77,10 +81,11 @@ interface WizardStepInterface {
     name: WizardSteps;
 }
 
-// Oidc form constants.
-const CLIENT_ID_MAX_LENGTH: number = 100;
-const CLIENT_SECRET_MAX_LENGTH: number = 100;
-const URL_MAX_LENGTH: number = 2048;
+type AvailableProtocols = "oidc" | "saml";
+type SamlConfigurationMode = "file" | "manual";
+type CertificateInputType = "jwks" | "pem";
+type MinMax = { min: number; max: number };
+type FormErrors = { [ key: string ]: string };
 
 export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     props: PropsWithChildren<EnterpriseIDPCreateWizardProps>
@@ -91,46 +96,68 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         title,
         subTitle,
         template,
+        showAsStandaloneIdentityProvider,
         [ "data-testid" ]: testId
     } = props;
 
     const wizardRef = useRef(null);
+
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const [ selectedProtocol, setSelectedProtocol ] = useState<"oidc" | "saml">("oidc");
-    const [ selectedNameIdValue, setSelectedNameIdValue ] = useState<string>();
-    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<"file" | "manual">("manual");
+    const [ pemString, setPemString ] = useState<string>(EMPTY_STRING);
     const [ xmlBase64String, setXmlBase64String ] = useState<string>();
+    const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
+    const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
+    const [ selectedCertificateFile, setSelectedCertificateFile ] = useState<File>(null);
+    const [ selectedCertInputType, setSelectedCertInputType ] = useState<CertificateInputType>("jwks");
+    const [ selectedProtocol, setSelectedProtocol ] = useState<AvailableProtocols>("oidc");
+    const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
+    const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
 
-    const [ selectedCertInputType, setSelectedCertInputType ] = useState<"jwks" | "pem">("jwks");
-    const [ pemString, setPemString ] = useState<string>("");
-
-    // const [ disableFinishButton, setDisableFinishButton ] = useState<boolean>(true);
+    // Dynamic UI state
+    const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     useEffect(() => {
-        setWizardSteps(getWizardSteps());
-        console.log("THIS IS THE TEMPLATE", template);
-        setInitWizard(false);
+        if (showAsStandaloneIdentityProvider) {
+            if (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML === template.id) {
+                setSelectedProtocol("saml");
+            } else {
+                setSelectedProtocol("oidc");
+            }
+        }
+    });
+
+    useEffect(() => {
+        if (!initWizard) {
+            setWizardSteps(getWizardSteps());
+            setInitWizard(true);
+        }
     }, [ initWizard ]);
 
     useEffect(() => {
         setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem")
-    }, [ selectedProtocol ])
+    }, [ selectedProtocol ]);
+
+    const initialValues = useMemo(() => ({
+        name: template?.name,
+        RequestMethod: "post",
+        NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+    }), []);
 
     // Utils
 
     const getWizardSteps: () => WizardStepInterface[] = () => {
         return [
-            {
+            ...(!showAsStandaloneIdentityProvider ? [ {
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 title: "General Settings"
-            },
+            } ] : []),
             {
                 icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
@@ -173,52 +200,52 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     // Wizard
 
-    const handleFormSubmit = (values, form, callback) => {
+    /**
+     * @param values {object} form values
+     * @param _ form {Form} form Instance
+     * @param __ callback
+     */
+    const handleFormSubmit = (values, _, __) => {
 
-        let identityProvider: IdentityProviderInterface;
+        const FIRST_ENTRY = 0;
+
+        /**
+         * We use a grouped template to keep the sub templates of enterprise
+         * identity provider templates. So, before assigning the form values to the
+         * template first we need to find the correct sub template and deep
+         * clone that object to avoid mutation on file level configuration.
+         */
+        const { idp: identityProvider } = showAsStandaloneIdentityProvider ?
+            template
+            :
+            cloneDeep(template.subTemplates.find(({ id }) => {
+                return id === (selectedProtocol === "saml" ?
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                );
+            }));
 
         if (selectedProtocol === "oidc") {
 
             // Populate user entered values
-            identityProvider = template.idp;
             identityProvider.name = values?.name?.toString();
-            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
+            identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
                 { "key": "ClientId", "value": values?.clientId?.toString() },
                 { "key": "ClientSecret", "value": values?.clientSecret?.toString() },
                 { "key": "OAuth2AuthzEPUrl", "value": values?.authorizationEndpointUrl?.toString() },
                 { "key": "OAuth2TokenEPUrl", "value": values?.tokenEndpointUrl?.toString() },
                 { "key": "callbackUrl", "value": store.getState().config.deployment.serverHost + "/commonauth" }
             ];
-
             // Certificates: bind the JWKS URL if exists otherwise pem
-            identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? "";
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? "" ];
-
-            // Identity provider placeholder image.
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/" + AppConstants.getAppBasename() +
-                        "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-                }
-            }
-
-            // Remove the saml authenticator from the template.
-            identityProvider.federatedAuthenticators.authenticators.pop();
-            identityProvider.federatedAuthenticators.defaultAuthenticatorId =
-                identityProvider.federatedAuthenticators.authenticators[ 0 ].authenticatorId;
+            identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
 
         } else {
 
             // Populate user entered values
-            identityProvider = template.idp;
             identityProvider.name = values?.name?.toString();
-
             if (selectedSamlConfigMode === "manual") {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ]["properties"] = [
+                identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ][ "properties" ] = [
                     { key: "IdPEntityId", value: values.IdPEntityId },
                     { key: "NameIDType", value: values.NameIDType },
                     { key: "RequestMethod", value: values.RequestMethod },
@@ -227,20 +254,25 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "selectMode", value: "Manual Configuration" }
                 ];
             } else {
-                identityProvider.federatedAuthenticators.authenticators[ 1 ].properties = [
-                    { key: "meta_data_saml", value: xmlBase64String ?? "" },
+                identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
+                    { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
                     { key: "selectMode", value: "Metadata File Configuration" }
                 ];
             }
+            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];
 
-            // Certificate
-            identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? "" ];
+        }
 
-            // Remove the oidc authenticator from the template.
-            identityProvider.federatedAuthenticators.authenticators.shift();
-            identityProvider.federatedAuthenticators.defaultAuthenticatorId =
-                identityProvider.federatedAuthenticators.authenticators[ 0 ].authenticatorId
-
+        // Identity provider placeholder image.
+        if (AppConstants.getClientOrigin()) {
+            if (AppConstants.getAppBasename()) {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/" + AppConstants.getAppBasename() +
+                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+            } else {
+                identityProvider.image = AppConstants.getClientOrigin() +
+                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+            }
         }
 
         createIdentityProvider(identityProvider)
@@ -292,27 +324,29 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const wizardCommonFirstPage = () => (
         <WizardPage validate={ (values: any) => {
-            const errors: { [ key: string ]: string } = {};
-            if (!values.name) errors.name = 'Required';
+            const errors: FormErrors = {};
+            errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
         } }>
             <Field.Input
-                data-testid={ `${ testId }-idp-name` }
+                data-testid={ `${ testId }-form-wizard-idp-name` }
                 ariaLabel="name"
                 inputType="name"
                 name="name"
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
-                maxLength={ 20 }
-                minLength={ 3 }
+                initialValue={ initialValues.name }
+                maxLength={ IDP_NAME_LENGTH.max }
+                minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
-                width={ 10 }
+                width={ 15 }
             />
             <Grid>
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                         <div>
-                            <div>Select Protocol</div>
+                            <p><b>Select protocol</b></p>
                             <SelectionCard
                                 inline
                                 image={ getIdPIcons().oidc }
@@ -324,7 +358,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 imageSize="mini"
                                 contentTopBorder={ false }
                                 showTooltips={ true }
-                                data-testid={ `${ testId }-oidc-card` }/>
+                                data-testid={ `${ testId }-form-wizard-oidc-selection-card` }
+                            />
                             <SelectionCard
                                 inline
                                 image={ getIdPIcons().saml }
@@ -336,7 +371,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 imageSize="mini"
                                 contentTopBorder={ false }
                                 showTooltips={ true }
-                                data-testid={ `${ testId }-saml-card` }
+                                data-testid={ `${ testId }-form-wizard-saml-selection-card` }
                             />
                         </div>
                     </Grid.Column>
@@ -346,105 +381,137 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     );
 
     const samlConfigurationPage = () => (
-        <WizardPage validate={ (values): any => {
-            const errors: { [ key: string ]: string } = {};
-            if (!values.SPEntityId) errors.SPEntityId = 'Required';
-            if (!values.NameIDType) errors.NameIDType = 'Required';
-            if (!values.SSOUrl) errors.SSOUrl = 'Required';
-            if (!values.IdPEntityId) errors.IdPEntityId = 'Required';
-            if (!values.RequestMethod) errors.RequestMethod = 'Required';
+        <WizardPage validate={ (values) => {
+            const errors: FormErrors = {};
+            if (showAsStandaloneIdentityProvider) {
+                errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            }
+            errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
+            errors.NameIDType = composeValidators(required)(values.NameIDType);
+            errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
+            errors.IdPEntityId = composeValidators(required, length(IDP_EID_LENGTH))(values.IdPEntityId);
+            errors.RequestMethod = composeValidators(required)(values.RequestMethod);
+            if (selectedSamlConfigMode === "file") {
+                setNextShouldBeDisabled(!xmlBase64String);
+            } else {
+                setNextShouldBeDisabled(ifFieldsHave(errors));
+            }
             return errors;
         } }>
+            { showAsStandaloneIdentityProvider ? (<Field.Input
+                data-testid={ `${ testId }-form-wizard-idp-name` }
+                ariaLabel="name"
+                inputType="name"
+                name="name"
+                placeholder="Enter a name for the identity provider"
+                label="Identity provider name"
+                initialValue={ initialValues.name }
+                maxLength={ IDP_NAME_LENGTH.max }
+                minLength={ IDP_NAME_LENGTH.min }
+                required={ true }
+                width={ 15 }
+            />) : (<></>) }
             <Field.Input
                 ariaLabel="Service provider entity id"
                 inputType="default"
                 name="SPEntityId"
-                label="Service Provider Entity ID"
+                label="Service provider entity ID"
                 required={ true }
-                maxLength={ 100 }
-                minLength={ 3 }
+                maxLength={ SP_EID_LENGTH.max }
+                minLength={ SP_EID_LENGTH.min }
                 width={ 15 }
-                validate={ (value) => value.startsWith("s") && "Cant start with s" }
                 placeholder="Enter a Service Provider Entity ID"
+                data-testid={ `${ testId }-form-wizard-saml-entity-id` }
             />
-            {/*<Grid>*/}
-            {/*    <Grid.Row columns={ 1 }>*/}
-            {/*        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>*/}
-            {/*            <p><b>Mode of Configuration</b></p>*/}
-            {/*            <Switcher*/}
-            {/*                className={ "mt-1" }*/}
-            {/*                defaultOptionValue="file"*/}
-            {/*                onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }*/}
-            {/*                options={ [ {*/}
-            {/*                    value: "manual",*/}
-            {/*                    label: "Manual Configuration",*/}
-            {/*                }, {*/}
-            {/*                    value: "file",*/}
-            {/*                    label: "File Based Configuration",*/}
-            {/*                } ] }*/}
-            {/*            />*/}
-            {/*        </Grid.Column>*/}
-            {/*    </Grid.Row>*/}
-            {/*</Grid>*/}
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <p><b>Mode of configuration</b></p>
+                        <Switcher
+                            data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
+                            className={ "mt-1" }
+                            defaultOptionValue="file"
+                            selectedValue={ selectedSamlConfigMode }
+                            onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
+                            options={ [ {
+                                value: "manual",
+                                label: "Manual Configuration",
+                            }, {
+                                value: "file",
+                                label: "File Based Configuration",
+                            } ] }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             <Divider hidden/>
             { (selectedSamlConfigMode === "manual") ? (
-                    <React.Fragment>
+                    <div>
                         <Field.Dropdown
-                            ariaLabel="Name id format"
+                            ariaLabel="Name ID format"
                             name="NameIDType"
-                            label="Name ID Format"
+                            label="Name ID format"
                             required={ true }
                             width={ 15 }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
-                            children={ getAvailableNameIDFormats() }
+                            options={ getAvailableNameIDFormats() }
+                            value={ initialValues.NameIDType }
                             placeholder="Select an available name identifier"
+                            data-testid={ `${ testId }-form-wizard-saml-nameid-format` }
                         />
                         <Field.Input
                             inputType="url"
-                            ariaLabel="SSO Url"
+                            ariaLabel="Single sign on URL"
                             name="SSOUrl"
-                            label="SSO URL"
+                            label="Single sign on URL"
                             required={ true }
-                            maxLength={ 1000 }
-                            minLength={ 0 }
+                            maxLength={ SSO_URL_LENGTH.max }
+                            minLength={ SSO_URL_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 redirect SSO url" }
+                            data-testid={ `${ testId }-form-wizard-saml-sso-url` }
                         />
                         <Field.Input
                             inputType="default"
-                            ariaLabel="Identity provider entity id"
+                            ariaLabel="Identity provider entity ID"
                             name="IdPEntityId"
-                            label="Identity Provider Entity ID"
+                            label="Identity provider entity ID"
                             required={ true }
-                            maxLength={ 1000 }
-                            minLength={ 0 }
+                            maxLength={ IDP_EID_LENGTH.max }
+                            minLength={ IDP_EID_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
+                            data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
                         />
                         <Field.Dropdown
-                            ariaLabel="SAML Protocol Binding"
+                            ariaLabel="SAML 2.0 protocol binding"
                             name="RequestMethod"
-                            label="SAML Protocol Binding"
+                            label="SAML 2.0 protocol binding"
                             required={ true }
-                            initialValue={ "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" }
-                            children={ getAvailableProtocolBindingTypes() }
+                            options={ getAvailableProtocolBindingTypes() }
                             width={ 15 }
+                            value={ initialValues.RequestMethod }
                             placeholder={ "Select mode of protocol binding" }
+                            data-testid={ `${ testId }-form-wizard-saml-protocol-binding` }
                         />
-                    </React.Fragment>
+                    </div>
                 )
                 : (
                     <FilePicker
                         key={ 1 }
-                        fileStrategy={ new XMLFileStrategy() }
+                        fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                        file={ selectedMetadataFile }
+                        pastedContent={ pastedMetadataContent }
                         onChange={ (result) => {
-                            // meta_data_saml
+                            setSelectedMetadataFile(result.file);
+                            setPastedMetadataContent(result.pastedContent);
                             setXmlBase64String(result.serialized as string);
                         } }
                         uploadButtonText="Upload Metadata File"
                         dropzoneText="Drag and drop a XML file here."
+                        data-testid={ `${ testId }-form-wizard-saml-xml-config-file-picker` }
                         icon={ getCertificateIllustrations().uploadPlaceholder }
-                        placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                        placeholderIcon={ <Icon name="file code" size="huge"/> }
+                        normalizeStateOnRemoveOperations={ true }
                     />
                 )
             }
@@ -454,23 +521,57 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const oidcConfigurationPage = () => {
         return (
             <WizardPage validate={ (values) => {
-                const errors: { [ key: string ]: string } = {};
-                if (!values.clientId) errors.clientId = 'Required';
-                if (!values.clientSecret) errors.clientSecret = 'Required';
-                if (!values.authorizationEndpointUrl) errors.authorizationEndpointUrl = 'Required';
-                if (!values.tokenEndpointUrl) errors.tokenEndpointUrl = 'Required';
+                const errors: FormErrors = {};
+                if (showAsStandaloneIdentityProvider) {
+                    errors.name = composeValidators(
+                        required,
+                        length(IDP_NAME_LENGTH)
+                    )(values.name);
+                }
+                errors.clientId = composeValidators(
+                    required,
+                    length(OIDC_CLIENT_ID_MAX_LENGTH)
+                )(values.clientId);
+                errors.clientSecret = composeValidators(
+                    required,
+                    length(OIDC_CLIENT_SECRET_MAX_LENGTH)
+                )(values.clientSecret);
+                errors.authorizationEndpointUrl = composeValidators(
+                    required,
+                    isUrl,
+                    length(OIDC_URL_MAX_LENGTH)
+                )(values.authorizationEndpointUrl);
+                errors.tokenEndpointUrl = composeValidators(
+                    required,
+                    isUrl,
+                    length(OIDC_URL_MAX_LENGTH)
+                )(values.tokenEndpointUrl);
+                setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
             } }>
+                { showAsStandaloneIdentityProvider ? (<Field.Input
+                    data-testid={ `${ testId }-form-wizard-idp-name` }
+                    ariaLabel="name"
+                    inputType="name"
+                    name="name"
+                    placeholder="Enter a name for the identity provider"
+                    label="Identity provider name"
+                    initialValue={ initialValues.name }
+                    maxLength={ IDP_NAME_LENGTH.max }
+                    minLength={ IDP_NAME_LENGTH.min }
+                    required={ true }
+                    width={ 13 }
+                />) : (<></>) }
                 <Field.Input
                     ariaLabel="clientId"
                     inputType="resourceName"
                     name="clientId"
                     label={ "Client ID" }
                     required={ true }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    data-testid={ `${ testId }-idp-client-id` }
+                    placeholder={ "Enter client id" }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-client-id` }
                     width={ 13 }
                 />
                 <Field.Input
@@ -481,64 +582,87 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     required={ true }
                     hidePassword={ t("common:hide") }
                     showPassword={ t("common:show") }
-                    autoComplete={ "" + Math.random() }
                     maxLength={ 100 }
                     minLength={ 3 }
                     type="password"
-                    data-testid={ `${ testId }-idp-client-secret` }
+                    placeholder={ "Enter client secret" }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-client-secret` }
                     width={ 13 }
                 />
                 <Field.Input
                     ariaLabel="authorizationEndpointUrl"
                     inputType="url"
                     name="authorizationEndpointUrl"
-                    label={ "Authorization Endpoint URL" }
+                    label={ "Authorization endpoint URL" }
                     required={ true }
-                    placeholder={ "https://localhost:9443/oauth2/authorize/" }
-                    autoComplete={ "" + Math.random() }
+                    placeholder={ "https://myorg.io/authorize" }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    data-testid={ `${ testId }-idp-authorization-endpoint-url` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-authorization-endpoint-url` }
                     width={ 13 }
                 />
                 <Field.Input
                     ariaLabel="tokenEndpointUrl"
                     inputType="url"
                     name="tokenEndpointUrl"
-                    label={ "Token Endpoint URL" }
+                    label={ "Token endpoint URL" }
                     required={ true }
-                    placeholder={ "https://localhost:9443/oauth2/token/" }
-                    autoComplete={ "" + Math.random() }
+                    placeholder={ "https://myorg.io/token" }
                     maxLength={ 100 }
                     minLength={ 3 }
-                    data-testid={ `${ testId }-idp-token-endpoint-url` }
+                    data-testid={ `${ testId }-form-wizard-oidc-idp-token-endpoint-url` }
                     width={ 13 }
                 />
             </WizardPage>
-        )
+        );
     };
 
     const certificatesPage = () => (
         <WizardPage validate={ (values) => {
-            const errors: { [ key: string ]: string } = {};
+            const errors: FormErrors = {};
+            /**
+             * If it's the saml protocol then we don't render
+             * a JWKS endpoint field. Instead we only require
+             * a pem string or a file.
+             */
+            if (selectedProtocol === "saml") {
+                setNextShouldBeDisabled(!pemString);
+            } else {
+                /**
+                 * Now when it comes to OIDC the user can input either
+                 * JWKS endpoint, pem string, or the cert file itself
+                 * (cert file value will be extracted as a pem).
+                 */
+                if (selectedCertInputType === "pem") {
+                    setNextShouldBeDisabled(!pemString);
+                } else {
+                    errors.jwks_endpoint = composeValidators(
+                        required,
+                        length(JWKS_URL_LENGTH),
+                        isUrl
+                    )(values.jwks_endpoint);
+                    setNextShouldBeDisabled(ifFieldsHave(errors));
+                }
+            }
             return errors;
         } }>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <p><b>Mode of Certificate Configuration</b></p>
+                        <p><b>Mode of certificate configuration</b></p>
                         { (selectedProtocol === "oidc") && (
                             <Switcher
                                 compact
                                 className={ "mt-1" }
                                 defaultOptionValue="jwks"
+                                selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
                                     value: "jwks",
-                                    label: "JWKS Endpoint",
+                                    label: "JWKS endpoint",
                                 }, {
                                     value: "pem",
-                                    label: "Use PEM Certificate",
+                                    label: "Use PEM certificate",
                                 } ] }
                             />
                         ) }
@@ -548,30 +672,38 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             <Divider hidden/>
             { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
                 <Field.Input
-                    ariaLabel="JWKS Endpoint URL"
+                    ariaLabel="JWKS endpoint URL"
                     inputType="url"
                     name="jwks_endpoint"
-                    label="JWKS Endpoint URL"
+                    label="JWKS endpoint URL"
                     required={ true }
-                    maxLength={ 100 }
-                    minLength={ 3 }
+                    maxLength={ JWKS_URL_LENGTH.max }
+                    minLength={ JWKS_URL_LENGTH.min }
                     width={ 15 }
-                    placeholder="Enter JWKS Endpoint URL"
+                    initialValue={ EMPTY_STRING }
+                    placeholder="Enter JWKS endpoint URL"
+                    data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
                 />
             ) }
             { (selectedCertInputType === "pem") && (
                 <FilePicker
                     key={ 2 }
-                    fileStrategy={ new CertFileStrategy() }
+                    file={ selectedCertificateFile }
+                    pastedContent={ pastedPEMContent }
+                    fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                     onChange={ (result) => {
                         if (result?.serialized) {
+                            setPastedPEMContent(result?.pastedContent);
+                            setSelectedCertificateFile(result?.file);
                             setPemString(result.serialized.pemStripped);
                         }
                     } }
                     uploadButtonText="Upload Certificate File"
                     dropzoneText="Drag and drop a certificate file here."
                     icon={ getCertificateIllustrations().uploadPlaceholder }
-                    placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
+                    placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
+                    data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
+                    normalizeStateOnRemoveOperations={ true }
                 />
             ) }
         </WizardPage>
@@ -582,36 +714,46 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const resolveWizardPages = (): Array<ReactElement> => {
         if (selectedProtocol === "oidc") {
             return [
-                wizardCommonFirstPage(),
+                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
                 oidcConfigurationPage(),
                 certificatesPage()
             ];
         } else {
             return [
-                wizardCommonFirstPage(),
+                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
                 samlConfigurationPage(),
                 certificatesPage()
             ];
         }
     };
 
-    const resolveWizardInitialValues = () => ({});
-
     const resolveHelpPanel = () => {
+
+        if (showAsStandaloneIdentityProvider && currentWizardStep !== 0) return null;
+        if (!showAsStandaloneIdentityProvider && currentWizardStep !== 1) return null;
 
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
-        if (!template?.content?.samlHelp
-            || !template?.content?.oidcHelp
-            || currentWizardStep !== 1) {
+
+        const subTemplate: IdentityProviderTemplateInterface = showAsStandaloneIdentityProvider ?
+            template :
+            cloneDeep(template.subTemplates.find(({ id }) => {
+                return id === (selectedProtocol === "saml" ?
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                );
+            }));
+
+        if (!subTemplate?.content?.wizardHelp) {
             return null;
         }
 
-        const { samlHelp: SamlHelp, oidcHelp: OidcHelp } = template?.content;
+        const { wizardHelp: WizardHelp } = subTemplate?.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header
+                    data-testid={ `${ testId }-modal-side-panel-header` }
                     className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
                         Help
@@ -619,11 +761,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
-                        { (selectedProtocol === "oidc") ? (
-                            <OidcHelp/>
-                        ) : (
-                            <SamlHelp/>
-                        ) }
+                        <WizardHelp data-testid={ `${ testId }-modal-side-panel-help-content` }/>
                     </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
@@ -643,36 +781,23 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             closeOnEscape
             data-testid={ `${ testId }-modal` }>
             <ModalWithSidePanel.MainPanel>
-
                 { /*Modal header*/ }
                 <ModalWithSidePanel.Header
-                    className="page-header-inner with-image"
+                    className="wizard-header"
                     data-testid={ `${ testId }-modal-header` }>
-                    <div className="display-flex">
+                    <div className={ "display-flex" }>
                         <GenericIcon
                             icon={ getIdPIcons().enterprise }
-                            size="x50"
+                            size="x30"
                             transparent
                             spaced={ "right" }
                             data-testid={ `${ testId }-image` }/>
-                        <Header
-                            size={ "small" }
-                            textAlign={ "left" }
-                            className={ "m-0" }
-                            data-testid={ `${ testId }-text-wrapper` }>
-                            { title && (
-                                <span data-testid={ `${ testId }-title` }>{ title }</span>
-                            ) }
-                            { subTitle && (
-                                <Header.Subheader
-                                    data-testid={ `${ testId }-sub-title` }>
-                                    { subTitle }
-                                </Header.Subheader>
-                            ) }
-                        </Header>
+                        <div>
+                            { title }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                        </div>
                     </div>
                 </ModalWithSidePanel.Header>
-
                 { /*Modal body content*/ }
                 <React.Fragment>
                     <ModalWithSidePanel.Content
@@ -695,15 +820,15 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         { alert && alertComponent }
                         <Wizard2
                             ref={ wizardRef }
-                            initialValues={ resolveWizardInitialValues() }
+                            initialValues={ initialValues }
                             onSubmit={ handleFormSubmit }
+                            uncontrolledForm={ true }
                             pageChanged={ (index: number) => setCurrentWizardStep(index) }
                             data-testid={ testId }>
                             { resolveWizardPages() }
                         </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
-
                 { /*Modal actions*/ }
                 <ModalWithSidePanel.Actions
                     data-testid={ `${ testId }-modal-actions` }>
@@ -720,6 +845,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 {/*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
+                                        disabled={ nextShouldBeDisabled }
                                         floated="right" onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
@@ -734,6 +860,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                     // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
+                                        disabled={ nextShouldBeDisabled }
+                                        type="submit"
                                         floated="right" onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
@@ -743,6 +871,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 ) }
                                 { currentWizardStep > 0 && (
                                     <LinkButton
+                                        type="submit"
                                         floated="right" onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
@@ -753,11 +882,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         </Grid.Row>
                     </Grid>
                 </ModalWithSidePanel.Actions>
-
             </ModalWithSidePanel.MainPanel>
-
             { resolveHelpPanel() }
-
         </ModalWithSidePanel>
     );
 
@@ -769,5 +895,70 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
  */
 EnterpriseIDPCreateWizard.defaultProps = {
     currentStep: 0,
-    "data-testid": "idp-edit-idp-create-wizard"
+    "data-testid": "enterprise-idp-create-wizard"
+};
+
+// OIDC form constants.
+const OIDC_CLIENT_ID_MAX_LENGTH: MinMax = { max: 100, min: 1 };
+const OIDC_CLIENT_SECRET_MAX_LENGTH: MinMax = { max: 100, min: 1 };
+const OIDC_URL_MAX_LENGTH: MinMax = { max: 2048, min: 10 };
+
+// SAML form constants.
+const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
+const SP_EID_LENGTH: MinMax = { max: 240, min: 3 };
+const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
+const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+
+// General constants
+const EMPTY_STRING = "";
+const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+
+// Validation Functions.
+// FIXME: These will be removed in the future when
+//        form module validation gets to a stable state.
+
+const composeValidators = (...validators) => (value) => {
+    return validators.reduce(
+        (error, validator) => error || validator(value),
+        undefined
+    );
+};
+
+/**
+ * Given a {@link FormErrors} object, it will check whether
+ * every key has a assigned truthy value. {@link Array.every}
+ * will return {@code true} if one of the object member has
+ * a truthy value. In other words, it will check a field has
+ * a error message attached to it or not.
+ *
+ * @param errors {FormErrors}
+ */
+const ifFieldsHave = (errors: FormErrors): boolean => {
+    return !Object.keys(errors).every((k) => !errors[ k ]);
+};
+
+const required = (value: any) => {
+    if (!value) {
+        return `This is a required field`;
+    }
+    return undefined;
+};
+
+const length = (minMax: MinMax) => (value) => {
+    if (!value && minMax.min > 0) {
+        return `You cannot leave this blank`;
+    }
+    if (value?.length > minMax.max) {
+        return `Cannot exceed more than ${ minMax.max } characters.`;
+    }
+    if (value?.length < minMax.min) {
+        return `Should have at least ${ minMax.min } characters.`;
+    }
+    return undefined;
+};
+
+const isUrl = (value) => {
+    return FormValidation.url(value) ? undefined : "This value is invalid."
 };

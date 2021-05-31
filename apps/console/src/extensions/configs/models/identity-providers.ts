@@ -33,5 +33,11 @@ export interface IdentityProviderConfig {
         google: boolean;
         github: boolean;
         enterprise: boolean;
+        /**
+         * Adding `saml` and `oidc` template enabled property to this
+         * config under the group `enterprise-protocols`.
+         */
+        saml: boolean;
+        oidc: boolean;
     }
 }

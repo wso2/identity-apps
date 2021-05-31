@@ -330,6 +330,10 @@ export interface FeatureAccessConfigInterface {
  */
 export interface CRUDScopesInterface {
     /**
+     * Feature wise scopes array.
+     */
+    feature: string[];
+    /**
      * Create permission scopes array.
      */
     create: string[];

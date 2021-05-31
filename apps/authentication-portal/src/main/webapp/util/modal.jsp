@@ -90,6 +90,14 @@
         this.desc.html(html);
     };
 
+    ModalRef.prototype.hideDismissButton = function () {
+        this.cancelBtn.hide();
+    };
+
+    ModalRef.prototype.showDismissButton = function () {
+        this.cancelBtn.show();
+    };
+
     ModalRef.prototype.dispose = function () {
         this.hide();
         this.actionBtn.unbind("click");

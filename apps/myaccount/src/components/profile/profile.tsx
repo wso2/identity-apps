@@ -171,10 +171,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             const subValue = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]]
                                     .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                            tempProfileInfo.set(
-                                schema.name,
-                                subValue ? subValue.value : ""
-                            );
+                            if (schemaNames[0] === "addresses") {
+                                tempProfileInfo.set(
+                                    schema.name,
+                                    subValue ? subValue.formatted : ""
+                                );
+                            } else {
+                                tempProfileInfo.set(
+                                    schema.name,
+                                    subValue ? subValue.value : ""
+                                );
+                            }
                         }
                     }
                 }
@@ -219,8 +226,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
         const schemaNames = formName.split(".");
 
-        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-            schemaNames[0] === "phoneNumbers" || schemaNames[0] === "addresses") {
+        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0])) {
             const attributeValues = [];
 
             if (schemaNames.length === 1) {
@@ -250,37 +256,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
-                    };
-                }
-            } else if (schemaNames[0] === "addresses") {
-                const attributeValues = [];
-                // List of sub attributes.
-                const subValues = profileDetails.profileInfo[schemaNames[0]]
-                    && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute) => typeof subAttribute ===  "object");
-
-                if (subValues && subValues.length > 0) {
-                    subValues.map((value) => {
-                        if (value.type !== schemaNames[1]) {
-                            const subAttributeEntry = {
-                                type: value.type,
-                                formatted: value.value
-                            };
-                            attributeValues.push(subAttributeEntry);
-                        }
-                    });
-                }
-                // This is required as the api doesn't support
-                // patching the address attributes at the sub attribute level.
-                if (schemaNames[0] === "addresses") {
-                    value = {
-                        [schemaNames[0]]: [
-                            ...attributeValues,
-                            {
-                                type: schemaNames[1],
-                                formatted: values.get(formName)
-                            }
-                        ]
                     };
                 }
             } else {
@@ -350,6 +325,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     value = {
                         name: { [schemaNames[1]]: values.get(formName) }
                     };
+                } else if (schemaNames[0] === "addresses") {
+                    value = {
+                        [schemaNames[0]]: [
+                            {
+                                type: schemaNames[1],
+                                formatted: values.get(formName)
+                            }
+                        ]
+                    };
+                    // This is required as the api doesn't support patching the address attributes at the
+                    // sub attribute level using 'replace' operation.
+                    data.Operations[0].op = "add";
                 } else {
                     value = {
                         [schemaNames[0]]: [

@@ -54,10 +54,10 @@ export const TextFieldAdapter = (props): ReactElement => {
             control={ Input }
             autoFocus={ childFieldProps.autoFocus || false }
             type="text"
-            value={ meta.modified ? input.value 
-                : (childFieldProps?.value ? childFieldProps?.value 
-                    : (parentFormProps?.values[childFieldProps?.name] ? parentFormProps?.values[childFieldProps?.name]: "")) }
-            { ...omit(childFieldProps, ["value", "listen"]) }
+            value={ meta.modified ? input.value
+                : (childFieldProps?.value ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
+            { ...omit(childFieldProps, [ "value", "listen" ]) }
             error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
         />
     );
@@ -66,7 +66,7 @@ export const TextFieldAdapter = (props): ReactElement => {
 export const PasswordFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
-    
+
     return (
         <Password
             key={ childFieldProps.testId }
@@ -84,9 +84,9 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
-            value={ meta.modified ? input.value 
-                : (childFieldProps?.value ? childFieldProps?.value 
-                    : (parentFormProps?.values[childFieldProps?.name] ? parentFormProps?.values[childFieldProps?.name]: "")) }
+            value={ meta.modified ? input.value
+                : (childFieldProps?.value ? childFieldProps?.value
+                    : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
         />
     );
 };
@@ -94,15 +94,15 @@ export const PasswordFieldAdapter = (props): ReactElement => {
 export const CopyFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
-    
+
     return (
         <CopyInputField
             key={ childFieldProps.testId }
             data-testid={ childFieldProps.testId }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
-            value={ childFieldProps?.value ? childFieldProps?.value 
-                : (parentFormProps?.values[childFieldProps?.name] ? parentFormProps?.values[childFieldProps?.name]: "") }
+            value={ childFieldProps?.value ? childFieldProps?.value
+                : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "") }
         />
     );
 };
@@ -110,7 +110,7 @@ export const CopyFieldAdapter = (props): ReactElement => {
 export const TextAreaAdapter = (props): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
-    
+
     return (
         <Form.TextArea
             label={ childFieldProps.label !== "" ? childFieldProps.label : null }
@@ -133,9 +133,9 @@ export const TextAreaAdapter = (props): ReactElement => {
                 event.key === ENTER_KEY && input.onBlur(data.name);
             } }
             type="textarea"
-            { ...omit(childFieldProps, ["value", "listen"]) }
-            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value 
-                : (parentFormProps?.values[childFieldProps?.name] ? parentFormProps?.values[childFieldProps?.name]: ""))}
+            { ...omit(childFieldProps, [ "value", "listen" ]) }
+            value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value
+                : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
             error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
         />
     );
@@ -198,11 +198,11 @@ export const SelectAdapter = (props): ReactElement => {
     );
 };
 
-export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
+export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
     if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_PRIMARY) {
         return (
             <PrimaryButton
-                { ...omit(childFieldProps, ["label"]) }
+                { ...omit(childFieldProps, [ "label" ]) }
                 disabled={ childFieldProps.disabled }
                 key={ childFieldProps.testId }
                 type="submit"
@@ -213,7 +213,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_CANCEL) {
         return (
             <LinkButton
-                { ...omit(childFieldProps, ["label"]) }
+                { ...omit(childFieldProps, [ "label" ]) }
                 disabled={ childFieldProps.disabled }
                 key={ childFieldProps.testId }
             >
@@ -223,7 +223,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_LINK) {
         return (
             <LinkButton
-                { ...omit(childFieldProps, ["label"]) }
+                { ...omit(childFieldProps, [ "label" ]) }
                 disabled={ childFieldProps.disabled }
                 key={ childFieldProps.testId }
             >
@@ -233,7 +233,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     } else if (childFieldProps.buttonType === FieldButtonTypes.BUTTON_DANGER) {
         return (
             <DangerButton
-                { ...omit(childFieldProps, ["label"]) }
+                { ...omit(childFieldProps, [ "label" ]) }
                 disabled={ childFieldProps.disabled }
                 key={ childFieldProps.testId }
             >
@@ -243,7 +243,7 @@ export const ButtonAdapter  = ({ childFieldProps }): ReactElement => {
     } else {
         return (
             <Button
-                { ...omit(childFieldProps, ["label"]) }
+                { ...omit(childFieldProps, [ "label" ]) }
                 disabled={ childFieldProps.disabled }
                 key={ childFieldProps.testId }
             >

@@ -64,7 +64,6 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
     return (
         <>
             <FinalFormField
-                { ...rest }
                 key={ testId }
                 parse={ value => value === undefined
                     ? setCheckboxValue(!(props?.childFieldProps?.value?.length == 0)) : setCheckboxValue(value) }
@@ -72,6 +71,7 @@ export const FieldCheckbox = (props: FieldCheckboxPropsInterface): ReactElement 
                 name={ props.name }
                 defaultValue={ checkboxValue }
                 component={ ToggleAdapter }
+                { ...rest }
             />
             {
                 props.hint && (

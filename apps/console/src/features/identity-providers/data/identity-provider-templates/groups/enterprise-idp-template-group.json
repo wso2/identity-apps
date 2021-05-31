@@ -1,0 +1,12 @@
+{
+    "category": "DEFAULT",
+    "description": "Enterprise connectors via standard protocols",
+    "enabled": true,
+    "displayOrder": 2,
+    "id": "enterprise-protocols",
+    "image": "enterprise",
+    "name": "Enterprise",
+    "services": [],
+    "disabled": false,
+    "type": "ENTERPRISE"
+}

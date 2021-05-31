@@ -45,7 +45,7 @@ export interface FieldDropdownPropsInterface extends FormFieldPropsInterface {
  */
 export const FieldDropdown = (props: FieldDropdownPropsInterface): ReactElement => {
 
-    const { [ "data-testid" ]: testId, ...rest } = props;
+    const { [ "data-testid" ]: testId, initialValue, ...rest } = props;
 
     const resolveInputFieldMessage = () => {
         switch (props.message.type) {
@@ -63,15 +63,15 @@ export const FieldDropdown = (props: FieldDropdownPropsInterface): ReactElement 
     return (
         <>
             <FinalFormField
-                { ...rest }
                 key={ testId }
                 type="dropdown"
                 name={ props.name }
                 parse={ value => value }
                 component={ SelectAdapter }
-                validate={ (value,allValues, meta) =>
+                validate={ (value, allValues, meta) =>
                     getValidation(value, meta, props.type, props.required)
                 }
+                { ...rest }
             />
             {
                 (props.hint && typeof props.hint === "string")
