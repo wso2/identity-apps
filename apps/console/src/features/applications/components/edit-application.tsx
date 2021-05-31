@@ -709,7 +709,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the tab change.
      */
-    const handleTabChange = (e, { activeIndex }) => {
+    const handleTabChange = (e, { activeIndex }): void => {
         setActiveTabIndex(activeIndex);
     };
 
