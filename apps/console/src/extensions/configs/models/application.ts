@@ -65,6 +65,9 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPList: boolean;
         disabledGrantTypes: string[];
     };
+    infoSettings: {
+        renderInfoTabExtension: () => ReactNode
+    };
     templates: {
         android: boolean;
         oidc: boolean;

@@ -499,6 +499,9 @@ export interface ConsoleNS {
                             };
                             tabName: string;
                         };
+                        info: {
+                            tabName: string;
+                        };
                         general: {
                             tabName: string;
                         };

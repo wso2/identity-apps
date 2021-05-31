@@ -35,6 +35,7 @@ import {
     ProvisioningSettings,
     SignOnMethods
 } from "./settings";
+import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
@@ -43,6 +44,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
+    OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
@@ -136,6 +138,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
@@ -154,6 +158,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         clientSecretHashDisclaimerModalInputs,
         setClientSecretHashDisclaimerModalInputs
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
+    const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
+    const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
 
     /**
      * Called when an application updates.
@@ -164,6 +171,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setIsApplicationUpdated(true);
         onUpdate(id);
     };
+
+    /**
+     * Called when the defaultActiveIndex updates.
+     */
+    useEffect( () => {
+        setActiveTabIndex(defaultActiveIndex);
+
+    },[defaultActiveIndex]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -230,13 +245,29 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (samlConfigurations !== undefined) {
             return;
         }
+        setSAMLConfigsLoading(true);
+
         if (application?.templateId === SAMLApplicationTemplate.id) {
-            ApplicationManagementUtils.getSAMLApplicationMeta();
+            ApplicationManagementUtils.getSAMLApplicationMeta()
+                .finally(() => {
+                    setSAMLConfigsLoading(false);
+            });
         }
     }, [ samlConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
+        if (oidcConfigurations !== undefined) {
+            return;
+        }
+        setOIDCConfigsLoading(true);
 
+        ApplicationManagementUtils.getOIDCApplicationMeta()
+            .finally(() => {
+                setOIDCConfigsLoading(false);
+            });
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
+
+    useEffect(() => {
         if (tabPaneExtensions && !isApplicationUpdated) {
             return;
         }
@@ -260,6 +291,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols: inboundProtocolList,
                 onApplicationUpdate: () => {
                     onUpdate(application?.id);
+                },
+                onTriggerTabUpdate: (tabIndex: number) => {
+                    setActiveTabIndex(tabIndex);
                 },
                 template: template
             },
@@ -543,6 +577,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             : null
     );
 
+    const InfoTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <Info
+                inboundProtocols={ application?.inboundProtocols }
+                isOIDCConfigLoading={ isOIDCConfigsLoading }
+                isSAMLConfigLoading={ isSAMLConfigsLoading }
+                data-testid={ `${ testId }-server-endpoints` }
+            />
+        </ResourceTab.Pane>
+    );
+
     /**
      * Resolves the tab panes based on the application config.
      *
@@ -611,6 +656,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     render: AdvancedSettingsTabPane
                 });
             }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
+
+                panes.push({
+                    menuItem: {
+                        content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                        icon: "info circle"
+                    },
+                    render: InfoTabPane
+                });
+            }
 
             return panes;
         }
@@ -639,8 +695,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             {
                 menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
+            },
+            {
+                menuItem: {
+                    content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                    icon: "info circle"
+                },
+                render: InfoTabPane
             }
         ];
+    };
+
+    /**
+     * Handles the tab change.
+     */
+    const handleTabChange = (e, { activeIndex }): void => {
+        setActiveTabIndex(activeIndex);
     };
 
     /**
@@ -763,11 +833,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 <>
                     <ResourceTab
-                        data-testid={ `${ testId }-resource-tabs` }
-                        panes={ resolveTabPanes() }
+                        activeIndex= { activeTabIndex }
+                        data-testid= { `${testId}-resource-tabs` }
                         defaultActiveIndex={
                             application?.templateId === CustomApplicationTemplate.id ?
                                 (defaultActiveIndex - 1) : defaultActiveIndex }
+                        onTabChange={ handleTabChange }
+                        panes= { resolveTabPanes() }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>

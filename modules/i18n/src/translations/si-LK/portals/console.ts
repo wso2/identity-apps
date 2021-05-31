@@ -826,6 +826,9 @@ export const console: ConsoleNS = {
                             },
                             tabName: "පරිශීලක ගුණාංග"
                         },
+                        info: {
+                            tabName: "තොරතුරු"
+                        },
                         general: {
                             tabName: "ජනරාල්"
                         },

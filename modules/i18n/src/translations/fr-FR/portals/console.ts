@@ -830,6 +830,9 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Attributs"
                         },
+                        info: {
+                            tabName: "Info"
+                        },
                         general: {
                             tabName: "Général"
                         },
