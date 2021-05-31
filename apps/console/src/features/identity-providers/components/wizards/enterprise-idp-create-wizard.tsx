@@ -350,7 +350,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             const errors: FormErrors = {};
             errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
             if (isIdpNameAlreadyTaken(values.name)) {
-                errors.name = "An identity provider already exists with this name.";
+                errors.name = t("console:develop.features.authenticationProvider." +
+                    "forms.generalDetails.name.validations.duplicate");
             }
             setNextShouldBeDisabled(ifFieldsHave(errors));
             return errors;
@@ -412,7 +413,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             if (showAsStandaloneIdentityProvider) {
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
                 if (isIdpNameAlreadyTaken(values.name)) {
-                    errors.name = "An identity provider already exists with this name.";
+                    errors.name = t("console:develop.features.authenticationProvider." +
+                        "forms.generalDetails.name.validations.duplicate");
                 }
             }
             errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
@@ -557,7 +559,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         length(IDP_NAME_LENGTH)
                     )(values.name);
                     if (isIdpNameAlreadyTaken(values.name)) {
-                        errors.name = "An identity provider already exists with this name.";
+                        errors.name = t("console:develop.features.authenticationProvider." +
+                            "forms.generalDetails.name.validations.duplicate");
                     }
                 }
                 errors.clientId = composeValidators(
