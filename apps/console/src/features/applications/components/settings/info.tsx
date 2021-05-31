@@ -66,6 +66,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         isSAMLConfigLoading,
         [ "data-testid" ]: testId
     } = props;
+    
     const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
