@@ -620,29 +620,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const certificatesPage = () => (
         <WizardPage validate={ (values) => {
             const errors: FormErrors = {};
-            /**
-             * If it's the saml protocol then we don't render
-             * a JWKS endpoint field. Instead we only require
-             * a pem string or a file.
-             */
-            if (selectedProtocol === "saml") {
-                setNextShouldBeDisabled(!pemString);
-            } else {
-                /**
-                 * Now when it comes to OIDC the user can input either
-                 * JWKS endpoint, pem string, or the cert file itself
-                 * (cert file value will be extracted as a pem).
-                 */
-                if (selectedCertInputType === "pem") {
-                    setNextShouldBeDisabled(!pemString);
-                } else {
+            if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
+                if (values.jwks_endpoint?.length > 0) {
                     errors.jwks_endpoint = composeValidators(
-                        required,
                         length(JWKS_URL_LENGTH),
                         isUrl
                     )(values.jwks_endpoint);
-                    setNextShouldBeDisabled(ifFieldsHave(errors));
                 }
+                setNextShouldBeDisabled(ifFieldsHave(errors));
             }
             return errors;
         } }>
@@ -676,7 +661,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     inputType="url"
                     name="jwks_endpoint"
                     label="JWKS endpoint URL"
-                    required={ true }
+                    required={ false }
                     maxLength={ JWKS_URL_LENGTH.max }
                     minLength={ JWKS_URL_LENGTH.min }
                     width={ 15 }
@@ -697,6 +682,17 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             setSelectedCertificateFile(result?.file);
                             setPemString(result.serialized.pemStripped);
                         }
+                        /**
+                         * If there's pasted content or a file, but it hasn't been serialized
+                         * and if it's not valid then we must disable the next button. This condition
+                         * implies => that when the input is optional but the user tries to enter
+                         * invalid content to the picker we can't enable next because it's invalid.
+                         */
+                        setNextShouldBeDisabled(
+                            (result?.pastedContent?.length || result?.file) > 0 &&
+                            !result.serialized &&
+                            !result.valid
+                        );
                     } }
                     uploadButtonText="Upload Certificate File"
                     dropzoneText="Drag and drop a certificate file here."
@@ -908,7 +904,7 @@ const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
 const SP_EID_LENGTH: MinMax = { max: 240, min: 3 };
 const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
 const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
-const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 10 };
+const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
 
 // General constants
 const EMPTY_STRING = "";
