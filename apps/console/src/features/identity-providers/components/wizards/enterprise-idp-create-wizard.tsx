@@ -849,8 +849,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         className="content-container"
                         data-testid={ `${ testId }-modal-content-2` }>
                         { alert && alertComponent }
-                        { !isIDPListLoading ?
-                            <Wizard2
+                        { !isIDPListLoading
+                            ? <Wizard2
                                 ref={ wizardRef }
                                 initialValues={ initialValues }
                                 onSubmit={ handleFormSubmit }
@@ -858,8 +858,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 pageChanged={ (index: number) => setCurrentWizardStep(index) }
                                 data-testid={ testId }>
                                 { resolveWizardPages() }
-                            </Wizard2> :
-                            <ContentLoader text="Loading identity providers"/>
+                            </Wizard2>
+                            : <ContentLoader text="Loading identity providers"/>
                         }
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
