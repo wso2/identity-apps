@@ -473,7 +473,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
-            );
+            ).toLowerCase();
             return (
                 isFeatureEnabled(
                     featureConfig?.personalInfo,
@@ -618,6 +618,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                 "myAccount:components.profile.forms.mobileChangeForm." +
                                                                 "inputs.mobile.validations.invalidFormat"
                                                             ));
+                                                        } else if (checkSchemaType(schema.name, "dateOfBirth")) {
+                                                            validation.errorMessages.push(t(
+                                                                "myAccount:components.profile.forms.dateChangeForm." +
+                                                                "inputs.date.validations.invalidFormat", { fieldName }
+                                                            ));
                                                         } else {
                                                             validation.errorMessages.push(
                                                                 t(
@@ -668,7 +673,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         } else {
             const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
-            );
+            ).toLowerCase();
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>

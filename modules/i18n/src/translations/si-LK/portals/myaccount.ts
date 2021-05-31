@@ -1009,7 +1009,17 @@ export const myAccount: MyAccountNS = {
                             placeholder: "විද්‍යුත් තැපෑල ඇතුල් කරන්න",
                             validations: {
                                 empty: "විද්‍යුත් තැපෑල අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
-                                invalidFormat: "ඊමේල් ලිපිනය නිවැරදි ආකෘතියෙන් නොවේ"
+                                invalidFormat: "විද්‍යුත් තැපැල් ආකෘතිය නිවැරදි නොවේ. ඔබට අක්ෂරාංක, ඉරි (-), "+
+                                    "යටි ඉරි (_), නැවතුම් ලකුණු (.), සහ at ලකුණක් (@) භාවිතා කළ හැකිය."
+                            }
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "කරුණාකර වලංගු {{fieldName}} YYYY-MM-DD ආකෘතියෙන් ඇතුළත් කරන්න."
                             }
                         }
                     }

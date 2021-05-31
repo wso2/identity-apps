@@ -1001,7 +1001,18 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Insira o seu endereço de email",
                             validations: {
                                 empty: "O endereço de email é um campo obrigatório",
-                                invalidFormat: "O endereço de email não está no formato correto"
+                                invalidFormat: "O endereço de email não está no formato correto. Você pode usar " +
+                                    "caracteres alfanuméricos, sublinhados (_), travessões (-), pontos (.) E uma arroba " +
+                                    "(@)."
+                            }
+                        }
+                    }
+                },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: "Insira um {{fieldName}} válido no formato AAAA-MM-DD."
                             }
                         }
                     }

@@ -686,6 +686,15 @@ export interface MyAccountNS {
                         };
                     };
                 },
+                dateChangeForm: {
+                    inputs: {
+                        date: {
+                            validations: {
+                                invalidFormat: string;
+                            };
+                        };
+                    };
+                };
             };
             messages: {
                 emailConfirmation: {
