@@ -1057,7 +1057,8 @@ export const myAccount: MyAccountNS = {
                             placeholder: "Veuillez saisir votre numéro de portable",
                             validations: {
                                 empty: "Le numéro de portable est un champ obligatoire",
-                                invalidFormat: "Le format du numéro de téléphone portable saisi est invalide"
+                                invalidFormat: "Veuillez saisir un numéro de mobile valide au format [+][indicatif du "+
+                                    "pays][indicatif régional][numéro de téléphone local]."
                             }
                         }
                     }
