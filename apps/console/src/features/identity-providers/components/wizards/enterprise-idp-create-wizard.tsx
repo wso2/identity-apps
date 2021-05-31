@@ -127,10 +127,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     useEffect(() => {
         setIsIDPListLoading(true);
-        getIdentityProviderList(null, null, null)
-            .then((response) => {
-                setIdPList(response.identityProviders);
-            }).catch((error) => {
+        getIdentityProviderList(null, null, null).then((response) => {
+            setIdPList(response.identityProviders);
+        }).catch((error) => {
             handleGetIDPListCallError(error);
         }).finally(() => {
             setIsIDPListLoading(false);
