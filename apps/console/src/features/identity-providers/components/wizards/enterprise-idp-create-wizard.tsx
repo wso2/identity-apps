@@ -689,7 +689,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                          * invalid content to the picker we can't enable next because it's invalid.
                          */
                         setNextShouldBeDisabled(
-                            (result?.pastedContent?.length || result?.file) > 0 &&
+                            (result?.pastedContent?.length > 0 || result?.file) &&
                             !result.serialized &&
                             !result.valid
                         );
