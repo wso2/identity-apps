@@ -178,7 +178,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     useEffect( () => {
         if (application?.templateId === CustomApplicationTemplate.id
             && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
-            setActiveTabIndex(defaultActiveIndex-1);
+            setActiveTabIndex(defaultActiveIndex - 1);
             return;
         }
         setActiveTabIndex(defaultActiveIndex);

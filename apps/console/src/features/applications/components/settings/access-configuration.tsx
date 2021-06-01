@@ -417,7 +417,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 } else {
                     return false;
                 }
-
             }
 
             if (protocol === SupportedAuthProtocolTypes.WS_TRUST
