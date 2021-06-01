@@ -280,23 +280,23 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     />
                 )
                 : null;
-        // case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC:
-        //     return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
-        //         ? (
-        //             <OidcAuthenticationProviderCreateWizard
-        //                 title={ selectedTemplateWithUniqueName?.name }
-        //                 subTitle={ selectedTemplateWithUniqueName?.description }
-        //                 closeWizard={ () => {
-        //                     setSelectedTemplateWithUniqueName(undefined);
-        //                     setSelectedTemplate(undefined);
-        //                     setShowWizard(false);
-        //                     onWizardClose();
-        //                 } }
-        //                 template={ selectedTemplateWithUniqueName }
-        //                 { ...rest }
-        //             />
-        //         )
-        //         : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <OidcAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        closeWizard={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
         default:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
