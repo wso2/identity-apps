@@ -500,6 +500,9 @@ export interface ConsoleNS {
                             tabName: string;
                         };
                         info: {
+                            heading: string;
+                            oidcSubHeading: string;
+                            samlSubHeading: string;
                             tabName: string;
                         };
                         general: {

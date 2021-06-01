@@ -102,17 +102,17 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                         <Grid.Column>
                             <Heading ellipsis as="h4">
                                 <strong>
-                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                        "endpoints." + "title") }
+                                    { t("console:develop.features.applications.edit.sections.info.heading") }
                                 </strong>
                             </Heading>
 
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
-                                            "subTitle") }
-
                             <Divider hidden/>
                             { isOIDC && (
-                                <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                <>
+                                    { t("console:develop.features.applications.edit.sections.info.oidcSubHeading") }
+                                    <Divider hidden/>
+                                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                </>
                             ) }
                             { isOIDC && isSAML ? (
                                 <>
@@ -120,7 +120,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                 </>
                             ) : null }
                             { isSAML && (
-                                <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                <>
+                                    { t("console:develop.features.applications.edit.sections.info.samlSubHeading") }
+                                    <Divider hidden/>
+                                    <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                </>
                             ) }
                         </Grid.Column>
                     </Grid.Row>
