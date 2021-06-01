@@ -827,6 +827,11 @@ export const console: ConsoleNS = {
                             tabName: "User Attributes"
                         },
                         info: {
+                            heading: "Server endpoints",
+                            oidcSubHeading: "The following server endpoints will be useful for you to implement and " +
+                                "configure authentication for your application using OpenID Connect.",
+                            samlSubHeading: "The following server endpoints will be useful for you to implement and " +
+                                "configure authentication for your application using SAML 2.0.",
                             tabName: "Info"
                         },
                         general: {
