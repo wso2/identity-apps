@@ -242,7 +242,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * clone that object to avoid mutation on file level configuration.
          */
         const { idp: identityProvider } = showAsStandaloneIdentityProvider ?
-            template
+            cloneDeep(template)
             :
             cloneDeep(template.subTemplates.find(({ id }) => {
                 return id === (selectedProtocol === "saml" ?
