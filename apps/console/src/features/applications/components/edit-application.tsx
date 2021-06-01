@@ -176,6 +176,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Called when the defaultActiveIndex updates.
      */
     useEffect( () => {
+        if (application?.templateId === CustomApplicationTemplate.id
+            && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
+            setActiveTabIndex(defaultActiveIndex-1);
+            return;
+        }
         setActiveTabIndex(defaultActiveIndex);
 
     },[defaultActiveIndex]);
@@ -835,9 +840,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     <ResourceTab
                         activeIndex= { activeTabIndex }
                         data-testid= { `${testId}-resource-tabs` }
-                        defaultActiveIndex={
-                            application?.templateId === CustomApplicationTemplate.id ?
-                                (defaultActiveIndex - 1) : defaultActiveIndex }
+                        defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
                         panes= { resolveTabPanes() }
                     />
