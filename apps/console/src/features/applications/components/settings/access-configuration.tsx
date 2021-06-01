@@ -28,6 +28,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Header, Message, Popup, Button as SemButton } from "semantic-ui-react";
 import { ProtocolLanding } from "./protocols/protocol-landing";
+import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, store } from "../../../core";
 import {
     deleteProtocol,
@@ -38,6 +39,8 @@ import {
     updateAuthProtocolConfig
 } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
@@ -299,7 +302,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const handleSubmit = (values: any): void => {
         setRequestLoading(true);
         updateApplicationDetails({ id: appId, ...values.general })
-            // .then(() => new Promise(resolve => setTimeout(resolve, 5000)))
             .then(() => {
                 handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
             })
@@ -406,10 +408,21 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
+
+            if (template.id === CustomApplicationTemplate.id
+                && applicationConfig.customApplication.allowedProtocolTypes
+                && applicationConfig.customApplication.allowedProtocolTypes.length > 0 ) {
+                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)){
+                    return protocol;
+                } else {
+                    return false;
+                }
+
+            }
+
             if (protocol === SupportedAuthProtocolTypes.WS_TRUST
                 || protocol === SupportedAuthProtocolTypes.CUSTOM
                 || (extendedAccessConfig && protocol === SupportedAuthProtocolTypes.WS_FEDERATION)
-                || (extendedAccessConfig && protocol === SupportedAuthProtocolTypes.SAML)
                 || (filterProtocol && protocol === filterProtocol)) {
 
                 return false;
