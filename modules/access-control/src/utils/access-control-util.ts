@@ -30,15 +30,15 @@ export class AccessControlUtils {
 
     /**
      * Util method to filter base routes based on user scopes retrieved via the token call.
-     * 
+     *
      * @param routeArray Un authenticated routes array
      * @param allowedScopes user scopes
      * @param featureConfig feature scope configuration
      * @returns filtered route array based on the user scopes
      */
     public static getAuthenticatedRoutes(
-        routeArray: RouteInterface[], 
-        allowedScopes: string, 
+        routeArray: RouteInterface[],
+        allowedScopes: string,
         featureConfig: any // TODO : Properly map FeatureConfigInterface type
     ): RouteInterface[] {
 
@@ -47,9 +47,11 @@ export class AccessControlUtils {
         routeArray.map((route: RouteInterface) => {
             const feature: FeatureAccessConfigInterface = featureConfig[route.id];
 
-            if (!feature 
+            if (!feature
                 && (route.id === this.MANAGE_GETTING_STARTED_ID || route.id === this.DEVELOP_GETTING_STARTED_ID)) {
                     authenticatedRoutes.push(route);
+
+                    return;
             }
 
             if (feature && feature.enabled) {
@@ -64,8 +66,15 @@ export class AccessControlUtils {
 
                 if (route.showOnSidePanel && shouldShowRoute) {
                     authenticatedRoutes.push(route);
+
+                    return;
                 }
             }
+
+            if (route.showOnSidePanel) {
+                authenticatedRoutes.push(route);
+            }
+
         });
 
         return authenticatedRoutes;
@@ -73,15 +82,15 @@ export class AccessControlUtils {
 
     /**
      * Util method to retrieve if a single tab is disabled via iterating routes based on scopes.
-     * 
+     *
      * @param manageRoutes routes related to manage section
      * @param developRoutes routes related to develop section
      * @param allowedScopes allowed scopes
      * @param featureConfig feature config
-     * @returns 
+     * @returns
      */
     public static getDisabledTab(
-        manageRoutes: RouteInterface[], developRoutes: RouteInterface[], 
+        manageRoutes: RouteInterface[], developRoutes: RouteInterface[],
         allowedScopes: string, featureConfig: any // TODO : Properly map FeatureConfigInterface type
     ): string {
 
@@ -91,14 +100,14 @@ export class AccessControlUtils {
         const authenticatedManageRoutes = this.getAuthenticatedRoutes(manageRoutes, allowedScopes, featureConfig);
         const authenticatedDevelopRoutes = this.getAuthenticatedRoutes(developRoutes, allowedScopes, featureConfig);
 
-        if (authenticatedManageRoutes.length < 2 
-            || (authenticatedManageRoutes.length === 1 
+        if (authenticatedManageRoutes.length < 2
+            || (authenticatedManageRoutes.length === 1
                 && authenticatedManageRoutes[0].id !== this.MANAGE_GETTING_STARTED_ID)) {
             isManageTabDisabled = true;
         }
 
-        if (authenticatedDevelopRoutes.length < 2 
-            || (authenticatedDevelopRoutes.length === 1 
+        if (authenticatedDevelopRoutes.length < 2
+            || (authenticatedDevelopRoutes.length === 1
                 && authenticatedDevelopRoutes[0].id !== this.DEVELOP_GETTING_STARTED_ID)) {
             isDevelopTabDisabled = true;
         }
