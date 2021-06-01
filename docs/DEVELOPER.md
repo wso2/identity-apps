@@ -142,6 +142,46 @@ command before making a commit to make sure that you don't violate the rules.
 npm run lint:staged
 ```
 
+### React Rules of Thumb
+
+#### Writing Components
+
+##### Conditional Rendering
+
+The return from an component should always be a `ReactElement` or `null`. Always be careful when doing 
+[conditional rendering][react-conditional-rendering] with `&&` operator. If the component returns undefined, React 
+with break the rendering as of now.
+
+:white_check_mark: Do
+
+```typescript
+export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
+    props: SignOnMethodsPropsInterface
+): ReactElement => {
+
+    ...
+    
+    return (
+        someCondition
+            ? <SignOnMethodsContent />
+            : null
+    );
+}
+```
+
+:x: Don't
+
+```typescript
+export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
+    props: SignOnMethodsPropsInterface
+): ReactElement => {
+
+    ...
+    
+    return someCondition && <SignOnMethodsContent />;
+}
+```
+
 ### Formatting
 
 We have already added few [ESLint rules](../.eslintrc.js) to ensure consistent formatting across the entire codebase.
@@ -476,3 +516,4 @@ For more information regarding the test module, checkout the [README](../tests/R
 
 [react-testing-library]: https://testing-library.com/docs/
 [react-testing-library-custom-renderer]: https://testing-library.com/docs/react-testing-library/setup#custom-render
+[react-conditional-rendering]: https://reactjs.org/docs/conditional-rendering.html
