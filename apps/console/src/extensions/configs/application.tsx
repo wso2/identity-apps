@@ -85,5 +85,8 @@ export const applicationConfig: ApplicationConfig = {
         saml: true,
         spa: true,
         windows: true
+    },
+    customApplication: {
+        allowedProtocolTypes: []
     }
 };

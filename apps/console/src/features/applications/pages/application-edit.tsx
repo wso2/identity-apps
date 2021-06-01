@@ -485,7 +485,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     useEffect(() => {
         if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
             if (isExtensionsAvailable) {
-                setDefaultActiveIndex(2);
+                setDefaultActiveIndex(1);
             }
             return;
         }

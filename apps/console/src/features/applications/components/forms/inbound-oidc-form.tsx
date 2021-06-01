@@ -319,7 +319,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         if (initialValues?.grantTypes) {
-            setSelectedGrantTypes(initialValues?.grantTypes);
+            setSelectedGrantTypes([...initialValues?.grantTypes]);
         }
 
         if (initialValues?.allowedOrigins) {
@@ -372,7 +372,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (isHideRefreshTokenGrantType(selectedGrantTypes)) {
             grants = grants.filter(grant => grant != "refresh_token");
         }
-        initialValues.grantTypes = grants;
         setSelectedGrantTypes(grants);
         setGrantChanged(!isGrantChanged);
     };

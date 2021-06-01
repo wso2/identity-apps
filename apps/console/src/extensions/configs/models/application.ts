@@ -75,5 +75,9 @@ export interface ApplicationConfig {
         spa: boolean;
         windows: boolean;
         custom: boolean;
+    };
+    customApplication: {
+        allowedProtocolTypes: string[];
     }
+
 }
