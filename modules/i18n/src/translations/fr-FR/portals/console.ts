@@ -828,7 +828,7 @@ export const console: ConsoleNS = {
                                 },
                                 selectAll: "Sélectionnez tous les attributs"
                             },
-                            tabName: "Attributs utilisateur"
+                            tabName: "Attributs Utilisateur"
                         },
                         info: {
                             heading: "Points de terminaison du serveur",
