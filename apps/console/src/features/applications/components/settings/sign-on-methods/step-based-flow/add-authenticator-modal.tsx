@@ -361,7 +361,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                         {
                             categorizedIDPTemplates.map((category) => {
-                                return category?.templates?.map((template, index: number) => (
+                                return category.templates.map((template, index: number) => (
                                     <InfoCard
                                         key={ index }
                                         header={ template.name }
