@@ -36,7 +36,8 @@ import {
 import {getAuthenticatorIcons, getIdPIcons} from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
-    FederatedAuthenticatorMetaInterface, GenericIdentityProviderCreateWizardPropsInterface,
+    FederatedAuthenticatorMetaInterface,
+    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface, IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
