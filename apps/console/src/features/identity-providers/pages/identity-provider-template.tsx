@@ -510,8 +510,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <AuthenticatorCreateWizardFactory
                     open={ showWizard }
                     type={ templateType }
-                    showAsStandaloneIdentityProvider={ false }
-                    selectedTemplate={ selectedTemplate }
                     onIDPCreate={ handleSuccessfulIDPCreation }
                     onWizardClose={ () => {
                         setTemplateType(undefined);

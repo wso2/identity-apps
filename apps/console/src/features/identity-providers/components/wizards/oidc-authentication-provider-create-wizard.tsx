@@ -37,6 +37,7 @@ import {getAuthenticatorIcons, getIdPIcons} from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
+    GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface, IdentityProviderTemplateInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
@@ -56,6 +57,7 @@ interface MinimalAuthenticationProviderCreateWizardPropsInterface extends Testab
     closeWizard: () => void;
     template: IdentityProviderTemplateInterface;
     subTitle?: string;
+    onIDPCreate: (id?: string) => void;
 }
 
 const IDP_NAME_MAX_LENGTH: number = 50;
@@ -78,6 +80,7 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
         title,
         subTitle,
         template,
+        onIDPCreate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -125,16 +128,13 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push({
-                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
-                    });
+                    onIDPCreate(createdIdpID);
 
                     return;
                 }
 
-                // Fallback to identity providers page, if the location header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                // Since the location header is not present, trigger callback without the id.
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

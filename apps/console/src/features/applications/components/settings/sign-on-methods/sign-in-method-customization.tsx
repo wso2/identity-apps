@@ -62,7 +62,7 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
     /**
      * Callback to trigger IDP create wizard.
      */
-    onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
+    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
     /**
      * Callback for sequence reset.
      */
