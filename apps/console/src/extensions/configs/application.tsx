@@ -75,9 +75,6 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPList: true,
         disabledGrantTypes: []
     },
-    infoSettings: {
-        renderInfoTabExtension: () => null
-    },
     templates: {
         android: true,
         custom: true,

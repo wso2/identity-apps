@@ -22,7 +22,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions";
 import { AppState } from "../../../core";
 import {
     InboundProtocolListItemInterface,
@@ -101,15 +100,15 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                     <Grid.Row>
                         <Grid.Column>
                             <Heading ellipsis as="h4">
-                                <strong>
                                     { t("console:develop.features.applications.edit.sections.info.heading") }
-                                </strong>
                             </Heading>
 
-                            <Divider hidden/>
                             { isOIDC && (
                                 <>
-                                    { t("console:develop.features.applications.edit.sections.info.oidcSubHeading") }
+                                    <Heading as="h6" color="grey" compact>
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "oidcSubHeading") }
+                                    </Heading>
                                     <Divider hidden/>
                                     <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
                                 </>
@@ -121,7 +120,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                             ) : null }
                             { isSAML && (
                                 <>
-                                    { t("console:develop.features.applications.edit.sections.info.samlSubHeading") }
+                                    <Heading as="h6" color="grey" compact>
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "samlSubHeading") }
+                                    </Heading>
                                     <Divider hidden/>
                                     <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
                                 </>
@@ -129,8 +131,6 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <Divider className="x2" hidden/>
-                { applicationConfig.infoSettings.renderInfoTabExtension() }
             </EmphasizedSegment>
         )
         : <ContentLoader/>
