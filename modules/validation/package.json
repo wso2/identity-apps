@@ -28,7 +28,7 @@
         "run-script-os": "^1.0.7"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "fastestsmallesttextencoderdecoder": "^1.0.22",
         "joi": "^17.2.0"
     }
