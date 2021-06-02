@@ -71,10 +71,10 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <p>Provide a unique name for the identity provider.</p>
             <Divider />
             <Heading as="h5">Client ID</Heading>
-            <p>Provide the Client ID obtained from Google.</p>
+            <p>Provide the client ID obtained from Google.</p>
             <Divider />
             <Heading as="h5">Client secret</Heading>
-            <p>Provide the Client Secret obtained from Google.</p>
+            <p>Provide the client secret obtained from Google.</p>
         </div>
     );
 };
