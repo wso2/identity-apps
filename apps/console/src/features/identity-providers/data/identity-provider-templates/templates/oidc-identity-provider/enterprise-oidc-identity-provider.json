@@ -1,6 +1,6 @@
 {
     "category": "DEFAULT",
-    "description": "Configure a new Enterprise identity provider with OpenID Connect",
+    "description": "Configure a new enterprise identity provider with OpenID Connect",
     "displayOrder": 1,
     "id": "oidc-idp",
     "idp": {
@@ -49,8 +49,8 @@
                         },
                         {
                             "key": "AuthenticationEndpointUrl",
-                            "displayName": "Authentication Endpoint Url",
-                            "description": "Authentication Endpoint URL value",
+                            "displayName": "Authorization Endpoint URL",
+                            "description": "Authorization Endpoint URL value",
                             "type": "STRING",
                             "displayOrder": 1,
                             "regex": ".*",
@@ -62,8 +62,8 @@
                         },
                         {
                             "key": "TokenEndpointUrl",
-                            "displayName": "Token Endpoint Url",
-                            "description": "Authentication Endpoint URL value",
+                            "displayName": "Token Endpoint URL",
+                            "description": "Token Endpoint URL value",
                             "type": "STRING",
                             "displayOrder": 1,
                             "regex": ".*",

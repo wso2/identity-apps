@@ -63,14 +63,17 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
             <Heading as="h5">Client ID</Heading>
             <p>Provide the client ID obtained from the identity provider.</p>
             <Divider />
-            <Heading as="h5">Client Secret</Heading>
-            <p>Provide the Client Secret obtained from the identity provider.</p>
+            <Heading as="h5">Client secret</Heading>
+            <p>Provide the client secret obtained from the identity provider.</p>
             <Divider />
-            <Heading as="h5">Authentication Endpoint URL</Heading>
-            <p>Provide the standard Authentication Endpoint URL obtained from the identity provider.</p>
+            <Heading as="h5">Authorization endpoint URL</Heading>
+            <p>Provide the standard authorization endpoint URL of the identity provider.</p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/authorize</p>
             <Divider />
-            <Heading as="h5">Token Endpoint URL</Heading>
-            <p>Provide the standard Token Endpoint URL obtained from the identity provider.</p>
+            <Heading as="h5">Token endpoint URL</Heading>
+            <p>Provide the standard token endpoint URL of the identity provider.</p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/token</p>
+
         </div>
     );
 };
