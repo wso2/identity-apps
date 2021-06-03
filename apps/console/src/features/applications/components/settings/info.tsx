@@ -99,12 +99,14 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                 <Grid className="form-container with-max-width">
                     <Grid.Row>
                         <Grid.Column>
-                            <Heading ellipsis as="h4">
-                                    { t("console:develop.features.applications.edit.sections.info.heading") }
-                            </Heading>
+
 
                             { isOIDC && (
                                 <>
+                                    <Heading ellipsis as="h4">
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "oidcHeading") }
+                                    </Heading>
                                     <Heading as="h6" color="grey" compact>
                                         { t("console:develop.features.applications.edit.sections.info." +
                                             "oidcSubHeading") }
@@ -120,6 +122,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                             ) : null }
                             { isSAML && (
                                 <>
+                                    <Heading ellipsis as="h4">
+                                        { t("console:develop.features.applications.edit.sections.info." +
+                                            "samlHeading") }
+                                    </Heading>
                                     <Heading as="h6" color="grey" compact>
                                         { t("console:develop.features.applications.edit.sections.info." +
                                             "samlSubHeading") }

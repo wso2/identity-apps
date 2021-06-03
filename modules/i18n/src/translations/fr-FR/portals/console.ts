@@ -831,13 +831,13 @@ export const console: ConsoleNS = {
                             tabName: "Attributs Utilisateur"
                         },
                         info: {
-                            heading: "Points de terminaison du serveur",
+                            oidcHeading: "Points de terminaison du serveur",
                             oidcSubHeading: "Les points de terminaison de serveur suivants vous seront utiles pour " +
                                 "implémenter et configurer l'authentification pour votre application à l'aide " +
                                 "d'OpenID Connect.",
-                            samlSubHeading: "Les points de terminaison de serveur suivants vous seront utiles pour " +
-                                "implémenter et configurer l'authentification pour votre application à l'aide " +
-                                "de SAML 2.0.",
+                            samlHeading: "Détails du fournisseur d'identité",
+                            samlSubHeading: "Les détails de l'IdP suivants vous seront utiles pour implémenter et " +
+                                "configurer l'authentification pour votre application à l'aide de SAML 2.0.",
                             tabName: "Info"
                         },
                         general: {
