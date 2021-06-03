@@ -94,18 +94,22 @@
                 String[] parameterList = queryParams.split("&");
                 Map<String, String> queryMap = new HashMap<>();
                 for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
+                    if (param.contains("=")) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
                 }
                 sessionDataKey = queryMap.get("sessionDataKey");
                 String referer = request.getHeader("referer");
                 String refererParams = referer.substring(referer.indexOf("?") + 1);
                 parameterList = refererParams.split("&");
                 for (String param : parameterList) {
-                    String key = param.substring(0, param.indexOf("="));
-                    String value = param.substring(param.indexOf("=") + 1);
-                    queryMap.put(key, value);
+                    if (param.contains("=")) {
+                        String key = param.substring(0, param.indexOf("="));
+                        String value = param.substring(param.indexOf("=") + 1);
+                        queryMap.put(key, value);
+                    }
                 }
                 if (userStoreDomain != null) {
                   username = userStoreDomain + "/" + username;
@@ -171,28 +175,6 @@
     <% } %>
 </head>
 <body>
-    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
-        <%
-            if (username != null) {
-        %>
-        <div>
-            <input type="hidden" name="username"
-                   value="<%=Encode.forHtmlAttribute(username)%>"/>
-        </div>
-        <%
-            }
-        %>
-        <%
-            if (sessionDataKey != null) {
-        %>
-        <div>
-            <input type="hidden" name="sessionDataKey"
-                   value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-        </div>
-        <%
-            }
-        %>
-    </form>
 
     <!-- footer -->
     <%
@@ -211,7 +193,7 @@
                 try {
                     if(isAutoLoginEnable) {
             %>
-                    document.callbackForm.submit();
+                    location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
                     <%
                            } else {
                     %>
