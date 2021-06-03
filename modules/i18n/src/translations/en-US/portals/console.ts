@@ -827,10 +827,11 @@ export const console: ConsoleNS = {
                             tabName: "User Attributes"
                         },
                         info: {
-                            heading: "Server endpoints",
+                            oidcHeading: "Server Endpoints",
                             oidcSubHeading: "The following server endpoints will be useful for you to implement and " +
                                 "configure authentication for your application using OpenID Connect.",
-                            samlSubHeading: "The following server endpoints will be useful for you to implement and " +
+                            samlHeading: "Identity Provider Details",
+                            samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
                             tabName: "Info"
                         },
@@ -2092,12 +2093,12 @@ export const console: ConsoleNS = {
                                 samlConfigurations: {
                                     buttons: {
                                         certificate: "Download Certificate",
-                                        metadata: "Download IDP Metadata"
+                                        metadata: "Download IdP Metadata"
                                     },
                                     labels: {
-                                        certificate: "IDP certificate",
+                                        certificate: "IdP certificate",
                                         issuer: "Issuer",
-                                        metadata: "IDP Metadata",
+                                        metadata: "IdP Metadata",
                                         slo: "Single Logout",
                                         sso: "Single Sign-On"
                                     }
