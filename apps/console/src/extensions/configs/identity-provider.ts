@@ -49,7 +49,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators = new Set([]);
             /**
-             * If the {@link authenticatorId} is not in the excluded set we
+             * If the {@param authenticatorId} is not in the excluded set we
              * can say the provisioning attributes is enabled for authenticator.
              */
             return !excludedAuthenticators.has(authenticatorId);
