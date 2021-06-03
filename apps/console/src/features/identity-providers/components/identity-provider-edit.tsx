@@ -99,6 +99,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isGoogle,
+        isSaml,
         isOidc,
         onDelete,
         onUpdate,
@@ -142,6 +143,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-attribute-settings` }
+                provisioningAttributesEnabled={
+                    identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    )
+                }
             />
         </ResourceTab.Pane>
     );
@@ -239,8 +245,18 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: AuthenticatorSettingsTabPane
         });
 
+        /**
+         * If the protocol is SAML and if the feature is enabled in
+         * configuration level we can show the attributes section.
+         * {@link identityProviderConfig} contains the configuration
+         * to enable or disable this via extensions. Please refer
+         * {@link apps/console/src/extensions/} configs folder and
+         * models folder for types. {@file identity-provider.ts}
+         */
+        const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
+
         // Wait for `isGoogle` & `isOidc` to be defined.
-        if ((isGoogle !== undefined && isGoogle === false) && (isOidc !== undefined && isOidc === false)) {
+        if (attributesForSamlEnabled || (isGoogle !== undefined && isGoogle === false) && (isOidc !== undefined && isOidc === false)) {
             panes.push({
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane

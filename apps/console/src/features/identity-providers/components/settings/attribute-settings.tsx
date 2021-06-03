@@ -77,6 +77,13 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * This boolean attribute specifies whether provisioning attributes
+     * section should be enabled or not. By default this is not a required
+     * prop and the component itself defaults this to {@code true}. Please
+     * see {@link AttributeSettings.defaultProps}.
+     */
+    provisioningAttributesEnabled?: boolean;
 }
 
 export const LocalDialectURI = "http://wso2.org/claims";
@@ -91,6 +98,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         initialRoleMappings,
         isLoading,
         onUpdate,
+        provisioningAttributesEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -306,7 +314,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         /> }
 
                         { /* Select attributes for provisioning. */ }
-                        { selectedProvisioningClaimsWithDefaultValue &&
+                        { provisioningAttributesEnabled && selectedProvisioningClaimsWithDefaultValue &&
                         <AttributeSelection
                             attributeList={
                                 buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
@@ -366,5 +374,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
  * Default proptypes for the IDP attribute settings component.
  */
 AttributeSettings.defaultProps = {
-    "data-testid": "idp-edit-attribute-settings"
+    "data-testid": "idp-edit-attribute-settings",
+    provisioningAttributesEnabled: true
 };

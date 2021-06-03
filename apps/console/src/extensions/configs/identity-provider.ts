@@ -23,7 +23,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
         showAdvancedSettings: true,
         showJitProvisioning: true,
-        showOutboundProvisioning: true
+        showOutboundProvisioning: true,
+        attributesSettings: true
     },
     generalDetailsForm: {
         showCertificate: true
@@ -44,6 +45,14 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 IdentityProviderManagementConstants.X509_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
+        },
+        isProvisioningAttributesEnabled(authenticatorId: string): boolean {
+            const excludedAuthenticators = new Set([]);
+            /**
+             * If the {@link authenticatorId} is not in the excluded set we
+             * can say the provisioning attributes is enabled for authenticator.
+             */
+            return !excludedAuthenticators.has(authenticatorId);
         }
     }
 };
