@@ -731,9 +731,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "ISAuthnReqSigned") {
                         prop.displayName = "Enable authentication request signing"
                     } else if (prop.key === "IsLogoutEnabled") {
-                        prop.displayName = "Enable logout"
+                        prop.displayName = "Identity provider logout enabled"
+                        prop.description = "Specify whether logout or single logout" +
+                            " is supported by the third party identity provider.";
                     } else if (prop.key === "IsSLORequestAccepted") {
-                        prop.displayName = "Enable logout request accepting"
+                        prop.displayName = "Accept identity provider logout request";
+                        prop.description = "Specify whether single logout request from the" +
+                            " identity provider must be accepted by " + config.ui.productName;
                     } else if (prop.key === "LogoutReqUrl") {
                         prop.displayName = "Logout URL"
                     } else if (prop.key === "IsLogoutReqSigned") {
