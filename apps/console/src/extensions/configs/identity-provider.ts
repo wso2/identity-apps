@@ -54,9 +54,19 @@ export const identityProviderConfig: IdentityProviderConfig = {
              */
             return !excludedAuthenticators.has(authenticatorId);
         },
+        /**
+         * As an example you can implement this method like the
+         * following:-
+         *
+         *      const identityClaimsHiddenAuthenticators = new Set([
+         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+         *      ]);
+         *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
+         *
+         * @param authenticatorId
+         */
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
-            const identityClaimsHiddenAuthenticators = new Set([]);
-            return identityClaimsHiddenAuthenticators.has(authenticatorId);
+            return false;
         }
     }
 };

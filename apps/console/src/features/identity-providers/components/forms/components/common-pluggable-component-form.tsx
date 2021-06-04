@@ -224,8 +224,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
          *    condition. The fun part is based on X's state how can we trigger Y, Z
          *    state? Ha! you've come to the wrong place but you are in the right place NOW?!
          *
-         *    The original issue: https://github.com/wso2-enterprise/asgardeo-product/issues/3991
-         *
          * So, do we have a solution?
          * --
          *
@@ -250,14 +248,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
          * on common components. These components didn't chose the bug life but the bug
          * life chose them xD.
          *
-         * List of WTFs
+         * List of unknown things?!
          * --
          *      - Can user update the form it self only by enabling the checkbox?
          *      - What happens when there's no default value to the field?
          *      - But can we assign a default value to the meta prop object?
          *      - Can we ensure the state will refresh and re-render after a metadata update?
-         *      - Why form state represents API's structure? Why? why? why?
-         *      - So many WTFs I can't process and document.
+         *      - Why form state represents API's structure?
          *
          * This is what happens when you abstract things to the point where you can't
          * implement a basic logical condition that was invented in 1918. Below this point
