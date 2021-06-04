@@ -283,6 +283,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 ];
             } else {
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
+                    { key: "SPEntityId", value: values.SPEntityId },
                     { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
                     { key: "selectMode", value: "Metadata File Configuration" }
                 ];
