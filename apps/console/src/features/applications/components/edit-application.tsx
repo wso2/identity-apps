@@ -668,7 +668,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 panes.push({
                     menuItem: {
                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                        icon: "info circle"
+                        icon: "info circle grey"
                     },
                     render: InfoTabPane
                 });
@@ -705,7 +705,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             {
                 menuItem: {
                     content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                    icon: "info circle"
+                    icon: "info circle grey"
                 },
                 render: InfoTabPane
             }
