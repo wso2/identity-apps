@@ -23,6 +23,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppState } from "../../../core";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -46,6 +48,10 @@ interface InfoPropsInterface extends LoadableComponentInterface, TestableCompone
      * Is the OIDC configuration still loading.
      */
     isOIDCConfigLoading: boolean;
+    /**
+     * Id of the application template
+     */
+    templateId: string;
 }
 
 /**
@@ -63,6 +69,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         inboundProtocols,
         isOIDCConfigLoading,
         isSAMLConfigLoading,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
     
@@ -100,8 +107,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                     <Grid.Row>
                         <Grid.Column>
 
-
-                            { isOIDC && (
+                            { (isOIDC || templateId === CustomApplicationTemplate.id) && (
                                 <>
                                     <Heading ellipsis as="h4">
                                         { t("console:develop.features.applications.edit.sections.info." +
