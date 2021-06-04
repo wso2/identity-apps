@@ -374,7 +374,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         menuItem: "Upload",
         render: () => {
             const previewPlaceholder = (
-                <Segment placeholder color="green">
+                <Segment placeholder>
                     <Segment textAlign="center" basic>
                         <GenericIcon
                             inline

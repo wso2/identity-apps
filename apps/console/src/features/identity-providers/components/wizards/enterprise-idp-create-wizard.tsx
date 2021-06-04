@@ -412,38 +412,33 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const samlConfigurationPage = () => (
         <WizardPage validate={ (values) => {
             const errors: FormErrors = {};
-            if (showAsStandaloneIdentityProvider) {
-                errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (isIdpNameAlreadyTaken(values.name)) {
-                    errors.name = t("console:develop.features.authenticationProvider." +
-                        "forms.generalDetails.name.validations.duplicate");
-                }
-            }
             errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
-            errors.NameIDType = composeValidators(required)(values.NameIDType);
-            errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
-            errors.IdPEntityId = composeValidators(required, length(IDP_EID_LENGTH))(values.IdPEntityId);
-            errors.RequestMethod = composeValidators(required)(values.RequestMethod);
             if (selectedSamlConfigMode === "file") {
-                setNextShouldBeDisabled(!xmlBase64String);
+                setNextShouldBeDisabled(ifFieldsHave(errors) || !xmlBase64String);
             } else {
+                errors.NameIDType = composeValidators(required)(values.NameIDType);
+                errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
+                errors.IdPEntityId = composeValidators(required, length(IDP_EID_LENGTH))(values.IdPEntityId);
+                errors.RequestMethod = composeValidators(required)(values.RequestMethod);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
             }
             return errors;
         } }>
-            { showAsStandaloneIdentityProvider ? (<Field.Input
-                data-testid={ `${ testId }-form-wizard-idp-name` }
-                ariaLabel="name"
-                inputType="name"
-                name="name"
-                placeholder="Enter a name for the identity provider"
-                label="Identity provider name"
-                initialValue={ initialValues.name }
-                maxLength={ IDP_NAME_LENGTH.max }
-                minLength={ IDP_NAME_LENGTH.min }
-                required={ true }
-                width={ 15 }
-            />) : (<></>) }
+            { showAsStandaloneIdentityProvider && (
+                <Field.Input
+                    data-testid={ `${ testId }-form-wizard-idp-name` }
+                    ariaLabel="name"
+                    inputType="name"
+                    name="name"
+                    placeholder="Enter a name for the identity provider"
+                    label="Identity provider name"
+                    initialValue={ initialValues.name }
+                    maxLength={ IDP_NAME_LENGTH.max }
+                    minLength={ IDP_NAME_LENGTH.min }
+                    required={ true }
+                    width={ 15 }
+                />)
+            }
             <Field.Input
                 ariaLabel="Service provider entity id"
                 inputType="default"
