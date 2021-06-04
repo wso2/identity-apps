@@ -428,6 +428,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         return (
             <AuthenticatorCreateWizardFactory
+                showAsStandaloneIdentityProvider={ true }
                 open={ showIDPCreateWizard }
                 type={ idpTemplateTypeToTrigger }
                 onIDPCreate={ () => {
