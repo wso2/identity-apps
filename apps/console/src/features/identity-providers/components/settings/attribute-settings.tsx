@@ -42,6 +42,7 @@ import {
     initSelectedProvisioningClaimsWithDefaultValues,
     initSubjectAndRoleURIs,
     isClaimExistsInIdPClaims,
+    isLocalIdentityClaim,
     updateAvailableLocalClaims
 } from "../utils";
 
@@ -77,6 +78,24 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * This boolean attribute specifies whether provisioning attributes
+     * section should be enabled or not. By default this is not a required
+     * prop and the component itself defaults this to {@code true}. Please
+     * see {@link AttributeSettings.defaultProps}.
+     */
+    provisioningAttributesEnabled?: boolean;
+    /**
+     * This boolean attribute specifies whether local identity claims
+     * should be hidden or not. By default we will show these attributes
+     * see {@link AttributeSettings.defaultProps}.
+     *
+     * For an example, setting this to {@code true} will hide:-
+     *  - http://wso2.org/claims/identity/accountLocked
+     *  - http://wso2.org/claims/identity/isExistingLiteUser
+     *  - etc...
+     */
+    hideIdentityClaimAttributes?: boolean;
 }
 
 export const LocalDialectURI = "http://wso2.org/claims";
@@ -91,6 +110,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         initialRoleMappings,
         isLoading,
         onUpdate,
+        provisioningAttributesEnabled,
+        hideIdentityClaimAttributes,
         [ "data-testid" ]: testId
     } = props;
 
@@ -269,7 +290,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         { /* Select attributes for mapping. */ }
                         { selectedClaimsWithMapping &&
                         <AttributeSelection
-                            attributeList={ availableLocalClaims }
+                            attributeList={
+                                availableLocalClaims.filter(
+                                    hideIdentityClaimAttributes
+                                        ? ({ uri }) => !isLocalIdentityClaim(uri)
+                                        : (_) => true
+                                )
+                            }
                             selectedAttributesWithMapping={ selectedClaimsWithMapping }
                             setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
                             uiProps={ {
@@ -294,7 +321,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         <UriAttributesSettings
                             dropDownOptions={
                                 createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !isEmpty(element)) }
+                                    .filter(element => !isEmpty(element))
+                                    .filter(hideIdentityClaimAttributes
+                                        ? ({ value }) => !isLocalIdentityClaim(value)
+                                        : (_) => true
+                                    )
+                            }
                             initialRoleUri={ roleClaimUri }
                             initialSubjectUri={ subjectClaimUri }
                             claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
@@ -306,7 +338,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         /> }
 
                         { /* Select attributes for provisioning. */ }
-                        { selectedProvisioningClaimsWithDefaultValue &&
+                        { provisioningAttributesEnabled && selectedProvisioningClaimsWithDefaultValue &&
                         <AttributeSelection
                             attributeList={
                                 buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
@@ -366,5 +398,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
  * Default proptypes for the IDP attribute settings component.
  */
 AttributeSettings.defaultProps = {
-    "data-testid": "idp-edit-attribute-settings"
+    "data-testid": "idp-edit-attribute-settings",
+    provisioningAttributesEnabled: true,
+    hideIdentityClaimAttributes: false
 };

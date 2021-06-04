@@ -23,7 +23,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
         showAdvancedSettings: true,
         showJitProvisioning: true,
-        showOutboundProvisioning: true
+        showOutboundProvisioning: true,
+        attributesSettings: true
     },
     generalDetailsForm: {
         showCertificate: true
@@ -44,6 +45,33 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 IdentityProviderManagementConstants.X509_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
+        },
+        /**
+         * If the {@param authenticatorId} is not in the excluded set we
+         * can say the provisioning attributes is enabled for authenticator.
+         *
+         * As an example:-
+         *      const excludedAuthenticators = new Set([
+         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+         *      ]);
+         *      return !excludedAuthenticators.has(authenticatorId);
+         */
+        isProvisioningAttributesEnabled(authenticatorId: string): boolean {
+            return true;
+        },
+        /**
+         * As an example you can implement this method like the
+         * following:-
+         *
+         *      const identityClaimsHiddenAuthenticators = new Set([
+         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+         *      ]);
+         *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
+         *
+         * @param authenticatorId
+         */
+        hideIdentityClaimAttributes(authenticatorId: string): boolean {
+            return false;
         }
     }
 };

@@ -2742,16 +2742,14 @@ export const console: ConsoleNS = {
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
-                        actionTitle: "Supprimer le fournisseur d'identité",
+                        actionTitle: "Effacer",
                         header: "Supprimer le fournisseur d'identité",
-                        subheader: "Une fois que vous avez supprimé un fournisseur d'identité, il est impossible." +
-                            " Soyez-en certain."
+                        subheader: "Une fois supprimé, il ne peut pas être récupéré. S'il vous plaît soyez certain."
                     },
                     disableIDP: {
                         actionTitle: "Activer le fournisseur d'identité",
                         header: "Activer le fournisseur d'identité",
-                        subheader: "Une fois que vous avez désactivé un fournisseur d'identité, il ne peut plus être " +
-                            "utilisé jusqu'à ce que vous l'activiez à nouveau. Soyez-en certain."
+                        subheader: "Une fois désactivé, il ne peut plus être utilisé jusqu'à ce que vous le réactiviez."
                     },
                     header: "Zone de danger"
                 },

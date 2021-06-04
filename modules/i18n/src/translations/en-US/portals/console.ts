@@ -2716,15 +2716,14 @@ export const console: ConsoleNS = {
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
-                        actionTitle: "Delete Identity Provider",
+                        actionTitle: "Delete",
                         header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
+                        subheader: "Once you delete it, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
                         actionTitle: "{{ state }} Identity Provider",
                         header: "{{ state }} identity provider",
-                        subheader: "Once you disable an identity provider, it can no longer be used until " +
-                            "you enable it again.",
+                        subheader: "Once you disable it, it can no longer be used until you enable it again.",
                         subheader2: "Enable the identity provider to use it with your applications."
                     },
                     header: "Danger Zone"

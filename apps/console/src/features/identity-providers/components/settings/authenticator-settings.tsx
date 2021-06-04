@@ -37,10 +37,12 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import { IdpCertificates } from "./idp-certificates";
 import {
+    AppState,
+    ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../core";
 import {
@@ -130,6 +132,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Handles the authenticator config form submit action.
@@ -731,9 +734,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "ISAuthnReqSigned") {
                         prop.displayName = "Enable authentication request signing"
                     } else if (prop.key === "IsLogoutEnabled") {
-                        prop.displayName = "Enable logout"
+                        prop.displayName = "Identity provider logout enabled"
+                        prop.description = "Specify whether logout or single logout" +
+                            " is supported by the third party identity provider.";
                     } else if (prop.key === "IsSLORequestAccepted") {
-                        prop.displayName = "Enable logout request accepting"
+                        prop.displayName = "Accept identity provider logout request";
+                        prop.description = "Specify whether single logout request from the" +
+                            " identity provider must be accepted by " + config.ui.productName;
                     } else if (prop.key === "LogoutReqUrl") {
                         prop.displayName = "Logout URL"
                     } else if (prop.key === "IsLogoutReqSigned") {

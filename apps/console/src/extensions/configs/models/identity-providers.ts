@@ -21,12 +21,20 @@ export interface IdentityProviderConfig {
         showAdvancedSettings: boolean;
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
+        /**
+         * {@link enabled} means the entire feature tab is enabled
+         * or not. If this value is set to false the rest of the
+         * variable values is pointless.
+         */
+        attributesSettings: boolean;
     };
     generalDetailsForm: {
         showCertificate: boolean;
     };
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
+        isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
+        hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
     };
     templates: {
         facebook: boolean;
