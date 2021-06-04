@@ -588,6 +588,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ application?.inboundProtocols }
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }
+                templateId={ application?.templateId }
                 data-testid={ `${ testId }-server-endpoints` }
             />
         </ResourceTab.Pane>

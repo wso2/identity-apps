@@ -22,7 +22,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions";
 import { AppState } from "../../../core";
 import {
     InboundProtocolListItemInterface,
@@ -30,6 +29,8 @@ import {
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import CustomApplicationTemplate
+    from "../../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the server endpoints details component.
@@ -47,6 +48,10 @@ interface InfoPropsInterface extends LoadableComponentInterface, TestableCompone
      * Is the OIDC configuration still loading.
      */
     isOIDCConfigLoading: boolean;
+    /**
+     * Id of the application template
+     */
+    templateId: string;
 }
 
 /**
@@ -64,9 +69,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         inboundProtocols,
         isOIDCConfigLoading,
         isSAMLConfigLoading,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
@@ -96,44 +102,50 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
 
     return (
         !isLoading ? (
-            <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
-                <Grid className="form-container with-max-width">
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Heading ellipsis as="h4">
-                                <strong>
-                                    { t("console:develop.features.applications.edit.sections.info.heading") }
-                                </strong>
-                            </Heading>
+                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
+                    <Grid className="form-container with-max-width">
+                        <Grid.Row>
+                            <Grid.Column>
 
-                            <Divider hidden/>
-                            { isOIDC && (
-                                <>
-                                    { t("console:develop.features.applications.edit.sections.info.oidcSubHeading") }
-                                    <Divider hidden/>
-                                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                                </>
-                            ) }
-                            { isOIDC && isSAML ? (
-                                <>
-                                    <Divider className="x2" hidden/>
-                                </>
-                            ) : null }
-                            { isSAML && (
-                                <>
-                                    { t("console:develop.features.applications.edit.sections.info.samlSubHeading") }
-                                    <Divider hidden/>
-                                    <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                                </>
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                <Divider className="x2" hidden/>
-                { applicationConfig.infoSettings.renderInfoTabExtension() }
-            </EmphasizedSegment>
-        )
-        : <ContentLoader/>
+                                { (isOIDC || templateId === CustomApplicationTemplate.id) && (
+                                    <>
+                                        <Heading ellipsis as="h4">
+                                            { t("console:develop.features.applications.edit.sections.info." +
+                                                "oidcHeading") }
+                                        </Heading>
+                                        <Heading as="h6" color="grey" compact>
+                                            { t("console:develop.features.applications.edit.sections.info." +
+                                                "oidcSubHeading") }
+                                        </Heading>
+                                        <Divider hidden/>
+                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                    </>
+                                ) }
+                                { isOIDC && isSAML ? (
+                                    <>
+                                        <Divider className="x2" hidden/>
+                                    </>
+                                ) : null }
+                                { isSAML && (
+                                    <>
+                                        <Heading ellipsis as="h4">
+                                            { t("console:develop.features.applications.edit.sections.info." +
+                                                "samlHeading") }
+                                        </Heading>
+                                        <Heading as="h6" color="grey" compact>
+                                            { t("console:develop.features.applications.edit.sections.info." +
+                                                "samlSubHeading") }
+                                        </Heading>
+                                        <Divider hidden/>
+                                        <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                                    </>
+                                ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment>
+            )
+            : <ContentLoader/>
     );
 };
 
