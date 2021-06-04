@@ -400,7 +400,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             text: (
                                 <SubjectAttributeListItem
                                     key={ element.localClaim?.id }
-                                    displayName={ element.localClaim?.displayName }
+                                    displayName={ element?.applicationClaim ?
+                                        element?.applicationClaim : element?.localClaim?.uri }
                                     claimURI={ element.localClaim?.uri }
                                     value={ element.applicationClaim }
                                 />

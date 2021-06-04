@@ -81,6 +81,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         readOnly,
         deleteAttribute,
         subject,
+        mappedURI,
         [ "data-testid" ]: testId
     } = props;
 
@@ -118,7 +119,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     useEffect(() => {
         setMandatory(initialMandatory);
-    }, []);
+    }, [initialMandatory]);
 
     useEffect(() => {
         setRequested(initialRequested);
@@ -135,7 +136,15 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         setMappedAttribute(claimURI);
         if (mapping) {
             addToMapping(claimURI, claimMappingOn);
-            updateMapping(claimURI,defaultMappedAttribute);
+            // If mapped value available then show that value.
+            if (mapping?.applicationClaim){
+                setMappedAttribute(mapping?.applicationClaim );
+                updateMapping(claimURI,mapping?.applicationClaim);
+                // If mapped value available then enable warning modal.
+                isDefaultMappingChanged(true);
+            } else {
+                updateMapping(claimURI,defaultMappedAttribute);
+            }
         }
     }, [claimMappingOn]);
 

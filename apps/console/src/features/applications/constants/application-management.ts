@@ -259,17 +259,17 @@ export class ApplicationManagementConstants {
         ]),
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
-            [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
-            [ ApplicationManagementConstants.PASSWORD, 2 ],
-            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 3 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ]
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 3 ],
+            [ ApplicationManagementConstants.PASSWORD, 4 ],
+            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ]),
         [ "custom-application" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
-            [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
-            [ ApplicationManagementConstants.PASSWORD, 2 ],
-            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 3 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 4 ]
+            [ ApplicationManagementConstants.IMPLICIT_GRANT, 3 ],
+            [ ApplicationManagementConstants.PASSWORD, 4 ],
+            [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ])
     }
 

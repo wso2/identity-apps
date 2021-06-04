@@ -723,7 +723,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
-                                                                            subject={ selectedSubjectValue === claim.claimURI }
+                                                                            subject={ claimMappingOn
+                                                                                ? selectedSubjectValue === getCurrentMapping(
+                                                                                    claim.claimURI).applicationClaim
+                                                                                : selectedSubjectValue === claim.claimURI
+                                                                            }
                                                                             deleteAttribute={
                                                                             () => onDeleteAttribute(claim.claimURI)
                                                                             }
