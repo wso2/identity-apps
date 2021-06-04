@@ -110,12 +110,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                 { (isOIDC || templateId === CustomApplicationTemplate.id) && (
                                     <>
                                         <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "oidcHeading") }
+                                            Server Endpoints
                                         </Heading>
                                         <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "oidcSubHeading") }
+                                            The following server endpoints will be useful for you to implement and
+                                            configure authentication for your application using OpenID Connect.
                                         </Heading>
                                         <Divider hidden/>
                                         <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
@@ -129,12 +128,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                 { isSAML && (
                                     <>
                                         <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "samlHeading") }
+                                            Identity Provider Details
                                         </Heading>
                                         <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
-                                                "samlSubHeading") }
+                                            The following IdP details will be useful for you to implement and
+                                            configure authentication for your application using SAML 2.0.
                                         </Heading>
                                         <Divider hidden/>
                                         <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
