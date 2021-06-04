@@ -84,7 +84,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         open,
         onWizardClose,
         type,
-        /**
+        /*
          * Added this because {@link IdentityProviderTemplateSelectPage} currently
          * unable to handle grouped templates properly. {@link selectedTemplate}
          * will be a grouped identity provider with sub templates. Even though, the
@@ -286,7 +286,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     <OidcAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
-                        closeWizard={ () => {
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             setShowWizard(false);

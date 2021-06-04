@@ -241,6 +241,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
     }, [ authenticationSteps ]);
 
+    useEffect(() => {
+
+        if (addNewAuthenticatorClicked
+            && groupedIDPTemplates
+            && groupedIDPTemplates.length > 0) {
+            persistCategorizedTemplates(groupedIDPTemplates);
+        }
+    }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
+
     /**
      * Validates if the addition to the step is valid.
      *
@@ -689,15 +698,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 setAddNewAuthenticatorClicked(false);
             });
     };
-
-    useEffect(() => {
-
-        if (addNewAuthenticatorClicked
-            && groupedIDPTemplates
-            && groupedIDPTemplates.length > 0) {
-            persistCategorizedTemplates(groupedIDPTemplates);
-        }
-    }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
 
     /**
      * Shows a disclaimer to users when a handler is added.

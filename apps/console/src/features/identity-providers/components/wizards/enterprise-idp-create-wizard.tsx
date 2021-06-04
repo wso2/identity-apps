@@ -322,9 +322,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
                     return;
                 }
-                // Fallback to identity providers page, if the location
-                // header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

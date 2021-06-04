@@ -99,8 +99,6 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         isGoogle,
-        isEnterprise,
-        isSaml,
         isOidc,
         onDelete,
         onUpdate,

@@ -17,12 +17,10 @@
  */
 
  import { TestableComponentInterface } from "@wso2is/core/models";
-import { getIdentityProviderList } from "../../api";
-import React, { ReactElement, cloneElement, useState, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import { useTranslation } from "react-i18next";
-import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../models";
-import { handleGetIDPListCallError } from "../utils";
+import { IdentityProviderTemplateInterface } from "../../models";
 
 const CLIENT_ID_MAX_LENGTH: number = 100;
 const CLIENT_SECRET_MAX_LENGTH: number = 100;

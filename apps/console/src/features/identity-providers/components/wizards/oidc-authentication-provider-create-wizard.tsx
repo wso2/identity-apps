@@ -18,49 +18,35 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms";
 import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
-import { AppConstants, AppState, ModalWithSidePanel, history, store } from "../../../../features/core";
+import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../features/core";
 import {
     createIdentityProvider,
-    getFederatedAuthenticatorMetadata,
-    getIdentityProviderList
+    getFederatedAuthenticatorMetadata
 } from "../../api";
-import {getAuthenticatorIcons, getIdPIcons} from "../../configs";
-import { IdentityProviderManagementConstants } from "../../constants";
+import { getIdPIcons } from "../../configs";
 import {
-    FederatedAuthenticatorMetaInterface,
-    IdentityProviderInterface, IdentityProviderTemplateInterface,
-    OutboundProvisioningConnectorInterface,
+    FederatedAuthenticatorMetaInterface, GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../models";
 import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetIDPListCallError
+    handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { OidcAuthenticationWizardFrom } from "./oidc-authentication-wizard-page";
 
 /**
  * Proptypes for the identity provider creation wizard component.
  */
-interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface {
-    currentStep?: number;
-    title: string;
-    closeWizard: () => void;
-    template: IdentityProviderTemplateInterface;
-    subTitle?: string;
-}
-
-const IDP_NAME_MAX_LENGTH: number = 50;
-const CLIENT_ID_MAX_LENGTH: number = 100;
-const CLIENT_SECRET_MAX_LENGTH: number = 100;
+interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
+    GenericIdentityProviderCreateWizardPropsInterface { }
 
 /**
  * Identity provider creation wizard component.
@@ -73,8 +59,9 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
 ): ReactElement => {
 
     const {
-        closeWizard,
+        onWizardClose,
         currentStep,
+        onIDPCreate,
         title,
         subTitle,
         template,
@@ -125,16 +112,12 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push({
-                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
-                    });
+                    onIDPCreate(createdIdpID);
 
                     return;
                 }
 
-                // Fallback to identity providers page, if the location header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -179,7 +162,7 @@ export const OidcAuthenticationProviderCreateWizard: FunctionComponent<MinimalAu
         setDefaultAuthenticatorMetadata(undefined);
 
         // Trigger the close method from props.
-        closeWizard();
+        onWizardClose();
     };
 
     /**
