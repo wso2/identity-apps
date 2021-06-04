@@ -42,6 +42,7 @@ import {
     initSelectedProvisioningClaimsWithDefaultValues,
     initSubjectAndRoleURIs,
     isClaimExistsInIdPClaims,
+    isLocalIdentityClaim,
     updateAvailableLocalClaims
 } from "../utils";
 
@@ -289,7 +290,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         { /* Select attributes for mapping. */ }
                         { selectedClaimsWithMapping &&
                         <AttributeSelection
-                            attributeList={ availableLocalClaims }
+                            attributeList={
+                                availableLocalClaims.filter(
+                                    hideIdentityClaimAttributes
+                                        ? ({ uri }) => !isLocalIdentityClaim(uri)
+                                        : (_) => true
+                                )
+                            }
                             selectedAttributesWithMapping={ selectedClaimsWithMapping }
                             setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
                             uiProps={ {
