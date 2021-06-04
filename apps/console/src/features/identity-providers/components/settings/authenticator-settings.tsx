@@ -37,10 +37,12 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import { IdpCertificates } from "./idp-certificates";
 import {
+    AppState,
+    ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../core";
 import {
@@ -130,6 +132,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Handles the authenticator config form submit action.
