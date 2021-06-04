@@ -246,7 +246,7 @@
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                     data-testid="login-page-username-input"
                     required>
-                <i aria-hidden="true" class="envelope icon"></i>
+                <i aria-hidden="true" class="user icon"></i>
                 <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>

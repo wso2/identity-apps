@@ -111,7 +111,7 @@
                 tabindex="0"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
                 required />
-            <i aria-hidden="true" class="envelope icon"></i>
+            <i aria-hidden="true" class="user icon"></i>
         </div>
         <input id="username" name="username" type="hidden" value="">
         <input id="authType" name="authType" type="hidden" value="idf">
