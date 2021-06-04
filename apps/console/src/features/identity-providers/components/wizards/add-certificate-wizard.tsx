@@ -102,7 +102,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             return;
         }
 
-        let data = [];
+        let data;
         const certificateIndex: number = idp?.certificate?.certificates ? idp?.certificate?.certificates?.length : 0;
 
         if (idp?.certificate?.jwksUri) {

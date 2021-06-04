@@ -141,16 +141,16 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             id: EnterpriseOIDCIdentityProviderTemplate.id,
                             resource: EnterpriseOIDCIdentityProviderTemplate
                         },
-                        // {
-                        //     content: {
-                        //         wizardHelp: lazy(() => (
-                        //             import("./templates/saml-identity-provider/saml-idp-wizard-help")
-                        //         ))
-                        //     },
-                        //     enabled: identityProviderConfig.templates.saml,
-                        //     id: EnterpriseSAMLIdentityProviderTemplate.id,
-                        //     resource: EnterpriseSAMLIdentityProviderTemplate
-                        // },
+                        {
+                            content: {
+                                wizardHelp: lazy(() => (
+                                    import("./templates/saml-identity-provider/saml-idp-wizard-help")
+                                ))
+                            },
+                            enabled: identityProviderConfig.templates.saml,
+                            id: EnterpriseSAMLIdentityProviderTemplate.id,
+                            resource: EnterpriseSAMLIdentityProviderTemplate
+                        },
                     ],
                     "id"
                 ),

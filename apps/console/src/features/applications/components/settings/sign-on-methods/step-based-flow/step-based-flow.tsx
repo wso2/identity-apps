@@ -78,7 +78,7 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
     /**
      * Callback to trigger IDP create wizard.
      */
-    onIDPCreateWizardTrigger: (type: string, cb: () => void) => void;
+    onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
     /**
      * Callback to update the application details.
      * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
@@ -125,8 +125,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider.templates);
+    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider?.groupedTemplates
+    );
 
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -138,11 +139,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
-    const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
-    const [
-        isIDPTemplateRequestLoading,
-        setIDPTemplateRequestLoadingStatus
-    ] = useState<boolean>(false);
+    const [ categorizedTemplates, setCategorizedTemplates ] =
+        useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
+    const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
@@ -241,6 +240,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             // Tracked here https://github.com/wso2/product-is/issues/11650.
         }
     }, [ authenticationSteps ]);
+
+    useEffect(() => {
+
+        if (addNewAuthenticatorClicked
+            && groupedIDPTemplates
+            && groupedIDPTemplates.length > 0) {
+            persistCategorizedTemplates(groupedIDPTemplates);
+        }
+    }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
 
     /**
      * Validates if the addition to the step is valid.
@@ -661,36 +669,33 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Handles the clock event of add new authenticator button.
      */
     const handleAddNewAuthenticatorClick = (): void => {
-        
-        const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
 
-            IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
-                .then((response: IdentityProviderTemplateCategoryInterface[]) => {
-                    setCategorizedTemplates(response);
-                })
-                .catch(() => {
-                    setCategorizedTemplates([]);
-                });
-        };
-
-        if (identityProviderTemplates !== undefined) {
-            persistCategorizedTemplates(identityProviderTemplates);
+        if (groupedIDPTemplates !== undefined) {
+            persistCategorizedTemplates(groupedIDPTemplates);
             return;
         }
-
-        setIDPTemplateRequestLoadingStatus(true);
 
         const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
             ? (config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE)
             : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY
                 === IdentityProviderTemplateLoadingStrategies.REMOTE);
 
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI, true)
-            .then((response: IdentityProviderTemplateInterface[]) => {
-                persistCategorizedTemplates(response);
-            })
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
             .finally(() => {
-                setIDPTemplateRequestLoadingStatus(false);
+                setAddNewAuthenticatorClicked(true);
+            });
+    };
+
+    const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
+
+        IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+            .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+                setCategorizedTemplates(response);
+                setAddNewAuthenticatorClicked(false);
+            })
+            .catch(() => {
+                setCategorizedTemplates([]);
+                setAddNewAuthenticatorClicked(false);
             });
     };
 

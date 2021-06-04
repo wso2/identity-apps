@@ -34,7 +34,11 @@ import {
 import { addAlert } from "@wso2is/core/store";
 
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { IdentityProviderTemplateInterface, StrictIdentityProviderInterface } from "../../models";
+import {
+    GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderTemplateInterface,
+    StrictIdentityProviderInterface
+} from "../../models";
 import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
 import { Divider, Grid, Icon } from "semantic-ui-react";
@@ -52,12 +56,9 @@ import { handleGetIDPListCallError } from "../utils";
  * Proptypes for the enterprise identity provider
  * creation wizard component.
  */
-interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface {
-    currentStep?: number;
-    title: string;
-    closeWizard: () => void;
-    template: IdentityProviderTemplateInterface;
-    subTitle?: string;
+interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface,
+    GenericIdentityProviderCreateWizardPropsInterface {
+
     showAsStandaloneIdentityProvider?: boolean;
 }
 
@@ -93,7 +94,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 ): ReactElement => {
 
     const {
-        closeWizard,
+        onWizardClose,
+        onIDPCreate,
         title,
         subTitle,
         template,
@@ -315,15 +317,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 if (!isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push({
-                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
-                        search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
-                    });
+
+                    onIDPCreate(createdIdpID);
+
                     return;
                 }
-                // Fallback to identity providers page, if the location
-                // header is not present.
-                history.push(AppConstants.getPaths().get("IDP"));
+                onIDPCreate();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -810,7 +809,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             open={ true }
             className="wizard identity-provider-create-wizard"
             dimmer="blurring"
-            onClose={ closeWizard }
+            onClose={ onWizardClose }
             closeOnDimmerClick={ false }
             closeOnEscape
             data-testid={ `${ testId }-modal` }>
@@ -873,7 +872,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
-                                    floated="left" onClick={ closeWizard }
+                                    floated="left" onClick={ onWizardClose }
                                     data-testid={ `${ testId }-modal-cancel-button` }>
                                     { t("common:cancel") }
                                 </LinkButton>

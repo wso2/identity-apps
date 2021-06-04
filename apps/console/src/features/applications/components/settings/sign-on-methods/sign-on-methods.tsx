@@ -36,7 +36,8 @@ import {
 import {
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
-    IdentityProviderManagementUtils
+    IdentityProviderManagementUtils,
+    IdentityProviderTemplateInterface
 } from "../../../../identity-providers";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
@@ -119,6 +120,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         moderatedAuthenticationSequence,
         setModeratedAuthenticationSequence
     ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ selectedIDPTemplate, setSelectedIDPTemplate ] = useState<IdentityProviderTemplateInterface>(undefined);
     const [ idpTemplateTypeToTrigger, setIDPTemplateTypeToTrigger ] = useState<string>(undefined);
     const [ showIDPCreateWizard, setShowIDPCreateWizard ] = useState<boolean>(false);
     const [
@@ -430,6 +432,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             <AuthenticatorCreateWizardFactory
                 open={ showIDPCreateWizard }
                 type={ idpTemplateTypeToTrigger }
+                showAsStandaloneIdentityProvider={ false }
+                selectedTemplate={ selectedIDPTemplate }
                 onIDPCreate={ () => {
                     fetchAndCategorizeAuthenticators((all, google) => {
                         setIDPTemplateTypeToTrigger(undefined);
@@ -471,7 +475,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
                                 authenticators={ authenticators }
                                 authenticationSequence={ moderatedAuthenticationSequence }
-                                onIDPCreateWizardTrigger={ (type: string, cb: () => void) => {
+                                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                                    setSelectedIDPTemplate(template);
                                     setIDPCreateWizardTriggerOrigin("EXTERNAL");
                                     setIDPTemplateTypeToTrigger(type);
                                     setShowMissingGoogleAuthenticatorModal(false);

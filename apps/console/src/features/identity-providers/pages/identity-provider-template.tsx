@@ -49,21 +49,11 @@ import {
     PortalDocumentationStructureInterface
 } from "../../core";
 import {
-    getIdentityProviderList,
-    getIdentityProviderTemplate
-} from "../api";
-import {
-    GoogleAuthenticationProviderCreateWizard,
-    OidcAuthenticationProviderCreateWizard,
-    IdentityProviderCreateWizard,
-    handleGetIDPTemplateAPICallError
-} from "../components";
-import {
     getHelpPanelIcons,
     getIdPIcons,
     getIdPTemplateDocsIcons
 } from "../configs";
-import {GOOGLE_IDP_ID, GOOGLE_IDP_NAME, IdentityProviderManagementConstants, OIDC_IDP_ID} from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
@@ -72,7 +62,7 @@ import {
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
-import { IdentityProviderTemplateManagementUtils } from "../utils/identity-provider-template-management-utils";
+import { IdentityProviderTemplateManagementUtils } from "../utils";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 
 /**
@@ -510,6 +500,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 <AuthenticatorCreateWizardFactory
                     open={ showWizard }
                     type={ templateType }
+                    showAsStandaloneIdentityProvider={ false }
+                    selectedTemplate={ selectedTemplate }
                     onIDPCreate={ handleSuccessfulIDPCreation }
                     onWizardClose={ () => {
                         setTemplateType(undefined);

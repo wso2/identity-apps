@@ -18,7 +18,7 @@
 
  import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import React, { ReactElement, cloneElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getIdentityProviderList } from "../../api";
 import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../models";

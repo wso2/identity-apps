@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Header } from "semantic-ui-react";
 import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
-import { AppConstants, AppState, ModalWithSidePanel, history, store } from "../../../../features/core";
+import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../features/core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
@@ -49,10 +49,6 @@ import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
  */
 interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
     GenericIdentityProviderCreateWizardPropsInterface { }
-
-const IDP_NAME_MAX_LENGTH: number = 50;
-const CLIENT_ID_MAX_LENGTH: number = 100;
-const CLIENT_SECRET_MAX_LENGTH: number = 100;
 
 /**
  * Identity provider creation wizard component.
@@ -187,17 +183,6 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
 
         // Trigger the close method from props.
         onWizardClose();
-    };
-
-    /**
-     * Enter button option.
-     * @param e keypress event.
-     */
-    const keyPressed = (e): void => {
-        const key = e.which || e.charCode || e.keyCode;
-        if (key === 13) {
-            setSubmitGeneralSettings();
-        }
     };
 
     /**
