@@ -418,10 +418,23 @@ const getDropDownChildren = (key: string, options: string[]) => {
     return options.map((option) => {
         return ({
             key: key,
-            text: option,
+            text: key === "RequestMethod" ? mapSAMLProtocolBindingToProperDisplayNames(option) : option,
             value: option
         });
     });
+};
+
+const mapSAMLProtocolBindingToProperDisplayNames = (value: string): string => {
+    switch (value) {
+        case "redirect":
+            return "HTTP Redirect";
+        case "post":
+            return "HTTP Post";
+        case "as_request":
+            return "As Per Request";
+        default:
+            return value;
+    }
 };
 
 /**
