@@ -588,6 +588,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols={ application?.inboundProtocols }
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }
+                templateId={ application?.templateId }
                 data-testid={ `${ testId }-server-endpoints` }
             />
         </ResourceTab.Pane>
@@ -667,7 +668,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 panes.push({
                     menuItem: {
                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                        icon: "info circle"
+                        icon: "info circle grey"
                     },
                     render: InfoTabPane
                 });
@@ -704,7 +705,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             {
                 menuItem: {
                     content: t("console:develop.features.applications.edit.sections.info.tabName"),
-                    icon: "info circle"
+                    icon: "info circle grey"
                 },
                 render: InfoTabPane
             }
