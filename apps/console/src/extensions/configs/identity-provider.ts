@@ -46,13 +46,18 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
             ].includes(name);
         },
+        /**
+         * If the {@param authenticatorId} is not in the excluded set we
+         * can say the provisioning attributes is enabled for authenticator.
+         *
+         * As an example:-
+         *      const excludedAuthenticators = new Set([
+         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+         *      ]);
+         *      return !excludedAuthenticators.has(authenticatorId);
+         */
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
-            const excludedAuthenticators = new Set([]);
-            /**
-             * If the {@param authenticatorId} is not in the excluded set we
-             * can say the provisioning attributes is enabled for authenticator.
-             */
-            return !excludedAuthenticators.has(authenticatorId);
+            return true;
         },
         /**
          * As an example you can implement this method like the
