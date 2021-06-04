@@ -1,4 +1,5 @@
 {
+    "templateGroup": "enterprise-protocols",
     "category": "DEFAULT",
     "description": "Configure a new enterprise identity provider with SAML 2.0",
     "displayOrder": 2,

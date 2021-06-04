@@ -303,7 +303,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     <EnterpriseIDPCreateWizard
                         title="Standard Based Authentication"
                         subTitle="Configure a new Identity Provider with advanced enterprise protocols."
-                        closeWizard={ () => {
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             onWizardClose();
@@ -312,6 +312,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         } }
                         showAsStandaloneIdentityProvider={ showAsStandaloneIdentityProvider }
                         template={ selectedTemplateWithUniqueName }
+                        { ...rest }
                     />
                 )
                 : null;

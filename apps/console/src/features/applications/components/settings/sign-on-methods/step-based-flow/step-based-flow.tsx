@@ -125,8 +125,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider.templates);
+    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider?.groupedTemplates
+    );
 
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -138,11 +139,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
-    const [ categorizedTemplates, setCategorizedTemplates ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
-    const [
-        isIDPTemplateRequestLoading,
-        setIDPTemplateRequestLoadingStatus
-    ] = useState<boolean>(false);
+    const [ categorizedTemplates, setCategorizedTemplates ] =
+        useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
+    const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
 
     const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
 
@@ -661,24 +660,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Handles the clock event of add new authenticator button.
      */
     const handleAddNewAuthenticatorClick = (): void => {
-        
-        const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
 
-            IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
-                .then((response: IdentityProviderTemplateCategoryInterface[]) => {
-                    setCategorizedTemplates(response);
-                })
-                .catch(() => {
-                    setCategorizedTemplates([]);
-                });
-        };
-
-        if (identityProviderTemplates !== undefined) {
-            persistCategorizedTemplates(identityProviderTemplates);
+        if (groupedIDPTemplates !== undefined) {
+            persistCategorizedTemplates(groupedIDPTemplates);
             return;
         }
-
-        setIDPTemplateRequestLoadingStatus(true);
 
         const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
             ? (config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE)
@@ -686,13 +672,32 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 === IdentityProviderTemplateLoadingStrategies.REMOTE);
 
         IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
-            .then((response: IdentityProviderTemplateInterface[]) => {
-                persistCategorizedTemplates(response);
-            })
             .finally(() => {
-                setIDPTemplateRequestLoadingStatus(false);
+                setAddNewAuthenticatorClicked(true);
             });
     };
+
+    const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
+
+        IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+            .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+                setCategorizedTemplates(response);
+                setAddNewAuthenticatorClicked(false);
+            })
+            .catch(() => {
+                setCategorizedTemplates([]);
+                setAddNewAuthenticatorClicked(false);
+            });
+    };
+
+    useEffect(() => {
+
+        if (addNewAuthenticatorClicked
+            && groupedIDPTemplates
+            && groupedIDPTemplates.length > 0) {
+            persistCategorizedTemplates(groupedIDPTemplates);
+        }
+    }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
 
     /**
      * Shows a disclaimer to users when a handler is added.

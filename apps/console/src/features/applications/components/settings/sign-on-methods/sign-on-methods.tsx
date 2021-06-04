@@ -432,7 +432,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             <AuthenticatorCreateWizardFactory
                 open={ showIDPCreateWizard }
                 type={ idpTemplateTypeToTrigger }
-                showAsStandaloneIdentityProvider={ true }
+                showAsStandaloneIdentityProvider={ false }
                 selectedTemplate={ selectedIDPTemplate }
                 onIDPCreate={ () => {
                     fetchAndCategorizeAuthenticators((all, google) => {
