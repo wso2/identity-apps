@@ -334,6 +334,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
                     });
+                    setTimeout(() => setAlert(undefined), 4000);
                     return;
                 }
                 setAlert({
@@ -343,6 +344,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.message")
                 });
+                setTimeout(() => setAlert(undefined), 4000);
             });
 
     };
