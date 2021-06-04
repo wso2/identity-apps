@@ -96,6 +96,10 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Update authentication steps.
      */
     updateSteps: (add: boolean) => void;
+    /**
+     * Callback to update the button disable state change.
+     */
+    onAuthenticationSequenceChange: (buttonStateDisabled: boolean) => void;
 }
 
 /**
@@ -117,6 +121,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         readOnly,
         triggerUpdate,
         updateSteps,
+        onAuthenticationSequenceChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -240,6 +245,20 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             // Add debug logs here one a logger is added.
             // Tracked here https://github.com/wso2/product-is/issues/11650.
         }
+    }, [ authenticationSteps ]);
+
+    /**
+     * Change button disable state when authentication Steps are changed.
+     */
+    useEffect(() => {
+
+        const noOptionsSelected = authenticationSteps.length === 1 && authenticationSteps[ 0 ].options?.length === 0;
+
+        if (noOptionsSelected) {
+            onAuthenticationSequenceChange(true);
+            return;
+        }
+        onAuthenticationSequenceChange(false);
     }, [ authenticationSteps ]);
 
     /**

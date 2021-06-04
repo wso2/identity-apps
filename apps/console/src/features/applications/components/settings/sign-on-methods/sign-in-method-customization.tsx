@@ -113,6 +113,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
+    const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
 
     /**
      * Toggles the update trigger.
@@ -353,6 +354,13 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     );
 
     /**
+     * Handles the update button disable state.
+     */
+    const handleButtonDisabledStateChange = (buttonStateDisabled: boolean): void => {
+        setIsButtonDisabled(buttonStateDisabled);
+    };
+
+    /**
      * Renders update button.
      *
      * @return {React.ReactElement}
@@ -369,6 +377,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <PrimaryButton
                     onClick={ handleUpdateClick }
                     data-testid={ `${ testId }-update-button` }
+                    disabled={ isButtonDisabled }
                 >
                     { t("common:update") }
                 </PrimaryButton>
@@ -428,6 +437,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                onAuthenticationSequenceChange={ handleButtonDisabledStateChange }
             />
             <Divider className="x2"/>
             <ScriptBasedFlow
