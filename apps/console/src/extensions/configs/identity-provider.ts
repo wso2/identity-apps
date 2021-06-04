@@ -53,6 +53,10 @@ export const identityProviderConfig: IdentityProviderConfig = {
              * can say the provisioning attributes is enabled for authenticator.
              */
             return !excludedAuthenticators.has(authenticatorId);
+        },
+        hideIdentityClaimAttributes(authenticatorId: string): boolean {
+            const identityClaimsHiddenAuthenticators = new Set([]);
+            return identityClaimsHiddenAuthenticators.has(authenticatorId);
         }
     }
 };

@@ -142,6 +142,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 initialRoleMappings={ identityProvider.roles.mappings }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                hideIdentityClaimAttributes={
+                    /*identity claim attributes are disabled for saml*/
+                    isSaml && identityProviderConfig.utils.hideIdentityClaimAttributes(
+                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    )
+                }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
                     identityProviderConfig.utils.isProvisioningAttributesEnabled(

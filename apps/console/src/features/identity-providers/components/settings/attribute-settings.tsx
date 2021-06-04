@@ -84,6 +84,17 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * see {@link AttributeSettings.defaultProps}.
      */
     provisioningAttributesEnabled?: boolean;
+    /**
+     * This boolean attribute specifies whether local identity claims
+     * should be hidden or not. By default we will show these attributes
+     * see {@link AttributeSettings.defaultProps}.
+     *
+     * For an example, setting this to {@code true} will hide:-
+     *  - http://wso2.org/claims/identity/accountLocked
+     *  - http://wso2.org/claims/identity/isExistingLiteUser
+     *  - etc...
+     */
+    hideIdentityClaimAttributes?: boolean;
 }
 
 export const LocalDialectURI = "http://wso2.org/claims";
@@ -99,6 +110,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         isLoading,
         onUpdate,
         provisioningAttributesEnabled,
+        hideIdentityClaimAttributes,
         [ "data-testid" ]: testId
     } = props;
 
@@ -302,7 +314,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         <UriAttributesSettings
                             dropDownOptions={
                                 createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
-                                    .filter(element => !isEmpty(element)) }
+                                    .filter(element => !isEmpty(element))
+                                    .filter(hideIdentityClaimAttributes
+                                        ? ({ value }) => !isLocalIdentityClaim(value)
+                                        : (_) => true
+                                    )
+                            }
                             initialRoleUri={ roleClaimUri }
                             initialSubjectUri={ subjectClaimUri }
                             claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
@@ -375,5 +392,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
  */
 AttributeSettings.defaultProps = {
     "data-testid": "idp-edit-attribute-settings",
-    provisioningAttributesEnabled: true
+    provisioningAttributesEnabled: true,
+    hideIdentityClaimAttributes: false
 };

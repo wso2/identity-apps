@@ -59,6 +59,14 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
+/**
+ * Given a local claim it will test whether it
+ * contains `identity` in the claim attribute.
+ */
+export const isLocalIdentityClaim = (claim: string) => {
+    return /identity/.test(claim);
+};
+
 export const createDropdownOption = (selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[],
                                      availableLocalClaims: IdentityProviderClaimInterface[]):
     DropdownOptionsInterface[] => {

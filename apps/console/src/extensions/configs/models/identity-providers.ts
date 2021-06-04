@@ -34,6 +34,7 @@ export interface IdentityProviderConfig {
     utils: {
         isAuthenticatorAllowed: (name: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
+        hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
     };
     templates: {
         facebook: boolean;
