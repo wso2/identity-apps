@@ -110,6 +110,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const [ showAddExternalClaim, setShowAddExternalClaim ] = useState(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ disableSubmit, setDisableSubmit ] = useState<boolean>(true);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
     const [ resetPagination, setResetPagination ] = useTrigger();
@@ -249,6 +250,10 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         });
     };
 
+    const handleClaimListChange = (buttonState: boolean): void => {
+        setDisableSubmit(buttonState);
+    };
+
     return (
         <ListLayout
             advancedSearch={ (
@@ -342,6 +347,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 shouldShowInitialValues={ false }
                                 attributeType={ attributeType }
                                 wizard={ false }
+                                onClaimListChange={ handleClaimListChange }
                             />
                         </Modal.Content>
                         <Modal.Actions>
@@ -352,6 +358,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 { t("common:cancel") }
                             </LinkButton>
                             <PrimaryButton
+                                disabled={ disableSubmit }
                                 onClick={ () => {
                                     setTriggerAddExternalClaim();
                                 } }
@@ -386,7 +393,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 filterAttributePlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder", {
-                                            type: resolveType(attributeType, true, true)
+                                        type: resolveType(attributeType, true, true)
                                     })
                                 }
                                 filterConditionsPlaceholder={
