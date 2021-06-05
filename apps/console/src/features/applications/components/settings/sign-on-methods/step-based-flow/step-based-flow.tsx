@@ -96,6 +96,10 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Update authentication steps.
      */
     updateSteps: (add: boolean) => void;
+    /**
+     * Callback to update the button disable state change.
+     */
+    onAuthenticationSequenceChange: (isDisabled: boolean) => void;
 }
 
 /**
@@ -117,6 +121,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         readOnly,
         triggerUpdate,
         updateSteps,
+        onAuthenticationSequenceChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -249,6 +254,21 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             persistCategorizedTemplates(groupedIDPTemplates);
         }
     }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
+
+    /**
+     * Change button disable state when authentication Steps are changed.
+     */
+    useEffect(() => {
+
+        const noOptionsSelected: boolean = authenticationSteps.length === 1
+            && authenticationSteps[ 0 ].options?.length === 0;
+
+        if (noOptionsSelected) {
+            onAuthenticationSequenceChange(true);
+            return;
+        }
+        onAuthenticationSequenceChange(false);
+    }, [ authenticationSteps ]);
 
     /**
      * Validates if the addition to the step is valid.
