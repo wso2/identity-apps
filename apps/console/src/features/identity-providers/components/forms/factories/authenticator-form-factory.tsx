@@ -31,6 +31,10 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     type: string;
     triggerSubmit?: boolean;
     enableSubmitButton?: boolean;
+    /**
+     * Show/Hide Custom Properties.
+     */
+    showCustomProperties?: boolean;
 }
 
 /**
@@ -50,6 +54,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         type,
         triggerSubmit,
         enableSubmitButton,
+        showCustomProperties,
         [ "data-testid" ]: testId
     } = props;
 
@@ -63,6 +68,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
                 />
             );
     }

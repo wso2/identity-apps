@@ -46,6 +46,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         onSubmit,
         triggerSubmit,
         enableSubmitButton,
+        showCustomProperties,
         [ "data-testid" ]: testId
     } = props;
 
@@ -76,7 +77,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @return {any} Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
+
         const properties = [];
+        const resolvedCustomProperties: string | string[] = showCustomProperties
+            ? values.get("customProperties")
+            : customProperties;
 
         values?.forEach((value, key) => {
             const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
@@ -90,7 +95,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         });
 
-        const customProperties = values.get("customProperties")?.toString()?.split(",")
+        const modifiedCustomProperties = resolvedCustomProperties?.toString()?.split(",")
             ?.map((customProperty: string) => {
                 const keyValuePair = customProperty.split("=");
                 return {
@@ -99,7 +104,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 };
             });
 
-        customProperties?.length > 0 && properties.push(...customProperties);
+        modifiedCustomProperties?.length > 0 && properties.push(...modifiedCustomProperties);
 
         if (initialValues?.properties) {
             return {
@@ -407,7 +412,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         >
             <Grid>
                 { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
-                { customProperties && (
+                { showCustomProperties && customProperties && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
