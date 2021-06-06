@@ -839,7 +839,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     }
                     initialValues={ authenticator.data }
                     onSubmit={ handleAuthenticatorConfigFormSubmit }
-                    type={ authenticator.meta?.name }
+                    type={ authenticator.meta?.authenticatorId }
                     data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
                 />
             );
