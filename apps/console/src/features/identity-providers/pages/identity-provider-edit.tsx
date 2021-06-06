@@ -165,21 +165,30 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         }
 
         // TODO: Creating internal mapping to resolve the IDP template.
-        // TODO: Should be removed once template id is supported
-        const authenticatorId = identityProvider.federatedAuthenticators?.defaultAuthenticatorId;
+        // TODO: Should be removed once template id is supported from IDP REST API
+        // Tracked Here - https://github.com/wso2/product-is/issues/11023
+        const resolveTemplateId = (authenticatorId: string) => {
 
-        // FIXME: Need to revisit OIDC_AUTHENTICATOR_ID and SAML_AUTHENTICATOR_ID
-        if (authenticatorId) {
-            if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
-                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE.toString();
-            } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC.toString();
-            } else if (authenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
-                identityProvider.templateId = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML.toString();
+            if (authenticatorId) {
+                if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
+                } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC;
+                } else if (authenticatorId === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML;
+                } else if (authenticatorId === IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
+                }
             }
-        }
 
-        const template = identityProviderTemplates.find((template) => template.id === identityProvider.templateId);
+            return "";
+        };
+
+        const template: IdentityProviderTemplateItemInterface = identityProviderTemplates
+            .find((template: IdentityProviderTemplateItemInterface) => {
+                return template.id === resolveTemplateId(
+                    identityProvider.federatedAuthenticators?.defaultAuthenticatorId);
+            });
 
         setIdentityProviderTemplate(template);
     }, [ identityProviderTemplates, identityProvider ]);
@@ -431,6 +440,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     template={ identityProviderTemplate }
                     defaultActiveIndex={ defaultActiveIndex }
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                    type={ identityProviderTemplate?.id }
                 />
             </PageLayout>
         </HelpPanelLayout>
