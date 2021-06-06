@@ -83,9 +83,24 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         ENTERPRISE: "enterprise-idp",
+        GITHUB: "github-idp",
         GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
         OIDC: "oidc-idp",
         SAML: "saml-idp"
+    };
+
+    /**
+     * Authenticator Settings Form element constraints.
+     * @type {Record<string, string | number>}
+     */
+    public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
+        CALLBACK_URL_MIN_LENGTH: 3,
+        CLIENT_ID_MAX_LENGTH: 100,
+        CLIENT_ID_MIN_LENGTH: 3,
+        CLIENT_SECRET_MAX_LENGTH: 100,
+        CLIENT_SECRET_MIN_LENGTH: 3,
+        IDP_NAME_MAX_LENGTH: 50,
+        IDP_NAME_MIN_LENGTH: 3
     };
 
     /**

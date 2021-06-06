@@ -21,6 +21,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
+import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import { ConfigReducerStateInterface } from "../../../core/models";
@@ -263,8 +264,26 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
-                            onWizardClose();
+                            setSelectedTemplate(undefined);
                             setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <GitHubAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
                         } }
                         template={ selectedTemplateWithUniqueName }
                         { ...rest }
@@ -297,7 +316,6 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
-                            onWizardClose();
                             setShowWizard(false);
                             onWizardClose();
                         } }

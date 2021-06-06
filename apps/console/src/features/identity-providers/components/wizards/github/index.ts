@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,5 @@
  * under the License.
  */
 
-export * from "./github";
-export * from "./authenticator-create-wizard-factory";
-export * from "./identity-provider-create-wizard";
-export * from "./steps";
-export * from "./outbound-provisioning-connector-create-wizard";
-export * from "./add-certificate-wizard";
-export * from "./google-authentication-provider-create-wizard";
-export * from "./oidc-authentication-provider-create-wizard";
+export * from "./github-authentication-provider-create-wizard";
+export * from "./github-authentication-provider-create-wizard-page";
