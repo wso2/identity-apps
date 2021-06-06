@@ -20,25 +20,26 @@ import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInter
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils, URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading, Hint, LinkButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
-import { AppState } from "../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     CertificateInterface,
     CertificateTypeInterface,
     LogoutMethods,
-    MetadataPropertyInterface,
+    MetadataPropertyInterface, SAML2BindingTypes,
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
+import { applicationConfig } from "../../../../extensions";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     /**
@@ -52,6 +53,10 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * IdP Entity ID.
+     */
+    idpEntityId?: string;
 }
 
 /**
@@ -71,6 +76,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         metadata,
         onSubmit,
         readOnly,
+        idpEntityId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -84,6 +90,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ returnToURLsErrorLabel, setReturnToURLsErrorLabel ] = useState<ReactElement>(null);
     const isSignatureValidationCertificateAliasEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isSignatureValidationCertificateAliasEnabled);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // creates dropdown options
     const getAllowedOptions = (metadataProp: MetadataPropertyInterface, isLabel?: boolean) => {
@@ -119,8 +126,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [isAttributeProfileEnabled, setIsAttributeProfileEnabled] = useState(false);
     const [isRequestSignatureValidationEnabled, setIsRequestSignatureValidationEnabled] = useState(false);
     const [isAssertionEncryptionEnabled, setAssertionEncryptionEnabled] = useState(false);
+    const [isSignSAMLResponsesEnabled, setSignSAMLResponsesEnabled] = useState(false);
+    const [isArtifactBindingEnabled, setIsArtifactBindingEnabled] = useState(false);
 
-    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
+    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(true);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
@@ -184,8 +193,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             general: {
                 advancedConfigurations: {
                     certificate: {
-                        type: values.get("type"),
-                        value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
+                        type: CertificateTypeInterface.PEM,
+                        value: values.get("certificateValue")
                     }
                 }
             },
@@ -193,13 +202,12 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 manualConfiguration: {
                     assertionConsumerUrls: assertionConsumerUrls.split(","),
                     attributeProfile: {
-                        alwaysIncludeAttributesInResponse: values.get("includeAttributesInResponse")
-                            .includes("alwaysIncludeAttributesInResponse"),
+                        alwaysIncludeAttributesInResponse: values.get("attributeProfile").includes("enabled"),
                         enabled: values.get("attributeProfile").includes("enabled")
                     },
                     defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
                     enableAssertionQueryProfile:
-                        values.get("assertionQueryProfile").includes("enableAssertionQueryProfile"),
+                        values.get("assertionQueryProfile")?.includes("enableAssertionQueryProfile"),
                     idpEntityIdAlias: values.get("idpEntityIdAlias"),
                     issuer: values.get("issuer") || initialValues?.issuer,
                     requestValidation: {
@@ -255,6 +263,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
                 setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled);
+                setIsArtifactBindingEnabled(initialValues?.singleSignOnProfile?.bindings?.
+                includes(SAML2BindingTypes.ARTIFACT));
             }
         }, [initialValues]
     );
@@ -449,39 +459,55 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         )
                                 }
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSAML.fields.issuer.hint") }
+                                    <Trans
+                                        i18nKey={
+                                               "console:develop.features.applications.forms.inboundSAML.fields." +
+                                               "issuer.hint"
+                                        }
+                                    >
+                                        This specifies the unique identifier of the application. This is also the
+                                        <Code withBackground>saml2:Issuer</Code>  value specified in the SAML
+                                        authentication request issued by the application.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ applicationQualifier }
-                                    name="applicationQualifier"
-                                    label={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                            ".label")
-                                    }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                            ".validations.empty")
-                                    }
-                                    type="text"
-                                    placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
-                                            ".placeholder")
-                                    }
-                                    value={ initialValues?.serviceProviderQualifier }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-application-qualifier-input` }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSAML.fields.qualifier." +
-                                        "hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            (applicationConfig.inboundSAMLForm.showApplicationQualifier) &&
+                            (
+                                <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ applicationQualifier }
+                                            name="applicationQualifier"
+                                            label={
+                                                t("console:develop.features.applications.forms.inboundSAML." +
+                                                    "fields.qualifier.label")
+                                            }
+                                            required={ false }
+                                            requiredErrorMessage={
+                                                t("console:develop.features.applications.forms.inboundSAML." +
+                                                    "fields.qualifier.validations.empty")
+                                            }
+                                            type="text"
+                                            placeholder={
+                                                t("console:develop.features.applications.forms.inboundSAML." +
+                                                    "fields.qualifier.placeholder")
+                                            }
+                                            value={ initialValues?.serviceProviderQualifier }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-application-qualifier-input` }
+                                        />
+                                        <Hint>
+                                            { t("console:develop.features.applications.forms.inboundSAML.fields." +
+                                                "qualifier.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                </>
+                            )
+                        }
                         <div ref={ consumerURL }></div>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -594,8 +620,20 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-idp-entity-id-alias-input` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                        ".idpEntityIdAlias.hint") }
+                                    <Trans values={ {
+                                        defaultIdpEntityID: idpEntityId,
+                                        productName: config.ui.productName
+                                    } }
+                                           i18nKey={
+                                               "console:develop.features.applications.forms.inboundSAML.fields" +
+                                               ".idpEntityIdAlias.hint"
+                                           }
+                                    >
+                                        This value can override the default Identity Provider (IdP) entity ID
+                                        defaultIdpEntityID. The IdP entity ID is used as the
+                                        <Code withBackground>saml2:Issuer</Code> of the SAML response that is
+                                        generated by productName.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -646,7 +684,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 />
                                 <Hint>
                                     { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".requestValidation.fields.signatureValidation.hint") }
+                                        ".requestValidation.fields.signatureValidation.hint",
+                                        { productName: config.ui.productName })
+                                    }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -697,25 +737,60 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Divider hidden/>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
-                                        ref={ digestAlgorithm }
-                                        label={
-                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                                ".responseSigning.fields.digestAlgorithm.label")
-                                        }
-                                        name="digestAlgorithm"
-                                        type="dropdown"
+                                        ref={ responseSigning }
+                                        name="responseSigning"
+                                        label=""
                                         required={ false }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                                ".responseSigning.fields.digestAlgorithm.validations.empty")
+                                        requiredErrorMessage="this is needed"
+                                        type="checkbox"
+                                        value={ initialValues?.responseSigning.enabled ? ["enabled"] : [] }
+                                        listen={
+                                            (values) => {
+                                                setSignSAMLResponsesEnabled(
+                                                    values.get("responseSigning").includes("enabled")
+                                                );
+                                            }
                                         }
-                                        default={ metadata?.responseDigestAlgorithm.defaultValue }
-                                        value={ initialValues?.singleSignOnProfile.assertion.digestAlgorithm }
-                                        children={ getAllowedOptions(metadata?.responseDigestAlgorithm) }
+                                        children={ [
+                                            {
+                                                label: t("console:develop.features.applications.forms.inboundSAML" +
+                                                    ".sections.responseSigning.fields.responseSigning.label"),
+                                                value: "enabled"
+                                            }
+                                        ] }
                                         readOnly={ readOnly }
-                                        data-testid={ `${ testId }-digest-algorithm-dropdown` }
+                                        data-testid={ `${ testId }-response-signing-checkbox` }
                                     />
+                                    <Hint>
+                                        { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".responseSigning.fields.responseSigning.hint",
+                                            { productName: config.ui.productName }) }
+                                    </Hint>
                                 </Grid.Column>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    ref={ digestAlgorithm }
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".responseSigning.fields.digestAlgorithm.label")
+                                    }
+                                    name="digestAlgorithm"
+                                    type="dropdown"
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                            ".responseSigning.fields.digestAlgorithm.validations.empty")
+                                    }
+                                    default={ metadata?.responseDigestAlgorithm.defaultValue }
+                                    value={ initialValues?.singleSignOnProfile.assertion.digestAlgorithm }
+                                    children={ getAllowedOptions(metadata?.responseDigestAlgorithm) }
+                                    readOnly={ readOnly }
+                                    disabled={ !isSignSAMLResponsesEnabled }
+                                    data-testid={ `${ testId }-digest-algorithm-dropdown` }
+                                />
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -737,34 +812,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     default={ metadata?.responseSigningAlgorithm.defaultValue }
                                     children={ getAllowedOptions(metadata?.responseSigningAlgorithm) }
                                     readOnly={ readOnly }
+                                    disabled={ !isSignSAMLResponsesEnabled }
                                     data-testid={ `${ testId }-signing-algorithm-dropdown` }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ responseSigning }
-                                    name="responseSigning"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage="this is needed"
-                                    type="checkbox"
-                                    value={ initialValues?.responseSigning.enabled ? ["enabled"] : [] }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".sections.responseSigning.fields.responseSigning.label"),
-                                            value: "enabled"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-response-signing-checkbox` }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".responseSigning.fields.responseSigning.hint") }
-                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -812,6 +862,16 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             [ "HTTP_POST", "HTTP_REDIRECT" ])
                                     }
                                     readOnly={ readOnly }
+                                    listen={
+                                        (values) => {
+                                            setIsArtifactBindingEnabled(
+                                                values.get("bindings").includes("ARTIFACT")
+                                            );
+                                            if (!values.get("bindings").includes("ARTIFACT")) {
+                                                values.set("signatureValidationForArtifactBinding", []);
+                                            }
+                                        }
+                                    }
                                     data-testid={ `${ testId }-bindings-checkbox-group` }
                                 />
                                 <Hint>
@@ -830,7 +890,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
                                     value={
-                                        initialValues?.singleSignOnProfile
+                                        isArtifactBindingEnabled && initialValues?.singleSignOnProfile
                                             .enableSignatureValidationForArtifactBinding ?
                                             ["enableSignatureValidationForArtifactBinding"] : [] }
                                     children={ [
@@ -841,9 +901,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    disabled={ !isArtifactBindingEnabled }
                                     data-testid={ `${ testId }-artifact-binding-signature-validation-checkbox` }
                                 />
-                                <Hint>
+                                <Hint disabled={ !isArtifactBindingEnabled }>
                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                            ".ssoProfile.fields.artifactBinding.hint") }
                                 </Hint>
@@ -875,11 +936,19 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-idp-initiated-sso-checkbox` }
                                 />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundSAML." +
+                                        "sections.ssoProfile.fields.idpInitiatedSSO.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h6">
+                                <Divider/>
+                                <Divider hidden/>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h5">
                                     { t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                         ".heading") }
                                 </Heading>
@@ -1022,11 +1091,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h6">
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".encryption.heading") }
-                                </Heading>
-                                <Divider hidden/>
                                 <Field
                                     ref={ assertionEncryption }
                                     name="assertionEncryption"
@@ -1159,66 +1223,43 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ includeAttributesInResponse }
-                                    name="includeAttributesInResponse"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage="this is needed"
-                                    type="checkbox"
-                                    disabled={ !isAttributeProfileEnabled }
-                                    value={
-                                        initialValues?.attributeProfile.alwaysIncludeAttributesInResponse ?
-                                            ["alwaysIncludeAttributesInResponse"] : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".sections.attributeProfile.fields.includeAttributesInResponse.label"),
-                                            value: "alwaysIncludeAttributesInResponse"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-include-attribute-in-response-checkbox` }
-                                />
-                                <Hint disabled={ !isAttributeProfileEnabled }>
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".attributeProfile.fields.includeAttributesInResponse.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ attributeConsumingServiceIndex }
-                                    label={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".attributeProfile.fields.serviceIndex.label")
-                                    }
-                                    name="attributeConsumingServiceIndex"
-                                    placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".attributeProfile.fields.serviceIndex.placeholder")
-                                    }
-                                    type="text"
-                                    required={ false }
-                                    disabled={ !isAttributeProfileEnabled }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".attributeProfile.fields.serviceIndex.validations.empty")
-                                    }
-                                    value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-attribute-consuming-service-index-input` }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".attributeProfile.fields.serviceIndex.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            (applicationConfig.inboundSAMLForm.showAttributeConsumingServiceIndex) &&
+                            (
+                            <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ attributeConsumingServiceIndex }
+                                            label={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                    ".attributeProfile.fields.serviceIndex.label")
+                                            }
+                                            name="attributeConsumingServiceIndex"
+                                            placeholder={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                    ".attributeProfile.fields.serviceIndex.placeholder")
+                                            }
+                                            type="text"
+                                            required={ false }
+                                            disabled={ !isAttributeProfileEnabled }
+                                            requiredErrorMessage={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                    ".attributeProfile.fields.serviceIndex.validations.empty")
+                                            }
+                                            value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-attribute-consuming-service-index-input` }
+                                        />
+                                        <Hint>
+                                            { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                ".attributeProfile.fields.serviceIndex.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </>
+                            )
+                        }
 
                         { /*Single Logout Profile*/ }
                         <Grid.Row columns={ 2 }>
@@ -1256,13 +1297,18 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     children={ [
                                         {
                                             label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".sections.sloProfile.heading"),
+                                                ".sections.sloProfile.fields.enable.label"),
                                             value: "enabled"
                                         }
                                     ] }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-single-logout-profile-checkbox` }
                                 />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundSAML" +
+                                        ".sections.sloProfile.fields.enable.hint")
+                                    }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -1339,6 +1385,12 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-single-logout-response-url-input` }
                                 />
+                                <Hint disabled={ !isSingleLogoutProfileEnabled }>
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                        ".sloProfile.fields.responseURL.hint",
+                                        { productName: config.ui.productName })
+                                    }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -1374,6 +1426,12 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-single-logout-request-url-input` }
                                 />
+                                <Hint disabled={ !isSingleLogoutProfileEnabled }>
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                        ".sloProfile.fields.requestURL.hint",
+                                        { productName: config.ui.productName })
+                                    }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -1470,46 +1528,56 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             showPredictions={ false }
                             customLabel={ returnToURLsErrorLabel }
                         />
-
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Divider/>
-                            <Divider hidden/>
-                        </Grid.Column>
+                        <Hint disabled={ !isSingleLogoutProfileEnabled }>
+                            { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                ".idpInitiatedSLO.fields.returnToURLs.hint")
+                            }
+                        </Hint>
 
                         { /* Assertion Query/Request Profile */ }
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h5">
-                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                        ".requestProfile.heading") }
-                                </Heading>
-                                <Divider hidden/>
-                                <Field
-                                    ref={ assertionQueryProfile }
-                                    name="assertionQueryProfile"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
-                                            ".requestProfile.fields.enable.validations.empty")
-                                    }
-                                    value={
-                                        initialValues?.enableAssertionQueryProfile ?
-                                            ["enableAssertionQueryProfile"] : []
-                                    }
-                                    type="checkbox"
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".sections.requestProfile.fields.enable.label"),
-                                            value: "enableAssertionQueryProfile"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-assertion-query-profile-checkbox` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            (applicationConfig.inboundSAMLForm.showQueryRequestProfile) &&
+                            (
+                            <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider/>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Heading as="h5">
+                                            { t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                ".requestProfile.heading") }
+                                        </Heading>
+                                        <Divider hidden/>
+                                        <Field
+                                            ref={ assertionQueryProfile }
+                                            name="assertionQueryProfile"
+                                            label=""
+                                            required={ false }
+                                            requiredErrorMessage={
+                                                t("console:develop.features.applications.forms.inboundSAML.sections" +
+                                                    ".requestProfile.fields.enable.validations.empty")
+                                            }
+                                            value={
+                                                initialValues?.enableAssertionQueryProfile ?
+                                                    ["enableAssertionQueryProfile"] : []
+                                            }
+                                            type="checkbox"
+                                            children={ [
+                                                {
+                                                    label: t("console:develop.features.applications.forms.inboundSAML" +
+                                                        ".sections.requestProfile.fields.enable.label"),
+                                                    value: "enableAssertionQueryProfile"
+                                                }
+                                            ] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-assertion-query-profile-checkbox` }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </>
+                            )
+                        }
 
                         { /* Certificates */ }
                         <Grid.Row columns={ 1 }>
@@ -1523,134 +1591,52 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             "advancedConfig.sections.certificate.heading") }
                                 </Heading>
                                 <Field
-                                    label={
-                                        t("console:develop.features.applications.forms." +
-                                            "advancedConfig.sections.certificate.fields.type.label")
+                                    name="certificateValue"
+                                    label={ "" }
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                            ".sections.certificate.fields.pemValue.validations.empty")
                                     }
-                                    name="type"
-                                    default={ CertificateTypeInterface.JWKS }
+                                    placeholder={
+                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
+                                    }
+                                    type="textarea"
+                                    value={
+                                        (CertificateTypeInterface.PEM === certificate?.type)
+                                        && certificate?.value
+                                    }
                                     listen={
                                         (values) => {
-                                            setPEMSelected(values.get("type") === "PEM");
+                                            setPEMValue(
+                                                values.get("certificateValue") as string
+                                            );
                                         }
                                     }
-                                    type="radio"
-                                    value={ certificate?.type }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
-                                            value: CertificateTypeInterface.JWKS
-                                        },
-                                        {
-                                            label: t("console:develop.features.applications.forms." +
-                                                "advancedConfig.sections.certificate.fields.type.children.pem.label"),
-                                            value: CertificateTypeInterface.PEM
-                                        }
-                                    ] }
                                     readOnly={ readOnly }
-                                    data-testid={ `${ testId }-certificate-type-radio-group` }
+                                    data-testid={ `${ testId }-certificate-textarea` }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                {
-                                    isPEMSelected
-                                        ?
-                                        (
-                                            <>
-                                                <Field
-                                                    name="certificateValue"
-                                                    label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.label")
-                                                    }
-                                                    required={ false }
-                                                    requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.pemValue.validations.empty")
-                                                    }
-                                                    placeholder={
-                                                        ApplicationManagementConstants.PEM_CERTIFICATE_PLACEHOLDER
-                                                    }
-                                                    type="textarea"
-                                                    value={
-                                                        (CertificateTypeInterface.PEM === certificate?.type)
-                                                        && certificate?.value
-                                                    }
-                                                    listen={
-                                                        (values) => {
-                                                            setPEMValue(
-                                                                values.get("certificateValue") as string
-                                                            );
-                                                        }
-                                                    }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-certificate-textarea` }
-                                                />
-                                                < Hint>
-                                                    {
-                                                        t("console:develop.features.applications.forms." +
-                                                            "advancedConfig.sections.certificate.fields.pemValue.hint")
-                                                    }
-                                                </Hint>
-                                                <LinkButton
-                                                    className="certificate-info-link-button"
-                                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.preventDefault();
-                                                        viewCertificate();
-                                                    } }
-                                                    disabled={ isEmpty(PEMValue) }
-                                                    data-testid={ `${ testId }-certificate-info-button` }
-                                                >
-                                                    {
-                                                        t("console:develop.features.applications.forms." +
-                                                            "advancedConfig.sections.certificate.fields.pemValue." +
-                                                            "actions.view")
-                                                    }
-                                                </LinkButton>
-                                            </>
-                                        )
-                                        : (
-                                            <>
-                                                <Field
-                                                    name="jwksValue"
-                                                    label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.label")
-                                                    }
-                                                    required={ false }
-                                                    requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.validations.empty")
-                                                    }
-                                                    placeholder={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
-                                                            ".sections.certificate.fields.jwksValue.placeholder") }
-                                                    type="text"
-                                                    validation={ (value: string, validation: Validation) => {
-                                                        if (!FormValidation.url(value)) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(
-                                                                t(
-                                                                    "console:develop.features.applications.forms" +
-                                                                    ".advancedConfig.sections.certificate.fields." +
-                                                                    "jwksValue.validations.invalid"
-                                                                )
-                                                            );
-                                                        }
-                                                    } }
-                                                    value={
-                                                        (CertificateTypeInterface.JWKS === certificate?.type)
-                                                        && certificate?.value
-                                                    }
-                                                    readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-jwks-input` }
-                                                />
-                                            </>
-                                        )
-                                }
+                                < Hint>
+                                    {
+                                        t("console:develop.features.applications.forms." +
+                                            "advancedConfig.sections.certificate.fields.pemValue.hint")
+                                    }
+                                </Hint>
+                                <LinkButton
+                                    className="certificate-info-link-button"
+                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                        e.preventDefault();
+                                        viewCertificate();
+                                    } }
+                                    disabled={ isEmpty(PEMValue) }
+                                    data-testid={ `${ testId }-certificate-info-button` }
+                                >
+                                    {
+                                        t("console:develop.features.applications.forms." +
+                                            "advancedConfig.sections.certificate.fields.pemValue." +
+                                            "actions.view")
+                                    }
+                                </LinkButton>
                             </Grid.Column>
                         </Grid.Row>
                         {

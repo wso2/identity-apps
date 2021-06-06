@@ -506,6 +506,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         ? inboundProtocolConfig[ selectedProtocol ]
                                         : undefined
                                 }
+                                idpEntityId={
+                                    get(inboundProtocolConfig, "issuer")
+                                        ? inboundProtocolConfig[ "issuer" ]
+                                        : undefined
+                                }
                                 onSubmit={ handleSubmit }
                                 type={ selectedProtocol as SupportedAuthProtocolTypes }
                                 onApplicationRegenerate={ handleApplicationRegenerate }
