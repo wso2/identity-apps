@@ -236,6 +236,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         setTabPaneExtensions(extensions);
     }, [
+        template,
         tabPaneExtensions,
         identityProvider
     ]);
