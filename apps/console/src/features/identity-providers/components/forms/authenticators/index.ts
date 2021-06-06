@@ -17,3 +17,4 @@
  */
 
 export * from "./common-authenticator-form";
+export * from "./github-authenticator-form";

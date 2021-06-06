@@ -425,6 +425,38 @@ export interface CommonPluggableComponentPropertyInterface {
     value?: string;
 }
 
+/**
+ * Interface for Authenticator Form metadata.
+ * @remarks Use this interface in manually defined Authenticator to resolve form meta.
+ */
+export type CommonAuthenticatorFormMetaInterface = CommonPluggableComponentMetaInterface;
+
+/**
+ * Interface for Authenticator Form initial values..
+ * @remarks Use this interface in manually defined Authenticator to resolve form initial values.
+ */
+export type CommonAuthenticatorFormInitialValuesInterface = CommonPluggableComponentInterface;
+
+/**
+ * Interface for Authenticator Form property interface.
+ * @remarks Use this interface in manually defined Authenticator to resolve form property.
+ */
+export type CommonAuthenticatorFormPropertyInterface = CommonPluggableComponentPropertyInterface;
+
+/**
+ * Interface for Authenticator Form fields.
+ * @remarks Use this interface in manually defined Authenticator to resolve form field data and meta.
+ */
+export interface CommonAuthenticatorFormFieldInterface extends CommonAuthenticatorFormPropertyInterface {
+    meta: CommonPluggableComponentMetaPropertyInterface;
+}
+
+/**
+ * Interface for Authenticator Form field meta.
+ * @remarks Use this interface in manually defined Authenticator to resolve form field meta.
+ */
+export type CommonAuthenticatorFormFieldMetaInterface = CommonPluggableComponentMetaPropertyInterface;
+
 export interface CommonPluggableComponentMetaPropertyInterface {
     key?: string;
     displayName?: string;
