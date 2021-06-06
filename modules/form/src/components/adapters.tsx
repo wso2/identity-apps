@@ -94,16 +94,36 @@ export const PasswordFieldAdapter = (props): ReactElement => {
 export const CopyFieldAdapter = (props): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
+    const {
+       label,
+       ...filteredChildFieldProps
+    } = childFieldProps;
 
     return (
-        <CopyInputField
-            key={ childFieldProps.testId }
-            data-testid={ childFieldProps.testId }
-            autoFocus={ childFieldProps.autoFocus || false }
-            { ...childFieldProps }
-            value={ childFieldProps?.value ? childFieldProps?.value
-                : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "") }
-        />
+        <Form.Group grouped={ true }>
+            {
+                label && (
+                    <div className={ `field ${ filteredChildFieldProps.required ? "required" : "" }` }>
+                        <label>{ label }</label>
+                    </div>
+                )
+            }
+            <Form.Field>
+                <CopyInputField
+                    key={ filteredChildFieldProps.testId }
+                    data-testid={ filteredChildFieldProps.testId }
+                    autoFocus={ filteredChildFieldProps.autoFocus || false }
+                    { ...filteredChildFieldProps }
+                    value={
+                        filteredChildFieldProps?.value
+                            ? filteredChildFieldProps?.value
+                            : (parentFormProps?.values[ filteredChildFieldProps?.name ]
+                                ? parentFormProps?.values[ filteredChildFieldProps?.name ]
+                                : "")
+                    }
+                />
+            </Form.Field>
+        </Form.Group>
     );
 };
 
