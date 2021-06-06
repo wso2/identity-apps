@@ -878,11 +878,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Heading as="h4">Authentication Settings</Heading>
-                                    </Grid.Column>
-                                </Grid.Row>
                                 <EmphasizedSegment padded="very">
                                     { showAuthenticator() }
                                 </EmphasizedSegment>
