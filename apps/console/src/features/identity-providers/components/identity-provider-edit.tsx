@@ -32,8 +32,8 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { ComponentExtensionPlaceholder } from "../../../extensions";
-import { identityProviderConfig } from "../../../extensions";
+import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
@@ -83,6 +83,11 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      * Callback to see if tab extensions are available
      */
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
+    /**
+     * Type of IDP.
+     * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`. 
+     */
+    type: string;
 }
 
 /**
@@ -106,6 +111,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         template,
         defaultActiveIndex,
         isTabExtensionsAvailable,
+        type,
         [ "data-testid" ]: testId
     } = props;
 
@@ -261,8 +267,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          */
         const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
 
-        // Wait for `isGoogle` & `isOidc` to be defined.
-        if (attributesForSamlEnabled || (isGoogle !== undefined && isGoogle === false) && (isOidc !== undefined && isOidc === false)) {
+        // Evaluate whether to Show/Hide `Attributes`.
+        if (attributesForSamlEnabled || shouldShowAttributeSettings(type)) {
             panes.push({
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
@@ -288,6 +294,30 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             });
 
         return panes;
+    };
+
+    /**
+     * Evaluate internally whether to show/hide `Attributes` tab.
+     *
+     * @param {string} type - IDP Type.
+     *
+     * @return {boolean}
+     */
+    const shouldShowAttributeSettings = (type: string): boolean => {
+
+        if (!type) {
+            return false;
+        }
+
+        if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
+            return false;
+        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB) {
+            return false;
+        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC) {
+            return false;
+        }
+
+        return true;
     };
 
     return (
