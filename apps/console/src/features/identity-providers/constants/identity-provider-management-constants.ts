@@ -104,6 +104,15 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * GitHub Scope mappings.
+     * @type {{USER_EMAIL: string; USER_READ: string}}
+     */
+    public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
+        USER_EMAIL: "user:email",
+        USER_READ: "read:user"
+    };
+
+    /**
      * Default IDP template loading strategy.
      * @constant
      * @type {IdentityProviderTemplateLoadingStrategies}
@@ -169,6 +178,7 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
+    public static readonly GITHUB_AUTHENTICATOR_ID: string = "R2l0aHViQXV0aGVudGljYXRvcg";
     
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
