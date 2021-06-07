@@ -18,9 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
@@ -131,7 +131,7 @@ interface ScopeMetaInterface {
     /**
      * Scope display name.
      */
-    displayName: string;
+    displayName: ReactNode;
     /**
      * Scope icon.
      */
@@ -235,15 +235,23 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
         if (scope === IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.scopes.list.profile.description"),
-                displayName: IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ,
+                    ".authenticatorSettings.github.scopes.list.profile.description"),
+                displayName: (
+                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
+                        { IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ }
+                    </Code>
+                ),
                 icon: "user outline"
             };
         } else if (scope === IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.scopes.list.email.description"),
-                displayName: IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
+                    ".authenticatorSettings.github.scopes.list.email.description"),
+                displayName: (
+                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
+                        { IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL }
+                    </Code>
+                ),
                 icon: "envelope outline"
             };
         }
@@ -265,15 +273,16 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings.clientId.label")
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".github.clientId.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".clientId.placeholder")
+                        ".github.clientId.placeholder")
                 }
                 hint={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".clientId.hint")
+                        ".github.clientId.hint")
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={ formFields?.ClientId?.meta?.readOnly }
@@ -292,15 +301,15 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 name="ClientSecret"
                 label={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.clientSecret.label")
+                        ".authenticatorSettings.github.clientSecret.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.clientSecret.placeholder")
+                        ".authenticatorSettings.github.clientSecret.placeholder")
                 }
                 hint={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.clientSecret.hint")
+                        ".authenticatorSettings.github.clientSecret.hint")
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={ formFields?.ClientSecret?.meta?.readOnly }
@@ -319,15 +328,15 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 name="callbackUrl"
                 label={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.callbackUrl.label")
+                        ".authenticatorSettings.github.callbackUrl.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.callbackUrl.placeholder")
+                        ".authenticatorSettings.github.callbackUrl.placeholder")
                 }
                 hint={
                     t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.callbackUrl.hint")
+                        ".authenticatorSettings.github.callbackUrl.hint")
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
                 value={ formFields?.callbackUrl?.value }
@@ -350,36 +359,43 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                             <label>
                                 {
                                     t("console:develop.features.authenticationProvider.forms" +
-                                        ".authenticatorSettings.scopes.heading")
+                                        ".authenticatorSettings.github.scopes.heading")
                                 }
                             </label>
                         </div>
-                        <div>
+                        <div className="authenticator-dynamic-properties">
                             {
                                 formFields.scope.value
                                     .split(" ")
                                     .map((scope: string, index: number) => {
 
-                                        const scopeMeta = resolveScopeMetadata(scope);
+                                        const scopeMeta: ScopeMetaInterface = resolveScopeMetadata(scope);
 
                                         return (
-                                            <div className="authenticator-scope" key={ index }>
-                                                <div className="scope-name-container">
+                                            <div
+                                                key={ index }
+                                                className="authenticator-dynamic-property"
+                                                data-testid={ scope }
+                                            >
+                                                <div className="authenticator-dynamic-property-name-container">
                                                     <GenericIcon
                                                         square
                                                         inline
                                                         transparent
                                                         icon={ <Icon name={ scopeMeta.icon }/> }
                                                         size="micro"
-                                                        className="scope-icon"
+                                                        className="authenticator-dynamic-property-icon"
                                                         spaced="right"
                                                         verticalAlign="top"
                                                     />
-                                                    <div data-testid={ `${ testId }-authorize-label` }>
+                                                    <div data-testid={ `${ scope }-name` }>
                                                         { scopeMeta.displayName }
                                                     </div>
                                                 </div>
-                                                <div data-testid={ `${ testId }-authorize-label` }>
+                                                <div
+                                                    className="authenticator-dynamic-property-description"
+                                                    data-testid={ `${ scope }-description` }
+                                                >
                                                     { scopeMeta.description }
                                                 </div>
                                             </div>
@@ -390,7 +406,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                         <Hint>
                             {
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.scopes.hint")
+                                    ".authenticatorSettings.github.scopes.hint")
                             }
                         </Hint>
                     </>

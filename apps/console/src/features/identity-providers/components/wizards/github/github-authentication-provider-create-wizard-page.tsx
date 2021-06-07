@@ -166,11 +166,11 @@ export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
         }
         if (!values.clientId) {
             errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.clientId.validations.required");
+                ".authenticatorSettings.github.clientId.validations.required");
         }
         if (!values.clientSecret) {
             errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.clientSecret.validations.required");
+                ".authenticatorSettings.github.clientSecret.validations.required");
         }
 
         return errors;
@@ -195,8 +195,14 @@ export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
                             ariaLabel="GitHub IDP Name"
                             inputType="name"
                             name="name"
-                            label={ t("console:develop.features.authenticationProvider.forms." +
-                                "generalDetails.name.label") }
+                            label={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.placeholder")
+                            }
                             required={ true }
                             validation={ (value) => idpNameValidation(value) }
                             maxLength={
@@ -216,12 +222,16 @@ export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
                             name="clientId"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.clientId.label")
+                                    ".authenticatorSettings.github.clientId.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.github.clientId.placeholder")
                             }
                             required={ true }
                             message={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.clientId.validations.required")
+                                    ".authenticatorSettings.github.clientId.validations.required")
                             }
                             type="text"
                             autoComplete={ "" + Math.random() }
@@ -242,12 +252,16 @@ export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
                             name="clientSecret"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.clientSecret.label")
+                                    ".authenticatorSettings.github.clientSecret.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.github.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.clientSecret.validations.required")
+                                    ".authenticatorSettings.github.clientSecret.validations.required")
                             }
                             type="password"
                             hidePassword={ t("common:hide") }

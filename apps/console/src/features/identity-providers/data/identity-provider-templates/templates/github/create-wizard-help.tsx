@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading } from "@wso2is/react-components";
+import { CopyInputField, Heading, Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -70,8 +70,8 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
                             target="_blank"
                             rel="noopener noreferrer">
                         on GitHub
-                        </a>, and obtain a <strong>client ID & secret</strong>. Use the following URL as the <strong>
-                        Authorized Redirect URI</strong>.
+                        </a>, and obtain a <strong>client ID & secret</strong>. Use the following URL as the 
+                        <strong>Homepage URL</strong> & <strong>Authorization callback URL</strong>.
                     </Trans>
 
                     <CopyInputField
@@ -110,10 +110,14 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
                 { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.clientId.heading") }
             </Heading>
             <p>
-                {
-                    t("console:develop.features.authenticationProvider.templates.github" +
-                        ".wizardHelp.clientId.description")
-                }
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.github" +
+                        ".wizardHelp.clientId.description"
+                    }
+                >
+                    Provide the <Code>Client ID</Code> obtained from GitHub.
+                </Trans>
             </p>
 
             <Divider/>
@@ -125,10 +129,14 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
                 }
             </Heading>
             <p>
-                {
-                    t("console:develop.features.authenticationProvider.templates.github." +
-                        "wizardHelp.clientSecret.description")
-                }
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.github" +
+                        ".wizardHelp.clientSecret.description"
+                    }
+                >
+                    Provide the <Code>Client Secret</Code> obtained from GitHub.
+                </Trans>
             </p>
         </div>
     );
