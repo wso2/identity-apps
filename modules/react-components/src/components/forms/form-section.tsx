@@ -67,11 +67,11 @@ export const FormSection: FunctionComponent<PropsWithChildren<FormSectionPropsIn
 
     return (
         <div className={ classes } data-testid={ testId }>
-            <Divider />
-            <Heading as={ headingLevel }>
+            <Divider className="form-section-top-divider" />
+            <Heading className="form-section-heading" as={ headingLevel }>
                 { heading }
             </Heading>
-            <Divider hidden />
+            <Divider className="form-section-bottom-divider" hidden />
             { children }
         </div>
     );

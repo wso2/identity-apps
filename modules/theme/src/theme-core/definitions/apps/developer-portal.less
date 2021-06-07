@@ -836,12 +836,23 @@
         overflow: auto;
     }
 }
+
 .form-container {
     &.with-max-width {
         max-width: @formContainerMaxWidth;
     }
     &.subject-attribute-selection {
         max-width: @applicationSubjectSelectWidth;
+    }
+}
+
+// Styles for the form section component. @see @wso2is/react-components -> FormSection
+.form-section {
+    .form-section-top-divider {
+        margin: 0;
+    }
+    .form-section-heading {
+        margin-top: 20px;
     }
 }
 
@@ -871,10 +882,12 @@
     .authenticator-dynamic-property {
         display: flex;
         margin-bottom: 1em;
+        padding-bottom: 10px;
 
-        &:not(:last-child) {
-            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
-            padding-bottom: 10px;
+        &.separated {
+            &:not(:last-child) {
+                border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+            }
         }
 
         .authenticator-dynamic-property-name-container {
