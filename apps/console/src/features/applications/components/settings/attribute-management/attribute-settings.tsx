@@ -296,24 +296,25 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return id;
     };
 
-    const createMapping = (claim: Claim) => {
-            if (selectedDialect.localDialect) {
-                const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
-                    const newClaimMapping: ExtendedClaimMappingInterface = {
-                        addMapping: false,
-                        applicationClaim: "",
-                        localClaim: {
-                            displayName: claim.displayName,
-                            id: claim.id,
-                            uri: claim.claimURI
-                        }
-                    };
-                    if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
-                        claimMappingList.push(newClaimMapping);
+    const createMapping = (claims: Claim[]) => {
+        if (selectedDialect.localDialect) {
+            const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+            claims.map((claim) => {
+                const newClaimMapping: ExtendedClaimMappingInterface = {
+                    addMapping: false,
+                    applicationClaim: "",
+                    localClaim: {
+                        displayName: claim.displayName,
+                        id: claim.id,
+                        uri: claim.claimURI
                     }
-                    setClaimMapping(claimMappingList);
-            }
-
+                };
+                if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
+                    claimMappingList.push(newClaimMapping);
+                }
+                setClaimMapping(claimMappingList);
+            });
+        }
     };
 
     const removeMapping = (claim: Claim) => {
@@ -396,17 +397,17 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     let option: DropdownOptionsInterface;
                     if (!isEmpty(element.applicationClaim)) {
                         option = {
-                            key: element.localClaim?.id,
+                            key: element?.localClaim?.id,
                             text: (
                                 <SubjectAttributeListItem
-                                    key={ element.localClaim?.id }
+                                    key={ element?.localClaim?.id }
                                     displayName={ element?.applicationClaim ?
                                         element?.applicationClaim : element?.localClaim?.uri }
-                                    claimURI={ element.localClaim?.uri }
-                                    value={ element.applicationClaim }
+                                    claimURI={ element?.localClaim?.uri }
+                                    value={ element?.applicationClaim }
                                 />
                             ),
-                            value: element.applicationClaim
+                            value: element?.applicationClaim
                         };
                         claimMappingOption.push(option);
                     }
@@ -525,14 +526,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const createdClaimMappings: ExtendedClaimMappingInterface[] = [...claimMapping];
         createdClaimMappings.map((claimMapping) => {
             if (claimMapping.addMapping) {
-                if (isEmpty(claimMapping.applicationClaim)) {
+                if (isEmpty(claimMapping?.applicationClaim)) {
                     setClaimMappingError(true);
                     returnList = false;
                 } else {
                     const claimMappedObject: ExtendedClaimMappingInterface = {
-                        applicationClaim: claimMapping.applicationClaim,
+                        applicationClaim: claimMapping?.applicationClaim,
                         localClaim: {
-                            uri: claimMapping.localClaim.uri
+                            uri: claimMapping?.localClaim?.uri
                         }
                     };
                     claimMappingFinal.push(claimMappedObject);
