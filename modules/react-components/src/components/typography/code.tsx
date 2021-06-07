@@ -33,6 +33,14 @@ export interface CodePropsInterface extends TestableComponentInterface {
      */
     compact?: boolean;
     /**
+     * Size of the font.
+     */
+    fontSize?: "inherit" | "default";
+    /**
+     * Font color.
+     */
+    fontColor?: "inherit" | "default";
+    /**
      * Should the component render with a background.
      */
     withBackground?: boolean;
@@ -54,6 +62,8 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
         children,
         className,
         compact,
+        fontColor,
+        fontSize,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -61,6 +71,8 @@ export const Code: React.FunctionComponent<PropsWithChildren<CodePropsInterface>
     const classes = classNames("inline-code",
         {
             compact,
+            [ `font-size-${ fontSize }` ]: fontSize,
+            [ `font-color-${ fontColor }` ]: fontColor,
             "transparent" : !withBackground
         },
         className

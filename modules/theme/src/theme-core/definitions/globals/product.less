@@ -1868,6 +1868,18 @@ code {
         &:not(.transparent) {
             background: @inlineCodeBlockBgColor;
         }
+
+        &.font-size {
+            &-inherit {
+                font-size: @emSize;
+            }
+        }
+
+        &.font-color {
+            &-inherit {
+                color: @textColor;
+            }
+        }
     }
 }
 
