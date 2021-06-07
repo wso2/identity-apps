@@ -1062,6 +1062,15 @@ export const console: ConsoleNS = {
                                                     "connexion Nom d'utilisateur et mot de passe.",
                                                 heading: "Commencer avec la configuration par défaut"
                                             },
+                                            facebook: {
+                                                description: "Permettre aux utilisateurs de se connecter avec " +
+                                                    "Facebook.",
+                                                heading: "Ajouter une connexion Facebook"
+                                            },
+                                            github: {
+                                                description: "Autorisez les utilisateurs à se connecter avec GitHub.",
+                                                heading: "Ajouter une connexion GitHub"
+                                            },
                                             google: {
                                                 description: "Permettre aux utilisateurs de se connecter avec Google.",
                                                 heading: "Ajouter une connexion Google"

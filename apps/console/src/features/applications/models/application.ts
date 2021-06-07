@@ -631,7 +631,9 @@ export enum DefaultTemplateGroupIds {
  * @enum {string}
  */
 export enum LoginFlowTypes {
+    FACEBOOK_LOGIN = "FACEBOOK_LOGIN",
     GOOGLE_LOGIN = "GOOGLE_LOGIN",
+    GITHUB_LOGIN = "GITHUB_LOGIN",
     SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
     DEFAULT = "DEFAULT"
 }

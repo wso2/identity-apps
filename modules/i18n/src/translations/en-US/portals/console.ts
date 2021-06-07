@@ -1046,6 +1046,14 @@ export const console: ConsoleNS = {
                                                     "Password login.",
                                                 heading: "Start with default configuration"
                                             },
+                                            facebook: {
+                                                description: "Enable users to login with Facebook.",
+                                                heading: "Add Facebook login"
+                                            },
+                                            github: {
+                                                description: "Enable users to login with GitHub.",
+                                                heading: "Add GitHub login"
+                                            },
                                             google: {
                                                 description: "Enable users to login with Google.",
                                                 heading: "Add Google login"

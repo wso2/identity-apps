@@ -54,6 +54,13 @@ import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
+import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import {
+    ReactComponent as ProtocolPredefined
+} from "../../../themes/default/assets/images/illustrations/application-predefined.svg";
+import {
+    ReactComponent as ProtocolIllustration
+} from "../../../themes/default/assets/images/illustrations/application-protocols-illustration.svg";
 import {
     ReactComponent as BasicAuthIllustration
 } from "../../../themes/default/assets/images/illustrations/basic-auth-illustration.svg";
@@ -93,12 +100,6 @@ import {
 import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
-import {
-    ReactComponent as ProtocolIllustration
-} from "../../../themes/default/assets/images/illustrations/application-protocols-illustration.svg";
-import {
-    ReactComponent as ProtocolPredefined
-} from "../../../themes/default/assets/images/illustrations/application-predefined.svg";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
@@ -161,6 +162,7 @@ export const getAuthenticatorIcons = () => {
         emailOTP: EmailOTPIcon,
         facebook: FacebookLogo,
         fido: FIDOLogo,
+        github: GithubIdPIcon,
         google: GoogleLogo,
         identifierFirst: MagnifierColoredIcon,
         jwtBasic: JWTLogo,

@@ -632,6 +632,14 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                             },
+                                            facebook: {
+                                                description: string;
+                                                heading: string;
+                                            },
+                                            github: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             google: {
                                                 description: string;
                                                 heading: string;
