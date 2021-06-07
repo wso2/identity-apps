@@ -30,6 +30,7 @@ export * from "./danger-zone";
 export * from "./dropdown";
 export * from "./error";
 export * from "./footer";
+export * from "./forms";
 export * from "./file-picker";
 export * from "./grid";
 export * from "./header";
