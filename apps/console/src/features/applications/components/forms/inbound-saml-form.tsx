@@ -34,8 +34,10 @@ import {
     CertificateInterface,
     CertificateTypeInterface,
     LogoutMethods,
-    MetadataPropertyInterface, SAML2BindingTypes,
+    MetadataPropertyInterface,
+    SAML2BindingTypes,
     SAML2ServiceProviderInterface,
+    SAMLApplicationConfigurationInterface,
     SAMLMetaDataInterface
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
@@ -53,10 +55,6 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
-    /**
-     * IdP Entity ID.
-     */
-    idpEntityId?: string;
 }
 
 /**
@@ -76,7 +74,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         metadata,
         onSubmit,
         readOnly,
-        idpEntityId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -90,6 +87,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [ returnToURLsErrorLabel, setReturnToURLsErrorLabel ] = useState<ReactElement>(null);
     const isSignatureValidationCertificateAliasEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isSignatureValidationCertificateAliasEnabled);
+    const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
+        (state: AppState) => state.application.samlConfigurations);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     // creates dropdown options
@@ -621,7 +620,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 />
                                 <Hint>
                                     <Trans values={ {
-                                        defaultIdpEntityID: idpEntityId,
+                                        defaultIdpEntityID: samlConfigurations?.issuer,
                                         productName: config.ui.productName
                                     } }
                                            i18nKey={

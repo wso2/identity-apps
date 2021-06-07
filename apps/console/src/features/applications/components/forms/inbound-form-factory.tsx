@@ -55,10 +55,6 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
-    /**
-     * IdP Entity ID.
-     */
-    idpEntityId?: string;
 }
 
 /**
@@ -84,7 +80,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         allowedOrigins,
         tenantDomain,
         template,
-        idpEntityId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -113,7 +108,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     metadata={ metadata }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
-                    idpEntityId={ idpEntityId }
                     data-testid={ testId }
                 />
             );
