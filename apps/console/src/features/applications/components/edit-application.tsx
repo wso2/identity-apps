@@ -529,7 +529,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
                 onlyOIDCConfigured={
-                    inboundProtocolList.length === 1 && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
+                    application?.templateId === CustomApplicationTemplate.id && inboundProtocolList.length === 0
+                        ? true
+                        : inboundProtocolList.length === 1
+                        && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ handleApplicationUpdate }
                 readOnly={ readOnly }
