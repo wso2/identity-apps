@@ -75,6 +75,11 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPList: true,
         disabledGrantTypes: []
     },
+    inboundSAMLForm: {
+        showApplicationQualifier: true,
+        showAttributeConsumingServiceIndex: true,
+        showQueryRequestProfile: true
+    },
     templates: {
         android: true,
         custom: true,
