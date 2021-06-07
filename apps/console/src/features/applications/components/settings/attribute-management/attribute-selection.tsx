@@ -310,7 +310,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 claimConfigurations.claimMappings.map((claim) => {
                     const claimMapping: ExtendedClaimMappingInterface = {
                         addMapping: true,
-                        applicationClaim: claim.applicationClaim,
+                        applicationClaim: claim?.applicationClaim,
                         localClaim: {
                             displayName: claim?.localClaim?.displayName,
                             id: claim?.localClaim?.id,
@@ -725,7 +725,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             }
                                                                             subject={ claimMappingOn
                                                                                 ? selectedSubjectValue === getCurrentMapping(
-                                                                                    claim.claimURI).applicationClaim
+                                                                                    claim?.claimURI)?.applicationClaim
                                                                                 : selectedSubjectValue === claim.claimURI
                                                                             }
                                                                             deleteAttribute={
