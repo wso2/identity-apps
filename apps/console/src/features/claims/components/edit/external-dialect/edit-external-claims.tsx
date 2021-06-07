@@ -393,7 +393,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 filterAttributePlaceholder={
                                     t("console:manage.features.claims.external.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder", {
-                                        type: resolveType(attributeType, true, true)
+                                            type: resolveType(attributeType, true, true)
                                     })
                                 }
                                 filterConditionsPlaceholder={

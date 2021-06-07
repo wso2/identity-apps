@@ -24,7 +24,7 @@ import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {Grid, Header, DropdownOnSearchChangeData, StrictDropdownItemProps, DropdownItemProps} from "semantic-ui-react";
+import { Grid, Header, DropdownOnSearchChangeData, StrictDropdownItemProps, DropdownItemProps } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
