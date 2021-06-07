@@ -69,7 +69,7 @@ export interface ApplicationConfig {
         showApplicationQualifier: boolean;
         showAttributeConsumingServiceIndex: boolean;
         showQueryRequestProfile: boolean;
-    },
+    };
     templates: {
         android: boolean;
         oidc: boolean;
