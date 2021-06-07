@@ -847,6 +847,8 @@
 
 /*-------------------------------
    Authenticator Scopes Styles
+   TODO: Remove once a seperate
+  form is written for Google IDP.
 --------------------------------*/
 
 .authenticator-scope {
@@ -856,6 +858,29 @@
     .scope-name-container {
         display: flex;
         min-width: 150px;
+    }
+}
+
+/*-------------------------------
+        IDP Authenticator 
+ Readonly Dynamic Property Styles
+--------------------------------*/
+
+.authenticator-dynamic-properties {
+
+    .authenticator-dynamic-property {
+        display: flex;
+        margin-bottom: 1em;
+
+        &:not(:last-child) {
+            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+            padding-bottom: 10px;
+        }
+
+        .authenticator-dynamic-property-name-container {
+            display: flex;
+            min-width: 150px;
+        }
     }
 }
 
