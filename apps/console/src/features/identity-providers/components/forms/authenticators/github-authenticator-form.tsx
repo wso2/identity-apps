@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -354,15 +354,12 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 && formFields.scope.value.split
                 && formFields.scope.value.split(" ").length > 0
                 && (
-                    <>
-                        <div className="field">
-                            <label>
-                                {
-                                    t("console:develop.features.authenticationProvider.forms" +
-                                        ".authenticatorSettings.github.scopes.heading")
-                                }
-                            </label>
-                        </div>
+                    <FormSection
+                        heading={
+                            t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.github.scopes.heading")
+                        }
+                    >
                         <div className="authenticator-dynamic-properties">
                             {
                                 formFields.scope.value
@@ -409,7 +406,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                                     ".authenticatorSettings.github.scopes.hint")
                             }
                         </Hint>
-                    </>
+                    </FormSection>
                 )
             }
             <Field.Button

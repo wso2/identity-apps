@@ -18,14 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, FormSection, GenericIcon, Heading, Hint } from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Grid, Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -386,15 +386,12 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 && formFields.scope.value.split
                 && formFields.scope.value.split(" ").length > 0
                 && (
-                    <>
-                        <div className="field">
-                            <label>
-                                {
-                                    t("console:develop.features.authenticationProvider.forms" +
-                                        ".authenticatorSettings.facebook.scopes.heading")
-                                }
-                            </label>
-                        </div>
+                    <FormSection
+                        heading={
+                            t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.facebook.scopes.heading")
+                        }
+                    >
                         <div className="authenticator-dynamic-properties">
                             {
                                 formFields.scope.value
@@ -441,7 +438,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                                     ".authenticatorSettings.facebook.scopes.hint")
                             }
                         </Hint>
-                    </>
+                    </FormSection>
                 )
             }
             {
@@ -449,15 +446,12 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 && formFields.UserInfoFields.value.split
                 && formFields.UserInfoFields.value.split(",").length > 0
                 && (
-                    <>
-                        <div className="field">
-                            <label>
-                                {
-                                    t("console:develop.features.authenticationProvider.forms" +
-                                        ".authenticatorSettings.facebook.userInfo.heading")
-                                }
-                            </label>
-                        </div>
+                    <FormSection
+                        heading={
+                            t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.facebook.userInfo.heading")
+                        }
+                    >
                         <div className="authenticator-dynamic-properties">
                             {
                                 formFields.UserInfoFields.value
@@ -495,8 +489,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                                     ".authenticatorSettings.facebook.userInfo.hint"
                                 }
                             >
-                                Requested default public profile fields of a user. These information can provide 
-                                authenticated app users with a personalized in-app experience. Click 
+                                Requested default public profile fields of a user. These information can provide
+                                authenticated app users with a personalized in-app experience. Click
                                 <a
                                     href={
                                         "https://developers.facebook.com/docs/graph-api/reference/user/" +
@@ -507,7 +501,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                                 >here</a> to learn more.
                             </Trans>
                         </Hint>
-                    </>
+                    </FormSection>
                 )
             }
             <Field.Button
