@@ -21,6 +21,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
+import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
@@ -256,6 +257,23 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
     };
 
     switch (type) {
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <FacebookAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        { ...rest }
+                    />
+                )
+                : null;
         case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (

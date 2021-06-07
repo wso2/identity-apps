@@ -170,7 +170,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         const resolveTemplateId = (authenticatorId: string) => {
 
             if (authenticatorId) {
-                if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                if (authenticatorId === IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
+                } else if (authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
                     return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
                 } else if (authenticatorId === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
                     return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC;

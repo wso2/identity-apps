@@ -83,6 +83,7 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         ENTERPRISE: "enterprise-idp",
+        FACEBOOK: "facebook-idp",
         GITHUB: "github-idp",
         GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
         OIDC: "oidc-idp",
@@ -105,11 +106,34 @@ export class IdentityProviderManagementConstants {
 
     /**
      * GitHub Scope mappings.
-     * @type {{USER_EMAIL: string; USER_READ: string}}
+     * @type {Record<string, string>}
      */
     public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
         USER_EMAIL: "user:email",
         USER_READ: "read:user"
+    };
+
+    /**
+     * Facebook Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email"
+    };
+
+    /**
+     * Facebook Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
+        AGE_RANGE: "age_range",
+        EMAIL: "email",
+        FIRST_NAME: "first_name",
+        GENDER: "gender",
+        ID: "id",
+        LAST_NAME: "last_name",
+        LINK: "link",
+        NAME: "name"
     };
 
     /**

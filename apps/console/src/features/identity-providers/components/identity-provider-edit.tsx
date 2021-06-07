@@ -310,7 +310,9 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return false;
         }
 
-        if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
+        if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK) {
+            return false;
+        } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
             return false;
         } else if (type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB) {
             return false;

@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
-import { CommonAuthenticatorForm, GithubAuthenticatorForm } from "../authenticators";
+import { CommonAuthenticatorForm, FacebookAuthenticatorForm, GithubAuthenticatorForm } from "../authenticators";
 
 /**
  * Proptypes for the authenticator form factory component.
@@ -60,6 +60,18 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     } = props;
 
     switch (type) {
+        case IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
+            return (
+                <FacebookAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                />
+            );
         case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
