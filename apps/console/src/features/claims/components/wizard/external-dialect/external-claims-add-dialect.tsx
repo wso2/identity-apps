@@ -141,7 +141,6 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * @param {Map<string, FormValue>} values {claimURI, localClaim}
      */
     const onExternalClaimAdd = (values: Map<string, FormValue>): void => {
-        // enableSubmit();
         const newClaim = {
             claimURI: values.get("claimURI").toString(),
             mappedLocalClaimURI: values.get("localClaim").toString()

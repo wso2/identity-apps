@@ -265,9 +265,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             }}
                             onSearchChange={ (event: SyntheticEvent, data: DropdownOnSearchChangeData) => {
                                 const query = data.searchQuery;
-                                const temList = filteredLocalClaims.filter((claim: Claim) => claim.displayName
+                                const itemList = filteredLocalClaims.filter((claim: Claim) => claim.displayName
                                     .toLowerCase().includes(query.toLowerCase()));
-                                setLocalClaimsSearchResults(temList);
+                                setLocalClaimsSearchResults(itemList);
                             }}
                             children={
                                 localClaimsSearchResults?.map((claim: Claim, index) => {
