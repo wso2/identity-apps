@@ -25,6 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { userstoresConfig } from "../../../extensions/configs/userstores";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -216,6 +217,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         <PageLayout
             action={
                 (isLoading || !(!searchQuery && filteredUserStores?.length <= 0))
+                && userstoresConfig.userstoreList.allowAddingUserstores
                 && hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
                     allowedScopes)
                 && (
