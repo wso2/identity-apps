@@ -26,10 +26,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
+import { userstoresConfig } from "../../../../extensions/configs/userstores";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
-import { CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
+import {CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED} from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
+import { UserstoreConstants } from "@wso2is/core/constants";
+
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
@@ -186,7 +189,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         const description = {
             operation: "REPLACE",
             path: "/description",
-            value: values.get("description").toString()
+            value: values.get("description")?.toString()
         };
 
         const requiredData = properties?.required.map((property: TypeProperty) => {
@@ -194,7 +197,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: values.get(property.name).toString()
+                    value: values.get(property.name)?.toString()
                 };
             }
         }).filter(Boolean);
@@ -206,7 +209,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: values.get(property.name).toString()
+                    value: values.get(property.name)?.toString()
                 };
             })
             : null;
@@ -216,7 +219,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -226,7 +229,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -236,7 +239,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -246,7 +249,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 return {
                     operation: "REPLACE",
                     path: `/properties/${ property.name }`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -368,49 +371,44 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         "name.requiredErrorMessage") }
                                     placeholder={ t("console:manage.features.userstores.forms.general.name" +
                                         ".placeholder") }
-                                    value={ userStore?.name }
+                                    value={
+                                        userStore?.name === CONSUMER_USERSTORE
+                                        ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                                        : userStore?.name
+                                    }
                                     disabled
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
-                                <Field
-                                    label={ t("console:manage.features.userstores.forms.general.type.label") }
-                                    name="type"
-                                    type="text"
-                                    disabled
-                                    required={ false }
-                                    requiredErrorMessage={ t("console:manage.features.userstores.forms.general" +
-                                        ".type.requiredErrorMessage") }
-                                    value={ userStore?.typeName }
-                                    data-testid={ `${ testId }-form-type-input` }
-                                />
                                 {
-                                    id === CONSUMER_USERSTORE_ID ? (
-                                        <Field
-                                            label={ t("console:manage.features.userstores.forms.general.description.label") }
-                                            name="description"
-                                            type="textarea"
-                                            disabled
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            placeholder={ t("console:manage.features.userstores.forms.general." +
-                                                "description.placeholder") }
-                                            value={ userStore?.description }
-                                            data-testid={ `${ testId }-form-description-textarea` }
-                                        />
-                                    )
-                                    : (
-                                        <Field
-                                            label={ t("console:manage.features.userstores.forms.general.description.label") }
-                                            name="description"
-                                            type="textarea"
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            placeholder={ t("console:manage.features.userstores.forms.general." +
-                                                "description.placeholder") }
-                                            value={ userStore?.description }
-                                            data-testid={ `${ testId }-form-description-textarea` }
-                                        />
-                                    )
+                                    (userstoresConfig.userstoreEdit.basicDetails.showType
+                                        && id !== CONSUMER_USERSTORE_ID)
+                                        && (
+                                            <Field
+                                                label={ t("console:manage.features.userstores.forms.general." +
+                                                    "type.label") }
+                                                name="type"
+                                                type="text"
+                                                disabled
+                                                required={ false }
+                                                requiredErrorMessage={ t("console:manage.features.userstores." +
+                                                    "forms.general.type.requiredErrorMessage") }
+                                                value={ userStore?.typeName }
+                                                data-testid={ `${ testId }-form-type-input` }
+                                            />
+                                        )
+                                }
+                                {
+                                    <Field
+                                        label={ t("console:manage.features.userstores.forms.general.description.label") }
+                                        name="description"
+                                        type="textarea"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder={ t("console:manage.features.userstores.forms.general." +
+                                            "description.placeholder") }
+                                        value={ userStore?.description }
+                                        data-testid={ `${ testId }-form-description-textarea` }
+                                    />
                                 }
                             </Grid.Column>
                         </Grid.Row>

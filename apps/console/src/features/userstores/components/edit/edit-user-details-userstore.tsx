@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
+import { userstoresConfig } from "../../../../extensions/configs/userstores";
 import { patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE_ID } from "../../constants";
 import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
@@ -290,14 +291,45 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 ) :
-                                                (
+                                                property.name == "DisplayNameAttribute" ?
+                                                    (
+                                                        (userstoresConfig.userstoreEdit.userDetails.showDisplayName
+                                                        && id !== CONSUMER_USERSTORE_ID)
+                                                        && (
+                                                            <Field
+                                                                name={ property.name }
+                                                                value={ property.value ?? property.defaultValue }
+                                                                type="text"
+                                                                key={ index }
+                                                                required={ true }
+                                                                label={ property.description.split("#")[ 0 ] }
+                                                                requiredErrorMessage={
+                                                                    t("console:manage.features.userstores.forms." +
+                                                                        "custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("console:manage.features.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                data-testid={
+                                                                    `${ testId }-form-text-input-${ property.name }`
+                                                                }
+                                                            />
+                                                        )
+                                                    )
+                                                : (
                                                     <Field
                                                         name={ property.name }
                                                         value={ property.value ?? property.defaultValue }
                                                         type="text"
                                                         key={ index }
                                                         required={ true }
-                                                        disabled={ id === CONSUMER_USERSTORE_ID }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             t("console:manage.features.userstores.forms." +
@@ -328,6 +360,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                     || properties?.optional.sql.insert.length > 0
                     || properties?.optional.sql.select.length > 0
                     || properties?.optional.sql.update.length > 0)
+                    && (userstoresConfig.userstoreEdit.userDetails.showAdditionalProperties
+                    && id !== CONSUMER_USERSTORE_ID)
                     && (
                         <Grid columns={ 1 }>
                             <Grid.Column width={ 8 } textAlign="center">

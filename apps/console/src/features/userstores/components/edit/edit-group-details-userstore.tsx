@@ -23,10 +23,12 @@ import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { userstoresConfig } from "../../../../extensions/configs/userstores";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore } from "../../api";
 import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
+import {CONSUMER_USERSTORE_ID} from "../../constants";
 
 /**
  * Prop types of `EditGroupDetails` component
@@ -112,7 +114,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
             return {
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
-                value: values.get(property.name).toString()
+                value: values.get(property.name)?.toString()
             };
         });
 
@@ -121,7 +123,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
-                    value: values.get(property.name).toString()
+                    value: values.get(property.name)?.toString()
                 };
             })
             : null;
@@ -131,7 +133,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -141,7 +143,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -151,7 +153,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -161,7 +163,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
-                    value: sql.get(property.name).toString()
+                    value: sql.get(property.name)?.toString()
                 };
             })
             : null;
@@ -254,7 +256,10 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                 />
                                             )
                                             : toggle
-                                                ? master
+                                                ? (userstoresConfig.userstoreEdit.groupDetails.showToggles
+                                                    && id !== CONSUMER_USERSTORE_ID)
+                                                && (
+                                                master
                                                     ? (
                                                         <Field
                                                             name={ property.name }
@@ -315,6 +320,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                             data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                         />
                                                     )
+                                                )
                                                 : (
                                                     <Field
                                                         name={ property.name }
@@ -330,7 +336,12 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
-                                                        disabled={ disabled }
+                                                        disabled={
+                                                            userstoresConfig.userstoreEdit.groupDetails.showToggles
+                                                            && id !== CONSUMER_USERSTORE_ID
+                                                                ? disabled
+                                                                : false
+                                                        }
                                                         placeholder={
                                                             t("console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
@@ -355,6 +366,8 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                         || properties?.optional.sql.insert.length > 0
                         || properties?.optional.sql.select.length > 0
                         || properties?.optional.sql.update.length > 0)
+                    && (userstoresConfig.userstoreEdit.groupDetails.showAdditionalProperties
+                    && id !== CONSUMER_USERSTORE_ID)
                     && (
                         <Grid columns={ 1 }>
                             <Grid.Column width={ 8 } textAlign="center">
