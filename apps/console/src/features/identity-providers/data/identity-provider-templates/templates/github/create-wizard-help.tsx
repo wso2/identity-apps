@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading, Code } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -70,8 +70,33 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
                             target="_blank"
                             rel="noopener noreferrer">
                         on GitHub
-                        </a>, and obtain a <strong>client ID & secret</strong>. Use the following URL as the 
-                        <strong>Homepage URL</strong> & <strong>Authorization callback URL</strong>.
+                        </a>, and obtain a <strong>client ID & secret</strong>.
+                    </Trans>
+                </p>
+                <p>
+
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                            ".preRequisites.configureHomePageURL"
+                        }
+                    >
+                        Use the following URL as the <strong>Homepage URL</strong>.
+                    </Trans>
+
+                    <CopyInputField
+                        className="copy-input-dark spaced"
+                        value={ config.deployment.serverHost }
+                    />
+                </p>
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                            ".preRequisites.configureRedirectURL"
+                        }
+                    >
+                        Add the following URL as the <strong>Authorization callback URL</strong>.
                     </Trans>
 
                     <CopyInputField
@@ -80,7 +105,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<GithubIdentityPr
                     />
 
                     <a
-                        href="https://github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
+                        href="https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app"
                         target="_blank"
                         rel="noopener noreferrer">
                         {

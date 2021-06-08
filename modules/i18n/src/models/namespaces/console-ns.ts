@@ -624,8 +624,8 @@ export interface ConsoleNS {
                                         heading: string;
                                     },
                                     flowBuilder: {
-                                        addMissingGoogleAuthenticatorModal: ModalInterface;
-                                        duplicateGoogleAuthenticatorSelectionModal: ModalInterface;
+                                        addMissingSocialAuthenticatorModal: ModalInterface;
+                                        duplicateSocialAuthenticatorSelectionModal: ModalInterface;
                                         heading: string;
                                         types: {
                                             defaultConfig: {
@@ -1084,6 +1084,73 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
+                    authenticatorSettings: {
+                        facebook: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                            userInfo: {
+                                heading: string;
+                                hint: string;
+                                placeholder: string;
+                                list: {
+                                    ageRange: {
+                                        description: string;
+                                    },
+                                    email: {
+                                        description: string;
+                                    },
+                                    firstName: {
+                                        description: string;
+                                    },
+                                    gender: {
+                                        description: string;
+                                    }
+                                    id: {
+                                        description: string;
+                                    },
+                                    lastName: {
+                                        description: string;
+                                    },
+                                    link: {
+                                        description: string;
+                                    },
+                                    name: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                        };
+                        github: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                        };
+                    },
                     outboundConnectorAccordion: {
                         default: {
                             0: string;
@@ -1169,6 +1236,56 @@ export interface ConsoleNS {
                     quickSetup: {
                         heading: string;
                         subHeading: string;
+                    };
+                    facebook: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            },
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            },
+                            heading: string;
+                            name: {
+                                description: string;
+                                heading: string;
+                            },
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                configureSiteURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            },
+                            subHeading: string;
+                        }
+                    },
+                    github: {
+                        wizardHelp: {
+                            heading: string;
+                            subHeading: string;
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            },
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            },
+                            name: {
+                                description: string;
+                                heading: string;
+                            },
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureHomePageURL: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                                getCredentials: string;
+                            }
+                        }
                     };
                 };
                 list: {

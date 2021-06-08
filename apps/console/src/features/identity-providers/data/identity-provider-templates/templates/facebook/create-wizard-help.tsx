@@ -106,7 +106,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                     />
 
                     <a
-                        href="https://developers.facebook.com/docs/facebook-login/"
+                        href="https://developers.facebook.com/docs/development/create-an-app"
                         target="_blank"
                         rel="noopener noreferrer">
                         {
