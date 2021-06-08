@@ -17,12 +17,15 @@
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
     FilePicker,
     GenericIcon,
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -31,25 +34,23 @@ import {
     useWizardAlert,
     XMLFileStrategy
 } from "@wso2is/react-components";
-import { addAlert } from "@wso2is/core/store";
+import { FormValidation } from "@wso2is/validation";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Divider, Grid, Icon } from "semantic-ui-react";
+import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
+import { createIdentityProvider, getIdentityProviderList } from "../../api";
+import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
     StrictIdentityProviderInterface
 } from "../../models";
-import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
-import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
-import { Divider, Grid, Icon } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { Field, Wizard2, WizardPage } from "@wso2is/form";
-import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import isEmpty from "lodash-es/isEmpty";
-import { IdentityProviderManagementConstants } from "../../constants";
-import cloneDeep from "lodash-es/cloneDeep";
-import { FormValidation } from "@wso2is/validation";
 import { handleGetIDPListCallError } from "../utils";
 
 /**
@@ -691,51 +692,64 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             </Grid>
             <Divider hidden/>
             { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
-                <Field.Input
-                    ariaLabel="JWKS endpoint URL"
-                    inputType="url"
-                    name="jwks_endpoint"
-                    label="JWKS endpoint URL"
-                    required={ false }
-                    maxLength={ JWKS_URL_LENGTH.max }
-                    minLength={ JWKS_URL_LENGTH.min }
-                    width={ 15 }
-                    initialValue={ EMPTY_STRING }
-                    placeholder="Enter JWKS endpoint URL"
-                    data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
-                />
+                <>
+                    <Field.Input
+                        ariaLabel="JWKS endpoint URL"
+                        inputType="url"
+                        name="jwks_endpoint"
+                        label="JWKS endpoint URL"
+                        required={ false }
+                        maxLength={ JWKS_URL_LENGTH.max }
+                        minLength={ JWKS_URL_LENGTH.min }
+                        width={ 15 }
+                        initialValue={ EMPTY_STRING }
+                        placeholder="Enter JWKS endpoint URL"
+                        data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
+                    />
+                    <Hint>
+                        Asgardeo will use this URL to obtain keys to verify the signed
+                        responses from your external IdP
+                    </Hint>
+                </>
             ) }
             { (selectedCertInputType === "pem") && (
-                <FilePicker
-                    key={ 2 }
-                    file={ selectedCertificateFile }
-                    pastedContent={ pastedPEMContent }
-                    fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
-                    onChange={ (result) => {
-                        if (result?.serialized) {
-                            setPastedPEMContent(result?.pastedContent);
-                            setSelectedCertificateFile(result?.file);
-                            setPemString(result.serialized.pemStripped);
-                        }
-                        /**
-                         * If there's pasted content or a file, but it hasn't been serialized
-                         * and if it's not valid then we must disable the next button. This condition
-                         * implies => that when the input is optional but the user tries to enter
-                         * invalid content to the picker we can't enable next because it's invalid.
-                         */
-                        setNextShouldBeDisabled(
-                            (result?.pastedContent?.length > 0 || result?.file) &&
-                            !result.serialized &&
-                            !result.valid
-                        );
-                    } }
-                    uploadButtonText="Upload Certificate File"
-                    dropzoneText="Drag and drop a certificate file here."
-                    icon={ getCertificateIllustrations().uploadPlaceholder }
-                    placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
-                    data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
-                    normalizeStateOnRemoveOperations={ true }
-                />
+                <>
+                    <FilePicker
+                        key={ 2 }
+                        file={ selectedCertificateFile }
+                        pastedContent={ pastedPEMContent }
+                        fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
+                        normalizeStateOnRemoveOperations={ true }
+                        onChange={ (result) => {
+                            if (result?.serialized) {
+                                setPastedPEMContent(result?.pastedContent);
+                                setSelectedCertificateFile(result?.file);
+                                setPemString(result.serialized.pemStripped);
+                            }
+                            /**
+                             * If there's pasted content or a file, but it hasn't been serialized
+                             * and if it's not valid then we must disable the next button. This condition
+                             * implies => that when the input is optional but the user tries to enter
+                             * invalid content to the picker we can't enable next because it's invalid.
+                             */
+                            setNextShouldBeDisabled(
+                                (result?.pastedContent?.length > 0 || result?.file) &&
+                                !result.serialized &&
+                                !result.valid
+                            );
+                        } }
+                        uploadButtonText="Upload Certificate File"
+                        dropzoneText="Drag and drop a certificate file here."
+                        pasteAreaPlaceholderText="Paste IdP certificate in PEM format."
+                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                        placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
+                        data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
+                    />
+                    <Hint>
+                        Asgardeo will use this certificate to verify the signed
+                        responses from your external IdP.
+                    </Hint>
+                </>
             ) }
         </WizardPage>
     );
