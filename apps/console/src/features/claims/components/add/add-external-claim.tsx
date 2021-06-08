@@ -264,8 +264,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 return items;
                             }}
                             onSearchChange={ (event: SyntheticEvent, data: DropdownOnSearchChangeData) => {
-                                const query = data.searchQuery;
-                                const itemList = filteredLocalClaims.filter((claim: Claim) => claim.displayName
+                                const query: string = data.searchQuery;
+                                const itemList: Claim[] = filteredLocalClaims.filter((claim: Claim) => claim.displayName
                                     .toLowerCase().includes(query.toLowerCase()));
                                 setLocalClaimsSearchResults(itemList);
                             }}

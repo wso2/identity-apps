@@ -122,6 +122,9 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         }
     }, [ values ]);
 
+    /**
+     * Change button disable state when claims are added.
+     */
     useEffect(() => {
 
         if (claims.length === initialList.length) {

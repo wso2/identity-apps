@@ -250,6 +250,9 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
         });
     };
 
+    /**
+     * Handles the update button disable state.
+     */
     const handleClaimListChange = (buttonState: boolean): void => {
         setDisableSubmit(buttonState);
     };
