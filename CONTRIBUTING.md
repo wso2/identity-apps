@@ -3,7 +3,7 @@
 We would really appreciate your contributions to WSO2 Identity Server Apps to help make it even better than it is today!
 As a contributor, here are the guidelines we would like you to follow:
 
- - [Developer Guide](#developer-guide)
+ - [Developer Guide](./docs/DEVELOPER.md)
 
 ## Developer Guide
 
