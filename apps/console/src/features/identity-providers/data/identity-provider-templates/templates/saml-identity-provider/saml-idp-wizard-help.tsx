@@ -17,9 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Code, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 type Props = TestableComponentInterface;
 
@@ -27,37 +29,39 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
 
     const { [ "data-testid" ]: testId } = props;
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Service provider entity id</Heading>
+            <Heading as="h5">Service provider entity ID</Heading>
             <p>
-                A globally unique name for IDPs under Asgardeo. This can be any value but when you configure a service
-                provider in the external IDP you should give the same value as the Service Provider Entity ID.
+                This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
+                { config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
+                as the service provider entity id.
             </p>
             <Divider/>
-            <Heading as="h5">Identity provider entity id</Heading>
+            <Heading as="h5">Identity provider entity ID</Heading>
             <p>
-                The <code>&lt;Issuer&gt;</code> value of the SAML2 response from the identity provider you are
-                configuring. This value must be a unique string among identity providers inside the same tenant.
-                This information should be taken from the external Identity provider.
+                This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in the SAML responses issued by the
+                external IdP. Also, this needs to be a unique value to identify the external IdP within your organization.
             </p>
             <Divider/>
-            <Heading as="h5">SSO Url</Heading>
+            <Heading as="h5">SSO URL</Heading>
             <p>
-                Single sign-on URL of external identity provider. this is where Asgardeo will send its authentication
-                requests.
+                Single sign-on URL of the external IdP. { config.ui.productName } will send SAML authentication
+                requests to this endpoint.
             </p>
+            <p>E.g., https://ENTERPRISE_DOMAIN/token</p>
             <Divider/>
             <Heading as="h5">Protocol binding</Heading>
             <p>
-                Protocol binding to use when sending requests. http-redirect for simple requests or http-post if
-                requests are signed, which is recommended.
+                This specifies the mechanisms to transport SAML messages in communication protocols.
             </p>
             <Divider/>
-            <Heading as="h5">Name id format</Heading>
+            <Heading as="h5">Name ID format</Heading>
             <p>
-                Name ID defines the name identifier formats supported by the external identity provider. Name identifier
-                is how Asgardeo communicate with external idp regarding a user.
+                This specifies the name identifier format that is used to exchange information regarding the user
+                in the SAML assertion sent from the external IdP.
             </p>
         </div>
     );
