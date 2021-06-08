@@ -76,7 +76,7 @@ interface FacebookAuthenticatorFormPropsInterface extends TestableComponentInter
  */
 interface FacebookAuthenticatorFormInitialValuesInterface {
     /**
-     * Facebook Authenticator client secret field value. 
+     * Facebook Authenticator client secret field value.
      */
     ClientSecret: string;
     /**
@@ -258,40 +258,23 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             };
         }
 
-        return {
-            description: "",
-            displayName: scope,
-            icon: "key"
-        };
-    };
-
-    /**
-     * Resolve metadata for UI rendering of User Info fields.
-     *
-     * @param {string} infoField - User info field.
-     *
-     * @return {UserInfoMetaInterface}
-     */
-    const resolveUserInfoMetadata = (infoField: string): UserInfoMetaInterface => {
-
-        if (get(IdentityProviderManagementConstants.FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY, toUpper(infoField))) {
+        if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                    ".facebook.userInfo.list."+ camelCase(infoField) + ".description"),
+                description: t("console:develop.features.authenticationProvider.forms" +
+                    ".authenticatorSettings.facebook.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        {
-                            get(IdentityProviderManagementConstants.FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY,
-                                toUpper(infoField))
-                        }
+                        { IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE }
                     </Code>
-                )
+                ),
+                icon: "user outline"
             };
         }
 
         return {
             description: "",
-            displayName: infoField
+            displayName: scope,
+            icon: "key"
         };
     };
 
@@ -340,8 +323,14 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                         ".facebook.clientSecret.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientSecret.hint")
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".facebook.clientSecret.hint"
+                        }
+                    >
+                        The <Code>App secret</Code> value of the Facebook application.
+                    </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={ formFields?.ClientSecret?.meta?.readOnly }
@@ -433,72 +422,18 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                             }
                         </div>
                         <Hint compact>
-                            {
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.scopes.hint")
-                            }
-                        </Hint>
-                    </FormSection>
-                )
-            }
-            {
-                formFields?.UserInfoFields?.value
-                && formFields.UserInfoFields.value.split
-                && formFields.UserInfoFields.value.split(",").length > 0
-                && (
-                    <FormSection
-                        heading={
-                            t("console:develop.features.authenticationProvider.forms" +
-                                ".authenticatorSettings.facebook.userInfo.heading")
-                        }
-                    >
-                        <div className="authenticator-dynamic-properties">
-                            {
-                                formFields.UserInfoFields.value
-                                    .split(",")
-                                    .map((field: string, index: number) => {
-
-                                        const uerInfoMeta: UserInfoMetaInterface = resolveUserInfoMetadata(field);
-
-                                        return (
-                                            <div
-                                                key={ index }
-                                                className="authenticator-dynamic-property"
-                                                data-testid={ field }
-                                            >
-                                                <div className="authenticator-dynamic-property-name-container">
-                                                    <div data-testid={ `${ field }-name` }>
-                                                        { uerInfoMeta.displayName }
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className="authenticator-dynamic-property-description"
-                                                    data-testid={ `${ field }-description` }
-                                                >
-                                                    { uerInfoMeta.description }
-                                                </div>
-                                            </div>
-                                        );
-                                    })
-                            }
-                        </div>
-                        <Hint compact>
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.userInfo.hint"
+                                    ".authenticatorSettings.facebook.scopes.hint"
                                 }
                             >
-                                Requested default public profile fields of a user. These information can provide
-                                authenticated app users with a personalized in-app experience. Click
-                                <a
-                                    href={
-                                        "https://developers.facebook.com/docs/graph-api/reference/user/" +
-                                        "#default-public-profile-fields"
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >here</a> to learn more.
+                                Permissions provide a way for connected apps to access data from Facebook.
+                                Click <a
+                                href="https://developers.facebook.com/docs/permissions/reference"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >here</a> to learn more.
                             </Trans>
                         </Hint>
                     </FormSection>

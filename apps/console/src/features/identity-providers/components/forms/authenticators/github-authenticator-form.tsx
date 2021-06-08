@@ -21,7 +21,7 @@ import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
@@ -73,7 +73,7 @@ interface GithubAuthenticatorFormPropsInterface extends TestableComponentInterfa
  */
 interface GithubAuthenticatorFormInitialValuesInterface {
     /**
-     * GitHub Authenticator client secret field value. 
+     * GitHub Authenticator client secret field value.
      */
     ClientSecret: string;
     /**
@@ -281,8 +281,14 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                         ".github.clientId.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".github.clientId.hint")
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".github.clientId.hint"
+                        }
+                    >
+                        The <Code>Client ID</Code> you received from GitHub for your OAuth app.
+                    </Trans>
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={ formFields?.ClientId?.meta?.readOnly }
@@ -308,8 +314,14 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                         ".authenticatorSettings.github.clientSecret.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms" +
-                        ".authenticatorSettings.github.clientSecret.hint")
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".github.clientSecret.hint"
+                        }
+                    >
+                        The <Code>Client secret</Code> you received from GitHub for your OAuth app.
+                    </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
                 readOnly={ formFields?.ClientSecret?.meta?.readOnly }
@@ -401,10 +413,22 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                             }
                         </div>
                         <Hint>
-                            {
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.scopes.hint")
-                            }
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.facebook.scopes.hint"
+                                }
+                            >
+                                The scopes specifies the type of access provided for connected apps
+                                to access data from GitHub. Click <a
+                                href={
+                                    "https://docs.github.com/en/developers/apps/building-oauth" +
+                                    "-apps/scopes-for-oauth-apps"
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >here</a> to learn more.
+                            </Trans>
                         </Hint>
                     </FormSection>
                 )
