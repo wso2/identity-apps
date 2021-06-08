@@ -401,6 +401,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     <Field
                                         label={ t("console:manage.features.userstores.forms.general.description.label") }
                                         name="description"
+                                        disabled={ id == CONSUMER_USERSTORE_ID }
                                         type="textarea"
                                         required={ false }
                                         requiredErrorMessage=""
