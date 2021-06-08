@@ -725,6 +725,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // TODO: Need to update below values in the SAML authenticator metadata API
             // Remove additional meta & data if the authenticator is SAML
             if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                const ssoUrl = authenticator.data.properties.find((prop) => prop.key === "SSOUrl");
                 // Remove additional query params
                 authenticator.meta.properties.map(prop => {
                     if (prop.key === "SPEntityId") {
@@ -732,33 +733,49 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "IdPEntityId") {
                         prop.displayName = "Identity provider entity ID"
                     } else if (prop.key === "ISAuthnReqSigned") {
-                        prop.displayName = "Enable authentication request signing"
+                        prop.displayName = "Enable authentication request signing";
+                        prop.description = "Specify whether the SAML authentication request to" +
+                            " the external identity provider must be signed or not.";
                     } else if (prop.key === "IsLogoutEnabled") {
                         prop.displayName = "Identity provider logout enabled"
-                        prop.description = "Specify whether logout or single logout" +
-                            " is supported by the third party identity provider.";
+                        prop.description = "Specify whether logout is supported by the external identity provider.";
                     } else if (prop.key === "IsSLORequestAccepted") {
                         prop.displayName = "Accept identity provider logout request";
                         prop.description = "Specify whether single logout request from the" +
                             " identity provider must be accepted by " + config.ui.productName;
                     } else if (prop.key === "LogoutReqUrl") {
-                        prop.displayName = "Logout URL"
+                        prop.displayName = "Logout URL";
+                        // TODO: once we refactor out the SAML authenticator setting to a
+                        //       separate component. We need to format the SSO URL to a
+                        //       code block.
+                        prop.description = `Enter the identity provider's logout URL value` +
+                            ` if it is different from the SSO URL${ssoUrl?.value ? " (" + ssoUrl.value + ")" : ""}`;
                     } else if (prop.key === "IsLogoutReqSigned") {
                         prop.displayName = "Enable logout request signing"
                     } else if (prop.key === "IsAuthnRespSigned") {
-                        prop.displayName = "Enable authentication response signing"
+                        prop.displayName = "Verify response signature";
                     } else if (prop.key === "SignatureAlgorithm") {
                         prop.displayName = "Signature algorithm"
                     } else if (prop.key === "DigestAlgorithm") {
                         prop.displayName = "Digest algorithm"
                     } else if (prop.key === "IncludeProtocolBinding") {
-                        prop.displayName = "Include protocol binding"
+                        prop.displayName = "Include ProtocolBinding in the request";
+                        prop.description = "This specifies the mechanisms to transport SAML " +
+                            "messages in communication protocols.";
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "SAML2 Web SSO user ID location"
+                        prop.displayName = "Use NameID as the User Identifier";
+                        // TODO: once we refactor out the SAML authenticator setting to a
+                        //       separate component, add a link to Attributes tab from the
+                        //       description itself.
+                        prop.description = "If you need to specify an attribute from the SAML assertion " +
+                            "as the User Identifier, you can uncheck this option " +
+                            "and configure the subject from the Attributes section.";
                     } else if (prop.key === "RequestMethod") {
                         prop.displayName = "HTTP binding"
                     } else if (prop.key === "commonAuthQueryParams") {
-                        prop.displayName = "Additional query parameters"
+                        prop.displayName = "Additional query parameters";
+                        prop.description = "These will be sent to external IdP as query parameters" +
+                            " in the SAML authentication request. E.g., loginHint=hint1";
                     }
                 });
 

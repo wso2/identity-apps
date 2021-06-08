@@ -301,11 +301,40 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         }
 
-    }
+    };
+
+    const changeUserIdInClaimCheckboxLabelBasedOnValue = (key: string, values: Map<string, FormValue>) => {
+
+        const TARGET_FORM_KEY = "IsUserIdInClaims";
+
+        if (key === TARGET_FORM_KEY) {
+
+            const changeLabel = (to: string): void => {
+                const props = metadata
+                    .properties
+                    .find(({ key }) => key === TARGET_FORM_KEY);
+                if (props) props.displayName = to;
+            };
+
+            const isChecked = (value: FormValue): boolean =>
+                value &&
+                (Array.isArray(value) && value.length > 0) ||
+                (typeof value === "string" && value == "true");
+
+            if (isChecked(values.get(TARGET_FORM_KEY))) {
+                changeLabel("Use NameID as the User Identifier");
+            } else {
+                changeLabel("User Identifier found among claims");
+            }
+
+        }
+
+    };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
 
         triggerAlgorithmSelectionDropdowns(key, values);
+        changeUserIdInClaimCheckboxLabelBasedOnValue(key, values);
 
         setDynamicValues({
             ...dynamicValues,
@@ -346,6 +375,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
+        changeUserIdInClaimCheckboxLabelBasedOnValue("IsUserIdInClaims", initialFormValues);
 
     }, []);
 
