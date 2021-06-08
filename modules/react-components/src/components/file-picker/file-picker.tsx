@@ -56,6 +56,12 @@ export interface FilePickerProps {
      */
     dropzoneText?: string;
     /**
+     * This is the placeholder text for paste tab content
+     * area. By default this has a value like the following:-
+     * "Paste your content in this area..."
+     */
+    pasteAreaPlaceholderText?: string;
+    /**
      * The manual upload button text. This button is
      * placed beneath the description.
      */
@@ -132,6 +138,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         fileStrategy,
         onChange,
         dropzoneText,
+        pasteAreaPlaceholderText,
         uploadButtonText,
         icon,
         placeholderIcon,
@@ -430,7 +437,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
             return (
                 <TextArea
                     rows={ 10 }
-                    placeholder={ "Paste your content in this area..." }
+                    placeholder={ pasteAreaPlaceholderText ?? "Paste your content in this area..." }
                     value={ pastedContent }
                     onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                         if (event) {

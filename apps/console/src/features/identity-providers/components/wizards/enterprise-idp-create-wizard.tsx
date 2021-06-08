@@ -17,12 +17,15 @@
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
     FilePicker,
     GenericIcon,
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton,
     SelectionCard,
@@ -31,25 +34,23 @@ import {
     useWizardAlert,
     XMLFileStrategy
 } from "@wso2is/react-components";
-import { addAlert } from "@wso2is/core/store";
+import { FormValidation } from "@wso2is/validation";
+import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 
 import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Divider, Grid, Icon } from "semantic-ui-react";
+import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
+import { createIdentityProvider, getIdentityProviderList } from "../../api";
+import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
     StrictIdentityProviderInterface
 } from "../../models";
-import { AppConstants, getCertificateIllustrations, history, ModalWithSidePanel, store } from "../../../core";
-import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
-import { Divider, Grid, Icon } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { Field, Wizard2, WizardPage } from "@wso2is/form";
-import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import isEmpty from "lodash-es/isEmpty";
-import { IdentityProviderManagementConstants } from "../../constants";
-import cloneDeep from "lodash-es/cloneDeep";
-import { FormValidation } from "@wso2is/validation";
 import { handleGetIDPListCallError } from "../utils";
 
 /**
@@ -58,8 +59,6 @@ import { handleGetIDPListCallError } from "../utils";
  */
 interface EnterpriseIDPCreateWizardProps extends TestableComponentInterface,
     GenericIdentityProviderCreateWizardPropsInterface {
-
-    showAsStandaloneIdentityProvider?: boolean;
 }
 
 /**
@@ -99,7 +98,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         title,
         subTitle,
         template,
-        showAsStandaloneIdentityProvider,
         [ "data-testid" ]: testId
     } = props;
 
@@ -142,16 +140,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, []);
 
     useEffect(() => {
-        if (showAsStandaloneIdentityProvider) {
-            if (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML === template.id) {
-                setSelectedProtocol("saml");
-            } else {
-                setSelectedProtocol("oidc");
-            }
-        }
-    });
-
-    useEffect(() => {
         if (!initWizard) {
             setWizardSteps(getWizardSteps());
             setInitWizard(true);
@@ -172,11 +160,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const getWizardSteps: () => WizardStepInterface[] = () => {
         return [
-            ...(!showAsStandaloneIdentityProvider ? [ {
+            {
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 title: "General Settings"
-            } ] : []),
+            },
             {
                 icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
@@ -243,15 +231,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * template first we need to find the correct sub template and deep
          * clone that object to avoid mutation on file level configuration.
          */
-        const { idp: identityProvider } = showAsStandaloneIdentityProvider ?
-            cloneDeep(template)
-            :
-            cloneDeep(template.subTemplates.find(({ id }) => {
-                return id === (selectedProtocol === "saml" ?
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
-                );
-            }));
+        const {idp: identityProvider} = cloneDeep(template.subTemplates.find(({id}) => {
+            return id === (selectedProtocol === "saml" ?
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+            );
+        }));
 
         if (selectedProtocol === "oidc") {
 
@@ -427,21 +412,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
             return errors;
         } }>
-            { showAsStandaloneIdentityProvider && (
-                <Field.Input
-                    data-testid={ `${ testId }-form-wizard-idp-name` }
-                    ariaLabel="name"
-                    inputType="name"
-                    name="name"
-                    placeholder="Enter a name for the identity provider"
-                    label="Identity provider name"
-                    initialValue={ initialValues.name }
-                    maxLength={ IDP_NAME_LENGTH.max }
-                    minLength={ IDP_NAME_LENGTH.min }
-                    required={ true }
-                    width={ 15 }
-                />)
-            }
             <Field.Input
                 ariaLabel="Service provider entity id"
                 inputType="default"
@@ -553,16 +523,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return (
             <WizardPage validate={ (values) => {
                 const errors: FormErrors = {};
-                if (showAsStandaloneIdentityProvider) {
-                    errors.name = composeValidators(
-                        required,
-                        length(IDP_NAME_LENGTH)
-                    )(values.name);
-                    if (isIdpNameAlreadyTaken(values.name)) {
-                        errors.name = t("console:develop.features.authenticationProvider." +
-                            "forms.generalDetails.name.validations.duplicate");
-                    }
-                }
                 errors.clientId = composeValidators(
                     required,
                     length(OIDC_CLIENT_ID_MAX_LENGTH)
@@ -584,19 +544,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
             } }>
-                { showAsStandaloneIdentityProvider ? (<Field.Input
-                    data-testid={ `${ testId }-form-wizard-idp-name` }
-                    ariaLabel="name"
-                    inputType="name"
-                    name="name"
-                    placeholder="Enter a name for the identity provider"
-                    label="Identity provider name"
-                    initialValue={ initialValues.name }
-                    maxLength={ IDP_NAME_LENGTH.max }
-                    minLength={ IDP_NAME_LENGTH.min }
-                    required={ true }
-                    width={ 13 }
-                />) : (<></>) }
                 <Field.Input
                     ariaLabel="clientId"
                     inputType="resourceName"
@@ -691,51 +638,62 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             </Grid>
             <Divider hidden/>
             { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
-                <Field.Input
-                    ariaLabel="JWKS endpoint URL"
-                    inputType="url"
-                    name="jwks_endpoint"
-                    label="JWKS endpoint URL"
-                    required={ false }
-                    maxLength={ JWKS_URL_LENGTH.max }
-                    minLength={ JWKS_URL_LENGTH.min }
-                    width={ 15 }
-                    initialValue={ EMPTY_STRING }
-                    placeholder="Enter JWKS endpoint URL"
-                    data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
-                />
+                <>
+                    <Field.Input
+                        ariaLabel="JWKS endpoint URL"
+                        inputType="url"
+                        name="jwks_endpoint"
+                        label="JWKS endpoint URL"
+                        required={ false }
+                        maxLength={ JWKS_URL_LENGTH.max }
+                        minLength={ JWKS_URL_LENGTH.min }
+                        width={ 15 }
+                        initialValue={ EMPTY_STRING }
+                        placeholder="Enter JWKS endpoint URL"
+                        data-testid={ `${ testId }-form-wizard-oidc-jwks-endpoint-url` }
+                    />
+                    <Hint>
+                        Asgardeo will use this URL to obtain keys to verify the signed
+                        responses from your external IdP
+                    </Hint>
+                </>
             ) }
             { (selectedCertInputType === "pem") && (
-                <FilePicker
-                    key={ 2 }
-                    file={ selectedCertificateFile }
-                    pastedContent={ pastedPEMContent }
-                    fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
-                    onChange={ (result) => {
-                        if (result?.serialized) {
-                            setPastedPEMContent(result?.pastedContent);
-                            setSelectedCertificateFile(result?.file);
-                            setPemString(result.serialized.pemStripped);
-                        }
-                        /**
-                         * If there's pasted content or a file, but it hasn't been serialized
-                         * and if it's not valid then we must disable the next button. This condition
-                         * implies => that when the input is optional but the user tries to enter
-                         * invalid content to the picker we can't enable next because it's invalid.
-                         */
-                        setNextShouldBeDisabled(
-                            (result?.pastedContent?.length > 0 || result?.file) &&
-                            !result.serialized &&
-                            !result.valid
-                        );
-                    } }
-                    uploadButtonText="Upload Certificate File"
-                    dropzoneText="Drag and drop a certificate file here."
-                    icon={ getCertificateIllustrations().uploadPlaceholder }
-                    placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
-                    data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
-                    normalizeStateOnRemoveOperations={ true }
-                />
+                <>
+                    <FilePicker
+                        key={ 2 }
+                        file={ selectedCertificateFile }
+                        pastedContent={ pastedPEMContent }
+                        fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
+                        normalizeStateOnRemoveOperations={ true }
+                        onChange={ (result) => {
+                            setPastedPEMContent(result.pastedContent);
+                            setSelectedCertificateFile(result.file);
+                            setPemString(result.serialized?.pemStripped);
+                            /**
+                             * If there's pasted content or a file, but it hasn't been serialized
+                             * and if it's not valid then we must disable the next button. This condition
+                             * implies => that when the input is optional but the user tries to enter
+                             * invalid content to the picker we can't enable next because it's invalid.
+                             */
+                            setNextShouldBeDisabled(
+                                (result.pastedContent?.length > 0 || result.file) &&
+                                !result.serialized &&
+                                !result.valid
+                            );
+                        } }
+                        uploadButtonText="Upload Certificate File"
+                        dropzoneText="Drag and drop a certificate file here."
+                        pasteAreaPlaceholderText="Paste IdP certificate in PEM format."
+                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                        placeholderIcon={ <Icon name="file alternate" size={ "huge" }/> }
+                        data-testid={ `${ testId }-form-wizard-${ selectedProtocol }-pem-certificate` }
+                    />
+                    <Hint>
+                        Asgardeo will use this certificate to verify the signed
+                        responses from your external IdP.
+                    </Hint>
+                </>
             ) }
         </WizardPage>
     );
@@ -745,13 +703,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const resolveWizardPages = (): Array<ReactElement> => {
         if (selectedProtocol === "oidc") {
             return [
-                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
+                wizardCommonFirstPage(),
                 oidcConfigurationPage(),
                 certificatesPage()
             ];
         } else {
             return [
-                ...(!showAsStandaloneIdentityProvider ? [ wizardCommonFirstPage() ] : []),
+                wizardCommonFirstPage(),
                 samlConfigurationPage(),
                 certificatesPage()
             ];
@@ -760,26 +718,24 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const resolveHelpPanel = () => {
 
-        if (showAsStandaloneIdentityProvider && currentWizardStep !== 0) return null;
-        if (!showAsStandaloneIdentityProvider && currentWizardStep !== 1) return null;
+        const SECOND_STEP: number = 1;
+        if (currentWizardStep !== SECOND_STEP) return null;
 
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: IdentityProviderTemplateInterface = showAsStandaloneIdentityProvider ?
-            template :
-            cloneDeep(template.subTemplates.find(({ id }) => {
-                return id === (selectedProtocol === "saml" ?
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
-                );
-            }));
+        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({id}) => {
+            return id === (selectedProtocol === "saml" ?
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
+                    IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+            );
+        }));
 
         if (!subTemplate?.content?.wizardHelp) {
             return null;
         }
 
-        const { wizardHelp: WizardHelp } = subTemplate?.content;
+        const {wizardHelp: WizardHelp} = subTemplate?.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
