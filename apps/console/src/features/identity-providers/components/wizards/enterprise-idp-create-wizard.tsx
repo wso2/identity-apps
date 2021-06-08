@@ -721,11 +721,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                         normalizeStateOnRemoveOperations={ true }
                         onChange={ (result) => {
-                            if (result?.serialized) {
-                                setPastedPEMContent(result?.pastedContent);
-                                setSelectedCertificateFile(result?.file);
-                                setPemString(result.serialized.pemStripped);
-                            }
+                            setPastedPEMContent(result.pastedContent);
+                            setSelectedCertificateFile(result.file);
+                            setPemString(result.serialized?.pemStripped);
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
@@ -733,7 +731,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                              * invalid content to the picker we can't enable next because it's invalid.
                              */
                             setNextShouldBeDisabled(
-                                (result?.pastedContent?.length > 0 || result?.file) &&
+                                (result.pastedContent?.length > 0 || result.file) &&
                                 !result.serialized &&
                                 !result.valid
                             );
