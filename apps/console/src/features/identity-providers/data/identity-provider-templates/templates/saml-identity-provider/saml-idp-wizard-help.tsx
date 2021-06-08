@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Code, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
@@ -35,14 +35,14 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
         <div data-testid={ testId }>
             <Heading as="h5">Service provider entity ID</Heading>
             <p>
-                This value will be used as the <code>&lt;saml2:Issuer&gt;</code> in the SAML requests initiated from
+                This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
                 { config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
                 as the service provider entity id.
             </p>
             <Divider/>
             <Heading as="h5">Identity provider entity ID</Heading>
             <p>
-                This is the <code>&lt;saml2:Issuer&gt;</code> value specified in the SAML responses issued by the
+                This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in the SAML responses issued by the
                 external IdP. Also, this needs to be a unique value to identify the external IdP within your organization.
             </p>
             <Divider/>
