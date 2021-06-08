@@ -744,9 +744,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "IsAuthnRespSigned") {
                         prop.displayName = "Verify response signature";
                     } else if (prop.key === "SignatureAlgorithm") {
-                        prop.displayName = "Signature algorithm"
+                        prop.displayName = "Signature algorithm";
+                        prop.description = undefined;
                     } else if (prop.key === "DigestAlgorithm") {
                         prop.displayName = "Digest algorithm"
+                        prop.description = undefined;
                     } else if (prop.key === "IncludeProtocolBinding") {
                         prop.displayName = "Include ProtocolBinding in the request";
                         prop.description = "This specifies the mechanisms to transport SAML " +
