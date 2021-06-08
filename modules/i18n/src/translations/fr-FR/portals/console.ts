@@ -2810,8 +2810,8 @@ export const console: ConsoleNS = {
                                     empty: "La valeur du certificat est requise"
                                 }
                             },
-                            hint: "Si le type est JWKS, la valeur doit être une URL JWKS. Si le type est" +
-                                " PEM, la valeur doit être le certificat au format PEM.",
+                            hint: "L'URL JWKS ou le certificat au format PEM est utilisé pour vérifier les réponses " +
+                                "signées du fournisseur d'identité externe",
                             label: "Sélectionnez le type de certificat"
                         },
                         federationHub: {

@@ -31,6 +31,12 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import {CheckboxProps, Grid, Icon} from "semantic-ui-react";
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    getEmptyPlaceholderIllustrations
+} from "../../../core";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
@@ -121,6 +127,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
+    const [ isJwksDisabled, setIsJwksDisabled ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
@@ -250,6 +257,16 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
         return authenticators;
     }
+
+    /**
+     * Sets the value to disable the JWKS URL in certificate section
+     */
+    useEffect(() => {
+        if (identityProvider.federatedAuthenticators.defaultAuthenticatorId ==
+            IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+            setIsJwksDisabled(true);
+        }
+    }, [identityProvider]);
 
     useEffect(() => {
         if (isEmpty(identityProvider.federatedAuthenticators)) {
@@ -554,6 +571,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         <IdpCertificates
                                             editingIDP={ identityProvider }
                                             onUpdate={ onUpdate }
+                                            disableJwks={ isJwksDisabled }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
@@ -823,10 +841,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-
-                    { /*<Divider hidden />*/ }
-                    { /*{ showCertificateDetails() }*/ }
-
+                    { showCertificateDetails() }
                     {
                         deletingAuthenticator && (
                             <ConfirmationModal

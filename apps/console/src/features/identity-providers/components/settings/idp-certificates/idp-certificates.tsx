@@ -41,6 +41,10 @@ interface IdpCertificatesPropsInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * JWKS endpoint availability
+     */
+    disableJwks?: boolean;
 }
 
 /**
@@ -57,6 +61,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     const {
         editingIDP,
         onUpdate,
+        disableJwks,
         [ "data-testid" ]: testId
     } = props;
 
@@ -141,67 +146,80 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
 
     return (
         <Forms>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Field
-                            label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
-                                "certificateType.label") }
-                            name="type"
-                            default={ "JWKS" }
-                            listen={
-                                (values) => {
-                                    setPEMSelected(values.get("type") === "PEM");
-                                    setJWKSSelected(values.get("type") === "JWKS");
-                                    handleCertificateTypeChange(values.get("type").toString());
+            { !disableJwks ?
+                (
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                            <Field
+                                label={t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
+                                    "certificateType.label")}
+                                name="type"
+                                default={"JWKS"}
+                                listen={
+                                    (values) => {
+                                        setPEMSelected(values.get("type") === "PEM");
+                                        setJWKSSelected(values.get("type") === "JWKS");
+                                        handleCertificateTypeChange(values.get("type").toString());
+                                    }
                                 }
-                            }
-                            type="radio"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.authenticationProvider.forms." +
-                                        "advancedConfigs.certificateType" +
-                                        ".certificateJWKS.label"),
-                                    value: "JWKS"
-                                },
-                                {
-                                    label: t("console:develop.features.authenticationProvider.forms." +
-                                        "advancedConfigs.certificateType" +
-                                        ".certificatePEM.label"),
-                                    value: "PEM"
-                                }
-                            ] }
-                            value={ editingIDP?.certificate?.certificates ? "PEM" : "JWKS" }
-                            data-testid={ `${ testId }-certificate-type-radio-group` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
-                                "certificateType.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
+                                type="radio"
+                                children={[
+                                    {
+                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                            "advancedConfigs.certificateType" +
+                                            ".certificateJWKS.label"),
+                                        value: "JWKS"
+                                    },
+                                    {
+                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                            "advancedConfigs.certificateType" +
+                                            ".certificatePEM.label"),
+                                        value: "PEM"
+                                    }
+                                ]}
+                                value={editingIDP?.certificate?.certificates ? "PEM" : "JWKS"}
+                                data-testid={`${testId}-certificate-type-radio-group`}
+                            />
+                            <Hint>
+                                {t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
+                                    "certificateType.hint")}
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={1}>
                         {
                             (isPEMSelected || editingIDP?.certificate?.certificates) && !isJWKSSelected ?
                                 (
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Grid.Column mobile={16} tablet={16} computer={16}>
                                         <IdpCertificatesListComponent
-                                            editingIDP={ editingIDP }
-                                            onUpdate={ onUpdate }
+                                            editingIDP={editingIDP}
+                                            onUpdate={onUpdate}
                                         />
                                     </Grid.Column>
                                 ) : (
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Grid.Column mobile={16} tablet={16} computer={8}>
                                         <AddIDPJWKSUriFormComponent
-                                            initialUri={ editingIDP?.certificate?.jwksUri
-                                                ? editingIDP?.certificate?.jwksUri : "" }
-                                            onSubmit={ updateJWKEndpoint }
+                                            initialUri={editingIDP?.certificate?.jwksUri
+                                                ? editingIDP?.certificate?.jwksUri : ""}
+                                            onSubmit={updateJWKEndpoint}
                                         />
                                     </Grid.Column>
                                 )
                         }
-                </Grid.Row>
-            </Grid>
+                    </Grid.Row>
+                </Grid>
+                ) : (
+                    <Grid>
+                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                            <IdpCertificatesListComponent
+                                editingIDP={editingIDP}
+                                onUpdate={onUpdate}
+                            />
+                        </Grid.Column>
+                    </Grid>
+                )
+            }
         </Forms>
     );
 };
