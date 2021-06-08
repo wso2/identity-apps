@@ -365,7 +365,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
                         </Grid.Column>
                     </Grid.Row>
-                    { type.typeName.includes(JDBC) && (
+                    { type?.typeName.includes(JDBC) && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
                                 <Button

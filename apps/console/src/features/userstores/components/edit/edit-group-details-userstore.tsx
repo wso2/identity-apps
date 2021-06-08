@@ -256,8 +256,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                 />
                                             )
                                             : toggle
-                                                ? (userstoresConfig.userstoreEdit.groupDetails.showToggles
-                                                    && id !== CONSUMER_USERSTORE_ID)
+                                                ? (id !== CONSUMER_USERSTORE_ID)
                                                 && (
                                                 master
                                                     ? (
@@ -366,8 +365,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                         || properties?.optional.sql.insert.length > 0
                         || properties?.optional.sql.select.length > 0
                         || properties?.optional.sql.update.length > 0)
-                    && (userstoresConfig.userstoreEdit.groupDetails.showAdditionalProperties
-                    && id !== CONSUMER_USERSTORE_ID)
+                    && (id !== CONSUMER_USERSTORE_ID)
                     && (
                         <Grid columns={ 1 }>
                             <Grid.Column width={ 8 } textAlign="center">
