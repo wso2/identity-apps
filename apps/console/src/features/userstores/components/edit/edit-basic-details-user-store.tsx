@@ -373,8 +373,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         ".placeholder") }
                                     value={
                                         userStore?.name === CONSUMER_USERSTORE
-                                        ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
-                                        : userStore?.name
+                                            ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                                            : userStore?.name
                                     }
                                     disabled
                                     data-testid={ `${ testId }-form-name-input` }
