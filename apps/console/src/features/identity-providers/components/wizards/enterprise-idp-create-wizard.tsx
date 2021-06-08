@@ -264,13 +264,19 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "RequestMethod", value: values.RequestMethod },
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "SSOUrl", value: values.SSOUrl },
-                    { key: "selectMode", value: "Manual Configuration" }
+                    { key: "selectMode", value: "Manual Configuration" },
+                    { key: "IsUserIdInClaims", value: "true" },
+                    { key: "IsSLORequestAccepted", value: "true" },
+                    { key: "SignatureAlgorithm", value: "RSA with SHA1" },
+                    { key: "DigestAlgorithm", value: "SHA1" }
                 ];
             } else {
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
                     { key: "SPEntityId", value: values.SPEntityId },
                     { key: "meta_data_saml", value: xmlBase64String ?? EMPTY_STRING },
-                    { key: "selectMode", value: "Metadata File Configuration" }
+                    { key: "selectMode", value: "Metadata File Configuration" },
+                    { key: "IsUserIdInClaims", value: "true" },
+                    { key: "IsSLORequestAccepted", value: "true" }
                 ];
             }
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ?? EMPTY_STRING ];

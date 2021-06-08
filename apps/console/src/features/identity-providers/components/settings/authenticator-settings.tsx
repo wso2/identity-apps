@@ -28,23 +28,11 @@ import {
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, {
-    FormEvent,
-    FunctionComponent,
-    MouseEvent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { IdpCertificates } from "./idp-certificates";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    getEmptyPlaceholderIllustrations
-} from "../../../core";
+import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -73,6 +61,7 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
+import { IdpCertificates } from "./idp-certificates";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -726,6 +715,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // TODO: Need to update below values in the SAML authenticator metadata API
             // Remove additional meta & data if the authenticator is SAML
             if (authenticator.id === IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
+                const ssoUrl = authenticator.data.properties.find((prop) => prop.key === "SSOUrl");
                 // Remove additional query params
                 authenticator.meta.properties.map(prop => {
                     if (prop.key === "SPEntityId") {
@@ -733,40 +723,82 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "IdPEntityId") {
                         prop.displayName = "Identity provider entity ID"
                     } else if (prop.key === "ISAuthnReqSigned") {
-                        prop.displayName = "Enable authentication request signing"
+                        prop.displayName = "Enable authentication request signing";
+                        prop.description = "Specify whether the SAML authentication request to" +
+                            " the external identity provider must be signed or not.";
                     } else if (prop.key === "IsLogoutEnabled") {
                         prop.displayName = "Identity provider logout enabled"
-                        prop.description = "Specify whether logout or single logout" +
-                            " is supported by the third party identity provider.";
+                        prop.description = "Specify whether logout is supported by the external identity provider.";
                     } else if (prop.key === "IsSLORequestAccepted") {
                         prop.displayName = "Accept identity provider logout request";
                         prop.description = "Specify whether single logout request from the" +
                             " identity provider must be accepted by " + config.ui.productName;
                     } else if (prop.key === "LogoutReqUrl") {
-                        prop.displayName = "Logout URL"
+                        prop.displayName = "Logout URL";
+                        // TODO: once we refactor out the SAML authenticator setting to a
+                        //       separate component. We need to format the SSO URL to a
+                        //       code block.
+                        prop.description = `Enter the identity provider's logout URL value` +
+                            ` if it is different from the SSO URL${ssoUrl?.value ? " (" + ssoUrl.value + ")" : ""}`;
                     } else if (prop.key === "IsLogoutReqSigned") {
                         prop.displayName = "Enable logout request signing"
                     } else if (prop.key === "IsAuthnRespSigned") {
-                        prop.displayName = "Enable authentication response signing"
+                        prop.displayName = "Verify response signature";
                     } else if (prop.key === "SignatureAlgorithm") {
-                        prop.displayName = "Signature algorithm"
+                        prop.displayName = "Signature algorithm";
+                        prop.description = undefined;
                     } else if (prop.key === "DigestAlgorithm") {
                         prop.displayName = "Digest algorithm"
+                        prop.description = undefined;
                     } else if (prop.key === "IncludeProtocolBinding") {
-                        prop.displayName = "Include protocol binding"
+                        prop.displayName = "Include ProtocolBinding in the request";
+                        prop.description = "This specifies the mechanisms to transport SAML " +
+                            "messages in communication protocols.";
                     } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "SAML2 Web SSO user ID location"
+                        prop.displayName = "Use NameID as the User Identifier";
+                        // TODO: once we refactor out the SAML authenticator setting to a
+                        //       separate component, add a link to Attributes tab from the
+                        //       description itself.
+                        prop.description = "If you need to specify an attribute from the SAML assertion " +
+                            "as the User Identifier, you can uncheck this option " +
+                            "and configure the subject from the Attributes section.";
                     } else if (prop.key === "RequestMethod") {
                         prop.displayName = "HTTP binding"
                     } else if (prop.key === "commonAuthQueryParams") {
-                        prop.displayName = "Additional query parameters"
+                        prop.displayName = "Additional query parameters";
+                        prop.description = "These will be sent to external IdP as query parameters" +
+                            " in the SAML authentication request. E.g., loginHint=hint1";
                     }
                 });
+
+                // Sort the properties. Sad reaccs only :(
+                //
+                // 0. "SPEntityId"      Service Provider entity ID.    =1   swap: SignatureAlgorithmPost -> 1
+                // 1. "SSOUrl"          SSO URL                        =6   swap: SignatureAlgorithmPost -> 6
+                // 2. "IdPEntityId"     IdP Entity ID                  =5   swap: "NameIDType" -> 5
+                // 3. "NameIDType"      NameID format                  =2   swap: "selectMode" -> 2
+                // 4. "RequestMethod"   HTTP Binding                   =32  swap: "meta_data_saml" -> 32
+
+                const swapDisplayOrderOfKeys = (key1: string, key2: string): void => {
+                    const prop1 = authenticator.meta.properties.find((prop) => prop.key === key1);
+                    const prop2 = authenticator.meta.properties.find((prop) => prop.key === key2);
+                    const tempProp1DisplayOrderNumber = prop1.displayOrder;
+                    prop1.displayOrder = prop2.displayOrder;
+                    prop2.displayOrder = tempProp1DisplayOrderNumber;
+                };
+
+                swapDisplayOrderOfKeys("SignatureAlgorithmPost", "SPEntityId");
+                swapDisplayOrderOfKeys("SignatureAlgorithmPost", "SSOUrl");
+                swapDisplayOrderOfKeys("NameIDType", "IdPEntityId");
+                swapDisplayOrderOfKeys("selectMode", "NameIDType");
+                swapDisplayOrderOfKeys("meta_data_saml", "RequestMethod");
 
                 // Removing these attributes from the basic settings. We will categorize them
                 // and add these to advanced on the go.
                 removeElementFromProps(authenticator.data.properties, "isAssertionSigned");
                 removeElementFromProps(authenticator.meta.properties, "isAssertionSigned");
+                removeElementFromProps(authenticator.data.properties, "IsSLORequestAccepted");
+                removeElementFromProps(authenticator.meta.properties, "IsSLORequestAccepted");
                 removeElementFromProps(authenticator.data.properties, "ACSUrl");
                 removeElementFromProps(authenticator.meta.properties, "ACSUrl");
                 removeElementFromProps(authenticator.data.properties, "ForceAuthentication");
