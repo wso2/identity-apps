@@ -35,7 +35,7 @@ import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dimmer, Grid, Popup } from "semantic-ui-react";
+import { Dimmer, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
@@ -431,7 +431,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
                                 validation={ async (value: FormValue, validation: Validation) => {
-                                    if(!isNameValid(value.toString())) {
+                                    if(!isNameValid(value.toString().trim())) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
                                             t("console:develop.features.applications.forms." +
