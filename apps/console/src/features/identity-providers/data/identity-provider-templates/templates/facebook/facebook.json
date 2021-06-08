@@ -4,7 +4,7 @@
     "description": "Login with Facebook",
     "image": "facebook",
     "category": "DEFAULT",
-    "displayOrder": 4,
+    "displayOrder": 2,
     "services": [],
     "idp": {
         "name": "Facebook",
