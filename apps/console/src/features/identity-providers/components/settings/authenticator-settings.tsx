@@ -28,23 +28,11 @@ import {
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, {
-    FormEvent,
-    FunctionComponent,
-    MouseEvent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { IdpCertificates } from "./idp-certificates";
-import {
-    AppState,
-    ConfigReducerStateInterface,
-    getEmptyPlaceholderIllustrations
-} from "../../../core";
+import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -73,6 +61,7 @@ import {
     handleGetIDPTemplateListError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
+import { IdpCertificates } from "./idp-certificates";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -778,6 +767,28 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             " in the SAML authentication request. E.g., loginHint=hint1";
                     }
                 });
+
+                // Sort the properties. Sad reaccs only :(
+                //
+                // 0. "SPEntityId"      Service Provider entity ID.    =1   swap: SignatureAlgorithmPost -> 1
+                // 1. "SSOUrl"          SSO URL                        =6   swap: SignatureAlgorithmPost -> 6
+                // 2. "IdPEntityId"     IdP Entity ID                  =5   swap: "NameIDType" -> 5
+                // 3. "NameIDType"      NameID format                  =2   swap: "selectMode" -> 2
+                // 4. "RequestMethod"   HTTP Binding                   =32  swap: "meta_data_saml" -> 32
+
+                const swapDisplayOrderOfKeys = (key1: string, key2: string): void => {
+                    const prop1 = authenticator.meta.properties.find((prop) => prop.key === key1);
+                    const prop2 = authenticator.meta.properties.find((prop) => prop.key === key2);
+                    const tempProp1DisplayOrderNumber = prop1.displayOrder;
+                    prop1.displayOrder = prop2.displayOrder;
+                    prop2.displayOrder = tempProp1DisplayOrderNumber;
+                };
+
+                swapDisplayOrderOfKeys("SignatureAlgorithmPost", "SPEntityId");
+                swapDisplayOrderOfKeys("SignatureAlgorithmPost", "SSOUrl");
+                swapDisplayOrderOfKeys("NameIDType", "IdPEntityId");
+                swapDisplayOrderOfKeys("selectMode", "NameIDType");
+                swapDisplayOrderOfKeys("meta_data_saml", "RequestMethod");
 
                 // Removing these attributes from the basic settings. We will categorize them
                 // and add these to advanced on the go.
