@@ -69,21 +69,31 @@ return (
 ```
 
 ### Adding a new language to the module.
+
 1. Create a folder with the language's ISO code inside `src/translations`. ex: `en-GB`
-2. Create a `portals` folder and implement the common, user portal, dev portal, etc. namespaces.
+2. Create a `portals` folder and implement the common, myAccount, console, extensions etc. namespaces.
 3. Create other folders such as `docs`, etc. and place the necessary translations.
 4. Create a `meta.ts` file and add all the necessary metadata regarding the language bundle.
+
 ```ts
+import { I18nModuleConstants } from "../../constants";
 import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "en-GB",
     flag: "gb",
     name: "English (United Kingdom)",
-    namespaces: [ "common", "devPortal", "myAccount" ]
+    namespaces: [
+        I18nModuleConstants.COMMON_NAMESPACE,
+        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
+        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
+        I18nModuleConstants.EXTENSIONS_NAMESPACE
+    ]
 };
 ```
+
 5. Export the bundle from the index.
+
 ```ts
 import * as portals from "./portals";
 import { LocaleBundle } from "../../models";
@@ -95,23 +105,30 @@ export const EN_GB: LocaleBundle = {
         portals
     }
 };
-
 ```
 
 ### Adding a new language during runtime.
-1. Create a folder with the language's ISO code inside the distribution directory. ex: For Dev Portal, the i18n bundle will be saved under `resources/i18n`. Create a folder `fr` to store french language the translations.
+1. Create a folder with the language's ISO code inside the distribution directory. ex: For Console, the i18n bundle will be saved under `resources/i18n`. Create a folder `fr-FR` to store french language the translations.
 2. Copy the translated JSON files.
 3. Update the `meta.json` file.
+
 ```json
 {
-    "fr": {
-        "code": "fr",
+    "fr-FR": {
+        "code": "fr-FR",
         "flag": "fr",
-        "name": "French (France)",
-        "namespaces": ["common", "devPortal"],
+        "name": "Français (France)",
+        "namespaces": [
+            "common",
+            "console",
+            "myAccount",
+            "extensions"
+        ],
         "paths": {
-            "devPortal": "fr/portals/devPortal.json",
-            "common": "fr/portals/common.json"
+            "common": "fr-FR/portals/common.json",
+            "console": "fr-FR/portals/console.json",
+            "myAccount": "fr-FR/portals/myAccount.json",
+            "extensions": "fr-FR/portals/extensions.json"
         }
     }
 }
