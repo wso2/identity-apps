@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FacebookAuthenticationProviderCreateWizardPage } from "./facebook-authentication-provider-create-wizard-page";
+import { FacebookAuthenticationProviderCreateWizardContent } from "./facebook-authentication-provider-create-wizard-content";
 import {
     AppConstants,
     AppState,
@@ -412,7 +412,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                     data-testid={ `${ testId }-modal-content` }
                 >
                     { alert && alertComponent }
-                    <FacebookAuthenticationProviderCreateWizardPage
+                    <FacebookAuthenticationProviderCreateWizardContent
                         onSubmit={ onSubmitWizard }
                         triggerSubmission={ (submitFunctionCb: () => void) => {
                             submitForm = submitFunctionCb;

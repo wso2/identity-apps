@@ -17,4 +17,4 @@
  */
 
 export * from "./facebook-authentication-provider-create-wizard";
-export * from "./facebook-authentication-provider-create-wizard-page";
+export * from "./facebook-authentication-provider-create-wizard-content";

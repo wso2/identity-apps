@@ -30,9 +30,9 @@ import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterfac
 import { handleGetIDPListCallError } from "../../utils";
 
 /**
- * Proptypes for the GoogleAuthenticationWizardFrom.
+ * Proptypes for the GitHub Authentication Provider create wizard content.
  */
-interface GithubAuthenticationProviderCreateWizardPagePropsInterface extends TestableComponentInterface {
+interface GithubAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
     /**
      * Trigger form submit.
      * @param {() => void} submitFunctionCb - Callback.
@@ -65,15 +65,15 @@ interface GithubAuthenticationProviderCreateWizardPagePropsInterface extends Tes
 }
 
 /**
- * Facebook Authentication Provider Create Wizard Page Component.
+ * Facebook Authentication Provider Create Wizard content component.
  *
- * @param {GithubAuthenticationProviderCreateWizardPagePropsInterface} props - Props injected to the component.
+ * @param {GithubAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const FacebookAuthenticationProviderCreateWizardPage: FunctionComponent<
-    GithubAuthenticationProviderCreateWizardPagePropsInterface> = (
-        props: GithubAuthenticationProviderCreateWizardPagePropsInterface
+export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponent<
+    GithubAuthenticationProviderCreateWizardContentPropsInterface> = (
+        props: GithubAuthenticationProviderCreateWizardContentPropsInterface
 ): ReactElement => {
 
     const {
@@ -284,6 +284,6 @@ export const FacebookAuthenticationProviderCreateWizardPage: FunctionComponent<
 /**
  * Default props for the Facebook Authentication Provider Create Wizard Page Component.
  */
-FacebookAuthenticationProviderCreateWizardPage.defaultProps = {
-    "data-testid": "facebook-idp-create-wizard-page"
+FacebookAuthenticationProviderCreateWizardContent.defaultProps = {
+    "data-testid": "facebook-idp-create-wizard-content"
 };

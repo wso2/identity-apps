@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { GithubAuthenticationProviderCreateWizardPage } from "./github-authentication-provider-create-wizard-page";
+import { GitHubAuthenticationProviderCreateWizardContent } from "./git-hub-authentication-provider-create-wizard-content";
 import {
     AppConstants,
     AppState,
@@ -92,9 +92,9 @@ export interface GithubAuthenticationProviderCreateWizardFormErrorValidationsInt
 /**
  * GitHub Authentication Provider Create Wizard Component.
  *
- * @param { GitHubAuthenticationProviderCreateWizardPropsInterface } props - Props injected to the component.
+ * @param {GitHubAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
  *
- * @return { React.ReactElement }
+ * @return {React.ReactElement}
  */
 export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
     GitHubAuthenticationProviderCreateWizardPropsInterface
@@ -410,7 +410,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     data-testid={ `${ testId }-modal-content` }
                 >
                     { alert && alertComponent }
-                    <GithubAuthenticationProviderCreateWizardPage
+                    <GitHubAuthenticationProviderCreateWizardContent
                         onSubmit={ onSubmitWizard }
                         triggerSubmission={ (submitFunctionCb: () => void) => {
                             submitForm = submitFunctionCb;

@@ -32,7 +32,7 @@ import { handleGetIDPListCallError } from "../../utils";
 /**
  * Proptypes for the GoogleAuthenticationWizardFrom.
  */
-interface GithubAuthenticationProviderCreateWizardPagePropsInterface extends TestableComponentInterface {
+interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
     /**
      * Trigger form submit.
      * @param {() => void} submitFunctionCb - Callback.
@@ -65,15 +65,15 @@ interface GithubAuthenticationProviderCreateWizardPagePropsInterface extends Tes
 }
 
 /**
- * GitHub Authentication Provider Create Wizard Page Component.
+ * GitHub Authentication Provider Create Wizard content component.
  *
- * @param {GithubAuthenticationProviderCreateWizardPagePropsInterface} props - Props injected to the component.
+ * @param {GitHubAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
-    GithubAuthenticationProviderCreateWizardPagePropsInterface> = (
-        props: GithubAuthenticationProviderCreateWizardPagePropsInterface
+export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
+    GitHubAuthenticationProviderCreateWizardContentPropsInterface> = (
+        props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
 ): ReactElement => {
 
     const {
@@ -288,6 +288,6 @@ export const GithubAuthenticationProviderCreateWizardPage: FunctionComponent<
 /**
  * Default props for the GitHub Authentication Provider Create Wizard Page Component.
  */
-GithubAuthenticationProviderCreateWizardPage.defaultProps = {
+GitHubAuthenticationProviderCreateWizardContent.defaultProps = {
     "data-testid": "github-idp-create-wizard-page"
 };
