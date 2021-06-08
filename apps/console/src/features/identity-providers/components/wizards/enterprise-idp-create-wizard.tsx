@@ -281,7 +281,9 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "SSOUrl", value: values.SSOUrl },
                     { key: "selectMode", value: "Manual Configuration" },
                     { key: "IsUserIdInClaims", value: "true" },
-                    { key: "IsSLORequestAccepted", value: "true" }
+                    { key: "IsSLORequestAccepted", value: "true" },
+                    { key: "SignatureAlgorithm", value: "RSA with SHA1" },
+                    { key: "DigestAlgorithm", value: "SHA1" }
                 ];
             } else {
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
