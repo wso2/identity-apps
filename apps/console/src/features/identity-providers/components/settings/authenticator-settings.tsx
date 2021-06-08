@@ -794,6 +794,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // and add these to advanced on the go.
                 removeElementFromProps(authenticator.data.properties, "isAssertionSigned");
                 removeElementFromProps(authenticator.meta.properties, "isAssertionSigned");
+                removeElementFromProps(authenticator.data.properties, "IsSLORequestAccepted");
+                removeElementFromProps(authenticator.meta.properties, "IsSLORequestAccepted");
                 removeElementFromProps(authenticator.data.properties, "ACSUrl");
                 removeElementFromProps(authenticator.meta.properties, "ACSUrl");
                 removeElementFromProps(authenticator.data.properties, "ForceAuthentication");
