@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -26,12 +27,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { userstoresConfig } from "../../../../extensions/configs/userstores";
+import { userstoresConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
-import {CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED} from "../../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
-import { UserstoreConstants } from "@wso2is/core/constants";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component

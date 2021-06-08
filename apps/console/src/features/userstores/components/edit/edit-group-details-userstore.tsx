@@ -23,12 +23,12 @@ import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { userstoresConfig } from "../../../../extensions/configs/userstores";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
+import { userstoresConfig } from "../../../../extensions";
 import { patchUserStore } from "../../api";
+import { CONSUMER_USERSTORE_ID } from "../../constants";
 import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
-import {CONSUMER_USERSTORE_ID} from "../../constants";
 
 /**
  * Prop types of `EditGroupDetails` component

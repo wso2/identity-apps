@@ -33,7 +33,7 @@ import {
     EditUserDetails
 } from "../components";
 import { getDatabaseAvatarGraphic } from "../configs";
-import {CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID} from "../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
 import { CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { reOrganizeProperties } from "../utils";
 
