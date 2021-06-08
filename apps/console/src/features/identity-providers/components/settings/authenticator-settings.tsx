@@ -671,8 +671,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.maxLength = OIDC_CLIENT_ID_SECRET_MAX_LENGTH;
                     } else if (prop.key === "callbackUrl") {
                         prop.displayName = "Authorized redirect URL";
-                        prop.description = "The URL to which the authorization code is sent upon " +
-                            "authentication, and where the user is redirected to upon logout.";
+                        prop.description = "The Asgardeo URL to which the user needs to be redirected " +
+                            "after completing the authentication at the identity provider. The " +
+                            "identity provider needs to send the authorization code to this URL upon " +
+                            "successful authentication.";
+                        prop.readOnly = true;
                     } else if (prop.key === "OAuth2AuthzEPUrl") {
                         prop.displayName = "Authorization endpoint URL";
                         prop.description = "The standard authorization endpoint URL obtained from " +
@@ -687,20 +690,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.displayName = "User info endpoint URL";
                         prop.description = "The URL corresponding to the userinfo endpoint.";
                         prop.maxLength = URL_MAX_LENGTH;
-                        prop.displayOrder = 7;
-                    } else if (prop.key === "IsUserIdInClaims") {
-                        prop.displayName = "User ID found in claims";
-                        prop.description = "The location to find the user identifier in the " +
-                            "ID token assertion.";
-                        prop.displayOrder = 6;
                     } else if (prop.key === "commonAuthQueryParams") {
                         prop.displayName = "Additional query parameters";
+                        prop.description = "These  will be sent to the identity provider as query parameters in the " +
+                            "authentication request. \nE.g., loginHint=hint1"
                     }
                 });
 
                 // Remove additional query params
                 removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
                 removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
+                //Temporarily removed until sub attributes are available
+                removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" )
 
                 // Inject logout url
                 const logoutUrlData = {
@@ -708,8 +709,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 };
                 authenticator.data.properties.push(logoutUrlData);
                 const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    description: "The URL to communicate directly with a client to invalidate " +
-                        "a user session.",
+                    description: "The URL of the identity provider to which Asgardeo will send session " +
+                        "invalidation requests.",
                     displayName: "Logout URL",
                     displayOrder: 7,
                     isConfidential: false,
