@@ -249,7 +249,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
             },
             {
                 "key": "scope",
-                "value": "read:user user:email"
+                "value": IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
             },
             {
                 "key": "UsePrimaryEmail",

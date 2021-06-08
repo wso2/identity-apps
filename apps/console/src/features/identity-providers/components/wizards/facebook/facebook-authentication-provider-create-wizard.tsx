@@ -249,11 +249,11 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
             },
             {
                 "key": "scope",
-                "value": "email"
+                "value": IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
             },
             {
                 "key": "UserInfoFields",
-                "value": "id,name,gender,email,first_name,last_name,age_range,link"
+                "value": IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS.join(",")
             }
         ];
 

@@ -114,11 +114,21 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Scopes to request from GitHub.
+     * @type {string[]}
+     */
+    public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
+        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ
+    ];
+
+    /**
      * Facebook Scope mappings.
      * @type {Record<string, string>}
      */
     public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
-        EMAIL: "email"
+        EMAIL: "email",
+        PUBLIC_PROFILE: "public_profile"
     };
 
     /**
@@ -135,6 +145,30 @@ export class IdentityProviderManagementConstants {
         LINK: "link",
         NAME: "name"
     };
+
+    /**
+     * Scopes to request from Facebook.
+     * @type {string[]}
+     */
+    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
+    ];
+
+    /**
+     * Profile fields to request from Facebook.
+     * @type {string[]}
+     */
+    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
+        "id",
+        "name",
+        "gender",
+        "email",
+        "first_name",
+        "last_name",
+        "age_range",
+        "link"
+    ];
 
     /**
      * Default IDP template loading strategy.
