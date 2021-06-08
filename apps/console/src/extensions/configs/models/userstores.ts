@@ -16,9 +16,21 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./application";
-export * from "./identity-provider";
-export * from "./common";
-export * from "./server-configuration";
-export * from "./userstores";
+export interface UserstoresConfig {
+    userstoreEdit: {
+        basicDetails: {
+            showType: boolean;
+        };
+        userDetails: {
+            showAdditionalProperties: boolean;
+            showDisplayName: boolean;
+        };
+        groupDetails: {
+            showAdditionalProperties: boolean;
+            showToggles: boolean;
+        };
+    };
+    userstoreList: {
+        allowAddingUserstores: boolean;
+    };
+}

@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout, ResourceTab } from "@wso2is/react-components";
@@ -32,7 +33,7 @@ import {
     EditUserDetails
 } from "../components";
 import { getDatabaseAvatarGraphic } from "../configs";
-import { CONSUMER_USERSTORE_ID } from "../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
 import { CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { reOrganizeProperties } from "../utils";
 
@@ -170,8 +171,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             )
         },
         {
-            menuItem: (userStoreId === CONSUMER_USERSTORE_ID) ? null
-                :  t("console:manage.features.userstores.pageLayout.edit.tabs.group"),
+            menuItem:  t("console:manage.features.userstores.pageLayout.edit.tabs.group"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditGroupDetails
@@ -199,7 +199,11 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                     icon={ getDatabaseAvatarGraphic() }
                 />
             }
-            title={ userStore?.name }
+            title={
+                userStore?.name === CONSUMER_USERSTORE
+                    ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                    : userStore?.name
+            }
             description={ t("console:manage.features.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {

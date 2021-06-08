@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -48,7 +49,7 @@ import {
 } from "../../core";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
-import { CONSUMER_USERSTORE_ID } from "../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -346,7 +347,11 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                             }
                         </Header.Content>
                         <Header.Content>
-                            { userstore.name }
+                            {
+                                userstore?.name === CONSUMER_USERSTORE
+                                ? UserstoreConstants.CUSTOMER_USER_STORE_MAPPING
+                                : userstore?.name
+                            }
                             <Header.Subheader>
                                 { userstore.description }
                             </Header.Subheader>

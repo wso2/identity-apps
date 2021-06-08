@@ -16,9 +16,23 @@
  * under the License.
  */
 
-export * from "./attribute";
-export * from "./application";
-export * from "./identity-provider";
-export * from "./common";
-export * from "./server-configuration";
-export * from "./userstores";
+import { UserstoresConfig } from "./models";
+
+export const userstoresConfig: UserstoresConfig = {
+    userstoreEdit: {
+        basicDetails: {
+            showType: true
+        },
+        groupDetails: {
+            showAdditionalProperties: true,
+            showToggles: true
+        },
+        userDetails: {
+            showAdditionalProperties: true,
+            showDisplayName: true
+        }
+    },
+    userstoreList: {
+        allowAddingUserstores: true
+    }
+};

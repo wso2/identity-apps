@@ -44,4 +44,13 @@ export class UserstoreConstants {
      * @default
      */
     public static readonly PRIMARY_USER_STORE: string = "PRIMARY";
+
+    /**
+     * Customer user store identifier.
+     *
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CUSTOMER_USER_STORE_MAPPING: string = "Customer";
 }
