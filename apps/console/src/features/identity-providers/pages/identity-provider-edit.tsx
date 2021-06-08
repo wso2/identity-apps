@@ -90,7 +90,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const [ identityProviderTemplate, setIdentityProviderTemplate ]
         = useState<IdentityProviderTemplateItemInterface>(undefined);
     const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
-    const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
+    const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(undefined);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
@@ -377,7 +377,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 title={ (
                     <>
                         { identityProvider.name }
-                        { !isIdentityProviderRequestLoading && resolveStatusLabel() }
+                        { isIdentityProviderRequestLoading === false && resolveStatusLabel() }
                     </>
                 ) }
                 contentTopMargin={ true }
