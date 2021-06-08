@@ -95,7 +95,6 @@
                                         name="reset-password"
                                         type="password"
                                         required=""
-                                        onpaste="return false"
                                     />
                                     <i id="password1ShowHide" class="eye link icon" onclick="password1ShowToggle()"></i>
                                 </div>
@@ -152,7 +151,6 @@
                                         type="password"
                                         data-match="reset-password"
                                         required=""
-                                        onpaste="return false"
                                     />
                                     <i id="password2ShowHide" class="eye link icon" onclick="password2ShowToggle()"></i>
                                 </div>
