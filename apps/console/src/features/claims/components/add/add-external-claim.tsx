@@ -21,10 +21,10 @@ import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentIn
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Header } from "semantic-ui-react";
+import { Grid, Header, DropdownOnSearchChangeData, StrictDropdownItemProps, DropdownItemProps } from "semantic-ui-react";
 import { addExternalClaim } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
@@ -93,6 +93,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
+    const [ localClaimsSearchResults, setLocalClaimsSearchResults ] = useState<Claim[]>();
     const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
 
     const [ reset, setReset ] = useTrigger();
@@ -119,6 +120,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
             setLocalClaims(sortedClaims);
             setFilteredLocalClaims(sortedClaims);
+            setLocalClaimsSearchResults(sortedClaims);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -142,6 +144,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                 tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
             });
             setFilteredLocalClaims(tempLocalClaims);
+            setLocalClaimsSearchResults(tempLocalClaims);
         }
     }, [ externalClaims, localClaimsSet ]);
 
@@ -256,9 +259,18 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 "localAttribute.requiredErrorMessage") }
                             placeholder={ t("console:manage.features.claims.external.forms." +
                                 "localAttribute.placeholder") }
-                            search
+                            // prevent default search functionality
+                            search = { (items: DropdownItemProps[], query:string) => {
+                                return items;
+                            }}
+                            onSearchChange={ (event: SyntheticEvent, data: DropdownOnSearchChangeData) => {
+                                const query: string = data.searchQuery;
+                                const itemList: Claim[] = filteredLocalClaims.filter((claim: Claim) => claim.displayName
+                                    .toLowerCase().includes(query.toLowerCase()));
+                                setLocalClaimsSearchResults(itemList);
+                            }}
                             children={
-                                filteredLocalClaims?.map((claim: Claim, index) => {
+                                localClaimsSearchResults?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
                                         text: (

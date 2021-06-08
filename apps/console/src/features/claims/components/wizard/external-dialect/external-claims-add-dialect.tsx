@@ -67,6 +67,10 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * Specifies if this is to be rendered in a wizard.
      */
     wizard?: boolean;
+    /**
+     * Specifies if the submit button have to be displayed.
+     */
+    onClaimListChange?: (buttonState: boolean) => void;
 }
 
 /**
@@ -88,6 +92,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         shouldShowInitialValues,
         attributeType,
         wizard,
+        onClaimListChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -116,6 +121,18 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
             }
         }
     }, [ values ]);
+
+    /**
+     * Change button disable state when claims are added.
+     */
+    useEffect(() => {
+
+        if (claims.length === initialList.length) {
+            onClaimListChange(true);
+        } else {
+            onClaimListChange(false);
+        }
+    }, [ claims ]);
 
     /**
      * Handles the event when a new external claim has been submitted via
