@@ -207,5 +207,11 @@ export class IdentityProviderManagementConstants {
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
     public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
+    public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
     public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+
+    // Known Social authenticator display names;
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
+    public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
+    public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
 }

@@ -50,6 +50,8 @@ export class AuthenticatorMeta {
             "Time Password.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
             "existing Google accounts.",
+            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            "existing GitHub accounts.",
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Authenticate users with " +
             "existing Facebook accounts.",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Authenticate users with " +
@@ -79,6 +81,9 @@ export class AuthenticatorMeta {
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
