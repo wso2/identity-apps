@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
     Divider,
@@ -36,6 +37,10 @@ export interface MessageWithIconProps extends TestableComponentInterface {
      * Type of the message.
      */
     type?: "info" | "warning" | "error" | "success";
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * Content of the message.
      * */
@@ -57,11 +62,17 @@ export interface MessageWithIconProps extends TestableComponentInterface {
 export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: MessageWithIconProps): ReactElement => {
 
     const {
+        className,
         type,
         header,
         content,
         [ "data-testid" ]: testId
     } = props;
+
+    const classes = classNames(
+        "info-message-with-icon",
+        className
+    );
 
     const generateContent = () => {
         return (
@@ -80,7 +91,7 @@ export const MessageWithIcon: FunctionComponent<MessageWithIconProps> = (props: 
         switch (type) {
             case "info":
                 return (
-                    <Message
+                    <Message className={ classes }
                         info
                         header={
                             header
