@@ -3627,7 +3627,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "Retour aux applications",
                 subTitle: "Choisissez l'un des types prédéfinis pour intégrer une application.",
-                title: "Choisissez le type d'application"
+                title: "Utiliser le type d'application prédéfini"
             },
             applications: {
                 subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",
