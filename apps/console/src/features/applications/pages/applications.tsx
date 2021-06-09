@@ -54,6 +54,7 @@ import {
     UIConstants,
     history, ConfigReducerStateInterface
 } from "../../core";
+import { getGeneralIcons } from "../configs";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList, MinimalAppCreateWizard } from "../components";
@@ -262,7 +263,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add"/>
+                            <GenericIcon
+                                verticalAlign="middle"
+                                transparent
+                                icon={ getGeneralIcons().predefined }
+                                spaced="right"
+                                size="default"
+                                floated="left"
+                            />
                             Use Predefined
                         </PrimaryButton>
                         <SemButton
