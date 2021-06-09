@@ -285,8 +285,8 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
     useEffect(() => {
         if (imageUrl) {
-            setHostedURL(imageUrl);
-            setSelectedAvatarType(AvatarTypes.URL);
+            setOutputURL(imageUrl);
+            setSelectedAvatarType(AvatarTypes.GRAVATAR);
         } else {
             setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
         }
