@@ -326,6 +326,23 @@
                 }
             }
         },
+        "identityProviderTemplates": {
+            "enterpriseOIDC": {
+                "enabled": true
+            },
+            "enterpriseSAML": {
+                "enabled": true
+            },
+            "facebook": {
+                "enabled": true
+            },
+            "google": {
+                "enabled": true
+            },
+            "github": {
+                "enabled": false
+            }
+        },
         "gravatarConfig": {
             "fallback": "404"
         },
