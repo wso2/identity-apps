@@ -682,19 +682,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "commonAuthQueryParams") {
                         prop.displayName = "Additional query parameters";
                         prop.description = "These  will be sent to the identity provider as query parameters in the " +
-                            "authentication request. \nE.g., loginHint=hint1"
+                            "authentication request. \nE.g., loginHint=hint1";
+                    } else if (prop.key === "IsBasicAuthEnabled") {
+                        prop.description = "Specify whether to enable HTTP basic authentication for authenticating " +
+                            "clients. If unchecked, client credentials will be included in the request body";
                     }
                 });
 
-                // Remove additional query params
-                removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
-                removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" )
 
                 // Inject logout url
                 const logoutUrlData = {
-                    key: "LogoutUrl"
+                    key: "OIDCLogoutEPUrl"
                 };
                 authenticator.data.properties.push(logoutUrlData);
                 const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
@@ -704,7 +704,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     displayOrder: 7,
                     isConfidential: false,
                     isMandatory: false,
-                    key: "LogoutUrl",
+                    key: "OIDCLogoutEPUrl",
                     options: [],
                     subProperties: [],
                     type: "URL"
