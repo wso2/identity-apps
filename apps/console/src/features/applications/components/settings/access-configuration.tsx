@@ -619,28 +619,28 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         icon={ getInboundProtocolLogos()[ selectedProtocol ] }
                         size="mini"
                         verticalAlign="middle"
-                        className={ supportedProtocolList.length !== 1 && "pr-1 mt-2" }
                     />
                     <Header.Content
-                        className={ supportedProtocolList.length === 1 && "mt-1" }
+                        className={ "mt-1" }
                     >
                         <strong> {
                             ApplicationManagementUtils.resolveProtocolDisplayName(
                                 selectedProtocol as SupportedAuthProtocolTypes)
                         } </strong>
-                        {  (supportedProtocolList.length !== 1) &&
-                        <Header.Subheader
-                            className="protocol-banner-sub-title"
-                        >
-                            Choose different protocol?
-                            <LinkButton
-                                className={ "pl-1" }
-                                onClick={ () => setShowProtocolSwitchModal(true) }
-                            >
-                                Change Protocol
-                            </LinkButton>
-                        </Header.Subheader>
-                        }
+                        {/*{TODO: Hide change protocol option}*/}
+                        {/*{  (supportedProtocolList.length !== 1) &&*/}
+                        {/*<Header.Subheader*/}
+                        {/*    className="protocol-banner-sub-title"*/}
+                        {/*>*/}
+                        {/*    Choose different protocol?*/}
+                        {/*    <LinkButton*/}
+                        {/*        className={ "pl-1" }*/}
+                        {/*        onClick={ () => setShowProtocolSwitchModal(true) }*/}
+                        {/*    >*/}
+                        {/*        Change Protocol*/}
+                        {/*    </LinkButton>*/}
+                        {/*</Header.Subheader>*/}
+                        {/*}*/}
                     </Header.Content>
                 </Header>
                 <Divider hidden/>
