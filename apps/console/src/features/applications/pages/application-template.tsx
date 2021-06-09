@@ -17,13 +17,22 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, PageLayout, PrimaryButton, TemplateGrid } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
+import {
+    Divider,
+    Dropdown,
+    DropdownItemProps,
+    DropdownProps,
+    Grid,
+    Icon,
+    Input,
+    Button as SemButton
+} from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -265,13 +274,18 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             return null;
         }
 
+        let templateToShow: ApplicationTemplateInterface[] = templatesOverrides
+            ? templatesOverrides
+            : templates;
+
+        templateToShow = templateToShow.filter(
+            (template) => template.id !== CustomApplicationTemplate.id);
+
         return (
             <TemplateGrid<ApplicationTemplateListItemInterface>
                 type="application"
                 templates={
-                    templatesOverrides
-                        ? templatesOverrides
-                        : templates
+                    templateToShow
                 }
                 templateIcons={ { ...getApplicationTemplateIllustrations(), ...getTechnologyLogos() } }
                 templateIconOptions={ {
@@ -381,6 +395,24 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             title={ t("console:develop.pages.applicationTemplate.title") }
             contentTopMargin={ true }
             description={ t("console:develop.pages.applicationTemplate.subTitle") }
+            action={
+                (
+                    <>
+                        <SemButton
+                            basic
+                            primary
+                            onClick={ () =>  {
+                                setSelectedTemplate(CustomApplicationTemplate);
+                                setShowWizard(true);
+                            }
+                            }
+                        >
+                            <Icon name="add"/>
+                            { t("console:develop.features.applications.list.actions.custom") }
+                        </SemButton>
+                    </>
+                )
+            }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,

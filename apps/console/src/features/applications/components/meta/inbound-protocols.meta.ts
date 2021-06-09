@@ -66,7 +66,7 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
  */
 export const SupportedAuthProtocolTypeDisplayNames = {
     [ SupportedAuthProtocolTypes.SAML ]: "SAML",
-    [ SupportedAuthProtocolTypes.OIDC ] : "OpenID Connnect",
+    [ SupportedAuthProtocolTypes.OIDC ] : "OpenID Connect",
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Passive STS",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
     [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom"

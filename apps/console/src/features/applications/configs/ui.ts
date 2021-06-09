@@ -96,6 +96,9 @@ import {
 import {
     ReactComponent as ProtocolIllustration
 } from "../../../themes/default/assets/images/illustrations/application-protocols-illustration.svg";
+import {
+    ReactComponent as ProtocolPredefined
+} from "../../../themes/default/assets/images/illustrations/application-predefined.svg";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
@@ -202,7 +205,8 @@ export const getGeneralIcons = () => {
 
     return {
         addCircleOutline: AddCircleOutlineIcon,
-        plusIcon: PlusIcon
+        plusIcon: PlusIcon,
+        predefined: ProtocolPredefined
     };
 };
 

@@ -723,7 +723,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Ajouter un nouveau protocole à l'application {{appName}}"
                             },
-                            tabName: "Protocole"
+                            tabName: "Protocole",
+                            protocolLanding: {
+                                heading: "Quel protocole utilisez-vous?",
+                                subHeading: "Sélectionnez le protocole de connexion de votre application."
+                            }
                         },
                         advanced: {
                             tabName: "Avancé"
@@ -2149,7 +2153,9 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "Nouvelle Application"
+                        add: "Nouvelle Application",
+                        predefined: "Utiliser prédéfini",
+                        custom: "Personnalisé"
                     },
                     columns: {
                         actions: "Actions",
@@ -3627,7 +3633,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "Retour aux applications",
                 subTitle: "Choisissez l'un des types prédéfinis pour intégrer une application.",
-                title: "Choisissez le type d'application"
+                title: "Utiliser le type d'application prédéfini"
             },
             applications: {
                 subTitle: "Gérez les applications à l'aide de modèles et configurez l'authentification.",

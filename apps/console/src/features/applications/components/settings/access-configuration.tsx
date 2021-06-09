@@ -554,10 +554,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (!supportedProtocolList) {
             return null;
         }
-        if (supportedProtocolList.length === 1 ) {
-            return null;
-        }
-
+        
         if (allowMultipleProtocol) {
             return (
                 <Grid.Row>
@@ -615,34 +612,38 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
         return (
             <>
-                <Message
-                    info
-                    content={
-                        <Header as="h4">
-                            <Header.Content>
-                                <GenericIcon
-                                    inline
-                                    transparent
-                                    icon={ getInboundProtocolLogos()[ selectedProtocol ] }
-                                    size="micro"
-                                    verticalAlign="middle"
-                                    className={ "pr-1" }
-                                />
-                                You have selected <strong> {
-                                ApplicationManagementUtils.resolveProtocolDisplayName(
-                                    selectedProtocol as SupportedAuthProtocolTypes)
-                            } </strong> as the protocol. If you want to change the technology,
-                                <LinkButton
-                                    className={ "pl-1" }
-                                    onClick={ () => setShowProtocolSwitchModal(true) }
-                                >
-                                    <Header as="h4" color="orange"> Change Protocol </Header>
-                                </LinkButton>
-                            </Header.Content>
-                        </Header>
-                    }
-                />
-                <Divider hidden />
+                <Header as="h3">
+                    <GenericIcon
+                        inline
+                        transparent
+                        icon={ getInboundProtocolLogos()[ selectedProtocol ] }
+                        size="mini"
+                        verticalAlign="middle"
+                    />
+                    <Header.Content
+                        className={ "mt-1" }
+                    >
+                        <strong> {
+                            ApplicationManagementUtils.resolveProtocolDisplayName(
+                                selectedProtocol as SupportedAuthProtocolTypes)
+                        } </strong>
+                        {/*{TODO: Hide change protocol option}*/}
+                        {/*{  (supportedProtocolList.length !== 1) &&*/}
+                        {/*<Header.Subheader*/}
+                        {/*    className="protocol-banner-sub-title"*/}
+                        {/*>*/}
+                        {/*    Choose different protocol?*/}
+                        {/*    <LinkButton*/}
+                        {/*        className={ "pl-1" }*/}
+                        {/*        onClick={ () => setShowProtocolSwitchModal(true) }*/}
+                        {/*    >*/}
+                        {/*        Change Protocol*/}
+                        {/*    </LinkButton>*/}
+                        {/*</Header.Subheader>*/}
+                        {/*}*/}
+                    </Header.Content>
+                </Header>
+                <Divider hidden/>
             </>
         );
     };

@@ -17,10 +17,12 @@
  */
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { EmphasizedSegment, GenericIcon, Heading, InfoCard, Text } from "@wso2is/react-components";
+import { AnimatedAvatar, EmphasizedSegment, Heading, TechnologyCard, Text } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Card, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
 import { getInboundProtocolLogos } from "../../../configs";
 import { SupportedAuthProtocolTypes } from "../../../models";
@@ -108,53 +110,75 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
             };
             protocolContentList.push(protocolContent);
         }
+
+       availableProtocols.map(
+            (protocol: string)=> {
+              if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML
+                 && protocol !== SupportedAuthProtocolTypes.WS_FEDERATION) {
+                  const protocolContent: ProtocolContentInterface = {
+                      description: protocol,
+                      image: <AnimatedAvatar
+                                  name={ protocol }
+                                  size="tiny"
+                                  data-testid={ `${ testId }-item-image-inner` }
+                              />,
+                      name: protocol,
+                      protocol: protocol
+                  };
+                  protocolContentList.push(protocolContent);
+              }
+
+            });
         return protocolContentList;
     };
 
     const resolveContent = (): ReactElement => {
+
         const protocolContentList: ProtocolContentInterface[] = resolveProtocols();
+
         return (
-            <>
-                {
-                    protocolContentList.length === 2 ?
-                        <Grid.Column
-                            computer={ 3 }
-                            tablet={ 16 }
-                            mobile={ 16 }
-                        /> :
-                        <div className={ "ml-5" }/>
-                }
-                {
-
-                    protocolContentList.map((protocol: ProtocolContentInterface, index) => (
-                        <Grid.Column
-                            computer={ 5 }
-                            tablet={ 16 }
-                            mobile={ 16 }
-                            key={ index }
-                        >
-                            <InfoCard
-                                fluid
-                                data-testid={ `${testId}-${protocol.protocol}` }
-                                image={ protocol.image }
-                                imageSize="mini"
-                                header={
-                                    protocol.name
-                                }
-                                description={
-                                    protocol.description
-                                }
-                                onClick={ () => {
-                                    setProtocol(protocol.protocol);
-                                } }
-                            />
-                            <Divider hidden/>
-                        </Grid.Column>
-                    ))
-                }
-            </>
+            <Grid.Row className="protocol-selection-wrapper check" textAlign="center">
+                <Grid.Column width={ 16 }>
+                    <div data-testid={ testId }>
+                        <Heading as="h2" className="mb-1" compact>
+                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.heading") }
+                        </Heading>
+                        <Text muted>
+                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.subHeading") }
+                        </Text>
+                        <Divider hidden/>
+                        {
+                            (!isEmpty(protocolContentList) && Array.isArray(protocolContentList)
+                                && protocolContentList.length > 0) && (
+                                <Card.Group
+                                    centered
+                                    className="tech-selection-cards mt-3"
+                                    itemsPerRow={ 9 }
+                                >
+                                    {
+                                        protocolContentList.map((protocol: ProtocolContentInterface, index: number) => (
+                                            <TechnologyCard
+                                                key={ index }
+                                                raised={ false }
+                                                data-testid={
+                                                    protocol[ "data-testid" ]
+                                                    ?? `technology-card-${ kebabCase(protocol.name) }`
+                                                }
+                                                onClick={ () =>  setProtocol(protocol.protocol) }
+                                                displayName={ protocol.name }
+                                                overlayOpacity={ 0.6 }
+                                                image={ protocol.image }
+                                                className={ "protocol-card" }
+                                            />
+                                        ))
+                                    }
+                                </Card.Group>
+                            )
+                        }
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
         );
-
     };
 
     return (
@@ -163,42 +187,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
             data-testid={ testId }
         >
             <Grid>
-                <Grid.Row>
-                    <Grid.Column
-                        computer={ 16 }
-                        tablet={ 16 }
-                        mobile={ 16 }
-                        className="default-config-column"
-                        textAlign="center"
-                    >
-                        <div className={ "protocol-landing-title" }>
-                            <GenericIcon
-                                transparent
-                                icon={ getInboundProtocolLogos().general }
-                                size="small"
-                            />
-                            <Divider hidden/>
-
-                            <div className="default-config-description">
-                                <Heading as="h3">
-                                    Which protocol you are using?
-                                </Heading>
-                                <div className="default-config-description-content">
-                                    <Text subHeading muted>
-                                        select the protocol for your applications to connect.
-                                    </Text>
-                                </div>
-                            </div>
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row
-                    computer={ 16 }
-                    tablet={ 16 }
-                    mobile={ 16 }
-                >
-                    { resolveContent() }
-                </Grid.Row>
+                { resolveContent() }
             </Grid>
         </EmphasizedSegment>
     );

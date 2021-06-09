@@ -20,7 +20,14 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    GenericIcon,
+    LinkButton,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    SecondaryButton
+} from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, {
     FunctionComponent,
@@ -33,6 +40,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    Button as SemButton,
     DropdownItemProps,
     DropdownProps,
     Icon,
@@ -44,12 +52,17 @@ import {
     AppState,
     FeatureConfigInterface,
     UIConstants,
-    history
+    history,
+    ConfigReducerStateInterface
 } from "../../core";
+import { getGeneralIcons } from "../configs";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
-import { ApplicationList } from "../components";
+import { ApplicationList, MinimalAppCreateWizard } from "../components";
 import { ApplicationListInterface } from "../models";
+import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -110,6 +123,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -242,20 +257,38 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
                     allowedScopes))
                 && (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add"/>
-                        { t("console:develop.features.applications.list.actions.add") }
-                    </PrimaryButton>
+                    <>
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <GenericIcon
+                                verticalAlign="middle"
+                                transparent
+                                icon={ getGeneralIcons().predefined }
+                                spaced="right"
+                                size="default"
+                                floated="left"
+                            />
+                            { t("console:develop.features.applications.list.actions.predefined") }
+                        </PrimaryButton>
+                        <SemButton
+                            basic
+                            primary
+                            onClick={()=> setShowWizard(true)}
+                        >
+                            <Icon name="add"/>
+                            { t("console:develop.features.applications.list.actions.custom") }
+                        </SemButton>
+                    </>
                 )
             }
             title={ t("console:develop.pages.applications.title") }
             description={ t("console:develop.pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
+            isLoading={ isApplicationListRequestLoading }
         >
             { renderRemoteFetchStatus() }
             <ListLayout
@@ -343,6 +376,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
+            { showWizard && (
+                <MinimalAppCreateWizard
+                    title={ CustomApplicationTemplate?.name }
+                    subTitle={ CustomApplicationTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ CustomApplicationTemplate }
+                    showHelpPanel={ true }
+                    subTemplates={ CustomApplicationTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                    templateLoadingStrategy={
+                        config.ui.applicationTemplateLoadingStrategy
+                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                    }
+                />
+            ) }
         </PageLayout>
     );
 };

@@ -723,7 +723,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Prot {{appName}} යෙදුමට නව ප්‍රොටෝකෝලයක් එක් කරන්න"
                             },
-                            tabName: "ප්රොටෝකෝලය"
+                            tabName: "ප්රොටෝකෝලය",
+                            protocolLanding: {
+                                heading: "ඔබ භාවිතා කරන්නේ කුමන ප්‍රොටෝකෝලයද?",
+                                subHeading: "ඔබගේ යෙදුම සම්බන්ධ කිරීම සඳහා ප්‍රොටෝකෝලය තෝරන්න."
+                            }
                         },
                         advanced: {
                             tabName: "උසස්"
@@ -2107,7 +2111,9 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "නව යෙදුම"
+                        add: "නව යෙදුම",
+                        predefined: "අච්චුව භාවිතා කරන්න",
+                        custom: "චාරිත්රය"
                     },
                     columns: {
                         actions: "ක්‍රියා",
@@ -3581,7 +3587,7 @@ export const console: ConsoleNS = {
             applicationTemplate: {
                 backButton: "යෙදුම් වෙත ආපසු යන්න",
                 subTitle: "යෙදුමක් තුළට පිවිසීමට පූර්ව නිශ්චිත යෙදුම් වර්ග වලින් එකක් තෝරන්න.",
-                title: "යෙදුම් වර්ගය තෝරන්න"
+                title: "පූර්ව නිශ්චිත යෙදුම් වර්ගය භාවිතා කරන්න"
             },
             applications: {
                 subTitle: "සැකිලි භාවිතයෙන් යෙදුම් කළමනාකරණය කරන්න, සහ සත්‍යාපනය වින්‍යාස කරන්න.",
