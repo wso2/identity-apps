@@ -7936,7 +7936,7 @@ export const console: ConsoleNS = {
                 pageLayout: {
                     edit: {
                         back: "Go back to userstores",
-                        description: "Edit userstore.",
+                        description: "Edit userstore",
                         tabs: {
                             connection: "Connection",
                             general: "General",
