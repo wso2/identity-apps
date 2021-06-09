@@ -723,7 +723,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Prot {{appName}} යෙදුමට නව ප්‍රොටෝකෝලයක් එක් කරන්න"
                             },
-                            tabName: "ප්රොටෝකෝලය"
+                            tabName: "ප්රොටෝකෝලය",
+                            protocolLanding: {
+                                heading: "ඔබ භාවිතා කරන්නේ කුමන ප්‍රොටෝකෝලයද?",
+                                subHeading: "ඔබගේ යෙදුම සම්බන්ධ කිරීම සඳහා ප්‍රොටෝකෝලය තෝරන්න."
+                            }
                         },
                         advanced: {
                             tabName: "උසස්"

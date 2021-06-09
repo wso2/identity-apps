@@ -112,7 +112,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
         }
 
        availableProtocols.map(
-            (protocol)=> {
+            (protocol: string)=> {
               if (protocol !== SupportedAuthProtocolTypes.OIDC && protocol !== SupportedAuthProtocolTypes.SAML
                  && protocol !== SupportedAuthProtocolTypes.WS_FEDERATION) {
                   const protocolContent: ProtocolContentInterface = {
@@ -140,9 +140,11 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
             <Grid.Row className="protocol-selection-wrapper check" textAlign="center">
                 <Grid.Column width={ 16 }>
                     <div data-testid={ testId }>
-                        <Heading as="h2" className="mb-1" compact>Which protocol are you using?</Heading>
+                        <Heading as="h2" className="mb-1" compact>
+                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.heading") }
+                        </Heading>
                         <Text muted>
-                            Select the protocol for your application to connect.
+                            { t("console:develop.features.applications.edit.sections.access.protocolLanding.subHeading") }
                         </Text>
                         <Divider hidden/>
                         {

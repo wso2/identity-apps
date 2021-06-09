@@ -52,7 +52,8 @@ import {
     AppState,
     FeatureConfigInterface,
     UIConstants,
-    history, ConfigReducerStateInterface
+    history,
+    ConfigReducerStateInterface
 } from "../../core";
 import { getGeneralIcons } from "../configs";
 import { RemoteFetchStatus } from "../../remote-repository-configuration";

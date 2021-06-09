@@ -432,6 +432,10 @@ export interface ConsoleNS {
                                 };
                             };
                             tabName: string;
+                            protocolLanding: {
+                                heading: string;
+                                subHeading: string;
+                            }
                         };
                         advanced: {
                             tabName: string;

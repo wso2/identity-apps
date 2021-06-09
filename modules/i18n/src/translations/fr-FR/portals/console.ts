@@ -723,7 +723,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Ajouter un nouveau protocole à l'application {{appName}}"
                             },
-                            tabName: "Protocole"
+                            tabName: "Protocole",
+                            protocolLanding: {
+                                heading: "Quel protocole utilisez-vous?",
+                                subHeading: "Sélectionnez le protocole de connexion de votre application."
+                            }
                         },
                         advanced: {
                             tabName: "Avancé"

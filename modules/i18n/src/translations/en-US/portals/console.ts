@@ -721,7 +721,11 @@ export const console: ConsoleNS = {
                                 },
                                 subHeading: "Add new protocol to {{appName}} application"
                             },
-                            tabName: "Protocol"
+                            tabName: "Protocol",
+                            protocolLanding: {
+                                heading: "Which protocol are you using?",
+                                subHeading: "Select the protocol for your application to connect."
+                            }
                         },
                         advanced: {
                             tabName: "Advanced"
