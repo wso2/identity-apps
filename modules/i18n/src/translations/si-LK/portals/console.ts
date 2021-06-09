@@ -2107,7 +2107,9 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "නව යෙදුම"
+                        add: "නව යෙදුම",
+                        predefined: "අච්චුව භාවිතා කරන්න",
+                        custom: "චාරිත්රය"
                     },
                     columns: {
                         actions: "ක්‍රියා",

@@ -914,6 +914,8 @@ export interface ConsoleNS {
                     };
                     actions: {
                         add: string;
+                        predefined: string;
+                        custom: string;
                     };
                 };
                 notifications: {

@@ -142,7 +142,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                     <div data-testid={ testId }>
                         <Heading as="h2" className="mb-1" compact>Which protocol are you using?</Heading>
                         <Text muted>
-                            Select the protocol for your applications to connect.
+                            Select the protocol for your application to connect.
                         </Text>
                         <Divider hidden/>
                         {

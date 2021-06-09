@@ -271,7 +271,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 size="default"
                                 floated="left"
                             />
-                            Use Predefined
+                            { t("console:develop.features.applications.list.actions.predefined") }
                         </PrimaryButton>
                         <SemButton
                             basic
@@ -279,7 +279,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             onClick={()=> setShowWizard(true)}
                         >
                             <Icon name="add"/>
-                            Custom
+                            { t("console:develop.features.applications.list.actions.custom") }
                         </SemButton>
                     </>
                 )

@@ -408,7 +408,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             }
                         >
                             <Icon name="add"/>
-                            Custom
+                            { t("console:develop.features.applications.list.actions.custom") }
                         </SemButton>
                     </>
                 )

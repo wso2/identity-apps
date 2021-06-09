@@ -2136,7 +2136,9 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "New Application"
+                        add: "New Application",
+                        predefined: "Use Predefined",
+                        custom: "Custom"
                     },
                     columns: {
                         actions: "Actions",
