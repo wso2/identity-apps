@@ -38,10 +38,20 @@ import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 
-import React, { FC, PropsWithChildren, ReactElement, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+    FC,
+    PropsWithChildren,
+    ReactElement,
+    ReactNode,
+    Suspense,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
 import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
@@ -214,7 +224,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         return false;
     };
 
-    // Wizard
+    const renderDimmerOverlay = (): ReactNode => {
+        return (
+            <Dimmer className="lighter" active={ true }>
+                { t("common:featureAvailable") }
+            </Dimmer>
+        );
+    };
 
     /**
      * @param values {object} form values
@@ -392,8 +408,12 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 selected={ selectedProtocol === "saml" }
                                 onClick={ () => setSelectedProtocol("saml") }
                                 imageSize="mini"
-                                contentTopBorder={ false }
                                 showTooltips={ true }
+                                disabled={ true }
+                                overlay={ renderDimmerOverlay() }
+                                contentTopBorder={ false }
+                                renderDisabledItemsAsGrayscale={ false }
+                                overlayOpacity={ 0.6 }
                                 data-testid={ `${ testId }-form-wizard-saml-selection-card` }
                             />
                         </div>
