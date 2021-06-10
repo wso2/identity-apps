@@ -198,7 +198,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         } }
                     >
                         <Field.Input
-                            ariaLabel="name"
+                            ariaLabel="Google IDP Name"
                             inputType="name"
                             name="name"
                             label={
@@ -223,7 +223,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="clientId"
+                            ariaLabel="Google Client ID"
                             inputType="resourceName"
                             name="clientId"
                             label={
@@ -253,7 +253,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="clientSecret"
+                            ariaLabel="Google Client Secret"
                             inputType="password"
                             name="clientSecret"
                             label={
