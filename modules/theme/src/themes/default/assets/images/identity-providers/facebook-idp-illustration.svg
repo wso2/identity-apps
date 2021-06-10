@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -18,11 +16,10 @@
  * under the License.
 -->
 
-<svg id="facebook-idp-illustration" class="icon" xmlns="http://www.w3.org/2000/svg" width="67.91" height="67.91" viewBox="0 0 67.91 67.91">
-  <g id="facebook-idp-illustration" transform="translate(0 1365.33)">
-    <g id="g12" transform="translate(0 -1365.33)">
-      <path id="path14" d="M67.91-1331.375a33.955,33.955,0,0,0-33.955-33.955A33.955,33.955,0,0,0,0-1331.375a33.963,33.963,0,0,0,28.649,33.542v-23.727H20.028v-9.815h8.621v-7.481c0-8.51,5.069-13.211,12.825-13.211a52.213,52.213,0,0,1,7.6.663v8.356H44.794c-4.218,0-5.533,2.617-5.533,5.3v6.369h9.417l-1.505,9.815H39.26v23.727a33.963,33.963,0,0,0,28.649-33.542" transform="translate(0 1365.33)" fill="#1877f2"/>
-      <path id="path16" d="M429.81-1068.158l1.505-9.815H421.9v-6.369c0-2.685,1.315-5.3,5.533-5.3h4.282V-1098a52.213,52.213,0,0,0-7.6-.663c-7.756,0-12.825,4.7-12.825,13.211v7.481h-8.621v9.815h8.621v23.727a34.21,34.21,0,0,0,5.305.412,34.21,34.21,0,0,0,5.305-.412v-23.727h7.912" transform="translate(-382.638 1111.927)" fill="#fff"/>
-    </g>
-  </g>
+<svg version="1.1" id="facebook-logo" class="icon" width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     viewBox="0 0 512 512" xml:space="preserve">
+	<path style="fill:#1976D2;" d="M448,0H64C28.704,0,0,28.704,0,64v384c0,35.296,28.704,64,64,64h384c35.296,0,64-28.704,64-64V64
+		C512,28.704,483.296,0,448,0z"/>
+  <path style="fill:#FAFAFA;" d="M432,256h-80v-64c0-17.664,14.336-16,32-16h32V96h-64l0,0c-53.024,0-96,42.976-96,96v64h-64v80h64
+		v176h96V336h48L432,256z"/>
 </svg>

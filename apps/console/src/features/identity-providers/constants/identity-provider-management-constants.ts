@@ -83,10 +83,92 @@ export class IdentityProviderManagementConstants {
      */
     public static readonly IDP_TEMPLATE_IDS: Record<string, string> = {
         ENTERPRISE: "enterprise-idp",
+        FACEBOOK: "facebook-idp",
+        GITHUB: "github-idp",
         GOOGLE: "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
         OIDC: "oidc-idp",
         SAML: "saml-idp"
     };
+
+    /**
+     * Authenticator Settings Form element constraints.
+     * @type {Record<string, string | number>}
+     */
+    public static readonly AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, string | number> = {
+        CALLBACK_URL_MIN_LENGTH: 3,
+        CLIENT_ID_MAX_LENGTH: 100,
+        CLIENT_ID_MIN_LENGTH: 3,
+        CLIENT_SECRET_MAX_LENGTH: 100,
+        CLIENT_SECRET_MIN_LENGTH: 3,
+        IDP_NAME_MAX_LENGTH: 50,
+        IDP_NAME_MIN_LENGTH: 3
+    };
+
+    /**
+     * GitHub Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
+        USER_EMAIL: "user:email",
+        USER_READ: "read:user"
+    };
+
+    /**
+     * Scopes to request from GitHub.
+     * @type {string[]}
+     */
+    public static readonly GITHUB_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL,
+        IdentityProviderManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ
+    ];
+
+    /**
+     * Facebook Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        PUBLIC_PROFILE: "public_profile"
+    };
+
+    /**
+     * Facebook Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly FACEBOOK_PUBLIC_PROFILE_FIELD_DICTIONARY: Record<string, string> = {
+        AGE_RANGE: "age_range",
+        EMAIL: "email",
+        FIRST_NAME: "first_name",
+        GENDER: "gender",
+        ID: "id",
+        LAST_NAME: "last_name",
+        LINK: "link",
+        NAME: "name"
+    };
+
+    /**
+     * Scopes to request from Facebook.
+     * @type {string[]}
+     */
+    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE
+    ];
+
+    /**
+     * Profile fields to request from Facebook.
+     * @type {string[]}
+     */
+    public static readonly FACEBOOK_AUTHENTICATOR_REQUESTED_PROFILE_FIELDS: string[] = [
+        "id",
+        "name",
+        "gender",
+        "email",
+        "first_name",
+        "last_name",
+        "age_range",
+        "link"
+    ];
 
     /**
      * Default IDP template loading strategy.
@@ -154,9 +236,16 @@ export class IdentityProviderManagementConstants {
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
+    public static readonly GITHUB_AUTHENTICATOR_ID: string = "R2l0aHViQXV0aGVudGljYXRvcg";
     
     // Known Social authenticator names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
     public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
+    public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
     public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+
+    // Known Social authenticator display names;
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
+    public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
+    public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
 }

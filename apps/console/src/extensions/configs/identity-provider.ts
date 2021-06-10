@@ -21,10 +21,10 @@ import { IdentityProviderManagementConstants } from "../../features/identity-pro
 
 export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
+        attributesSettings: true,
         showAdvancedSettings: true,
         showJitProvisioning: true,
-        showOutboundProvisioning: true,
-        attributesSettings: true
+        showOutboundProvisioning: true
     },
     generalDetailsForm: {
         showCertificate: true
@@ -32,12 +32,26 @@ export const identityProviderConfig: IdentityProviderConfig = {
     templates: {
         enterprise: true,
         facebook: false,
-        github: false,
+        github: true,
         google: true,
-        saml: true,
         oidc: true,
+        saml: true
     },
     utils: {
+        /**
+         * As an example you can implement this method like the
+         * following:-
+         *
+         *      const identityClaimsHiddenAuthenticators = new Set([
+         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
+         *      ]);
+         *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
+         *
+         * @param authenticatorId
+         */
+        hideIdentityClaimAttributes(authenticatorId: string): boolean {
+            return false;
+        },
         isAuthenticatorAllowed: (name: string): boolean => {
             return [
                 IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
@@ -58,20 +72,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
          */
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             return true;
-        },
-        /**
-         * As an example you can implement this method like the
-         * following:-
-         *
-         *      const identityClaimsHiddenAuthenticators = new Set([
-         *          IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
-         *      ]);
-         *      return identityClaimsHiddenAuthenticators.has(authenticatorId);
-         *
-         * @param authenticatorId
-         */
-        hideIdentityClaimAttributes(authenticatorId: string): boolean {
-            return false;
         }
     }
 };

@@ -1029,29 +1029,31 @@ export const console: ConsoleNS = {
                                             "de connexion"
                                     },
                                     flowBuilder: {
-                                        addMissingGoogleAuthenticatorModal: {
+                                        addMissingSocialAuthenticatorModal: {
                                             content: {
                                                 body: "Vous n'avez pas de fournisseur d'identité configuré avec " +
-                                                    "<1>Google Authenticator</1>. Cliquez sur <3>Configurer</3> " +
-                                                    "bouton pour lancer le processus de configuration ou accéder à" +
-                                                    "la section <5>Fournisseurs d'identité</5> manuellement.",
-                                                message: "Aucun fournisseur d'identité Google configuré"
+                                                    "<1>{{authenticator}} Authenticator</1>. Cliquez sur " +
+                                                    "<3>Configurer</3> bouton pour lancer le processus de " +
+                                                    "configuration ou accéder à la section <5>{{authenticator}} " +
+                                                    "d'identité</5> manuellement.",
+                                                message: "Aucun fournisseur d'identité {{authenticator}} configuré"
                                             },
                                             description: "",
-                                            heading: "Configurer le fournisseur d'identité Google",
+                                            heading: "Configurer le fournisseur d'identité {{authenticator}}",
                                             primaryButton: "Configurer",
                                             secondaryButton: "Annuler"
                                         },
-                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                        duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
                                                 body: "Vous avez plusieurs fournisseurs d'identité configurés " +
-                                                    "avec <1> Google Authenticator </1>. Sélectionnez celui de " +
-                                                    "votre choix dans la sélection ci-dessous pour continuer.",
-                                                message: "Plusieurs fournisseurs d'identité trouvés avec Google " +
-                                                    "Authenticator."
+                                                    "avec <1> {{authenticator}} Authenticator </1>. " +
+                                                    "Sélectionnez celui de votre choix dans la sélection " +
+                                                    "ci-dessous pour continuer.",
+                                                message: "Plusieurs fournisseurs d'identité trouvés avec " +
+                                                    "{{authenticator}} Authenticator."
                                             },
                                             description: "",
-                                            heading: "Sélectionnez le fournisseur d'identité Google",
+                                            heading: "Sélectionnez le fournisseur d'identité {{authenticator}}",
                                             primaryButton: "Continuer",
                                             secondaryButton: "Annuler"
                                         },
@@ -1061,6 +1063,15 @@ export const console: ConsoleNS = {
                                                 description: "Créez votre flux de connexion en commençant par la " +
                                                     "connexion Nom d'utilisateur et mot de passe.",
                                                 heading: "Commencer avec la configuration par défaut"
+                                            },
+                                            facebook: {
+                                                description: "Permettre aux utilisateurs de se connecter avec " +
+                                                    "Facebook.",
+                                                heading: "Ajouter une connexion Facebook"
+                                            },
+                                            github: {
+                                                description: "Autorisez les utilisateurs à se connecter avec GitHub.",
+                                                heading: "Ajouter une connexion GitHub"
                                             },
                                             google: {
                                                 description: "Permettre aux utilisateurs de se connecter avec Google.",

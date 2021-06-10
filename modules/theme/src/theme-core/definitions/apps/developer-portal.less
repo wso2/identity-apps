@@ -836,6 +836,7 @@
         overflow: auto;
     }
 }
+
 .form-container {
     &.with-max-width {
         max-width: @formContainerMaxWidth;
@@ -845,12 +846,56 @@
     }
 }
 
+// Styles for the form section component. @see @wso2is/react-components -> FormSection
+.form-section {
+    .form-section-top-divider {
+        margin: 0;
+    }
+    .form-section-heading {
+        margin-top: 20px;
+    }
+}
+
 /*-------------------------------
-      Google IDP Scope Label
+   Authenticator Scopes Styles
+   TODO: Remove once a seperate
+  form is written for Google IDP.
 --------------------------------*/
 
-.scope-name {
-    font-size: 0.89em !important;
+.authenticator-scope {
+    display: flex;
+    margin-bottom: 1em;
+
+    .scope-name-container {
+        display: flex;
+        min-width: 200px;
+        margin-right: 2em;
+    }
+}
+
+/*-------------------------------
+        IDP Authenticator 
+ Readonly Dynamic Property Styles
+--------------------------------*/
+
+.authenticator-dynamic-properties {
+
+    .authenticator-dynamic-property {
+        display: flex;
+        margin-bottom: 1em;
+        padding-bottom: 10px;
+
+        &.separated {
+            &:not(:last-child) {
+                border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+            }
+        }
+
+        .authenticator-dynamic-property-name-container {
+            display: flex;
+            min-width: 150px;
+        }
+    }
 }
 
 /*-------------------------------

@@ -17,33 +17,153 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Divider, Message } from "semantic-ui-react";
+import { ConfigReducerStateInterface } from "../../../../../core/models";
+import { AppState } from "../../../../../core/store";
 
 /**
  * Prop types of the component.
  */
-type FacebookIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
+type FacebookIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface;
 
 /**
- * Help content for the facebook IDP template creation wizard.
+ * Help content for the Facebook IDP template creation wizard.
  *
  * @param {FacebookIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
+ *
  * @return {React.ReactElement}
  */
-const FacebookIdentityProviderCreateWizardHelpPropsInterface: FunctionComponent<FacebookIdentityProviderCreateWizardHelpPropsInterface> = (
-    props: FacebookIdentityProviderCreateWizardHelpPropsInterface
+const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
+    FacebookIdentityProviderCreateWizardHelpPropsInterface> = (
+        props: FacebookIdentityProviderCreateWizardHelpPropsInterface
 ): ReactElement => {
 
     const {
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the facebook authentication provider so that it can be easily identified.</p>
-            <p>E.g., MyFacebookAuthProvider.</p>
+            <Message info>
+                <Heading as="h5" className="mb-3">
+                    {
+                        t("console:develop.features.authenticationProvider.templates.facebook.wizardHelp." +
+                            "preRequisites.heading")
+                    }
+                </Heading>
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.facebook.wizardHelp." +
+                            "preRequisites.getCredentials"
+                        }
+                    >
+                        Before you begin, create an <strong>application</strong> <a
+                        href="https://developers.facebook.com/"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        on Facebook Developer Console
+                        </a>, and obtain a <strong>App ID & secret</strong>.
+                    </Trans>
+                </p>
+                <p>
+        
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
+                            ".preRequisites.configureSiteURL"
+                        }
+                    >
+                        Use the following as the <strong>Site URL</strong>.
+                    </Trans>
+
+                    <CopyInputField
+                        className="copy-input-dark spaced"
+                        value={ config.deployment.serverHost }
+                    />
+                </p>
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.facebook.wizardHelp" +
+                            ".preRequisites.configureRedirectURL"
+                        }
+                    >
+                        Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
+                    </Trans>
+
+                    <CopyInputField
+                        className="copy-input-dark spaced"
+                        value={ config.deployment.serverHost + "/commonauth" }
+                    />
+
+                    <a
+                        href="https://developers.facebook.com/docs/development/create-an-app"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        {
+                            t("console:develop.features.authenticationProvider.templates.facebook" +
+                                ".wizardHelp.preRequisites.configureOAuthApps")
+                        }
+                    </a>
+                </p>
+            </Message>
+
+            <Heading as="h5">
+                {
+                    t("console:develop.features.authenticationProvider.templates.facebook" +
+                        ".wizardHelp.name.heading")
+                }
+            </Heading>
+            <p>
+                {
+                    t("console:develop.features.authenticationProvider.templates.facebook." +
+                        "wizardHelp.name.description")
+                }
+            </p>
+
+            <Divider/>
+
+            <Heading as="h5">
+                { t("console:develop.features.authenticationProvider.templates.facebook.wizardHelp.clientId.heading") }
+            </Heading>
+            <p>
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.facebook" +
+                        ".wizardHelp.clientId.description"
+                    }
+                >
+                    Provide the <Code>App ID</Code> obtained from Facebook.
+                </Trans>
+            </p>
+
+            <Divider/>
+
+            <Heading as="h5">
+                {
+                    t("console:develop.features.authenticationProvider.templates.facebook" +
+                        ".wizardHelp.clientSecret.heading")
+                }
+            </Heading>
+            <p>
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.facebook." +
+                        "wizardHelp.clientSecret.description"
+                    }
+                >
+                    Provide the <Code>App Secret</Code> obtained from Facebook.
+                </Trans>
+            </p>
         </div>
     );
 };
@@ -51,8 +171,8 @@ const FacebookIdentityProviderCreateWizardHelpPropsInterface: FunctionComponent<
 /**
  * Default props for the component
  */
-FacebookIdentityProviderCreateWizardHelpPropsInterface.defaultProps = {
-    "data-testid": "custom-app-create-wizard-help"
+FacebookIdentityProviderCreateWizardHelp.defaultProps = {
+    "data-testid": "facebook-idp-create-wizard-help"
 };
 
 /**
@@ -60,4 +180,4 @@ FacebookIdentityProviderCreateWizardHelpPropsInterface.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default FacebookIdentityProviderCreateWizardHelpPropsInterface;
+export default FacebookIdentityProviderCreateWizardHelp;

@@ -539,6 +539,21 @@
             {% endfor %}
             {% endif %}
         },
+        {% if console.ui.idp_templates is defined %}
+        "identityProviderTemplates": {
+            {% for key, value in console.ui.idp_templates.items() %}
+            "{{ key }}": {
+                {% for attrKey, attrValue in value.items() %}
+                {% if attrValue is string %}
+                    "{{ attrKey }}": "{{ attrValue }}"{{ "," if not loop.last }}
+                {% else %}
+                    "{{ attrKey }}": {{ attrValue }}{{ "," if not loop.last }}
+                {% endif %}
+                {% endfor %}
+            }{{ "," if not loop.last }}
+            {% endfor %}
+        },
+        {% endif %}
         {% if console.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
         {% endif %}

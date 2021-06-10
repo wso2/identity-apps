@@ -167,6 +167,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenAuthenticators?: string[];
     /**
+     * Configurations for IDP templates.
+     */
+    identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
+    /**
      * How should the IDP templates be loaded.
      * If `LOCAL` is selected, app will resort to in-app templates.
      * `REMOTE` will fetch templates from the template management REST API.
@@ -213,6 +217,42 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     
+}
+
+/**
+ * Interface for IDP template configurations.
+ */
+interface IdentityProviderTemplatesConfigInterface {
+    /**
+     * Enterprise OIDC template config.
+     */
+    enterpriseOIDC: IdentityProviderTemplateConfigInterface;
+    /**
+     * Enterprise SAML template config.
+     */
+    enterpriseSAML: IdentityProviderTemplateConfigInterface;
+    /**
+     * Facebook template config.
+     */
+    facebook: IdentityProviderTemplateConfigInterface;
+    /**
+     * Google template config.
+     */
+    google: IdentityProviderTemplateConfigInterface;
+    /**
+     * GitHub template config.
+     */
+    github: IdentityProviderTemplateConfigInterface;
+}
+
+/**
+ * Interface for IDP template config.
+ */
+interface IdentityProviderTemplateConfigInterface {
+    /**
+     * Is the IDP enabled.
+     */
+    enabled: boolean;
 }
 
 /**

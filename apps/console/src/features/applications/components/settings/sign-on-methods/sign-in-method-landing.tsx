@@ -142,6 +142,36 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             />
                             <InfoCard
                                 fluid
+                                data-testid="github-login-flow-card"
+                                imageSize="mini"
+                                image={ getAuthenticatorIcons().github }
+                                header={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.github.heading")
+                                }
+                                description={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.github.description")
+                                }
+                                onClick={ () => onLoginFlowSelect(LoginFlowTypes.GITHUB_LOGIN) }
+                            />
+                            <InfoCard
+                                fluid
+                                data-testid="facebook-login-flow-card"
+                                imageSize="mini"
+                                image={ getAuthenticatorIcons().facebook }
+                                header={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.facebook.heading")
+                                }
+                                description={
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                        "landing.flowBuilder.types.facebook.description")
+                                }
+                                onClick={ () => onLoginFlowSelect(LoginFlowTypes.FACEBOOK_LOGIN) }
+                            />
+                            <InfoCard
+                                fluid
                                 data-testid="totp-mfa-flow-card"
                                 image={ getAuthenticatorIcons().totp }
                                 imageSize="mini"

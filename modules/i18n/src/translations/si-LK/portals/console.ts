@@ -1012,26 +1012,28 @@ export const console: ConsoleNS = {
                                         heading: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ යෙදුම වින්‍යාස කර ඇත"
                                     },
                                     flowBuilder: {
-                                        addMissingGoogleAuthenticatorModal: {
+                                        addMissingSocialAuthenticatorModal: {
                                             content: {
-                                                body: "ඔබට අනන්‍යතා සැපයුම්කරුවෙකු <1>ගූගල් සත්‍යාපකය</ 1> සමඟ වින්‍යාස කර " +
-                                                    "නොමැත. වින්‍යාස කිරීමේ ක්‍රියාවලිය ආරම්භ කිරීමට <3>වින්‍යාස කරන්න</3> බොත්තම " +
-                                                    "ක්ලික් කරන්න හෝ <5>අනන්‍යතා සැපයුම්කරුවන්</5> කොටස අතින්.",
-                                                message: "ගූගල් හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කර නොමැත"
+                                                body: "ඔබට අනන්‍යතා සැපයුම්කරුවෙකු <1>{{authenticator}} සත්‍යාපකය</ 1> " +
+                                                    "සමඟ වින්‍යාස කර නොමැත. වින්‍යාස කිරීමේ ක්‍රියාවලිය ආරම්භ කිරීමට <3>" +
+                                                    "වින්‍යාස කරන්න</3> බොත්තම ක්ලික් කරන්න හෝ <5>{{authenticator}} අනන්‍යතා " +
+                                                    "සැපයුම්කරුවන්</5> කොටස අතින්.",
+                                                message: "{{authenticator}} හැඳුනුම්පත් සපයන්නෙකු වින්‍යාස කර නොමැත"
                                             },
                                             description: "",
-                                            heading: "ගූගල් හැඳුනුම් සැපයුම්කරු වින්‍යාස කරන්න",
+                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු වින්‍යාස කරන්න",
                                             primaryButton: "වින්‍යාස කරන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
-                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                        duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
-                                                body: "<1>Google Authenticator</1> සමඟ වින්‍යාස කර ඇති අනන්‍යතා " +
-                                                    "සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් අපේක්ෂිත එකක් තෝරන්න.",
-                                                message: "Google Authenticator සමඟ බහු අනන්‍යතා සපයන්නන් හමු විය."
+                                                body: "<1>{{authenticator}} Authenticator</1> සමඟ වින්‍යාස කර ඇති " +
+                                                    "අනන්‍යතා සැපයුම්කරුවන් ඔබට ඇත. ඉදිරියට යාමට තේරීම් වළල්ලෙන් අපේක්ෂිත එකක් " +
+                                                    "තෝරන්න.",
+                                                message: "{{authenticator}} Authenticator සමඟ බහු අනන්‍යතා සපයන්නන් හමු විය."
                                             },
                                             description: "",
-                                            heading: "ගූගල් හැඳුනුම් සැපයුම්කරු තෝරන්න",
+                                            heading: "{{authenticator}} හැඳුනුම් සැපයුම්කරු තෝරන්න",
                                             primaryButton: "දිගටම කරගෙන යන්න",
                                             secondaryButton: "අවලංගු කරන්න"
                                         },
@@ -1041,6 +1043,14 @@ export const console: ConsoleNS = {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ පිවිසුම් " +
                                                     "ප්‍රවාහය ගොඩනඟන්න.",
                                                 heading: "පෙරනිමි වින්‍යාසය සමඟ ආරම්භ කරන්න"
+                                            },
+                                            facebook: {
+                                                description: "ෆේස්බුක් සමඟ පිවිසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                                                heading: "ෆේස්බුක් පිවිසුම එක් කරන්න"
+                                            },
+                                            github: {
+                                                description: "පරිශීලකයින්ට GitHub සමඟ ප්‍රවේශ වීමට ඉඩ දෙන්න.",
+                                                heading: "GitHub පිවිසුම එක් කරන්න"
                                             },
                                             google: {
                                                 description: "ගූගල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",

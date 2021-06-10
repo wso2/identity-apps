@@ -1014,28 +1014,30 @@ export const console: ConsoleNS = {
                                         heading: "This application is configured with Username & Password Login"
                                     },
                                     flowBuilder: {
-                                        addMissingGoogleAuthenticatorModal: {
+                                        addMissingSocialAuthenticatorModal: {
                                             content: {
                                                 body: "You do not have an active Identity Provider configured with " +
-                                                    "<1>Google Authenticator</1>. Click on the <3>Configure</3> " +
-                                                    "button to register a new <5>Google Identity Provider</5> " +
-                                                    "or navigate to the <7>Identity Providers</7> section manually.",
-                                                message: "No active Google Identity Provider configured"
+                                                    "<1>{{authenticator}} Authenticator</1>. Click on the " +
+                                                    "<3>Configure</3> button to register a new <5>{{authenticator}} " +
+                                                    "Identity Provider</5> or navigate to the <7>Identity " +
+                                                    "Providers</7> section manually.",
+                                                message: "No active {{authenticator}} Identity Provider configured"
                                             },
                                             description: "",
-                                            heading: "Configure Google Identity Provider",
+                                            heading: "Configure {{authenticator}} Identity Provider",
                                             primaryButton: "Configure",
                                             secondaryButton: "Cancel"
                                         },
-                                        duplicateGoogleAuthenticatorSelectionModal: {
+                                        duplicateSocialAuthenticatorSelectionModal: {
                                             content: {
                                                 body: "You have multiple Identity Providers configured with <1>" +
-                                                    "Google Authenticator</1>. Select the desired one from the " +
-                                                    "selection bellow to proceed.",
-                                                message: "Multiple Identity Providers found with Google Authenticator."
+                                                    "{{authenticator}} Authenticator</1>. Select the desired one " +
+                                                    "from the selection bellow to proceed.",
+                                                message: "Multiple Identity Providers found with {{authenticator}} " +
+                                                    "Authenticator."
                                             },
                                             description: "",
-                                            heading: "Select Google Identity Provider",
+                                            heading: "Select {{authenticator}} Identity Provider",
                                             primaryButton: "Continue",
                                             secondaryButton: "Cancel"
                                         },
@@ -1045,6 +1047,14 @@ export const console: ConsoleNS = {
                                                 description: "Build your login flow starting with Username & " +
                                                     "Password login.",
                                                 heading: "Start with default configuration"
+                                            },
+                                            facebook: {
+                                                description: "Enable users to login with Facebook.",
+                                                heading: "Add Facebook login"
+                                            },
+                                            github: {
+                                                description: "Enable users to login with GitHub.",
+                                                heading: "Add GitHub login"
                                             },
                                             google: {
                                                 description: "Enable users to login with Google.",
@@ -2822,6 +2832,119 @@ export const console: ConsoleNS = {
                             1: "Disabled"
                         }
                     },
+                    authenticatorSettings: {
+                        facebook: {
+                            callbackUrl: {
+                                hint: "The set of redirect URIs specified as valid in the Facebook OAuth app.",
+                                label: "Valid OAuth redirect URIs",
+                                placeholder: "Enter Valid OAuth redirect URIs.",
+                                validations: {
+                                    required: "Valid OAuth redirect URIs is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The generated unque ID which is generated when the Facebook OAuth app is created.",
+                                label: "App ID",
+                                placeholder: "Enter App ID from Facebook application.",
+                                validations: {
+                                    required: "App ID is a required field."
+                                }
+                            },
+                            clientSecret: {
+                                hint: "The <1>App secret</1> value of the Facebook OAuth app.",
+                                label: "App secret",
+                                placeholder: "Enter App secret from Facebook application.",
+                                validations: {
+                                    required: "App secret is a required field."
+                                }
+                            },
+                            scopes: {
+                                heading: "Permissions",
+                                hint: "Permissions granted for the connected apps to access data from Facebook. Click <1>here</> to learn more.",
+                                list: {
+                                    email: {
+                                        description: "Grants read access to a user's primary email address."
+                                    },
+                                    profile: {
+                                        description: "Grants read access to a user's default public profile fields."
+                                    }
+                                }
+                            },
+                            userInfo: {
+                                heading: "User information fields",
+                                hint: "Requested default public profile fields of a user. These information can " +
+                                    "provide authenticated app users with a personalized in-app experience. Click " +
+                                    "<1>here</1> to learn more.",
+                                list: {
+                                    ageRange: {
+                                        description: "The age segment for this person expressed as a minimum and " +
+                                            "maximum age."
+                                    },
+                                    email: {
+                                        description: "The User's primary email address listed on their profile."
+                                    },
+                                    firstName: {
+                                        description: "The person's first name."
+                                    },
+                                    gender: {
+                                        description: "The gender selected by this person, male or female."
+                                    },
+                                    id: {
+                                        description: "The app user's App-Scoped User ID."
+                                    },
+                                    lastName: {
+                                        description: "The person's last name."
+                                    },
+                                    link: {
+                                        description: "A link to the person's Timeline."
+                                    },
+                                    name: {
+                                        description: "The person's full name."
+                                    }
+                                },
+                                placeholder: "Enter fields to extract from user's profile."
+                            }
+                        },
+                        github: {
+                            callbackUrl: {
+                                hint: "The set of redirect URIs specified as valid in the GitHub for your OAuth app.",
+                                label: "Authorization callback URL",
+                                placeholder: "Enter Authorization callback URL.",
+                                validations: {
+                                    required: "Authorization callback URL is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The <1>Client ID</> you received from GitHub for your OAuth app.",
+                                label: "Client ID",
+                                placeholder: "Enter Client ID from Github application.",
+                                validations: {
+                                    required: "Client ID is a required field."
+                                }
+                            },
+                            clientSecret: {
+                                hint: "The <1>Client secret</1> you received from GitHub for your OAuth app.",
+                                label: "Client secret",
+                                placeholder: "Enter Client secret from Github application.",
+                                validations: {
+                                    required: "Client secret is a required field."
+                                }
+                            },
+                            scopes: {
+                                heading: "Scopes",
+                                hint: "The type of access provided for the connected apps to access data " +
+                                    "from GitHub. Click <1>here</1> to learn more.",
+                                list: {
+                                    email: {
+                                        description: "Grants read access to a user's email addresses."
+                                    },
+                                    profile: {
+                                        description: "Grants access to read a user's profile data."
+                                    }
+                                }
+                            }
+                        }
+                    },
                     common: {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
@@ -2847,7 +2970,8 @@ export const console: ConsoleNS = {
                             validations: {
                                 duplicate: "An identity provider already exists with this name",
                                 empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters."
+                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters.",
+                                required: "Identity Provider name is required"
                             }
                         }
                     },
@@ -3460,6 +3584,59 @@ export const console: ConsoleNS = {
                     }
                 },
                 templates: {
+                    facebook: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>App ID</1> you received from Facebook when you registered the OAuth app.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the <1>App secret</1> you received from Facebook when you registered the OAuth app.",
+                                heading: "Client secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                description: "Provide a unique name for the identity provider.",
+                                heading: "Name"
+                            },
+                            preRequisites: {
+                                configureOAuthApps: "See Facebooks's guide on configuring apps.",
+                                configureRedirectURL: "Add the following URL as a <1>Valid OAuth Redirect URI</1>.",
+                                configureSiteURL: "Use the following as the <1>Site URL</1>.",
+                                getCredentials: "Before you begin, create an <1>app</1> " +
+                                    "<3>on Facebook</3>, and obtain an <5>App ID & secret</5>.",
+                                heading: "Prerequisite"
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
+                    github: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Client ID</1> you received from GitHub when you registered the OAuth app.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the <1>Client secret</1> you received from GitHub when you registered the OAuth app.",
+                                heading: "Client secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                description: "Provide a unique name for the identity provider.",
+                                heading: "Name"
+                            },
+                            preRequisites: {
+                                configureOAuthApps: "See GitHub's guide on configuring OAuth Apps.",
+                                configureHomePageURL: "Use the following as the <1>HomePage URL</1>.",
+                                configureRedirectURL: "Add the following URL as the <1>Authorization callback URL</1>.",
+                                getCredentials: "Before you begin, create an <1>OAuth application</1> " +
+                                    "<3>on GitHub</3>, and obtain a <5>client ID & secret</5>. Use the following " +
+                                    "URL as the <7>Homepage URL</7> & <9>Authorization callback URL</9>.",
+                                heading: "Prerequisite"
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
                     manualSetup: {
                         heading: "Manual Setup",
                         subHeading: "Create an identity provider with custom configurations."
@@ -7759,7 +7936,7 @@ export const console: ConsoleNS = {
                 pageLayout: {
                     edit: {
                         back: "Go back to userstores",
-                        description: "Edit userstore.",
+                        description: "Edit userstore",
                         tabs: {
                             connection: "Connection",
                             general: "General",

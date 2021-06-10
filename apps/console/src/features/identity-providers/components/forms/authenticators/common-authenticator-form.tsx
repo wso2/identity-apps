@@ -37,6 +37,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         onSubmit,
         triggerSubmit,
         enableSubmitButton,
+        showCustomProperties,
         [ "data-testid" ]: testId
     } = props;
 
@@ -48,6 +49,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
             data-testid={ testId }
+            showCustomProperties={ showCustomProperties }
         />
     );
 };

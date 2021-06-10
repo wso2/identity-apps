@@ -19,21 +19,23 @@
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
 import values from "lodash-es/values";
-import { ComponentType, lazy, LazyExoticComponent, ReactElement } from "react";
+import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
-import EnterpriseOIDCIdentityProviderTemplate
-    from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
+import EnterpriseIdentityProviderTemplateGroup from "./groups/enterprise-idp-template-group.json";
 import EnterpriseIdentityProviderTemplate
     from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import FacebookIDPTemplate from "./templates/facebook/facebook.json";
-import GihubIDPTemplate from "./templates/github/github.json";
+import GitHubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
-import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
-import { EnterpriseIdentityProviderTemplateExtension } from "../../../../extensions/configs/identity-providers-templates";
-import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
+import EnterpriseOIDCIdentityProviderTemplate
+    from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
 import EnterpriseSAMLIdentityProviderTemplate
     from "./templates/saml-identity-provider/enterprise-saml-identity-provider.json";
-import EnterpriseIdentityProviderTemplateGroup from "./groups/enterprise-idp-template-group.json";
+import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
+import {
+    EnterpriseIdentityProviderTemplateExtension
+} from "../../../../extensions/configs/identity-providers-templates";
+import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**
  * This is used to extend two configurations. Say for example,
@@ -111,7 +113,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/google/create-wizard-help"))
                             },
-                            enabled: identityProviderConfig.templates.google,
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.google?.enabled
+                                ?? identityProviderConfig.templates.google,
                             id: GoogleIDPTemplate.id,
                             resource: GoogleIDPTemplate
                         },
@@ -119,7 +122,8 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/facebook/create-wizard-help"))
                             },
-                            enabled: identityProviderConfig.templates.facebook,
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.facebook?.enabled
+                                ?? identityProviderConfig.templates.facebook,
                             id: FacebookIDPTemplate.id,
                             resource: FacebookIDPTemplate
                         },
@@ -127,9 +131,10 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                             content: {
                                 wizardHelp: lazy(() => import("./templates/github/create-wizard-help"))
                             },
-                            enabled: identityProviderConfig.templates.github,
-                            id: GihubIDPTemplate.id,
-                            resource: GihubIDPTemplate
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.github?.enabled
+                                ?? identityProviderConfig.templates.github,
+                            id: GitHubIDPTemplate.id,
+                            resource: GitHubIDPTemplate
                         },
                         {
                             content: {
@@ -137,7 +142,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/oidc-identity-provider/create-wizard-help")
                                 )
                             },
-                            enabled: identityProviderConfig.templates.oidc,
+                            enabled: window["AppUtils"].getConfig()
+                                .ui.identityProviderTemplates?.enterpriseOIDC?.enabled
+                                    ?? identityProviderConfig.templates.oidc,
                             id: EnterpriseOIDCIdentityProviderTemplate.id,
                             resource: EnterpriseOIDCIdentityProviderTemplate
                         },
@@ -147,10 +154,12 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                     import("./templates/saml-identity-provider/saml-idp-wizard-help")
                                 ))
                             },
-                            enabled: identityProviderConfig.templates.saml,
+                            enabled: window["AppUtils"].getConfig()
+                                .ui.identityProviderTemplates?.enterpriseSAML?.enabled
+                                    ?? identityProviderConfig.templates.saml,
                             id: EnterpriseSAMLIdentityProviderTemplate.id,
                             resource: EnterpriseSAMLIdentityProviderTemplate
-                        },
+                        }
                     ],
                     "id"
                 ),

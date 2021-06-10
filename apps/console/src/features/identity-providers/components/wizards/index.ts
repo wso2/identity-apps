@@ -16,6 +16,8 @@
  * under the License.
  */
 
+export * from "./facebook";
+export * from "./github";
 export * from "./authenticator-create-wizard-factory";
 export * from "./identity-provider-create-wizard";
 export * from "./steps";

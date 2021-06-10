@@ -26,23 +26,22 @@ import { Divider } from "semantic-ui-react";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
 import { SignInMethodLanding } from "./sign-in-method-landing";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.json";
+import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
-import {
-    AppConstants,
-    FeatureConfigInterface,
-    history
-} from "../../../../core";
+import { AppConstants, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorMeta,
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateInterface
 } from "../../../../identity-providers";
+import { AuthenticatorCreateWizardFactory } from "../../../../identity-providers/components";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { ApplicationInterface, AuthenticationSequenceInterface, LoginFlowTypes } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
-import { AuthenticatorCreateWizardFactory } from "../../../../identity-providers/components/wizards";
+
 /**
  * Proptypes for the sign on methods component.
  */
@@ -104,17 +103,20 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const { t } = useTranslation();
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
+    const [ socialDisclaimerModalType, setSocialDisclaimerModalType ] = useState<LoginFlowTypes>(undefined);
     const [ authenticators, setAuthenticators ] = useState<GenericAuthenticatorInterface[][]>(undefined);
     const [ googleAuthenticators, setGoogleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
-    const [ showMissingGoogleAuthenticatorModal, setShowMissingGoogleAuthenticatorModal ] = useState<boolean>(false);
+    const [ gitHubAuthenticators, setGitHubAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
+    const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
+    const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
     const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(false);
     const [
-        showDuplicateGoogleAuthenticatorSelectionModal,
-        setShowDuplicateGoogleAuthenticatorSelectionModal
+        showDuplicateSocialAuthenticatorSelectionModal,
+        setShowDuplicateSocialAuthenticatorSelectionModal
     ] = useState<boolean>(false);
     const [
-        selectedGoogleAuthenticator,
-        setSelectedGoogleAuthenticator
+        selectedSocialAuthenticator,
+        setSelectedSocialAuthenticator
     ] = useState<GenericAuthenticatorInterface>(undefined);
     const [
         moderatedAuthenticationSequence,
@@ -143,7 +145,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      *     google: GenericAuthenticatorInterface[]) => void} onSuccess - On Success callback.
      */
     const fetchAndCategorizeAuthenticators = (onSuccess?: (all: GenericAuthenticatorInterface[][],
-                                                           google: GenericAuthenticatorInterface[]) => void): void => {
+                                                           google: GenericAuthenticatorInterface[],
+                                                           github: GenericAuthenticatorInterface[],
+                                                           facebook: GenericAuthenticatorInterface[]
+    ) => void): void => {
 
         setIsAuthenticatorsFetchRequestLoading(true);
 
@@ -151,18 +156,34 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             .then((response: GenericAuthenticatorInterface[][]) => {
 
                 const google: GenericAuthenticatorInterface[] = [];
+                const gitHub: GenericAuthenticatorInterface[] = [];
+                const facebook: GenericAuthenticatorInterface[] = [];
 
                 response[ 1 ].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
                         ===  IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
 
                         google.push(authenticator);
+                    } else if (authenticator.defaultAuthenticator.authenticatorId
+                        ===  IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+
+                        gitHub.push(authenticator);
+                    } else if (authenticator.defaultAuthenticator.authenticatorId
+                        ===  IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+
+                        facebook.push(authenticator);
                     }
                 });
 
                 setGoogleAuthenticators(google);
+                setGitHubAuthenticators(gitHub);
+                setFacebookAuthenticators(facebook);
                 setAuthenticators(response);
-                onSuccess && onSuccess(response, google);
+                
+                // Trigger the onsuccess callback and send the responses to the calller.
+                // Reason for this is that the invoker needs the responses ASAP,
+                // but the state update takes time.
+                onSuccess && onSuccess(response, google, gitHub, facebook);
             })
             .finally(() => {
                 setIsAuthenticatorsFetchRequestLoading(false);
@@ -194,10 +215,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * Handles the login flow select action.
      *
      * @param {LoginFlowTypes} loginFlow - Selected login flow.
-     * @param {GenericAuthenticatorInterface[]} googleAuthenticators -  Set of Google Authenticators.
+     * @param {GenericAuthenticatorInterface[]} googleAuthenticators -  Set of configured Google Authenticators.
+     * @param {GenericAuthenticatorInterface[]} gitHubAuthenticators -  Set of configured GutHub Authenticators.
+     * @param {GenericAuthenticatorInterface[]} facebookAuthenticators -  Set of configured Facebook Authenticators.
      */
     const handleLoginFlowSelect = (loginFlow: LoginFlowTypes,
-                                   googleAuthenticators: GenericAuthenticatorInterface[]): void => {
+                                   googleAuthenticators: GenericAuthenticatorInterface[],
+                                   gitHubAuthenticators: GenericAuthenticatorInterface[],
+                                   facebookAuthenticators: GenericAuthenticatorInterface[]): void => {
 
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
@@ -212,9 +237,12 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
+
+            setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
+            
             // If there are no IDP's with google authenticator, show missing authenticator modal.
            if (isEmpty(googleAuthenticators)) {
-               setShowMissingGoogleAuthenticatorModal(true);
+               setShowMissingSocialAuthenticatorModal(true);
                
                return;
            }
@@ -222,8 +250,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             // If there are more than 1 IDP's with google authenticator, show authenticator select modal.
            if (googleAuthenticators.length > 1) {
                // Set the first element as the selected google authenticator.
-               setSelectedGoogleAuthenticator(googleAuthenticators[0]);
-               setShowDuplicateGoogleAuthenticatorSelectionModal(true);
+               setSelectedSocialAuthenticator(googleAuthenticators[0]);
+               setShowDuplicateSocialAuthenticatorSelectionModal(true);
                
                return;
            }
@@ -232,9 +260,66 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
            if (googleAuthenticators.length === 1) {
                setModeratedAuthenticationSequence({
                    ...authenticationSequence,
-                   ...updateGoogleLoginSequenceWithIDPName(googleAuthenticators[0].idp)
+                   ...updateSocialLoginSequenceWithIDPName(googleAuthenticators[0].idp,
+                       LoginFlowTypes.GOOGLE_LOGIN)
                });
            }
+        } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
+            
+            setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
+            
+            // If there are no IDP's with GitHub authenticator, show missing authenticator modal.
+            if (isEmpty(gitHubAuthenticators)) {
+                setShowMissingSocialAuthenticatorModal(true);
+
+                return;
+            }
+
+            // If there are more than 1 IDP's with GitHub authenticator, show authenticator select modal.
+            if (gitHubAuthenticators.length > 1) {
+                // Set the first element as the selected GitHub authenticator.
+                setSelectedSocialAuthenticator(gitHubAuthenticators[0]);
+                setShowDuplicateSocialAuthenticatorSelectionModal(true);
+
+                return;
+            }
+
+            // If there are only 1 IDP's with GitHub authenticator, move on.
+            if (gitHubAuthenticators.length === 1) {
+                setModeratedAuthenticationSequence({
+                    ...authenticationSequence,
+                    ...updateSocialLoginSequenceWithIDPName(gitHubAuthenticators[0].idp,
+                        LoginFlowTypes.GITHUB_LOGIN)
+                });
+            }
+        } else if (loginFlow === LoginFlowTypes.FACEBOOK_LOGIN) {
+
+            setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);
+            
+            // If there are no IDP's with Facebook authenticator, show missing authenticator modal.
+            if (isEmpty(facebookAuthenticators)) {
+                setShowMissingSocialAuthenticatorModal(true);
+
+                return;
+            }
+
+            // If there are more than 1 IDP's with Facebook authenticator, show authenticator select modal.
+            if (facebookAuthenticators.length > 1) {
+                // Set the first element as the selected GitHub authenticator.
+                setSelectedSocialAuthenticator(facebookAuthenticators[0]);
+                setShowDuplicateSocialAuthenticatorSelectionModal(true);
+
+                return;
+            }
+
+            // If there are only 1 IDP's with Facebook authenticator, move on.
+            if (facebookAuthenticators.length === 1) {
+                setModeratedAuthenticationSequence({
+                    ...authenticationSequence,
+                    ...updateSocialLoginSequenceWithIDPName(facebookAuthenticators[0].idp,
+                        LoginFlowTypes.FACEBOOK_LOGIN)
+                });
+            }
         }
 
         setLoginFlow(loginFlow);
@@ -242,20 +327,34 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     /**
      * Updates the predefined google login sequence with the desired IDP name.
-     * i.e. Replaces the `<GOOGLE_IDP>` in the JSON with a properly configured IDP.
+     * i.e. Replaces the `<GOOGLE_IDP>`, `<FACEBOOK_IDP>` etc. in the JSON with a properly configured IDP.
      *
      * @return {AuthenticationSequenceInterface}
      */
-    const updateGoogleLoginSequenceWithIDPName = (idp: string): AuthenticationSequenceInterface => {
+    const updateSocialLoginSequenceWithIDPName = (idp: string,
+                                                  loginType: LoginFlowTypes): AuthenticationSequenceInterface => {
 
-        const modifiedGoogleLoginSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
-        modifiedGoogleLoginSequenceTemplate.steps[0].options.forEach((option) => {
-            if (option.authenticator === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME) {
+        let modifiedSequenceTemplate: AuthenticationSequenceInterface = {};
+        let authenticatorType: string = null;
+        
+        if (loginType === LoginFlowTypes.GOOGLE_LOGIN) {
+            modifiedSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
+            authenticatorType = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
+        } else if (loginType === LoginFlowTypes.GITHUB_LOGIN) {
+            modifiedSequenceTemplate = cloneDeep(GitHubLoginSequenceTemplate);
+            authenticatorType = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME;
+        } else if (loginType === LoginFlowTypes.FACEBOOK_LOGIN) {
+            modifiedSequenceTemplate = cloneDeep(FacebookLoginSequenceTemplate);
+            authenticatorType = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
+        }
+
+        modifiedSequenceTemplate.steps[0].options.forEach((option) => {
+            if (option.authenticator === authenticatorType) {
                 option.idp = idp;
             }
         });
 
-        return modifiedGoogleLoginSequenceTemplate;
+        return modifiedSequenceTemplate;
     };
 
     /**
@@ -263,154 +362,204 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      *
      * @return {ReactElement}
      */
-    const renderMissingGoogleAuthenticatorModal = (): ReactElement => (
+    const renderMissingSocialAuthenticatorModal = (): ReactElement => {
 
-        <ConfirmationModal
-            type="info"
-            onClose={ () => setShowMissingGoogleAuthenticatorModal(false) }
-            open={ showMissingGoogleAuthenticatorModal }
-            primaryAction={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                    "flowBuilder.addMissingGoogleAuthenticatorModal.primaryButton")
-            }
-            secondaryAction={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                    "flowBuilder.addMissingGoogleAuthenticatorModal.secondaryButton")
-            }
-            onSecondaryActionClick={ () => setShowMissingGoogleAuthenticatorModal(false) }
-            onPrimaryActionClick={ (): void => {
-                setIDPTemplateTypeToTrigger(IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
-                setShowMissingGoogleAuthenticatorModal(false);
-                setShowIDPCreateWizard(true);
-                setIDPCreateWizardTriggerOrigin("INTERNAL");
-            } }
-            data-testid={ `${ testId }-add-missing-authenticator-modal` }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header>
-                {
+        let idpTemplateTypeToTrigger: string = null; // Which template wizard to trigger? i.e Google wizard etc.
+        let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
+        
+        if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
+            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
+            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
+            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
+            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
+            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
+            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+        } else {
+            return null;
+        }
+
+        return (
+            <ConfirmationModal
+                type="info"
+                onClose={ () => setShowMissingSocialAuthenticatorModal(false) }
+                open={ showMissingSocialAuthenticatorModal }
+                primaryAction={
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                        "flowBuilder.addMissingGoogleAuthenticatorModal.heading")
+                        "flowBuilder.addMissingSocialAuthenticatorModal.primaryButton")
                 }
-            </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached info>
-                {
+                secondaryAction={
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                        "flowBuilder.addMissingGoogleAuthenticatorModal.content.message")
+                        "flowBuilder.addMissingSocialAuthenticatorModal.secondaryButton")
                 }
-            </ConfirmationModal.Message>
-            <ConfirmationModal.Content>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                        "flowBuilder.addMissingGoogleAuthenticatorModal.content.body"
+                onSecondaryActionClick={ () => setShowMissingSocialAuthenticatorModal(false) }
+                onPrimaryActionClick={ (): void => {
+                    
+                    // Trigger the IDP create wizard based on the type.
+                    setIDPTemplateTypeToTrigger(idpTemplateTypeToTrigger);
+                    setShowMissingSocialAuthenticatorModal(false);
+                    setShowIDPCreateWizard(true);
+                    // Since the wizard was triggered from landing page, set the origin as `INTERNAL`.
+                    setIDPCreateWizardTriggerOrigin("INTERNAL");
+                } }
+                data-testid={ `${ testId }-add-missing-authenticator-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    {
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.addMissingSocialAuthenticatorModal.heading",
+                            { authenticator: authenticatorName })
                     }
-                >
-                    You do not have an active Identity Provider configured with <Code> Google Authenticator</Code>.
-                    Click on the <strong>Configure</strong> button to register a new <Code>Google Identity 
-                    Provider</Code> or navigate to the <a
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached info>
+                    {
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.addMissingSocialAuthenticatorModal.content.message",
+                            { authenticator: authenticatorName })
+                    }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.addMissingSocialAuthenticatorModal.content.body"
+                        }
+                        tOptions={ { authenticator: authenticatorName } }
+                    >
+                        You do not have an active Identity Provider configured with <Code> { authenticatorName } 
+                        Authenticator</Code>. Click on the <strong>Configure</strong> button to register a new 
+                        <Code>{ authenticatorName } Identity Provider</Code> or navigate to the <a
                         onClick={ () => {
                             history.push(AppConstants.getPaths().get("IDP"));
                         } }
                         className="external-link link pointing primary"
                     >Identity Providers</a> section manually.
-                </Trans>
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
-    );
+                    </Trans>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
 
     /**
-     * Shows a modal to select the IDP when multiple IDP's have google authenticator configured as default.
+     * Shows a modal to select the IDP when multiple IDP's have the selected 
+     * social authenticator configured as default.
      *
      * @return {ReactElement}
      */
-    const renderDuplicateGoogleAuthenticatorSelectionModal = (): ReactElement => (
+    const renderDuplicateSocialAuthenticatorSelectionModal = (): ReactElement => {
 
-        <ConfirmationModal
-            type="warning"
-            onClose={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
-            open={ showDuplicateGoogleAuthenticatorSelectionModal }
-            primaryAction={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                    "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.primaryButton")
-            }
-            secondaryAction={
-                t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                    "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.secondaryButton")
-            }
-            onSecondaryActionClick={ () => setShowDuplicateGoogleAuthenticatorSelectionModal(false) }
-            onPrimaryActionClick={ (): void => {
-                setModeratedAuthenticationSequence({
-                    ...authenticationSequence,
-                    ...updateGoogleLoginSequenceWithIDPName(selectedGoogleAuthenticator.idp)
-                });
+        let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
+        let authenticators: GenericAuthenticatorInterface[] = []; // Existing authenticators based on the selected type.
 
-                setLoginFlow(LoginFlowTypes.GOOGLE_LOGIN);
-                setShowDuplicateGoogleAuthenticatorSelectionModal(false);
-            } }
-            data-testid={ `${ testId }-duplicate-authenticator-selection-modal` }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header>
-                {
+        if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
+            authenticators = [ ...googleAuthenticators ];
+            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
+            authenticators = [ ...gitHubAuthenticators ];
+            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
+            authenticators = [ ...facebookAuthenticators ];
+            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+        } else {
+            return null;
+        }
+
+        return (
+            <ConfirmationModal
+                type="warning"
+                onClose={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
+                open={ showDuplicateSocialAuthenticatorSelectionModal }
+                primaryAction={
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                        "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.heading")
+                        "flowBuilder.duplicateSocialAuthenticatorSelectionModal.primaryButton")
                 }
-            </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning>
-                {
+                secondaryAction={
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                        "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.content.message")
+                        "flowBuilder.duplicateSocialAuthenticatorSelectionModal.secondaryButton")
                 }
-            </ConfirmationModal.Message>
-            <ConfirmationModal.Content>
-                <Text>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
-                            "flowBuilder.duplicateGoogleAuthenticatorSelectionModal.content.body"
-                        }
-                    >
-                        You have multiple Identity Providers configured with <Code>Google Authenticator</Code>. 
-                        Select the desired one from the selection bellow to proceed
-                    </Trans>
-                </Text>
-                <Divider hidden />
-                <div>
+                onSecondaryActionClick={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
+                onPrimaryActionClick={ (): void => {
+                    // Update the sequence wuth the selected IDP.
+                    setModeratedAuthenticationSequence({
+                        ...authenticationSequence,
+                        ...updateSocialLoginSequenceWithIDPName(selectedSocialAuthenticator.idp,
+                            socialDisclaimerModalType)
+                    });
+
+                    // Set the login flow so that we can show the customization page to the user.
+                    setLoginFlow(socialDisclaimerModalType);
+                    setShowDuplicateSocialAuthenticatorSelectionModal(false);
+                } }
+                data-testid={ `${ testId }-duplicate-authenticator-selection-modal` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
                     {
-                        googleAuthenticators.map((authenticator, index) => (
-                            <LabeledCard
-                                key={ index }
-                                multilineLabel
-                                className="authenticator-card"
-                                size="tiny"
-                                selected={ selectedGoogleAuthenticator?.id === authenticator.id }
-                                image={ authenticator.image }
-                                label={
-                                    AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
-                                    || authenticator.displayName
-                                }
-                                labelEllipsis={ true }
-                                data-testid={
-                                    `${ testId }-authenticator-${ authenticator.name }`
-                                }
-                                onClick={ () => setSelectedGoogleAuthenticator(authenticator) }
-                            />
-                        ))
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.duplicateSocialAuthenticatorSelectionModal.heading",
+                            { authenticator: authenticatorName })
                     }
-                </div>
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
-    );
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached warning>
+                    {
+                        t("console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.message",
+                            { authenticator: authenticatorName })
+                    }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    <Text>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                                "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.body"
+                            }
+                            tOptions={ { authenticator: authenticatorName } }
+                        >
+                            You have multiple Identity Providers configured with <Code>{ authenticatorName } 
+                            Authenticator</Code>. Select the desired one from the selection bellow to proceed
+                        </Trans>
+                    </Text>
+                    <Divider hidden/>
+                    <div>
+                        {
+                            authenticators.map((authenticator, index) => (
+                                <LabeledCard
+                                    key={ index }
+                                    multilineLabel
+                                    className="authenticator-card"
+                                    size="tiny"
+                                    selected={ selectedSocialAuthenticator?.id === authenticator.id }
+                                    image={ authenticator.image }
+                                    label={
+                                        AuthenticatorMeta.getAuthenticatorDisplayName(authenticator.name)
+                                        || authenticator.displayName
+                                    }
+                                    labelEllipsis={ true }
+                                    data-testid={
+                                        `${ testId }-authenticator-${ authenticator.name }`
+                                    }
+                                    onClick={ () => setSelectedSocialAuthenticator(authenticator) }
+                                />
+                            ))
+                        }
+                    </div>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
 
     /**
      * Resets the internal state back to default on reset.
      */
     const handleLoginFlowReset = (): void => {
         setLoginFlow(undefined);
-        setShowMissingGoogleAuthenticatorModal(false);
-        setShowDuplicateGoogleAuthenticatorSelectionModal(false);
-        setSelectedGoogleAuthenticator(undefined);
+        setSocialDisclaimerModalType(undefined);
+        setShowMissingSocialAuthenticatorModal(false);
+        setShowDuplicateSocialAuthenticatorSelectionModal(false);
+        setSelectedSocialAuthenticator(undefined);
         setModeratedAuthenticationSequence(authenticationSequence);
         setIDPTemplateTypeToTrigger(undefined);
         setIDPCreateWizardTriggerOrigin(undefined);
@@ -434,17 +583,29 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 type={ idpTemplateTypeToTrigger }
                 selectedTemplate={ selectedIDPTemplate }
                 onIDPCreate={ () => {
-                    fetchAndCategorizeAuthenticators((all, google) => {
+                    // When the IDP is created, we need to fetch the authenticators list again to get
+                    // the new updates. On successful fetch, we need to broadcast
+                    fetchAndCategorizeAuthenticators((all: GenericAuthenticatorInterface[][],
+                                                      google: GenericAuthenticatorInterface[],
+                                                      github: GenericAuthenticatorInterface[],
+                                                      facebook: GenericAuthenticatorInterface[]) => {
+
+                        // Housekeeping...Reset IDP wizard related states.
                         setIDPTemplateTypeToTrigger(undefined);
                         setShowIDPCreateWizard(false);
+
+                        // Trigger IDP creation success message broadcasting closure.
                         broadcastIDPCreateSuccessMessage && broadcastIDPCreateSuccessMessage();
 
+                        // If the IDP creation is triggered from the landing page, handle the relevant
+                        // login flow changes so that we can navigate the user to the customizing page.
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
-                            handleLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN, google);
+                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook);
                         }
                     });
                 } }
                 onWizardClose={ () => {
+                    // Housekeeping...Reset IDP wizard related states.
                     setIDPTemplateTypeToTrigger(undefined);
                     setIDPCreateWizardTriggerOrigin(undefined);
                     setShowIDPCreateWizard(false);
@@ -462,7 +623,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             isLoading={ isLoading || isAuthenticatorsFetchRequestLoading }
                             readOnly={ readOnly }
                             onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                handleLoginFlowSelect(type, googleAuthenticators);
+                                handleLoginFlowSelect(type,
+                                    googleAuthenticators,
+                                    gitHubAuthenticators,
+                                    facebookAuthenticators);
                             } }
                             data-testid={ `${ testId }-landing` }
                         />
@@ -478,7 +642,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     setSelectedIDPTemplate(template);
                                     setIDPCreateWizardTriggerOrigin("EXTERNAL");
                                     setIDPTemplateTypeToTrigger(type);
-                                    setShowMissingGoogleAuthenticatorModal(false);
+                                    setShowMissingSocialAuthenticatorModal(false);
                                     setShowIDPCreateWizard(true);
                                     broadcastIDPCreateSuccessMessage = cb;
                                 } }
@@ -491,8 +655,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     )
             }
             { showIDPCreateWizard && renderIDPCreateWizard() }
-            { showMissingGoogleAuthenticatorModal && renderMissingGoogleAuthenticatorModal() }
-            { showDuplicateGoogleAuthenticatorSelectionModal && renderDuplicateGoogleAuthenticatorSelectionModal() }
+            { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
+            { showDuplicateSocialAuthenticatorSelectionModal && renderDuplicateSocialAuthenticatorSelectionModal() }
         </EmphasizedSegment>
     );
 };

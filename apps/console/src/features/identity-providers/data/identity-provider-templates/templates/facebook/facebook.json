@@ -1,38 +1,143 @@
 {
-    "category": "DEFAULT",
-    "description": "Login with Facebook",
-    "displayOrder": 4,
     "id": "facebook-idp",
+    "name": "Facebook",
+    "description": "Login with Facebook",
+    "image": "facebook",
+    "category": "DEFAULT",
+    "displayOrder": 2,
+    "services": [],
     "idp": {
-        "certificate": {},
-        "claims": {
-            "provisioningClaims": [],
-            "roleClaim": {
-                "uri": ""
-            },
-            "userIdClaim": {
-                "uri": ""
-            }
-        },
+        "name": "Facebook",
         "description": "",
-        "federatedAuthenticators": {
-            "authenticators": [],
-            "defaultAuthenticatorId": ""
-        },
-        "homeRealmIdentifier": "",
         "image": "",
-        "isFederationHub": false,
         "isPrimary": false,
-        "name": "Facebook Authentication Provider",
-        "provisioning": {},
+        "isFederationHub": false,
+        "homeRealmIdentifier": "",
+        "certificate": {
+            "certificates": []
+        },
+        "alias": "https://localhost:9444/oauth2/token",
+        "claims": {
+            "userIdClaim": {
+                "uri": "http://wso2.org/claims/username"
+            },
+            "roleClaim": {
+                "uri": "http://wso2.org/claims/role"
+            },
+            "provisioningClaims": []
+        },
         "roles": {
             "mappings": [],
             "outboundProvisioningRoles": []
+        },
+        "federatedAuthenticators": {
+            "defaultAuthenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+            "authenticators": [
+                {
+                    "authenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+                    "properties": [
+                        {
+                            "key": "AuthnEndpoint",
+                            "type": "STRING",
+                            "displayOrder": 0,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "Scope",
+                            "displayName": "Scope",
+                            "description": "Enter a comma separated list of permissions to request from the user",
+                            "type": "STRING",
+                            "displayOrder": 3,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "email",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "UserInfoFields",
+                            "displayName": "User Information Fields",
+                            "description": "Enter comma-separated user information fields you want to retrieve",
+                            "type": "STRING",
+                            "displayOrder": 4,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "ClientId",
+                            "displayName": "Client Id",
+                            "description": "Enter Facebook client identifier value",
+                            "type": "STRING",
+                            "displayOrder": 1,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "UserInfoEndpoint",
+                            "type": "STRING",
+                            "displayOrder": 0,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "AuthTokenEndpoint",
+                            "type": "STRING",
+                            "displayOrder": 0,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "callBackUrl",
+                            "displayName": "Callback Url",
+                            "description": "Enter value corresponding to callback url",
+                            "type": "STRING",
+                            "displayOrder": 5,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "ClientSecret",
+                            "displayName": "Client Secret",
+                            "description": "Enter Facebook client secret value",
+                            "type": "STRING",
+                            "displayOrder": 2,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": true,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        }
+                    ]
+                }
+            ]
         }
     },
-    "image": "facebook",
-    "name": "Facebook",
-    "services": [],
-    "disabled": true,
     "type": "SOCIAL"
 }
