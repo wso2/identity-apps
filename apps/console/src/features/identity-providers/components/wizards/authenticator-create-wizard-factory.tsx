@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
-import { GoogleAuthenticationProviderCreateWizard } from "./google-authentication-provider-create-wizard";
+import { GoogleAuthenticationProviderCreateWizard } from "./google";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import { ConfigReducerStateInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
