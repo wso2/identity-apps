@@ -684,8 +684,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         prop.description = "These  will be sent to the identity provider as query parameters in the " +
                             "authentication request. \nE.g., loginHint=hint1";
                     } else if (prop.key === "IsBasicAuthEnabled") {
-                        prop.description = "Specify whether to enable HTTP basic authentication for authenticating " +
-                            "clients. If unchecked, client credentials will be included in the request body";
+                        prop.description = "Specify whether to enable HTTP basic authentication or send " +
+                            "client credentials in the request body";
                     }
                 });
 
