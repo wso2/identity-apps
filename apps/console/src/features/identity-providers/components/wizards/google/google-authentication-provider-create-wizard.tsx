@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import {
     GoogleAuthenticationProviderCreateWizardContent
-} from "./google-authentication-wizard-page";
+} from "./google-authentication-provider-create-wizard-content";
 import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../../features/core";
 import {
     createIdentityProvider,

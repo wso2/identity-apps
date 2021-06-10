@@ -17,4 +17,4 @@
  */
 
 export * from "./google-authentication-provider-create-wizard";
-export * from "./google-authentication-wizard-page";
+export * from "./google-authentication-provider-create-wizard-content";
