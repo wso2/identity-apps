@@ -541,61 +541,17 @@
         },
         {% if console.ui.idp_templates is defined %}
         "identityProviderTemplates": {
-            "enterpriseOIDC": {
-                {% if console.ui.idp_templates.enterpriseOIDC is defined %}
-                {% for key, value in console.ui.idp_templates.enterpriseOIDC.items() %}
-                {% if value is string %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% for key, value in console.ui.idp_templates.items() %}
+            "{{ key }}": {
+                {% for attrKey, attrValue in value.items() %}
+                {% if attrValue is string %}
+                    "{{ attrKey }}": "{{ attrValue }}"{{ "," if not loop.last }}
                 {% else %}
-                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                    "{{ attrKey }}": {{ attrValue }}{{ "," if not loop.last }}
                 {% endif %}
                 {% endfor %}
-                {% endif %}
-            },
-            "enterpriseSAML": {
-                {% if console.ui.idp_templates.enterpriseSAML.items() is defined %}
-                {% for key, value in console.ui.idp_templates.enterpriseSAML.items() %}
-                {% if value is string %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-                {% else %}
-                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-            },
-            "facebook": {
-                {% if console.ui.idp_templates.facebook.items() is defined %}
-                {% for key, value in console.ui.idp_templates.facebook.items() %}
-                {% if value is string %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-                {% else %}
-                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-            },
-            "google": {
-                {% if console.ui.idp_templates.google.items() is defined %}
-                {% for key, value in console.ui.idp_templates.google.items() %}
-                {% if value is string %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-                {% else %}
-                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-            },
-            "github": {
-                {% if console.ui.idp_templates.github.items() is defined %}
-                {% for key, value in console.ui.idp_templates.github.items() %}
-                {% if value is string %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-                {% else %}
-                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-            }
+            }{{ "," if not loop.last }}
+            {% endfor %}
         },
         {% endif %}
         {% if console.ui.is_cookie_consent_banner_enabled is defined %}
