@@ -32,14 +32,16 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Header } from "semantic-ui-react";
-import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
+import { Grid } from "semantic-ui-react";
+import {
+    GoogleAuthenticationProviderCreateWizardContent
+} from "./google-authentication-wizard-page";
 import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../../features/core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
 } from "../../../api";
-import { getAuthenticatorIcons, getIdPIcons } from "../../../configs";
+import { getIdPIcons } from "../../../configs";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
@@ -379,7 +381,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content className="content-container" data-testid={ `${ testId }-modal-content-2` }>
                     { alert && alertComponent }
-                    <GoogleAuthenticationWizardFrom
+                    <GoogleAuthenticationProviderCreateWizardContent
                         onSubmit={ onSubmitWizard }
                         triggerSubmission={ (submitFunction: () => void) => {
                             submitAdvanceForm = submitFunction;
