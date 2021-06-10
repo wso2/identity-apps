@@ -19,36 +19,45 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
+import {
+    ContentLoader,
+    GenericIcon,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    useWizardAlert
+} from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Header } from "semantic-ui-react";
-import { GoogleAuthenticationWizardFrom } from "./google-authentication-wizard-page";
-import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../features/core";
+import { Grid } from "semantic-ui-react";
+import {
+    GoogleAuthenticationProviderCreateWizardContent
+} from "./google-authentication-provider-create-wizard-content";
+import { AppConstants, AppState, ModalWithSidePanel, store } from "../../../../../features/core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
-} from "../../api";
-import { getAuthenticatorIcons } from "../../configs";
-import { IdentityProviderManagementConstants } from "../../constants";
+} from "../../../api";
+import { getIdPIcons } from "../../../configs";
+import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
-} from "../../models";
-import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
+} from "../../../models";
+import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../../utils";
 
 /**
  * Proptypes for the identity provider creation wizard component.
  */
 interface MinimalAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface { }
+    GenericIdentityProviderCreateWizardPropsInterface {
+}
 
 /**
  * Identity provider creation wizard component.
@@ -166,7 +175,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         if (connector && isGoogleConnector) {
             delete connector[
                 IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
-            ];
+                ];
         }
 
         createNewIdentityProvider(identityProvider);
@@ -228,7 +237,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
             {
                 "key": "ClientId",
-                "value":  values?.clientId.toString()
+                "value": values?.clientId.toString()
             },
             {
                 "key": "ClientSecret",
@@ -261,7 +270,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             }
         }
         handleWizardFormFinish(identityProvider);
-    }; 
+    };
 
 
     const resolveStepActions = (): ReactElement => {
@@ -270,38 +279,53 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             <Grid>
                 <Grid.Row column={ 1 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        <LinkButton floated="left" onClick={ handleWizardClose }
-                            data-testid={ `${ testId }-modal-cancel-button` }>
+                        <LinkButton
+                            floated="left"
+                            onClick={ handleWizardClose }
+                            data-testid={ `${ testId }-modal-cancel-button` }
+                        >
                             { t("common:cancel") }
                         </LinkButton>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        { currentWizardStep !== totalStep ? (
-                            <PrimaryButton floated="right" onClick={ () => {
-                                submitAdvanceForm();
-                            } }
-                                data-testid={ `${ testId }-modal-finish-button` }>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
-                            </PrimaryButton>
-                        ) : (
-                                <>
-                                    <PrimaryButton floated="right" onClick={ () => {
-                                        // setCurrentWizardStep(1);
-                                        submitAdvanceForm();
-                                    } }
-                                        data-testid={ `${ testId }-modal-finish-button` }>
+                        {
+                            (currentWizardStep !== totalStep)
+                                ? (
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            submitAdvanceForm();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                    >
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                    </PrimaryButton>
+                                )
+                                : (
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            // setCurrentWizardStep(1);
+                                            submitAdvanceForm();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                    >
                                         { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
-                                </>
-                            ) }
+                                )
+                        }
                         {
-                            currentWizardStep > 1 && 
-                            <LinkButton floated="right" onClick={ ()=> {
+                            currentWizardStep > 1 && (
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ () => {
                                         triggerPreviousForm();
                                     } }
-                                data-testid={ `${ testId }-modal-previous-button` }>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
-                            </LinkButton>
+                                    data-testid={ `${ testId }-modal-previous-button` }
+                                >
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                </LinkButton>
+                            )
                         }
                     </Grid.Column>
                 </Grid.Row>
@@ -333,8 +357,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
-                    <Suspense fallback={ <ContentLoader /> }>
-                        <WizardHelp />
+                    <Suspense fallback={ <ContentLoader/> }>
+                        <WizardHelp/>
                     </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
@@ -352,45 +376,36 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             data-testid={ `${ testId }-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="page-header-inner with-image"
-                    data-testid={ `${ testId }-modal-header` }>
+                <ModalWithSidePanel.Header
+                    className="wizard-header"
+                    data-testid={ `${ testId }-modal-header` }
+                >
                     <div className="display-flex">
                         <GenericIcon
-                            icon={ getAuthenticatorIcons().google }
-                            size="x50"
+                            icon={ getIdPIcons().google }
+                            size="mini"
                             transparent
-                            spaced={ "right" }
+                            spaced="right"
                             data-testid={ `${ testId }-image` }
                         />
-                        <Header
-                            size={ "small" }
-                            textAlign={ "left" }
-                            className={ "m-0" }
-                            data-testid={ `${ testId }-text-wrapper` }
-                        >
-                            <span data-testid={ `${ testId }-title` }>
-                                { title && title }
-                            </span>
-                            { subTitle && (
-                                <Header.Subheader
-                                    data-testid={ `${ testId }-sub-title` }
-                                >
-                                    { subTitle }
-                                </Header.Subheader>
-                            ) }
-                        </Header>
+                        <div className="ml-1">
+                            { title }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                        </div>
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content className="content-container" data-testid={ `${ testId }-modal-content-2` }>
                     { alert && alertComponent }
-                    <GoogleAuthenticationWizardFrom
+                    <GoogleAuthenticationProviderCreateWizardContent
                         onSubmit={ onSubmitWizard }
                         triggerSubmission={ (submitFunction: () => void) => {
-                            submitAdvanceForm = submitFunction; } }
+                            submitAdvanceForm = submitFunction;
+                        } }
                         triggerPrevious={ (previousFunction: () => void) => {
-                            triggerPreviousForm = previousFunction; } }
-                        changePageNumber= { (step:number)=> setWizStep(step) }
-                        setTotalPage= { (pageNumber:number)=> setTotalStep(pageNumber) }
+                            triggerPreviousForm = previousFunction;
+                        } }
+                        changePageNumber={ (step: number) => setWizStep(step) }
+                        setTotalPage={ (pageNumber: number) => setTotalStep(pageNumber) }
                         template={ template }
                     />
                 </ModalWithSidePanel.Content>

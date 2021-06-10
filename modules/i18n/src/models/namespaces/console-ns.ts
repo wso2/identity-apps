@@ -1150,6 +1150,26 @@ export interface ConsoleNS {
                                 }
                             };
                         };
+                        google: {
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            clientSecret: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    },
+                                    openid: {
+                                        description: string;
+                                    },
+                                    profile: {
+                                        description: string;
+                                    }
+                                }
+                            };
+                        };
                     },
                     outboundConnectorAccordion: {
                         default: {
@@ -1287,6 +1307,30 @@ export interface ConsoleNS {
                             }
                         }
                     };
+                    google: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            },
+                            subHeading: string;
+                        }
+                    },
                 };
                 list: {
                     actions: string;

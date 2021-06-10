@@ -21,18 +21,18 @@ import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    FacebookAuthenticationProviderCreateWizardFormErrorValidationsInterface,
-    FacebookAuthenticationProviderCreateWizardFormValuesInterface
-} from "./facebook-authentication-provider-create-wizard";
+    GitHubAuthenticationProviderCreateWizardFormValuesInterface,
+    GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface
+} from "./github-authentication-provider-create-wizard";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../../utils";
 
 /**
- * Proptypes for the GitHub Authentication Provider create wizard content.
+ * Proptypes for the GoogleAuthenticationWizardFrom.
  */
-interface GithubAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
+interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
     /**
      * Trigger form submit.
      * @param {() => void} submitFunctionCb - Callback.
@@ -61,19 +61,19 @@ interface GithubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * Callback to be triggered for form submit.
      * @param values
      */
-    onSubmit: (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    onSubmit: (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => void;
 }
 
 /**
- * Facebook Authentication Provider Create Wizard content component.
+ * GitHub Authentication Provider Create Wizard content component.
  *
- * @param {GithubAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
+ * @param {GitHubAuthenticationProviderCreateWizardContentPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponent<
-    GithubAuthenticationProviderCreateWizardContentPropsInterface> = (
-        props: GithubAuthenticationProviderCreateWizardContentPropsInterface
+export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
+    GitHubAuthenticationProviderCreateWizardContentPropsInterface> = (
+        props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
 ): ReactElement => {
 
     const {
@@ -147,14 +147,14 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
     /**
      * Validates the Form.
      *
-     * @param {FacebookAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
+     * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
      *
      * @return {GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface}
      */
-    const validateForm = (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface):
-        FacebookAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
+    const validateForm = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface):
+        GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
 
-        const errors: FacebookAuthenticationProviderCreateWizardFormErrorValidationsInterface = {
+        const errors: GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface = {
             clientId: undefined,
             clientSecret: undefined,
             name: undefined
@@ -166,11 +166,11 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
         }
         if (!values.clientId) {
             errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.facebook.clientId.validations.required");
+                ".authenticatorSettings.github.clientId.validations.required");
         }
         if (!values.clientSecret) {
             errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.facebook.clientSecret.validations.required");
+                ".authenticatorSettings.github.clientSecret.validations.required");
         }
 
         return errors;
@@ -182,7 +182,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                 <Wizard
                     initialValues={ { name: template?.idp?.name } }
                     onSubmit={
-                        (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
+                        (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                     }
                     triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
                     triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
@@ -192,13 +192,17 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
-                            ariaLabel="Facebook IDP Name"
+                            ariaLabel="GitHub IDP Name"
                             inputType="name"
                             name="name"
-                            label={ t("console:develop.features.authenticationProvider.forms." +
-                                "generalDetails.name.label") }
-                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
-                                "generalDetails.name.placeholder") }
+                            label={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.placeholder")
+                            }
                             required={ true }
                             validation={ (value) => idpNameValidation(value) }
                             maxLength={
@@ -213,21 +217,21 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="Facebook Client ID"
+                            ariaLabel="GitHub Client ID"
                             inputType="resourceName"
                             name="clientId"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientId.label")
+                                    ".authenticatorSettings.github.clientId.label")
                             }
                             placeholder={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientId.placeholder")
+                                    ".authenticatorSettings.github.clientId.placeholder")
                             }
                             required={ true }
                             message={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientId.validations.required")
+                                    ".authenticatorSettings.github.clientId.validations.required")
                             }
                             type="text"
                             autoComplete={ "" + Math.random() }
@@ -243,21 +247,21 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="Facebook Client Secret"
+                            ariaLabel="GitHub Client Secret"
                             inputType="password"
                             name="clientSecret"
                             label={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientSecret.label")
+                                    ".authenticatorSettings.github.clientSecret.label")
                             }
                             placeholder={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientSecret.placeholder")
+                                    ".authenticatorSettings.github.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.clientSecret.validations.required")
+                                    ".authenticatorSettings.github.clientSecret.validations.required")
                             }
                             type="password"
                             hidePassword={ t("common:hide") }
@@ -282,8 +286,8 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
 };
 
 /**
- * Default props for the Facebook Authentication Provider Create Wizard Page Component.
+ * Default props for the GitHub Authentication Provider Create Wizard Page Component.
  */
-FacebookAuthenticationProviderCreateWizardContent.defaultProps = {
-    "data-testid": "facebook-idp-create-wizard-content"
+GitHubAuthenticationProviderCreateWizardContent.defaultProps = {
+    "data-testid": "github-idp-create-wizard-page"
 };

@@ -26,7 +26,9 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { GitHubAuthenticationProviderCreateWizardContent } from "./git-hub-authentication-provider-create-wizard-content";
+import {
+    GitHubAuthenticationProviderCreateWizardContent
+} from "./github-authentication-provider-create-wizard-content";
 import {
     AppConstants,
     AppState,

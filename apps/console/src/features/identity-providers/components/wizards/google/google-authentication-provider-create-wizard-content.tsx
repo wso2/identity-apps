@@ -18,12 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    GitHubAuthenticationProviderCreateWizardFormValuesInterface,
-    GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface
-} from "./github-authentication-provider-create-wizard";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../../models";
@@ -61,7 +58,29 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * Callback to be triggered for form submit.
      * @param values
      */
-    onSubmit: (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    onSubmit: (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => void;
+}
+
+/**
+ * Proptypes for the Google Authentication Wizard Form values.
+ */
+export interface GoogleAuthenticationProviderCreateWizardFormValuesInterface {
+    /**
+     * GitHub Authenticator Client Secret.
+     */
+    clientSecret: string;
+    /**
+     * Callback URL.
+     */
+    callbackUrl: string;
+    /**
+     * GitHub Authenticator Client ID.
+     */
+    clientId: string;
+    /**
+     * GitHub Authenticator name.
+     */
+    name: string;
 }
 
 /**
@@ -71,9 +90,9 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
  *
  * @return {React.ReactElement}
  */
-export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
+export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
     GitHubAuthenticationProviderCreateWizardContentPropsInterface> = (
-        props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
+    props: GitHubAuthenticationProviderCreateWizardContentPropsInterface
 ): ReactElement => {
 
     const {
@@ -86,10 +105,10 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
         [ "data-testid" ]: testId
     } = props;
 
-    const { t } = useTranslation();
-
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
+
+    const { t } = useTranslation();
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -125,7 +144,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
      *
      * @returns error msg if name is already taken.
      */
-    const idpNameValidation = (value): string => {
+    const idpNameValidation = (value: string): string => {
 
         let nameExist = false;
 
@@ -133,7 +152,6 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
             idpList?.identityProviders.map((idp) => {
                 if (idp?.name === value) {
                     nameExist = true;
-
                 }
             });
         }
@@ -144,45 +162,13 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
         }
     };
 
-    /**
-     * Validates the Form.
-     *
-     * @param {GitHubAuthenticationProviderCreateWizardFormValuesInterface} values - Form Values.
-     *
-     * @return {GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface}
-     */
-    const validateForm = (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface):
-        GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface => {
-
-        const errors: GithubAuthenticationProviderCreateWizardFormErrorValidationsInterface = {
-            clientId: undefined,
-            clientSecret: undefined,
-            name: undefined
-        };
-
-        if (!values.name) {
-            errors.name = t("console:develop.features.authenticationProvider.forms." +
-                "generalDetails.name.validations.required");
-        }
-        if (!values.clientId) {
-            errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.github.clientId.validations.required");
-        }
-        if (!values.clientSecret) {
-            errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.github.clientSecret.validations.required");
-        }
-
-        return errors;
-    };
-
     return (
-        !isIdPListRequestLoading
+        (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
             ? (
                 <Wizard
                     initialValues={ { name: template?.idp?.name } }
                     onSubmit={
-                        (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
+                        (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                     }
                     triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
                     triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
@@ -190,9 +176,28 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                     setTotalPage={ (step: number) => setTotalPage(step) }
                     data-testid={ testId }
                 >
-                    <WizardPage validate={ validateForm }>
+                    <WizardPage
+                        validate={ (values): any => {
+                            const errors: any = {};
+
+                            if (!values.name) {
+                                errors.name = t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.validations.required");
+                            }
+                            if (!values.clientId) {
+                                errors.clientId = t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.google.clientId.validations.required");
+                            }
+                            if (!values.clientSecret) {
+                                errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.google.clientSecret.validations.required");
+                            }
+
+                            return errors;
+                        } }
+                    >
                         <Field.Input
-                            ariaLabel="GitHub IDP Name"
+                            ariaLabel="Google IDP Name"
                             inputType="name"
                             name="name"
                             label={
@@ -204,7 +209,6 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                                     "generalDetails.name.placeholder")
                             }
                             required={ true }
-                            validation={ (value) => idpNameValidation(value) }
                             maxLength={
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
@@ -213,25 +217,26 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
                             }
+                            validation={ (value: string) => idpNameValidation(value) }
                             data-testid={ `${ testId }-idp-name` }
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="GitHub Client ID"
+                            ariaLabel="Google Client ID"
                             inputType="resourceName"
                             name="clientId"
                             label={
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientId.label")
+                                t("console:develop.features.authenticationProvider.templates.google" +
+                                    ".wizardHelp.clientId.heading")
                             }
                             placeholder={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientId.placeholder")
+                                    ".authenticatorSettings.google.clientId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientId.validations.required")
+                                t("console:develop.features.authenticationProvider." +
+                                    "forms.common.requiredErrorMessage")
                             }
                             type="text"
                             autoComplete={ "" + Math.random() }
@@ -247,21 +252,21 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
-                            ariaLabel="GitHub Client Secret"
+                            ariaLabel="Google Client Secret"
                             inputType="password"
                             name="clientSecret"
                             label={
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientSecret.label")
+                                t("console:develop.features.authenticationProvider.templates.google" +
+                                    ".wizardHelp.clientSecret.heading")
                             }
                             placeholder={
                                 t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientSecret.placeholder")
+                                    ".authenticatorSettings.google.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.github.clientSecret.validations.required")
+                                t("console:develop.features.authenticationProvider." +
+                                    "forms.common.requiredErrorMessage")
                             }
                             type="password"
                             hidePassword={ t("common:hide") }
@@ -286,8 +291,8 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
 };
 
 /**
- * Default props for the GitHub Authentication Provider Create Wizard Page Component.
+ * Default props for the google creation wizard.
  */
-GitHubAuthenticationProviderCreateWizardContent.defaultProps = {
-    "data-testid": "github-idp-create-wizard-page"
+GoogleAuthenticationProviderCreateWizardContent.defaultProps = {
+    "data-testid": "idp-edit-idp-create-wizard"
 };
