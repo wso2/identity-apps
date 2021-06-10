@@ -17,4 +17,4 @@
  */
 
 export * from "./github-authentication-provider-create-wizard";
-export * from "./git-hub-authentication-provider-create-wizard-content";
+export * from "./github-authentication-provider-create-wizard-content";
