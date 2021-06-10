@@ -312,7 +312,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                     setIsGravatarUrl(true);
                 }
             })
-
         }
     }, [ gravatarURLs ]);
 
