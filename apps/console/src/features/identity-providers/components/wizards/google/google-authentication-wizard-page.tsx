@@ -117,15 +117,20 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                 <WizardPage
                     validate={ (values): any => {
                         const errors: any = {};
+
                         if (!values.name) {
-                            errors.name = "Required";
+                            errors.name = t("console:develop.features.authenticationProvider.forms." +
+                                "generalDetails.name.validations.required");
                         }
                         if (!values.clientId) {
-                            errors.clientId = "Required";
+                            errors.clientId = t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.google.clientId.validations.required");
                         }
                         if (!values.clientSecret) {
-                            errors.clientSecret = "Required";
+                            errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.google.clientSecret.validations.required");
                         }
+
                         return errors;
                     } }
                 >
@@ -135,6 +140,10 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                         name="name"
                         label={ t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label") }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms." +
+                                "generalDetails.name.placeholder")
+                        }
                         required={ true }
                         maxLength={ IDP_NAME_MAX_LENGTH }
                         validation={ (value) => idpNameValidation(value) }
@@ -148,7 +157,14 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                         ariaLabel="clientId"
                         inputType="resourceName"
                         name="clientId"
-                        label={ "Client ID" }
+                        label={
+                            t("console:develop.features.authenticationProvider.templates.google" +
+                                ".wizardHelp.clientId.heading")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.google.clientId.placeholder")
+                        }
                         required={ true }
                         message={ t("console:develop.features.authenticationProvider." +
                             "forms.common.requiredErrorMessage") }
@@ -165,7 +181,14 @@ export const GoogleAuthenticationWizardFrom = (props: GoogleAuthenticationWizard
                         ariaLabel="clientSecret"
                         inputType="password"
                         name="clientSecret"
-                        label={ "Client secret" }
+                        label={
+                            t("console:develop.features.authenticationProvider.templates.google" +
+                                ".wizardHelp.clientSecret.heading")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms" +
+                                ".authenticatorSettings.google.clientSecret.placeholder")
+                        }
                         required={ true }
                         message={ t("console:develop.features.authenticationProvider." +
                             "forms.common.requiredErrorMessage") }

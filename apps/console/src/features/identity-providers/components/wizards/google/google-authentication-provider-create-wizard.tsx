@@ -19,7 +19,14 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { ContentLoader, GenericIcon, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    GenericIcon,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    useWizardAlert
+} from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
@@ -32,7 +39,7 @@ import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
 } from "../../../api";
-import { getAuthenticatorIcons } from "../../../configs";
+import { getAuthenticatorIcons, getIdPIcons } from "../../../configs";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     FederatedAuthenticatorMetaInterface,
@@ -352,33 +359,22 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             data-testid={ `${ testId }-modal` }
         >
             <ModalWithSidePanel.MainPanel>
-                <ModalWithSidePanel.Header className="page-header-inner with-image"
-                                           data-testid={ `${ testId }-modal-header` }>
+                <ModalWithSidePanel.Header
+                    className="wizard-header"
+                    data-testid={ `${ testId }-modal-header` }
+                >
                     <div className="display-flex">
                         <GenericIcon
-                            icon={ getAuthenticatorIcons().google }
-                            size="x50"
+                            icon={ getIdPIcons().google }
+                            size="mini"
                             transparent
-                            spaced={ "right" }
+                            spaced="right"
                             data-testid={ `${ testId }-image` }
                         />
-                        <Header
-                            size={ "small" }
-                            textAlign={ "left" }
-                            className={ "m-0" }
-                            data-testid={ `${ testId }-text-wrapper` }
-                        >
-                            <span data-testid={ `${ testId }-title` }>
-                                { title && title }
-                            </span>
-                            { subTitle && (
-                                <Header.Subheader
-                                    data-testid={ `${ testId }-sub-title` }
-                                >
-                                    { subTitle }
-                                </Header.Subheader>
-                            ) }
-                        </Header>
+                        <div className="ml-1">
+                            { title }
+                            { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                        </div>
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content className="content-container" data-testid={ `${ testId }-modal-content-2` }>

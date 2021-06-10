@@ -17,10 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading } from "@wso2is/react-components";
+import { Code, CopyInputField, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Message } from "semantic-ui-react";
-import { store } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
 /**
  * Prop types of the component.
@@ -41,40 +43,108 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <div data-testid={ testId }>
             <Message info>
-                <Heading as="h5" className="mb-3">Prerequisite</Heading>
-                <p>Before you begin, create an <strong>OAuth Credential</strong> on the <a
-                    href="https://console.developers.google.com"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    Google developer console
-                </a>, and obtain a <strong>client ID & secret</strong>. Use the following URL as the <strong>
-                        Authorized Redirect URI</strong>.
-                    <br />
-                    <br />
+                <Heading as="h5" className="mb-3">
+                    {
+                        t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                            "preRequisites.heading")
+                    }
+                </Heading>
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                            "preRequisites.getCredentials"
+                        }
+                    >
+                        Before you begin, create an <strong>OAuth credential</strong> on the <a
+                            href="https://console.developers.google.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                    </Trans>
+                </p>
+                <p>
+
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
+                            ".preRequisites.configureRedirectURL"
+                        }
+                    >
+                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                    </Trans>
+
                     <CopyInputField
-                        className="copy-input-dark"
-                        value={ store.getState().config.deployment.serverHost + "/commonauth" }
+                        className="copy-input-dark spaced"
+                        value={ config.deployment.serverHost + "/commonauth" }
                     />
-                    <br />
+
                     <a
                         href="https://support.google.com/googleapi/answer/6158849"
                         target="_blank"
                         rel="noopener noreferrer">
-                        See Google&apos;s guide to obtain the credentials.
+                        {
+                            t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                "preRequisites.configureOAuthApps")
+                        }
                     </a>
                 </p>
             </Message>
-            <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the identity provider.</p>
-            <Divider />
-            <Heading as="h5">Client ID</Heading>
-            <p>Provide the client ID obtained from Google.</p>
-            <Divider />
-            <Heading as="h5">Client secret</Heading>
-            <p>Provide the client secret obtained from Google.</p>
+
+            <Heading as="h5">
+                {
+                    t("console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.name.heading")
+                }
+            </Heading>
+            <p>
+                {
+                    t("console:develop.features.authenticationProvider.templates.google." +
+                        "wizardHelp.name.description")
+                }
+            </p>
+
+            <Divider/>
+
+            <Heading as="h5">
+                { t("console:develop.features.authenticationProvider.templates.google.wizardHelp.clientId.heading") }
+            </Heading>
+            <p>
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.clientId.description"
+                    }
+                >
+                    Provide the <Code>Client ID</Code> obtained from Google.
+                </Trans>
+            </p>
+
+            <Divider/>
+
+            <Heading as="h5">
+                {
+                    t("console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.clientSecret.heading")
+                }
+            </Heading>
+            <p>
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.clientSecret.description"
+                    }
+                >
+                    Provide the <Code>Client Secret</Code> obtained from Google.
+                </Trans>
+            </p>
         </div>
     );
 };
