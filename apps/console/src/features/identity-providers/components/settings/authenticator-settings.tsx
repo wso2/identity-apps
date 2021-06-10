@@ -694,7 +694,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
                 // Inject logout url
                 const logoutUrlData = {
-                    key: "LogoutUrl"
+                    key: "OIDCLogoutEPUrl"
                 };
                 authenticator.data.properties.push(logoutUrlData);
                 const logoutUrlMeta: CommonPluggableComponentMetaPropertyInterface = {
@@ -704,7 +704,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     displayOrder: 7,
                     isConfidential: false,
                     isMandatory: false,
-                    key: "LogoutUrl",
+                    key: "OIDCLogoutEPUrl",
                     options: [],
                     subProperties: [],
                     type: "URL"
