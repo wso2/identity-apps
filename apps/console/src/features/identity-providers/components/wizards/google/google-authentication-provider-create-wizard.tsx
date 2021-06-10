@@ -279,38 +279,53 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             <Grid>
                 <Grid.Row column={ 1 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        <LinkButton floated="left" onClick={ handleWizardClose }
-                                    data-testid={ `${ testId }-modal-cancel-button` }>
+                        <LinkButton
+                            floated="left"
+                            onClick={ handleWizardClose }
+                            data-testid={ `${ testId }-modal-cancel-button` }
+                        >
                             { t("common:cancel") }
                         </LinkButton>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        { currentWizardStep !== totalStep ? (
-                            <PrimaryButton floated="right" onClick={ () => {
-                                submitAdvanceForm();
-                            } }
-                                           data-testid={ `${ testId }-modal-finish-button` }>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
-                            </PrimaryButton>
-                        ) : (
-                            <>
-                                <PrimaryButton floated="right" onClick={ () => {
-                                    // setCurrentWizardStep(1);
-                                    submitAdvanceForm();
-                                } }
-                                               data-testid={ `${ testId }-modal-finish-button` }>
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
-                                </PrimaryButton>
-                            </>
-                        ) }
                         {
-                            currentWizardStep > 1 &&
-                            <LinkButton floated="right" onClick={ () => {
-                                triggerPreviousForm();
-                            } }
-                                        data-testid={ `${ testId }-modal-previous-button` }>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
-                            </LinkButton>
+                            (currentWizardStep !== totalStep)
+                                ? (
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            submitAdvanceForm();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                    >
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                    </PrimaryButton>
+                                )
+                                : (
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            // setCurrentWizardStep(1);
+                                            submitAdvanceForm();
+                                        } }
+                                        data-testid={ `${ testId }-modal-finish-button` }
+                                    >
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    </PrimaryButton>
+                                )
+                        }
+                        {
+                            currentWizardStep > 1 && (
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ () => {
+                                        triggerPreviousForm();
+                                    } }
+                                    data-testid={ `${ testId }-modal-previous-button` }
+                                >
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                </LinkButton>
+                            )
                         }
                     </Grid.Column>
                 </Grid.Row>
