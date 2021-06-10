@@ -2252,8 +2252,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "Il y a une étape d'authentification vide.Veuillez la supprimer ou ajouter des " +
-                                "authentificateurs pour continuer.",
+                            description: "Il y a des étapes d'authentification vides. Veuillez les supprimer ou" +
+                                " ajouter des authentifiants pour continuer.",
                             message: "Erreur de mise à jour"
                         }
                     },

@@ -2238,7 +2238,7 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "There is an empty authentication step. Please remove it or add " +
+                            description: "There are empty authentication steps. Please remove them or add " +
                                 "authenticators to proceed.",
                             message: "Update error"
                         }

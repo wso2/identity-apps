@@ -2208,8 +2208,8 @@ export const console: ConsoleNS = {
                     },
                     emptyAuthenticationStep: {
                         genericError: {
-                            description: "හිස් සත්‍යාපන පියවරක් ඇත. කරුණාකර එය ඉවත් කරන්න හෝ " +
-                                "ඉදිරියට යාමට සත්‍යාපක එකතු කරන්න.",
+                            description: "හිස් සත්‍යාපන පියවර තිබේ. කරුණාකර ඒවා ඉවත් කරන්න හෝ ඉදිරියට යාමට සත්‍යාපක එකතු" +
+                                " කරන්න.",
                             message: "යාවත්කාලීන දෝෂයකි"
                         }
                     },

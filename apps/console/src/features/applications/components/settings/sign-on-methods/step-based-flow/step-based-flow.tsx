@@ -260,14 +260,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     useEffect(() => {
 
-        const noOptionsSelected: boolean = authenticationSteps.length === 1
-            && authenticationSteps[ 0 ].options?.length === 0;
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
-        if (noOptionsSelected) {
-            onAuthenticationSequenceChange(true);
+        const optionsSelected = steps.find((step) => !isEmpty(step.options));
+
+        if (optionsSelected) {
+            onAuthenticationSequenceChange(false);
             return;
         }
-        onAuthenticationSequenceChange(false);
+        onAuthenticationSequenceChange(true);
     }, [ authenticationSteps ]);
 
     /**
