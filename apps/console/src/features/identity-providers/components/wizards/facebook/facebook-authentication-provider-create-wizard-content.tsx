@@ -89,7 +89,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
     const { t } = useTranslation();
 
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -166,18 +166,18 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
         }
         if (!values.clientId) {
             errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.clientId.validations.required");
+                ".authenticatorSettings.facebook.clientId.validations.required");
         }
         if (!values.clientSecret) {
             errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.clientSecret.validations.required");
+                ".authenticatorSettings.facebook.clientSecret.validations.required");
         }
 
         return errors;
     };
 
     return (
-        !isIdPListRequestLoading
+        (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
             ? (
                 <Wizard
                     initialValues={ { name: template?.idp?.name } }

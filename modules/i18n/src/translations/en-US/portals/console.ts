@@ -2943,6 +2943,48 @@ export const console: ConsoleNS = {
                                     }
                                 }
                             }
+                        },
+                        google: {
+                            callbackUrl: {
+                                hint: "The authorized redirect URL used to obtain Google credentials.",
+                                label: "Authorized redirect URL",
+                                placeholder: "Enter Authorized redirect URL.",
+                                validations: {
+                                    required: "Authorized redirect URL is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The <1>Client ID</> you received from Google for your OAuth app.",
+                                label: "Client ID",
+                                placeholder: "Enter Client ID from Google application.",
+                                validations: {
+                                    required: "Client ID is a required field."
+                                }
+                            },
+                            clientSecret: {
+                                hint: "The <1>Client secret</1> you received from Google for your OAuth app.",
+                                label: "Client secret",
+                                placeholder: "Enter Client secret from Google application.",
+                                validations: {
+                                    required: "Client secret is a required field."
+                                }
+                            },
+                            scopes: {
+                                heading: "Scopes",
+                                hint: "The type of access provided for the connected apps to access data " +
+                                    "from Google. Click <1>here</1> to learn more.",
+                                list: {
+                                    email: {
+                                        description: "Allows to view user's email address."
+                                    },
+                                    openid: {
+                                        description: "Allows to authenticate using OpenID Connect."
+                                    },
+                                    profile: {
+                                        description: "Allows to view user's basic profile data."
+                                    }
+                                }
+                            }
                         }
                     },
                     common: {
@@ -3587,11 +3629,13 @@ export const console: ConsoleNS = {
                     facebook: {
                         wizardHelp: {
                             clientId: {
-                                description: "Provide the <1>App ID</1> you received from Facebook when you registered the OAuth app.",
+                                description: "Provide the <1>App ID</1> you received from Facebook when you " +
+                                    "registered the OAuth app.",
                                 heading: "Client ID"
                             },
                             clientSecret: {
-                                description: "Provide the <1>App secret</1> you received from Facebook when you registered the OAuth app.",
+                                description: "Provide the <1>App secret</1> you received from Facebook when you " +
+                                    "registered the OAuth app.",
                                 heading: "Client secret"
                             },
                             heading: "Help",
@@ -3613,11 +3657,13 @@ export const console: ConsoleNS = {
                     github: {
                         wizardHelp: {
                             clientId: {
-                                description: "Provide the <1>Client ID</1> you received from GitHub when you registered the OAuth app.",
+                                description: "Provide the <1>Client ID</1> you received from GitHub when you " +
+                                    "registered the OAuth app.",
                                 heading: "Client ID"
                             },
                             clientSecret: {
-                                description: "Provide the <1>Client secret</1> you received from GitHub when you registered the OAuth app.",
+                                description: "Provide the <1>Client secret</1> you received from GitHub when you " +
+                                    "registered the OAuth app.",
                                 heading: "Client secret"
                             },
                             heading: "Help",
@@ -3632,6 +3678,34 @@ export const console: ConsoleNS = {
                                 getCredentials: "Before you begin, create an <1>OAuth application</1> " +
                                     "<3>on GitHub</3>, and obtain a <5>client ID & secret</5>. Use the following " +
                                     "URL as the <7>Homepage URL</7> & <9>Authorization callback URL</9>.",
+                                heading: "Prerequisite"
+                            },
+                            subHeading: "Use the guide below"
+                        }
+                    },
+                    google: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Client ID</1> you received from Google when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the <1>Client secret</1> you received from Google when you " +
+                                    "registered the OAuth app.",
+                                heading: "Client secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                description: "Provide a unique name for the identity provider.",
+                                heading: "Name"
+                            },
+                            preRequisites: {
+                                configureOAuthApps: "See Google's guide on configuring OAuth Apps.",
+                                configureRedirectURL: "Add the following URL as the <1>Authorized Redirect URI</1>.",
+                                getCredentials: "Before you begin, create an <1>OAuth application</1> " +
+                                    "<3>on Google</3>, and obtain a <5>client ID & secret</5>. Use the following " +
+                                    "URL as the <9>Authorization callback URL</9>.",
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"

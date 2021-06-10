@@ -106,7 +106,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
     } = props;
 
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
     const { t } = useTranslation();
 
@@ -164,7 +164,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
     };
 
     return (
-        !isIdPListRequestLoading
+        (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
             ? (
                 <Wizard
                     initialValues={ { name: template?.idp?.name } }
@@ -287,7 +287,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                     </WizardPage>
                 </Wizard>
             )
-            : <ContentLoader/>
+            : null
     );
 };
 

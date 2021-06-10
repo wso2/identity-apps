@@ -89,7 +89,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
     const { t } = useTranslation();
 
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
     /**
      * Loads the identity provider authenticators on initial component load.
@@ -177,7 +177,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
     };
 
     return (
-        !isIdPListRequestLoading
+        (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
             ? (
                 <Wizard
                     initialValues={ { name: template?.idp?.name } }
