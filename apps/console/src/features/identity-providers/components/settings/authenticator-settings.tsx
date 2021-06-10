@@ -682,13 +682,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     } else if (prop.key === "commonAuthQueryParams") {
                         prop.displayName = "Additional query parameters";
                         prop.description = "These  will be sent to the identity provider as query parameters in the " +
-                            "authentication request. \nE.g., loginHint=hint1";
-                    } else if (prop.key === "IsBasicAuthEnabled") {
-                        prop.description = "Specify whether to enable HTTP basic authentication or send " +
-                            "client credentials in the request body";
+                            "authentication request. \nE.g., loginHint=hint1"
                     }
                 });
 
+                // Remove additional query params
+                removeElementFromProps(authenticator.data.properties, "IsBasicAuthEnabled");
+                removeElementFromProps(authenticator.meta.properties, "IsBasicAuthEnabled");
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" )
 
