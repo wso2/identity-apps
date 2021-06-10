@@ -199,7 +199,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const [ gravatarURLs, setGravatarURLs ] = useState<Map<string, string>>(undefined);
     const [ selectedAvatarType, setSelectedAvatarType ] = useState<AvatarTypes>(undefined);
     const [ hostedURL, setHostedURL ] = useState<string>(undefined);
-    const [isGravatarUrl, setIsGravatarUrl] = useState<boolean>(false);
+    const [ isGravatarUrl, setIsGravatarUrl ] = useState<boolean>(false);
     const [ hostedURLError, setHostedURLError ] = useState<LabelProps>(undefined);
     const [
         outputURL,
