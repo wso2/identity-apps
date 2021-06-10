@@ -256,15 +256,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
 
     /**
-     * Change button disable state when authentication Steps are changed.
+     * Disable button when there are no authentication options selected.
      */
     useEffect(() => {
 
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
-        const optionsSelected = steps.find((step) => !isEmpty(step.options));
+        const hasStepsWithOptions: boolean = steps.some((step: AuthenticationStepInterface) => !isEmpty(step.options));
 
-        if (optionsSelected) {
+        if (hasStepsWithOptions) {
             onAuthenticationSequenceChange(false);
             return;
         }
