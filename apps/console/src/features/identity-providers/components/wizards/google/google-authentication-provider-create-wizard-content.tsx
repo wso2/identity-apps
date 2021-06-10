@@ -152,7 +152,6 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
             idpList?.identityProviders.map((idp) => {
                 if (idp?.name === value) {
                     nameExist = true;
-
                 }
             });
         }
