@@ -40,26 +40,26 @@ export class AuthenticatorMeta {
     public static getAuthenticatorDescription(authenticatorId: string): string {
         
         return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Authenticates users with user " +
-            "name and password credentials.",
+            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
+            "credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
             "control the authentication flow.",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provides secure and fast passwordless " +
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
             "login experience.",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Authenticate users using Time-Based One " +
-            "Time Password.",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            "Time-Based One Time Password.",
+            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Google accounts.",
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
             "existing GitHub accounts.",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Facebook accounts.",
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
             "existing Twitter accounts.",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Enterprise login via OpenID " +
-            "Connect protocol.",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Enterprise login via SAML " +
-            "protocol."
+            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Login users with " +
+            "existing accounts in the Enterprise IdP.",
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Login users with " +
+            "existing accounts in the Enterprise IdP.",
         }, authenticatorId);
     }
 

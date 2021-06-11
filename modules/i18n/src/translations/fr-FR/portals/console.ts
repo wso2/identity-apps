@@ -1005,7 +1005,9 @@ export const console: ConsoleNS = {
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
-                                                "</3>qui peut gérer ces facteurs est présent dans une étape précédente."
+                                                "</3>qui peut gérer ces facteurs est présent dans une étape précédente.",
+                                            secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
+                                                "facteur ne peuvent pas être utilisés dans la première étape"
                                         }
                                     }
                                 },

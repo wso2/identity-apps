@@ -416,7 +416,7 @@ export const console: ConsoleNS = {
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Your user name (except in cases where the user name created by your employer is " +
+                            0: "Your username (except in cases where the username created by your employer is " +
                                 "under contract)",
                             1: "Your date of birth/age",
                             2: "IP address used to log in",
@@ -978,11 +978,11 @@ export const console: ConsoleNS = {
                                             forms: {
                                                 fields: {
                                                     attributesFrom: {
-                                                        label: "Use attributes from",
+                                                        label: "Use attributes from this step",
                                                         placeholder: "Select step"
                                                     },
                                                     subjectIdentifierFrom: {
-                                                        label: "Use subject identifier from",
+                                                        label: "Use subject identifier from this step",
                                                         placeholder: "Select step"
                                                     }
                                                 }
@@ -990,10 +990,12 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            secondFactorDisabled: "The second-factor authenticators can only be used " +
-                                                "if <1>Username & Password</1> or any other handlers such as <3>" +
-                                                "Identifier First</3> that can handle these factors are present in " +
-                                                "a previous step."
+                                            secondFactorDisabled: "Second factor authenticators can only be used if " +
+                                                "<1>Username & Password</1> or any other handler such as <3>" +
+                                                "Identifier First</3> is present in a previous step, that can " +
+                                                "identify the user.",
+                                            secondFactorDisabledInFirstStep: "Second factor authenticators can " +
+                                                "not be used in the first step"
                                         }
                                     }
                                 },
