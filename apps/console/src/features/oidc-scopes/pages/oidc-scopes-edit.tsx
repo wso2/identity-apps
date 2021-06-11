@@ -84,7 +84,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             {
                 key: 0,
                 text: t("console:manage.features.claims.external.attributes.attributeURI", { type: "OIDC" }),
-                value: "claimURI"
+                value: "localClaimDisplayName"
             },
             {
                 key: 1,
@@ -171,7 +171,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
             });
 
-            const sortedSelected = sortBy(selected, "claimURI");
+            const sortedSelected = sortBy(selected, "localClaimDisplayName");
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
             setUnselectedAttributes(OIDCAttributes.filter((x) => !selected?.includes(x)));
@@ -247,7 +247,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             if (changeValue.length > 0) {
                 setTempSelectedAttributes(
                     selectedAttributes.filter(
-                        (claim: ExternalClaim) => claim.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+                        (claim: ExternalClaim) =>
+                            claim.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
                     )
                 );
             } else {
