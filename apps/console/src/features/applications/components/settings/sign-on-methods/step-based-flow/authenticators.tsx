@@ -275,6 +275,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         ) }
                         trigger={ (
                             <InfoCard
+                                showTooltips
                                 className={ authenticatorCardClasses }
                                 header={
                                     AuthenticatorMeta.getAuthenticatorDisplayName(
