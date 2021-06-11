@@ -199,6 +199,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const [ gravatarURLs, setGravatarURLs ] = useState<Map<string, string>>(undefined);
     const [ selectedAvatarType, setSelectedAvatarType ] = useState<AvatarTypes>(undefined);
     const [ hostedURL, setHostedURL ] = useState<string>(undefined);
+    const [ isGravatarUrl, setIsGravatarUrl ] = useState<boolean>(false);
     const [ hostedURLError, setHostedURLError ] = useState<LabelProps>(undefined);
     const [
         outputURL,
@@ -283,14 +284,38 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setGravatarURLs(urls);
     }, [ selectedGravatarEmail, isGravatarQualified ]);
 
+    /**
+     * Set the Avatar types based on imageUrl.
+     */
     useEffect(() => {
         if (imageUrl) {
-            setHostedURL(imageUrl);
-            setSelectedAvatarType(AvatarTypes.URL);
+            if (isGravatarUrl) {
+                setOutputURL(imageUrl);
+                setSelectedAvatarType(AvatarTypes.GRAVATAR);
+            } else {
+                setHostedURL(imageUrl);
+                setSelectedAvatarType(AvatarTypes.URL);
+            }
         } else {
             setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
         }
-    }, [ imageUrl ]);
+    }, [ imageUrl , isGravatarUrl ]);
+
+    /**
+     * Check the type of imageUrl.
+     */
+    useEffect(() => {
+
+        if (gravatarURLs) {
+            for (const [ key, value ] of gravatarURLs) {
+                if (imageUrl.localeCompare(value) == 0) {
+                    setIsGravatarUrl(true);
+
+                    break;
+                }
+            }
+        }
+    }, [ gravatarURLs ]);
 
     /**
      * Handles selected gravatar email change.
