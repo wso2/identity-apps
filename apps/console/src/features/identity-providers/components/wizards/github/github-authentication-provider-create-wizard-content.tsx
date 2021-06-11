@@ -161,16 +161,16 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
         };
 
         if (!values.name) {
-            errors.name = t("console:develop.features.authenticationProvider.forms." +
-                "generalDetails.name.validations.required");
+            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
         }
         if (!values.clientId) {
-            errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.github.clientId.validations.required");
+            errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
         }
         if (!values.clientSecret) {
-            errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                ".authenticatorSettings.github.clientSecret.validations.required");
+            errors.clientSecret = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
         }
 
         return errors;

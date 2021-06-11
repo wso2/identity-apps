@@ -2991,7 +2991,7 @@ export const console: ConsoleNS = {
                         customProperties: "Custom Properties",
                         invalidQueryParamErrorMessage: "These are not valid query parameters",
                         invalidURLErrorMessage: "Enter a valid URL",
-                        requiredErrorMessage: "This is required"
+                        requiredErrorMessage: "This field cannot be empty"
                     },
                     generalDetails: {
                         description: {
