@@ -181,16 +181,16 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             const errors: any = {};
 
                             if (!values.name) {
-                                errors.name = t("console:develop.features.authenticationProvider.forms." +
-                                    "generalDetails.name.validations.required");
+                                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+                                    ".requiredErrorMessage");
                             }
                             if (!values.clientId) {
-                                errors.clientId = t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.google.clientId.validations.required");
+                                errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
+                                    ".requiredErrorMessage");
                             }
                             if (!values.clientSecret) {
                                 errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.google.clientSecret.validations.required");
+                                    ".common.requiredErrorMessage");
                             }
 
                             return errors;
