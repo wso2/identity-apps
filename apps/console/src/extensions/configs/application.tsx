@@ -80,6 +80,14 @@ export const applicationConfig: ApplicationConfig = {
         showAttributeConsumingServiceIndex: true,
         showQueryRequestProfile: true
     },
+    signInMethod: {
+        authenticatorSelection: {
+            messages: {
+                secondFactorDisabled: null,
+                secondFactorDisabledInFirstStep: null
+            }
+        }
+    },
     templates: {
         android: true,
         custom: true,

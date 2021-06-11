@@ -36,6 +36,7 @@ import {
 } from "../../../../../identity-providers";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils";
+import { applicationConfig } from "../../../../../../extensions/configs";
 
 /**
  * Proptypes for the authenticators component.
@@ -155,20 +156,47 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         if (authenticator.category === AuthenticatorCategories.SECOND_FACTOR) {
             return (
-                <Text>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                            "authenticationFlow.sections.stepBased.secondFactorDisabled"
-                        }
-                    >
-                        The second-factor authenticators can only be used if the <Code withBackground>basic</Code>
-                        authenticator has been added in a previous step.
-                        The second-factor authenticators can only be used if <Code withBackground>Username & Password
-                    </Code> or any other handlers such as <Code withBackground> Identifier First</Code>
-                        that can handle these factors are present in a previous step.
-                    </Trans>
-                </Text>
+                <>
+                    {
+                        (currentStep === 0)
+                            ? (
+                                <Text>
+                                    {
+                                        applicationConfig.signInMethod.authenticatorSelection.messages
+                                            .secondFactorDisabledInFirstStep
+                                            ?? t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                                ".secondFactorDisabledInFirstStep")
+                                    }
+                                </Text>
+                            )
+                            : (
+                                <Text>
+                                    {
+                                        applicationConfig.signInMethod.authenticatorSelection.messages
+                                            .secondFactorDisabled
+                                            ?? (
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:develop.features.applications.edit.sections" +
+                                                        ".signOnMethod.sections.authenticationFlow.sections" +
+                                                        ".stepBased.secondFactorDisabled"
+                                                    }
+                                                >
+                                                    The second-factor authenticators can only be used if the <Code
+                                                    withBackground>basic</Code>
+                                                    authenticator has been added in a previous step.
+                                                    The second-factor authenticators can only be used if <Code
+                                                    withBackground>Username & Password</Code> or any other handlers 
+                                                    such as <Code withBackground> Identifier First</Code>
+                                                    that can handle these factors are present in a previous step.
+                                                </Trans>
+                                            )
+                                    }
+                                </Text>
+                            )
+                    }
+                </>
             );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (

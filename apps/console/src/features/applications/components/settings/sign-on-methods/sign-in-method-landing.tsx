@@ -208,7 +208,6 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     />
                                 )
                             }
-
                             {
                                 !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_TOTP) && (
                                     <>
