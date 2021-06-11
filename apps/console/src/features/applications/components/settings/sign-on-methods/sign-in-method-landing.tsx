@@ -212,7 +212,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 !hiddenOptions.includes(LoginFlowTypes.DEFAULT) && (
                                     <>
                                         <Divider className="mt-4 mb-4" horizontal>Or</Divider>
-                                        < InfoCard
+                                        <InfoCard
                                             fluid
                                             data-testid="basic-configuration-flow-card"
                                             image={ getAuthenticatorIcons().basic }
