@@ -209,7 +209,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 )
                             }
                             {
-                                !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_TOTP) && (
+                                !hiddenOptions.includes(LoginFlowTypes.DEFAULT) && (
                                     <>
                                         <Divider className="mt-4 mb-4" horizontal>Or</Divider>
                                         < InfoCard
