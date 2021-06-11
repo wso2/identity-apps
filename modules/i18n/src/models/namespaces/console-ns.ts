@@ -395,6 +395,7 @@ export interface ConsoleNS {
                     reactivateSPA: Confirmation;
                     reactivateOIDC: Confirmation;
                     removeApplicationUserAttribute: Popup;
+                    removeApplicationUserAttributeMapping: Popup;
                     revokeApplication: Confirmation;
                     clientSecretHashDisclaimer: {
                         modal: Confirmation;

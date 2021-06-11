@@ -200,8 +200,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     trigger={
                         (
                             <Checkbox
-                                checked={ mandatory || subject }
-                                defaultChecked={ initialMandatory }
+                                checked={ initialMandatory || mandatory || subject }
                                 onClick={ handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
                                 readOnly={ readOnly }

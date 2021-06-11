@@ -129,6 +129,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const [ showSelectionModal, setShowSelectionModal ] = useState(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ localClaimURIToBeDeleted, setLocalClaimURIToBeDeleted ] = useState<string>();
 
     const initValue = useRef(false);
 
@@ -140,11 +141,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 )
             ) {
-                tempFilterSelectedExternalClaims.push(
-                    availableExternalClaims.find(
-                        (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
-                    )
+                const availableExternalClaim = availableExternalClaims.find(
+                    (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
+                if (availableExternalClaim) {
+                    tempFilterSelectedExternalClaims.push(availableExternalClaim);
+                }
             }
         });
         setSelectedExternalClaims(tempFilterSelectedExternalClaims);
@@ -437,6 +439,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             if (!claim) {
                 setClaims([ removing, ...claims ]);
             }
+            if (claimMappingOn) {
+                removeMapping(claimURI);
+            }
         } else {
             const removing = selectedExternalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
             setSelectedExternalClaims(selectedExternalClaims.filter(claim => claim.mappedLocalClaimURI !== claimURI));
@@ -450,12 +455,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const onDeleteAttribute = (claimURI: string): void => {
-        if ((selectedSubjectValue === claimURI)
+        setLocalClaimURIToBeDeleted(claimURI);
+        if ((selectedSubjectValue === resolveClaimValue(claimURI))
             && defaultSubjectAttribute !== claimURI) {
             setShowDeleteConfirmationModal(true);
         } else {
             deleteAttribute(claimURI);
         }
+    };
+
+    const resolveClaimValue = (localClaimURI: string): string => {
+        if (claimMappingOn) {
+            const claimMappingValue = getCurrentMapping(localClaimURI);
+            // The mapping might not exist if it is deleted from the list.
+            return claimMappingValue !== undefined ? claimMappingValue.applicationClaim : null;
+        }
+        return localClaimURI;
     };
 
     const removeAttributeModal = () => {
@@ -472,7 +487,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setShowDeleteConfirmationModal(false);
                 } }
                 onPrimaryActionClick={ () => {
-                    deleteAttribute(selectedSubjectValue);
+                    deleteAttribute(localClaimURIToBeDeleted);
                     setShowDeleteConfirmationModal(false);
                 } }
                 data-testid={ `${ testId }-delete-confirmation-modal` }
@@ -495,13 +510,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
-                    <Trans
-                        i18nKey={ "console:develop.features.applications.confirmations." +
-                            "removeApplicationUserAttribute.content" }
-                    >
-                        If you remove this, the subject attribute will be set to
-                        the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
-                    </Trans>
+                    {
+                        claimMappingOn
+                            ? (
+                                t("console:develop.features.applications.confirmations." +
+                                    "removeApplicationUserAttributeMapping.content")
+                            )
+                            : (
+                                <Trans
+                                    i18nKey={ "console:develop.features.applications.confirmations." +
+                                    "removeApplicationUserAttribute.content" }
+                                >
+                                    If you remove this, the subject attribute will be set to
+                                    the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
+                                </Trans>
+                            )
+                    }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -709,7 +733,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 setIsDefaultMappingChanged
                                                                             }
                                                                             initialMandatory={
-                                                                                (selectedSubjectValue === claim.claimURI)
+                                                                                (selectedSubjectValue ===
+                                                                                    resolveClaimValue(claim.claimURI))
                                                                                     ? true
                                                                                     : claim.mandatory
                                                                             }
@@ -719,14 +744,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
                                                                             readOnly={
-                                                                                (selectedSubjectValue === claim.claimURI)
+                                                                                (selectedSubjectValue ===
+                                                                                    resolveClaimValue(claim.claimURI))
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
-                                                                            subject={ claimMappingOn
-                                                                                ? selectedSubjectValue === getCurrentMapping(
-                                                                                    claim?.claimURI)?.applicationClaim
-                                                                                : selectedSubjectValue === claim.claimURI
+                                                                            subject={ selectedSubjectValue ===
+                                                                            resolveClaimValue(claim.claimURI)
                                                                             }
                                                                             deleteAttribute={
                                                                             () => onDeleteAttribute(claim.claimURI)

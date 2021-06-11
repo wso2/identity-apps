@@ -317,15 +317,18 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
-    const removeMapping = (claim: Claim) => {
+    const removeMapping = (claimURI: string) => {
         const claimMappingList = [...claimMapping];
-        const mappedClaim = claimMappingList.map((mapping) => {
-            if (mapping.localClaim.uri === claim.claimURI) {
-                return mapping;
+        let mappedClaim : ExtendedClaimMappingInterface;
+        claimMappingList.map((mapping) => {
+            if (mapping.localClaim.uri === claimURI) {
+                mappedClaim = mapping;
             }
         });
-        claimMappingList.splice(claimMappingList.indexOf(mappedClaim[0]), 1);
-        setClaimMapping(claimMappingList);
+        if (mappedClaim) {
+            claimMappingList.splice(claimMappingList.indexOf(mappedClaim), 1);
+            setClaimMapping(claimMappingList);
+        }
     };
 
     const getCurrentMapping = (claimURI: string): ExtendedClaimMappingInterface => {
@@ -412,6 +415,25 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         claimMappingOption.push(option);
                     }
                 });
+                if (claimMapping.length === 0) {
+                    const userclaim: ExtendedClaimInterface = claims.filter(
+                        (element: ExtendedClaimInterface) => element.claimURI === DefaultSubjectAttribute)[ 0 ];
+                    if (userclaim !== null && typeof userclaim !== "undefined") {
+                        const option: DropdownOptionsInterface = {
+                            key: userclaim.id,
+                            text: (
+                                <SubjectAttributeListItem
+                                    key={ userclaim.id }
+                                    displayName={ userclaim.displayName }
+                                    claimURI={ userclaim.claimURI }
+                                    value={ userclaim.claimURI }
+                                />
+                            ),
+                            value: userclaim.claimURI
+                        };
+                        claimMappingOption.push(option);
+                    }
+                }
                 return claimMappingOption;
             } else {
                 let usernameAdded: boolean = false;

@@ -677,6 +677,12 @@ export const console: ConsoleNS = {
                         subHeader: "The attribute you are trying to remove is currently selected as the subject " +
                             "attribute."
                     },
+                    removeApplicationUserAttributeMapping: {
+                        content : "If you confirm this action, you have to select a new subject attribute",
+                        header: "Are you sure?",
+                        subHeader: "The attribute you are trying to remove is currently selected as the subject " +
+                            "attribute."
+                    },
                     revokeApplication: {
                         assertionHint: "Please type <1>{{ id }}</1> to confirm.",
                         content: "This action can be reversed by activating the application later.",

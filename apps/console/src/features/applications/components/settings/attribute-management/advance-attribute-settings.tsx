@@ -78,7 +78,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         if(selectedSubjectValue) {
             if(dropDownOptions && dropDownOptions.length > 0 &&
                 dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
-                setSelectedSubjectValue(defaultSubjectAttribute);
+                if (claimMappingOn) {
+                    setSelectedSubjectValue(dropDownOptions[ 0 ]?.value);
+                } else {
+                    setSelectedSubjectValue(defaultSubjectAttribute);
+                }
             }
         } else {
             setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
@@ -194,6 +198,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         (initialRole && initialSubject)
             ? (
                 <Form
+                    initialValues={
+                        { subjectAttribute: selectedSubjectValue }
+                    }
                     onSubmit={ (values, form) => {
                         submitValues(values);
                     } }
