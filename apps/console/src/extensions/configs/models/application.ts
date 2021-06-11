@@ -77,7 +77,7 @@ export interface ApplicationConfig {
                 secondFactorDisabledInFirstStep: ReactNode;
             };
         };
-    },
+    };
     templates: {
         android: boolean;
         oidc: boolean;
