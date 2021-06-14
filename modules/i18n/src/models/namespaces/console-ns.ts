@@ -1988,6 +1988,9 @@ export interface ConsoleNS {
                             };
                         };
                     };
+                    dangerZones: {
+                        terminate: DangerZone;
+                    };
                     notifications: {
                         getUserSessions: Notification;
                         terminateAllUserSessions: Notification;

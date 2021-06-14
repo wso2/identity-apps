@@ -7767,6 +7767,13 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "Terminate",
+                            header: "Terminate session",
+                            subheader: "You will be logged out of the session on the particular device."
+                        }
+                    },
                     notifications: {
                         getUserSessions: {
                             error: {

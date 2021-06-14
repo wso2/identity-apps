@@ -6703,6 +6703,13 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "Déconnecter",
+                            header: "Se déconnecter",
+                            subheader: "L'accès à votre compte depuis cet appareil sera supprimé."
+                        }
+                    },
                     notifications: {
                         getUserSessions: {
                             error: {

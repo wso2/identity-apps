@@ -6627,6 +6627,13 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "අවසන් කරන්න",
+                            header: "සැසිය අවසන් කරන්න",
+                            subheader: "විශේෂිත උපාංගයේ සැසියෙන් ඔබ ඉවත් වනු ඇත."
+                        }
+                    },
                     notifications: {
                         getUserSessions: {
                             error: {
