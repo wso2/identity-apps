@@ -136,7 +136,7 @@ export const console: ConsoleNS = {
                     "it exists. If you don't have an active session, you will be redirected to the login page.",
                 heading: "It looks like you have been inactive for a long time.",
                 loginAgainButton: "Login again",
-                primaryButton: "Stay logged in",
+                primaryButton: "Go back",
                 secondaryButton: "Logout",
                 sessionTimedOutDescription: "Please log in again to continue from where you left off.",
                 sessionTimedOutHeading: "User session has expired due to inactivity."
