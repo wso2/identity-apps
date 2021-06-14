@@ -3633,12 +3633,12 @@ export const console: ConsoleNS = {
                             clientId: {
                                 description: "Provide the <1>App ID</1> you received from Facebook when you " +
                                     "registered the OAuth app.",
-                                heading: "Client ID"
+                                heading: "App ID"
                             },
                             clientSecret: {
                                 description: "Provide the <1>App secret</1> you received from Facebook when you " +
                                     "registered the OAuth app.",
-                                heading: "Client secret"
+                                heading: "App secret"
                             },
                             heading: "Help",
                             name: {
