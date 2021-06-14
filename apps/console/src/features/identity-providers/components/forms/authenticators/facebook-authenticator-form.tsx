@@ -313,6 +313,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             <Field.Input
                 ariaLabel="Facebook authenticator client secret"
                 inputType="password"
+                type="password"
                 name="ClientSecret"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
