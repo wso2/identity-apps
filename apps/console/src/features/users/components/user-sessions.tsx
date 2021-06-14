@@ -419,7 +419,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             <Grid.Column width={ 5 }>
                                                 {
                                                     t("console:manage.features.users.userSessions.components" +
-                                                        ".sessionDetails.labels.recentActivity")
+                                                        ".sessionDetails.labels.activeApplication")
                                                 }
                                             </Grid.Column>
                                             <Grid.Column mobile={ 16 } computer={ 11 }>

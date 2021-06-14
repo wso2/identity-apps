@@ -6623,7 +6623,8 @@ export const console: ConsoleNS = {
                                 loggedInAs: "<1>{{ app }}</1> ලෙස <3>{{ user }}</3> ලෙස පුරනය වී ඇත.",
                                 loginTime: "පිවිසුම් වේලාව",
                                 os: "මෙහෙයුම් පද්ධතිය",
-                                recentActivity: "මෑත ක්‍රියාකාරකම"
+                                recentActivity: "මෑත ක්‍රියාකාරකම",
+                                activeApplication: "සක්‍රීය යෙදුම්"
                             }
                         }
                     },

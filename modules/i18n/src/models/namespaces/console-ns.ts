@@ -1985,6 +1985,7 @@ export interface ConsoleNS {
                                 loginTime: string;
                                 os: string;
                                 recentActivity: string;
+                                activeApplication: string;
                             };
                         };
                     };

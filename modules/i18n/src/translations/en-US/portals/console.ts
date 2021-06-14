@@ -7763,7 +7763,8 @@ export const console: ConsoleNS = {
                                 loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
                                 loginTime: "Login Time",
                                 os: "Operating System",
-                                recentActivity: "Recent Activity"
+                                recentActivity: "Recent Activity",
+                                activeApplication: "Active Applications"
                             }
                         }
                     },
