@@ -271,6 +271,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                             { time: timerDisplay }
                         }
                     >
+                        You will be logged out in <strong>{ timerDisplay }</strong>.
                     </Trans>
                 }
                 description={ sessionTimedOut ? modalOptions?.sessionTimedOutDescription
