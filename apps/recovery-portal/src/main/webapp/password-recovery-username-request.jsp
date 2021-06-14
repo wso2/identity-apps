@@ -90,8 +90,7 @@
                                 <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                 </label>
-                                <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
-                                <input id="username" name="username" type="hidden">
+                                <input id="username" name="username" type="text" tabindex="0" required>
                                 <%
                                     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                                 %>
@@ -171,10 +170,8 @@
                             e.preventDefault();
 
                             var userName = document.getElementById("username");
-                            var usernameUserInput = document.getElementById("usernameUserInput");
-                            if (usernameUserInput) {
-                                userName.value = usernameUserInput.value.trim();
-                            }
+                            userName.value = userName.value.trim();
+
                             // Mark it so that the next submit can be ignored.
                             $form.data("submitted", true);
                             document.getElementById("tenantBasedRecovery").submit();

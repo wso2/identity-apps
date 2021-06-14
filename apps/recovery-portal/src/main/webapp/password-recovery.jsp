@@ -155,8 +155,7 @@
                             <label for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
                             </label>
-                            <input id="usernameUserInput" name="usernameUserInput" value="<%=username%>" type="text" tabindex="0" required>
-                            <input id="username" name="username" type="hidden">
+                            <input id="username" name="username" value="<%=username%>" type="text" tabindex="0" required>
                             <%
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                             %>
@@ -174,8 +173,7 @@
                             <label for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
                             </label>
-                            <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
-                            <input id="username" name="username" type="hidden">
+                            <input id="username" name="username" type="text" tabindex="0" required>
                             <%
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                             %>
@@ -323,10 +321,8 @@
                 errorMessage.hide();
 
                 let userName = document.getElementById("username");
-                const usernameUserInput = document.getElementById("usernameUserInput");
-                if (usernameUserInput) {
-                    userName.value = usernameUserInput.value.trim();
-                }
+                userName.value = userName.value.trim();
+
                 // Validate User Name
                 const firstName = $("#username").val();
 
