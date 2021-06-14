@@ -733,8 +733,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                 setIsDefaultMappingChanged
                                                                             }
                                                                             initialMandatory={
-                                                                                (selectedSubjectValue ===
-                                                                                    resolveClaimValue(claim.claimURI))
+                                                                                selectedSubjectValue ===
+                                                                                resolveClaimValue(claim.claimURI)
                                                                                     ? true
                                                                                     : claim.mandatory
                                                                             }
@@ -744,16 +744,17 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
                                                                             readOnly={
-                                                                                (selectedSubjectValue ===
-                                                                                    resolveClaimValue(claim.claimURI))
+                                                                                selectedSubjectValue ===
+                                                                                resolveClaimValue(claim.claimURI)
                                                                                     ? true
                                                                                     : readOnly
                                                                             }
-                                                                            subject={ selectedSubjectValue ===
-                                                                            resolveClaimValue(claim.claimURI)
+                                                                            subject={
+                                                                                selectedSubjectValue ===
+                                                                                resolveClaimValue(claim.claimURI)
                                                                             }
                                                                             deleteAttribute={
-                                                                            () => onDeleteAttribute(claim.claimURI)
+                                                                                () => onDeleteAttribute(claim.claimURI)
                                                                             }
 
                                                                             data-testid={ claim.claimURI }

@@ -22,7 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, Icon, Input, Label, Popup, Table } from "semantic-ui-react";
+import {Checkbox, Divider, Icon, Input, Label, Popup, Table} from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
@@ -180,13 +180,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             required
                         />
                         { errorInClaimMapping && (
-                            <Label
-                                basic color="red"
-                                pointing="left"
-                            >
-                                { t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.fields.claim.label") }
-                            </Label>
+                            <>
+                                <br/>
+                                <Label
+                                    basic color="red"
+                                    pointing="above"
+                                    horizontal
+                                >
+                                    { t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        ".mappingTable.listItem.fields.claim.label") }
+                                </Label>
+                            </>
                         ) }
                     </Table.Cell>
                 </>
