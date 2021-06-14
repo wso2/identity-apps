@@ -469,6 +469,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         return (
             <ConfirmationModal
                 type="warning"
+                className="duplicate-social-authenticator-selection-modal"
                 onClose={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
                 open={ showDuplicateSocialAuthenticatorSelectionModal }
                 primaryAction={
@@ -509,7 +510,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             { authenticator: authenticatorName })
                     }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
+                <ConfirmationModal.Content scrolling>
                     <Text>
                         <Trans
                             i18nKey={
@@ -523,7 +524,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         </Trans>
                     </Text>
                     <Divider hidden/>
-                    <div>
+                    <div className="authenticator-grid">
                         {
                             authenticators.map((authenticator, index) => (
                                 <LabeledCard
