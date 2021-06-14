@@ -26,11 +26,17 @@ import {
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
+import {
+    Code,
+    ContentLoader,
+    SessionManagementProvider,
+    SessionTimeoutModalTypes,
+    ThemeContext
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { I18nextProvider } from "react-i18next";
+import { I18nextProvider, Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
@@ -46,7 +52,7 @@ import {
 } from "./models";
 import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
-import { endUserSession, filterRoutes } from "./utils";
+import { filterRoutes } from "./utils";
 
 /**
  * Main App component.
@@ -166,6 +172,28 @@ export const App = (): ReactElement => {
         }
     };
 
+    /**
+     * Handles the `stay logged in` option of the session management modal.
+     * Sets a URL search param to notify the session management iframe to
+     * do the necessary actions.
+     */
+    const handleStayLoggedIn = (): void => {
+
+        const urlSearchParams: URLSearchParams = new URLSearchParams();
+        urlSearchParams.set("stay_logged_in", "true");
+
+        history.push({
+            pathname: window.location.pathname,
+            search: urlSearchParams.toString()
+        });
+
+        dispatchEvent(new PopStateEvent("popstate", {
+            state: {
+                stayLoggedIn: true
+            }
+        }));
+    };
+
     return (
         <>
             {
@@ -178,22 +206,33 @@ export const App = (): ReactElement => {
                                         <SessionManagementProvider
                                             onSessionTimeoutAbort={ handleSessionTimeoutAbort }
                                             onSessionLogout={ handleSessionLogout }
-                                            onLoginAgain={ endUserSession }
+                                            onLoginAgain={ handleStayLoggedIn }
                                             modalOptions={ {
-                                                description: I18n.instance.t("myAccount:modals" +
-                                                    ".sessionTimeoutModal.description"),
-                                                headingI18nKey: "myAccount:modals.sessionTimeoutModal.heading",
-                                                primaryButtonText: I18n.instance.t("myAccount:modals" +
-                                                    ".sessionTimeoutModal.primaryButton"),
-                                                secondaryButtonText: I18n.instance.t("myAccount:modals" +
-                                                    ".sessionTimeoutModal.secondaryButton"),
-                                                sessionTimedOutHeadingI18nKey: "myAccount:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutHeading",
-                                                loginAgainButtonText: I18n.instance.t("myAccount:modals" +
+                                                description: (
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:common.modals.sessionTimeoutModal.description"
+                                                        }
+                                                    >
+                                                        When you click on the <Code>Go back</Code> button, we will
+                                                        try to recover the session if it exists. If you don&apos;t
+                                                        have an active session, you will be redirected to the login
+                                                        page
+                                                    </Trans>
+                                                ),
+                                                headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
+                                                loginAgainButtonText: I18n.instance.t("console:common:modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"),
-                                                sessionTimedOutDescription: I18n.instance.t("myAccount:modals" +
+                                                primaryButtonText: I18n.instance.t("console:common.modals" +
+                                                    ".sessionTimeoutModal.primaryButton"),
+                                                secondaryButtonText: I18n.instance.t("console:common.modals" +
+                                                    ".sessionTimeoutModal.secondaryButton"),
+                                                sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
                                                     ".sessionTimeoutModal.sessionTimedOutDescription"),
+                                                sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                    ".sessionTimeoutModal.sessionTimedOutHeading"
                                             } }
+                                            type={ SessionTimeoutModalTypes.DEFAULT }
                                         >
                                             <>
                                                 <Helmet>

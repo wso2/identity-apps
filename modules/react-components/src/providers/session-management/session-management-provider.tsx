@@ -299,7 +299,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                             <Trans
                                 i18nKey={ modalOptions?.headingI18nKey }
                             >
-                                You have been idle for a long time.
+                                It looks like you have been inactive for a long time.
                             </Trans>
                         )
                         : (
