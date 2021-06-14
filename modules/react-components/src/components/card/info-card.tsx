@@ -21,6 +21,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
+import { Tooltip } from "../typography";
 
 /**
  * Proptypes for the info card component.
@@ -74,6 +75,10 @@ export interface InfoCardPropsInterface extends CardProps, TestableComponentInte
      * If the card should be inline.
      */
     inline?: boolean;
+    /**
+     * Show/Hide tooltips.
+     */
+    showTooltips?: boolean;
 }
 
 /**
@@ -115,6 +120,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
         subHeader,
         tags,
         textAlign,
+        showTooltips,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -160,9 +166,17 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 }
                 <div className="card-header-section">
                     { header && (
-                        <Card.Header className="card-header ellipsis" data-testid={ `${ testId }-header` }>
-                            { header }
-                        </Card.Header>
+                        <Tooltip
+                            compact
+                            size="mini"
+                            trigger={ (
+                                <Card.Header className="card-header ellipsis" data-testid={ `${ testId }-header` }>
+                                    { header }
+                                </Card.Header>
+                            ) }
+                            content={ header }
+                            disabled={ !showTooltips || typeof header !== "string" }
+                        />
                     ) }
                     { subHeader && (
                         <Card.Header className="card-subheader ellipsis" data-testid={ `${ testId }-sub-header` }>
@@ -171,9 +185,20 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                     ) }
                     {
                         description && fluid && (
-                            <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
-                                { description }
-                            </Card.Description>
+                            <Tooltip
+                                compact
+                                size="mini"
+                                trigger={ (
+                                    <Card.Description
+                                        className="card-description"
+                                        data-testid={ `${ testId }-description` }
+                                    >
+                                        { description }
+                                    </Card.Description>
+                                ) }
+                                content={ description }
+                                disabled={ !showTooltips || typeof description !== "string" }
+                            />
                         )
                     }
                     {
@@ -219,9 +244,17 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             </Card.Content>
             { description && !fluid && (
                 <Card.Content className="card-description-container">
-                    <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
-                        { description }
-                    </Card.Description>
+                    <Tooltip
+                        compact
+                        size="mini"
+                        trigger={ (
+                            <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
+                                { description }
+                            </Card.Description>
+                        ) }
+                        content={ description }
+                        disabled={ !showTooltips || typeof description !== "string" }
+                    />
                 </Card.Content>
             ) }
             {
@@ -290,5 +323,6 @@ InfoCard.defaultProps = {
     imageSize: "mini",
     inline: false,
     onClick: () => null,
+    showTooltips: false,
     textAlign: "center"
 };

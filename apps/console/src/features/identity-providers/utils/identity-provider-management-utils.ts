@@ -110,8 +110,44 @@ export class IdentityProviderManagementUtils {
      */
     public static getAllAuthenticators(): Promise<GenericAuthenticatorInterface[][]> {
 
+        // Loads the federated authenticators. ATM, the IDP listing API has a default pagination
+        // limit of 15. Until there is a proper solution from the backend, we are continuously
+        // fetching the items until the limit is reached.
+        // TODO: Refactor this block once there is a solution from the APIs side.
+        // Tracked here - https://github.com/wso2/product-is/issues/11913
         const loadFederatedAuthenticators = (): Promise<IdentityProviderListResponseInterface> => {
-            return getIdentityProviderList(null, null, "isEnabled eq \"true\"", "federatedAuthenticators");
+
+            let idp: IdentityProviderListResponseInterface = {};
+            const limit: number = 15;
+            let offset: number = 0;
+
+            const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
+
+                return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", "federatedAuthenticators")
+                    .then((response) => {
+                        if (!isEmpty(idp)) {
+                            idp = {
+                                ...idp,
+                                identityProviders: [
+                                    ...idp.identityProviders,
+                                    ...response.identityProviders
+                                ]
+                            };
+                        } else {
+                            idp = { ...response };
+                        }
+
+                        // If there is a links section and that has a link to the next set of results, fetch again..
+                        if (!isEmpty(response.links) && response.links[0].rel && response.links[0].rel === "next") {
+                            offset = offset + limit;
+                            return getIdPs();
+                        } else {
+                            return Promise.resolve(idp);
+                        }
+                    });
+            };
+
+            return getIdPs();
         };
 
         const loadLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> | any => {

@@ -70,6 +70,14 @@ export interface ApplicationConfig {
         showAttributeConsumingServiceIndex: boolean;
         showQueryRequestProfile: boolean;
     };
+    signInMethod: {
+        authenticatorSelection: {
+            messages: {
+                secondFactorDisabled: ReactNode;
+                secondFactorDisabledInFirstStep: ReactNode;
+            };
+        };
+    };
     templates: {
         android: boolean;
         oidc: boolean;

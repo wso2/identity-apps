@@ -603,6 +603,7 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
+                                            secondFactorDisabledInFirstStep: string;
                                             secondFactorDisabled: string;
                                             authenticatorDisabled: string;
                                         };
