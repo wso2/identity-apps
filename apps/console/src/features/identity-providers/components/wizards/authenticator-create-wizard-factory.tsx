@@ -133,8 +133,19 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
      */
     useEffect(() => {
 
-        if (!showWizard) return;
-        if (!possibleListOfDuplicateIDPs) return;
+        if (!showWizard) {
+            return;
+        }
+
+        if (!possibleListOfDuplicateIDPs) {
+            return;
+        }
+
+        // WHen the wizard is closed by pressing `esc`, bellow code block is executed
+        // hitting NPE. Better, to terminate execution if `selectedTemplate` is undefined.
+        if (!selectedTemplate) {
+            return;
+        }
 
         if (selectedTemplate.idp?.name) {
             /**
