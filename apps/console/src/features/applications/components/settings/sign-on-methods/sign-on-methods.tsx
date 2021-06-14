@@ -519,7 +519,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             tOptions={ { authenticator: authenticatorName } }
                         >
                             You have multiple Identity Providers configured with <Code>{ authenticatorName } 
-                            Authenticator</Code>. Select the desired one from the selection bellow to proceed
+                            Authenticator</Code>. Select the desired one from the selection below to proceed.
                         </Trans>
                     </Text>
                     <Divider hidden/>

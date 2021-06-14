@@ -1032,7 +1032,7 @@ export const console: ConsoleNS = {
                                             content: {
                                                 body: "You have multiple Identity Providers configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
-                                                    "from the selection bellow to proceed.",
+                                                    "from the selection below to proceed.",
                                                 message: "Multiple Identity Providers found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
