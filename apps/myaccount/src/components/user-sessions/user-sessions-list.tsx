@@ -133,7 +133,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
-                                                    <Text size={11}>
+                                                    <Text size={ 11 }>
                                                         {
                                                             t("myAccount:components.userSessions.lastAccessed",
                                                                 {
