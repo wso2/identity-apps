@@ -1186,8 +1186,8 @@ export const myAccount: MyAccountNS = {
             modals: {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmação",
-                    message: "Esta ação fará o logout de todas as sessões em todos os dispositivos. Você deseja " +
-                        "continuar?"
+                    message: "A ação o desconectará desta sessão e de todas as outras sessões em todos os " +
+                        "dispositivos. Você deseja continuar?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmação",

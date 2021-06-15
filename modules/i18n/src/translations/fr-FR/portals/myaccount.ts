@@ -1205,8 +1205,8 @@ export const myAccount: MyAccountNS = {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:
-                        "Cette action supprimera l'accès à votre compte depuis tous les appareils. " +
-                        "Souhaitez-vous continuer ?"
+                        "L'action vous déconnectera de cette session et de toutes les autres sessions sur " +
+                        "chaque appareil. Souhaitez-vous continuer?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmation",
