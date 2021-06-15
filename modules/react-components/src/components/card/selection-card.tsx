@@ -175,7 +175,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         <Card
             id={ id }
             className={ classes }
-            onClick={ onClick }
+            onClick={ disabled ? (/*if disabled noop*/) => void 0 : onClick }
+            disabled={ disabled }
             link={ false }
             as="div"
             data-testid={ testId }
