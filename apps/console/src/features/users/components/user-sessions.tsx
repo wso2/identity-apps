@@ -642,7 +642,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
-                                                    <p style={ { fontSize: "11px" } }>
+                                                    <p className="ui-session-description">
                                                         {
                                                             t("console:manage.features.users.userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",

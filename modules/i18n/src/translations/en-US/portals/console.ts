@@ -7759,7 +7759,7 @@ export const console: ConsoleNS = {
                                 browser: "Browser",
                                 deviceModel: "Device Model",
                                 ip: "IP Address",
-                                lastAccessed: "Last Accessed",
+                                lastAccessed: "Last Accessed {{ date }}",
                                 loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
                                 loginTime: "Login Time",
                                 os: "Operating System",
