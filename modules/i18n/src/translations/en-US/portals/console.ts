@@ -132,7 +132,7 @@ export const console: ConsoleNS = {
                 secondaryButton: "Cancel"
             },
             sessionTimeoutModal: {
-                description: "When you click on the <1>Go back</1> button, we will try to recover the session if " +
+                description: "When you click on <1>Go back</1>, we will try to recover the session if " +
                     "it exists. If you don't have an active session, you will be redirected to the login page.",
                 heading: "It looks like you have been inactive for a long time.",
                 loginAgainButton: "Login again",
