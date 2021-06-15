@@ -2,18 +2,18 @@
 > Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. Remove this placeholder when you're editing.
 
 ### Related Issues
-- Issue #1
+- Issue `#1` or (None)
 
 ### Checklist
 - [ ] e2e cypress tests locally verified.
 - [ ] Manual test round performed and verified.
-- [ ] UX/UI review done on final implementation
-- [ ] Documentation provided. (Add links)
-- [ ] Unit tests provided. (Add links if any)
-- [ ] Integration tests provided. (Add links if any)
+- [ ] UX/UI review done on final implementation.
+- [ ] Documentation provided. (Add links if there's any)
+- [ ] Unit tests provided. (Add links if there's any)
+- [ ] Integration tests provided. (Add links if there's any)
 
 ### Related PRs
-- Related PR #1
+- Related PR `#1` or (None)
 
 ### Security checks
 - [ ] Followed secure coding standards in http://wso2.com/technical-reports/wso2-secure-engineering-guidelines?
