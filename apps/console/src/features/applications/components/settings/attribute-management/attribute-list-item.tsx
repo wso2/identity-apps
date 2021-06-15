@@ -178,20 +178,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             disabled={ !mappingOn }
                             readOnly={ readOnly }
                             required
+                            error={ errorInClaimMapping }
                         />
-                        { errorInClaimMapping && (
-                            <>
-                                <br/>
-                                <Label
-                                    basic color="red"
-                                    pointing="above"
-                                    horizontal
-                                >
-                                    { t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                        ".mappingTable.listItem.fields.claim.label") }
-                                </Label>
-                            </>
-                        ) }
                     </Table.Cell>
                 </>
             }
@@ -207,7 +195,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 checked={ initialMandatory || mandatory || subject }
                                 onClick={ handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ readOnly }
+                                readOnly={ subject }
                             />
                         )
                     }

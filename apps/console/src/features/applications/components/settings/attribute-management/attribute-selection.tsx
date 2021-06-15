@@ -69,6 +69,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     showClaimMappingRevertConfirmation?: (confirmation: boolean) => void;
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
+    updateMappings: any;
     /**
      * Make the form read only.
      */
@@ -110,6 +111,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setClaimMappingOn,
         claimMappingError,
         readOnly,
+        updateMappings,
         [ "data-testid" ]: testId
     } = props;
 
@@ -291,7 +293,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
             applicationConfig.attributeSettings.attributeSelection.getClaims(claims)
                 .map((claim) => {
-                    if (initialRequest.includes(claim.claimURI)) {
+                    if (initialRequest.includes(claim.claimURI) &&
+                        !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
                         const newClaim: ExtendedClaimInterface = {
                             ...claim,
                             mandatory: checkInitialRequestMandatory(claim.claimURI),
@@ -310,13 +313,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             if (claimConfigurations?.dialect === "CUSTOM") {
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
                 claimConfigurations.claimMappings.map((claim) => {
+                    if (!claim || !claim.localClaim) {
+                        return;
+                    }
+                    if (claim.localClaim.uri === defaultSubjectAttribute &&
+                        isSubjectClaimSetToDefaultWithoutMapping()) {
+                        return;
+                    }
                     const claimMapping: ExtendedClaimMappingInterface = {
                         addMapping: true,
-                        applicationClaim: claim?.applicationClaim,
+                        applicationClaim: claim.applicationClaim,
                         localClaim: {
-                            displayName: claim?.localClaim?.displayName,
-                            id: claim?.localClaim?.id,
-                            uri: claim?.localClaim?.uri
+                            displayName: claim.localClaim.displayName,
+                            id: claim.localClaim.id,
+                            uri: claim.localClaim.uri
                         }
                     };
                     initialClaimMappingList.push(claimMapping);
@@ -365,6 +375,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
     };
 
+    /**
+     * When claim mappings from local to custom dialect is enabled, it is possible to set the subject claim to the
+     * default value without having a claim mapping for it. To support that, we specifically add a mapping for the
+     * default subject claim before updating the claim configuration. However, in such cases, the claim mappings
+     * list should not show that manually added mapping which comes in the response. We can identify this scenario
+     * by checking whether the response has a mapping entry for the default subject claim, but the requested claims
+     * in the response do not include that claim.
+     */
+    const isSubjectClaimSetToDefaultWithoutMapping = (): boolean => {
+
+        return claimConfigurations.subject.claim.uri === defaultSubjectAttribute &&
+            claimConfigurations.requestedClaims.findIndex(requestedClaim =>
+                requestedClaim.claim.uri === defaultSubjectAttribute) < 0;
+
+    };
+
     const handleOpenSelectionModal = () => {
         setShowSelectionModal(true);
     };
@@ -410,6 +436,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setAvailableClaims={ setClaims }
                     createMapping={ createMapping }
                     removeMapping={ removeMapping }
+                    updateMappings={ updateMappings }
                     data-testid={ `${ testId }-wizard` }
                 />
             );
@@ -743,12 +770,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             selectRequested={ updateRequested }
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
-                                                                            readOnly={
-                                                                                selectedSubjectValue ===
-                                                                                resolveClaimValue(claim.claimURI)
-                                                                                    ? true
-                                                                                    : readOnly
-                                                                            }
+                                                                            readOnly={ readOnly }
                                                                             subject={
                                                                                 selectedSubjectValue ===
                                                                                 resolveClaimValue(claim.claimURI)

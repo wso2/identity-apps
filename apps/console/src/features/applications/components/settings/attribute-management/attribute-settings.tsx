@@ -317,6 +317,39 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
+    const updateMappings = (addedClaims: Claim[], removedClaims: Claim[]) => {
+        if (selectedDialect.localDialect) {
+            const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+            addedClaims.map((claim) => {
+                const newClaimMapping: ExtendedClaimMappingInterface = {
+                    addMapping: claimMappingOn,
+                    applicationClaim: claimMappingOn ? claim.claimURI : "",
+                    localClaim: {
+                        displayName: claim.displayName,
+                        id: claim.id,
+                        uri: claim.claimURI
+                    }
+                };
+                if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
+                    claimMappingList.push(newClaimMapping);
+                }
+            });
+
+            removedClaims.map((claim) => {
+                let mappedClaim : ExtendedClaimMappingInterface;
+                claimMappingList.map((mapping) => {
+                    if (mapping.localClaim.uri === claim.claimURI) {
+                        mappedClaim = mapping;
+                    }
+                });
+                if (mappedClaim) {
+                    claimMappingList.splice(claimMappingList.indexOf(mappedClaim), 1);
+                }
+            });
+            setClaimMapping(claimMappingList);
+        }
+    };
+
     const removeMapping = (claimURI: string) => {
         const claimMappingList = [...claimMapping];
         let mappedClaim : ExtendedClaimMappingInterface;
@@ -395,27 +428,29 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         if (selectedDialect.localDialect) {
             if (claimMappingOn) {
+                let usernameAdded: boolean = false;
                 const claimMappingOption: DropdownOptionsInterface[] = [];
+                const claimMappingList = [...claimMapping];
                 claimMapping.map((element: ExtendedClaimMappingInterface) => {
-                    let option: DropdownOptionsInterface;
-                    if (!isEmpty(element.applicationClaim)) {
-                        option = {
-                            key: element?.localClaim?.id,
-                            text: (
-                                <SubjectAttributeListItem
-                                    key={ element?.localClaim?.id }
-                                    displayName={ element?.applicationClaim ?
-                                        element?.applicationClaim : element?.localClaim?.uri }
-                                    claimURI={ element?.localClaim?.uri }
-                                    value={ element?.applicationClaim }
-                                />
-                            ),
-                            value: element?.applicationClaim
-                        };
-                        claimMappingOption.push(option);
+                    const option: DropdownOptionsInterface = {
+                        key: element?.localClaim?.id,
+                        text: (
+                            <SubjectAttributeListItem
+                                key={ element?.localClaim?.id }
+                                displayName={ element?.applicationClaim ?
+                                    element?.applicationClaim : element?.localClaim?.uri }
+                                claimURI={ element?.localClaim?.uri }
+                                value={ element?.applicationClaim }
+                            />
+                        ),
+                        value: element?.applicationClaim
+                    };
+                    if (element.localClaim.uri === DefaultSubjectAttribute) {
+                        usernameAdded = true;
                     }
+                    claimMappingOption.push(option);
                 });
-                if (claimMapping.length === 0) {
+                if (claimMappingList.length === 0 || !usernameAdded) {
                     const userclaim: ExtendedClaimInterface = claims.filter(
                         (element: ExtendedClaimInterface) => element.claimURI === DefaultSubjectAttribute)[ 0 ];
                     if (userclaim !== null && typeof userclaim !== "undefined") {
@@ -571,6 +606,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     });
 
     const submitUpdateRequest = (claimMappingFinal) => {
+        let isSubjectSelectedWithoutMapping = false;
         const RequestedClaims = [];
         if (selectedDialect.localDialect) {
             selectedClaims.map((claim: ExtendedClaimInterface) => {
@@ -609,14 +645,30 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             });
         }
 
+        if (claimMappingFinal.findIndex(mapping => mapping.localClaim.uri === DefaultSubjectAttribute) < 0
+            && advanceSettingValues?.subject.claim.toString() === DefaultSubjectAttribute) {
+            isSubjectSelectedWithoutMapping = true;
+        }
+
         // Make the subject attribute mandatory by default.
-        applicationConfig.attributeSettings.makeSubjectMandatory &&
+        if (applicationConfig.attributeSettings.makeSubjectMandatory && !isSubjectSelectedWithoutMapping) {
             RequestedClaims.push({
                 claim: {
                     uri: advanceSettingValues?.subject.claim
                 },
                 mandatory: true
             });
+        }
+
+        if (isSubjectSelectedWithoutMapping) {
+            const claimMappedObject: ExtendedClaimMappingInterface = {
+                applicationClaim: DefaultSubjectAttribute,
+                localClaim: {
+                    uri: DefaultSubjectAttribute
+                }
+            };
+            claimMappingFinal.push(claimMappedObject);
+        }
 
         // Generate Final Submit value
         const submitValue = {
@@ -759,6 +811,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     setClaimMapping={ setClaimMapping }
                                     createMapping={ createMapping }
                                     removeMapping={ removeMapping }
+                                    updateMappings={ updateMappings }
                                     getCurrentMapping={ getCurrentMapping }
                                     updateClaimMapping={ updateClaimMapping }
                                     addToClaimMapping={ addToClaimMapping }

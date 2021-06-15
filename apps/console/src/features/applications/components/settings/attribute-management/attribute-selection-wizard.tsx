@@ -43,6 +43,7 @@ interface AttributeSelectionWizardPropsInterface extends TestableComponentInterf
     setShowAddModal: (showModal: boolean) => void;
     createMapping: any;
     removeMapping: any;
+    updateMappings: any;
 }
 
 /**
@@ -63,8 +64,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         availableClaims,
         setAvailableClaims,
         setInitialSelectedClaims,
-        createMapping,
-        removeMapping,
+        updateMappings,
         [ "data-testid" ]: testId
     } = props;
 
@@ -160,9 +160,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const updateSelectedClaims = (() => {
         const selectedClaimsValues = [...tempSelectedClaims];
         const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues?.includes(claim));
-        const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
-        createMapping(added);
-        removedClaims.map((claim: ExtendedClaimInterface) => removeMapping(claim.claimURI));
+        const addedClaims = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
+        updateMappings(addedClaims, removedClaims);
         setInitialSelectedClaims(selectedClaimsValues);
         setAvailableClaims([...tempAvailableClaims]);
         setShowAddModal(false);
