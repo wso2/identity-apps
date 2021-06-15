@@ -1192,7 +1192,7 @@ export const myAccount: MyAccountNS = {
                 terminateAllUserSessionsModal: {
                     heading: "තහවුරු කිරීම",
                     message:
-                        "මෙම ක්‍රියාව මඟින් සෑම උපාංගයකම සියලුම සැසි වලින් ඔබව ඉවත් කරනු ඇත. " +
+                        "ක්‍රියාව මඟින් මෙම සැසියෙන් සහ සෑම උපාංගයකම අනෙක් සියලුම සැසි වලින් ඔබව ඉවත් කරනු ඇත. " +
                         "ඉදිරියට යාමට ඔබ කැමතිද?"
                 },
                 terminateUserSessionModal: {

@@ -1198,8 +1198,8 @@ export const myAccount: MyAccountNS = {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:
-                        "This action will log you out of all the sessions on every device. Do you wish to " +
-                        "continue?"
+                        "The action will log you out of this session and all the other sessions on every device. " +
+                        "Do you wish to continue?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmation",
