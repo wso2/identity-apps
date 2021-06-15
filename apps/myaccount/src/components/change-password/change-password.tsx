@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -312,38 +312,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             />
                         </Suspense>
                     </Form.Field>
-                    <Field
-                        data-testid={ `${testId}-new-password-confirm-field` }
-                        hidePassword={ t("common:hidePassword") }
-                        label={ t(
-                            "myAccount:components.changePassword.forms.passwordResetForm.inputs"
-                            + ".confirmPassword.label"
-                        ) }
-                        name="confirmPassword"
-                        placeholder={ t(
-                            "myAccount:components.changePassword.forms.passwordResetForm.inputs." +
-                            "confirmPassword.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "myAccount:components.changePassword.forms.passwordResetForm." +
-                            "inputs.confirmPassword.validations.empty"
-                        ) }
-                        showPassword={ t("common:showPassword") }
-                        type="password"
-                        validation={ (value: string, validation: Validation, formValues) => {
-                            if (formValues.get("newPassword") !== value) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    t(
-                                        "myAccount:components.changePassword.forms.passwordResetForm.inputs" +
-                                        ".confirmPassword.validations.mismatch"
-                                    )
-                                );
-                            }
-                        } }
-                        width={ 9 }
-                    />
                     <Field
                         hidden={ true }
                         type="divider"
