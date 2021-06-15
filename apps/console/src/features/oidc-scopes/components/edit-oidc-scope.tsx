@@ -210,7 +210,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 render: (claim: ExternalClaim): ReactNode => (
                     <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
                         <Header.Content>
-                            { claim.claimURI }
+                            { claim.localClaimDisplayName }
                             <Header.Subheader>
                                 <code>{ claim.mappedLocalClaimURI }</code>
                             </Header.Subheader>
