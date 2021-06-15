@@ -469,6 +469,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         return (
             <ConfirmationModal
                 type="warning"
+                className="duplicate-social-authenticator-selection-modal"
                 onClose={ () => setShowDuplicateSocialAuthenticatorSelectionModal(false) }
                 open={ showDuplicateSocialAuthenticatorSelectionModal }
                 primaryAction={
@@ -509,7 +510,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             { authenticator: authenticatorName })
                     }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
+                <ConfirmationModal.Content scrolling>
                     <Text>
                         <Trans
                             i18nKey={
@@ -519,11 +520,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             tOptions={ { authenticator: authenticatorName } }
                         >
                             You have multiple Identity Providers configured with <Code>{ authenticatorName } 
-                            Authenticator</Code>. Select the desired one from the selection bellow to proceed
+                            Authenticator</Code>. Select the desired one from the selection below to proceed.
                         </Trans>
                     </Text>
                     <Divider hidden/>
-                    <div>
+                    <div className="authenticator-grid">
                         {
                             authenticators.map((authenticator, index) => (
                                 <LabeledCard

@@ -1034,7 +1034,7 @@ export const console: ConsoleNS = {
                                             content: {
                                                 body: "You have multiple Identity Providers configured with <1>" +
                                                     "{{authenticator}} Authenticator</1>. Select the desired one " +
-                                                    "from the selection bellow to proceed.",
+                                                    "from the selection below to proceed.",
                                                 message: "Multiple Identity Providers found with {{authenticator}} " +
                                                     "Authenticator."
                                             },
@@ -3633,12 +3633,12 @@ export const console: ConsoleNS = {
                             clientId: {
                                 description: "Provide the <1>App ID</1> you received from Facebook when you " +
                                     "registered the OAuth app.",
-                                heading: "Client ID"
+                                heading: "App ID"
                             },
                             clientSecret: {
                                 description: "Provide the <1>App secret</1> you received from Facebook when you " +
                                     "registered the OAuth app.",
-                                heading: "Client secret"
+                                heading: "App secret"
                             },
                             heading: "Help",
                             name: {

@@ -104,7 +104,7 @@ interface FacebookAuthenticatorFormFieldsInterface {
     /**
      * Facebook Authenticator callback URL field.
      */
-    callbackUrl: CommonAuthenticatorFormFieldInterface;
+    callBackUrl: CommonAuthenticatorFormFieldInterface;
     /**
      * Facebook Authenticator scopes field.
      */
@@ -313,6 +313,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             <Field.Input
                 ariaLabel="Facebook authenticator client secret"
                 inputType="password"
+                type="password"
                 name="ClientSecret"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
@@ -346,7 +347,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             <Field.Input
                 ariaLabel="Facebook authenticator authorized redirect URL"
                 inputType="copy_input"
-                name="callbackUrl"
+                name="callBackUrl"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".facebook.callbackUrl.label")
@@ -359,10 +360,10 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".facebook.callbackUrl.hint")
                 }
-                required={ formFields?.callbackUrl?.meta?.isMandatory }
-                value={ formFields?.callbackUrl?.value }
-                readOnly={ formFields?.callbackUrl?.meta?.readOnly }
-                maxLength={ formFields?.callbackUrl?.meta?.maxLength }
+                required={ formFields?.callBackUrl?.meta?.isMandatory }
+                value={ formFields?.callBackUrl?.value }
+                readOnly={ formFields?.callBackUrl?.meta?.readOnly }
+                maxLength={ formFields?.callBackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number

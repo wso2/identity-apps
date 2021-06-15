@@ -110,6 +110,10 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
      * Show sign on methods condition
      */
     isSetStrongerAuth?: boolean;
+    /**
+     * Is the list rendered on a portal.
+     */
+    isRenderedOnPortal?: boolean;
 }
 
 /**
@@ -137,6 +141,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         selection,
         showListItemActions,
         isSetStrongerAuth,
+        isRenderedOnPortal,
         [ "data-testid" ]: testId
     } = props;
 
@@ -400,7 +405,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    className="list-placeholder"
+                    className={ !isRenderedOnPortal ? "list-placeholder" : "" }
                     action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>

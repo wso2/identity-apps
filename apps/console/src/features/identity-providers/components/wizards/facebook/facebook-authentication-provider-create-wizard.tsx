@@ -244,7 +244,7 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 "value": values.clientSecret.toString()
             },
             {
-                "key": "callbackUrl",
+                "key": "callBackUrl",
                 "value": config.deployment.serverHost + "/commonauth"
             },
             {

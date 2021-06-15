@@ -304,6 +304,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             <Field.Input
                 ariaLabel="GitHub authenticator client secret"
                 inputType="password"
+                type="password"
                 name="ClientSecret"
                 label={
                     t("console:develop.features.authenticationProvider.forms" +
