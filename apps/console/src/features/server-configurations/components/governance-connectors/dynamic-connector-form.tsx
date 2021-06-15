@@ -175,7 +175,10 @@ const DynamicConnectorForm = (props) => {
                         computer={ 14 }
                         className={ !serverConfigurationConfig.intendSettings && "pl-0" }
                     >
-                        <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
+                        <PrimaryButton
+                            data-testid={ `${ testId }-update-button` }
+                            type="submit">{ t("common:update") }
+                        </PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
