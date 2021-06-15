@@ -33,7 +33,8 @@ import {
     DangerZoneGroup,
     EmptyPlaceholder,
     GenericIcon,
-    SegmentedAccordion
+    SegmentedAccordion,
+    Text
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import moment from "moment";
@@ -642,7 +643,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
-                                                    <p className="ui-session-description">
+                                                    <Text size={11}>
                                                         {
                                                             t("console:manage.features.users.userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",
@@ -653,7 +654,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 }
                                                             )
                                                         }
-                                                    </p>
+                                                    </Text>
                                                 </List.Description>
                                             </List.Content>
                                         </>
