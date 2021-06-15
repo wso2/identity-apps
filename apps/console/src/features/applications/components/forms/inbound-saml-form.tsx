@@ -261,6 +261,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
+                setSignSAMLResponsesEnabled(initialValues?.responseSigning.enabled);
                 setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled);
                 setIsArtifactBindingEnabled(initialValues?.singleSignOnProfile?.bindings?.
                 includes(SAML2BindingTypes.ARTIFACT));
