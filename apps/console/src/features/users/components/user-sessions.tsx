@@ -643,7 +643,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
-                                                    <Text size={11}>
+                                                    <Text size={ 11 }>
                                                         {
                                                             t("console:manage.features.users.userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",
