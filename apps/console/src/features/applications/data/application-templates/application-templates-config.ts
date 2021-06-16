@@ -57,6 +57,8 @@ export interface TemplateContentInterface extends StrictTemplateContentInterface
 
 export interface StrictTemplateContentInterface {
     wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
+    wizardHelp2?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
+    wizardHelp3?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {
@@ -119,7 +121,11 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                     },
                     {
                         content: {
-                            wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help"))
+                            wizardHelp: lazy(() => import("./templates/saml-web-application/create-wizard-help")),
+                            wizardHelp2:
+                                lazy(() => import("./templates/saml-web-application/create-file-based-wizard-help")),
+                            wizardHelp3:
+                                lazy(() => import("./templates/saml-web-application/create-url-based-wizard-help"))
                         },
                         enabled: applicationConfig.templates.saml,
                         id: SAMLWebApplicationTemplate.id,
@@ -143,7 +149,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                     },
                     {
                         content: {
-                            wizardHelp: lazy(() => import("./templates/custom-application/create-wizard-help"))
+                            wizardHelp: null
                         },
                         enabled: applicationConfig.templates.custom,
                         id: CustomApplicationTemplate.id,

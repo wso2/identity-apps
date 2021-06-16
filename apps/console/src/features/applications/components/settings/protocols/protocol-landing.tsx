@@ -25,8 +25,9 @@ import { useTranslation } from "react-i18next";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
 import { getInboundProtocolLogos } from "../../../configs";
-import { SupportedAuthProtocolTypes } from "../../../models";
+import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils";
+import { ProtocolCard } from "../../../../core/components/protocol-card";
 
 
 /**
@@ -55,6 +56,7 @@ interface ProtocolLandingPropsInterface extends SBACInterface<FeatureConfigInter
      * Make the form read only.
      */
     readOnly?: boolean;
+    setSAMLProtocol: (protocol: SAMLConfigModes) => void;
     /**
      * Make the form read only.
      */
@@ -75,6 +77,7 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
     const {
         setProtocol,
         availableProtocols,
+        setSAMLProtocol,
         ["data-testid"]: testId
     } = props;
 
@@ -157,18 +160,21 @@ export const ProtocolLanding: FunctionComponent<ProtocolLandingPropsInterface> =
                                 >
                                     {
                                         protocolContentList.map((protocol: ProtocolContentInterface, index: number) => (
-                                            <TechnologyCard
+                                            <ProtocolCard
                                                 key={ index }
                                                 raised={ false }
                                                 data-testid={
                                                     protocol[ "data-testid" ]
                                                     ?? `technology-card-${ kebabCase(protocol.name) }`
                                                 }
-                                                onClick={ () =>  setProtocol(protocol.protocol) }
+                                                onClick={
+                                                    protocol.protocol === SupportedAuthProtocolTypes.SAML ?
+                                                        setSAMLProtocol : () =>  setProtocol(protocol.protocol) }
                                                 displayName={ protocol.name }
                                                 overlayOpacity={ 0.6 }
                                                 image={ protocol.image }
                                                 className={ "protocol-card" }
+                                                showOption={ protocol.protocol === SupportedAuthProtocolTypes.SAML }
                                             />
                                         ))
                                     }

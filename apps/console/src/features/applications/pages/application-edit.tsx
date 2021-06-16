@@ -65,6 +65,8 @@ import {
     emptyApplication
 } from "../models";
 import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../utils";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
 
 /**
  * Proptypes for the applications edit page component.
@@ -192,7 +194,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        const template = applicationTemplates.find((template) => template.id === application.templateId);
+        let template = applicationTemplates.find((template) => template.id === application.templateId);
+        if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+            || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+                template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id );
+        }
 
         setApplicationTemplate(template);
     }, [ applicationTemplates, application ]);
@@ -484,9 +491,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     useEffect(() => {
         if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
-            if (isExtensionsAvailable) {
-                setDefaultActiveIndex(1);
-            }
+            setDefaultActiveIndex(1);
             return;
         }
     }, [

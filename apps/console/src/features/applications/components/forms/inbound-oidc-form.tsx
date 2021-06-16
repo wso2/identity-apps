@@ -1167,9 +1167,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             "callBackUrls.validations.empty")
                                     }
                                     validation={ (value: string) => {
-                                        if (!(URLUtils.isURLValid(value, true) &&
-                                            (URLUtils.isHttpUrl(value) ||
-                                                URLUtils.isHttpsUrl(value)))) {
+                                        if (CustomApplicationTemplate?.id !== template?.id
+                                            && !(URLUtils.isURLValid(value, true) &&
+                                                (URLUtils.isHttpUrl(value) ||
+                                                    URLUtils.isHttpsUrl(value)))) {
 
                                             return false;
                                         }

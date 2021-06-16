@@ -23,7 +23,13 @@ import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
-import { ApplicationTemplateListItemInterface, CertificateInterface, SupportedAuthProtocolTypes } from "../../models";
+import {
+    ApplicationTemplateListItemInterface,
+    CertificateInterface,
+    SupportedAuthProtocolTypes,
+    SAMLConfigModes
+} from "../../models";
+import { InboundSAMLCreationForm } from "./inbound-saml-creation-form";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -55,6 +61,19 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Application template.
+     */
+    showSAMLCreation?: boolean;
+    /**
+     * Application template.
+     */
+    SAMLCreationOption?: SAMLConfigModes;
+    /**
+     * Application template.
+     */
+    createSAMLapp?: (values: any) => void;
+
 }
 
 /**
@@ -80,6 +99,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         allowedOrigins,
         tenantDomain,
         template,
+        showSAMLCreation,
+        SAMLCreationOption,
         [ "data-testid" ]: testId
     } = props;
 
@@ -101,6 +122,16 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                 />
             );
         case SupportedAuthProtocolTypes.SAML:
+            if (showSAMLCreation && SAMLCreationOption && SAMLCreationOption !== SAMLConfigModes.MANUAL) {
+                return (
+                    <InboundSAMLCreationForm
+                        initialValues={ initialValues }
+                        creationOption={ SAMLCreationOption ? SAMLCreationOption : SAMLConfigModes.META_URL  }
+                        onSubmit={ onSubmit }
+                        data-testid={ testId }
+                    />
+                );
+            }
             return (
                 <InboundSAMLForm
                     certificate={ certificate }
@@ -151,5 +182,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
  * Default props for the inbound form factory component.
  */
 InboundFormFactory.defaultProps = {
-    "data-testid": "inbound-form-factory"
+    "data-testid": "inbound-form-factory",
+    showSAMLCreation: false
 };

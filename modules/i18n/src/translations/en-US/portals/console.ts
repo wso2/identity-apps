@@ -2655,7 +2655,7 @@ export const console: ConsoleNS = {
                                         subTitle: "The URLs to which the browser is redirected to upon successful" +
                                             " authentication. Also known as the Assertion Consumer Service (ACS) URL" +
                                             " of the service provider.",
-                                        title: "Assertion response URLs"
+                                        title: "Assertion consumer service URLs"
                                     },
                                     issuer: {
                                         example: "E.g., my-app.com",
@@ -2664,6 +2664,14 @@ export const console: ConsoleNS = {
                                             " specified in the SAML authentication request sent from the client" +
                                             " application.",
                                         title: "Issuer"
+                                    },
+                                    metaFile: {
+                                        subTitle: "Upload the meta file for the SAML configuration.",
+                                        title: "Upload Metadata File"
+                                    },
+                                    metaURL: {
+                                        subTitle: "Meta URL link from which SAML configurations can be fetched.",
+                                        title: "Meta URL"
                                     }
                                 }
                             }

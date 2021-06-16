@@ -537,7 +537,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                         initialValues={
                                             wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ]
                                         }
-                                        updateSelectedSAMLMetaFile={ setSelectedSAMLMetaFile }
+                                        templateValues={ templateSettings }
+                                        fields={ [ "issuer", "assertionConsumerURLs" ] }
+                                        hideFieldHints={ true }
                                         onSubmit={ (values): void => handleWizardFormSubmit(values,
                                             WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                         data-testid={ `${ testId }-saml-protocol-all-settings-form` }

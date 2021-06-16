@@ -505,6 +505,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }
                 appName={ application.name }
+                applicationTemplateId={ application.templateId }
                 extendedAccessConfig={ tabPaneExtensions !== undefined }
                 isLoading={ isLoading }
                 onUpdate={ handleApplicationUpdate }
@@ -605,12 +606,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs) {
+        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
             return [];
         }
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0
-            && application?.templateId !== CustomApplicationTemplate.id ) {
+            && application?.templateId !== CustomApplicationTemplate.id
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -838,7 +845,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs )
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML )
             ? (
                 <>
                     <ResourceTab

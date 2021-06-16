@@ -2679,6 +2679,15 @@ export const console: ConsoleNS = {
                                             " l'application. La valeur ajoutée ici doit être spécifiée dans la" +
                                             " demande d'authentification SAML envoyée depuis l'application cliente.",
                                         title: "Émetteur"
+                                    },
+                                    metaFile: {
+                                        subTitle: "Téléchargez le fichier méta pour la configuration SAML.",
+                                        title: "Télécharger le fichier de métadonnées"
+                                    },
+                                    metaURL: {
+                                        subTitle: "Lien méta URL à partir duquel les configurations SAML " +
+                                            "peuvent être récupérées.",
+                                        title: "URL méta"
                                     }
                                 }
                             }

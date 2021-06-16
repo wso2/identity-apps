@@ -111,6 +111,15 @@ import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
+import {
+    ReactComponent as globalIllustration
+} from "../../../themes/default/assets/images/illustrations/global.svg";
+import {
+    ReactComponent as codeFileIllustration
+} from "../../../themes/default/assets/images/illustrations/code-file.svg";
+import {
+    ReactComponent as settingsIllustration
+} from "../../../themes/default/assets/images/illustrations/setting.svg";
 
 export const getInboundProtocolLogos = () => {
 
@@ -216,5 +225,14 @@ export const getSignInMethodIllustrations = (): Record<string, unknown> => {
     
     return {
         basicAuth: BasicAuthIllustration
+    };
+};
+
+export const getSAMLModeIcons = () => {
+
+    return {
+        manual: settingsIllustration,
+        fileBased: codeFileIllustration,
+        URLBased: globalIllustration
     };
 };

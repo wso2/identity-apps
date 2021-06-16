@@ -380,4 +380,17 @@ export class ApplicationManagementConstants {
     };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY = "isConditionalAuthTourViewed";
+
+    public static readonly CUSTOM_APPLICATION_OIDC = "custom-application-oidc";
+
+    public static readonly CUSTOM_APPLICATION_SAML = "custom-application-saml";
+
+    public static readonly CUSTOM_APPLICATION_PASSIVE_STS = "custom-application-passive-sts";
+
+    public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
+        new Map<string, number>([
+            [ "oidc", 0 ],
+            [ "saml", 1 ],
+            [  "passive-sts", 2 ]
+        ])
 }
