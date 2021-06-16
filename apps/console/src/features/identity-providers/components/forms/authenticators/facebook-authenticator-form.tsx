@@ -79,11 +79,11 @@ interface FacebookAuthenticatorFormInitialValuesInterface {
     /**
      * Facebook Authenticator callback URL field value.
      */
-    callbackUrl: string;
+    callBackUrl: string;
     /**
      * Facebook Authenticator scopes field value.
      */
-    scope: string;
+    Scope: string;
     /**
      * Facebook Authenticator client id field value.
      */
