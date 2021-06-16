@@ -63,6 +63,7 @@ import { ApplicationListInterface } from "../models";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
+import isEmpty from "lodash-es/isEmpty";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -264,24 +265,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             } }
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <GenericIcon
-                                verticalAlign="middle"
-                                transparent
-                                icon={ getGeneralIcons().predefined }
-                                spaced="right"
-                                size="default"
-                                floated="left"
-                            />
-                            { t("console:develop.features.applications.list.actions.predefined") }
-                        </PrimaryButton>
-                        <SemButton
-                            basic
-                            primary
-                            onClick={()=> setShowWizard(true)}
-                        >
                             <Icon name="add"/>
-                            { t("console:develop.features.applications.list.actions.custom") }
-                        </SemButton>
+                            { t("console:develop.features.applications.list.actions.add") }
+                        </PrimaryButton>
                     </>
                 )
             }
