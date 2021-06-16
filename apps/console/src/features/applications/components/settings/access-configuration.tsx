@@ -19,17 +19,17 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon, LinkButton } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Header, Message, Popup, Button as SemButton } from "semantic-ui-react";
+import { Button as SemButton, Divider, Grid, Header, Popup } from "semantic-ui-react";
 import { ProtocolLanding } from "./protocols/protocol-landing";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface, store } from "../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -45,6 +45,7 @@ import {
     ApplicationTemplateListItemInterface,
     CertificateInterface,
     OIDCDataInterface,
+    SAMLConfigModes,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
@@ -52,6 +53,8 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
+import { ApplicationManagementConstants } from "../../constants";
+import { SAMLSelectionLanding } from "./protocols";
 
 /**
  * Proptypes for the applications settings component.
@@ -119,6 +122,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Application template.
+     */
+    applicationTemplateId?: string;
 }
 
 /**
@@ -150,6 +157,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         template,
         onProtocolUpdate,
         extendedAccessConfig,
+        applicationTemplateId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -172,6 +180,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
     const [ showLandingPage, setShowLandingPage ] = useState<boolean>(true);
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
+
+    const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
@@ -258,6 +268,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
      */
     const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
+        let updateError = false;
         updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
@@ -270,6 +281,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 onAllowedOriginsUpdate();
             })
             .catch((error) => {
+                updateError= true;
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -289,9 +301,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-            onUpdate(appId);
-            onProtocolUpdate();
+                onProtocolUpdate();
+                onUpdate(appId);
+                if (!updateError) {
+                    createSAMLApplication();
+                }
         });
+    };
+
+    const createSAMLApplication= () => {
+        if (template.id === CustomApplicationTemplate.id
+            && samlCreationOption && selectedProtocol === SupportedAuthProtocolTypes.SAML) {
+            setSAMLCreationOption(undefined);
+        }
     };
 
     /**
@@ -406,6 +428,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             ? [ template.authenticationProtocol ]
             : Object.values(SupportedAuthProtocolTypes);
 
+
+        if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            return [SupportedAuthProtocolTypes.SAML];
+        }
+
+        if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+            return [SupportedAuthProtocolTypes.OIDC];
+        }
+
+        if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            return [SupportedAuthProtocolTypes.WS_FEDERATION];
+        }
+
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol) => {
 
@@ -518,6 +553,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         allowedScopes
                                     )
                                 }
+                                showSAMLCreation={ selectedProtocol === SupportedAuthProtocolTypes.SAML }
+                                SAMLCreationOption={
+                                    (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
                                 template={ template }
                                 data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
                             />
@@ -701,14 +739,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocolList.push(protocol);
     };
 
+    const selectSAMLCreationProtocol = (samlOption: SAMLConfigModes): void =>{
+        setSAMLCreationOption(samlOption);
+        setSelectedProtocol(SupportedAuthProtocolTypes.SAML);
+        inboundProtocolList.push(SupportedAuthProtocolTypes.SAML);
+    };
+
     return (
         !isLoading && !requestLoading && !isInboundProtocolConfigRequestLoading
             ? ( !selectedProtocol && inboundProtocols.length === 0 && !allowMultipleProtocol
-            && getSupportedProtocols().length !== 1 ) ?
-            <ProtocolLanding
-                setProtocol={ selectInitialProtocol }
-                availableProtocols={ getSupportedProtocols() }
-            />
+            && applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) ?
+                <SAMLSelectionLanding
+                    setSAMLProtocol={ selectSAMLCreationProtocol }
+                />
             : (
                 <Grid>
                     { loadSupportedProtocols() }
