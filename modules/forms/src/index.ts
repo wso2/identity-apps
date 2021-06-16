@@ -18,5 +18,5 @@
 
 export * from "./forms";
 export * from "./models";
-export { Field, GroupFields } from "./components";
+export { Field, GroupFields, QueryParameters } from "./components";
 export * from "./utils";
