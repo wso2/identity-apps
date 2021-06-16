@@ -6697,12 +6697,20 @@ export const console: ConsoleNS = {
                                 browser: "Navigateur",
                                 deviceModel: "Modèle d'appareil",
                                 ip: "Adresse IP",
-                                lastAccessed: "Dernier accès",
+                                lastAccessed: "Dernier accès {{ date }}",
                                 loggedInAs: "Connecté sous <1>{{ app }}</1> en tant que <3>{{ user }}</3>",
                                 loginTime: "Heure de connexion",
                                 os: "Système opérateur",
-                                recentActivity: "Activité récente"
+                                recentActivity: "Activité récente",
+                                activeApplication: "Applications actives"
                             }
+                        }
+                    },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "Déconnecter",
+                            header: "Se déconnecter",
+                            subheader: "L'accès à votre compte depuis cet appareil sera supprimé."
                         }
                     },
                     notifications: {

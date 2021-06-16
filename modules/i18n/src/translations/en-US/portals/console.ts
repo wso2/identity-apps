@@ -7761,12 +7761,20 @@ export const console: ConsoleNS = {
                                 browser: "Browser",
                                 deviceModel: "Device Model",
                                 ip: "IP Address",
-                                lastAccessed: "Last Accessed",
+                                lastAccessed: "Last Accessed {{ date }}",
                                 loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
                                 loginTime: "Login Time",
                                 os: "Operating System",
-                                recentActivity: "Recent Activity"
+                                recentActivity: "Recent Activity",
+                                activeApplication: "Active Applications"
                             }
+                        }
+                    },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "Terminate",
+                            header: "Terminate session",
+                            subheader: "You will be logged out of the session on the particular device."
                         }
                     },
                     notifications: {

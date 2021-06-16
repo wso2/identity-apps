@@ -29,9 +29,12 @@ import {
     ConfirmationModal,
     ContentLoader,
     DangerButton,
+    DangerZone,
+    DangerZoneGroup,
     EmptyPlaceholder,
     GenericIcon,
-    SegmentedAccordion
+    SegmentedAccordion,
+    Text
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import moment from "moment";
@@ -47,7 +50,6 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
-import { getUserSessionAccordionIcons } from "../configs";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 import { CONSUMER_USERSTORE } from "../../userstores";
 
@@ -418,7 +420,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             <Grid.Column width={ 5 }>
                                                 {
                                                     t("console:manage.features.users.userSessions.components" +
-                                                        ".sessionDetails.labels.recentActivity")
+                                                        ".sessionDetails.labels.activeApplication")
                                                 }
                                             </Grid.Column>
                                             <Grid.Column mobile={ 16 } computer={ 11 }>
@@ -469,18 +471,22 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <DangerButton
-                                        data-testid={ `${ testId }-terminate-button` }
-                                        onClick={ () => {
-                                            setTerminatingSession(session);
-                                            setShowSessionTerminateConfirmationModal(true);
-                                        } }
-                                    >
-                                        {
-                                            t("console:manage.features.users.userSessions.components.sessionDetails" +
-                                                ".actions.terminateSession")
-                                        }
-                                    </DangerButton>
+                                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                        <DangerZone
+                                            actionTitle={ t("console:manage.features.users.userSessions." +
+                                                "dangerZones.terminate." +
+                                                "actionTitle") }
+                                            header={ t("console:manage.features.users.userSessions.dangerZones." +
+                                                "terminate.header") }
+                                            subheader={ t("console:manage.features.users.userSessions.dangerZones." +
+                                                "terminate.subheader") }
+                                            onActionClick={ () => {
+                                                setTerminatingSession(session);
+                                                setShowSessionTerminateConfirmationModal(true);
+                                            } }
+                                            data-testid={ `${ testId }-terminate-button` }
+                                        />
+                                    </DangerZoneGroup>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -614,38 +620,45 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     content={ (
                                         <>
                                             <GenericIcon
+                                                icon={
+                                                    (
+                                                        <Icon
+                                                            name={ resolveDeviceType(userAgentParser.device.type) }
+                                                            size="big"
+                                                            color="grey"
+                                                        />
+                                                    )
+                                                }
                                                 transparent
-                                                icon={ (
-                                                    <Icon
-                                                        name={ resolveDeviceType(userAgentParser.device.type) }
-                                                        color="grey"
-                                                    />
-                                                ) }
                                                 spaced="right"
                                                 floated="left"
-                                                size="micro"
                                                 data-testid={
                                                     `${ testId }-${ session.id }-title-icon`
                                                 }
                                             />
-                                            { userAgentParser.browser.name }
-                                            { " on " }
-                                            { userAgentParser.os.name }
+                                            <List.Content>
+                                                <List.Header>
+                                                    { userAgentParser.browser.name }
+                                                    { " on " }
+                                                    { userAgentParser.os.name }
+                                                </List.Header>
+                                                <List.Description>
+                                                    <Text size={ 11 }>
+                                                        {
+                                                            t("console:manage.features.users.userSessions." +
+                                                                "components.sessionDetails.labels.lastAccessed",
+                                                                {
+                                                                    date: moment(
+                                                                        parseInt(session.lastAccessTime, 10)
+                                                                    ).fromNow()
+                                                                }
+                                                            )
+                                                        }
+                                                    </Text>
+                                                </List.Description>
+                                            </List.Content>
                                         </>
                                     ) }
-                                    actions={ [
-                                        {
-                                            icon: {
-                                                icon: getUserSessionAccordionIcons().terminate
-                                            },
-                                            onClick: () => {
-                                                setTerminatingSession(session);
-                                                setShowSessionTerminateConfirmationModal(true);
-                                            },
-                                            popoverText: t("common:terminate"),
-                                            type: "icon"
-                                        }
-                                    ] }
                                     hideChevron={ false }
                                 />
                                 <SegmentedAccordion.Content

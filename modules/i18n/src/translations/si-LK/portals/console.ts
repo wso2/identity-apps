@@ -6621,12 +6621,20 @@ export const console: ConsoleNS = {
                                 browser: "බ්‍රව්සරය",
                                 deviceModel: "උපාංග ආකෘතිය",
                                 ip: "IP ලිපිනය",
-                                lastAccessed: "අවසන් වරට ප්‍රවේශ වූයේ",
+                                lastAccessed: "අවසන් වරට ප්‍රවේශ වූයේ {{ date }}",
                                 loggedInAs: "<1>{{ app }}</1> ලෙස <3>{{ user }}</3> ලෙස පුරනය වී ඇත.",
                                 loginTime: "පිවිසුම් වේලාව",
                                 os: "මෙහෙයුම් පද්ධතිය",
-                                recentActivity: "මෑත ක්‍රියාකාරකම"
+                                recentActivity: "මෑත ක්‍රියාකාරකම",
+                                activeApplication: "සක්‍රීය යෙදුම්"
                             }
+                        }
+                    },
+                    dangerZones: {
+                        terminate: {
+                            actionTitle: "අවසන් කරන්න",
+                            header: "සැසිය අවසන් කරන්න",
+                            subheader: "විශේෂිත උපාංගයේ සැසියෙන් ඔබ ඉවත් වනු ඇත."
                         }
                     },
                     notifications: {

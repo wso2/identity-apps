@@ -18,7 +18,7 @@
 
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Text } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -133,7 +133,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                     { userAgentParser.os.name }
                                                 </List.Header>
                                                 <List.Description>
-                                                    <p style={ { fontSize: "11px" } }>
+                                                    <Text size={ 11 }>
                                                         {
                                                             t("myAccount:components.userSessions.lastAccessed",
                                                                 {
@@ -143,7 +143,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                                 }
                                                             )
                                                         }
-                                                    </p>
+                                                    </Text>
                                                 </List.Description>
                                             </List.Content>
                                         </Grid.Column>
