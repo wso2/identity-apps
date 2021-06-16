@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface, SupportedAuthProtocolTypes } from "../../models";
+import { AuthProtocolMetaListItemInterface, SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
 
 export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     {
@@ -81,4 +81,14 @@ export const SupportedAuthProtocolTypeDescriptions = {
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Enable STS in a web browser.",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "Standard that provides extensions to WS-Security.",
     [ SupportedAuthProtocolTypes. CUSTOM ]: "Custom protocol."
+};
+
+
+/**
+ * SAML configuration mode display name mapping.
+ */
+export const SAMLConfigurationDisplayNames = {
+    [SAMLConfigModes.MANUAL]: "Manual",
+    [SAMLConfigModes.META_FILE]: "File Based",
+    [SAMLConfigModes.META_URL]: "URL Based"
 };

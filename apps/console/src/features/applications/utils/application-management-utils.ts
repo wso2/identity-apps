@@ -23,17 +23,27 @@ import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
-import { DocPanelUICardInterface, store } from "../../core";
+import { useSelector } from "react-redux";
+import { applicationConfig } from "../../../extensions";
+import { AppState, DocPanelUICardInterface, store } from "../../core";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
 } from "../api";
-import { SupportedAuthProtocolTypeDescriptions, SupportedAuthProtocolTypeDisplayNames } from "../components/meta";
-import { ApplicationManagementConstants } from "../constants";
 import {
+    SAMLConfigurationDisplayNames,
+    SupportedAuthProtocolTypeDescriptions,
+    SupportedAuthProtocolTypeDisplayNames
+} from "../components/meta";
+import { ApplicationManagementConstants } from "../constants";
+import CustomApplicationTemplate
+    from "../data/application-templates/templates/custom-application/custom-application.json";
+import {
+    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
+    SAMLConfigModes,
     SupportedAuthProtocolTypes,
     emptySAMLAppConfiguration
 } from "../models";
@@ -370,5 +380,16 @@ export class ApplicationManagementUtils {
     public static resolveProtocolDescription(protocol: SupportedAuthProtocolTypes): string {
 
         return SupportedAuthProtocolTypeDescriptions[protocol];
+    }
+
+    /**
+     * Resolves the display name of SAML configuration mode.
+     *
+     * @param {SAMLConfigModes} mode - Config mode.
+     * @return {string}
+     */
+    public static resolveSAMLConfigModeDisplayName(mode: SAMLConfigModes): string {
+
+        return SAMLConfigurationDisplayNames[mode];
     }
 }

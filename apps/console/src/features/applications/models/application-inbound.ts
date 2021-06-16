@@ -430,3 +430,15 @@ export interface OIDCEndpointsInterface {
 export enum SupportedAccessTokenBindingTypes {
     NONE = "None"
 }
+
+/**
+ * Enum for the SAML configuration modes.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SAMLConfigModes {
+    MANUAL = "manualConfiguration",
+    META_FILE = "metadataFile",
+    META_URL = "metadataURL"
+}
