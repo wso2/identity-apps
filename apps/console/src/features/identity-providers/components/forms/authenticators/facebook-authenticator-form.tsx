@@ -18,14 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, FormSection, GenericIcon, Heading, Hint } from "@wso2is/react-components";
-import camelCase from "lodash-es/camelCase";
-import get from "lodash-es/get";
+import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Divider, Grid, Icon, SemanticICONS } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -135,20 +132,6 @@ interface ScopeMetaInterface {
      * Scope icon.
      */
     icon: SemanticICONS
-}
-
-/**
- * User Info UI displaying interface.
- */
-interface UserInfoMetaInterface {
-    /**
-     * Scope description.
-     */
-    description: string;
-    /**
-     * Scope display name.
-     */
-    displayName: ReactNode;
 }
 
 /**
