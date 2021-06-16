@@ -53,9 +53,11 @@
 
         &.disabled {
             opacity: 1;
+            cursor: no-drop;
 
-            >label {
-                opacity: 1;
+            > label {
+                opacity: .5;
+                cursor: no-drop;
             }
         }
     }
