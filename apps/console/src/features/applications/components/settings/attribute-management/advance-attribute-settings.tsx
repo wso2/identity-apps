@@ -74,37 +74,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
 
-    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>(initialSubject?.claim?.uri);
-    const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
-        useState<string>(selectedSubjectValue);
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
 
     useEffect(() => {
-        if (claimMappingOn) {
-            if (selectedSubjectValueLocalClaim) {
-                const index = dropDownOptions.findIndex(option => option?.key === selectedSubjectValueLocalClaim);
-                if (index > -1) {
-                    setSelectedSubjectValue(dropDownOptions[ index ]?.value);
-                } else {
-                    const initialSubjectClaimIndex =
-                        dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
-                    if (initialSubjectClaimIndex > -1) {
-                        setSelectedSubjectValue(dropDownOptions[ initialSubjectClaimIndex ]?.value);
-                    } else {
-                        const defaultSubjectClaimIndex =
-                            dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
-                        setSelectedSubjectValue(
-                            defaultSubjectClaimIndex > -1
-                                ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
-                                : dropDownOptions[ 0 ]?.value
-                        );
-                    }
-                }
-            } else {
-                const initialSubjectClaimIndex =
-                    dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
-                if (initialSubjectClaimIndex > -1) {
-                    setSelectedSubjectValue(dropDownOptions[ initialSubjectClaimIndex ]?.value);
-                } else {
+        if (selectedSubjectValue) {
+            if (dropDownOptions && dropDownOptions.length > 0 &&
+                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
+                if (claimMappingOn) {
                     const defaultSubjectClaimIndex =
                         dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
                     setSelectedSubjectValue(
@@ -112,13 +88,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
                             : dropDownOptions[ 0 ]?.value
                     );
+                } else {
+                    setSelectedSubjectValue(defaultSubjectAttribute);
                 }
-            }
-        }
-        else if (selectedSubjectValue) {
-            if(dropDownOptions && dropDownOptions.length > 0 &&
-                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
-                setSelectedSubjectValue(defaultSubjectAttribute);
             }
         } else {
             setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
@@ -128,14 +100,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     useEffect(() => {
         if(selectedSubjectValue) {
             setSelectedValue(selectedSubjectValue);
-        }
-    }, [ selectedSubjectValue ]);
-
-    useEffect(() => {
-        if (claimMappingOn && selectedSubjectValue && dropDownOptions) {
-            const subjectValueLocalMapping =
-                dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
-            setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
         }
     }, [ selectedSubjectValue ]);
 

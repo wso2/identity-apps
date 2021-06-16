@@ -766,7 +766,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             selectRequested={ updateRequested }
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
-                                                                            readOnly={ readOnly }
+                                                                            readOnly={
+                                                                                selectedSubjectValue ===
+                                                                                resolveClaimValue(claim.claimURI)
+                                                                                    ? true
+                                                                                    : readOnly
+                                                                            }
                                                                             subject={
                                                                                 selectedSubjectValue ===
                                                                                 resolveClaimValue(claim.claimURI)
