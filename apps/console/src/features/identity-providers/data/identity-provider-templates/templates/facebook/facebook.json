@@ -19,16 +19,73 @@
         "alias": "https://localhost:9444/oauth2/token",
         "claims": {
             "userIdClaim": {
-                "uri": "http://wso2.org/claims/username"
+                "uri": "email"
             },
             "roleClaim": {
                 "uri": "http://wso2.org/claims/role"
             },
+            "mappings": [
+                {
+                    "idpClaim": "email",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9lbWFpbGFkZHJlc3M",
+                        "uri": "http://wso2.org/claims/emailaddress",
+                        "displayName": "Email"
+                    }
+                },
+                {
+                    "idpClaim": "gender",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9nZW5kZXI",
+                        "uri": "http://wso2.org/claims/gender",
+                        "displayName": "Gender"
+                    }
+                },
+                {
+                    "idpClaim": "name",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9mdWxsbmFtZQ",
+                        "uri": "http://wso2.org/claims/fullname",
+                        "displayName": "Full Name"
+                    }
+                },
+                {
+                    "idpClaim": "first_name",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9naXZlbm5hbWU",
+                        "uri": "http://wso2.org/claims/givenname",
+                        "displayName": "First Name"
+                    }
+                },
+                {
+                    "idpClaim": "last_name",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9sYXN0bmFtZQ",
+                        "uri": "http://wso2.org/claims/lastname",
+                        "displayName": "Last Name"
+                    }
+                },
+                {
+                    "idpClaim": "age_range",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy9kb2I",
+                        "uri": "http://wso2.org/claims/dob",
+                        "displayName": "Birth Date"
+                    }
+                },
+                {
+                    "idpClaim": "link",
+                    "localClaim": {
+                        "id": "aHR0cDovL3dzbzIub3JnL2NsYWltcy91cmw",
+                        "uri": "http://wso2.org/claims/url",
+                        "displayName": "URL"
+                    }
+                }
+            ],
             "provisioningClaims": []
         },
         "roles": {
-            "mappings": [],
-            "outboundProvisioningRoles": []
+            "mappings": []
         },
         "federatedAuthenticators": {
             "defaultAuthenticatorId": "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
