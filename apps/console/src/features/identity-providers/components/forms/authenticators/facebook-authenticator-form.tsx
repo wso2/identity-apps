@@ -357,7 +357,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             {
                 formFields?.Scope?.value
                 && formFields.Scope.value.split
-                && formFields.Scope.value.split(" ").length > 0
+                && formFields.Scope.value.split(",").length > 0
                 && (
                     <FormSection
                         heading={
