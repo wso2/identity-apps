@@ -204,3 +204,21 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         };
     }
 }
+
+/**
+ * Listens to the `popstate` event fired from the app to notify
+ * that the user has selected the try stay logged in option.
+ * And sends a prompt none request to restore the session.
+ */
+window.addEventListener("popstate", (e) => {
+
+    const { state } = e;
+
+    if (!state || !state.stayLoggedIn) {
+        return;
+    }
+
+    sendPromptNoneRequest();
+
+    window.history.replaceState(null, null, window.location.pathname);
+});

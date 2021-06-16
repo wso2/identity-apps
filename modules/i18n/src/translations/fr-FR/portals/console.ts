@@ -133,14 +133,14 @@ export const console: ConsoleNS = {
                 secondaryButton: "Annuler"
             },
             sessionTimeoutModal: {
-                description: "Vous serez déconnecté de la session en cours pour cause d'inactivité." +
-                    "Veuillez choisir 'Rester connecté' si vous souhaitez poursuivre la session.",
-                heading: "Vous serez déconnecté(e) dans <1>{{ time }}</1>.",
-                primaryButton: "Rester connecté",
-                secondaryButton: "Déconnexion",
+                description: "Lorsque vous cliquez sur <1>Retour</1>, nous essaierons de récupérer la session " +
+                    "si elle existe. Si vous n'avez pas de session active, vous serez redirigé vers la page de connexion.",
+                heading: "Il semble que vous ayez été inactif pendant longtemps.",
                 loginAgainButton: "Connectez-vous à nouveau",
-                sessionTimedOutHeading: "La session utilisateur a expiré en raison d'une inactivité.",
-                sessionTimedOutDescription: "Veuillez vous reconnecter pour reprendre là où vous vous étiez arrêté."
+                primaryButton: "Retourner",
+                secondaryButton: "Déconnexion",
+                sessionTimedOutDescription: "Veuillez vous reconnecter pour reprendre là où vous vous étiez arrêté.",
+                sessionTimedOutHeading: "La session utilisateur a expiré en raison d'une inactivité."
             }
         },
         notifications: {

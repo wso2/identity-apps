@@ -22,7 +22,9 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    useEffect, useRef,
+    ReactNode,
+    useEffect,
+    useRef,
     useState
 } from "react";
 import { Trans } from "react-i18next";
@@ -49,6 +51,10 @@ export interface SessionManagementProviderPropsInterface extends TestableCompone
      * Modal options.
      */
     modalOptions?: SessionManagementModalOptionsInterface;
+    /**
+     * Type of the modal.
+     */
+    type: SessionTimeoutModalTypes;
 }
 
 /**
@@ -62,7 +68,7 @@ export interface SessionManagementModalOptionsInterface {
     /**
      * Modal Description.
      */
-    description: string;
+    description: ReactNode;
     /**
      * Primary button text.
      */
@@ -104,6 +110,22 @@ export interface SessionTimeoutEventStateInterface {
 }
 
 /**
+ * Enum for modal types.
+ */
+export enum SessionTimeoutModalTypes {
+    /**
+     * Auto logout based on the counter.
+     * @type {string}
+     */
+    COUNTER = "COUNTER",
+    /**
+     * Default session timeout modal with warning messages.
+     * @type {string}
+     */
+    DEFAULT = "DEFAULT"
+}
+
+/**
  * Session management provider component.
  *
  * @param {React.PropsWithChildren<SessionManagementProviderPropsInterface>} props - Props injected to the component.
@@ -120,7 +142,8 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         onSessionLogout,
         onLoginAgain,
         onSessionTimeoutAbort,
-        modalOptions
+        modalOptions,
+        type
     } = props;
 
     const timerIntervalID = useRef(null);
@@ -155,7 +178,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 return;
             }
 
-            if (timeout) {
+            if (timeout && type === SessionTimeoutModalTypes.COUNTER) {
                 startTimer(idleTimeout - idleWarningTimeout);
             }
 
@@ -164,7 +187,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
         return () => {
             performCleanupTasks();
-        }
+        };
     }, []);
 
     /**
@@ -210,11 +233,16 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
      * Handles primary button click.
      */
     const handlePrimaryActionClick = (): void => {
-        if (sessionTimedOut) {
+
+        // If the counter runs out or if the type of the modal is default, try the login again option.
+        if (sessionTimedOut || type === SessionTimeoutModalTypes.DEFAULT) {
             handleLoginAgain();
-        } else {
-            handleSessionTimeoutAbort();
+
+            return;
         }
+
+        // If the counter hasn't run out, and the type of modal is other than `default` abort the termination.
+        handleSessionTimeoutAbort();
     };
 
     /**
@@ -258,27 +286,64 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         <>
             { children }
             <SessionTimeoutModal
+                closeOnEscape={ false }
+                closeOnDimmerClick={ false }
                 open={ showSessionTimeoutModal }
                 onClose={ handleSessionTimeoutAbort }
                 onPrimaryActionClick={ handlePrimaryActionClick }
                 onSecondaryActionClick={ handleSessionLogout }
-                sessionTimeOut = { sessionTimedOut }
+                sessionTimeOut={ sessionTimedOut }
                 heading={
-                    <Trans
-                        i18nKey={ !sessionTimedOut?
-                            modalOptions?.headingI18nKey : modalOptions?.sessionTimedOutHeadingI18nKey }
-                        tOptions={
-                            { time: timerDisplay }
-                        }
-                    >
-                    </Trans>
+                    (type === SessionTimeoutModalTypes.DEFAULT)
+                        ? (
+                            <Trans
+                                i18nKey={ modalOptions?.headingI18nKey }
+                            >
+                                It looks like you have been inactive for a long time.
+                            </Trans>
+                        )
+                        : (
+                            <Trans
+                                i18nKey={
+                                    !sessionTimedOut
+                                        ? modalOptions?.headingI18nKey
+                                        : modalOptions?.sessionTimedOutHeadingI18nKey
+                                }
+                                tOptions={
+                                    { time: timerDisplay }
+                                }
+                            >
+                                You will be logged out in <strong>{ timerDisplay }</strong>.
+                            </Trans>
+                        )
                 }
-                description={ sessionTimedOut ? modalOptions?.sessionTimedOutDescription
-                    : modalOptions?.description }
-                primaryButtonText={ sessionTimedOut ? modalOptions?.loginAgainButtonText
-                    : modalOptions?.primaryButtonText }
-                secondaryButtonText={ modalOptions?.secondaryButtonText }
+                description={
+                    (type === SessionTimeoutModalTypes.DEFAULT)
+                        ? modalOptions?.description
+                        : sessionTimedOut
+                            ? modalOptions?.sessionTimedOutDescription
+                            : modalOptions?.description
+                }
+                primaryButtonText={
+                    (type === SessionTimeoutModalTypes.DEFAULT)
+                        ? modalOptions?.primaryButtonText
+                        : sessionTimedOut
+                            ? modalOptions?.loginAgainButtonText
+                            : modalOptions?.primaryButtonText
+                }
+                secondaryButtonText={
+                    (type === SessionTimeoutModalTypes.COUNTER)
+                        ? modalOptions?.secondaryButtonText
+                        : null
+                }
             />
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+SessionManagementProvider.defaultProps = {
+    type: SessionTimeoutModalTypes.DEFAULT
 };
