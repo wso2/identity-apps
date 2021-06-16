@@ -678,6 +678,11 @@ export const console: ConsoleNS = {
                         header: "Etes-vous sûr ?",
                         subHeader: "Vous essayez de supprimer l'attribut d'objet"
                     },
+                    removeApplicationUserAttributeMapping: {
+                        content : "Si vous confirmez cette action, vous devez sélectionner un nouvel attribut de sujet",
+                        header: "Etes-vous sûr ?",
+                        subHeader: "Vous essayez de supprimer l'attribut d'objet"
+                    },
                     revokeApplication: {
                         assertionHint: "Veuillez saisir <1> {{id}} </1> pour confirmer.",
                         content: "Cette action peut être annulée en activant l'application ultérieurement.",

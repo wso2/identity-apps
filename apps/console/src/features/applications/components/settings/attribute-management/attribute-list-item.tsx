@@ -111,6 +111,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
+        setErrorInClaimMapping(isEmpty(mappingValue));
         if (claimMappingError && !isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
         }
@@ -178,16 +179,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             disabled={ !mappingOn }
                             readOnly={ readOnly }
                             required
+                            error={ errorInClaimMapping }
                         />
-                        { errorInClaimMapping && (
-                            <Label
-                                basic color="red"
-                                pointing="left"
-                            >
-                                { t("console:develop.features.applications.edit.sections.attributes.selection" +
-                                    ".mappingTable.listItem.fields.claim.label") }
-                            </Label>
-                        ) }
                     </Table.Cell>
                 </>
             }
@@ -200,11 +193,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                     trigger={
                         (
                             <Checkbox
-                                checked={ mandatory || subject }
-                                defaultChecked={ initialMandatory }
+                                checked={ initialMandatory || mandatory || subject }
                                 onClick={ handleMandatoryCheckChange }
                                 disabled={ mappingOn ? !requested : false }
-                                readOnly={ readOnly }
+                                readOnly={ subject }
                             />
                         )
                     }

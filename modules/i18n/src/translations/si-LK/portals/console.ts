@@ -679,6 +679,11 @@ export const console: ConsoleNS = {
                         header: "ඔබට විශ්වාසද?",
                         subHeader: "ඔබ විෂය ගුණාංගය ඉවත් කිරීමට උත්සාහ කරයි"
                     },
+                    removeApplicationUserAttributeMapping: {
+                        content : "ඔබ මෙම ක්‍රියාව සනාථ කරන්නේ නම්, ඔබ නව විෂය ලක්ෂණයක් තෝරා ගත යුතුය",
+                        header: "ඔබට විශ්වාසද?",
+                        subHeader: "ඔබ විෂය ගුණාංගය ඉවත් කිරීමට උත්සාහ කරයි"
+                    },
                     revokeApplication: {
                         assertionHint: "තහවුරු කිරීමට කරුණාකර <1> {{id}} </1> ටයිප් කරන්න.",
                         content: "යෙදුම පසුව සක්‍රිය කිරීමෙන් මෙම ක්‍රියාව ආපසු හැරවිය හැකිය.",

@@ -37,6 +37,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
     technology: InboundProtocolListItemInterface[];
+    initialSubjectLocalMapping: any;
     /**
      * Make the form read only.
      */
@@ -67,6 +68,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         claimMappingOn,
         readOnly,
         technology,
+        initialSubjectLocalMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -75,10 +77,20 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
 
     useEffect(() => {
-        if(selectedSubjectValue) {
-            if(dropDownOptions && dropDownOptions.length > 0 &&
+        if (selectedSubjectValue) {
+            if (dropDownOptions && dropDownOptions.length > 0 &&
                 dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
-                setSelectedSubjectValue(defaultSubjectAttribute);
+                if (claimMappingOn) {
+                    const defaultSubjectClaimIndex =
+                        dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
+                    setSelectedSubjectValue(
+                        defaultSubjectClaimIndex > -1
+                            ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
+                            : dropDownOptions[ 0 ]?.value
+                    );
+                } else {
+                    setSelectedSubjectValue(defaultSubjectAttribute);
+                }
             }
         } else {
             setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
@@ -194,6 +206,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         (initialRole && initialSubject)
             ? (
                 <Form
+                    initialValues={
+                        { subjectAttribute: selectedSubjectValue }
+                    }
                     onSubmit={ (values, form) => {
                         submitValues(values);
                     } }
