@@ -585,67 +585,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
                 ));
 
-            // TODO: Need to update below values in the Google authenticator metadata API
-            // Set additional meta data if the authenticator is Google
-            if (authenticator.id === "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I") {
-                authenticator.meta.properties.map(prop => {
-                    if (prop.key === "ClientId") {
-                        prop.displayName = "Client ID";
-                        prop.description = "The client identifier value of the Google identity provider.";
-                        prop.maxLength = GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH;
-                    } else if (prop.key === "ClientSecret") {
-                        prop.displayName = "Client secret";
-                        prop.description = "The client secret value of the Google identity provider.";
-                        prop.maxLength = GOOGLE_CLIENT_ID_SECRET_MAX_LENGTH;
-                    } else if (prop.key === "callbackUrl") {
-                        prop.readOnly = true;
-                        prop.description = "The authorized redirect URL used to obtain Google credentials.";
-                        prop.displayName = "Authorized redirect URL";
-                    }
-                });
-
-                // Remove additional query params
-                removeElementFromProps(authenticator.data.properties, "AdditionalQueryParameters");
-                removeElementFromProps(authenticator.meta.properties, "AdditionalQueryParameters");
-
-                // Inject scopes
-                const scopesData = {
-                    key: "scopes",
-                    value: "openid email profile"
-                };
-                authenticator.data.properties.push(scopesData);
-                const scopesMeta: CommonPluggableComponentMetaPropertyInterface = {
-                    defaultValue: "",
-                    description: "The scopes sent to Google to retrieve email address and basic profile " +
-                        "information of the user.",
-                    displayName: "Scopes",
-                    displayOrder: 4,
-                    isConfidential: false,
-                    isMandatory: false,
-                    key: "scopes",
-                    options: [],
-                    properties: {
-                        email: {
-                            description: "Allows to view user's email address",
-                            icon: <Icon className={ "mr-0" } name="envelope outline" />
-                        },
-                        openid: {
-                            description: "Allows to authenticate using OpenID Connect",
-                            icon: <Icon className={ "mr-0" } name="openid" />
-                        },
-                        profile: {
-                            description: "Allows to view user's basic profile info",
-                            icon: <Icon className={ "mr-0" } name="user outline" />
-                        }
-                    },
-                    readOnly: true,
-                    regex: ".*",
-                    subProperties: [],
-                    type: "STRING"
-                };
-                authenticator.meta.properties.push(scopesMeta);
-            }
-
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
             if (authenticator.id === IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {

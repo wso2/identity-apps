@@ -105,6 +105,16 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
+     * Google Scope mappings.
+     * @type {Record<string, string>}
+     */
+    public static readonly GOOGLE_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
+
+    /**
      * GitHub Scope mappings.
      * @type {Record<string, string>}
      */

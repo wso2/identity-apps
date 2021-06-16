@@ -33,15 +33,15 @@ import {
 } from "../../../models";
 
 /**
- * Interface for Facebook Authenticator Form props.
+ * Interface for Google Authenticator Form props.
  */
-interface FacebookAuthenticatorFormPropsInterface extends TestableComponentInterface {
+interface GoogleAuthenticatorFormPropsInterface extends TestableComponentInterface {
     /**
-     * Facebook Authenticator metadata.
+     * Google Authenticator metadata.
      */
     metadata: CommonAuthenticatorFormMetaInterface;
     /**
-     * Facebook Authenticator configured initial values.
+     * Google Authenticator configured initial values.
      */
     initialValues: CommonAuthenticatorFormInitialValuesInterface;
     /**
@@ -71,21 +71,21 @@ interface FacebookAuthenticatorFormPropsInterface extends TestableComponentInter
 /**
  * Form initial values interface.
  */
-interface FacebookAuthenticatorFormInitialValuesInterface {
+interface GoogleAuthenticatorFormInitialValuesInterface {
     /**
-     * Facebook Authenticator client secret field value.
+     * Google Authenticator client secret field value.
+     */
+    AdditionalQueryParameters: string;
+    /**
+     * Google Authenticator client secret field value.
      */
     ClientSecret: string;
     /**
-     * Facebook Authenticator callback URL field value.
+     * Google Authenticator callback URL field value.
      */
-    callBackUrl: string;
+    callbackUrl: string;
     /**
-     * Facebook Authenticator scopes field value.
-     */
-    Scope: string;
-    /**
-     * Facebook Authenticator client id field value.
+     * Google Authenticator client id field value.
      */
     ClientId: string;
 }
@@ -93,25 +93,21 @@ interface FacebookAuthenticatorFormInitialValuesInterface {
 /**
  * Form fields interface.
  */
-interface FacebookAuthenticatorFormFieldsInterface {
+interface GoogleAuthenticatorFormFieldsInterface {
     /**
-     * Facebook Authenticator client secret field.
+     * Google Authenticator client secret field value.
+     */
+    AdditionalQueryParameters: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Google Authenticator client secret field.
      */
     ClientSecret: CommonAuthenticatorFormFieldInterface;
     /**
-     * Facebook Authenticator callback URL field.
+     * Google Authenticator callback URL field.
      */
-    callBackUrl: CommonAuthenticatorFormFieldInterface;
+    callbackUrl: CommonAuthenticatorFormFieldInterface;
     /**
-     * Facebook Authenticator scopes field.
-     */
-    Scope: CommonAuthenticatorFormFieldInterface;
-    /**
-     * Facebook User Info field.
-     */
-    UserInfoFields: CommonAuthenticatorFormFieldInterface;
-    /**
-     * Facebook Authenticator client id field value.
+     * Google Authenticator client id field value.
      */
     ClientId: CommonAuthenticatorFormFieldInterface;
 }
@@ -135,14 +131,14 @@ interface ScopeMetaInterface {
 }
 
 /**
- * Facebook Authenticator Form.
+ * Google Authenticator Form.
  *
- * @param {FacebookAuthenticatorFormPropsInterface} props - Props injected to the component.
+ * @param {GoogleAuthenticatorFormPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorFormPropsInterface> = (
-    props: FacebookAuthenticatorFormPropsInterface
+export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormPropsInterface> = (
+    props: GoogleAuthenticatorFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -155,8 +151,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
     const { t } = useTranslation();
 
-    const [ formFields, setFormFields ] = useState<FacebookAuthenticatorFormFieldsInterface>(undefined);
-    const [ initialValues, setInitialValues ] = useState<FacebookAuthenticatorFormInitialValuesInterface>(undefined);
+    const [ formFields, setFormFields ] = useState<GoogleAuthenticatorFormFieldsInterface>(undefined);
+    const [ initialValues, setInitialValues ] = useState<GoogleAuthenticatorFormInitialValuesInterface>(undefined);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -167,8 +163,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             return;
         }
 
-        let resolvedFormFields: FacebookAuthenticatorFormFieldsInterface = null;
-        let resolvedInitialValues: FacebookAuthenticatorFormInitialValuesInterface = null;
+        let resolvedFormFields: GoogleAuthenticatorFormFieldsInterface = null;
+        let resolvedInitialValues: GoogleAuthenticatorFormInitialValuesInterface = null;
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
@@ -199,7 +195,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
      *
      * @return {CommonAuthenticatorFormInitialValuesInterface} Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: FacebookAuthenticatorFormInitialValuesInterface)
+    const getUpdatedConfigurations = (values: GoogleAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
         const properties = [];
@@ -228,26 +224,39 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.facebook.scopes.list.email.description"),
+                    ".authenticatorSettings.google.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL }
+                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE) {
+        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("console:develop.features.authenticationProvider.forms" +
-                    ".authenticatorSettings.facebook.scopes.list.profile.description"),
+                    ".authenticatorSettings.google.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE }
+                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.OPENID }
+                    </Code>
+                ),
+                icon: "openid"
+            };
+        }
+
+        if (scope === IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE) {
+            return {
+                description: t("console:develop.features.authenticationProvider.forms" +
+                    ".authenticatorSettings.google.scopes.list.profile.description"),
+                displayName: (
+                    <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
+                        { IdentityProviderManagementConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE }
                     </Code>
                 ),
                 icon: "user outline"
@@ -261,26 +270,51 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
         };
     };
 
+    /**
+     * Extracts scopes as an array.
+     * 
+     * Input - "scope=openid email profile"
+     * Output - [ "openid", "email", "profile" ]
+     * 
+     * @param {string} rawScopes - Raw String.
+     *
+     * @return {string[]}
+     */
+    const extractScopes = (rawScopes: string): string[] => {
+
+        let scopes: string[] = [];
+
+        try {
+            scopes = rawScopes.split("scope=")[1].split(" ");
+        } catch(e) {
+            // Silent any issues occurred when trying to scroll.
+            // Add debug logs here one a logger is added.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        return scopes;
+    };
+
     return (
         <Form
             onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values)) }
             initialValues={ initialValues }
         >
             <Field.Input
-                ariaLabel="Facebook authenticator client ID"
+                ariaLabel="Google authenticator client ID"
                 inputType="default"
                 name="ClientId"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientId.label")
+                        ".google.clientId.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientId.placeholder")
+                        ".google.clientId.placeholder")
                 }
                 hint={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientId.hint")
+                        ".google.clientId.hint")
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={ formFields?.ClientId?.meta?.readOnly }
@@ -294,26 +328,26 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 data-testid={ `${ testId }-client-id` }
             />
             <Field.Input
-                ariaLabel="Facebook authenticator client secret"
+                ariaLabel="Google authenticator client secret"
                 inputType="password"
                 type="password"
                 name="ClientSecret"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientSecret.label")
+                        ".google.clientSecret.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.clientSecret.placeholder")
+                        ".google.clientSecret.placeholder")
                 }
                 hint={
                     <Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".facebook.clientSecret.hint"
+                            ".google.clientSecret.hint"
                         }
                     >
-                        The <Code>App secret</Code> value of the Facebook application.
+                        The <Code>App secret</Code> value of the Google application.
                     </Trans>
                 }
                 required={ formFields?.ClientSecret?.meta?.isMandatory }
@@ -328,25 +362,25 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 data-testid={ `${ testId }-client-secret` }
             />
             <Field.Input
-                ariaLabel="Facebook authenticator authorized redirect URL"
+                ariaLabel="Google authenticator authorized redirect URL"
                 inputType="copy_input"
-                name="callBackUrl"
+                name="callbackUrl"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.callbackUrl.label")
+                        ".google.callbackUrl.label")
                 }
                 placeholder={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.callbackUrl.placeholder")
+                        ".google.callbackUrl.placeholder")
                 }
                 hint={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".facebook.callbackUrl.hint")
+                        ".google.callbackUrl.hint")
                 }
-                required={ formFields?.callBackUrl?.meta?.isMandatory }
-                value={ formFields?.callBackUrl?.value }
-                readOnly={ formFields?.callBackUrl?.meta?.readOnly }
-                maxLength={ formFields?.callBackUrl?.meta?.maxLength }
+                required={ formFields?.callbackUrl?.meta?.isMandatory }
+                value={ formFields?.callbackUrl?.value }
+                readOnly={ formFields?.callbackUrl?.meta?.readOnly }
+                maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
@@ -355,20 +389,17 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
             {
-                formFields?.Scope?.value
-                && formFields.Scope.value.split
-                && formFields.Scope.value.split(",").length > 0
-                && (
+                (formFields?.AdditionalQueryParameters?.value
+                    && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
                     <FormSection
                         heading={
                             t("console:develop.features.authenticationProvider.forms" +
-                                ".authenticatorSettings.facebook.scopes.heading")
+                                ".authenticatorSettings.google.scopes.heading")
                         }
                     >
                         <div className="authenticator-dynamic-properties">
                             {
-                                formFields.Scope.value
-                                    .split(",")
+                                extractScopes(formFields.AdditionalQueryParameters.value)
                                     .map((scope: string, index: number) => {
 
                                         const scopeMeta: ScopeMetaInterface = resolveScopeMetadata(scope);
@@ -409,12 +440,15 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.forms" +
-                                    ".authenticatorSettings.facebook.scopes.hint"
+                                    ".authenticatorSettings.google.scopes.hint"
                                 }
                             >
-                                Permissions provide a way for connected apps to access data from Facebook.
+                                Scopes provide a way for connected apps to access data from Google.
                                 Click <a
-                                href="https://developers.facebook.com/docs/permissions/reference"
+                                href={
+                                    "https://developers.google.com/identity/protocols/oauth2/" +
+                                    "openid-connect#scope-param"
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >here</a> to learn more.
@@ -426,7 +460,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
             <Field.Button
                 size="small"
                 buttonType="primary_btn"
-                ariaLabel="Facebook authenticator update button"
+                ariaLabel="Google authenticator update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
                 disabled={ false }
@@ -440,7 +474,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 /**
  * Default props for the component.
  */
-FacebookAuthenticatorForm.defaultProps = {
-    "data-testid": "facebook-authenticator-form",
+GoogleAuthenticatorForm.defaultProps = {
+    "data-testid": "google-authenticator-form",
     enableSubmitButton: true
 };
