@@ -321,7 +321,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const updateMappings = (addedClaims: Claim[], removedClaims: Claim[]) => {
         if (selectedDialect.localDialect) {
             const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
-            addedClaims.map((claim) => {
+            addedClaims.map((claim: Claim) => {
                 const newClaimMapping: ExtendedClaimMappingInterface = {
                     addMapping: false,
                     applicationClaim: "",
@@ -331,14 +331,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         uri: claim.claimURI
                     }
                 };
-                if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
+                if (!(claimMappingList.some((claimMap: ExtendedClaimMappingInterface) => claimMap.localClaim.uri === claim.claimURI))) {
                     claimMappingList.push(newClaimMapping);
                 }
             });
 
-            removedClaims.map((claim) => {
+            removedClaims.map((claim: Claim) => {
                 let mappedClaim : ExtendedClaimMappingInterface;
-                claimMappingList.map((mapping) => {
+                claimMappingList.map((mapping: ExtendedClaimMappingInterface) => {
                     if (mapping.localClaim.uri === claim.claimURI) {
                         mappedClaim = mapping;
                     }
@@ -354,7 +354,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const removeMapping = (claimURI: string) => {
         const claimMappingList = [...claimMapping];
         let mappedClaim : ExtendedClaimMappingInterface;
-        claimMappingList.map((mapping) => {
+        claimMappingList.map((mapping: ExtendedClaimMappingInterface) => {
             if (mapping.localClaim.uri === claimURI) {
                 mappedClaim = mapping;
             }

@@ -87,20 +87,32 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 } else {
                     const initialSubjectClaimIndex =
                         dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
-                    setSelectedSubjectValue(
-                        initialSubjectClaimIndex > -1
-                            ? dropDownOptions[ initialSubjectClaimIndex ]?.value
-                            : defaultSubjectAttribute
-                    );
+                    if (initialSubjectClaimIndex > -1) {
+                        setSelectedSubjectValue(dropDownOptions[ initialSubjectClaimIndex ]?.value);
+                    } else {
+                        const defaultSubjectClaimIndex =
+                            dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
+                        setSelectedSubjectValue(
+                            defaultSubjectClaimIndex > -1
+                                ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
+                                : dropDownOptions[ 0 ]?.value
+                        );
+                    }
                 }
             } else {
                 const initialSubjectClaimIndex =
                     dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
-                setSelectedSubjectValue(
-                    initialSubjectClaimIndex > -1
-                        ? dropDownOptions[ initialSubjectClaimIndex ]?.value
-                        : defaultSubjectAttribute
-                );
+                if (initialSubjectClaimIndex > -1) {
+                    setSelectedSubjectValue(dropDownOptions[ initialSubjectClaimIndex ]?.value);
+                } else {
+                    const defaultSubjectClaimIndex =
+                        dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
+                    setSelectedSubjectValue(
+                        defaultSubjectClaimIndex > -1
+                            ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
+                            : dropDownOptions[ 0 ]?.value
+                    );
+                }
             }
         }
         else if (selectedSubjectValue) {

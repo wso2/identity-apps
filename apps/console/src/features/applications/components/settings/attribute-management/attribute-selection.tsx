@@ -500,7 +500,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         if (claimMappingOn) {
             const claimMappingValue = getCurrentMapping(localClaimURI);
             // The mapping might not exist if it is deleted from the list.
-            return claimMappingValue !== undefined ? claimMappingValue.applicationClaim : null;
+            return claimMappingValue !== undefined ? claimMappingValue.applicationClaim : localClaimURI;
         }
         return localClaimURI;
     };
@@ -542,22 +542,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
-                    {
-                        claimMappingOn
-                            ? (
-                                t("console:develop.features.applications.confirmations." +
-                                    "removeApplicationUserAttributeMapping.content")
-                            )
-                            : (
-                                <Trans
-                                    i18nKey={ "console:develop.features.applications.confirmations." +
-                                    "removeApplicationUserAttribute.content" }
-                                >
-                                    If you remove this, the subject attribute will be set to
-                                    the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
-                                </Trans>
-                            )
-                    }
+                    <Trans
+                        i18nKey={ "console:develop.features.applications.confirmations." +
+                            "removeApplicationUserAttribute.content" }
+                    >
+                        If you remove this, the subject attribute will be set to
+                        the <strong>{ { default: defaultSubjectClaim?.displayName } }</strong>
+                    </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
