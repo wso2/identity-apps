@@ -312,10 +312,16 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientId.placeholder")
                 }
-                hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".google.clientId.hint")
-                }
+                hint={ (
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".google.clientId.hint"
+                        }
+                    >
+                        The <Code>Client ID</Code> you received from Google for your OAuth app.
+                    </Trans>
+                ) }
                 required={ formFields?.ClientId?.meta?.isMandatory }
                 readOnly={ formFields?.ClientId?.meta?.readOnly }
                 value={ formFields?.ClientId?.value }
