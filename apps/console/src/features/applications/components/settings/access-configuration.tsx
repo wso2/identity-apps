@@ -268,7 +268,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
      */
     const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
-        let updateError = false;
+        let updateError: boolean = false;
         updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({

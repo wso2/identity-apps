@@ -126,7 +126,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                 return (
                     <InboundSAMLCreationForm
                         initialValues={ initialValues }
-                        creationOption={ SAMLCreationOption ? SAMLCreationOption: SAMLConfigModes.META_URL  }
+                        creationOption={ SAMLCreationOption ? SAMLCreationOption : SAMLConfigModes.META_URL  }
                         onSubmit={ onSubmit }
                         data-testid={ testId }
                     />
