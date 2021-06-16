@@ -879,9 +879,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             <Message color="teal">
                                                 <Hint>
                                                     <Trans>
-                                                        This account is managed by Asgardeo. Therefore, this user
-                                                        can only update their profile via
-                                                        <strong> My Account</strong>.
+                                                        This user profile belongs to a collaborator or an organization
+                                                        owner. Only the account owner can manage the profile via the
+                                                        My Account app.
                                                     </Trans>
                                                 </Hint>
                                             </Message>
