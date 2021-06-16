@@ -58,7 +58,11 @@ export const TextFieldAdapter = (props): ReactElement => {
                 : (childFieldProps?.value ? childFieldProps?.value
                     : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            error={
+                (meta.error && meta.touched)
+                    ? meta.error
+                    : null
+            }
         />
     );
 };
@@ -81,7 +85,11 @@ export const PasswordFieldAdapter = (props): ReactElement => {
             } }
             onChange={ (event, data) => input.onChange(data?.value) }
             onBlur={ (event) => input.onBlur(event) }
-            error={ meta?.touched && meta?.error !== "" ? meta?.error : null }
+            error={
+                (meta.error && meta.touched)
+                    ? meta.error
+                    : null
+            }
             autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
             value={ meta.modified ? input.value
@@ -156,7 +164,11 @@ export const TextAreaAdapter = (props): ReactElement => {
             { ...omit(childFieldProps, [ "value", "listen" ]) }
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value
                 : (parentFormProps?.values[ childFieldProps?.name ] ? parentFormProps?.values[ childFieldProps?.name ] : "")) }
-            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            error={
+                (meta.error && meta.touched)
+                    ? meta.error
+                    : null
+            }
         />
     );
 };
@@ -212,7 +224,11 @@ export const SelectAdapter = (props): ReactElement => {
             } }
             control={ Select }
             { ...omit(childFieldProps, [ "value", "children" ]) }
-            error={ meta?.modified && meta?.error !== "" ? meta?.error : null }
+            error={
+                (meta.error && meta.touched)
+                    ? meta.error
+                    : null
+            }
             value={ meta.modified ? input.value : (childFieldProps?.value ? childFieldProps?.value : "") }
         />
     );
