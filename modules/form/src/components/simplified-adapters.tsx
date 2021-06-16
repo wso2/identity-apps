@@ -20,8 +20,8 @@ import React, { FC, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
 import {
     Checkbox,
-    CheckboxProps,
     DropdownProps,
+    Form as SemanticUIForm,
     FormCheckboxProps,
     FormInputProps,
     FormRadioProps,
@@ -30,8 +30,7 @@ import {
     InputOnChangeData,
     Radio,
     RadioProps,
-    Select,
-    Form as SemanticUIForm
+    Select
 } from "semantic-ui-react";
 
 type TextFieldAdapterProps = FieldRenderProps<string, HTMLInputElement> & FormInputProps;
@@ -39,16 +38,19 @@ export const STextFieldAdapter = (props: TextFieldAdapterProps): ReactElement =>
     const { input, meta, ...rest } = props;
     return (
         <SemanticUIForm.Input
-            { ...input }
             { ...rest }
+            { ...input }
+            type="text"
             control={ Input }
-            error={ ((meta?.touched || meta.modified) && !!meta?.error) ? meta.error : undefined }
-            onChange={
-                (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => input.onChange(value)
+            onChange={ (
+                event: React.ChangeEvent<HTMLInputElement>,
+                { value }: InputOnChangeData) => input.onChange(value)
             }
             onKeyPress={ (event: React.KeyboardEvent, data) => {
                 event.key === "Enter" && input.onBlur(data?.name);
             } }
+            onBlur={ (event) => input.onBlur(event) }
+            error={ ((meta?.touched || meta.modified) && !!meta?.error) ? meta.error : undefined }
         />
     );
 };
@@ -58,8 +60,8 @@ export const SSelectFieldAdapter: FC<SelectFieldAdapterProps> = (props: SelectFi
     const { input, meta, ...rest } = props;
     return (
         <SemanticUIForm.Select
-            { ...input }
             { ...rest }
+            { ...input }
             control={ Select }
             onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
                 input.onChange(value);
@@ -74,16 +76,17 @@ export const SSelectFieldAdapter: FC<SelectFieldAdapterProps> = (props: SelectFi
 
 type CheckboxAdapterProps = FieldRenderProps<string, HTMLInputElement> & FormCheckboxProps;
 export const SCheckboxAdapter: FC<CheckboxAdapterProps> = (props: CheckboxAdapterProps): ReactElement => {
-    const { input, meta, ...rest } = props;
+    const { input, checked, meta, ...rest } = props;
     return (
         <SemanticUIForm.Checkbox
-            { ...input }
             { ...rest }
+            { ...input }
+            control={ Checkbox }
             type="checkbox"
-            onChange={ (event: React.ChangeEvent<HTMLInputElement>, { checked }: CheckboxProps) => {
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>, { checked }) => {
                 input.onChange(checked);
             } }
-            control={ Checkbox }
+            checked={ !!(input.value) || input.checked }
             error={ ((meta?.touched || meta.modified) && !!meta?.error) ? meta.error : undefined }
         />
     );
@@ -94,13 +97,14 @@ export const SRadioButtonAdapter = (props: RadioButtonAdapterProps): ReactElemen
     const { input, meta, ...rest } = props;
     return (
         <SemanticUIForm.Radio
-            { ...input }
             { ...rest }
+            { ...input }
+            control={ Radio }
             type="radio"
             onChange={ (event: React.ChangeEvent<HTMLInputElement>, { checked }: RadioProps) => {
                 input.onChange(checked);
             } }
-            control={ Radio }
+            checked={ !!(input.value) || input.checked }
             error={ ((meta?.touched || meta.modified) && !!meta?.error) ? meta.error : undefined }
         />
     );

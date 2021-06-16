@@ -31,10 +31,9 @@ import {
     SelectionCard,
     Steps,
     Switcher,
-    useWizardAlert,
-    XMLFileStrategy
+    XMLFileStrategy,
+    useWizardAlert
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 
@@ -52,9 +51,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
+import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -62,6 +61,17 @@ import {
     StrictIdentityProviderInterface
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
+import {
+    IDENTITY_PROVIDER_ENTITY_ID_LENGTH,
+    IDENTITY_PROVIDER_NAME_LENGTH,
+    SERVICE_PROVIDER_ENTITY_ID_LENGTH,
+    SSO_URL_LENGTH,
+    composeValidators,
+    hasLength,
+    ifFieldsHave,
+    isUrl,
+    required
+} from "../utils/saml-idp-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -157,7 +167,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, [ initWizard ]);
 
     useEffect(() => {
-        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem")
+        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
     }, [ selectedProtocol ]);
 
     const initialValues = useMemo(() => ({
@@ -191,18 +201,21 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const getAvailableNameIDFormats = () => {
 
         const schemes = [
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
             "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted",
             "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName",
             "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos",
-            "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+            "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos"
         ];
 
         return schemes.map((scheme: string, index: number) => ({
-            key: index, text: scheme, value: scheme
+            key: index,
+            text: scheme,
+            value: scheme
         }));
 
     };
@@ -212,7 +225,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             { key: 1, text: "HTTP Redirect", value: "redirect" },
             { key: 2, text: "HTTP Post", value: "post" },
             { key: 3, text: "As Per Request", value: "as_request" }
-        ]
+        ];
     };
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
@@ -247,7 +260,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * template first we need to find the correct sub template and deep
          * clone that object to avoid mutation on file level configuration.
          */
-        const {idp: identityProvider} = cloneDeep(template.subTemplates.find(({id}) => {
+        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
             return id === (selectedProtocol === "saml" ?
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
@@ -360,7 +373,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const wizardCommonFirstPage = () => (
         <WizardPage validate={ (values: any) => {
             const errors: FormErrors = {};
-            errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
+            errors.name = composeValidators(
+                required,
+                hasLength(IDENTITY_PROVIDER_NAME_LENGTH)
+            )(values.name);
             if (isIdpNameAlreadyTaken(values.name)) {
                 errors.name = t("console:develop.features.authenticationProvider." +
                     "forms.generalDetails.name.validations.duplicate");
@@ -376,8 +392,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 placeholder="Enter a name for the identity provider"
                 label="Identity provider name"
                 initialValue={ initialValues.name }
-                maxLength={ IDP_NAME_LENGTH.max }
-                minLength={ IDP_NAME_LENGTH.min }
+                maxLength={ IDENTITY_PROVIDER_NAME_LENGTH.max }
+                minLength={ IDENTITY_PROVIDER_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
             />
@@ -426,13 +442,19 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const samlConfigurationPage = () => (
         <WizardPage validate={ (values) => {
             const errors: FormErrors = {};
-            errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
+            errors.SPEntityId = composeValidators(
+                required,
+                hasLength(SERVICE_PROVIDER_ENTITY_ID_LENGTH)
+            )(values.SPEntityId);
             if (selectedSamlConfigMode === "file") {
                 setNextShouldBeDisabled(ifFieldsHave(errors) || !xmlBase64String);
             } else {
                 errors.NameIDType = composeValidators(required)(values.NameIDType);
-                errors.SSOUrl = composeValidators(required, length(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
-                errors.IdPEntityId = composeValidators(required, length(IDP_EID_LENGTH))(values.IdPEntityId);
+                errors.SSOUrl = composeValidators(required, hasLength(SSO_URL_LENGTH), isUrl)(values.SSOUrl);
+                errors.IdPEntityId = composeValidators(
+                    required,
+                    hasLength(IDENTITY_PROVIDER_ENTITY_ID_LENGTH)
+                )(values.IdPEntityId);
                 errors.RequestMethod = composeValidators(required)(values.RequestMethod);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
             }
@@ -444,8 +466,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 name="SPEntityId"
                 label="Service provider entity ID"
                 required={ true }
-                maxLength={ SP_EID_LENGTH.max }
-                minLength={ SP_EID_LENGTH.min }
+                maxLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.max }
+                minLength={ SERVICE_PROVIDER_ENTITY_ID_LENGTH.min }
                 width={ 15 }
                 placeholder="Enter a Service Provider Entity ID"
                 data-testid={ `${ testId }-form-wizard-saml-entity-id` }
@@ -462,10 +484,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
                                 value: "manual",
-                                label: "Manual Configuration",
+                                label: "Manual Configuration"
                             }, {
                                 value: "file",
-                                label: "File Based Configuration",
+                                label: "File Based Configuration"
                             } ] }
                         />
                     </Grid.Column>
@@ -503,8 +525,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             name="IdPEntityId"
                             label="Identity provider entity ID"
                             required={ true }
-                            maxLength={ IDP_EID_LENGTH.max }
-                            minLength={ IDP_EID_LENGTH.min }
+                            maxLength={ IDENTITY_PROVIDER_ENTITY_ID_LENGTH.max }
+                            minLength={ IDENTITY_PROVIDER_ENTITY_ID_LENGTH.min }
                             width={ 15 }
                             placeholder={ "Enter SAML 2.0 entity id (saml issuer)" }
                             data-testid={ `${ testId }-form-wizard-saml-idp-entity-id` }
@@ -551,21 +573,21 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 const errors: FormErrors = {};
                 errors.clientId = composeValidators(
                     required,
-                    length(OIDC_CLIENT_ID_MAX_LENGTH)
+                    hasLength(OIDC_CLIENT_ID_MAX_LENGTH)
                 )(values.clientId);
                 errors.clientSecret = composeValidators(
                     required,
-                    length(OIDC_CLIENT_SECRET_MAX_LENGTH)
+                    hasLength(OIDC_CLIENT_SECRET_MAX_LENGTH)
                 )(values.clientSecret);
                 errors.authorizationEndpointUrl = composeValidators(
                     required,
                     isUrl,
-                    length(OIDC_URL_MAX_LENGTH)
+                    hasLength(OIDC_URL_MAX_LENGTH)
                 )(values.authorizationEndpointUrl);
                 errors.tokenEndpointUrl = composeValidators(
                     required,
                     isUrl,
-                    length(OIDC_URL_MAX_LENGTH)
+                    hasLength(OIDC_URL_MAX_LENGTH)
                 )(values.tokenEndpointUrl);
                 setNextShouldBeDisabled(ifFieldsHave(errors));
                 return errors;
@@ -631,7 +653,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
                 if (values.jwks_endpoint?.length > 0) {
                     errors.jwks_endpoint = composeValidators(
-                        length(JWKS_URL_LENGTH),
+                        hasLength(JWKS_URL_LENGTH),
                         isUrl
                     )(values.jwks_endpoint);
                 }
@@ -651,11 +673,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 selectedValue={ selectedCertInputType }
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
-                                    value: "jwks",
                                     label: "JWKS endpoint",
+                                    value: "jwks"
                                 }, {
-                                    value: "pem",
                                     label: "Use PEM certificate",
+                                    value: "pem"
                                 } ] }
                             />
                         ) }
@@ -750,7 +772,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({id}) => {
+        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
             return id === (selectedProtocol === "saml" ?
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
@@ -761,7 +783,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             return null;
         }
 
-        const {wizardHelp: WizardHelp} = subTemplate?.content;
+        const { wizardHelp: WizardHelp } = subTemplate?.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
@@ -780,7 +802,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             </ModalWithSidePanel.SidePanel>
         );
 
-    }
+    };
 
     // Start: Modal
 
@@ -858,7 +880,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                {/*Check whether we have more steps*/ }
+                                { /*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled }
@@ -870,7 +892,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
-                                {/*Check whether its the last step*/ }
+                                { /*Check whether its the last step*/ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     // Note that we use the same logic as the next button
                                     // element. This is because we pass a callback to
@@ -882,7 +904,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         wizardRef.current.gotoNextPage();
                                     } }
                                         data-testid={ `${ testId }-modal-finish-button` }>
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }
                                 { currentWizardStep > 0 && (
@@ -891,7 +914,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         floated="right" onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".wizards.buttons.previous") }
                                     </LinkButton>
                                 ) }
                             </Grid.Column>
@@ -903,7 +927,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         </ModalWithSidePanel>
     );
 
-}
+};
 
 /**
  * Default props for the enterprise identity provider
@@ -918,63 +942,9 @@ EnterpriseIDPCreateWizard.defaultProps = {
 const OIDC_CLIENT_ID_MAX_LENGTH: MinMax = { max: 100, min: 1 };
 const OIDC_CLIENT_SECRET_MAX_LENGTH: MinMax = { max: 100, min: 1 };
 const OIDC_URL_MAX_LENGTH: MinMax = { max: 2048, min: 10 };
-
-// SAML form constants.
-const IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
-const SP_EID_LENGTH: MinMax = { max: 240, min: 3 };
-const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
-const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
 const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
 
 // General constants
 const EMPTY_STRING = "";
 const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
 const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
-
-// Validation Functions.
-// FIXME: These will be removed in the future when
-//        form module validation gets to a stable state.
-
-const composeValidators = (...validators) => (value) => {
-    return validators.reduce(
-        (error, validator) => error || validator(value),
-        undefined
-    );
-};
-
-/**
- * Given a {@link FormErrors} object, it will check whether
- * every key has a assigned truthy value. {@link Array.every}
- * will return {@code true} if one of the object member has
- * a truthy value. In other words, it will check a field has
- * a error message attached to it or not.
- *
- * @param errors {FormErrors}
- */
-const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[ k ]);
-};
-
-const required = (value: any) => {
-    if (!value) {
-        return `This is a required field`;
-    }
-    return undefined;
-};
-
-const length = (minMax: MinMax) => (value) => {
-    if (!value && minMax.min > 0) {
-        return `You cannot leave this blank`;
-    }
-    if (value?.length > minMax.max) {
-        return `Cannot exceed more than ${ minMax.max } characters.`;
-    }
-    if (value?.length < minMax.min) {
-        return `Should have at least ${ minMax.min } characters.`;
-    }
-    return undefined;
-};
-
-const isUrl = (value) => {
-    return FormValidation.url(value) ? undefined : "This value is invalid."
-};

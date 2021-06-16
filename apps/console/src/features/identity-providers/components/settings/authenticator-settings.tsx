@@ -772,6 +772,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             return (
                 <AuthenticatorFormFactory
+                    authenticator={ authenticator }
                     metadata={ authenticator.meta }
                     showCustomProperties={
                         authenticator.id !== IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID
