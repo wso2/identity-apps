@@ -285,7 +285,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 disabled={ !isFactorEnabled(authenticator) }
                                 selected={
-                                    Array.isArray(selectedAuthenticators)
+                                    isFactorEnabled(authenticator) && Array.isArray(selectedAuthenticators)
                                     && selectedAuthenticators.some((evalAuthenticator) => {
                                         return evalAuthenticator.id === authenticator.id;
                                     })
@@ -294,7 +294,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 description={ authenticator.description }
                                 image={ authenticator.image }
                                 tags={ showLabels && resolveAuthenticatorLabels((authenticator?.defaultAuthenticator)) }
-                                onClick={ () => handleAuthenticatorSelect(authenticator) }
+                                onClick={ () => {
+                                    isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
+                                } }
                                 data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
                             />
                         ) }

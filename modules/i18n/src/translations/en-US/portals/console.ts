@@ -2178,7 +2178,7 @@ export const console: ConsoleNS = {
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators require having a basic or identifier-first" +
+                            description: "Second factor authenticators require having a basic or identifier-first " +
                                 "authenticator in a prior step.",
                             message: "Step cannot be deleted"
                         }
