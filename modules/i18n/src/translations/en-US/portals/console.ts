@@ -2956,7 +2956,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             clientId: {
-                                hint: "The <1>Client ID</> you received from Google for your OAuth app.",
+                                hint: "The <1>Client ID</1> you received from Google for your OAuth app.",
                                 label: "Client ID",
                                 placeholder: "Enter Client ID from Google application.",
                                 validations: {

@@ -19,3 +19,4 @@
 export * from "./common-authenticator-form";
 export * from "./facebook-authenticator-form";
 export * from "./github-authenticator-form";
+export * from "./google-authenticator-form";
