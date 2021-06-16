@@ -37,6 +37,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
     technology: InboundProtocolListItemInterface[];
+    initialSubjectLocalMapping: any;
     /**
      * Make the form read only.
      */
@@ -67,22 +68,45 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         claimMappingOn,
         readOnly,
         technology,
+        initialSubjectLocalMapping,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>(initialSubject?.claim?.uri);
+    const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
+        useState<string>(selectedSubjectValue);
 
     useEffect(() => {
-        if(selectedSubjectValue) {
+        if (claimMappingOn) {
+            if (selectedSubjectValueLocalClaim) {
+                const index = dropDownOptions.findIndex(option => option?.key === selectedSubjectValueLocalClaim);
+                if (index > -1) {
+                    setSelectedSubjectValue(dropDownOptions[ index ]?.value);
+                } else {
+                    const initialSubjectClaimIndex =
+                        dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
+                    setSelectedSubjectValue(
+                        initialSubjectClaimIndex > -1
+                            ? dropDownOptions[ initialSubjectClaimIndex ]?.value
+                            : defaultSubjectAttribute
+                    );
+                }
+            } else {
+                const initialSubjectClaimIndex =
+                    dropDownOptions.findIndex(option => option?.key === initialSubjectLocalMapping);
+                setSelectedSubjectValue(
+                    initialSubjectClaimIndex > -1
+                        ? dropDownOptions[ initialSubjectClaimIndex ]?.value
+                        : defaultSubjectAttribute
+                );
+            }
+        }
+        else if (selectedSubjectValue) {
             if(dropDownOptions && dropDownOptions.length > 0 &&
                 dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
-                if (claimMappingOn) {
-                    setSelectedSubjectValue(dropDownOptions[ 0 ]?.value);
-                } else {
-                    setSelectedSubjectValue(defaultSubjectAttribute);
-                }
+                setSelectedSubjectValue(defaultSubjectAttribute);
             }
         } else {
             setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
@@ -92,6 +116,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     useEffect(() => {
         if(selectedSubjectValue) {
             setSelectedValue(selectedSubjectValue);
+        }
+    }, [ selectedSubjectValue ]);
+
+    useEffect(() => {
+        if (claimMappingOn && selectedSubjectValue && dropDownOptions) {
+            const subjectValueLocalMapping =
+                dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+            setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
         }
     }, [ selectedSubjectValue ]);
 

@@ -70,6 +70,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
     updateMappings: any;
+    setInitialSubjectLocalMapping: any;
     /**
      * Make the form read only.
      */
@@ -112,6 +113,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingError,
         readOnly,
         updateMappings,
+        setInitialSubjectLocalMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -330,6 +332,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         }
                     };
                     initialClaimMappingList.push(claimMapping);
+                    if (claim.applicationClaim === claimConfigurations.subject?.claim?.uri) {
+                        setInitialSubjectLocalMapping(claim.localClaim.uri);
+                    }
                 });
                 setClaimMapping(initialClaimMappingList);
             } else {
@@ -385,9 +390,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      */
     const isSubjectClaimSetToDefaultWithoutMapping = (): boolean => {
 
-        return claimConfigurations.subject.claim.uri === defaultSubjectAttribute &&
-            claimConfigurations.requestedClaims.findIndex(requestedClaim =>
-                requestedClaim.claim.uri === defaultSubjectAttribute) < 0;
+        return claimConfigurations?.subject?.claim?.uri === defaultSubjectAttribute &&
+            claimConfigurations.requestedClaims?.findIndex(requestedClaim =>
+                requestedClaim?.claim?.uri === defaultSubjectAttribute) < 0;
 
     };
 

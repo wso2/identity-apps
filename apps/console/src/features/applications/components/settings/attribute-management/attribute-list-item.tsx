@@ -111,6 +111,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
         setMappedAttribute(mappingValue);
         updateMapping(claimURI, mappingValue);
+        setErrorInClaimMapping(isEmpty(mappingValue));
         if (claimMappingError && !isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
         }
