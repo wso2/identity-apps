@@ -27,4 +27,4 @@ export * from "./form";
 export * from "./wizard";
 export * from "./wizard2";
 export * from "./wizardPage";
-
+export * from "./simplified-adapters";
