@@ -29,6 +29,10 @@ h6.ui.header .sub.header {
   font-size: @h6SubHeaderFontSize;
 }
 
+h5.ui.header {
+  font-weight: 500;
+}
+
 .ui.header {
     &.page-header {
         .sub-header {
