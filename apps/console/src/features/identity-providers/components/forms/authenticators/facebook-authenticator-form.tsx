@@ -108,7 +108,7 @@ interface FacebookAuthenticatorFormFieldsInterface {
     /**
      * Facebook Authenticator scopes field.
      */
-    scope: CommonAuthenticatorFormFieldInterface;
+    Scope: CommonAuthenticatorFormFieldInterface;
     /**
      * Facebook User Info field.
      */
@@ -372,9 +372,9 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
             {
-                formFields?.scope?.value
-                && formFields.scope.value.split
-                && formFields.scope.value.split(" ").length > 0
+                formFields?.Scope?.value
+                && formFields.Scope.value.split
+                && formFields.Scope.value.split(" ").length > 0
                 && (
                     <FormSection
                         heading={
@@ -384,8 +384,8 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                     >
                         <div className="authenticator-dynamic-properties">
                             {
-                                formFields.scope.value
-                                    .split(" ")
+                                formFields.Scope.value
+                                    .split(",")
                                     .map((scope: string, index: number) => {
 
                                         const scopeMeta: ScopeMetaInterface = resolveScopeMetadata(scope);

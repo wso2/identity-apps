@@ -248,8 +248,8 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 "value": config.deployment.serverHost + "/commonauth"
             },
             {
-                "key": "scope",
-                "value": IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES.join(" ")
+                "key": "Scope",
+                "value": IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_REQUESTED_SCOPES.join(",")
             },
             {
                 "key": "UserInfoFields",
