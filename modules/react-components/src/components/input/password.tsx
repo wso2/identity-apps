@@ -67,7 +67,8 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
         readOnly,
         disabled,
         required,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     return (
@@ -111,6 +112,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
             disabled={ disabled }
             required={ required }
             data-testid= { testId }
+            { ...rest }
         />
     );
 };
