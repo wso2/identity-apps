@@ -711,10 +711,6 @@ export const SamlAuthenticatorSettingsForm: FC<SamlSettingsFormProps> = (
                     >
                         { t("common:update") }
                     </PrimaryButton>
-                    <pre>
-                        { JSON.stringify(values, null, 2) }
-                        { JSON.stringify(rProps, null, 2) }
-                    </pre>
                 </GridItem>
 
             </React.Fragment>
