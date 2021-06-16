@@ -18,33 +18,55 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { ContentLoader, FileUpload, Hint, URLInput } from "@wso2is/react-components";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { ContentLoader, FilePicker, Hint, LinkButton, URLInput, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Grid, Label } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "../../../core";
+import { Trans, useTranslation } from "react-i18next";
+import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { getCertificateIllustrations } from "../../../core";
+import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
- * Proptypes for the oauth protocol settings wizard form component.
+ * Proptypes for the saml protocol all settings wizard form component.
  */
 interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableComponentInterface {
-    initialValues: any;
-    updateSelectedSAMLMetaFile: (selected: boolean) => void;
+    /**
+     * Set of fields to be displayed.
+     */
+    fields?: ("issuer" | "applicationQualifier" | "assertionConsumerURLs")[];
+    /**
+     * Flag to hide the hints.
+     */
+    hideFieldHints?: boolean;
+    /**
+     * Initial form values.
+     */
+    initialValues?: any;
+    /**
+     * Values from the template.
+     */
+    templateValues: any;
+    /**
+     * Trigger to invoke submit.
+     */
     triggerSubmit: boolean;
+    /**
+     * On submit callback.
+     * @param values - Form values.
+     */
     onSubmit: (values: any) => void;
-}
-
-enum SAMLConfigModes {
-    MANUAL = "manualConfiguration",
-    META_URL = "metadataURL",
-    META_FILE = "metadataFile"
+    /**
+     * Maintain SAML configuration mode in parent Element.
+     * @param mode configuration mode
+     */
+    setSAMLConfigureMode?: (mode: string) => void;
 }
 
 /**
- * SAML protocol settings wizard form component.
+ * SAML protocol all settings wizard form component.
  *
  * @param {SAMLProtocolAllSettingsWizardFormPropsInterface} props - Props injected to the component.
  *
@@ -55,41 +77,55 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
 ): ReactElement => {
 
     const {
+        fields,
+        hideFieldHints,
         initialValues,
-        updateSelectedSAMLMetaFile,
+        templateValues,
         triggerSubmit,
         onSubmit,
-        [ "data-testid" ]: testId
+        setSAMLConfigureMode,
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
-    const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
-    const [configureMode, setConfigureMode] = useState<string>(undefined);
+    const [ assertionConsumerUrls, setAssertionConsumerUrls ] = useState<string>("");
+    const [ issuer, setIssuer ] = useState<string>("");
+    const [ assertionConsumerURLFromTemplate, setAssertionConsumerURLFromTemplate ] = useState("");
+    const [ issuerFromTemplate, setIssuerLFromTemplate ] = useState("");
+    const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
+    const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
+    const [ configureMode, setConfigureMode ] = useState<string>(undefined);
 
-    const [fileName, setFileName] = useState("");
-    const [file, setFile] = useState<File>(null);
-    const [fileContent, setFileContent] = useState("");
-    const [filePasteContent, setFilePasteContent] = useState("");
-    const [emptyFileError, setEmptyFileError] = useState(false);
-    const [ assertionURLsErrorLabel, setAssertionURLsErrorLabel ] = useState<ReactElement>(null);
+    // State related to file picker
+    const [ xmlBase64String, setXmlBase64String ] = useState<string>();
+    const [ selectedMetadataFile, setSelectedMetadataFile ] = useState<File>(null);
+    const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
+    const [ emptyFileError, setEmptyFileError ] = useState(false);
 
     useEffect(() => {
+        setConfigureMode(SAMLConfigModes.MANUAL);
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
-            setConfigureMode(SAMLConfigModes.MANUAL);
-        } else {
-            if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration)) {
-                setConfigureMode(SAMLConfigModes.MANUAL);
-            } else if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataURL)) {
-                setConfigureMode(SAMLConfigModes.META_URL);
-            } else if (!isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile)) {
-                setConfigureMode(SAMLConfigModes.META_FILE);
-                setFile(initialValues?.inboundProtocolConfiguration?.saml?.file);
-                setFileName(initialValues?.inboundProtocolConfiguration?.saml?.fileName);
-                setFilePasteContent(initialValues?.inboundProtocolConfiguration?.saml?.pasteValue);
-                setFileContent(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile);
+            const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                .assertionConsumerUrls;
+            const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+            if (!isEmpty(tempAssertionConsumerUrls)) {
+                setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
+            } else {
+                setAssertionConsumerUrls("");
             }
+            if (!isEmpty(tempIssuer)) {
+                setIssuer(tempIssuer.toString());
+            } else {
+                setIssuer("");
+            }
+        } else {
+            setAssertionConsumerUrls(
+                initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                    .assertionConsumerUrls?.toString()
+            );
+            setIssuer(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                .issuer?.toString());
         }
     }, [initialValues]);
 
@@ -97,45 +133,77 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
      * Reset empty file error.
      */
     useEffect(() => {
-        if (file && emptyFileError) {
+        if (xmlBase64String && emptyFileError) {
             setEmptyFileError(false);
         }
-    }, [fileContent]);
+    }, [xmlBase64String]);
 
     /**
-     * Watch metaFile selected or not.
+     * Update SAML config mode to the parent element.
      */
     useEffect(() => {
-        if (configureMode === SAMLConfigModes.META_FILE) {
-            updateSelectedSAMLMetaFile(true);
+        if (configureMode) {
+            setSAMLConfigureMode(configureMode);
+        }
+    }, [configureMode]);
+
+    /**
+     * Sets the mandatory status of the ACS URL component by reading
+     * the template values. If the template has a ACS URL array defined,
+     * makes the field optional.
+     */
+    useEffect(() => {
+
+        if (!templateValues) {
             return;
         }
-        updateSelectedSAMLMetaFile(false);
-    }, [configureMode]);
+
+        const templatedCallbacks: string[] =
+            templateValues?.inboundProtocolConfiguration?.saml?.templateConfiguration?.assertionConsumerUrls;
+        const templatedIssuer: string =
+            templateValues?.inboundProtocolConfiguration?.saml?.templateConfiguration?.issuer;
+
+        if (templatedCallbacks && Array.isArray(templatedCallbacks) && templatedCallbacks.length > 0) {
+            setAssertionConsumerURLFromTemplate(templatedCallbacks[0]);
+        }
+        if (templatedIssuer) {
+            setIssuerLFromTemplate(templatedIssuer);
+        }
+    }, [templateValues]);
 
     /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
+     * @param {string} urls - Callback URLs.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: Map<string, FormValue>): any => {
-
-        let result = {};
+    const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
+        let config;
         if (configureMode === SAMLConfigModes.MANUAL) {
-            result = {
+            config = {
                 inboundProtocolConfiguration: {
                     saml: {
-                        manualConfiguration: {
-                            assertionConsumerUrls: (assertionConsumerUrls.split(",")),
-                            issuer: values.get("issuer") as string,
-                            serviceProviderQualifier: values.get("applicationQualifier")
-                        }
+                        manualConfiguration: {}
                     }
                 }
             };
+
+            if (!fields || fields.includes("assertionConsumerURLs")) {
+                config.inboundProtocolConfiguration.saml.manualConfiguration["assertionConsumerUrls"] =
+                    urls ? urls.split(",") : assertionConsumerUrls.split(",");
+            }
+
+            if (!fields || fields.includes("issuer")) {
+                config.inboundProtocolConfiguration.saml.manualConfiguration["issuer"] = values.get("issuer") as string;
+            }
+
+            if (!fields || fields.includes("applicationQualifier")) {
+                config.inboundProtocolConfiguration.saml.manualConfiguration["serviceProviderQualifier"] =
+                    values.get("applicationQualifier");
+            }
         } else if (configureMode === SAMLConfigModes.META_URL) {
-            result = {
+            config = {
                 inboundProtocolConfiguration: {
                     saml: {
                         metadataURL: values.get("url")
@@ -143,263 +211,348 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                 }
             };
         } else if (configureMode === SAMLConfigModes.META_FILE) {
-            result = {
+            config = {
                 inboundProtocolConfiguration: {
                     saml: {
-                        file: file,
-                        fileName: fileName,
-                        metadataFile: fileContent,
-                        pasteValue: filePasteContent
+                        // metadataFile: fileContent
+                        metadataFile: xmlBase64String
                     }
                 }
             };
         }
-        return result;
+
+        return config;
     };
 
-    return (configureMode
-            ?
-            <Forms
-                onSubmit={ (values: Map<string, FormValue>): void => {
-                    // check whether assertionConsumer url is empty or not
-                    if (configureMode === SAMLConfigModes.MANUAL && isEmpty(assertionConsumerUrls)) {
-                        setAssertionConsumerUrlError(true);
-                    } else if (configureMode === SAMLConfigModes.META_FILE && isEmpty(fileContent)) {
-                        setEmptyFileError(true);
-                    } else {
-                        onSubmit(getFormValues(values));
-                    }
-                } }
-                submitState={ triggerSubmit }
-            >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Field
-                                label={
-                                    t("console:develop.features.applications.forms.inboundSAML.fields.mode.label")
-                                }
-                                name="mode"
-                                default={ configureMode }
-                                type="radio"
-                                children={
-                                    [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".fields.mode.children.manualConfig.label"),
-                                            value: SAMLConfigModes.MANUAL
-                                        },
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".fields.mode.children.metadataURL.label"),
-                                            value: SAMLConfigModes.META_URL
-                                        },
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundSAML" +
-                                                ".fields.mode.children.metadataFile.label"),
-                                            value: SAMLConfigModes.META_FILE
+    /**
+     * Render SAML mode selection section.
+     */
+    const resolveSAMLModeSelection = (): ReactElement => {
+        return(
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Button.Group
+                        size="large"
+                        labeled
+                        basic
+                    >
+                        {
+                            Object.values(SAMLConfigModes).map((mode: string, index) => {
+                                return(
+                                    <Button
+                                        key={ index }
+                                        active={ configureMode === mode }
+                                        className="saml-config-mode-wizard-tab"
+                                        content={
+                                            ApplicationManagementUtils.resolveSAMLConfigModeDisplayName(
+                                                mode as SAMLConfigModes
+                                            )
                                         }
-                                    ]
-                                }
-                                listen={
-                                    (values) => {
-                                        setConfigureMode(values.get("mode") as string);
+                                        onClick={ (event) => {
+                                            event.preventDefault();
+                                            setConfigureMode(mode);
+                                        } }
+                                    />
+                                );
+                            })
+                        }
+                    </Button.Group>
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
+
+    /**
+     * Render SAML configuration section.
+     */
+    const resolveSAMLConfiguration = (): ReactElement => {
+
+        if (configureMode == SAMLConfigModes.MANUAL) {
+            return (
+                <>
+                    { (!fields || fields.includes("issuer")) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    name="issuer"
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.issuer.label")
                                     }
-                                }
-                                data-testid={ `${ testId }-mode-radio-group` }
-                            />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.inboundSAML.fields.mode.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    {
-                        (SAMLConfigModes.MANUAL === configureMode) &&
-                        (
-                            <>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                        <Field
-                                            name="issuer"
-                                            label={
-                                                t("console:develop.features.applications.forms.inboundSAML" +
-                                                    ".fields.issuer.label")
-                                            }
-                                            required={ true }
-                                            requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                    ".issuer.validations.empty")
-                                            }
-                                            type="text"
-                                            placeholder={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                    ".issuer.placeholder")
-                                            }
-                                            value={ initialValues?.inboundProtocolConfiguration
-                                                .saml?.manualConfiguration?.issuer }
-                                            data-testid={ `${ testId }-issuer-input` }
-                                        />
-                                        <Hint>
-                                            { t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".issuer.hint") }
-                                        </Hint>
-                                    </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                        <Field
-                                            name="applicationQualifier"
-                                            label={
-                                                t("console:develop.features.applications.forms.inboundSAML" +
-                                                    ".fields.qualifier.label")
-                                            }
-                                            required={ false }
-                                            requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                    ".qualifier.validations.empty")
-                                            }
-                                            type="text"
-                                            placeholder={
-                                                t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                    ".qualifier.placeholder")
-                                            }
-                                            value={
-                                                initialValues?.inboundProtocolConfiguration
-                                                    .saml?.manualConfiguration?.serviceProviderQualifier
-                                            }
-                                            data-testid={ `${ testId }-application-qualifier-input` }
-                                        />
-                                        <Hint>
-                                            { t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".qualifier.hint") }
-                                        </Hint>
-                                    </Grid.Column>
-                                </Grid.Row>
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".issuer.validations.empty")
+                                    }
+                                    type="text"
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".issuer.placeholder")
+                                    }
+                                    value={ issuer }
+                                    data-testid={ `${testId}-issuer-input` }
+                                />
+                                { !hideFieldHints && (
+                                    <Hint>
+                                        { t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".issuer.hint") }
+                                    </Hint>
+                                ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
+                    { (!fields || fields.includes("applicationQualifier")) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    name="applicationQualifier"
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.qualifier.label")
+                                    }
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.qualifier.validations.empty")
+                                    }
+                                    type="text"
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.qualifier.placeholder")
+                                    }
+                                    value={
+                                        initialValues?.inboundProtocolConfiguration
+                                            .saml?.manualConfiguration?.serviceProviderQualifier
+                                    }
+                                    data-testid={ `${testId}-application-qualifier-input` }
+                                />
+                                { !hideFieldHints && (
+                                    <Hint>
+                                        { t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                            ".qualifier.hint") }
+                                    </Hint>
+                                ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
+                    { (!fields || fields.includes("assertionConsumerURLs")) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
                                 <URLInput
                                     urlState={ assertionConsumerUrls }
                                     setURLState={ setAssertionConsumerUrls }
-                                    value={
-                                        initialValues?.inboundProtocolConfiguration
-                                            .saml?.manualConfiguration?.assertionConsumerUrls.toString()
-                                    }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                            ".assertionURLs.label")
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.assertionURLs.label")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                            ".assertionURLs.placeholder")
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.assertionURLs.placeholder")
                                     }
                                     validationErrorMsg={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                            ".assertionURLs.validations.invalid")
+                                        t("console:develop.features.applications.forms." +
+                                            "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
+                                    }
+                                    emptyErrorMessage={
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.assertionURLs.validations.empty")
                                     }
                                     validation={ (value: string) => {
+                                        if (!(URLUtils.isURLValid(value, true) && (URLUtils.isHttpUrl(value) ||
+                                            URLUtils.isHttpsUrl(value)))) {
 
-                                        let label: ReactElement = null;
-
-                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                            label = (
-                                                <Label basic color="orange" className="mt-2">
-                                                    { t("console:common.validations.unrecognizedURL.description") }
-                                                </Label>
-                                            );
+                                            return false;
                                         }
 
                                         if (!URLUtils.isMobileDeepLink(value)) {
                                             return false;
                                         }
 
-                                        setAssertionURLsErrorLabel(label);
+                                        setAssertionConsumerURLsErrorLabel(null);
 
                                         return true;
                                     } }
-                                    required={ true }
                                     computerWidth={ 10 }
+                                    required={ true }
                                     showError={ showAssertionConsumerUrlError }
                                     setShowError={ setAssertionConsumerUrlError }
                                     hint={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                            ".assertionURLs.hint")
+                                        !hideFieldHints && t("console:develop.features.applications" +
+                                            ".forms.inboundSAML.fields.assertionURLs.hint")
                                     }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                    data-testid={ `${ testId }-assertion-consumer-url-input` }
+                                    data-testid={ `${testId}-assertion-consumer-url-input` }
+                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                        submitUrl = submitFunction;
+                                    } }
                                     showPredictions={ false }
-                                    customLabel={ assertionURLsErrorLabel }
+                                    customLabel={ assertionConsumerURLsErrorLabel }
                                 />
-                            </>
-                        )
-                    }
-                    {
-                        (SAMLConfigModes.META_URL === configureMode) &&
-                        (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Field
-                                        name="url"
-                                        label={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.label")
-                                        }
-                                        required={ true }
-                                        requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.validations.empty")
-                                        }
-                                        type="text"
-                                        placeholder={
-                                            t("console:develop.features.applications.forms.inboundSAML.fields" +
-                                                ".metaURL.placeholder")
-                                        }
-                                        validation={ (value: string, validation: Validation) => {
-                                            if (!FormValidation.url(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    t("console:develop.features.applications.forms.inboundSAML" +
-                                                        ".fields.metaURL.validations.invalid")
-                                                );
+                                {
+                                    (assertionConsumerURLFromTemplate) && (
+                                        <Message className="with-inline-icon" icon visible info>
+                                            <Icon name="info" size="mini"/>
+                                            <Message.Content> {
+                                                <Trans
+                                                    i18nKey={ "console:develop.features.applications.forms." +
+                                                    "inboundSAML.fields.assertionURLs.info" }
+                                                    tOptions={ {
+                                                        assertionURLFromTemplate:
+                                                        assertionConsumerURLFromTemplate
+                                                    } }
+                                                >
+                                                    Don’t have an app? Try out a sample app
+                                                    using <strong>{ assertionConsumerURLFromTemplate }</strong> as
+                                                    the assertion Response URL. (You can download and run a sample
+                                                    at a later step.)
+                                                </Trans>
                                             }
-                                        } }
-                                        value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
-                                        data-testid={ `${ testId }-meta-url-input` }
-                                    />
-                                    <Hint>
-                                        { t("console:develop.features.applications.forms.inboundSAML.fields.metaURL" +
-                                            ".hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                    }
-                </Grid>
-                {
-                    (SAMLConfigModes.META_FILE === configureMode) &&
-                    (
-                        <FileUpload
-                            encode={ true }
-                            dropzoneIcon={ getEmptyPlaceholderIllustrations().fileUpload }
-                            updateFile={ setFile }
-                            updateContent={ setFileContent }
-                            updatePasteContent={ setFilePasteContent }
-                            updateFileName={ setFileName }
-                            initialName={ fileName }
-                            initialFile={ file }
-                            initialPasteValue={ filePasteContent }
-                            initialContent={ fileContent }
-                            triggerEmptyFileError={ emptyFileError }
-                            data-testid={ `${ testId }-meta-file-upload` }
+                                                {
+                                                    (assertionConsumerUrls === undefined ||
+                                                        assertionConsumerUrls === "") && (
+                                                        <LinkButton
+                                                            className={ "m-1 p-1 with-no-border orange" }
+                                                            onClick={ (e) => {
+                                                                e.preventDefault();
+                                                                setAssertionConsumerUrls(
+                                                                    assertionConsumerURLFromTemplate);
+                                                                setIssuer(issuerFromTemplate);
+                                                            } }
+                                                            data-testid={ `${testId}-add-now-button` }
+                                                        >
+                                                            <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                                        </LinkButton>
+                                                    )
+                                                }
+                                            </Message.Content>
+                                        </Message>
+                                    )
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+
+                    ) }
+                </>
+            );
+
+
+        } else if (configureMode === SAMLConfigModes.META_URL) {
+            return (
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Field
+                            name="url"
+                            label={
+                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                    ".metaURL.label")
+                            }
+                            required={ true }
+                            requiredErrorMessage={
+                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                    ".metaURL.validations.empty")
+                            }
+                            type="text"
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                    ".metaURL.placeholder")
+                            }
+                            validation={ (value: string, validation: Validation) => {
+                                if (!FormValidation.url(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                            ".fields.metaURL.validations.invalid")
+                                    );
+                                }
+                            } }
+                            value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
+                            data-testid={ `${testId}-meta-url-input` }
                         />
-                    )
-                }
-            </Forms>
+                        { !hideFieldHints && (
+                            <Hint>
+                                { t("console:develop.features.applications.forms.inboundSAML.fields.metaURL" +
+                                    ".hint") }
+                            </Hint>
+                        ) }
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        } else if (configureMode === SAMLConfigModes.META_FILE) {
+            return (
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <FilePicker
+                            key={ 1 }
+                            fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                            file={ selectedMetadataFile }
+                            pastedContent={ pastedMetadataContent }
+                            onChange={ (result) => {
+                                setSelectedMetadataFile(result.file);
+                                setPastedMetadataContent(result.pastedContent);
+                                setXmlBase64String(result.serialized as string);
+                            } }
+                            uploadButtonText="Upload Metadata File"
+                            dropzoneText="Drag and drop a XML file here."
+                            data-testid={ `${testId}-form-wizard-saml-xml-config-file-picker` }
+                            icon={ getCertificateIllustrations().uploadPlaceholder }
+                            placeholderIcon={ <Icon name="file code" size="huge"/> }
+                            normalizeStateOnRemoveOperations={ true }
+                            emptyFileError={ emptyFileError }
+                            hidePasteOption={ true }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+    };
+
+    /**
+     * submitURL function.
+     */
+    let submitUrl: (callback: (url?: string) => void) => void;
+
+    return (
+        templateValues && configureMode
+            ? (
+                <Forms
+                    onSubmit={ (values: Map<string, FormValue>): void => {
+                        if (configureMode === SAMLConfigModes.MANUAL) {
+                            submitUrl((url: string) => {
+                                // Check whether assertionConsumer url is empty or not.
+                                if (isEmpty(assertionConsumerUrls) && isEmpty(url)) {
+                                    setAssertionConsumerUrlError(true);
+                                } else {
+                                    onSubmit(getFormValues(values, url));
+                                }
+                            });
+                        } else {
+                            if (configureMode === SAMLConfigModes.META_FILE && isEmpty(xmlBase64String)) {
+                                setEmptyFileError(true);
+                            } else {
+                                onSubmit(getFormValues(values));
+                            }
+                        }
+
+                    } }
+                    submitState={ triggerSubmit }
+                >
+                    <Grid>
+                        { resolveSAMLModeSelection() }
+                        { resolveSAMLConfiguration() }
+                    </Grid>
+                </Forms>
+            )
             : <ContentLoader/>
     );
 };
 
 /**
- * Default props for the all saml protocol settings wizard form component.
+ * Default props for the saml protocol all settings wizard form component.
  */
 SAMLProtocolAllSettingsWizardForm.defaultProps = {
-    "data-testid": "saml-protocol-all-settings-wizard-form"
+    "data-testid": "saml-protocol-settings-wizard-form",
+    hideFieldHints: false
 };
+
+const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();

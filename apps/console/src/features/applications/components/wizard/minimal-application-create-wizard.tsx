@@ -37,8 +37,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dimmer, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
-import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import { ApplicationListInterface, ApplicationTemplateLoadingStrategies, getApplicationList } from "../..";
+import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
+import {
+    ApplicationListInterface,
+    ApplicationManagementUtils,
+    ApplicationTemplateLoadingStrategies,
+    SAMLConfigModes,
+    getApplicationList
+} from "../..";
+import { applicationConfig } from "../../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -118,9 +125,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
+    const [ customApplicationProtocol, setCustomApplicationProtocol ] = useState<string>(SupportedAuthProtocolTypes.OIDC);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+
+    // Maintain SAML configuration mode
+    const [samlConfigureMode, setSAMLConfigureMode] = useState<string>(undefined);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
 
@@ -204,7 +215,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
-
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
+            if ( customApplicationProtocol === SupportedAuthProtocolTypes.OIDC) {
+                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
+            } else if ( customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
+                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
+            } else if ( customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
+            }
+        }
         createApplication(application)
             .then((response) => {
                 dispatch(
@@ -230,7 +249,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     let searchParams: string = `?${
                         ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
                         ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
-                        }`;
+                    }`;
 
                     if (isClientSecretHashEnabled) {
                         searchParams = `${ searchParams }&${
@@ -359,14 +378,24 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             );
         } else if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML) {
             return (
-                <SAMLProtocolSettingsWizardForm
+                <SAMLProtocolAllSettingsWizardForm
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
                     templateValues={ templateSettings?.application }
                     onSubmit={ (values): void => setProtocolFormValues(values) }
+                    setSAMLConfigureMode={ setSAMLConfigureMode }
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
+                // Enable to have SAML wizard without config mode options.
+                // <SAMLProtocolSettingsWizardForm
+                //     fields={ [ "issuer", "assertionConsumerURLs" ] }
+                //     hideFieldHints={ true }
+                //     triggerSubmit={ submitProtocolForm }
+                //     templateValues={ templateSettings?.application }
+                //     onSubmit={ (values): void => setProtocolFormValues(values) }
+                //     data-testid={ `${ testId }-saml-protocol-settings-form` }
+                // />
             );
         }
     };
@@ -386,6 +415,41 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const isNameValid = (name: string) => {
         return name && !!name.match(ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_PATTERN);
+    };
+
+
+    const getSupportedProtocols = (filterProtocol?: string): string[] => {
+        let supportedProtocols: string[] = Object.values(SupportedAuthProtocolTypes);
+
+        // Filter out legacy and unsupported auth protocols.
+        supportedProtocols = supportedProtocols.filter((protocol) => {
+
+            if ( applicationConfig.customApplication.allowedProtocolTypes
+                && applicationConfig.customApplication.allowedProtocolTypes.length > 0 ) {
+                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)){
+                    return protocol;
+                } else {
+                    return false;
+                }
+            }
+
+            if (protocol === SupportedAuthProtocolTypes.WS_TRUST
+                || protocol === SupportedAuthProtocolTypes.CUSTOM
+                || (filterProtocol && protocol === filterProtocol)) {
+
+                return false;
+            }
+
+            return protocol;
+        });
+
+        supportedProtocols.sort((a, b) => {
+            if (a < b) return -1;
+            if (a > b) return 1;
+            return 0;
+        });
+
+        return supportedProtocols;
     };
 
     /**
@@ -482,6 +546,49 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     {
+                        (selectedTemplate.id === CustomApplicationTemplate.id)
+                        && (
+                            <Grid.Row className="pt-0">
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                    <div className="sub-template-selection">
+                                        <div>Protocol</div>
+                                        {
+                                            getSupportedProtocols().map((
+                                                subTemplate: string, index: number
+                                            ) => (
+                                                <SelectionCard
+                                                    inline
+                                                    key={ index }
+                                                    image={
+                                                        {
+                                                            ...getInboundProtocolLogos(),
+                                                            ...getTechnologyLogos()
+                                                        }[ subTemplate ]
+                                                    }
+                                                    size="x120"
+                                                    className="sub-template-selection-card"
+                                                    header={ ApplicationManagementUtils.resolveProtocolDisplayName(
+                                                        subTemplate as SupportedAuthProtocolTypes.OIDC) }
+                                                    selected={ customApplicationProtocol=== subTemplate }
+                                                    onClick={ () => {
+                                                        setCustomApplicationProtocol(subTemplate);
+                                                    } }
+                                                    imageSize="mini"
+                                                    contentTopBorder={ false }
+                                                    showTooltips={ false }
+                                                    renderDisabledItemsAsGrayscale={ false }
+                                                    overlay={ renderDimmerOverlay() }
+                                                    overlayOpacity={ 0.6 }
+                                                    data-testid={ `${ testId }-${ subTemplate }-card` }
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    }
+                    {
                         (subTemplates && subTemplates instanceof Array && subTemplates.length > 0)
                             ? (
                                 <Grid.Row className="pt-0">
@@ -551,9 +658,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return null;
         }
 
-        const {
+        let {
             wizardHelp: WizardHelp
         } = selectedTemplate.content;
+
+        if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML
+            && samlConfigureMode === SAMLConfigModes.META_FILE && selectedTemplate.content?.wizardHelp2) {
+            WizardHelp = selectedTemplate.content?.wizardHelp2;
+        }
+
+        if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.SAML
+            && samlConfigureMode === SAMLConfigModes.META_URL && selectedTemplate.content?.wizardHelp3) {
+            WizardHelp = selectedTemplate.content?.wizardHelp3;
+        }
 
         return (
             <ModalWithSidePanel.SidePanel>
