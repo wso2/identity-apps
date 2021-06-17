@@ -70,7 +70,6 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
     updateMappings: any;
-    setInitialSubjectLocalMapping: any;
     /**
      * Make the form read only.
      */
@@ -113,7 +112,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingError,
         readOnly,
         updateMappings,
-        setInitialSubjectLocalMapping,
         [ "data-testid" ]: testId
     } = props;
 
@@ -332,9 +330,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         }
                     };
                     initialClaimMappingList.push(claimMapping);
-                    if (claim.applicationClaim === claimConfigurations.subject?.claim?.uri) {
-                        setInitialSubjectLocalMapping(claim.localClaim.uri);
-                    }
                 });
                 setClaimMapping(initialClaimMappingList);
             } else {
@@ -766,12 +761,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             selectRequested={ updateRequested }
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
-                                                                            readOnly={
-                                                                                selectedSubjectValue ===
-                                                                                resolveClaimValue(claim.claimURI)
-                                                                                    ? true
-                                                                                    : readOnly
-                                                                            }
+                                                                            readOnly={ readOnly }
                                                                             subject={
                                                                                 selectedSubjectValue ===
                                                                                 resolveClaimValue(claim.claimURI)
