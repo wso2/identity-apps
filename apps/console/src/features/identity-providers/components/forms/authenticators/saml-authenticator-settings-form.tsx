@@ -21,7 +21,6 @@ import { SCheckboxAdapter, SSelectFieldAdapter, STextFieldAdapter } from "@wso2i
 import { QueryParameters } from "@wso2is/forms";
 import { Code, FormSection, Hint, PrimaryButton } from "@wso2is/react-components";
 import classNames from "classnames";
-import { FormApi, SubmissionErrors } from "final-form";
 import React, { FC, PropsWithChildren, ReactElement, useMemo } from "react";
 import {
     Field as FinalFormField,
@@ -215,14 +214,10 @@ export const SamlAuthenticatorSettingsForm: FC<SamlSettingsFormProps> = (
     /**
      * Form submission.
      * @param values
-     * @param _ form
-     * @param __ callback
+     * [@param _ form] (2nd argument)
+     * [@param __ callback] (3rd argument)
      */
-    const onFormSubmit = (
-        values: { [ key: string ]: any },
-        _: FormApi,
-        __?: (errors?: SubmissionErrors) => void
-    ) => {
+    const onFormSubmit = (values: { [ key: string ]: any }) => {
         /**
          * Just pass the existing authenticator data with the new
          * properties values.
