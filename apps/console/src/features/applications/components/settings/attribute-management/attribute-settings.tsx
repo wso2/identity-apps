@@ -612,6 +612,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const submitUpdateRequest = (claimMappingFinal) => {
         let isSubjectSelectedWithoutMapping = false;
         const RequestedClaims = [];
+        const subjectClaim = advanceSettingValues?.subject?.claim;
         if (selectedDialect.localDialect) {
             selectedClaims.map((claim: ExtendedClaimInterface) => {
                 // If claim mapping is there then check whether claim is requested or not.
@@ -623,7 +624,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             claim: {
                                 uri: claimMappingURI
                             },
-                            mandatory: claim.mandatory
+                            mandatory: (subjectClaim && claimMappingURI === subjectClaim.toString())
+                                ? applicationConfig.attributeSettings.makeSubjectMandatory
+                                : claim.mandatory
                         };
                         RequestedClaims.push(requestedClaim);
                     }
@@ -632,7 +635,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         claim: {
                             uri: claim.claimURI
                         },
-                        mandatory: claim.mandatory
+                        mandatory: (subjectClaim && claim.claimURI === subjectClaim.toString())
+                            ? applicationConfig.attributeSettings.makeSubjectMandatory
+                            : claim.mandatory
                     };
                     RequestedClaims.push(requestedClaim);
                 }
@@ -650,18 +655,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         if (claimMappingFinal.findIndex(mapping => mapping.localClaim.uri === DefaultSubjectAttribute) < 0
-            && advanceSettingValues?.subject.claim.toString() === DefaultSubjectAttribute) {
+            && subjectClaim && subjectClaim.toString() === DefaultSubjectAttribute) {
             isSubjectSelectedWithoutMapping = true;
-        }
-
-        // Make the subject attribute mandatory by default.
-        if (applicationConfig.attributeSettings.makeSubjectMandatory && !isSubjectSelectedWithoutMapping) {
-            RequestedClaims.push({
-                claim: {
-                    uri: advanceSettingValues?.subject.claim
-                },
-                mandatory: true
-            });
         }
 
         if (claimMappingFinal.length > 0 && isSubjectSelectedWithoutMapping) {
