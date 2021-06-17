@@ -6630,7 +6630,9 @@ export const console: ConsoleNS = {
                 forms: {
                     validation: {
                         formatError: "Le format du {{field}} saisi est incorrect.",
-                        dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD."
+                        dateFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est YYYY-MM-DD.",
+                        mobileFormatError: "Le format du {{field}} saisi est incorrect. Le format valide est [+]"+
+                            "[indicatif du pays][indicatif régional][numéro de téléphone local]."
                     }
                 },
                 list: {

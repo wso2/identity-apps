@@ -2038,6 +2038,7 @@ export interface ConsoleNS {
                     validation: {
                         formatError: string;
                         dateFormatError: string;
+                        mobileFormatError: string;
                     };
                 };
                 list: {
