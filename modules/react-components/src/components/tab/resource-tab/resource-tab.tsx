@@ -37,6 +37,10 @@ export interface ResourceTabPropsInterface extends TabProps, TestableComponentIn
      * Custom class for the component.
      */
     className?: string;
+    /**
+     * Callback to set the panes list length.
+     */
+    onInitialize?: ({ panesLength:number }) => void;
 }
 
 /**
@@ -53,6 +57,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     const {
         className,
         defaultActiveTab,
+        onInitialize,
         panes,
         defaultActiveIndex,
         [ "data-testid" ]: testId,
@@ -69,6 +74,15 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     useEffect(() => {
         setActiveIndex(defaultActiveIndex);
     }, [ defaultActiveIndex ]);
+
+    /**
+     * Called to set the panes list length initially.
+     */
+    useEffect(()=> {
+        if(onInitialize && typeof onInitialize === "function") {
+            onInitialize({ panesLength: panes.length });
+        }
+    });
 
     /**
      * Handles the tab change.

@@ -449,32 +449,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * TODO: IMPORTANT - Refactor this code.
      */
     useEffect(() => {
-        if (isExtensionsAvailable === undefined) {
-            return;
+        if (isExtensionsAvailable) {
+            setDefaultActiveIndex(1);
         }
 
-        if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
-            if (isExtensionsAvailable) {
-                setDefaultActiveIndex(1);
-            }
-
-            return;
-        }
-
-        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
-            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && isExtensionsAvailable) {
-
-            setDefaultActiveIndex(0);
-
-            return;
-        }
-
-        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
-            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && !HelpPanelUtils.isPanelPinned()) {
-
-            toggleHelpPanelVisibility(true);
-        }
-    }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY), isExtensionsAvailable ]);
+    }, [ isExtensionsAvailable ]);
 
     useEffect(() => {
         if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY)) {

@@ -637,3 +637,14 @@ export enum LoginFlowTypes {
     SECOND_FACTOR_TOTP = "SECOND_FACTOR_TOTP",
     DEFAULT = "DEFAULT"
 }
+
+/**
+ * Enum for URL fragment types used in the edit application.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum URLFragmentTypes {
+    TAB_INDEX = "tab=",
+    VIEW = "view=",
+}

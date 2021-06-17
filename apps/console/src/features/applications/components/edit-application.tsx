@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
+import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,7 +40,7 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
+import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins, history } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -47,11 +50,10 @@ import {
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import SAMLApplicationTemplate
-    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 
@@ -161,6 +163,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+    const [ callbackUrlList, setCallbackUrlList ] = useState<string[]>([]);
 
     /**
      * Called when an application updates.
@@ -176,18 +180,51 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Called when the defaultActiveIndex updates.
      */
     useEffect( () => {
-        // Change defaultActiveIndex value for custom applications.
-        if ((application?.templateId === CustomApplicationTemplate.id
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
-            && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
-            setActiveTabIndex(defaultActiveIndex - 1);
+        if(isEmpty(window.location.hash) ){
+            handleDefaultTabIndex();
+        }
+        /**
+         * Keep track of authentication callback URLs to handle ordinary application edit section view use case and the
+         * application edit section view after refreshing the page separately.
+         *
+         */
+        const authenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP);
+
+        callbackUrlList.push(authenticationCallbackUrl);
+        setCallbackUrlList(callbackUrlList);
+
+        if(callbackUrlList.length===2 && !callbackUrlList[0].includes(`#${URLFragmentTypes.TAB_INDEX}`)) {
+            handleDefaultTabIndex();
+        }
+    },[defaultActiveIndex]);
+
+    /**
+     * Called when the URL fragment updates
+     */
+    useEffect( () => {
+        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
+            isEmpty(window.location.hash)) {
             return;
         }
-        setActiveTabIndex(defaultActiveIndex);
 
-    },[defaultActiveIndex]);
+        const urlFragment:string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
+
+        if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
+            const tab_index:number = parseInt(urlFragment[1]);
+
+            if(inRange(tab_index,  0, totalTabs)) {
+                if(tab_index === activeTabIndex) {
+                    return;
+                }
+
+                handleActiveTabIndexChange(tab_index);
+            } else {
+                updateActiveIndexToDefault();
+            }
+        } else {
+            updateActiveIndexToDefault();
+        }
+    }, [window.location.hash, totalTabs]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -332,6 +369,52 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         setShowClientSecretHashDisclaimerModal(true);
     }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
+
+    /**
+     * Handles the defaultActiveIndex change.
+     */
+    const handleDefaultTabIndex = () => {
+        if ((application?.templateId === CustomApplicationTemplate.id
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
+            && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
+            handleActiveTabIndexChange(defaultActiveIndex - 1);
+            return;
+        }
+
+        handleActiveTabIndexChange(defaultActiveIndex);
+    };
+
+
+    /**
+     * Updates the activeTabIndex to defaultActiveIndex if the URL includes an invalid fragment.
+     */
+    const updateActiveIndexToDefault = (): void => {
+        if ((application?.templateId === CustomApplicationTemplate.id
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
+            && defaultActiveIndex>0) {
+            handleActiveTabIndexChange(defaultActiveIndex - 1);
+            return;
+        }
+
+        handleActiveTabIndexChange(defaultActiveIndex);
+    };
+
+    /**
+     * Handles the activeTabIndex change.
+     *
+     * @param {number} tab_index - Tab index.
+     */
+    const handleActiveTabIndexChange = (tab_index:number): void => {
+        history.push({
+            hash: `#${URLFragmentTypes.TAB_INDEX}${tab_index}`,
+            pathname: window.location.pathname
+        });
+        setActiveTabIndex(tab_index);
+    };
 
     /**
      * Todo Remove this mapping and fix the backend.
@@ -731,7 +814,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Handles the tab change.
      */
     const handleTabChange = (e, { activeIndex }): void => {
-        setActiveTabIndex(activeIndex);
+        handleActiveTabIndexChange(activeIndex);
     };
 
     /**
@@ -862,6 +945,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
                         panes= { resolveTabPanes() }
+                        onInitialize={ ({ panesLength }) => {
+                            setTotalTabs(panesLength);
+                        } }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
