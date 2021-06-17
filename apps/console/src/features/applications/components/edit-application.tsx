@@ -176,7 +176,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Called when the defaultActiveIndex updates.
      */
     useEffect( () => {
-        if (application?.templateId === CustomApplicationTemplate.id
+        // Change defaultActiveIndex value for custom applications.
+        if ((application?.templateId === CustomApplicationTemplate.id
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
             && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
             setActiveTabIndex(defaultActiveIndex - 1);
             return;
@@ -530,7 +534,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
                 onlyOIDCConfigured={
-                    application?.templateId === CustomApplicationTemplate.id && inboundProtocolList.length === 0
+                    (application?.templateId === CustomApplicationTemplate.id
+                        || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC)
+                    && inboundProtocolList.length === 0
                         ? true
                         : inboundProtocolList.length === 1
                         && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
@@ -673,7 +679,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                && inboundProtocolList.length !== 0) {
 
                 panes.push({
                     menuItem: {
