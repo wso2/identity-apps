@@ -21,7 +21,7 @@ import { SCheckboxAdapter, SSelectFieldAdapter, STextFieldAdapter } from "@wso2i
 import { QueryParameters } from "@wso2is/forms";
 import { Code, FormSection, Hint, PrimaryButton } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FC, PropsWithChildren, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useMemo } from "react";
 import {
     Field as FinalFormField,
     FieldRenderProps,
@@ -111,7 +111,7 @@ export interface SamlProperties {
     commonAuthQueryParams?: string;
 }
 
-export const SamlAuthenticatorSettingsForm: FC<SamlSettingsFormProps> = (
+export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormProps> = (
     props: SamlSettingsFormProps
 ): ReactElement => {
 
@@ -756,7 +756,7 @@ SamlAuthenticatorSettingsForm.defaultProps = {
 // Functional react helper components.
 
 type GridItemProps = { width?: SemanticWIDTHS };
-const GridItem: FC<GridItemProps> = (
+const GridItem: FunctionComponent<GridItemProps> = (
     { width, children }: PropsWithChildren<GridItemProps>
 ): ReactElement => {
     return (
@@ -769,7 +769,7 @@ const GridItem: FC<GridItemProps> = (
 };
 
 type RichLabelProps = { htmlFor: string; disabled?: boolean, [ key: string ]: any; };
-const RichLabel: FC<RichLabelProps> = (
+const RichLabel: FunctionComponent<RichLabelProps> = (
     { children, htmlFor, disabled }: PropsWithChildren<RichLabelProps>
 ): ReactElement => {
     return (
@@ -806,7 +806,9 @@ export type WhenFormProps = {
  * @param execute { Function } Please refer {@link WhenFormProps.execute}
  * @constructor
  */
-export const WhenForm: FC<WhenFormProps> = ({ field, becomes, execute }: WhenFormProps): ReactElement => {
+export const WhenForm: FunctionComponent<WhenFormProps> = (
+    { field, becomes, execute }: WhenFormProps
+): ReactElement => {
     return (
         <FinalFormField name={ field }>
             { (fieldRenderProps) => (
