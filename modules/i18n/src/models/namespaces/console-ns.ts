@@ -2070,6 +2070,7 @@ export interface ConsoleNS {
                         iconPopups: {
                             delete: string;
                             edit: string;
+                            view: string;
                         };
                     };
                     metaOptions: {

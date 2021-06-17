@@ -27,17 +27,18 @@ import {
     PrimaryButton,
     ResourceList,
     ResourceListItem,
-    UserAvatar
+    UserAvatar, useWizardAlert
 } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import {Button, Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
 import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
+import {AddIDPCertificateFormComponent} from "../../wizards/steps/add-certificate-steps";
 
 /**
  * Proptypes for the IDP certificate list component.
@@ -78,6 +79,8 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ triggerSubmit, setTriggerSubmit ] = useState<boolean>(false);
+    const [ triggerCertificateUpload, setTriggerCertificateUpload ] = useState<boolean>(false);
 
     useEffect(() => {
         if (editingIDP?.certificate?.certificates?.length > 0) {
@@ -275,23 +278,83 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
         );
     };
 
+    /**
+     * Handles the final wizard submission.
+     */
+    const handleFormFinish = (values: any): void => {
+        addCertificate(values);
+    };
+
+    const addCertificate = (values: any) => {
+        if (editingIDP?.certificate?.certificates?.includes(values["certificate"])) {
+            dispatch(addAlert({
+                description: t("console:develop.features.authenticationProvider." +
+                    "notifications.duplicateCertificateUpload.error" +
+                    ".description", { idp: editingIDP.name }),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.authenticationProvider." +
+                    "notifications.duplicateCertificateUpload.error.message")
+            }));
+            return;
+        }
+
+        const data = [];
+        const certificateIndex: number = 0;
+
+        if (editingIDP?.certificate?.jwksUri) {
+            data.push( {
+                "operation": "REPLACE",
+                "path": "/certificate/jwksUri",
+                "value": null
+            })
+        }
+
+        data.push({
+            "operation": "ADD",
+            "path": "/certificate/certificates/" + certificateIndex,
+            "value": values["certificate"]
+        })
+
+        updateIDPCertificate(editingIDP.id, data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateIDPCertificate.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateIDPCertificate.success.message")
+                }));
+                onUpdate(editingIDP.id);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.authenticationProvider." +
+                            "notifications.updateIDPCertificate.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateIDPCertificate.genericError" +
+                        ".description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.updateIDPCertificate.genericError.message")
+                }));
+            });
+    };
+
     return (
         <Forms>
             {
                 editingIDP?.certificate?.certificates?.length >= 1 ? (
                     <Grid>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => setShowWizard(true) }
-                                    data-testid={ `${testId}-add-certificate-button` }
-                                >
-                                    <Icon name="add"/>
-                                    { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <ResourceList
@@ -308,8 +371,16 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 key={ index }
                                                 actions={ [
                                                     {
-                                                        "data-testid": `${ testId }-edit-cert-${ index }-button`,
+                                                        "data-testid": `${ testId }-view-cert-${ index }-button`,
                                                         icon: "eye",
+                                                        onClick: () => handleViewCertificate(certificate),
+                                                        popupText: t("console:manage.features.users.usersList.list." +
+                                                            "iconPopups.view"),
+                                                        type: "button"
+                                                    },
+                                                    {
+                                                        "data-testid": `${ testId }-edit-cert-${ index }-button`,
+                                                        icon: "pencil",
                                                         onClick: () => handleViewCertificate(certificate),
                                                         popupText: t("console:manage.features.users.usersList.list." +
                                                             "iconPopups.edit"),
@@ -354,47 +425,30 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={ 8 }>
-                                <Divider hidden/>
-                                <Segment>
-                                    <EmptyPlaceholder
-                                            title={ t("console:develop.features.authenticationProvider.placeHolders." +
-                                            "emptyCertificateList.title") }
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
-                                        subtitle={ [
-                                            t("console:develop.features.authenticationProvider.placeHolders." +
-                                                "emptyCertificateList.subtitles.0"),
-                                            t("console:develop.features.authenticationProvider.placeHolders." +
-                                                "emptyCertificateList.subtitles.1")
-                                        ] }
-                                        imageSize="tiny"
-                                        action={ (
-                                            <PrimaryButton
-                                                onClick={ () => setShowWizard(true) }
-                                                data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }
-                                                type="button"
-                                            >
-                                                <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider" +
-                                                    ".buttons.addCertificate") }
-                                            </PrimaryButton>
-                                        ) }
-                                        data-testid={ `${testId}-empty-placeholder` }
-                                    />
-                                </Segment>
-                                <Divider hidden/>
+                                <AddIDPCertificateFormComponent
+                                    triggerCertificateUpload={ triggerCertificateUpload }
+                                    triggerSubmit={ triggerSubmit }
+                                    onSubmit={ handleFormFinish }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <PrimaryButton
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-save-button` }
+                                    onClick={ () => {
+                                        setTriggerSubmit(true);
+                                        setTriggerCertificateUpload(true)
+                                    }}
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                )
-            }
-            {
-                showWizard && (
-                    <AddIDPCertificateWizard
-                        closeWizard={ () => setShowWizard(false) }
-                        idp={ editingIDP }
-                        onUpdate={ onUpdate }
-                        data-testid={ `${ testId }-add-certificate-wizard` }
-                    />
                 )
             }
             { showCertificateModal() }

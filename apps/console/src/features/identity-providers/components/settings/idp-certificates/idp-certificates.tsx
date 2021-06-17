@@ -85,6 +85,15 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
             }
         ];
 
+        // Remove certificate if exists.
+        if (editingIDP?.certificate?.certificates) {
+            data.push({
+                "operation": "REMOVE",
+                "path": "/certificate/certificates/0",
+                value: null
+            })
+        }
+
         updateIDPCertificate(editingIDP.id, data)
             .then(() => {
                 dispatch(addAlert({

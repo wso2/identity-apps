@@ -6716,7 +6716,8 @@ export const console: ConsoleNS = {
                         },
                         iconPopups: {
                             delete: "මකන්න",
-                            edit: "සංස්කරණය කරන්න"
+                            edit: "සංස්කරණය කරන්න",
+                            view: "බලන්න"
                         }
                     },
                     metaOptions: {

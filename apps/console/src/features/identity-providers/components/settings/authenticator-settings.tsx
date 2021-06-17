@@ -564,7 +564,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                        <EmphasizedSegment>
+                        <EmphasizedSegment padded="very">
                             <Grid>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

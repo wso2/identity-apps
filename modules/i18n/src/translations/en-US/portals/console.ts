@@ -7858,7 +7858,8 @@ export const console: ConsoleNS = {
                         },
                         iconPopups: {
                             delete: "Delete",
-                            edit: "Edit"
+                            edit: "Edit",
+                            view: "View"
                         }
                     },
                     metaOptions: {
