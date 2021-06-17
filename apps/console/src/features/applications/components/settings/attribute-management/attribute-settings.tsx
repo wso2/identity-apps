@@ -199,7 +199,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission ] = useTrigger();
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ isAdvanceFormSubmitTriggered, setIsAdvanceFormSubmitTriggered ] = useState<boolean>(false);
-    const [ initialSubjectLocalMapping, setInitialSubjectLocalMapping ] = useState<string>();
 
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
@@ -478,7 +477,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 let usernameAdded: boolean = false;
                 selectedClaims.map((element: ExtendedClaimInterface) => {
                     const option: DropdownOptionsInterface = {
-                        key: element.id,
+                        key: element.claimURI,
                         text: (
                             <SubjectAttributeListItem
                                 key={ element.id }
@@ -499,7 +498,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         (element: ExtendedClaimInterface) => element.claimURI === DefaultSubjectAttribute)[ 0 ];
                     if (userclaim !== null && typeof userclaim !== "undefined") {
                         const option: DropdownOptionsInterface = {
-                            key: userclaim.id,
+                            key: userclaim.claimURI,
                             text: (
                                 <SubjectAttributeListItem
                                     key={ userclaim.id }
@@ -518,7 +517,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             let usernameAdded: boolean = false;
             selectedExternalClaims.map((element: ExtendedExternalClaimInterface) => {
                 const option: DropdownOptionsInterface = {
-                    key: element.id,
+                    key: element.claimURI,
                     text: (
                         <SubjectAttributeListItem
                             key={ element.id }
@@ -541,7 +540,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         element.mappedLocalClaimURI === DefaultSubjectAttribute)[ 0 ];
                 if (userclaim !== null && typeof userclaim !== "undefined") {
                     const option: DropdownOptionsInterface = {
-                        key: userclaim.id,
+                        key: userclaim.claimURI,
                         text: (
                             <SubjectAttributeListItem
                                 key={ userclaim.id }
@@ -826,7 +825,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             featureConfig?.applications?.scopes?.update,
                                             allowedScopes)
                                     }
-                                    setInitialSubjectLocalMapping={ setInitialSubjectLocalMapping }
                                     data-testid={ `${ testId }-attribute-selection` }
                                 />
                             </Grid.Column>
@@ -853,7 +851,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             allowedScopes)
                                     }
                                     technology={ technology }
-                                    initialSubjectLocalMapping={ initialSubjectLocalMapping }
                                     data-testid={ `${ testId }-advanced-attribute-settings-form` }
                                 />
                             </Grid.Column>

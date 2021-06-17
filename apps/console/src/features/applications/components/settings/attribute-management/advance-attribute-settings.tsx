@@ -37,7 +37,6 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
     technology: InboundProtocolListItemInterface[];
-    initialSubjectLocalMapping: any;
     /**
      * Make the form read only.
      */
@@ -68,19 +67,22 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         claimMappingOn,
         readOnly,
         technology,
-        initialSubjectLocalMapping,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>(initialSubject?.claim?.uri);
+    const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
+        useState<string>();
 
     useEffect(() => {
-        if (selectedSubjectValue) {
-            if (dropDownOptions && dropDownOptions.length > 0 &&
-                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
-                if (claimMappingOn) {
+        if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
+            if (selectedSubjectValueLocalClaim) {
+                const index = dropDownOptions.findIndex(option => option?.key === selectedSubjectValueLocalClaim);
+                if (index > -1) {
+                    setSelectedSubjectValue(dropDownOptions[ index ]?.value);
+                } else {
                     const defaultSubjectClaimIndex =
                         dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
                     setSelectedSubjectValue(
@@ -88,9 +90,21 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             ? dropDownOptions[ defaultSubjectClaimIndex ]?.value
                             : dropDownOptions[ 0 ]?.value
                     );
-                } else {
-                    setSelectedSubjectValue(defaultSubjectAttribute);
                 }
+            } else if (selectedSubjectValue) {
+                const subjectValueLocalMapping =
+                    dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+                if (subjectValueLocalMapping) {
+                    setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
+                    setSelectedSubjectValue(selectedSubjectValue);
+                }
+            } else {
+                setSelectedSubjectValue(dropDownOptions[ 0 ]?.value);
+            }
+        } else if (selectedSubjectValue) {
+            if (dropDownOptions && dropDownOptions.length > 0 &&
+                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
+                setSelectedSubjectValue(defaultSubjectAttribute);
             }
         } else {
             setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
@@ -100,6 +114,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     useEffect(() => {
         if(selectedSubjectValue) {
             setSelectedValue(selectedSubjectValue);
+        }
+    }, [ selectedSubjectValue ]);
+
+    useEffect(() => {
+        if (selectedSubjectValue && dropDownOptions) {
+            const subjectValueLocalMapping =
+                dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+            setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
         }
     }, [ selectedSubjectValue ]);
 
