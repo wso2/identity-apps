@@ -7694,7 +7694,10 @@ export const console: ConsoleNS = {
                 forms: {
                     validation: {
                         formatError: "The format of the {{field}} entered is incorrect.",
-                        dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is YYYY-MM-DD."
+                        dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
+                            "YYYY-MM-DD.",
+                        mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
+                            "[+][country code][area code][local phone number]."
                     }
                 },
                 list: {
