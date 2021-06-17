@@ -31,6 +31,7 @@ import {
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the server endpoints details component.
@@ -107,7 +108,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                     <Grid.Row>
                         <Grid.Column>
 
-                            { (isOIDC || templateId === CustomApplicationTemplate.id) && (
+                            { (isOIDC || templateId === CustomApplicationTemplate.id
+                                || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) && (
                                 <>
                                     <Heading ellipsis as="h4">
                                         { t("console:develop.features.applications.edit.sections.info." +
@@ -126,7 +128,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                     <Divider className="x2" hidden/>
                                 </>
                             ) : null }
-                            { isSAML && (
+                            { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
                                 <>
                                     <Heading ellipsis as="h4">
                                         { t("console:develop.features.applications.edit.sections.info." +

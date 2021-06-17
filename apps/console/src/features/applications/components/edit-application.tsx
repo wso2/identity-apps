@@ -256,12 +256,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
         setSAMLConfigsLoading(true);
 
-        if (application?.templateId === SAMLApplicationTemplate.id) {
-            ApplicationManagementUtils.getSAMLApplicationMeta()
-                .finally(() => {
-                    setSAMLConfigsLoading(false);
+
+        ApplicationManagementUtils.getSAMLApplicationMeta()
+            .finally(() => {
+                setSAMLConfigsLoading(false);
             });
-        }
     }, [ samlConfigurations, inboundProtocolConfig ]);
 
     useEffect(() => {
@@ -679,8 +678,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                && inboundProtocolList.length !== 0) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))) {
 
                 panes.push({
                     menuItem: {
