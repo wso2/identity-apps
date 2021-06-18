@@ -170,6 +170,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         <>
             <EmphasizedSegment padded="very">
                 <Form
+                    uncontrolledForm={ false }
                     onSubmit={ (values): void => {
                         updateConfigurations(values);
                     } }

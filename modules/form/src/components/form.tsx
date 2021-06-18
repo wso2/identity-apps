@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import React, { cloneElement, forwardRef, ReactElement, useImperativeHandle, useRef } from "react";
+import React, {
+    cloneElement,
+    forwardRef,
+    ForwardRefExoticComponent,
+    ReactElement,
+    useImperativeHandle,
+    useRef
+} from "react";
 import { Form as FinalForm, FormProps, FormRenderProps } from "react-final-form";
 import { Form as SemanticForm, Grid } from "semantic-ui-react";
 
@@ -35,7 +42,8 @@ export interface FormPropsInterface extends FormProps {
  * Implementation of the Form component.
  * @param props
  */
-export const Form = forwardRef((props: FormProps, ref): ReactElement => {
+export const Form: ForwardRefExoticComponent<FormPropsInterface> =
+    forwardRef((props: FormProps, ref): ReactElement => {
 
     let { triggerSubmit, ...other } = props;
     const { children, onSubmit, uncontrolledForm, ...rest } = other;
@@ -45,7 +53,7 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
 
     const skipFinalTypes = (type: String): boolean => {
         let skip: boolean;
-        const typeToBeSkipped = [ "Heading", "FieldDropdown" ]
+        const typeToBeSkipped = [ "FieldDropdown" ]
         skip = typeToBeSkipped.some((skipType) => {
             return type === skipType;
         });
@@ -114,7 +122,7 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
             if (uncontrolledForm) {
                 if ((hasChildrenAndIsValid || hasOnlyOneChild) && !skipFinalTypes(child.type.name)) {
                     return React.createElement(child.type, {
-                        ...allProps,
+                        ...childFieldProps,
                         children: addPropsToChild(
                             React.Children.toArray(child.props?.children),
                             formRenderProps
@@ -185,6 +193,4 @@ export const Form = forwardRef((props: FormProps, ref): ReactElement => {
 /**
  * Default props for the component.
  */
-Form.defaultProps = {
-    uncontrolledForm: false
-};
+Form.defaultProps = { };

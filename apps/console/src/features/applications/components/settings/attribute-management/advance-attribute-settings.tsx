@@ -228,6 +228,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         (initialRole && initialSubject)
             ? (
                 <Form
+                    uncontrolledForm={ false }
                     initialValues={
                         { subjectAttribute: selectedSubjectValue }
                     }
