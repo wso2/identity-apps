@@ -62,4 +62,12 @@ export class AppConstants {
      * @default
      */
     public static readonly MY_ACCOUNT_APP: string = "my_account";
+
+    /**
+     * The name of the event dispatched when a network error occurs.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly NETWORK_ERROR_EVENT: string = "network_error_event";
 }
