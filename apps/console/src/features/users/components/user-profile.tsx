@@ -35,15 +35,14 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
-    Hint,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {FunctionComponent, ReactElement, ReactNode, useEffect, useState} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input, Message } from "semantic-ui-react";
+import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
@@ -82,6 +81,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Tenant admin
      */
     tenantAdmin?: string;
+    /**
+     * User Disclaimer Message
+     */
+    editUserDisclaimerMessage?: ReactNode;
 }
 
 /**
@@ -103,6 +106,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         connectorProperties,
         isReadOnlyUserStoresLoading,
         tenantAdmin,
+        editUserDisclaimerMessage,
         [ "data-testid" ]: testId
     } = props;
 
@@ -872,24 +876,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 !isEmpty(profileInfo) && (
                     <EmphasizedSegment padded="very">
                         {
-                            (isReadOnly && !isEmpty(tenantAdmin)) && (
-                                <Grid>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                            <Message color="teal">
-                                                <Hint>
-                                                    <Trans>
-                                                        This user profile belongs to a collaborator or an organization
-                                                        owner. Only the account owner can manage the profile via the
-                                                        My Account app.
-                                                    </Trans>
-                                                </Hint>
-                                            </Message>
-                                            <Divider hidden/>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            )
+                            (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
                         }
                         <Forms
                             data-testid={ `${ testId }-form` }
