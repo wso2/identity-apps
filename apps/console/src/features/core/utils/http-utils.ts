@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppConstants } from "../constants";
@@ -87,11 +88,12 @@ export class HttpUtils {
             return;
         }
 
-        // Terminate the session if the requests returns an un-authorized status code (401)
+        // Dispatch a `network_error_event` Event when the requests returns an un-authorized status code (401)
+        // or are timed out.
         // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
         // the `401` error. Check the link in the doc comment.
         if (!error.response || error.response.status === 401) {
-            history.push(window["AppUtils"].getConfig().routes.logout);
+            dispatchEvent(new Event(AppConstantsCore.NETWORK_ERROR_EVENT));
         }
     }
 
