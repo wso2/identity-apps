@@ -29,6 +29,7 @@ import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     Code,
     ContentLoader,
+    NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes,
     ThemeContext
@@ -253,6 +254,13 @@ export const App = (): ReactElement => {
                                                         { state.css }
                                                     </style>
                                                 </Helmet>
+                                                <NetworkErrorModal
+                                                    heading="Something went wrong"
+                                                    description={
+                                                        "Try reloading the app to see if that resolves the issue."
+                                                    }
+                                                    primaryActionText="Reload the App"
+                                                />
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }
