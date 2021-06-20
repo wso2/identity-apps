@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid } from "semantic-ui-react";
@@ -66,10 +64,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     application: ApplicationInterface;
     /**
-     * Default active tab index.
-     */
-    defaultActiveIndex?: number;
-    /**
      * Used to the configured inbound protocols list from the parent component.
      */
     getConfiguredInboundProtocolsList?: (list: string[]) => void;
@@ -94,10 +88,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     template?: ApplicationTemplateInterface;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Make the form read only.
      */
     readOnly?: boolean;
@@ -120,7 +110,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
-        defaultActiveIndex,
         featureConfig,
         isLoading,
         getConfiguredInboundProtocolsList,
@@ -128,7 +117,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         template,
-        isTabExtensionsAvailable,
         readOnly,
         urlSearchParams,
         [ "data-testid" ]: testId
@@ -163,8 +151,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
-    const [ callbackUrlList, setCallbackUrlList ] = useState<string[]>([]);
 
     /**
      * Called when an application updates.
@@ -177,54 +165,76 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
-     * Called when the defaultActiveIndex updates.
+     * Set the defaultTabIndex when the application template updates.
      */
-    useEffect( () => {
-        if(isEmpty(window.location.hash) ){
-            handleDefaultTabIndex();
-        }
-        /**
-         * Keep track of authentication callback URLs to handle ordinary application edit section view use case and the
-         * application edit section view after refreshing the page separately.
-         *
-         */
-        const authenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP);
+    useEffect(() => {
 
-        callbackUrlList.push(authenticationCallbackUrl);
-        setCallbackUrlList(callbackUrlList);
-
-        if(callbackUrlList.length===2 && !callbackUrlList[0].includes(`#${URLFragmentTypes.TAB_INDEX}`)) {
-            handleDefaultTabIndex();
-        }
-    },[defaultActiveIndex]);
-
-    /**
-     * Called when the URL fragment updates
-     */
-    useEffect( () => {
-        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
-            isEmpty(window.location.hash)) {
+        if(!template) {
             return;
         }
 
-        const urlFragment:string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
+        let defaultTabIndex: number;
+
+        if(applicationConfig.editApplication.extendTabs) {
+            defaultTabIndex=1;
+            setDefaultActiveIndex(defaultTabIndex);
+        } else {
+            defaultTabIndex=0;
+            setDefaultActiveIndex(defaultTabIndex);
+        }
+
+        if(isEmpty(window.location.hash)){
+
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
+
+                handleDefaultTabIndexChange(defaultTabIndex);
+
+                return;
+            }
+
+            // When application selection is done through the strong authentication flow.
+            if(template.id === CustomApplicationTemplate.id) {
+                handleActiveTabIndexChange(3);
+            } else {
+                handleActiveTabIndexChange(4);
+            }
+        }
+    },[template]);
+
+    /**
+     * Called when the URL fragment updates.
+     */
+    useEffect( () => {
+
+        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
+            isEmpty(window.location.hash)) {
+
+            return;
+        }
+
+        const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
 
         if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
-            const tab_index:number = parseInt(urlFragment[1]);
 
-            if(inRange(tab_index,  0, totalTabs)) {
-                if(tab_index === activeTabIndex) {
+            const tabIndex: number = parseInt(urlFragment[1], 10);
+
+            if(inRange(tabIndex,  0, totalTabs)) {
+                if(tabIndex === activeTabIndex) {
                     return;
                 }
+                handleActiveTabIndexChange(tabIndex);
 
-                handleActiveTabIndexChange(tab_index);
             } else {
-                updateActiveIndexToDefault();
+                // Change the tab index to defaultActiveIndex for invalid URL fragments.
+                handleDefaultTabIndexChange(defaultActiveIndex);
             }
+
         } else {
-            updateActiveIndexToDefault();
+            // Change the tab index to defaultActiveIndex for invalid URL fragments.
+            handleDefaultTabIndexChange(defaultActiveIndex);
         }
-    }, [window.location.hash, totalTabs]);
+    }, [ window.location.hash, totalTabs ]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -346,10 +356,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             type: "tab"
         });
 
-        if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
-        }
-
         setTabPaneExtensions(extensions);
         setIsApplicationUpdated(false);
     }, [
@@ -373,30 +379,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the defaultActiveIndex change.
      */
-    const handleDefaultTabIndex = () => {
-        if ((application?.templateId === CustomApplicationTemplate.id
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
-            && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
+    const handleDefaultTabIndexChange = (defaultActiveIndex: number) => {
+
+        if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);
-            return;
-        }
 
-        handleActiveTabIndexChange(defaultActiveIndex);
-    };
-
-
-    /**
-     * Updates the activeTabIndex to defaultActiveIndex if the URL includes an invalid fragment.
-     */
-    const updateActiveIndexToDefault = (): void => {
-        if ((application?.templateId === CustomApplicationTemplate.id
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
-            && defaultActiveIndex>0) {
-            handleActiveTabIndexChange(defaultActiveIndex - 1);
             return;
         }
 
@@ -406,14 +393,27 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the activeTabIndex change.
      *
-     * @param {number} tab_index - Tab index.
+     * @param {number} tabIndex - Active tab index.
      */
-    const handleActiveTabIndexChange = (tab_index:number): void => {
+    const handleActiveTabIndexChange = (tabIndex:number): void => {
+
         history.push({
-            hash: `#${URLFragmentTypes.TAB_INDEX}${tab_index}`,
+            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
             pathname: window.location.pathname
         });
-        setActiveTabIndex(tab_index);
+
+        setActiveTabIndex(tabIndex);
+    };
+
+    /**
+     * Handles the tab change.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {number} activeIndex - Active tab index.
+     */
+    const handleTabChange = (e: SyntheticEvent, { activeIndex }): void => {
+
+        handleActiveTabIndexChange(activeIndex);
     };
 
     /**
@@ -808,13 +808,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 render: InfoTabPane
             }
         ];
-    };
-
-    /**
-     * Handles the tab change.
-     */
-    const handleTabChange = (e, { activeIndex }): void => {
-        handleActiveTabIndexChange(activeIndex);
     };
 
     /**

@@ -136,8 +136,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
-    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
 
@@ -443,40 +441,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     //     }
     //
     // }, [ applicationTemplate, application ]);
-
-    /**
-     * Triggered when the application state search param in the URL changes.
-     * TODO: IMPORTANT - Refactor this code.
-     */
-    useEffect(() => {
-        if (isExtensionsAvailable) {
-            setDefaultActiveIndex(1);
-        }
-
-    }, [ isExtensionsAvailable ]);
-
-    useEffect(() => {
-        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY)) {
-            if (isExtensionsAvailable) {
-                setDefaultActiveIndex(4);
-            }
-
-            return;
-        }
-    }, [
-        urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY),
-        isExtensionsAvailable
-    ]);
-
-    useEffect(() => {
-        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
-            setDefaultActiveIndex(1);
-            return;
-        }
-    }, [
-        urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY),
-        isExtensionsAvailable
-    ]);
 
     /**
      * Retrieves application details from the API.
@@ -948,14 +912,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             >
                 <EditApplication
                     application={ application }
-                    defaultActiveIndex={ defaultActiveIndex }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
                     template={ applicationTemplate }
                     data-testid={ testId }
-                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                     urlSearchParams={ urlSearchParams }
                     getConfiguredInboundProtocolsList={ (list: string[]) => {
                         setInboundProtocolList(list);

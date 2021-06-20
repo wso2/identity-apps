@@ -59,6 +59,7 @@ import {
     MainApplicationInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes,
+    URLFragmentTypes,
     emptyApplication
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
@@ -234,7 +235,14 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
+                    let defaultTabIndex: number = 0;
+
+                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                        defaultTabIndex = 1;
+                    }
+
                     history.push({
+                        hash: `#${ URLFragmentTypes.TAB_INDEX }${ defaultTabIndex }`,
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
                         search: `?${ ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
                             ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE }`

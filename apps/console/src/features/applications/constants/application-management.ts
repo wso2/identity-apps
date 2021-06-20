@@ -104,13 +104,6 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY = "isSignOn";
 
     /**
-     * Value for sign on authentication param for application state.
-     * @constant
-     * @type {string}
-     */
-    public static readonly APP_STATE_PROTOCOL_PARAM_KEY = "isProtocol";
-
-    /**
      * Key for the URL search param for application readonly state.
      * @constant
      * @type {string}

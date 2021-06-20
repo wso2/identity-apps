@@ -79,6 +79,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
      * Called to set the panes list length initially.
      */
     useEffect(()=> {
+
         if(onInitialize && typeof onInitialize === "function") {
             onInitialize({ panesLength: panes.length });
         }

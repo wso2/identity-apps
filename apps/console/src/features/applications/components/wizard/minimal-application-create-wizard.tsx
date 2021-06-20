@@ -43,8 +43,8 @@ import {
     ApplicationManagementUtils,
     ApplicationTemplateLoadingStrategies,
     SAMLConfigModes,
-    getApplicationList,
-    URLFragmentTypes
+    URLFragmentTypes,
+    getApplicationList
 } from "../..";
 import { applicationConfig } from "../../../../extensions";
 import {
@@ -256,11 +256,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
 
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                        searchParams = `${ searchParams }&${
-                            ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY }=true`;
-                    }
-
-                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
                         defaultTabIndex = 1;
                     }
 
@@ -268,7 +263,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT")
                             .replace(":id", createdAppID),
                         search: searchParams,
-                        hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`
+                        hash: `#${ URLFragmentTypes.TAB_INDEX }${ defaultTabIndex }`
                     });
 
                     return;
