@@ -127,7 +127,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     }, [initialRequested]);
 
     useEffect(() => {
-        if (isEmpty(mapping?.applicationClaim)) {
+        if (isEmpty(mapping?.applicationClaim) && isEmpty(mapping)) {
             setErrorInClaimMapping(claimMappingError);
         }
     }, [claimMappingError]);
