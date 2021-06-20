@@ -173,15 +173,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
-        let defaultTabIndex: number;
+        let defaultTabIndex: number = 0;
 
         if(applicationConfig.editApplication.extendTabs) {
             defaultTabIndex=1;
-            setDefaultActiveIndex(defaultTabIndex);
-        } else {
-            defaultTabIndex=0;
-            setDefaultActiveIndex(defaultTabIndex);
         }
+
+        setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
 
@@ -379,7 +377,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     /**
      * Handles the defaultActiveIndex change.
      */
-    const handleDefaultTabIndexChange = (defaultActiveIndex: number) => {
+    const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
 
         if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
             handleActiveTabIndexChange(defaultActiveIndex - 1);

@@ -83,7 +83,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         if(onInitialize && typeof onInitialize === "function") {
             onInitialize({ panesLength: panes.length });
         }
-    });
+    }, []);
 
     /**
      * Handles the tab change.
