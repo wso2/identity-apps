@@ -254,7 +254,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }
 
     /**
-     * Sets the value to disable the JWKS URL in certificate section
+     * Sets the value to disable the JWKS URL in certificate section.
+     * Sets the value to enable certificate section for Enterprise IdP.
      */
     useEffect(() => {
         if (identityProvider.federatedAuthenticators.defaultAuthenticatorId ==
