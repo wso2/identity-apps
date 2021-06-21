@@ -2071,6 +2071,7 @@ export interface ConsoleNS {
                             delete: string;
                             edit: string;
                             view: string;
+                            replace: string;
                         };
                     };
                     metaOptions: {

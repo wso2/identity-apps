@@ -436,7 +436,7 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "Confidentialité",
+            privacy: "Confidentialité"
         },
         validations: {
             inSecureURL: {
@@ -697,7 +697,7 @@ export const console: ConsoleNS = {
                         actionTitle: "Supprimer",
                         header: "Supprimer l'application",
                         subheader: "Une fois l'application supprimée, elle ne peut pas être récupérée et les " +
-                            "clients utilisant cette application ne fonctionneront plus.",
+                            "clients utilisant cette application ne fonctionneront plus."
                     },
                     header: "Zone de danger"
                 },
@@ -1581,7 +1581,7 @@ export const console: ConsoleNS = {
                                             empty: "Veuillez renseigner l'URL de déconnexion aval",
                                             invalid: "Veuillez ajouter une URL valide"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1642,7 +1642,7 @@ export const console: ConsoleNS = {
                                     "de demande signés dans la demande d'autorisation.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Activer la validation de la signature",
+                                        label: "Activer la validation de la signature"
                                     }
                                 }
                             },
@@ -3610,7 +3610,7 @@ export const console: ConsoleNS = {
                     subtitles: "Veuillez ajouter des modèles à afficher ici.",
                     title: "Pas de modèles à afficher."
                 }
-            },
+            }
         },
         notifications: {
             endSession: {
@@ -3745,7 +3745,7 @@ export const console: ConsoleNS = {
                 modals: {
                     taskDetails: {
                         header: "Tâche d'approbation",
-                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur.",
+                        description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur."
                     }
                 },
                 notifications: {
@@ -5250,7 +5250,7 @@ export const console: ConsoleNS = {
                         action: "Voir tout",
                         subtitles: {
                             0: "Nous n'avons pas trouvé la portée que vous avez recherchée.",
-                            1: "Veuillez essayer un autre nom.",
+                            1: "Veuillez essayer un autre nom."
                         },
                         title: "Aucun résultat trouvé"
                     }
@@ -6795,7 +6795,8 @@ export const console: ConsoleNS = {
                         iconPopups: {
                             delete: "Supprimer",
                             edit: "Modifier",
-                            view: "Voir"
+                            view: "Voir",
+                            replace: "Remplacer"
                         }
                     },
                     metaOptions: {

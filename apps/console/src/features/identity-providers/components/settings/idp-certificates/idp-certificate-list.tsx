@@ -33,12 +33,11 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {Button, Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
-import { AddIDPCertificateWizard } from "../../wizards";
-import {AddIDPCertificateFormComponent} from "../../wizards/steps/add-certificate-steps";
+import { AddIDPCertificateFormComponent } from "../../wizards/steps/add-certificate-steps";
 
 /**
  * Proptypes for the IDP certificate list component.
@@ -52,6 +51,10 @@ interface IdpCertificatesPropsListInterface extends TestableComponentInterface {
      * Callback to update the idp details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Flag to identify if Idp is of SAML protocol.
+     */
+    isSaml?: boolean;
 }
 
 /**
@@ -68,6 +71,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     const {
         editingIDP,
         onUpdate,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -77,7 +81,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
     const [ certificateModal, setCertificateModal ] = useState<boolean>(false);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showCertificateReplace, setShowCertificateReplace ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ triggerSubmit, setTriggerSubmit ] = useState<boolean>(false);
     const [ triggerCertificateUpload, setTriggerCertificateUpload ] = useState<boolean>(false);
@@ -156,6 +160,38 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
         );
     };
 
+    const showAddCertificate = (): ReactElement => {
+        return (
+            <>
+                <Grid.Row>
+                    <Grid.Column width={ 8 }>
+                        <AddIDPCertificateFormComponent
+                            triggerCertificateUpload={ triggerCertificateUpload }
+                            triggerSubmit={ triggerSubmit }
+                            onSubmit={ handleFormFinish }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        <PrimaryButton
+                            type="submit"
+                            size="small"
+                            className="form-button"
+                            data-testid={ `${ testId }-save-button` }
+                            onClick={ () => {
+                                setTriggerSubmit(true);
+                                setTriggerCertificateUpload(true);
+                            } }
+                        >
+                            { t("common:update") }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+            </>
+        );
+    };
+
     /**
      * Show the certificate details.
      *
@@ -163,6 +199,18 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
      */
     const handleViewCertificate = (certificate: DisplayCertificate) => {
         setCertificateDisplay(certificate);
+    };
+
+    /**
+     * Replace the certificate.
+     *
+     */
+    const handleReplaceCertificate = () => {
+        if (!showCertificateReplace) {
+            setShowCertificateReplace(true);
+        } else {
+            setShowCertificateReplace(false);
+        }
     };
 
     /**
@@ -306,14 +354,22 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                 "operation": "REPLACE",
                 "path": "/certificate/jwksUri",
                 "value": null
-            })
+            });
         }
 
-        data.push({
-            "operation": "ADD",
-            "path": "/certificate/certificates/" + certificateIndex,
-            "value": values["certificate"]
-        })
+        if (editingIDP?.certificate?.certificates) {
+            data.push({
+                "operation": "REPLACE",
+                "path": "/certificate/certificates/" + certificateIndex,
+                "value": values["certificate"]
+            });
+        } else {
+            data.push({
+                "operation": "ADD",
+                "path": "/certificate/certificates/" + certificateIndex,
+                "value": values["certificate"]
+            });
+        }
 
         updateIDPCertificate(editingIDP.id, data)
             .then(() => {
@@ -366,88 +422,108 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                     } }
                                 >
                                     {
-                                        certificates?.map((certificate, index) => (
-                                            <ResourceListItem
-                                                key={ index }
-                                                actions={ [
-                                                    {
-                                                        "data-testid": `${ testId }-view-cert-${ index }-button`,
-                                                        icon: "eye",
-                                                        onClick: () => handleViewCertificate(certificate),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.view"),
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        "data-testid": `${ testId }-edit-cert-${ index }-button`,
-                                                        icon: "pencil",
-                                                        onClick: () => handleViewCertificate(certificate),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.edit"),
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        "data-testid": `${ testId }-delete-cert-${ index }-button`,
-                                                        icon: "trash alternate",
-                                                        onClick: () => deleteCertificate(index),
-                                                        popupText: t("console:manage.features.users.usersList.list." +
-                                                            "iconPopups.delete"),
-                                                        type: "button"
-                                                    }
-                                                ] }
-                                                actionsFloated="right"
-                                                avatar={ (
-                                                    <UserAvatar
-                                                        name={
-                                                            CertificateManagementUtils.searchIssuerDNAlias(
-                                                                certificate?.issuerDN)
+                                        isSaml? (
+                                            certificates?.map((certificate, index) => (
+                                                <ResourceListItem
+                                                    key={ index }
+                                                    actions={ [
+                                                        {
+                                                            "data-testid": `${ testId }-view-cert-${ index }-button`,
+                                                            icon: "eye",
+                                                            onClick: () => handleViewCertificate(certificate),
+                                                            popupText: t("console:manage.features.users.usersList.list." +
+                                                                "iconPopups.view"),
+                                                            type: "button"
+                                                        },
+                                                        {
+                                                            "data-testid": `${ testId }-edit-cert-${ index }-button`,
+                                                            icon: "exchange",
+                                                            onClick: () => handleReplaceCertificate(),
+                                                            popupText: t("console:manage.features.users.usersList.list." +
+                                                                "iconPopups.replace"),
+                                                            type: "button"
                                                         }
-                                                        size="mini"
-                                                        floated="left"
-                                                    />
-                                                ) }
-                                                itemHeader={ showValidityLabel(
-                                                    certificate.validFrom,
-                                                    certificate.validTill,
-                                                    CertificateManagementUtils.searchIssuerDNAlias(
-                                                        certificate?.issuerDN)
-                                                ) }
-                                                itemDescription={ showDescription(certificate.validFrom,
-                                                    certificate.validTill) }
-                                            />
-                                        ))
+                                                    ] }
+                                                    actionsFloated="right"
+                                                    avatar={ (
+                                                        <UserAvatar
+                                                            name={
+                                                                CertificateManagementUtils.searchIssuerDNAlias(
+                                                                    certificate?.issuerDN)
+                                                            }
+                                                            size="mini"
+                                                            floated="left"
+                                                        />
+                                                    ) }
+                                                    itemHeader={ showValidityLabel(
+                                                        certificate.validFrom,
+                                                        certificate.validTill,
+                                                        CertificateManagementUtils.searchIssuerDNAlias(
+                                                            certificate?.issuerDN)
+                                                    ) }
+                                                    itemDescription={ showDescription(certificate.validFrom,
+                                                        certificate.validTill) }
+                                                />
+                                            ))
+                                        ) : (
+                                            certificates?.map((certificate, index) => (
+                                                <ResourceListItem
+                                                    key={ index }
+                                                    actions={ [
+                                                        {
+                                                            "data-testid": `${ testId }-view-cert-${ index }-button`,
+                                                            icon: "eye",
+                                                            onClick: () => handleViewCertificate(certificate),
+                                                            popupText: t("console:manage.features.users.usersList.list." +
+                                                                "iconPopups.view"),
+                                                            type: "button"
+                                                        },
+                                                        {
+                                                            "data-testid": `${ testId }-delete-cert-${ index }-button`,
+                                                            icon: "trash alternate",
+                                                            onClick: () => deleteCertificate(index),
+                                                            popupText: t("console:manage.features.users.usersList.list." +
+                                                                "iconPopups.delete"),
+                                                            type: "button"
+                                                        }
+                                                    ] }
+                                                    actionsFloated="right"
+                                                    avatar={ (
+                                                        <UserAvatar
+                                                            name={
+                                                                CertificateManagementUtils.searchIssuerDNAlias(
+                                                                    certificate?.issuerDN)
+                                                            }
+                                                            size="mini"
+                                                            floated="left"
+                                                        />
+                                                    ) }
+                                                    itemHeader={ showValidityLabel(
+                                                        certificate.validFrom,
+                                                        certificate.validTill,
+                                                        CertificateManagementUtils.searchIssuerDNAlias(
+                                                            certificate?.issuerDN)
+                                                    ) }
+                                                    itemDescription={ showDescription(certificate.validFrom,
+                                                        certificate.validTill) }
+                                                />
+                                            ))
+
+                                        )
                                     }
                                 </ResourceList>
                             </Grid.Column>
                         </Grid.Row>
+                        {
+                            showCertificateReplace &&
+                                <>
+                                    { showAddCertificate() }
+                                </>
+                        }
                     </Grid>
                 ) : (
                     <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 8 }>
-                                <AddIDPCertificateFormComponent
-                                    triggerCertificateUpload={ triggerCertificateUpload }
-                                    triggerSubmit={ triggerSubmit }
-                                    onSubmit={ handleFormFinish }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <PrimaryButton
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={ `${ testId }-save-button` }
-                                    onClick={ () => {
-                                        setTriggerSubmit(true);
-                                        setTriggerCertificateUpload(true)
-                                    }}
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
+                        { showAddCertificate() }
                     </Grid>
                 )
             }

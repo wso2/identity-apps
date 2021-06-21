@@ -44,7 +44,7 @@ interface IdpCertificatesPropsInterface extends TestableComponentInterface {
     /**
      * JWKS endpoint availability
      */
-    disableJwks?: boolean;
+    isSaml?: boolean;
 }
 
 /**
@@ -61,7 +61,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     const {
         editingIDP,
         onUpdate,
-        disableJwks,
+        isSaml,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,7 +91,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                 "operation": "REMOVE",
                 "path": "/certificate/certificates/0",
                 value: null
-            })
+            });
         }
 
         updateIDPCertificate(editingIDP.id, data)
@@ -155,16 +155,16 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
 
     return (
         <Forms>
-            { !disableJwks ?
+            { !isSaml ?
                 (
                 <Grid>
-                    <Grid.Row columns={2}>
-                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
-                                label={t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
-                                    "certificateType.label")}
+                                label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
+                                    "certificateType.label") }
                                 name="type"
-                                default={"JWKS"}
+                                default={ "JWKS" }
                                 listen={
                                     (values) => {
                                         setPEMSelected(values.get("type") === "PEM");
@@ -173,7 +173,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                     }
                                 }
                                 type="radio"
-                                children={[
+                                children={ [
                                     {
                                         label: t("console:develop.features.authenticationProvider.forms." +
                                             "advancedConfigs.certificateType" +
@@ -186,32 +186,32 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                             ".certificatePEM.label"),
                                         value: "PEM"
                                     }
-                                ]}
-                                value={editingIDP?.certificate?.certificates ? "PEM" : "JWKS"}
-                                data-testid={`${testId}-certificate-type-radio-group`}
+                                ] }
+                                value={ editingIDP?.certificate?.certificates ? "PEM" : "JWKS" }
+                                data-testid={ `${testId}-certificate-type-radio-group` }
                             />
                             <Hint>
-                                {t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
-                                    "certificateType.hint")}
+                                { t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
+                                    "certificateType.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={1}>
+                    <Grid.Row columns={ 1 }>
                         {
                             (isPEMSelected || editingIDP?.certificate?.certificates) && !isJWKSSelected ?
                                 (
-                                    <Grid.Column mobile={16} tablet={16} computer={16}>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <IdpCertificatesListComponent
-                                            editingIDP={editingIDP}
-                                            onUpdate={onUpdate}
+                                            editingIDP={ editingIDP }
+                                            onUpdate={ onUpdate }
                                         />
                                     </Grid.Column>
                                 ) : (
-                                    <Grid.Column mobile={16} tablet={16} computer={8}>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <AddIDPJWKSUriFormComponent
-                                            initialUri={editingIDP?.certificate?.jwksUri
-                                                ? editingIDP?.certificate?.jwksUri : ""}
-                                            onSubmit={updateJWKEndpoint}
+                                            initialUri={ editingIDP?.certificate?.jwksUri
+                                                ? editingIDP?.certificate?.jwksUri : "" }
+                                            onSubmit={ updateJWKEndpoint }
                                         />
                                     </Grid.Column>
                                 )
@@ -220,10 +220,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                 </Grid>
                 ) : (
                     <Grid>
-                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <IdpCertificatesListComponent
-                                editingIDP={editingIDP}
-                                onUpdate={onUpdate}
+                                editingIDP={ editingIDP }
+                                onUpdate={ onUpdate }
+                                isSaml={ isSaml }
                             />
                         </Grid.Column>
                     </Grid>
