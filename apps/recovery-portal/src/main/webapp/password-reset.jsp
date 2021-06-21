@@ -96,7 +96,8 @@
                                         type="password"
                                         required=""
                                     />
-                                    <i id="password1ShowHide" class="eye link icon" onclick="password1ShowToggle()"></i>
+                                    <i id="passwordShowHide" class="eye link icon slash"
+                                       onclick="passwordShowToggle()"></i>
                                 </div>
                             </div>
 
@@ -152,7 +153,8 @@
                                         data-match="reset-password"
                                         required=""
                                     />
-                                    <i id="password2ShowHide" class="eye link icon" onclick="password2ShowToggle()"></i>
+                                    <i id="confirmPasswordShowHide" class="eye link icon slash"
+                                       onclick="confirmPasswordShowToggle()"></i>
                                 </div>
                             </div>
                             <div class="ui divider hidden"></div>
@@ -223,26 +225,26 @@
             var password1 = true;
             var password2 = true;
 
-            function password1ShowToggle(){
+            function passwordShowToggle(){
                 if(password1) {
                     password1 = false;
-                    document.getElementById("password1ShowHide").classList.add("slash");
+                    document.getElementById("passwordShowHide").classList.remove("slash");
                     document.getElementById("reset-password").setAttribute("type","text");
                 } else{
                     password1 = true;
-                    document.getElementById("password1ShowHide").classList.remove("slash");
+                    document.getElementById("passwordShowHide").classList.add("slash");
                     document.getElementById("reset-password").setAttribute("type","password");
                 }
             }
 
-            function password2ShowToggle(){
+            function confirmPasswordShowToggle(){
                 if(password2) {
                     password2 = false;
-                    document.getElementById("password2ShowHide").classList.add("slash");
+                    document.getElementById("confirmPasswordShowHide").classList.remove("slash");
                     document.getElementById("reset-password2").setAttribute("type","text");
                 } else{
                     password2 = true;
-                    document.getElementById("password2ShowHide").classList.remove("slash");
+                    document.getElementById("confirmPasswordShowHide").classList.add("slash");
                     document.getElementById("reset-password2").setAttribute("type","password");
                 }
             }
