@@ -236,30 +236,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     /> 
                 </Form>
             </EmphasizedSegment>
-            { identityProviderConfig.generalDetailsForm.showCertificate
-                && <>
-                    < Divider hidden />
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">Certificates</Heading>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                    <EmphasizedSegment>
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <IdpCertificates
-                                        editingIDP={ editingIDP }
-                                        onUpdate={ onUpdate }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </EmphasizedSegment>
-                </>
-            }
         </>
     );
 };

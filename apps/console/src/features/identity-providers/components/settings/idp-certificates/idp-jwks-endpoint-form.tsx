@@ -22,7 +22,7 @@ import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 
 /**
  * Proptypes for the add IDP JWKS endpoint form component.
@@ -89,6 +89,8 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
                         <Grid.Column>
                             <PrimaryButton
                                 type="submit"
+                                size="small"
+                                className="form-button"
                                 data-testid={ `${ testId }-save-button` }
                             >
                                 { t("common:update") }

@@ -1556,7 +1556,7 @@ export const console: ConsoleNS = {
                                             empty: "Please fill the Front Channel Logout URL",
                                             invalid: "Please add valid URL"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1615,7 +1615,7 @@ export const console: ConsoleNS = {
                                     "in the authorization request.",
                                 fields: {
                                     signatureValidation: {
-                                        label: "Enable signature validation",
+                                        label: "Enable signature validation"
                                     }
                                 },
                                 heading: "Request Object"
@@ -2795,8 +2795,8 @@ export const console: ConsoleNS = {
                                     empty: "Certificate value is required"
                                 }
                             },
-                            hint: "If the type is JWKS, the value should be a JWKS URL. If the type is PEM, the" +
-                                " value should be the certificate in PEM format.",
+                            hint: "JWKS URL or certificate in PEM format is used to verify the signed responses " +
+                                "from the external identity provider.",
                             label: "Select Certificate Type"
                         },
                         federationHub: {
@@ -7858,7 +7858,9 @@ export const console: ConsoleNS = {
                         },
                         iconPopups: {
                             delete: "Delete",
-                            edit: "Edit"
+                            edit: "Edit",
+                            view: "View",
+                            replace: "Replace"
                         }
                     },
                     metaOptions: {

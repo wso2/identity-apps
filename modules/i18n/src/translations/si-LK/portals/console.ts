@@ -222,7 +222,7 @@ export const console: ConsoleNS = {
                     1: "කරුණාකර වෙනත් ගිණුමක් සමඟ පුරනය වන්න."
                 },
                 title: "ඔබට අවසර නැත"
-            },
+            }
         },
         privacy: {
             about: {
@@ -444,7 +444,7 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "පෞද්ගලිකත්වය",
+            privacy: "පෞද්ගලිකත්වය"
         },
         validations: {
             inSecureURL: {
@@ -969,7 +969,7 @@ export const console: ConsoleNS = {
                                                     stepSelectDropdown: {
                                                         hint: "ඔබට සත්‍යාපකයන් එකතු කිරීමට අවශ්‍ය පියවර තෝරන්න.",
                                                         label:  "පියවර තෝරන්න",
-                                                        placeholder: "පියවර තෝරන්න",
+                                                        placeholder: "පියවර තෝරන්න"
                                                     }
                                                 },
                                                 description: null,
@@ -1542,7 +1542,7 @@ export const console: ConsoleNS = {
                                             empty: "කරුණාකර ඉදිරිපස නාලිකා ලොග්අවුට් URL පුරවන්න",
                                             invalid: "කරුණාකර වලංගු URL එක් කරන්න"
                                         }
-                                    },
+                                    }
                                 },
                                 heading: "PKCE"
                             },
@@ -1597,7 +1597,7 @@ export const console: ConsoleNS = {
                                   " අත්සන් කළ ඉල්ලීම් වස්තු පමණක් පිළිගැනීමට අත්සන් වලංගු කිරීම සක්‍රීය කරන්න.",
                               fields: {
                                   signatureValidation: {
-                                      label: "අත්සන වලංගු කිරීම සක්‍රීය කරන්න",
+                                      label: "අත්සන වලංගු කිරීම සක්‍රීය කරන්න"
                                   }
                               }
                             },
@@ -2760,8 +2760,8 @@ export const console: ConsoleNS = {
                                     empty: "සහතික වටිනාකම අවශ්‍ය වේ"
                                 }
                             },
-                            hint: "වර්ගය JWKS නම්, අගය JWKS URL එකක් විය යුතුය. වර්ගය PEM නම්, අගය PEM " +
-                                "ආකෘතියෙන් සහතිකය විය යුතුය.",
+                            hint: "බාහිර අනන්‍යතා සැපයුම්කරුගෙන් අත්සන් කළ ප්‍රතිචාර සත්‍යාපනය කිරීම සඳහා JWKS URL හෝ PEM "+
+                                "ආකෘතියෙන් සහතිකය භාවිතා කරයි",
                             label: "සහතික වර්ගය තෝරන්න"
                         },
                         federationHub: {
@@ -3562,7 +3562,7 @@ export const console: ConsoleNS = {
                     subtitles: "කරුණාකර මෙහි පෙන්වීමට සැකිලි එක් කරන්න.",
                     title: "පෙන්වීමට සැකිලි නොමැත."
                 }
-            },
+            }
         },
         notifications: {
             endSession: {
@@ -3697,7 +3697,7 @@ export const console: ConsoleNS = {
                 modals: {
                     taskDetails: {
                         header: "අනුමත කිරීමේ කාර්යය",
-                        description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ.",
+                        description: "පරිශීලකයෙකුගේ මෙහෙයුම් ක්‍රියාවක් අනුමත කිරීමට ඔබට ඉල්ලීමක් තිබේ."
                     }
                 },
                 notifications: {
@@ -4976,7 +4976,7 @@ export const console: ConsoleNS = {
             },
             oidcScopes: {
                 addAttributes: {
-                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න.",
+                    description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න."
                 },
                 buttons: {
                     addScope: "නව OIDC විෂය පථය"
@@ -5198,7 +5198,7 @@ export const console: ConsoleNS = {
                         action: "සියල්ල බලන්න",
                         subtitles: {
                             0: "ඔබ සෙවූ විෂය පථය අපට සොයාගත නොහැකි විය.",
-                            1: "කරුණාකර වෙනත් නමක් උත්සාහ කරන්න.",
+                            1: "කරුණාකර වෙනත් නමක් උත්සාහ කරන්න."
                         },
                         title: "ප්‍රතිපල හමු නොවීය"
                     }
@@ -6052,7 +6052,7 @@ export const console: ConsoleNS = {
                             forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කිරීමෙන් පසු වත්මන් මුරපදය භාවිතා කර " +
                                 "පරිශීලකයාට කිසිදු යෙදුමකට පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
                             setPassword: "සටහන: මුරපදය වෙනස් කිරීමෙන් පසුව පරිශීලකයාට වත්මන් මුරපදය භාවිතා කර කිසිදු යෙදුමකට " +
-                                "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න.",
+                                "පිවිසිය නොහැකි බව කරුණාවෙන් සලකන්න."
                         },
                         passwordOptions: {
                             forceReset: "මුරපදය නැවත සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",
@@ -6716,7 +6716,9 @@ export const console: ConsoleNS = {
                         },
                         iconPopups: {
                             delete: "මකන්න",
-                            edit: "සංස්කරණය කරන්න"
+                            edit: "සංස්කරණය කරන්න",
+                            view: "බලන්න",
+                            replace: "ආදේශ කරන්න"
                         }
                     },
                     metaOptions: {
