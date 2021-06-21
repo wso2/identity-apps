@@ -122,6 +122,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
     const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
     const [ isSaml, setIsSaml ] = useState<boolean>(false);
+    const [ showCertificateComponent, setShowCertificateComponent ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
@@ -257,9 +258,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     useEffect(() => {
         if (identityProvider.federatedAuthenticators.defaultAuthenticatorId ==
+            IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID) {
+            setShowCertificateComponent(true);
+
+        } else if (identityProvider.federatedAuthenticators.defaultAuthenticatorId ==
             IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID) {
             setIsSaml(true);
+            setShowCertificateComponent(true);
         }
+
     }, [identityProvider]);
 
     useEffect(() => {
@@ -835,7 +842,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    { showCertificateDetails() }
+                    {
+                        showCertificateComponent && ( showCertificateDetails() )
+                    }
                     {
                         deletingAuthenticator && (
                             <ConfirmationModal
