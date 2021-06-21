@@ -150,4 +150,9 @@ export interface CommonNS {
     disabled: string;
     enable: string;
     disable: string;
+    networkErrorMessage: {
+        heading: string;
+        description: string;
+        primaryActionText: string;
+    }
 }

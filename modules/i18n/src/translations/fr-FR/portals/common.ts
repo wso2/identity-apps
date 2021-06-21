@@ -94,6 +94,11 @@ export const common: CommonNS = {
     more: "Plus",
     myAccount: "Mon compte",
     name: "Nom",
+    networkErrorMessage:{
+        description: "Veuillez essayer de recharger l'application.",
+        heading: "Quelque chose s'est mal passé",
+        primaryActionText: "Recharger l'application"
+    },
     next: "Suivant",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
