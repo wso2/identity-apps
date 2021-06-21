@@ -259,11 +259,11 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                     </style>
                                                 </Helmet>
                                                 <NetworkErrorModal
-                                                    heading="Something went wrong"
-                                                    description={
-                                                        "Try reloading the app to see if that resolves the issue."
-                                                    }
-                                                    primaryActionText="Reload the App"
+                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".primaryActionText") }
                                                 />
                                                 <Switch>
                                                     <Redirect
