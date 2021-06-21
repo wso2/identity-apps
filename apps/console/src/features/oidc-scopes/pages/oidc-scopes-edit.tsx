@@ -522,7 +522,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                         onUpdate={ getScope }
                         data-testid={ testId }
-                        selectedAttributes={ tempSelectedAttributes }
+                        selectedAttributes={ selectedAttributes }
+                        tempSelectedAttributes ={ tempSelectedAttributes }
                         unselectedAttributes={ unselectedAttributes }
                         isRequestLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                         triggerAddAttributeModal={ triggerAddAttributeModal }

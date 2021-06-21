@@ -5056,7 +5056,7 @@ export const console: ConsoleNS = {
                         emptyPlaceholder: {
                             action: "Ajouter un attribut",
                             subtitles: {
-                                0: "Il n'y a pas d'attributs ajoutés pour ce scope OIDC",
+                                0: "Il n'y a pas d'attributs ajoutés pour ce scope OIDC.",
                                 1: "Veuillez ajouter les attributs requis pour les visualiser ici."
                             },
                             title: "Pas d'attributs OIDC"
