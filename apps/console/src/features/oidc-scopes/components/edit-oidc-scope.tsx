@@ -24,7 +24,8 @@ import {
     LinkButton,
     TableActionsInterface,
     TableColumnInterface,
-    TableDataInterface
+    TableDataInterface,
+    PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,6 +59,10 @@ interface EditScopePropsInterface extends SBACInterface<FeatureConfigInterface>,
      */
     selectedAttributes: ExternalClaim[];
     /**
+     * Attributes that have already been filtered.
+     */
+    tempSelectedAttributes: ExternalClaim[];
+    /**
      * Attributes that haven't been selected yet.
      */
     unselectedAttributes: ExternalClaim[];
@@ -89,6 +94,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         scope,
         onUpdate,
         selectedAttributes,
+        tempSelectedAttributes,
         unselectedAttributes,
         isRequestLoading,
         triggerAddAttributeModal,
@@ -254,23 +260,47 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     };
 
     const showPlaceholders = (): ReactElement => {
-        return selectedAttributes?.length === 0 ? (
+        return selectedAttributes?.length === 0 ?
             <EmptyPlaceholder
-                data-testid="scope-mgt-empty-claims-list"
-                title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
+                data-testid="scope-mgt-empty-actual-claims-list"
                 subtitle={ [
-                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
-                    t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
+                    t("console:manage.features.oidcScopes.editScope.claimList.emptyPlaceholder.subtitles.0")
                 ] }
                 action={ (
-                    <LinkButton onClick={ clearSearchedAttributes }>
-                        { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
-                    </LinkButton>
+                    <PrimaryButton
+                        data-testid="user-mgt-roles-list-add-button"
+                        size="medium"
+                        icon={ <Icon name="add" /> }
+                        onClick={ () => {
+                            handleOpenSelectionModal();
+                            showAttributeSelectionModal();
+                        } }
+                    >
+                        <Icon name="add" />
+                            { t("console:manage.features.oidcScopes.editScope.claimList.addClaim") }
+                    </PrimaryButton>
                 ) }
-                image={ getEmptyPlaceholderIllustrations().emptySearch }
+                image={ getEmptyPlaceholderIllustrations().newList }
                 imageSize="tiny"
             />
-        ) : null;
+            : (
+            tempSelectedAttributes?.length === 0 ?
+                <EmptyPlaceholder
+                    data-testid="scope-mgt-empty-claims-list"
+                    title={ t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.title") }
+                    subtitle={ [
+                        t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.0"),
+                        t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.subtitles.1")
+                    ] }
+                    action={ (
+                        <LinkButton onClick={ clearSearchedAttributes }>
+                            { t("console:manage.features.oidcScopes.editScope.claimList.emptySearch.action") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                />
+            : null);
     };
 
     return (
@@ -284,7 +314,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ selectedAttributes }
+                data={ tempSelectedAttributes }
                 onRowClick={ () => null }
                 placeholders={ showPlaceholders() }
                 transparent={ !isRequestLoading && showPlaceholders() !== null }
