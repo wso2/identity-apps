@@ -49,7 +49,8 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
         && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND")
         && (history.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")))) {
 
-        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, history.location.pathname);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP,
+            history.location.pathname + history.location.hash);
     } else {
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
     }
@@ -67,3 +68,4 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
         />
     );
 };
+

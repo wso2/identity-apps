@@ -21,8 +21,9 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
+import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid } from "semantic-ui-react";
@@ -37,7 +38,7 @@ import {
 } from "./settings";
 import { Info } from "./settings/info";
 import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
-import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
+import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins, history } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -47,11 +48,10 @@ import {
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import SAMLApplicationTemplate
-    from "../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 
@@ -63,10 +63,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Editing application.
      */
     application: ApplicationInterface;
-    /**
-     * Default active tab index.
-     */
-    defaultActiveIndex?: number;
     /**
      * Used to the configured inbound protocols list from the parent component.
      */
@@ -92,10 +88,6 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     template?: ApplicationTemplateInterface;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Make the form read only.
      */
     readOnly?: boolean;
@@ -118,7 +110,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
-        defaultActiveIndex,
         featureConfig,
         isLoading,
         getConfiguredInboundProtocolsList,
@@ -126,7 +117,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         template,
-        isTabExtensionsAvailable,
         readOnly,
         urlSearchParams,
         [ "data-testid" ]: testId
@@ -161,6 +151,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
+    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
 
     /**
      * Called when an application updates.
@@ -173,21 +165,74 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
-     * Called when the defaultActiveIndex updates.
+     * Set the defaultTabIndex when the application template updates.
      */
-    useEffect( () => {
-        // Change defaultActiveIndex value for custom applications.
-        if ((application?.templateId === CustomApplicationTemplate.id
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
-            && !urlSearchParams.get(ApplicationManagementConstants.APP_STATE_PROTOCOL_PARAM_KEY)) {
-            setActiveTabIndex(defaultActiveIndex - 1);
+    useEffect(() => {
+
+        if(!template) {
             return;
         }
-        setActiveTabIndex(defaultActiveIndex);
 
-    },[defaultActiveIndex]);
+        let defaultTabIndex: number = 0;
+
+        if(applicationConfig.editApplication.extendTabs) {
+            defaultTabIndex=1;
+        }
+
+        setDefaultActiveIndex(defaultTabIndex);
+
+        if(isEmpty(window.location.hash)){
+
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) !==
+                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
+
+                handleDefaultTabIndexChange(defaultTabIndex);
+
+                return;
+            }
+
+            // When application selection is done through the strong authentication flow.
+            if(template.id === CustomApplicationTemplate.id) {
+                handleActiveTabIndexChange(3);
+            } else {
+                handleActiveTabIndexChange(4);
+            }
+        }
+    },[template]);
+
+    /**
+     * Called when the URL fragment updates.
+     */
+    useEffect( () => {
+
+        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
+            isEmpty(window.location.hash)) {
+
+            return;
+        }
+
+        const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
+
+        if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
+
+            const tabIndex: number = parseInt(urlFragment[1], 10);
+
+            if(inRange(tabIndex,  0, totalTabs)) {
+                if(tabIndex === activeTabIndex) {
+                    return;
+                }
+                handleActiveTabIndexChange(tabIndex);
+
+            } else {
+                // Change the tab index to defaultActiveIndex for invalid URL fragments.
+                handleDefaultTabIndexChange(defaultActiveIndex);
+            }
+
+        } else {
+            // Change the tab index to defaultActiveIndex for invalid URL fragments.
+            handleDefaultTabIndexChange(defaultActiveIndex);
+        }
+    }, [ window.location.hash, totalTabs ]);
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -309,10 +354,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             type: "tab"
         });
 
-        if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
-        }
-
         setTabPaneExtensions(extensions);
         setIsApplicationUpdated(false);
     }, [
@@ -332,6 +373,46 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         setShowClientSecretHashDisclaimerModal(true);
     }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
+
+    /**
+     * Handles the defaultActiveIndex change.
+     */
+    const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
+
+        if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
+            handleActiveTabIndexChange(defaultActiveIndex - 1);
+
+            return;
+        }
+
+        handleActiveTabIndexChange(defaultActiveIndex);
+    };
+
+    /**
+     * Handles the activeTabIndex change.
+     *
+     * @param {number} tabIndex - Active tab index.
+     */
+    const handleActiveTabIndexChange = (tabIndex:number): void => {
+
+        history.push({
+            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
+            pathname: window.location.pathname
+        });
+
+        setActiveTabIndex(tabIndex);
+    };
+
+    /**
+     * Handles the tab change.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {number} activeIndex - Active tab index.
+     */
+    const handleTabChange = (e: SyntheticEvent, { activeIndex }): void => {
+
+        handleActiveTabIndexChange(activeIndex);
+    };
 
     /**
      * Todo Remove this mapping and fix the backend.
@@ -728,13 +809,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     /**
-     * Handles the tab change.
-     */
-    const handleTabChange = (e, { activeIndex }): void => {
-        setActiveTabIndex(activeIndex);
-    };
-
-    /**
      * Renders the client secret hash disclaimer modal.
      * @return {React.ReactElement}
      */
@@ -862,6 +936,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
                         panes= { resolveTabPanes() }
+                        onInitialize={ ({ panesLength }) => {
+                            setTotalTabs(panesLength);
+                        } }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
