@@ -175,27 +175,21 @@ export const TextAreaAdapter = (props): ReactElement => {
 
 export const ToggleAdapter = (props): ReactElement => {
 
-    const { childFieldProps, input, meta } = props;
+    const { childFieldProps, input: { value, ...input }, type, meta, ...rest } = props;
 
     return (
         <Form.Checkbox
-            label={ childFieldProps.label }
-            name={ childFieldProps.name }
-            children={ childFieldProps.children }
-            onChange={ (event, data) => {
-                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
-                    childFieldProps.listen(data?.checked);
+            { ...input }
+            { ...rest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event, { checked }) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(checked);
                 }
 
-                input.onChange(data?.checked);
+                input.onChange({ target: { type: "checkbox", value, checked } });
             } }
-            control={ Checkbox }
-            readOnly={ childFieldProps.readOnly }
-            disabled={ childFieldProps.disabled }
-            { ...childFieldProps }
-            defaultChecked={ childFieldProps.value && childFieldProps.value.length > 0 }
-            checked={ input.checked || input.value }
-            autoFocus={ childFieldProps.autoFocus || false }
         />
     );
 };

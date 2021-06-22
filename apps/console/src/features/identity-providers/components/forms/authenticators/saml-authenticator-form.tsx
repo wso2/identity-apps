@@ -155,9 +155,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             ...authenticator.data,
             properties: [
                 ...Object.keys(values)
-                    .filter((key) => !controlledFields.has(key))
+                    //.filter((key) => !controlledFields.has(key))
                     .map((key) => ({ key, value: values[ key ] })),
-                ...Object.entries({
+                /*...Object.entries({
                     ISAuthnReqSigned: isAuthnReqSigned,
                     IncludeProtocolBinding: includeProtocolBinding,
                     IsAuthnRespSigned: isAuthnRespSigned,
@@ -165,7 +165,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     IsLogoutReqSigned: isLogoutReqSigned,
                     IsSLORequestAccepted: isSLORequestAccepted,
                     IsUserIdInClaims: isUserIdInClaims,
-                }).map(([ key, value ]) => ({ key, value })) as any
+                }).map(([ key, value ]) => ({ key, value })) as any*/
             ],
         });
 
@@ -297,171 +297,183 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             />
 
             <FormSection heading="Single Logout">
-                <Field.Checkbox
-                    toggle
-                    name="IsSLORequestAccepted"
-                    value={ formValues?.IsSLORequestAccepted }
-                    ariaLabel={ "Specify whether logout is enabled for IdP" }
-                    data-testid={ `${ testId }-IsSLORequestAccepted-field` }
-                    label={ (
-                        <FormInputLabel htmlFor="IsSLORequestAccepted">
-                            Accept identity provider logout request
-                        </FormInputLabel>
-                    ) }
-                    hint={ `Specify whether single logout request from the identity 
+                <Grid>
+                    <SectionRow>
+                        <Field.Checkbox
+                            toggle
+                            name="IsSLORequestAccepted"
+                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            data-testid={ `${ testId }-IsSLORequestAccepted-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="IsSLORequestAccepted">
+                                    Accept identity provider logout request
+                                </FormInputLabel>
+                            ) }
+                            hint={ `Specify whether single logout request from the identity 
                                     provider must be accepted by ${ config.ui.productName }`
-                    }
-                />
-                <Field.Checkbox
-                    required={ false }
-                    name="IsLogoutEnabled"
-                    value={ formValues?.IsLogoutEnabled }
-                    ariaLabel={ "Specify whether logout is enabled for IdP" }
-                    data-testid={ `${ testId }-IsLogoutEnabled-field` }
-                    toggle
-                    label={ (
-                        <FormInputLabel htmlFor="IsLogoutEnabled">
-                            Identity provider logout enabled
-                        </FormInputLabel>
-                    ) }
-                    hint={ (
-                        <>
-                            Specify whether logout is supported by the external
-                            identity provider.
-                        </>
-                    ) }
-                />
-                <Field.Input
-                    name="LogoutReqUrl"
-                    value={ formValues?.LogoutReqUrl }
-                    inputType="url"
-                    disabled={ !isLogoutEnabled }
-                    placeholder={ "Enter logout URL" }
-                    ariaLabel={ "Specify SAML 2.0 IdP Logout URL" }
-                    data-testid={ `${ testId }-LogoutReqUrl-field` }
-                    label={ (
-                        <FormInputLabel htmlFor="LogoutReqUrl">
-                            IdP logout <Code>URL</Code>
-                        </FormInputLabel>
-                    ) }
-                    maxLength={ LOGOUT_URL_LENGTH.max }
-                    minLength={ LOGOUT_URL_LENGTH.min }
-                    validate={ (value) => {
-                        return (formValues?.IsLogoutEnabled && value)
-                            ? composeValidators(
-                                isUrl,
-                                hasLength(LOGOUT_URL_LENGTH)
-                            )(value)
-                            : undefined;
-                    } }
-                    hint={ (
-                        <>
-                            Enter the identity provider&apos;s logout URL value if it is different from the SSO
-                            URL (<Code>{ formValues.SSOUrl ?? "https://ENTERPRISE_IDP/samlsso" }</Code>)
-                        </>
-                    ) }
-                />
+                            }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Checkbox
+                            required={ false }
+                            name="IsLogoutEnabled"
+                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            data-testid={ `${ testId }-IsLogoutEnabled-field` }
+                            toggle
+                            label={ (
+                                <FormInputLabel htmlFor="IsLogoutEnabled">
+                                    Identity provider logout enabled
+                                </FormInputLabel>
+                            ) }
+                            hint={ (
+                                <>
+                                    Specify whether logout is supported by the external
+                                    identity provider.
+                                </>
+                            ) }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Input
+                            name="LogoutReqUrl"
+                            value={ formValues?.LogoutReqUrl }
+                            inputType="url"
+                            disabled={ !isLogoutEnabled }
+                            placeholder={ "Enter logout URL" }
+                            ariaLabel={ "Specify SAML 2.0 IdP Logout URL" }
+                            data-testid={ `${ testId }-LogoutReqUrl-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="LogoutReqUrl">
+                                    IdP logout <Code>URL</Code>
+                                </FormInputLabel>
+                            ) }
+                            maxLength={ LOGOUT_URL_LENGTH.max }
+                            minLength={ LOGOUT_URL_LENGTH.min }
+                            validate={ (value) => {
+                                return (formValues?.IsLogoutEnabled && value)
+                                    ? composeValidators(
+                                        isUrl,
+                                        hasLength(LOGOUT_URL_LENGTH)
+                                    )(value)
+                                    : undefined;
+                            } }
+                            hint={ (
+                                <>
+                                    Enter the identity provider&apos;s logout URL value if it is different from the SSO
+                                    URL (<Code>{ formValues.SSOUrl ?? "https://ENTERPRISE_IDP/samlsso" }</Code>)
+                                </>
+                            ) }
+                        />
+                    </SectionRow>
+                </Grid>
             </FormSection>
 
             <FormSection heading="Request & Response Signing">
-                <Field.Checkbox
-                    toggle
-                    required={ false }
-                    name="IsAuthnRespSigned"
-                    value={ formValues?.IsAuthnRespSigned }
-                    ariaLabel={ "Authentication response must be signed always?" }
-                    data-testid={ `${ testId }-IsAuthnRespSigned-field` }
-                    label={ (
-                        <FormInputLabel htmlFor="IsAuthnRespSigned">
-                            Strictly verify authentication response signature
-                        </FormInputLabel>
-                    ) }
-                    hint={ (
-                        <>
-                            Specifies if SAML2 authentication response from the external
-                            identity provider must be signed or not.
-                        </>
-                    ) }
-                />
-                <Field.Checkbox
-                    toggle
-                    required={ false }
-                    name="IsLogoutReqSigned"
-                    value={ formValues?.IsLogoutReqSigned }
-                    ariaLabel={ "Specify whether logout is enabled for IdP" }
-                    data-testid={ `${ testId }-IsLogoutReqSigned-field` }
-                    label={ (
-                        <FormInputLabel htmlFor="IsLogoutEnabled">
-                            Enable logout request signing
-                        </FormInputLabel>
-                    ) }
-                    hint={ (
-                        <>
-                            Specify whether SAML logout request to the external identity
-                            provider must be signed or not.
-                        </>
-                    ) }
-                />
-                <Field.Checkbox
-                    toggle
-                    required={ false }
-                    name="ISAuthnReqSigned"
-                    value={ formValues?.ISAuthnReqSigned }
-                    ariaLabel={ "Is authentication request signed?" }
-                    data-testid={ `${ testId }-ISAuthnReqSigned-field` }
-                    label={ (
-                        <FormInputLabel htmlFor="ISAuthnReqSigned">
-                            Enable authentication request signing
-                        </FormInputLabel>
-                    ) }
-                    hint={ (
-                        <>
-                            Specify whether the SAML authentication request to the external
-                            identity provider must be signed or not.
-                        </>
-                    ) }
-                />
-                <Field.Dropdown
-                    value={ formValues?.SignatureAlgorithm }
-                    required={ isAlgorithmsEnabled }
-                    name="SignatureAlgorithm"
-                    type="select"
-                    disabled={ !isAlgorithmsEnabled }
-                    placeholder={ "Select signature algorithm." }
-                    ariaLabel={ "Select the signature algorithm for request signing." }
-                    data-testid={ `${ testId }-SignatureAlgorithm-field` }
-                    options={ getSignatureAlgorithmOptionsMapped(authenticator.meta) }
-                    label={ (
-                        <FormInputLabel htmlFor="SignatureAlgorithm">
-                            Signature algorithm
-                        </FormInputLabel>
-                    ) }
-                    validate={ getAlgorithmsDropdownFieldValidators() }
-                />
-                <Field.Dropdown
-                    required={ isAlgorithmsEnabled }
-                    name="DigestAlgorithm"
-                    value={ formValues?.DigestAlgorithm }
-                    type="select"
-                    disabled={ !isAlgorithmsEnabled }
-                    placeholder={ "Select digest algorithm" }
-                    ariaLabel={ "Select the digest algorithm for description." }
-                    data-testid={ `${ testId }-DigestAlgorithm-field` }
-                    options={ getDigestAlgorithmOptionsMapped(authenticator.meta) }
-                    label={ (
-                        <FormInputLabel htmlFor="DigestAlgorithm">
-                            Select digest algorithm
-                        </FormInputLabel>
-                    ) }
-                    validate={ getAlgorithmsDropdownFieldValidators() }
-                />
+                <Grid>
+                    <SectionRow>
+                        <Field.Checkbox
+                            toggle
+                            required={ false }
+                            name="IsAuthnRespSigned"
+                            ariaLabel={ "Authentication response must be signed always?" }
+                            data-testid={ `${ testId }-IsAuthnRespSigned-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="IsAuthnRespSigned">
+                                    Strictly verify authentication response signature
+                                </FormInputLabel>
+                            ) }
+                            hint={ (
+                                <>
+                                    Specifies if SAML2 authentication response from the external
+                                    identity provider must be signed or not.
+                                </>
+                            ) }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Checkbox
+                            toggle
+                            required={ false }
+                            name="IsLogoutReqSigned"
+                            ariaLabel={ "Specify whether logout is enabled for IdP" }
+                            data-testid={ `${ testId }-IsLogoutReqSigned-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="IsLogoutEnabled">
+                                    Enable logout request signing
+                                </FormInputLabel>
+                            ) }
+                            hint={ (
+                                <>
+                                    Specify whether SAML logout request to the external identity
+                                    provider must be signed or not.
+                                </>
+                            ) }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Checkbox
+                            toggle
+                            required={ false }
+                            name="ISAuthnReqSigned"
+                            ariaLabel={ "Is authentication request signed?" }
+                            data-testid={ `${ testId }-ISAuthnReqSigned-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="ISAuthnReqSigned">
+                                    Enable authentication request signing
+                                </FormInputLabel>
+                            ) }
+                            hint={ (
+                                <>
+                                    Specify whether the SAML authentication request to the external
+                                    identity provider must be signed or not.
+                                </>
+                            ) }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Dropdown
+                            required={ isAlgorithmsEnabled }
+                            name="SignatureAlgorithm"
+                            type="select"
+                            disabled={ !isAlgorithmsEnabled }
+                            placeholder={ "Select signature algorithm." }
+                            ariaLabel={ "Select the signature algorithm for request signing." }
+                            data-testid={ `${ testId }-SignatureAlgorithm-field` }
+                            options={ getSignatureAlgorithmOptionsMapped(authenticator.meta) }
+                            label={ (
+                                <FormInputLabel htmlFor="SignatureAlgorithm">
+                                    Signature algorithm
+                                </FormInputLabel>
+                            ) }
+                            validate={ getAlgorithmsDropdownFieldValidators() }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Dropdown
+                            required={ isAlgorithmsEnabled }
+                            name="DigestAlgorithm"
+                            type="select"
+                            disabled={ !isAlgorithmsEnabled }
+                            placeholder={ "Select digest algorithm" }
+                            ariaLabel={ "Select the digest algorithm for description." }
+                            data-testid={ `${ testId }-DigestAlgorithm-field` }
+                            options={ getDigestAlgorithmOptionsMapped(authenticator.meta) }
+                            label={ (
+                                <FormInputLabel htmlFor="DigestAlgorithm">
+                                    Select digest algorithm
+                                </FormInputLabel>
+                            ) }
+                            validate={ getAlgorithmsDropdownFieldValidators() }
+                        />
+                    </SectionRow>
+                </Grid>
             </FormSection>
 
             <FormSection heading="Advanced">
                 <Field.Checkbox
                     toggle
                     required={ false }
-                    value={ formValues?.IncludeProtocolBinding }
                     name="IncludeProtocolBinding"
                     ariaLabel={ "Include protocol binding in the request" }
                     data-testid={ `${ testId }-IncludeProtocolBinding-field` }
@@ -480,7 +492,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Field.Checkbox
                     required={ false }
                     name="IsUserIdInClaims"
-                    value={ formValues?.IsUserIdInClaims }
                     ariaLabel={ "Use Name ID as the user identifier." }
                     data-testid={ `${ testId }-IsUserIdInClaims-field` }
                     toggle
