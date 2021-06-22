@@ -192,9 +192,10 @@ export const ToggleAdapter = (props): ReactElement => {
             control={ Checkbox }
             readOnly={ childFieldProps.readOnly }
             disabled={ childFieldProps.disabled }
-            defaultChecked={ !(childFieldProps.value.length == 0) }
-            autoFocus={ childFieldProps.autoFocus || false }
             { ...childFieldProps }
+            defaultChecked={ childFieldProps.value && childFieldProps.value.length > 0 }
+            checked={ input.checked || input.value }
+            autoFocus={ childFieldProps.autoFocus || false }
         />
     );
 };
