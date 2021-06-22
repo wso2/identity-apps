@@ -211,7 +211,7 @@ export const App = (): ReactElement => {
                                                 description: (
                                                     <Trans
                                                         i18nKey={
-                                                            "console:common.modals.sessionTimeoutModal.description"
+                                                            "myAccount:common.modals.sessionTimeoutModal.description"
                                                         }
                                                     >
                                                         When you click on the <Code>Go back</Code> button, we will
@@ -220,16 +220,16 @@ export const App = (): ReactElement => {
                                                         page
                                                     </Trans>
                                                 ),
-                                                headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
-                                                loginAgainButtonText: I18n.instance.t("console:common:modals" +
+                                                headingI18nKey: "myAccount:common.modals.sessionTimeoutModal.heading",
+                                                loginAgainButtonText: I18n.instance.t("myAccount:common:modals" +
                                                     ".sessionTimeoutModal.loginAgainButton"),
-                                                primaryButtonText: I18n.instance.t("console:common.modals" +
-                                                    ".sessionTimeoutModal.primaryButton"),
-                                                secondaryButtonText: I18n.instance.t("console:common.modals" +
+                                                primaryButtonText: I18n.instance.t("myAccount:modals." +
+                                                    "sessionTimeoutModal.primaryButton"),
+                                                secondaryButtonText: I18n.instance.t("myAccount:common.modals" +
                                                     ".sessionTimeoutModal.secondaryButton"),
-                                                sessionTimedOutDescription: I18n.instance.t("console:common:modals" +
-                                                    ".sessionTimeoutModal.sessionTimedOutDescription"),
-                                                sessionTimedOutHeadingI18nKey: "console:common:modals" +
+                                                sessionTimedOutDescription: I18n.instance.t("myAccount:common:" +
+                                                    "modals.sessionTimeoutModal.sessionTimedOutDescription"),
+                                                sessionTimedOutHeadingI18nKey: "myAccount:common:modals" +
                                                     ".sessionTimeoutModal.sessionTimedOutHeading"
                                             } }
                                             type={ SessionTimeoutModalTypes.DEFAULT }

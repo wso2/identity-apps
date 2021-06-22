@@ -1321,14 +1321,14 @@ export const myAccount: MyAccountNS = {
             secondaryButton: "Cancelar"
         },
         sessionTimeoutModal: {
-            description: "Você será desconectado da sessão atual devido à inatividade." +
-                "Selecione Permanecer conectado se desejar continuar a sessão.",
-            heading: "Você será desconectado em <1>{{ time }}</1>.",
-            primaryButton: "Permaneça logado",
-            secondaryButton: "Sair",
+            description: "Ao clicar em <1>Voltar</1>, tentaremos recuperar a sessão, se ela existir. Se você " +
+                "não tiver uma sessão ativa, será redirecionado para a página de login.",
+            heading: "Parece que você está inativo há muito tempo.",
             loginAgainButton: "Entrar novamente",
-            sessionTimedOutHeading: "A sessão do usuário expirou devido à inatividade.",
-            sessionTimedOutDescription: "Faça login novamente para continuar de onde parou."
+            primaryButton: "Volte",
+            secondaryButton: "Sair",
+            sessionTimedOutDescription: "Please log in again to continue from where you left off.",
+            sessionTimedOutHeading: "A sessão do usuário expirou devido à inatividade."
         }
     },
     pages: {

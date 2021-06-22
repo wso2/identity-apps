@@ -1334,14 +1334,14 @@ export const myAccount: MyAccountNS = {
             secondaryButton: "Cancel"
         },
         sessionTimeoutModal: {
-            description: "You will be logged out of the current session due to inactivity. " +
-                "Please choose Stay logged in if you would like to continue the session.",
-            heading: "You will be logged out in <1>{{ time }}</1>.",
-            primaryButton: "Stay logged in",
-            secondaryButton: "Logout",
+            description: "When you click on <1>Go back</1>, we will try to recover the session if " +
+                "it exists. If you don't have an active session, you will be redirected to the login page.",
+            heading: "It looks like you have been inactive for a long time.",
             loginAgainButton: "Login again",
-            sessionTimedOutHeading: "User session has expired due to inactivity.",
-            sessionTimedOutDescription: "Please log in again to continue from where you left off."
+            primaryButton: "Go back",
+            secondaryButton: "Logout",
+            sessionTimedOutDescription: "Please log in again to continue from where you left off.",
+            sessionTimedOutHeading: "User session has expired due to inactivity."
         }
     },
     pages: {
