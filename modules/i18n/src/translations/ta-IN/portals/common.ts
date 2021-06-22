@@ -31,8 +31,8 @@ export const common: CommonNS = {
     approvalStatus: "அனுமதி நிலை",
     approve: "அனுமதி",
     assignees: "அளிக்கப்பட்டவர்கள்",
-    authenticator: "அங்கீகார",
     authentication: "அங்கீகார",
+    authenticator: "அங்கீகார",
     // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "அங்கீகாரிகள்",
     back: "மீண்டும்",
@@ -49,8 +49,8 @@ export const common: CommonNS = {
     confirm: "உறுதிப்படுத்தவும்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
-    createdOn: "உருவாக்கப்பட்ட தினம்",
     create: "உருவாக்கு",
+    createdOn: "உருவாக்கப்பட்ட தினம்",
     dangerZone: "ஆபத்து மண்டலம்",
     delete: "அழி",
     description: "விபரம்",
@@ -94,6 +94,11 @@ export const common: CommonNS = {
     more: "மேலும்",
     myAccount: "என் கணக்கு",
     name: "பெயர்",
+    networkErrorMessage: {
+        description: "பயன்பாட்டை மீண்டும் ஏற்ற முயற்சிக்கவும்.",
+        heading: "ஏதோ தவறு நடந்துவிட்டது",
+        primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
+    },
     next: "அடுத்தது",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",

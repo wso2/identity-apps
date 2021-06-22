@@ -29,6 +29,7 @@ import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     Code,
     ContentLoader,
+    NetworkErrorModal,
     SessionManagementProvider,
     SessionTimeoutModalTypes,
     ThemeContext
@@ -253,6 +254,13 @@ export const App = (): ReactElement => {
                                                         { state.css }
                                                     </style>
                                                 </Helmet>
+                                                <NetworkErrorModal
+                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".primaryActionText") }
+                                                />
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }

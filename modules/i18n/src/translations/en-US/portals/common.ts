@@ -31,8 +31,8 @@ export const common: CommonNS = {
     approvalStatus: "Approval Status",
     approve: "Approve",
     assignees: "Assignees",
-    authenticator: "Authenticator",
     authentication: "Authentication",
+    authenticator: "Authenticator",
     // eslint-disable-next-line @typescript-eslint/camelcase
     authenticator_plural: "Authenticators",
     back: "Back",
@@ -49,8 +49,8 @@ export const common: CommonNS = {
     confirm: "Confirm",
     contains: "Contains",
     continue: "Continue",
-    createdOn: "Created on",
     create: "Create",
+    createdOn: "Created on",
     dangerZone: "Danger Zone",
     delete: "Delete",
     description: "Description",
@@ -94,6 +94,11 @@ export const common: CommonNS = {
     more: "More",
     myAccount: "My Account",
     name: "Name",
+    networkErrorMessage: {
+        description: "Please try reloading the app.",
+        heading: "Something went wrong",
+        primaryActionText: "Reload the App"
+    },
     next: "Next",
     okay: "Okay",
     operatingSystem: "Operating System",

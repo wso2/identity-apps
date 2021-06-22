@@ -26,7 +26,13 @@ import {
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { Code, SessionManagementProvider, SessionTimeoutModalTypes, ThemeContext } from "@wso2is/react-components";
+import {
+    Code,
+    NetworkErrorModal,
+    SessionManagementProvider,
+    SessionTimeoutModalTypes,
+    ThemeContext
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -252,6 +258,13 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                         { state.css }
                                                     </style>
                                                 </Helmet>
+                                                <NetworkErrorModal
+                                                    heading={ I18n.instance.t("common:networkErrorMessage.heading") }
+                                                    description={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".description") }
+                                                    primaryActionText={ I18n.instance.t("common:networkErrorMessage" +
+                                                        ".primaryActionText") }
+                                                />
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }
