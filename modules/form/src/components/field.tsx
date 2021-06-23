@@ -18,15 +18,16 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { ReactElement, cloneElement } from "react";
+import React, { FC, ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldDropdown } from "./field-dropdown";
 import { FieldInput } from "./field-input";
+import { FieldQueryParams } from "./field-query-params";
 import { FieldTextarea } from "./field-textarea";
 
-export interface FormFieldPropsInterface extends FieldProps<any,any,any>, TestableComponentInterface {
+export interface FormFieldPropsInterface extends FieldProps<any, any, any>, TestableComponentInterface {
     /**
      * Aria label for the field.
      */
@@ -38,14 +39,23 @@ export interface FormFieldPropsInterface extends FieldProps<any,any,any>, Testab
     /**
      * Custom styles object
      */
-    style?: object;
+    style?: Record<string, unknown>;
+}
+
+type FieldType = FC<FormFieldPropsInterface> & {
+    Input: typeof FieldInput;
+    Button: typeof FieldButton;
+    Textarea: typeof FieldTextarea;
+    Checkbox: typeof FieldCheckbox;
+    Dropdown: typeof FieldDropdown;
+    QueryParams: typeof FieldQueryParams;
 }
 
 /**
  * Implementation of the Form Field component.
  * @param props
  */
- export const Field = (props: FormFieldPropsInterface): ReactElement => {
+export const Field: FieldType = (props: FormFieldPropsInterface): ReactElement => {
     const {
         children,
         className,
@@ -83,3 +93,4 @@ Field.Button = FieldButton;
 Field.Textarea = FieldTextarea;
 Field.Checkbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
+Field.QueryParams = FieldQueryParams;

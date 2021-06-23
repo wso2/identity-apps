@@ -23,8 +23,8 @@ export * from "./field-checkbox";
 export * from "./field-input";
 export * from "./field-textarea";
 export * from "./field-dropdown";
+export * from "./field-query-params";
 export * from "./form";
 export * from "./wizard";
 export * from "./wizard2";
 export * from "./wizardPage";
-
