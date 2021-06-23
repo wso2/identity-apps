@@ -154,7 +154,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         });
         // FIXME: IsSLORequestAccepted is not updating from the API. Even though
         //        we send the value to false or true.
-        console.log("these are the props im goin to sumit", authn);
         onSubmit(authn);
     };
 
