@@ -167,14 +167,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     const subjectAttributeChangeListener = (subjectAttributeFieldName: string): void => {
-        console.log("AAAAAAAAAAAAAAAAAAA");
         if(subjectAttributeFieldName) {
-            console.log("BBBBBBBBBBB");
-            console.log(subjectAttributeFieldName?.toString());
             setSelectedSubjectValue(subjectAttributeFieldName?.toString());
         } else {
-            console.log("CCCCCCCCC");
-            console.log(subjectAttributeFieldName);
             setSelectedSubjectValue(subjectAttributeFieldName);
         }
     };
