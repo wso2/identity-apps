@@ -63,7 +63,7 @@
         "@types/react-redux": "^7.1.1",
         "@types/react-router-dom": "^5.1.3",
         "@types/ua-parser-js": "^0.7.33",
-        "@wso2/identity-oidc-js": "^0.1.3",
+        "@wso2/identity-oidc-js": "0.1.3",
         "await-semaphore": "^0.1.3",
         "axios": "^0.21.1",
         "babel-jest": "^26.3.0",
