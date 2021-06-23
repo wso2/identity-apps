@@ -133,13 +133,28 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     }, [isLogoutReqSigned, isAuthnReqSigned]);
 
     const onFormSubmit = (values: { [key: string]: any }) => {
+        const manualOverride = {
+            "IncludeProtocolBinding": includeProtocolBinding,
+            "ISAuthnReqSigned": isAuthnReqSigned,
+            "IsLogoutEnabled": isLogoutEnabled,
+            "IsLogoutReqSigned": isLogoutReqSigned,
+            "IsSLORequestAccepted": isSLORequestAccepted,
+            "IsUserIdInClaims": isUserIdInClaims
+        };
+        const manualOverrideKeys = new Set<string>(Object.keys(manualOverride));
         const authn = ({
             ...authenticator.data,
             properties: [
                 ...Object.keys(values)
-                    .map((key) => ({ key, value: values[key] }))
+                    .filter((key) => !manualOverrideKeys.has(key))
+                    .map((key) => ({ key, value: values[key] })),
+                ...Object.keys(manualOverride)
+                    .map((key) => ({ key, value: manualOverride[key] })) as any
             ]
         });
+        // FIXME: IsSLORequestAccepted is not updating from the API. Even though
+        //        we send the value to false or true.
+        console.log("these are the props im goin to sumit", authn);
         onSubmit(authn);
     };
 
