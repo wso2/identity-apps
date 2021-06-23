@@ -72,7 +72,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
 
-    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>(initialSubject?.claim?.uri);
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
         useState<string>();
 
@@ -99,7 +99,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     setSelectedSubjectValue(selectedSubjectValue);
                 }
             } else {
-                setSelectedSubjectValue(dropDownOptions[ 0 ]?.value);
+                setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
             }
         } else if (selectedSubjectValue) {
             if (dropDownOptions && dropDownOptions.length > 0 &&
@@ -167,9 +167,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     const subjectAttributeChangeListener = (subjectAttributeFieldName: string): void => {
+        console.log("AAAAAAAAAAAAAAAAAAA");
         if(subjectAttributeFieldName) {
+            console.log("BBBBBBBBBBB");
+            console.log(subjectAttributeFieldName?.toString());
             setSelectedSubjectValue(subjectAttributeFieldName?.toString());
         } else {
+            console.log("CCCCCCCCC");
+            console.log(subjectAttributeFieldName);
             setSelectedSubjectValue(subjectAttributeFieldName);
         }
     };
