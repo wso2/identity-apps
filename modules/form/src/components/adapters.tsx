@@ -20,7 +20,8 @@ import { Button, CopyInputField, DangerButton, LinkButton, Password, PrimaryButt
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, KeyboardEvent, ReactElement } from "react";
 import { Checkbox, Form, Input, Select } from "semantic-ui-react";
-import { CheckboxAdapterPropsInterface, FieldButtonTypes } from "../models";
+import { QueryParameters } from "../addons";
+import { FieldButtonTypes, CheckboxAdapterPropsInterface } from "../models";
 
 /**
  * The enter key.
@@ -392,4 +393,24 @@ export const ButtonAdapter = ({ childFieldProps }): ReactElement => {
             </Button>
         );
     }
+};
+
+export const QueryParamsAdapter = ({ input, childFieldProps }): ReactElement => {
+
+    const { label, name } = childFieldProps;
+
+    if (!label)
+        throw new Error("QueryParamsAdapter: required child prop 'label'");
+    if (!name)
+        throw new Error("QueryParamsAdapter: required child prop 'name'");
+
+    return (
+        <QueryParameters
+            label={ childFieldProps.label }
+            name={ childFieldProps.name }
+            value={ input.value || childFieldProps.value }
+            onChange={ input.onChange }
+        />
+    );
+
 };
