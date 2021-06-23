@@ -120,6 +120,14 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      * Enable query search with shift and enter.
      */
     enableQuerySearch?: boolean;
+    /**
+     * Default filter conditions..
+     */
+    defaultFilterConditionOptions?: any;
+    /**
+     * Default filter attributes.
+     */
+    filterAttributeOptions?: any;
 }
 
 /**
@@ -155,7 +163,9 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         searchOptionsHeader,
         submitted,
         [ "data-testid" ]: testId,
-        triggerClearQuery
+        triggerClearQuery,
+        defaultFilterConditionOptions,
+        filterAttributeOptions
     } = props;
 
     const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();
@@ -267,7 +277,26 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
             if (internalSearchQuery === "") {
                 query = null;
             } else {
-                query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
+                let advancedSearch = false;
+                const terms = internalSearchQuery.split(" ");
+                if (terms.length > 2) {
+                    const attributes = filterAttributeOptions.filter((attribute) => {
+                        return attribute.value === terms[0];
+                    });
+                    if (attributes.length > 0) {
+                        const conditions = defaultFilterConditionOptions.filter((condition) => {
+                            return condition.value === terms[1];
+                        });
+                        if (conditions.length > 0) {
+                            advancedSearch = true;
+                        }
+                    }
+                }
+                if (advancedSearch) {
+                    query = internalSearchQuery;
+                } else {
+                    query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
+                }
             }
             onSearchQuerySubmit(false, query);
             setShowSearchFieldHint(false);
@@ -363,19 +392,6 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     onKeyDown={ handleSearchQuerySubmit }
                 />
             </div>
-            {
-                enableQuerySearch
-                    ? (
-                        <div
-                            className={ `search-query-hint ${ searchFieldHintClasses }` }
-                            data-testid={ `${ testId }-query-hint` }
-                        >
-                            <div className="query">{ hintLabel }</div>
-                            <div className="short-cut"><Icon name="keyboard outline"/>{ " " }{ hintActionKeys }</div>
-                        </div>
-                    )
-                    : null
-            }
             <Popup
                 context={ searchInputRef }
                 content={ (
