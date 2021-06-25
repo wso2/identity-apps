@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../../configs";
-import {commonConfig} from "../../extensions";
+import { commonConfig } from "../../extensions";
 
 /**
  * Filter attribute field identifier.
