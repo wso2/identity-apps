@@ -278,7 +278,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 query = null;
             } else {
                 let advancedSearch: boolean = false;
-                const terms = internalSearchQuery.split(" ");
+                const terms: string[] = internalSearchQuery.split(" ");
                 if (terms.length > 2) {
                     const attributes = filterAttributeOptions.filter((attribute) => {
                         return attribute.value === terms[0];
