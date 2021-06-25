@@ -464,17 +464,20 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     disabled={ id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
-                                                                        t("console:manage.features.userstores.forms.edit." +
-                                                                            "connection.custom.requiredErrorMessage",
+                                                                        t("console:manage.features.userstores" +
+                                                                            ".forms.edit.connection.custom" +
+                                                                            ".requiredErrorMessage",
                                                                             {
-                                                                                name: property.description.split("#")[ 0 ]
+                                                                                name: property.description.
+                                                                                split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     placeholder={
-                                                                        t("console:manage.features.userstores.forms." +
-                                                                            "custom.placeholder",
+                                                                        t("console:manage.features.userstores." +
+                                                                            "forms.custom.placeholder",
                                                                             {
-                                                                                name: property.description.split("#")[ 0 ]
+                                                                                name: property.description.
+                                                                                split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     data-testid={ `${ testId }-form-non-sql-text-input-${
@@ -491,17 +494,20 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     disabled={ id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
-                                                                        t("console:manage.features.userstores.forms.edit." +
-                                                                            "connection.custom.requiredErrorMessage",
+                                                                        t("console:manage.features.userstores." +
+                                                                            "forms.edit.connection.custom." +
+                                                                            "requiredErrorMessage",
                                                                             {
-                                                                                name: property.description.split("#")[ 0 ]
+                                                                                name: property.description.
+                                                                                split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     placeholder={
                                                                         t("console:manage.features.userstores.forms." +
                                                                             "custom.placeholder",
                                                                             {
-                                                                                name: property.description.split("#")[ 0 ]
+                                                                                name: property.description.
+                                                                                split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     data-testid={ `${ testId }-form-non-sql-text-input-${

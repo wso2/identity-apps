@@ -31,8 +31,8 @@ import {
     SelectionCard,
     Steps,
     Switcher,
-    useWizardAlert,
-    XMLFileStrategy
+    XMLFileStrategy,
+    useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -52,9 +52,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { AppConstants, getCertificateIllustrations, ModalWithSidePanel, store } from "../../../core";
+import { AppConstants, ModalWithSidePanel, getCertificateIllustrations, store } from "../../../core";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
-import { getIdentityProviderWizardStepIcons, getIdPIcons } from "../../configs";
+import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -157,7 +157,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     }, [ initWizard ]);
 
     useEffect(() => {
-        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem")
+        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
     }, [ selectedProtocol ]);
 
     const initialValues = useMemo(() => ({
@@ -212,7 +212,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             { key: 1, text: "HTTP Redirect", value: "redirect" },
             { key: 2, text: "HTTP Post", value: "post" },
             { key: 3, text: "As Per Request", value: "as_request" }
-        ]
+        ];
     };
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
@@ -247,7 +247,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * template first we need to find the correct sub template and deep
          * clone that object to avoid mutation on file level configuration.
          */
-        const {idp: identityProvider} = cloneDeep(template.subTemplates.find(({id}) => {
+        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
             return id === (selectedProtocol === "saml" ?
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
@@ -462,10 +462,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
                                 value: "manual",
-                                label: "Manual Configuration",
+                                label: "Manual Configuration"
                             }, {
                                 value: "file",
-                                label: "File Based Configuration",
+                                label: "File Based Configuration"
                             } ] }
                         />
                     </Grid.Column>
@@ -652,10 +652,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 onChange={ ({ value }) => setSelectedCertInputType(value as any) }
                                 options={ [ {
                                     value: "jwks",
-                                    label: "JWKS endpoint",
+                                    label: "JWKS endpoint"
                                 }, {
                                     value: "pem",
-                                    label: "Use PEM certificate",
+                                    label: "Use PEM certificate"
                                 } ] }
                             />
                         ) }
@@ -750,7 +750,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({id}) => {
+        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
             return id === (selectedProtocol === "saml" ?
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML :
                     IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
@@ -761,7 +761,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             return null;
         }
 
-        const {wizardHelp: WizardHelp} = subTemplate?.content;
+        const { wizardHelp: WizardHelp } = subTemplate?.content;
 
         return (
             <ModalWithSidePanel.SidePanel>
@@ -780,7 +780,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             </ModalWithSidePanel.SidePanel>
         );
 
-    }
+    };
 
     // Start: Modal
 
@@ -858,7 +858,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                {/*Check whether we have more steps*/ }
+                                { /*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled }
@@ -870,7 +870,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
-                                {/*Check whether its the last step*/ }
+                                { /*Check whether its the last step*/ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     // Note that we use the same logic as the next button
                                     // element. This is because we pass a callback to
@@ -891,7 +891,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         floated="right" onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons." +
+                                            "previous") }
                                     </LinkButton>
                                 ) }
                             </Grid.Column>
@@ -903,7 +904,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         </ModalWithSidePanel>
     );
 
-}
+};
 
 /**
  * Default props for the enterprise identity provider
@@ -957,14 +958,14 @@ const ifFieldsHave = (errors: FormErrors): boolean => {
 
 const required = (value: any) => {
     if (!value) {
-        return `This is a required field`;
+        return "This is a required field";
     }
     return undefined;
 };
 
 const length = (minMax: MinMax) => (value) => {
     if (!value && minMax.min > 0) {
-        return `You cannot leave this blank`;
+        return "You cannot leave this blank";
     }
     if (value?.length > minMax.max) {
         return `Cannot exceed more than ${ minMax.max } characters.`;
@@ -976,5 +977,5 @@ const length = (minMax: MinMax) => (value) => {
 };
 
 const isUrl = (value) => {
-    return FormValidation.url(value) ? undefined : "This value is invalid."
+    return FormValidation.url(value) ? undefined : "This value is invalid.";
 };

@@ -42,12 +42,13 @@ import {
     AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
+    HelpPanelUtils,
+    PortalDocumentationStructureInterface,
     getEmptyPlaceholderIllustrations,
     getHelpPanelActionIcons,
-    HelpPanelUtils,
-    history,
-    PortalDocumentationStructureInterface
+    history
 } from "../../core";
+import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import {
     getHelpPanelIcons,
     getIdPIcons,
@@ -63,7 +64,6 @@ import {
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils } from "../utils";
 import { IdentityProviderTemplateManagementUtils } from "../utils";
-import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -196,7 +196,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
         const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy ?
             config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE :
-            IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY === IdentityProviderTemplateLoadingStrategies.REMOTE;
+            IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY ===
+            IdentityProviderTemplateLoadingStrategies.REMOTE;
 
         /**
          * With {@link skipGrouping} being {@code false} we say

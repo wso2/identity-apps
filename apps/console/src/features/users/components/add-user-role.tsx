@@ -52,7 +52,6 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         handleRoleListChange,
         handleTempListChange,
         handleInitialTempListChange,
-        handleInitialRoleListChange,
         handleSetRoleId
     } = props;
 

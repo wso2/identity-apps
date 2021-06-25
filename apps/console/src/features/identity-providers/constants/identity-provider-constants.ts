@@ -59,7 +59,7 @@ export class IdentityProviderConstants {
 
 export const GOOGLE_IDP_NAME = "Google";
 
-export const GOOGLE_IDP_ID = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0"
+export const GOOGLE_IDP_ID = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
 export const OIDC_IDP_ID = "oidc-idp";
-export const ENTERPRISE_IDP_ID = "enterprise-idp"
+export const ENTERPRISE_IDP_ID = "enterprise-idp";
 

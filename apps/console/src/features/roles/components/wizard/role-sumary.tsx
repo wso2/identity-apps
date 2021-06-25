@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, UserAvatar } from "@wso2is/react-components";
+import { UserAvatar } from "@wso2is/react-components";
 import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

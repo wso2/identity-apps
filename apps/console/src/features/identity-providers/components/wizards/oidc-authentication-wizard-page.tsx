@@ -17,8 +17,8 @@
  */
 
  import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { ReactElement } from "react";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { IdentityProviderTemplateInterface } from "../../models";
 
@@ -30,7 +30,7 @@ const URL_MAX_LENGTH: number = 2048;
  * Proptypes for the OidcAuthenticationWizardFrom.
  */
  interface OidcAuthenticationWizardFromPropsInterface extends TestableComponentInterface {
-    triggerSubmission: any; 
+    triggerSubmission: any;
     triggerPrevious: any;
     changePageNumber: (number) => void;
     template: IdentityProviderTemplateInterface;
@@ -39,14 +39,14 @@ const URL_MAX_LENGTH: number = 2048;
 }
 export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFromPropsInterface): ReactElement => {
 
-    const { 
-        triggerSubmission, 
-        triggerPrevious, 
+    const {
+        triggerSubmission,
+        triggerPrevious,
         changePageNumber,
         template,
         setTotalPage,
         onSubmit,
-        [ "data-testid" ]: testId 
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -55,27 +55,27 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
      * Check client id regex validation
      */
     const clientIdRegexValidation= (value) => {
-        const regex = new RegExp(".*")
+        const regex = new RegExp(".*");
         if (!regex.test(value)) {
-            return "Please enter a valid input."
+            return "Please enter a valid input.";
         }
     };
 
     return (
         <>
         <Wizard
-            initialValues={{ name: template?.idp?.name }}
-            onSubmit={(values)=>onSubmit(values)}
+            initialValues={ { name: template?.idp?.name } }
+            onSubmit={ (values)=>onSubmit(values) }
             triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
             triggerPrevious= { (previousFunction) => triggerPrevious(previousFunction) }
-            changePage= {(step:number)=> changePageNumber(step)}
-            setTotalPage= {(step:number)=> setTotalPage(step)}
+            changePage= { (step:number)=> changePageNumber(step) }
+            setTotalPage= { (step:number)=> setTotalPage(step) }
             data-testid={ testId }
         >
             <WizardPage
-                // TODO: Need to refactor once wizard can handle validation properly. 
+                // TODO: Need to refactor once wizard can handle validation properly.
                 validate={ (values): any => {
-   
+
                     const errors: any = {};
 
                     if (!values.name) {
@@ -175,8 +175,8 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
                 </WizardPage>
             </Wizard>
             </>
-    )
-}
+    );
+};
 
 /**
  * Default props for the oidc creation wizard.
