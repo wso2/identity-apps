@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../../configs";
+import { commonConfig } from "../../extensions";
 
 /**
  * Filter attribute field identifier.
@@ -112,6 +113,10 @@ export interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends Test
      * Manually trigger query clear action from outside.
      */
     triggerClearQuery?: boolean;
+    /**
+     * Enable query search with shift and enter.
+     */
+    enableQuerySearch?: boolean;
 }
 
 /**
@@ -128,6 +133,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchAttribute,
         defaultSearchOperator,
         dropdownPosition,
+        enableQuerySearch,
         filterAttributeOptions,
         filterConditionOptions,
         filterConditionsPlaceholder,
@@ -221,22 +227,25 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }
+            clearButtonPopupLabel={ t("myAccount:components.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
             defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
-            dropdownTriggerPopupLabel={ t("console:common.advancedSearch.popups.dropdown") }
-            hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
+            dropdownTriggerPopupLabel={ t("myAccount:components.advancedSearch.popups.dropdown") }
+            hintActionKeys={ t("myAccount:components.advancedSearch.hints.querySearch.actionKeys") }
             hintLabel={ t("myAccount:components.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("myAccount:components.advancedSearch.options.header") }
+            enableQuerySearch={ enableQuerySearch }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
             data-testid={ testId }
+            filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
+            filterAttributeOptions={ filterAttributeOptions }
             { ...rest }
         >
             <Grid>
@@ -360,5 +369,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
+    enableQuerySearch: commonConfig.AdvancedSearchWithBasicFilters.enableQuerySearch,
     showResetButton: false
 };
