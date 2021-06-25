@@ -123,7 +123,7 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
     /**
      * Default filter conditions..
      */
-    defaultFilterConditionOptions?: any;
+    filterConditionOptions?: any;
     /**
      * Default filter attributes.
      */
@@ -164,7 +164,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         submitted,
         [ "data-testid" ]: testId,
         triggerClearQuery,
-        defaultFilterConditionOptions,
+        filterConditionOptions,
         filterAttributeOptions
     } = props;
 
@@ -284,7 +284,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                         return attribute.value === terms[0];
                     });
                     if (attributes.length > 0) {
-                        const conditions = defaultFilterConditionOptions.filter((condition) => {
+                        const conditions = filterConditionOptions.filter((condition) => {
                             return condition.value === terms[1];
                         });
                         if (conditions.length > 0) {
