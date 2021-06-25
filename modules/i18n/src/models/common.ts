@@ -98,8 +98,9 @@ export interface StrictFormAttributes {
     actions?: FormAttributeActions;
     children?: FormAttributeChildren;
     hint?: string;
-    label: string;
+    label: string | Record<string, unknown>;
     placeholder?: string;
+    ariaLabel?: string;
     validations?: {
         empty?: string;
         duplicate?: string;
