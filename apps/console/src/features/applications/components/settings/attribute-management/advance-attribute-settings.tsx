@@ -72,7 +72,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
 
-    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>(initialSubject?.claim?.uri);
+    const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
         useState<string>();
 
@@ -99,7 +99,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     setSelectedSubjectValue(selectedSubjectValue);
                 }
             } else {
-                setSelectedSubjectValue(dropDownOptions[ 0 ]?.value);
+                setSelectedSubjectValue(initialSubject?.claim?.uri || dropDownOptions[ 0 ]?.value);
             }
         } else if (selectedSubjectValue) {
             if (dropDownOptions && dropDownOptions.length > 0 &&
