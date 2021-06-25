@@ -242,7 +242,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
             filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
-            filterAttributeOptions = { filterAttributeOptions }
+            filterAttributeOptions={ filterAttributeOptions }
             data-testid={ testId }
         >
             <Grid>
