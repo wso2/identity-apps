@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
+import {scimClaimsMap} from "../../../extensions/configs/scim";
 
 /**
  * Captures meta details of the user.
@@ -113,7 +114,7 @@ export interface UserDetailsInterface {
     name: NameInterface;
     userName: string;
     password: string;
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"?: {
+    [`scimClaimsMap.scim.enterpriseSchema`]?: {
         askPassword: string;
     };
     profileUrl: string;
@@ -133,7 +134,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     },
     password: "",
     profileUrl: "",
-    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    [scimClaimsMap.scim.enterpriseSchema]: {
         askPassword: ""
     },
     userName: ""
